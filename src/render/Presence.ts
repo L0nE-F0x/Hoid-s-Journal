@@ -61,9 +61,12 @@ export class Presence {
   ): void {
     const yolenPos = orrery.bodyPosition('yolen') ?? this.yolen;
 
+    // On a surface scan the pins are the subject; a swarm of people-dots at
+    // the same apparent size just competes with them.
+    const motesOn = scale !== 'surface' && scale !== 'city';
     for (const row of this.chars) {
       const ch = COSMERE.characters.find((c) => c.id === row.id);
-      if (!ch || !isVisible(ch, progress)) { row.mesh.visible = false; continue; }
+      if (!motesOn || !ch || !isVisible(ch, progress)) { row.mesh.visible = false; continue; }
       const at = characterAt(ch, era);
       const bodyId = at?.body;
       const origin = bodyId ? orrery.bodyPosition(bodyId) : null;

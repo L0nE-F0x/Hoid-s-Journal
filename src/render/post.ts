@@ -59,11 +59,13 @@ export function createPostChain(
   const composer = new EffectComposer(renderer, { frameBufferType: THREE.HalfFloatType });
   composer.addPass(new RenderPass(scene, camera));
 
+  // Threshold sits above a fully lit planet: below ~0.6 the sunward half of
+  // every globe fed the bloom and came back as a white wash.
   const bloom = new BloomEffect({
     blendFunction: BlendFunction.ADD,
-    intensity: 1.05,
-    luminanceThreshold: 0.34,
-    luminanceSmoothing: 0.22,
+    intensity: 0.95,
+    luminanceThreshold: 0.62,
+    luminanceSmoothing: 0.3,
     mipmapBlur: true,
     radius: 0.72,
     kernelSize: KernelSize.HUGE,
@@ -91,7 +93,7 @@ export function createPostChain(
 
   return {
     composer,
-    setBloom: (v) => { bloom.intensity = v * 1.05; },
+    setBloom: (v) => { bloom.intensity = v * 0.95; },
     setSize: (w, h) => composer.setSize(w, h),
     dispose: () => composer.dispose(),
   };

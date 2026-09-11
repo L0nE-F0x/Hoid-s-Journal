@@ -10,8 +10,18 @@ import { store } from '../core/store.ts';
 import { el, listen } from './dom.ts';
 import '../styles/atlas.css';
 
+const W = 800;
+const H = 400;
+
+function layer(): HTMLCanvasElement {
+  const c = document.createElement('canvas');
+  c.width = W;
+  c.height = H;
+  return c;
+}
+
 export function mountAtlas(root: HTMLElement): { destroy(): void } {
-  const canvas = el('canvas', { className: 'ceph-atlas-canvas', attrs: { width: '800', height: '400' } });
+  const canvas = el('canvas', { className: 'ceph-atlas-canvas', attrs: { width: String(W), height: String(H) } });
   const title = el('div', { className: 'ceph-atlas-title', text: 'Surface scan' });
   const kicker = el('div', { className: 'ceph-kicker', text: 'Cartography' });
   const roster = el('div', { className: 'ceph-atlas-roster' });
@@ -21,6 +31,11 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
     roster,
   ]);
   root.append(panel);
+
+  // The map and the pins are each composed once per change and blitted every
+  // frame. Re-running the pin labels at 60fps was the old cost.
+  const mapLayer = layer();
+  const pinLayer = layer();
 
   /**
    * The atlas owns the left and top insets; the HUD owns right and bottom.
@@ -40,42 +55,40 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
     }
   };
 
-  /** `remeasure` is false on the animation loop: it forces a layout. */
-  const paint = (remeasure = true) => {
+  const visibleLocations = () => {
     const s = store.state;
-    const show = s.shell === 'play' && !!s.focusedBody && (s.scale === 'globe' || s.scale === 'surface' || s.scale === 'city');
-    panel.classList.toggle('is-on', show);
-    if (!show || !s.focusedBody) { if (remeasure) measure(); return; }
+    if (!s.focusedBody) return [];
+    return locationsOn(s.focusedBody, s.era).filter((l) => {
+      if (!isVisible(l, s.readProgress)) return false;
+      return (s.realm === 'cognitive') === (l.realm === 'cognitive');
+    });
+  };
 
-    const body = bodyById[s.focusedBody];
-    if (!body) return;
-    title.textContent = body.name;
+  const composeMap = () => {
+    const s = store.state;
+    const body = s.focusedBody ? bodyById[s.focusedBody] : undefined;
+    const ctx = mapLayer.getContext('2d');
+    if (!ctx || !body) return;
     const biome = body.id === 'scadrial' ? scadrialBiome(s.era) : body.biome;
-    const src = bakePlanetMap(biome, seedFromId(body.id));
-    const ctx = canvas.getContext('2d');
+    ctx.drawImage(bakePlanetMap(biome, seedFromId(body.id)), 0, 0, W, H);
+  };
+
+  const composePins = () => {
+    const s = store.state;
+    const ctx = pinLayer.getContext('2d');
     if (!ctx) return;
-    const w = canvas.width;
-    const h = canvas.height;
-    ctx.drawImage(src, 0, 0, w, h);
-
-    if (body.id === 'roshar' && s.realm === 'physical') {
-      const t = (performance.now() / 1000) * 0.022;
-      const x = ((0.5 - (t % 1) + 1) % 1) * w;
-      const g = ctx.createLinearGradient(x - 28, 0, x + 28, 0);
-      g.addColorStop(0, 'rgba(94,231,255,0)');
-      g.addColorStop(0.5, 'rgba(186,230,255,0.45)');
-      g.addColorStop(1, 'rgba(94,231,255,0)');
-      ctx.fillStyle = g;
-      ctx.fillRect(x - 28, h * 0.12, 56, h * 0.76);
-    }
-
-    const locs = locationsOn(body.id, s.era).filter((l) => isVisible(l, s.readProgress));
-    for (const loc of locs) {
-      if (s.realm === 'cognitive' && loc.realm !== 'cognitive') continue;
-      if (s.realm !== 'cognitive' && loc.realm === 'cognitive') continue;
-      const px = loc.u * w;
-      const py = loc.v * h;
+    ctx.clearRect(0, 0, W, H);
+    for (const loc of visibleLocations()) {
+      const px = loc.u * W;
+      const py = loc.v * H;
       const hot = s.selected === loc.id || s.hovered === loc.id || s.focusedLocation === loc.id;
+      if (hot) {
+        ctx.beginPath();
+        ctx.arc(px, py, 13, 0, Math.PI * 2);
+        ctx.strokeStyle = 'rgba(234,244,255,0.85)';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+      }
       ctx.beginPath();
       ctx.arc(px, py, hot ? 7 : 4.5, 0, Math.PI * 2);
       ctx.fillStyle = loc.color;
@@ -83,17 +96,21 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
       ctx.lineWidth = 1.5;
       ctx.strokeStyle = hot ? '#eaf4ff' : 'rgba(5,6,13,0.7)';
       ctx.stroke();
-      ctx.font = '600 13px Inter, ui-sans-serif, sans-serif';
+      ctx.font = `${hot ? 700 : 600} 13px Inter, ui-sans-serif, sans-serif`;
       ctx.textAlign = 'left';
       ctx.textBaseline = 'middle';
       ctx.fillStyle = 'rgba(5,6,13,0.75)';
-      ctx.fillText(loc.name, px + 9, py + 1);
+      ctx.fillText(loc.name, px + (hot ? 18 : 9), py + 1);
       ctx.fillStyle = hot ? '#eaf4ff' : '#dce6f5';
-      ctx.fillText(loc.name, px + 8, py);
+      ctx.fillText(loc.name, px + (hot ? 17 : 8), py);
     }
+  };
 
+  const composeRoster = () => {
+    const s = store.state;
     roster.replaceChildren();
-    const people = charactersOnBody(body.id, s.era).filter((c) => isVisible(c, s.readProgress));
+    if (!s.focusedBody) return;
+    const people = charactersOnBody(s.focusedBody, s.era).filter((c) => isVisible(c, s.readProgress));
     if (people.length) {
       roster.append(el('div', { className: 'ceph-kicker', text: 'Present this era', style: { width: '100%' } }));
     }
@@ -102,55 +119,86 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
       listen(chip, 'click', () => store.set('selected', c.id));
       roster.append(chip);
     }
-    if (remeasure) measure();
+  };
+
+  /** One blit of each layer, plus whatever genuinely moves. */
+  const paint = () => {
+    const s = store.state;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    ctx.drawImage(mapLayer, 0, 0);
+
+    if (s.focusedBody === 'roshar' && s.realm === 'physical') {
+      const t = (performance.now() / 1000) * 0.022;
+      const x = ((0.5 - (t % 1) + 1) % 1) * W;
+      const g = ctx.createLinearGradient(x - 28, 0, x + 28, 0);
+      g.addColorStop(0, 'rgba(94,231,255,0)');
+      g.addColorStop(0.5, 'rgba(186,230,255,0.45)');
+      g.addColorStop(1, 'rgba(94,231,255,0)');
+      ctx.fillStyle = g;
+      ctx.fillRect(x - 28, H * 0.12, 56, H * 0.76);
+    }
+
+    ctx.drawImage(pinLayer, 0, 0);
+  };
+
+  const refresh = () => {
+    const s = store.state;
+    const show = s.shell === 'play' && !!s.focusedBody &&
+      (s.scale === 'globe' || s.scale === 'surface' || s.scale === 'city');
+    panel.classList.toggle('is-on', show);
+    measure();
+    if (!show || !s.focusedBody) return;
+    const body = bodyById[s.focusedBody];
+    if (!body) return;
+    title.textContent = body.name;
+    composeMap();
+    composePins();
+    composeRoster();
+    paint();
   };
 
   const hitTest = (ev: MouseEvent, click: boolean) => {
-    const s = store.state;
-    if (!s.focusedBody) return;
     const rect = canvas.getBoundingClientRect();
     const u = (ev.clientX - rect.left) / rect.width;
     const v = (ev.clientY - rect.top) / rect.height;
     let best: { id: string; d: number } | null = null;
-    for (const loc of locationsOn(s.focusedBody, s.era)) {
-      if (!isVisible(loc, s.readProgress)) continue;
-      if (s.realm === 'cognitive' && loc.realm !== 'cognitive') continue;
-      if (s.realm !== 'cognitive' && loc.realm === 'cognitive') continue;
+    for (const loc of visibleLocations()) {
       const d = Math.hypot(loc.u - u, loc.v - v);
       if (d < 0.045 && (!best || d < best.d)) best = { id: loc.id, d };
     }
-    if (!best) return;
-    if (click) {
-      store.set('selected', best.id);
-      store.set('focusedLocation', best.id);
-      store.set('scale', 'surface');
-    } else {
-      store.set('hovered', best.id);
+    if (!best) {
+      if (!click && store.state.hovered) store.set('hovered', null);
+      return;
     }
+    // A pin on the map is a place on the world: turn the globe to face it.
+    if (click) store.set('cameraCue', { kind: 'focus', id: best.id, scale: 'surface' });
+    else store.set('hovered', best.id);
   };
 
   const offs = [
     listen(canvas, 'click', (e) => hitTest(e as MouseEvent, true)),
     listen(canvas, 'mousemove', (e) => hitTest(e as MouseEvent, false)),
-    store.on('focusedBody', () => paint()),
-    store.on('scale', () => paint()),
-    store.on('era', () => paint()),
-    store.on('realm', () => paint()),
-    store.on('shell', () => paint()),
-    store.on('selected', () => paint()),
-    store.on('hovered', () => paint()),
-    store.on('readProgress', () => paint()),
-    store.on('focusedLocation', () => paint()),
-    listen(window, 'resize', () => paint()),
+    listen(canvas, 'mouseleave', () => { if (store.state.hovered) store.set('hovered', null); }),
+    listen(window, 'resize', () => measure()),
+    store.on('focusedBody', refresh),
+    store.on('scale', refresh),
+    store.on('era', refresh),
+    store.on('realm', refresh),
+    store.on('shell', refresh),
+    store.on('selected', () => { composePins(); paint(); }),
+    store.on('hovered', () => { composePins(); paint(); }),
+    store.on('focusedLocation', () => { composePins(); paint(); }),
+    store.on('readProgress', refresh),
   ];
 
   let raf = 0;
   const loop = () => {
     raf = requestAnimationFrame(loop);
-    if (store.state.focusedBody === 'roshar' && panel.classList.contains('is-on')) paint(false);
+    if (store.state.focusedBody === 'roshar' && panel.classList.contains('is-on')) paint();
   };
   loop();
-  paint();
+  refresh();
 
   return {
     destroy() {

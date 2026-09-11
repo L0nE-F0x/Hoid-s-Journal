@@ -26,14 +26,16 @@ void main() {
   float night = pow(1.0 - ndl, 2.4);
   lit += uEmissiveColor * uNightLights * night * albedo.g;
 
-  // Roshar highstorm: a moving longitudinal band of charged cloud
+  // Roshar highstorm: a moving storm front, not a hemisphere. Same 7% of the
+  // circumference the atlas panel draws.
   if (uHighstorm > 0.001) {
     float lon = vUv.x + uTime * 0.022;
-    float band = smoothstep(0.09, 0.0, abs(fract(lon) - 0.5) - 0.03);
-    float wall = smoothstep(0.03, 0.0, abs(fract(lon) - 0.5));
+    float dx = abs(fract(lon) - 0.5);
+    float band = smoothstep(0.035, 0.004, dx);
+    float wall = smoothstep(0.010, 0.0, abs(dx - 0.006));
     float latFade = smoothstep(0.06, 0.20, vUv.y) * smoothstep(0.94, 0.78, vUv.y);
-    lit += vec3(0.62, 0.84, 1.0) * band * latFade * uHighstorm * 0.85;
-    lit += vec3(0.85, 0.95, 1.0) * wall * latFade * uHighstorm * 0.55;
+    lit += vec3(0.62, 0.84, 1.0) * band * latFade * uHighstorm * 0.34;
+    lit += vec3(0.85, 0.95, 1.0) * wall * latFade * uHighstorm * 0.5;
   }
 
   // Limb lighting

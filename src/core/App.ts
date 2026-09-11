@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { COSMERE, bodyById, eraAt, isVisible } from '../data/index.ts';
+import { uvFacing } from '../layout/surface.ts';
 import { CameraRig, type Waypoint } from './CameraRig.ts';
 import { store, type CameraCue, type Scale } from './store.ts';
 import { Labels } from '../render/Labels.ts';
@@ -15,6 +16,9 @@ const CLICK_SLOP = 6;
 /** Playhead years per second at rate 1. Slow enough that orbits drift. */
 const YEARS_PER_SECOND = 0.08;
 const _ride = new THREE.Vector3();
+/** How far off the sun axis the camera stands. Bigger = more terminator. */
+const GLOBE_SUN_OFFSET = 0.7;
+const SURFACE_SUN_OFFSET = 0.95;
 
 function isGlobeScale(scale: Scale): boolean {
   return scale === 'globe' || scale === 'surface' || scale === 'city';
@@ -147,10 +151,7 @@ export class App {
       return;
     }
     if (cue.kind === 'frame') {
-      this.rig.flyTo(new THREE.Vector3(0, 0, 0), 268, 2.4);
-      store.set('scale', 'cosmere');
-      store.set('focusedSystem', null);
-      store.set('focusedBody', null);
+      this.frameCosmere(2.4);
       return;
     }
     if (cue.kind === 'pop') {
@@ -162,7 +163,12 @@ export class App {
 
   private popScale(): void {
     const s = store.state;
-    if (s.scale === 'city' || s.scale === 'surface') {
+    if (s.scale === 'city' && s.focusedLocation && s.focusedBody) {
+      this.focusLocation(s.focusedLocation, s.focusedBody, 'surface');
+      return;
+    }
+    if (s.scale === 'surface' || s.scale === 'city') {
+      store.set('focusedLocation', null);
       if (s.focusedBody) this.focusId(s.focusedBody, 'globe');
       return;
     }
@@ -170,14 +176,41 @@ export class App {
       this.focusId(s.focusedSystem, 'system');
       return;
     }
-    this.rig.flyTo(new THREE.Vector3(0, 0, 0), 268, 2.2);
-    store.set('scale', 'cosmere');
-    store.set('focusedSystem', null);
-    store.set('focusedBody', null);
+    this.frameCosmere(2.2);
     store.set('selected', null);
   }
 
+  /**
+   * Frame every system, not a fixed radius around Yolen. The systems are not
+   * centred on the origin, so a fixed 268 left half the sky empty and pushed
+   * the far ones off the bottom of the frame.
+   */
+  private frameCosmere(damping: number): void {
+    const centre = new THREE.Vector3();
+    let n = 0;
+    for (const sys of COSMERE.systems) {
+      const p = this.orrery.systemPosition(sys.id);
+      if (!p) continue;
+      centre.add(p);
+      n++;
+    }
+    if (n) centre.multiplyScalar(1 / n);
+    let spread = 40;
+    for (const sys of COSMERE.systems) {
+      const p = this.orrery.systemPosition(sys.id);
+      if (p) spread = Math.max(spread, centre.distanceTo(p));
+    }
+    // The spread is a 3-D radius but the systems lie in a flattened plane seen
+    // at an angle, so the on-screen width is roughly three quarters of it.
+    this.rig.flyTo(centre, this.rig.framingDistance(spread * 0.78, 0.86, 'width'), damping);
+    store.set('scale', 'cosmere');
+    store.set('focusedSystem', null);
+    store.set('focusedBody', null);
+  }
+
   private focusId(id: string, scale: Scale): void {
+    const loc = COSMERE.locations.find((l) => l.id === id);
+    if (loc) { this.focusLocation(loc.id, loc.body, scale === 'city' ? 'city' : 'surface'); return; }
     const body = bodyById[id];
     if (body) {
       const p = this.orrery.bodyPosition(id);
@@ -199,7 +232,7 @@ export class App {
         // a terminator on one limb, and the sun itself well behind us.
         const dx = p.x - sun.x;
         const dz = p.z - sun.z;
-        this.rig.setAngles(Math.atan2(dx, dz) + Math.PI - 0.7, 1.02);
+        this.rig.setAngles(Math.atan2(dx, dz) + Math.PI - GLOBE_SUN_OFFSET, 1.02);
       }
       this.rig.flyTo(p, globe ? this.rig.framingDistance(body.radius) : 42, 2.0);
       return;
@@ -298,9 +331,8 @@ export class App {
       return;
     }
     if (kind === 'location') {
-      store.set('focusedLocation', id);
-      store.set('selected', id);
-      store.set('scale', 'surface');
+      const loc = COSMERE.locations.find((l) => l.id === id);
+      if (loc) this.focusLocation(loc.id, loc.body, 'surface');
       return;
     }
     if (kind === 'system') this.focusId(id, 'system');
@@ -311,13 +343,47 @@ export class App {
   }
 
   /**
+   * Turn the globe until a place on it is facing the camera, with the camera
+   * still standing sunward so the place is lit. The camera solves the
+   * latitude, the body's spin solves the longitude.
+   */
+  private focusLocation(id: string, bodyId: string, scale: Scale): void {
+    const loc = COSMERE.locations.find((l) => l.id === id);
+    const body = bodyById[bodyId];
+    const p = this.orrery.bodyPosition(bodyId);
+    if (!loc || !body || !p) return;
+    store.set('focusedBody', bodyId);
+    store.set('focusedSystem', body.system);
+    store.set('focusedLocation', id);
+    store.set('selected', id);
+    store.set('scale', scale);
+    store.set('isPlaying', false);
+
+    const sun = this.orrery.systemPosition(body.system);
+    const heading = sun ? Math.atan2(p.x - sun.x, p.z - sun.z) : 0;
+    const theta = heading + Math.PI - SURFACE_SUN_OFFSET;
+    const face = uvFacing(loc.u, loc.v, 0);
+    this.orrery.setSpinLock(bodyId, theta - face.theta);
+    // Soften a polar stare a little; a globe reads better near the equator.
+    this.rig.setAngles(theta, Math.PI / 2 + (face.phi - Math.PI / 2) * 0.85);
+    this.rig.flyTo(p, this.rig.framingDistance(body.radius, 0.74), 2.0);
+  }
+
+  /**
    * At globe scale the subject is a planet mid-orbit. Ride its frame: the pose
    * moves with it and turns with the sun, so the shot stays centred and lit
-   * however fast the playhead runs.
+   * however fast the playhead runs. With a place on that planet selected, ride
+   * its spin too, so the pin you clicked stays under the camera.
    */
-  private trackFocus(scale: Scale, focusedBody: string | null, cinematic: boolean): void {
+  private trackFocus(
+    scale: Scale,
+    focusedBody: string | null,
+    focusedLocation: string | null,
+    cinematic: boolean,
+  ): void {
     if (!focusedBody || cinematic || !isGlobeScale(scale)) {
       this.follow = null;
+      this.orrery.setSpinLock(null);
       return;
     }
     const p = this.orrery.bodyPosition(focusedBody);
@@ -325,6 +391,16 @@ export class App {
     const body = bodyById[focusedBody];
     const sun = body ? this.orrery.systemPosition(body.system) : undefined;
     const heading = sun ? Math.atan2(p.x - sun.x, p.z - sun.z) : 0;
+    // A selected place keeps facing the camera: the body's spin tracks the
+    // same sunward heading the camera rides, so the two never drift apart.
+    const pin = scale === 'globe' ? null
+      : COSMERE.locations.find((l) => l.id === focusedLocation && l.body === focusedBody);
+    if (pin) {
+      const face = uvFacing(pin.u, pin.v, 0);
+      this.orrery.setSpinLock(focusedBody, heading + Math.PI - SURFACE_SUN_OFFSET - face.theta);
+    } else {
+      this.orrery.setSpinLock(null);
+    }
 
     if (this.follow && this.follow.id === focusedBody) {
       _ride.subVectors(p, this.follow.pos);
@@ -354,7 +430,9 @@ export class App {
 
   private frame(): void {
     const dt = Math.min(0.05, this.clock.getDelta());
-    const t = this.clock.elapsedTime;
+    // Same origin the atlas panel uses, so Roshar's storm front sits at the
+    // same longitude on the map as on the globe.
+    const t = performance.now() / 1000;
     const s = store.state;
 
     if (s.shell === 'play' && s.isPlaying && !s.cinematic) {
@@ -383,13 +461,19 @@ export class App {
       scale: s.scale,
       focusedSystem: s.focusedSystem,
     });
-    this.trackFocus(s.scale, s.focusedBody, s.cinematic);
+    this.trackFocus(s.scale, s.focusedBody, s.focusedLocation, s.cinematic);
 
     this.rig.update(dt);
     store.set('viewHeading', this.rig.heading);
 
-    this.labels.update(this.orrery, this.camera, s.readProgress, s.visual.showLabels, s.scale);
-    this.pins.update(this.orrery, s.readProgress, s.focusedBody, s.scale);
+    this.labels.update(
+      this.orrery, this.camera, s.readProgress, s.visual.showLabels, s.scale,
+      s.focusedSystem, s.focusedBody,
+    );
+    this.pins.update(
+      this.orrery, this.camera, s.readProgress, s.focusedBody, s.scale,
+      s.hovered ?? s.focusedLocation,
+    );
     this.presence.update(this.orrery, this.camera, s.era, s.year, s.readProgress, s.scale);
     this.spiritual.update(t, s.era, s.realm === 'spiritual');
     this.starfield.update(t, this.canvas.clientHeight, FOV, s.visual.starSize, s.visual.exposure);

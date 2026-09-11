@@ -280,10 +280,16 @@ export class CameraRig {
     this.goalOffsetY = (f.y0 + f.y1) / 2 - this.viewHeight / 2;
   }
 
-  /** Distance at which a sphere of `radius` fills `fill` of the free rectangle. */
-  framingDistance(radius: number, fill = 0.52): number {
+  /**
+   * Distance at which a sphere of `radius` fills `fill` of the free rectangle.
+   * `axis` picks which side to fit: 'min' for a round subject, 'width' for a
+   * wide flat one like the plane of the Cosmere.
+   */
+  framingDistance(radius: number, fill = 0.52, axis: 'min' | 'width' = 'min'): number {
     const f = this.freeRect();
-    const px = Math.max(1, Math.min(f.x1 - f.x0, f.y1 - f.y0));
+    const px = axis === 'width'
+      ? Math.max(1, f.x1 - f.x0)
+      : Math.max(1, Math.min(f.x1 - f.x0, f.y1 - f.y0));
     const tan = Math.tan((this.camera.fov * Math.PI) / 360);
     const d = (radius * this.viewHeight) / Math.max(0.05, fill * px * tan);
     return clamp(Math.max(d, radius * 2.2), this.minRadius, this.maxRadius);

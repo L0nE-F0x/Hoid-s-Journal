@@ -57,11 +57,13 @@ interface Recipe {
   hion?: boolean;
   terminator?: boolean;
   fain?: boolean;
+  /** Polar cap colour. Ice by default; ash worlds have no white left. */
+  cap?: number[];
 }
 
 const RECIPES: Record<BiomeKind, Recipe> = {
   roshar: { land: rgb('#b08958'), land2: rgb('#6e4e32'), ocean: rgb('#1c3d48'), threshold: 0.50, warp: 2.8 },
-  'scadrial-ash': { land: rgb('#3a3a38'), land2: rgb('#1f1f1c'), ocean: rgb('#2a2a28'), threshold: 0.62, warp: 1.6 },
+  'scadrial-ash': { land: rgb('#5b5248'), land2: rgb('#3a332c'), ocean: rgb('#46413b'), threshold: 0.62, warp: 1.6, cap: rgb('#6e6459') },
   'scadrial-basin': { land: rgb('#4a6b3a'), land2: rgb('#6a8a4a'), ocean: rgb('#2a4a6a'), threshold: 0.48, warp: 1.8, lights: true },
   nalthis: { land: rgb('#2d6a3a'), land2: rgb('#c45a8a'), ocean: rgb('#2a6a8a'), threshold: 0.44, warp: 2.2 },
   taldain: { land: rgb('#e8c878'), land2: rgb('#c9a24a'), ocean: rgb('#0f1220'), threshold: 0.5, warp: 1.4, split: true },
@@ -139,7 +141,7 @@ export function bakePlanetMap(kind: BiomeKind, seed = 1, W = 1024, H = 512): HTM
       if (r.lights && n > 0.58 && n < 0.64) col = mix(col, rgb('#fde68a'), 0.5);
 
       const polar = Math.abs(v - 0.5) * 2;
-      if (polar > 0.82) col = mix(col, rgb('#e2e8f0'), (polar - 0.82) / 0.18);
+      if (polar > 0.82) col = mix(col, r.cap ?? rgb('#e2e8f0'), (polar - 0.82) / 0.18);
 
       const i = (y * W + x) * 4;
       d[i] = col[0]!;

@@ -54,38 +54,48 @@ export class Labels {
     return { id, sprite, kind };
   }
 
+  /**
+   * One name per scale: systems out at Cosmere distance, planets inside a
+   * system, and on a globe only the world you are actually reading. Location
+   * names belong to the pins.
+   */
   update(
     orrery: Orrery,
     camera: THREE.Camera,
     progress: Record<string, number>,
     show: boolean,
     scale: string,
+    focusedSystem: string | null,
+    focusedBody: string | null,
   ): void {
     this.group.visible = show;
     if (!show) return;
+    const globe = scale === 'globe' || scale === 'surface' || scale === 'city';
     for (const l of this.labels) {
       if (l.kind === 'system') {
         const sys = COSMERE.systems.find((s) => s.id === l.id);
         const p = orrery.systemPosition(l.id);
-        if (!sys || !p) { l.sprite.visible = false; continue; }
+        if (!sys || !p || scale !== 'cosmere') { l.sprite.visible = false; continue; }
         const dist = camera.position.distanceTo(p);
-        l.sprite.visible = isVisible(sys, progress) && dist > 80 && dist < 420;
+        l.sprite.visible = isVisible(sys, progress);
         l.sprite.position.copy(p);
         l.sprite.position.y += 4.2;
-        const s = Math.max(8, Math.min(22, dist * 0.06));
+        const s = Math.max(8, Math.min(120, dist * 0.14));
         l.sprite.scale.set(s, s * 0.19, 1);
       } else {
         const body = COSMERE.bodies.find((b) => b.id === l.id);
         const p = orrery.bodyPosition(l.id);
         if (!body || !p) { l.sprite.visible = false; continue; }
-        const vis = isVisible(body, progress);
+        const inScope = globe
+          ? body.id === focusedBody
+          : scale === 'system' && (!focusedSystem || body.system === focusedSystem);
         const dist = camera.position.distanceTo(p);
-        l.sprite.visible = vis && dist < 90 && (scale === 'system' || scale === 'globe' || dist < 40);
+        l.sprite.visible = inScope && isVisible(body, progress) && dist < 160;
         l.sprite.position.copy(p);
         l.sprite.position.y += body.radius * 1.25 + 0.25;
         // Constant apparent size: a fixed floor turns into a billboard the
         // size of the planet once you are close enough to read one.
-        const s = Math.max(0.5, Math.min(10, dist * 0.09));
+        const s = Math.max(0.5, Math.min(80, dist * 0.22));
         l.sprite.scale.set(s, s * 0.19, 1);
       }
     }

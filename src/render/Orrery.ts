@@ -42,6 +42,8 @@ export class Orrery {
   private readonly bodyWorld = new Map<string, THREE.Vector3>();
   private readonly sphere = new THREE.SphereGeometry(1, 48, 32);
   private readonly moonGeo = new THREE.SphereGeometry(1, 16, 12);
+  private spinLockId: string | null = null;
+  private spinLock = 0;
   private scadrialTexAsh = planetTexture('scadrial-ash', 2);
   private scadrialTexBasin = planetTexture('scadrial-basin', 3);
   private lastBiome: 'scadrial-ash' | 'scadrial-basin' = 'scadrial-ash';
@@ -108,11 +110,16 @@ export class Orrery {
 
   private makePlanetMat(body: Body): THREE.ShaderMaterial {
     const biome = body.id === 'scadrial' ? 'scadrial-ash' : body.biome;
+    // Each system's light carries its own star's colour, part way: full
+    // saturation would repaint the world, none of it makes every sky the same.
+    const sun = new THREE.Color(0xfff1d0);
+    const star = COSMERE.systems.find((s) => s.id === body.system)?.sunColor;
+    if (star) sun.lerp(new THREE.Color(star), 0.45);
     return new THREE.ShaderMaterial({
       uniforms: {
         uAlbedo: { value: planetTexture(biome, seedFromId(body.id)) },
         uSunPos: { value: new THREE.Vector3() },
-        uSunColor: { value: new THREE.Color(0xfff1d0) },
+        uSunColor: { value: sun },
         uAtmosphere: { value: new THREE.Color(body.color) },
         uTime: { value: 0 },
         uHighstorm: { value: body.id === 'roshar' ? 1 : 0 },
@@ -210,6 +217,20 @@ export class Orrery {
     return this.systemPos.get(id);
   }
 
+  /** Current rotation of a body about its axis. Surface pins ride this. */
+  bodySpin(id: string): number {
+    return this.bodyNodes.get(id)?.mesh.rotation.y ?? 0;
+  }
+
+  /**
+   * Hold one body's rotation at a given angle. The atlas uses this to turn a
+   * world until the place you picked is facing the camera, and keep it there.
+   */
+  setSpinLock(id: string | null, spin = 0): void {
+    this.spinLockId = id;
+    this.spinLock = spin;
+  }
+
   update(year: number, realm: Realm, era: number, time: number, visual: {
     showOrbits: boolean;
     showMoons: boolean;
@@ -222,14 +243,18 @@ export class Orrery {
     const spiritual = realm === 'spiritual';
     this.group.visible = !spiritual;
 
+    // The Catacendre is a map swap, and the sky changes with it: ash haze
+    // before, Harmony's blue after.
     const biome = scadrialBiome(era);
     if (biome !== this.lastBiome) {
       this.lastBiome = biome;
       const scad = this.bodyNodes.get('scadrial');
       if (scad) {
-        scad.mat.uniforms.uAlbedo.value = biome === 'scadrial-basin'
-          ? this.scadrialTexBasin
-          : this.scadrialTexAsh;
+        const basin = biome === 'scadrial-basin';
+        scad.mat.uniforms.uAlbedo.value = basin ? this.scadrialTexBasin : this.scadrialTexAsh;
+        const sky = basin ? scad.body.color : '#c9a07a';
+        scad.mat.uniforms.uAtmosphere.value.set(sky);
+        scad.atmoMat.uniforms.uColor.value.set(sky);
       }
     }
 
@@ -247,7 +272,7 @@ export class Orrery {
       node.mat.uniforms.uHighstorm.value = node.body.id === 'roshar' && realm === 'physical' ? 1 : 0;
       node.atmoMat.uniforms.uSunPos.value.copy(_sun);
       node.atmo.visible = visual.showAtmospheres;
-      node.mesh.rotation.y = time * 0.04;
+      node.mesh.rotation.y = this.spinLockId === node.body.id ? this.spinLock : time * 0.04;
     }
 
     for (const moon of COSMERE.moons) {

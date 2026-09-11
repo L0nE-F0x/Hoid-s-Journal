@@ -261,6 +261,14 @@ Written down so the next session does not rediscover them:
 - **Disc geometry is unit-radius**, scaled by the model matrix. A shader
   reading `position.xy` gets 0..1, not world units. That bug hid two others
   before it was found.
+- **A black sky with a working HUD is a lost WebGL context.** Every DOM panel
+  keeps running, so it reads as "the app is fine, the Cosmere is missing".
+  `webglcontextlost` is handled now and says so on screen; `__ceph.diagnose()`
+  prints the driver, the drawing buffer, the program count and the fault.
+- **Budget the drawing buffer, not just the pixel ratio.** The post chain
+  holds several full-resolution half-float buffers and a bloom mip chain, so
+  a 1920×1200 screen at devicePixelRatio 2 asks for 3840×2400 of each. The
+  renderer caps the scene at about 2.3 megapixels for that reason.
 - **Alpha is coverage, not brightness.** Deriving a transparent surface's
   alpha from its own colour lets any texture on it modulate opacity, and the
   tone curve's toe turns a quarter-stop of that into visible banding.

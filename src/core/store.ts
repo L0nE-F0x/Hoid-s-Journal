@@ -94,6 +94,12 @@ export interface AppState {
   view: ViewMode;
   panel: 'none' | 'arcanum' | 'codex' | 'spoilers' | 'settings' | 'help' | 'realms';
   magicId: string | null;
+  /**
+   * Set when the renderer cannot draw: a lost WebGL context, or a driver that
+   * refused a shader. The sky goes black and every DOM panel keeps working,
+   * which looks like nothing is wrong, so this has to be said out loud.
+   */
+  fault: string | null;
 }
 
 export function defaultVisual(): VisualState {
@@ -158,6 +164,7 @@ class Store {
     searchQuery: '',
     view: 'sky',
     panel: 'none',
+    fault: null,
     magicId: null,
   };
 

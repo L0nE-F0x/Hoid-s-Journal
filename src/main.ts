@@ -69,7 +69,9 @@ async function main(): Promise<void> {
   app.start();
 
   // Handle for the capture / interaction harnesses in tools/. Not a public API.
-  (window as unknown as { __ceph: unknown }).__ceph = { store, app, ui };
+  (window as unknown as { __ceph: unknown }).__ceph = {
+    store, app, ui, diagnose: () => app.diagnose(),
+  };
 
   setBoot(1, 'The Cosmere turns');
   requestAnimationFrame(() => {

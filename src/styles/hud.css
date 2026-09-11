@@ -471,3 +471,28 @@
   pointer-events: none;
   transition: opacity 420ms var(--ceph-ease);
 }
+
+/* A renderer fault. Every DOM panel keeps working over a black canvas, which
+   reads as "nothing is wrong, the Cosmere is just missing", so this says it. */
+.ceph-fault {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 95;
+  display: none;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  width: min(420px, calc(100% - 40px));
+  padding: 20px 22px;
+  pointer-events: auto;
+}
+.ceph-fault.is-on { display: flex; }
+.ceph-fault-text {
+  margin: 0;
+  font-family: var(--ceph-display);
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--ceph-text);
+}

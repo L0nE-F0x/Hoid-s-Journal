@@ -135,11 +135,23 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
 
   const drawer = el('div', { className: 'ceph-panel ceph-panel-drawer', style: { display: 'none' } });
 
+  // A renderer fault is the one thing the HUD must not hide behind itself.
+  const faultText = el('p', { className: 'ceph-fault-text' });
+  const faultReload = el('button', {
+    className: 'ceph-btn ceph-btn--primary', text: 'Reload', attrs: { type: 'button' },
+  });
+  const fault = el('div', { className: 'ceph-panel ceph-fault' }, [
+    el('div', { className: 'ceph-kicker', text: 'The sky stopped drawing' }),
+    faultText,
+    faultReload,
+  ]);
+  listen(faultReload, 'click', () => window.location.reload());
+
   const skip = el('button', { className: 'ceph-btn ceph-btn--primary ceph-skip', text: 'Skip · Space', attrs: { type: 'button' } });
   const tooltip = el('div', { className: 'ceph-panel ceph-tooltip', text: '' });
 
   const hud = el('div', { className: 'ceph-hud' }, [topbar, timeline, drawer, skip, tooltip]);
-  root.append(hud);
+  root.append(hud, fault);
 
   /**
    * Stable chrome owns insets. The info card is an overlay: it must never
@@ -441,6 +453,10 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
     store.on('readingNow', refreshReading),
     listen(window, 'resize', () => measure()),
     store.on('cinematic', (on) => { skip.classList.toggle('is-on', on); refreshScale(); }),
+    store.on('fault', (msg) => {
+      fault.classList.toggle('is-on', !!msg);
+      faultText.textContent = msg ?? '';
+    }),
     store.on('shell', (shell) => {
       hud.classList.toggle('is-on', shell === 'play');
       measure();

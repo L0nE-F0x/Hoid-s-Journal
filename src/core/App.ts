@@ -341,6 +341,27 @@ export class App {
       if (store.state.shell !== 'play') return;
       this.pickAt(e.clientX, e.clientY, false);
     };
+    // A lost context leaves every DOM panel working over a black canvas,
+    // which reads as "the app is fine, the Cosmere is missing". Say so.
+    const lost = (e: Event) => {
+      e.preventDefault();
+      this.running = false;
+      cancelAnimationFrame(this.raf);
+      store.set('fault', 'The graphics context was lost. Reload to bring the sky back.');
+    };
+    const restored = () => {
+      // Everything baked lives in render targets that the driver has thrown
+      // away. Rebuilding them in place is a larger machine than this needs;
+      // a reload is honest and takes a second.
+      store.set('fault', 'The graphics context came back. Reload to rebuild the sky.');
+    };
+    this.canvas.addEventListener('webglcontextlost', lost);
+    this.canvas.addEventListener('webglcontextrestored', restored);
+    this.disposers.push(() => {
+      this.canvas.removeEventListener('webglcontextlost', lost);
+      this.canvas.removeEventListener('webglcontextrestored', restored);
+    });
+
     this.canvas.addEventListener('pointerdown', down);
     this.canvas.addEventListener('pointerup', up);
     this.canvas.addEventListener('pointermove', move);
@@ -610,7 +631,15 @@ export class App {
   private resize(): void {
     const w = this.canvas.clientWidth || window.innerWidth;
     const h = this.canvas.clientHeight || window.innerHeight;
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    // Budget the drawing buffer, not just the ratio. The post chain keeps
+    // several full-resolution half-float buffers plus a bloom mip chain, so a
+    // 1920x1200 screen at devicePixelRatio 2 asks for a 3840x2400 scene and
+    // a few hundred megabytes of them. On an integrated GPU that is how a
+    // context gets lost, and a lost context is a black sky with a working HUD.
+    const MAX_PIXELS = 1920 * 1200;
+    const want = Math.min(window.devicePixelRatio || 1, 2);
+    const fit = Math.sqrt(MAX_PIXELS / Math.max(1, w * h));
+    const dpr = Math.max(1, Math.min(want, fit));
     this.renderer.setPixelRatio(dpr);
     this.renderer.setSize(w, h, false);
     this.camera.aspect = w / Math.max(1, h);
@@ -734,6 +763,31 @@ export class App {
     this.post.setBloom(v.bloom * k);
     this.post.setQuality(band);
     this.orrery.setQuality(band);
+  }
+
+  /**
+   * What the renderer thinks it is. For a reader reporting a black sky: one
+   * line that says which driver, whether the context is alive, and whether
+   * any shader failed to build.
+   */
+  diagnose(): Record<string, unknown> {
+    const gl = this.renderer.getContext();
+    const dbg = gl.getExtension('WEBGL_debug_renderer_info');
+    return {
+      renderer: dbg ? gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL) : 'unknown',
+      vendor: dbg ? gl.getParameter(dbg.UNMASKED_VENDOR_WEBGL) : 'unknown',
+      contextLost: gl.isContextLost(),
+      drawingBuffer: [gl.drawingBufferWidth, gl.drawingBufferHeight],
+      pixelRatio: this.renderer.getPixelRatio(),
+      programs: this.renderer.info.programs?.length ?? -1,
+      textures: this.renderer.info.memory.textures,
+      geometries: this.renderer.info.memory.geometries,
+      frames: this.frameCount,
+      fps: Math.round(store.state.stats.fps),
+      quality: store.state.visual.quality,
+      band: this.autoBand,
+      fault: store.state.fault,
+    };
   }
 
   dispose(): void {

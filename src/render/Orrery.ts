@@ -93,6 +93,7 @@ export class Orrery {
   /** The world in front of the camera, currently wearing its large plates. */
   private detailed: string | null = null;
   private nebulaSteps = 9;
+  private blank: THREE.DataTexture | null = null;
 
   constructor(renderer: THREE.WebGLRenderer) {
     this.renderer = renderer;
@@ -194,10 +195,27 @@ export class Orrery {
     return new THREE.Color(0xffffff).lerp(new THREE.Color(body.color), 0.88).multiplyScalar(1.15);
   }
 
+  /** A neutral 1×1 stand-in, so a world can exist before its plate does. */
+  private blankPlate(): THREE.Texture {
+    if (!this.blank) {
+      const data = new Uint8Array([90, 90, 96, 255]);
+      this.blank = new THREE.DataTexture(data, 1, 1);
+      this.blank.needsUpdate = true;
+    }
+    return this.blank;
+  }
+
   private makePlanetMat(body: Body): THREE.ShaderMaterial {
     const biome = biomeOf(body, 0);
     const recipe = recipeFor(biome);
-    const plates = planetPlates(this.renderer, biome, this.plateSeed(body), false, PLATE_SMALL);
+    // Not baked here. Sixty-two render targets allocated inside one
+    // constructor is the kind of spike that loses a context on an integrated
+    // GPU; the per-frame rebind below spends them two at a time instead.
+    const plates = {
+      albedo: this.blankPlate(),
+      data: this.blankPlate(),
+      texel: new THREE.Vector2(1, 1),
+    };
     // Each system's light carries its own star's colour, part way: full
     // saturation would repaint the world, none of it makes every sky the same.
     const sun = new THREE.Color(0xfff1d0);
@@ -334,7 +352,7 @@ export class Orrery {
       const sunPos = this.systemPos.get(body.system)!;
       this.bodyNodes.set(body.id, {
         body, mesh, atmo, ring, mat, atmoMat, ringMat, systemId: body.system, sunPos,
-        skin: `${biomeOf(body, 0)}:false:${PLATE_SMALL}`, trail, trailGeo,
+        skin: '', trail, trailGeo,
       });
       this.bodyWorld.set(body.id, new THREE.Vector3());
     }
@@ -517,7 +535,13 @@ export class Orrery {
     this.lastBiome = biome;
     this.lastCognitive = shadesmar;
     let budget = flipped ? 4 : 2;
-    for (const node of this.bodyNodes.values()) {
+    // The world you are looking at cannot wait its turn behind ten gas giants.
+    const queue = [...this.bodyNodes.values()].sort((a, b) => {
+      const ax = a.body.id === visual.focusedBody ? 0 : a.body.system === visual.focusedSystem ? 1 : 2;
+      const bx = b.body.id === visual.focusedBody ? 0 : b.body.system === visual.focusedSystem ? 1 : 2;
+      return ax - bx;
+    });
+    for (const node of queue) {
       const kind = biomeOf(node.body, era);
       const want = node.body.id === this.detailed ? PLATE_LARGE : PLATE_SMALL;
       const skin = `${kind}:${shadesmar}:${want}`;

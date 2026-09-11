@@ -16,13 +16,13 @@ Architecture lock: `AGENTS.md` + `DESIGN.md`. This file is the live todo.
 
 # ▶ START HERE — next session
 
-**2026-09-12 night.** HUD overhaul: hover is a tooltip (the info card
-no longer shoves the sky), WASD never opens panels, chrome is one top bar
-plus collapsible directory / timeline / galaxy. Help copy credits Stewart.
-Look has v1-style toggles plus bloom/exposure sliders. Denser people and
-glossary. `npm run test:interaction` is **32/32**.
+**2026-09-12 bedtime.** Owner said the HUD is much better. Wrap is docs
+only. Product last landed in `2deaae5` (hover no longer shoves the sky;
+WASD never opens panels; one top bar; collapsible directory / timeline /
+galaxy; Look sliders; denser people + glossary). Help credits Stewart.
 
 Git: `master` tracking https://github.com/L0nE-F0x/Hoid-s-Journal.
+Live site (owner connected Netlify): https://thecosmere.netlify.app
 **Do not edit the v1 repo.** Pull before you start.
 
 ```bash
@@ -41,9 +41,9 @@ never converge and every screenshot lies. `tools/screenshot.mjs` drives
 headless Chrome at 60fps and prints `fps`, `scale`, `body`, and `insets`.
 `window.__ceph = { store, app, ui }` is the harness handle only.
 
-Last known green (before this docs-only commit): `npx tsc --noEmit`,
-`npm run build`, and `npm run test:interaction` (**30/30**) with `npm run
-dev` already up. Re-run those if you touch code.
+Last known green: `npx tsc --noEmit` and `npm run test:interaction`
+(**32/32**, including hover-must-not-select / hover-must-not-claim-a-right-inset)
+with `npm run dev` already up. Re-run those if you touch code.
 
 ---
 
@@ -70,7 +70,7 @@ Scan as a second scale, deep links, Hoid as the journal's voice.
 ## Where to look
 
 ```
-src/core/store.ts          UI ↔ renderer wall. Nothing else.
+src/core/store.ts          UI ↔ renderer wall. chrome persisted with visual.
 src/cartography/           Atlas maps. No Three.
   officialMaps.ts          Stewart rasters + layers + MAP_CREDIT
   planetMap.ts             Procedural world atlas (non-Stewart worlds)
@@ -78,8 +78,10 @@ src/cartography/           Atlas maps. No Three.
 src/data/locations.ts      Place UVs. Roshar/Scadrial calibrated to plates.
 src/data/cities.ts         Landmark UVs on *our* procedural plates.
 src/ui/atlas.ts            Blits official rasters or procedural canvases
+src/ui/hud.ts              Top bar, tooltip-on-hover, overlay card-on-click
 src/ui/loreWeb.ts          2D force graph. No Three.
 src/ui/brand.ts            Disclaimer includes Stewart credit
+src/core/store.ts          chrome: { directory, minimap, timeline } persisted
 public/maps/               Stewart plates (~26MB). Already in git.
 public/audio/soundtrack.mp3
 public/logo.png            Title mark + apple-touch
@@ -101,10 +103,13 @@ Treat this as current truth, not a wishlist.
 - Screen-space picking. At Cosmere you click the **orbit cloud** (outer
   world), not a 5-pixel star. HUD glass is `pointer-events: none` except
   interactive children. Single clicks dive Cosmere → system → globe →
-  surface → city. `Esc` walks back out.
-- Directory (left): Systems, Worlds, People, Shards, Doors, **Moons**.
-  Search filters the current tab. Info card is a field grid with a colour
-  swatch. Fly-to from a person or a system.
+  surface → city. `Esc` walks back out. Hover is a tooltip; the info card
+  opens on **click** as an overlay and **must not** report camera insets.
+- One top bar (wordmark, scale crumb, tools). Directory / timeline /
+  galaxy collapse (☰, ▾, × / `M`). Galaxy ducks when a card is open.
+- Directory (left): Systems, Worlds, People, Shards, Doors, Moons,
+  Dawnshards. Search filters the current tab. Info card is a field grid
+  with a colour swatch. Fly-to from a person or a system.
 - Surface atlas: Roshar (physical + Shadesmar) and Scadrial (ash / basin,
   plus starchart / endpaper layers) are Stewart plates. Layer chips switch
   drawings. Pins two-way with the globe. Atlas width 480px. Credit line
@@ -131,7 +136,7 @@ Treat this as current truth, not a wishlist.
   screen still gates a shared link because that is where the disclaimer
   lives. Progress + visual in localStorage.
 - PWA: `public/sw.js`, install in Look, `npm run icons` / `npm run og`.
-- Harnesses: `npm run shot`, `npm run test:interaction` (30 checks),
+- Harnesses: `npm run shot`, `npm run test:interaction` (32 checks),
   `npm run bench`.
 
 ---
@@ -140,18 +145,13 @@ Treat this as current truth, not a wishlist.
 
 The product is shippable locally. Do not invent a new pillar.
 
-### 1. Put it on the internet — needs the owner
+### 1. Put it on the internet
 
-- GitHub remote is done: https://github.com/L0nE-F0x/Hoid-s-Journal
-- `netlify.toml` is ready (`npm run build`, publish `dist`, Node 22).
-  **Connect the GitHub repo in the Netlify UI.** There is no site yet.
-  An agent cannot finish this without the owner's Netlify login.
+- GitHub: https://github.com/L0nE-F0x/Hoid-s-Journal
+- Live: https://thecosmere.netlify.app (`npm run build`, `dist`, Node 22).
+  Owner connected it. After a `master` push, hard-refresh the site.
 
-### 2. Leftover copy
-
-Help copy was fixed 2026-09-12. Stewart credit is in Help and on the atlas.
-
-### 3. Optional depth, only if a reread reaches for it
+### 2. Optional depth, only if a reread reaches for it
 
 - More Stewart city plates if they exist in v1 `assets/images` and are
   worth the bytes (Azimir has no plate yet). Do not re-copy rasters that
@@ -162,7 +162,7 @@ Help copy was fixed 2026-09-12. Stewart credit is in Help and on the atlas.
   plates. On Stewart city rasters the interaction test selects landmarks
   from the roster chips, not by clicking a UV on the scan — the scans
   have no calibrated landmark UVs. Do not "fix" that by guessing.
-- Glossary / characters can go denser. Keep the canonicity badge honest.
+- Glossary / characters can still go denser. Keep the canonicity badge honest.
 
 ---
 
@@ -225,10 +225,11 @@ Drag orbit · right/middle/shift pan · scroll zoom · WASD/QE fly.
 Space play/pause time (skips cinematic if one is running). Focusing a world
 pauses the playhead; Space restarts it and the camera rides the orbit.
 Timeline +/− changes speed. `1`–`6` eras · `C` Cognitive · `V` Spiritual ·
-`L` Lore Web · `A` Arcanum · `K`/`/` Codex · `H`/`?` Help · `F` frame
-Cosmere · `Esc` pop scale / close panel / leave the Web.
+`L` Lore Web · `M` galaxy chart · `K`/`/` Codex · `H`/`?` Help · `F` frame
+Cosmere · `Esc` pop scale / close panel / leave the Web / close a card
+at Cosmere. Hover names a world; click opens the card.
 Title: Enter the Cosmere · I need spoilers hidden · Skip to the sky.
-Music is a button (Look also has the toggle). Share is a button.
+Arcanum, Journal, Music, Share are buttons. WASD/QE never open panels.
 
 ---
 
@@ -259,4 +260,9 @@ Stewart lock flipped; this is the version that is true.
     procedural.
 13. Map layers, more places (Rall Elorim, Kurth, Panatham, Conventical of
     Seran, Doxonar, Dryport), original logo on the title.
-14. This file: evening pickup. No product change.
+14. Docs pickup 2026-09-11 evening (`504ed6a`).
+15. HUD overhaul (`2deaae5`). Hover was opening the info card and claiming
+    a right inset, so the Cosmere jumped — recording
+    `screenrecording-2026-09-12_00-02-54.mp4`. Card is overlay-on-click.
+    WASD unstolen. Chrome collapsible. Look sliders. Denser lore.
+    Owner: “that is MUUUUCH better.” This file: bedtime pickup.

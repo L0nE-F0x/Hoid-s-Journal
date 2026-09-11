@@ -169,8 +169,11 @@ void main() {
     col = mix(uLand, molten, heat);
     col = mix(col, uOcean, smoothstep(0.5, 0.05, heat) * 0.6);
   } else if (uWedgeCount > 0) {
-    // Lumar: twelve spore seas, one under each geostationary moon.
-    float w = uv.x * float(uWedgeCount);
+    // Lumar: twelve spore seas, one under each geostationary moon. The
+    // boundaries are where two kinds of spore meet in the water, so they
+    // wander and bleed — hard stripes turn the planet into a beach ball.
+    float drift = warped(p * 1.5 + uSeed * 3.0, 4, 0.8) * 0.10;
+    float w = (uv.x + drift) * float(uWedgeCount);
     int i0 = int(floor(mod(w, float(uWedgeCount))));
     int i1 = int(mod(float(i0 + 1), float(uWedgeCount)));
     vec3 sea = uWedges[0];
@@ -179,7 +182,9 @@ void main() {
       if (k == i0) sea = uWedges[k];
       if (k == i1) seaN = uWedges[k];
     }
-    sea = mix(sea, seaN, smoothstep(0.88, 1.0, fract(w)));
+    // A wide blend, so each sea is strongest under its own lunagree and
+    // gives way over the third of the arc between them.
+    sea = mix(sea, seaN, smoothstep(0.34, 1.0, fract(w)));
     // Spore texture: the sea is not liquid, it is a dust of living crystal.
     float grain = fbm3(p * 22.0 + uSeed, 4, 2.1, 0.5) * 0.5 + 0.5;
     float swirl = warped(p * 6.0 + uSeed * 2.0, 4, 0.9) * 0.5 + 0.5;

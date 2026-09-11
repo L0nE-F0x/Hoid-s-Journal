@@ -211,8 +211,12 @@ export function bakePlanetMap(
         col = mix(land, mix(land2, land3, smoothstep(0.05, 0.5, up)), heat);
         col = mix(col, ocean, smoothstep(0.5, 0.05, heat) * 0.6);
       } else if (wedges.length) {
-        const w = u * wedges.length;
-        const sea = wedges[Math.floor(w) % wedges.length]!;
+        // Boundaries wander and bleed; hard stripes read as a beach ball.
+        const drift = (warped3(px * 1.5 + s * 3, py * 1.5 + s * 3, pz * 1.5 + s * 3, 4, 0.8) - 0.5) * 0.20;
+        const w = (u + drift) * wedges.length;
+        const i0 = Math.floor(((w % wedges.length) + wedges.length) % wedges.length);
+        const sea = mix(wedges[i0]!, wedges[(i0 + 1) % wedges.length]!,
+          smoothstep(0.34, 1, w - Math.floor(w)));
         const grain = fbm3(px * 22 + s, py * 22 + s, pz * 22 + s, 4);
         const swirl = warped3(px * 6 + s, py * 6 + s, pz * 6 + s, 4, 0.9);
         const k = 0.70 + 0.38 * grain + 0.22 * swirl;

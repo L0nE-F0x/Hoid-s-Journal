@@ -25,7 +25,7 @@ void main() {
   float bands = 0.5 + 0.5 * sin(t * 46.0 + uSeed * 9.0);
   float fine = 0.5 + 0.5 * sin(t * 190.0 + uSeed * 3.0);
   float gap = smoothstep(0.30, 0.35, abs(t - 0.42)) * smoothstep(0.10, 0.14, abs(t - 0.73));
-  float dens = (0.45 + 0.55 * bands) * (0.78 + 0.22 * fine) * gap;
+  float dens = (0.34 + 0.70 * bands) * (0.70 + 0.32 * fine) * gap;
   dens *= smoothstep(0.0, 0.06, t) * smoothstep(1.0, 0.88, t);
   if (dens < 0.02) discard;
 
@@ -45,9 +45,9 @@ void main() {
     ? smoothstep(uPlanetRadius, uPlanetRadius * 0.82, perp)
     : 0.0;
 
-  vec3 col = mix(uColor, uColor2, t) * (0.55 + 0.85 * forward);
+  vec3 col = mix(uColor, uColor2, t) * (0.85 + 1.05 * forward);
   col *= 1.0 - shadow * 0.92;
 
-  float a = dens * uOpacity * (0.45 + 0.55 * forward) * (1.0 - shadow * 0.9);
+  float a = dens * uOpacity * (0.62 + 0.48 * forward) * (1.0 - shadow * 0.9);
   gl_FragColor = vec4(col * a, a);
 }

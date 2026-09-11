@@ -41,8 +41,8 @@
   width: 108px;
   height: 108px;
   margin-bottom: 18px;
+  border-radius: 18px;
   filter: drop-shadow(0 0 18px rgba(94, 231, 255, 0.28));
-  animation: ceph-spin 80s linear infinite;
 }
 
 .ceph-title-wordmark {

@@ -28,7 +28,6 @@ Breaking either of these is how this turns into a tangle:
 - Every published world is in scope, nested (globe + surface).
 - Globe textures stay procedural. Atlas plates may use Isaac Stewart
   cartography, credited. No Coppermind portraits.
-- No battle simulator. The atlas is the product.
 - Public name: **Cephandrius — Hoid's Journal**.
 - Unofficial fan project. Dragonsteel disclaimer on the title screen.
 

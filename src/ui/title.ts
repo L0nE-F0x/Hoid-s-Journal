@@ -11,7 +11,7 @@ export function mountTitle(root: HTMLElement): { enter(): void; open(): void; de
   const node = el('div', { className: 'ceph-title is-open' }, [
     el('div', { className: 'ceph-title-vignette' }),
     el('div', { className: 'ceph-title-center' }, [
-      el('img', { className: 'ceph-title-mark', attrs: { src: `${import.meta.env.BASE_URL}mark.svg`, alt: '', width: '108', height: '108' } }),
+      el('img', { className: 'ceph-title-mark', attrs: { src: `${import.meta.env.BASE_URL}logo.png`, alt: '', width: '108', height: '108' } }),
       el('h1', { className: 'ceph-title-wordmark', text: BRAND_WORDMARK }),
       el('p', { className: 'ceph-title-tag', text: BRAND_TAGLINE }),
       el('p', { className: 'ceph-title-pitch', text: BRAND_PITCH }),

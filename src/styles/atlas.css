@@ -3,7 +3,7 @@
   /* Hangs off the command panel, which grows when a book is being tracked. */
   top: calc(var(--ceph-command-bottom, 88px) + 12px);
   left: 16px;
-  width: min(420px, calc(100vw - 32px));
+  width: min(480px, calc(100vw - 32px));
   z-index: 24;
   padding: 12px 12px 14px;
   display: none;
@@ -43,6 +43,12 @@
   border: 1px solid var(--ceph-border);
   cursor: crosshair;
   background: #05060d;
+}
+.ceph-atlas-layers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 8px;
 }
 .ceph-atlas-credit {
   margin-top: 6px;

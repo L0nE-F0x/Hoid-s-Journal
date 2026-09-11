@@ -49,6 +49,12 @@ export const LOCATIONS: Location[] = [
     'The Rift. A city in a canyon, burned in Dalinar\'s past.', { arc: 'oathbringer' }),
   loc('sesemalex-dar', 'Sesemalex Dar', 'roshar', 'stormlight', 0.357, 0.735, '#d97706', 'city',
     'Capital of Emul, carved to drink the storms.', { arc: 'row' }),
+  loc('rall-elorim', 'Rall Elorim', 'roshar', 'stormlight', 0.313, 0.187, '#6366f1', 'city',
+    'The City of Shadows in Iri, and an Oathgate.', { arc: 'edgedancer' }),
+  loc('kurth', 'Kurth', 'roshar', 'stormlight', 0.419, 0.279, '#fbcfe8', 'city',
+    'Ancient capital of Rishir, an Oathgate city.', { arc: 'wor' }),
+  loc('panatham', 'Panatham', 'roshar', 'stormlight', 0.351, 0.476, '#c4b5fd', 'city',
+    'Ancient capital of Sela Tales, an Oathgate city.', { arc: 'wor' }),
 
   // Scadrial — Final Empire
   loc('luthadel', 'Luthadel', 'scadrial', 'mistborn1', 0.508, 0.386, '#d6a44c', 'city',
@@ -65,6 +71,10 @@ export const LOCATIONS: Location[] = [
     'Industrial port of the western Basin.', { arc: 'tlm', eraMaps: ['basin'] }),
   loc('new-seran', 'New Seran', 'scadrial', 'mistborn2', 0.811, 0.904, '#e8b86d', 'city',
     'Southern city of canals and conspiracy.', { arc: 'bom', eraMaps: ['basin'] }),
+  loc('doxonar', 'Doxonar', 'scadrial', 'mistborn2', 0.346, 0.679, '#94a3b8', 'home',
+    'A Basin town on the southern rail lines beyond Elendel.', { arc: 'bom', eraMaps: ['basin'] }),
+  loc('dryport', 'Dryport', 'scadrial', 'mistborn2', 0.421, 0.588, '#38bdf8', 'port',
+    'On the route between Elendel and the northern Roughs.', { eraMaps: ['basin'] }),
 
   // Other worlds — first-pass original pins
   loc('elantris-city', 'Elantris', 'sel', 'elantris', 0.46, 0.42, '#a78bfa', 'city',
@@ -137,6 +147,8 @@ export const LOCATIONS: Location[] = [
   loc('babatharnam', 'Babatharnam', 'roshar', 'stormlight', 0.30, 0.56, '#86efac', 'land',
     'Western land of the Most Ancient and its living, moving vines.'),
 
+  loc('conventical-of-seran', 'Conventical of Seran', 'scadrial', 'mistborn1', 0.493, 0.514, '#9333ea', 'keep',
+    'A Steel Ministry fortress of the Inquisitors, and a cache of the Lord Ruler.', { arc: 'hoa', eraMaps: ['ash'] }),
   loc('vetitan', 'Vetitan', 'scadrial', 'mistborn1', 0.439, 0.633, '#a8a29e', 'city',
     'A southern skaa town, emptied and led out in the last days of the ash.',
     { arc: 'hoa', eraMaps: ['ash'] }),

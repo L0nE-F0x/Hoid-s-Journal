@@ -1,5 +1,5 @@
 import { bakeCityMap } from '../cartography/cityMap.ts';
-import { cityMapFile, getOfficialMap, MAP_CREDIT, worldMapFile } from '../cartography/officialMaps.ts';
+import { cityMapFile, cityMapLayers, getOfficialMap, MAP_CREDIT, worldMapFile, worldMapLayers } from '../cartography/officialMaps.ts';
 import { bakePlanetMap, seedFromId } from '../cartography/planetMap.ts';
 import {
   bodyById,
@@ -57,12 +57,16 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
   const kicker = el('div', { className: 'ceph-kicker', text: 'Cartography' });
   const roster = el('div', { className: 'ceph-atlas-roster' });
   const credit = el('div', { className: 'ceph-atlas-credit', text: '' });
+  const layersEl = el('div', { className: 'ceph-atlas-layers' });
   const panel = el('div', { className: 'ceph-panel ceph-atlas' }, [
     el('div', { className: 'ceph-atlas-head' }, [kicker, title]),
     canvas,
+    layersEl,
     credit,
     roster,
   ]);
+  let plateLayer = 0;
+  let plateKey = '';
   root.append(panel);
 
   // The map and the pins are each composed once per change and blitted every
@@ -107,7 +111,7 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
     const body = s.focusedBody ? bodyById[s.focusedBody] : undefined;
     if (!body) return null;
     const official = getOfficialMap(
-      worldMapFile(body.id, s.era, s.realm === 'cognitive'),
+      worldMapFile(body.id, s.era, s.realm === 'cognitive', plateLayer),
       () => { composeMap(); composePins(); paint(); },
     );
     if (official) return official;
@@ -138,7 +142,7 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
     if (!ctx) return;
     ctx.clearRect(0, 0, W, H);
     if (s.scale === 'city' && s.focusedLocation) {
-      const raster = getOfficialMap(cityMapFile(s.focusedLocation), () => { composeMap(); paint(); });
+      const raster = getOfficialMap(cityMapFile(s.focusedLocation, plateLayer), () => { composeMap(); paint(); });
       if (raster) {
         ctx.drawImage(raster, 0, 0, W, H);
         return;
@@ -297,9 +301,26 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
     const loc = s.focusedLocation
       ? visibleLocations().find((l) => l.id === s.focusedLocation)
       : undefined;
+    const key = s.scale === 'city' ? `c:${s.focusedLocation}` : `w:${s.focusedBody}:${s.era}:${s.realm}`;
+    if (key !== plateKey) { plateKey = key; plateLayer = 0; }
+    const layerRows = s.scale === 'city' && loc
+      ? cityMapLayers(loc.id)
+      : worldMapLayers(body.id, s.era, s.realm === 'cognitive');
+    layersEl.replaceChildren();
+    if (layerRows.length > 1) {
+      layerRows.forEach((row, i) => {
+        const b = el('button', {
+          className: `ceph-chip${i === plateLayer ? ' is-on' : ''}`,
+          text: row.name,
+          attrs: { type: 'button' },
+        });
+        listen(b, 'click', () => { plateLayer = i; refresh(); });
+        layersEl.append(b);
+      });
+    }
     const official = s.scale === 'city' && loc
-      ? !!cityMapFile(loc.id)
-      : !!worldMapFile(body.id, s.era, s.realm === 'cognitive');
+      ? !!cityMapFile(loc.id, plateLayer)
+      : !!worldMapFile(body.id, s.era, s.realm === 'cognitive', plateLayer);
     if (s.scale === 'city' && loc) {
       kicker.textContent = official ? 'City plate' : (cityById[loc.id] ? 'City plate' : 'Local scan');
       title.textContent = loc.name;

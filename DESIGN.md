@@ -15,8 +15,7 @@ store wall, title over a live scene.
    system → the Cosmere. Then the companion HUD. The picture is the database.
 3. **Scope.** Every published world, nested (globe + surface). Not a slice.
 4. **Pillars.** Orrery + time, spoiler companion, Arcanum, three Realms,
-   Roshar surface, Scadrial surface (Catacendre map-swap), Codex. Lore Web
-   is later. **Battle sim is cut.**
+   Roshar surface, Scadrial surface (Catacendre map-swap), Codex, Lore Web.
 5. **Art.** Globe textures stay procedural. Atlas world and city plates may
    use Isaac Stewart's cartography, always credited. No Coppermind portraits.
 6. **Name.** Cephandrius — Hoid's Journal.
@@ -36,8 +35,8 @@ Preserve these *ideas*, not the machine:
 - Hoid as the journal's voice, not a mascot
 
 Throw away: globals, integer indices, Canvas2D + shadowBlur, Tailwind CDN,
-duplicated `roshar/` tree, emoji-as-icon, Coppermind hotlinks, battle sim.
-Isaac Stewart maps are in again, with credit, at the owner's request.
+duplicated `roshar/` tree, emoji-as-icon, Coppermind hotlinks.
+Isaac Stewart maps are in the atlas, with credit.
 
 ## Technical spine
 

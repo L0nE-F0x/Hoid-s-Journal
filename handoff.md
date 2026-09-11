@@ -16,8 +16,8 @@ Architecture lock: `AGENTS.md` + `DESIGN.md`. This file is only the live todo.
 
 # ▶ START HERE — next session
 
-**2026-09-11 (night) — Isaac Stewart plates are in the atlas, credited.**
-Globe stays procedural. Battle sim still out. Push is on `master`.
+**2026-09-11 (night) — Isaac Stewart plates are in the atlas, credited.
+Map layers, more places, original logo on the title.** Push is on `master`.
 
 Verify with `npm run shot`.
 
@@ -43,6 +43,15 @@ Git: `master` tracks `origin` at https://github.com/L0nE-F0x/Hoid-s-Journal.
 
 ## What changed this session
 
+### Thirteenth pass — layers, more places, the original mark
+
+- City and world plates with more than one Stewart drawing (Luthadel
+  survey / endpaper / Kredik Shaw, Elendel Lost Metal, Shattered Plains
+  warcamps, Scadrial starchart) switch from chips on the atlas.
+- More Stewart-calibrated places: Rall Elorim, Kurth, Panatham, the
+  Conventical of Seran, Doxonar, Dryport.
+- Title screen uses the original journal logo.
+
 ### Twelfth pass — Isaac Stewart plates
 
 The owner reversed the no-scans lock. Atlas world maps for Roshar
@@ -51,7 +60,6 @@ The owner reversed the no-scans lock. Atlas world maps for Roshar
 Urteau, New Seran, Shattered Plains) are the Stewart plates, with
 "Cartography by Isaac Stewart" on the atlas. Pins for those worlds
 were recalibrated to the plates. Globe albedo stays procedural.
-Coppermind portraits still out. Battle sim still out.
 
 ### Eleventh pass — Lore Web, music, moons
 
@@ -296,10 +304,8 @@ Owner answered these. They are the spec.
 | Audience | **Rereaders first.** Default progress = fully read. Spoiler gate exists for show-newcomers. |
 | First 20s | Nested cinematic: **Roshar highstorm → Rosharan system → Cosmere**, then HUD |
 | Scope | **Every published world, nested** (globe + surface). Not a slice. |
-| Must-ship pillars | Orrery + time, spoiler companion, Arcanum, three Realms, Roshar surface, Scadrial Catacendre map-swap, Codex |
-| Battle sim | **Cut.** Atlas is the product. |
-| Lore Web | Not a refuse-to-ship pillar. After the atlas is stunning. |
-| Art | **Original / procedural only.** No Isaac Stewart scans, no Coppermind portraits. |
+| Must-ship pillars | Orrery + time, spoiler companion, Arcanum, three Realms, Roshar surface, Scadrial Catacendre map-swap, Codex, Lore Web |
+| Art | Globe textures procedural. Atlas plates may use Isaac Stewart cartography, credited. No Coppermind portraits. |
 | Name | Cephandrius — Hoid's Journal |
 | Usage | Owner rereads with it for *all* of: where is everyone, planet-while-reading, magic tables, connections, vibe |
 

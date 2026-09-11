@@ -317,8 +317,13 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
         el('h2', { text: l.name }),
       ]));
       drawer.append(head, el('p', { className: 'ceph-fact', text: l.desc }));
+      const series = seriesById[l.book];
+      const arc = series?.arcs.find((a) => a.id === l.arc);
+      const realmOf = l.realm === 'cognitive' ? 'Cognitive · Shadesmar' : 'Physical';
       drawer.append(fields([
         ['World', bodyById[l.body]?.name],
+        ['Realm', realmOf],
+        ['First named in', arc?.label ?? series?.title ?? null],
         ['Perpendicularity', perp?.name],
       ]));
       if (perp) drawer.append(el('p', { className: 'ceph-fact', text: perp.fact }));

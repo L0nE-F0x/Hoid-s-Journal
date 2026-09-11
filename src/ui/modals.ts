@@ -211,7 +211,7 @@ function renderHelp(card: HTMLElement): void {
     el('h2', { text: 'The journal is a map you fly' }),
     el('p', { className: 'ceph-fact', text: 'Hover a world for its name. Click to open the card — the sky stays put. Click the orbit rings, not just the star, to dive in. Click a world for its globe, again for the surface, again for a city plate. Esc walks back out. ☰ hides the directory.' }),
     el('p', { className: 'ceph-fact', html: '<b>Drag</b> orbit · <b>scroll</b> zoom · <b>WASD / QE</b> fly (those keys never open panels) · <b>Space</b> play time · <b>+/−</b> on the timeline for speed · <b>1–6</b> eras · <b>C</b> Cognitive · <b>V</b> Spiritual · <b>L</b> Lore Web · <b>M</b> galaxy chart · <b>F</b> frame Cosmere · <b>K</b> or <b>/</b> Codex · <b>H</b> this help. Arcanum, Journal, Share and Music are buttons.' }),
-    el('p', { className: 'ceph-fact', text: 'Roshar and Scadrial atlas plates are Isaac Stewart\'s cartography, credited on the map. Globes stay painterly. Journal sets where you are in the books; the sky hides what you have not reached. Default is fully read.' }),
+    el('p', { className: 'ceph-fact', text: 'Roshar and Scadrial atlas plates are Isaac Stewart\'s cartography, credited on the map. Globes are procedural, baked from one recipe per world, so a coast on the plate is the same coast on the sphere. Journal sets where you are in the books; the sky hides what you have not reached. Default is fully read.' }),
     el('p', { className: 'ceph-fact', style: { color: 'var(--ceph-text-dim)' }, text: 'Unofficial fan project. Not affiliated with Dragonsteel or Brandon Sanderson. Cartography by Isaac Stewart.' }),
   );
 }

@@ -4,7 +4,9 @@ import { GLOSSARY } from './glossary.ts';
 import { LOCATIONS, PERPS } from './locations.ts';
 import { MAGICS } from './magics.ts';
 import { SHARDS } from './shards.ts';
-import type { Body, Character, CharacterEra, Cosmere, Location, Series } from './types.ts';
+import type {
+  Body, Character, CharacterEra, Cosmere, Location, Perpendicularity, Series,
+} from './types.ts';
 
 export type { Cosmere } from './types.ts';
 export * from './types.ts';
@@ -135,6 +137,11 @@ export function locationsOn(bodyId: string, era?: number): Location[] {
     }
     return true;
   });
+}
+
+/** The perpendicularity standing at a place, if the geography is known. */
+export function perpAt(locationId: string): Perpendicularity | undefined {
+  return PERPS.find((p) => p.at === locationId);
 }
 
 export function scadrialBiome(era: number): 'scadrial-ash' | 'scadrial-basin' {

@@ -564,7 +564,7 @@ export class App {
     );
     this.presence.update(
       this.orrery, this.camera, s.era, s.year, s.readProgress, s.scale,
-      s.realm === 'cognitive',
+      s.realm === 'cognitive', s.selected,
     );
     this.spiritual.update(
       t, s.era, s.realm === 'spiritual', this.camera, s.readProgress, s.selected,

@@ -5,6 +5,32 @@ import type { Orrery } from './Orrery.ts';
 
 const _off = new THREE.Vector3();
 
+/** A perpendicularity: a bright ring, because it is a door, not a place. */
+function perpTexture(): THREE.CanvasTexture {
+  const c = document.createElement('canvas');
+  c.width = 96;
+  c.height = 96;
+  const ctx = c.getContext('2d')!;
+  ctx.strokeStyle = 'rgba(196,181,253,0.95)';
+  ctx.lineWidth = 6;
+  ctx.beginPath();
+  ctx.arc(48, 48, 34, 0, Math.PI * 2);
+  ctx.stroke();
+  ctx.globalAlpha = 0.55;
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.arc(48, 48, 22, 0, Math.PI * 2);
+  ctx.stroke();
+  ctx.globalAlpha = 1;
+  ctx.fillStyle = 'rgba(233,213,255,0.95)';
+  ctx.beginPath();
+  ctx.arc(48, 48, 7, 0, Math.PI * 2);
+  ctx.fill();
+  const tex = new THREE.CanvasTexture(c);
+  tex.needsUpdate = true;
+  return tex;
+}
+
 /** A map marker: bright core, dark ring, so it reads on any terrain. */
 function markerTexture(): THREE.CanvasTexture {
   const c = document.createElement('canvas');
@@ -55,6 +81,7 @@ export class Pins {
 
   private readonly label: THREE.Sprite;
   private labelId: string | null = null;
+  private readonly perps: { at: string; sprite: THREE.Sprite }[] = [];
 
   constructor() {
     const map = markerTexture();
@@ -67,6 +94,17 @@ export class Pins {
       sprite.userData = { kind: 'location', id: loc.id, body: loc.body };
       this.group.add(sprite);
       this.markers.push(sprite);
+    }
+
+    const perpMap = perpTexture();
+    for (const p of COSMERE.perps) {
+      if (!p.at) continue;
+      const sprite = new THREE.Sprite(new THREE.SpriteMaterial({
+        map: perpMap, transparent: true, opacity: 0.95,
+      }));
+      sprite.visible = false;
+      this.group.add(sprite);
+      this.perps.push({ at: p.at, sprite });
     }
 
     this.label = new THREE.Sprite(new THREE.SpriteMaterial({
@@ -92,6 +130,7 @@ export class Pins {
 
     let hotPos: THREE.Vector3 | null = null;
     let hotName: string | null = null;
+    for (const p of this.perps) p.sprite.visible = false;
 
     for (const sprite of this.markers) {
       const loc = COSMERE.locations.find((l) => l.id === sprite.userData.id);
@@ -107,10 +146,18 @@ export class Pins {
       // Constant apparent size, so a pin stays a pin at every distance.
       const d = camera.position.distanceTo(sprite.position);
       const isHot = loc.id === hot;
-      sprite.scale.setScalar(Math.min(1.2, Math.max(0.03, d * 0.017)) * (isHot ? 1.7 : 1));
+      const size = Math.min(1.2, Math.max(0.03, d * 0.017));
+      sprite.scale.setScalar(size * (isHot ? 1.7 : 1));
       if (isHot) {
         hotPos = sprite.position;
         hotName = loc.name;
+      }
+      // A perpendicularity rides its place: same spot, bigger ring.
+      const perp = this.perps.find((p) => p.at === loc.id);
+      if (perp) {
+        perp.sprite.visible = true;
+        perp.sprite.position.copy(sprite.position);
+        perp.sprite.scale.setScalar(size * 3.4);
       }
     }
 

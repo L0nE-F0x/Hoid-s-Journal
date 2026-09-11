@@ -4,6 +4,7 @@ import {
   characterById,
   eraAt,
   isNewThisArc,
+  perpAt,
   seriesById,
   sliderToYear,
   worldDate,
@@ -176,6 +177,13 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
         el('h2', { text: l.name }),
         el('p', { className: 'ceph-fact', text: l.desc }),
       );
+      const perp = perpAt(l.id);
+      if (perp) {
+        drawer.append(el('div', { className: 'ceph-meta' }, [
+          el('div', { html: `<b>Perpendicularity</b> ${perp.name}` }),
+          el('div', { text: perp.fact }),
+        ]));
+      }
     } else if (hit.kind === 'character') {
       const c = hit.obj;
       drawer.append(

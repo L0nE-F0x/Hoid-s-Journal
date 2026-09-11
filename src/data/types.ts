@@ -182,6 +182,8 @@ export interface Perpendicularity extends Cited {
   body: string;
   book: string;
   fact: string;
+  /** Location id it sits at, when the geography is known. */
+  at?: string;
 }
 
 export interface WorldEpoch {

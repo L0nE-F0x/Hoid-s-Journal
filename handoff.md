@@ -372,34 +372,33 @@ Arcanum, Journal, Music, Share are buttons. WASD/QE never open panels.
 
 ## How we got here (so you do not undo it)
 
-Condensed. The old thirteen-pass diary contradicted itself after the
-Stewart lock flipped; this is the version that is true.
+Condensed. The old thirteen-pass diary contradicted itself after the Stewart
+lock flipped; this is the version that is true.
 
 1. Globe framing, insets, sunward heading, `npm run shot`.
-2. Atlas wired to the globe; pin z-sign; Catacendre map-swap; lighting
-   (atmosphere rim, storm band, bloom).
+2. Atlas wired to the globe; pin z-sign; Catacendre map-swap; lighting.
 3. Screen-space picking; Reading Companion actually sets `readingNow`.
 4. Shadesmar as a baked place; Spiritual as its own camera stage.
-5. Worldhopper trails, perpendicularities, phone layout, PWA, interaction
-   test.
-6. Continent recipes so land sits under the pins; deep links as save
-   state; camera re-fits when HUD insets land.
-7. City scale as a nested layer (procedural plates first).
-8. Thin-world places, Silverlight, doors on both sides, Shard Connection,
-   denser lore, icons, quality ladder, rumble, GitHub remote.
-9. Orbit-sized picking, directory, Help/Realms as real panels — this is
-   why clicks felt dead in an earlier screenshot.
+5. Worldhopper trails, perpendicularities, phone layout, PWA, interaction test.
+6. Continent recipes so land sits under the pins; deep links as save state.
+7. City scale as a nested layer.
+8. Thin-world places, Silverlight, doors on both sides, quality ladder.
+9. Orbit-sized picking, directory, Help/Realms as real panels.
 10. Denser companion, galaxy chart, Share, time speed.
-11. Lore Web, soundtrack, Moons tab, labelled minimap, logo as apple-touch.
-    *At that moment Stewart rasters were still in the museum.*
-12. Owner reversed the no-scans lock. Stewart plates copied into
-    `public/maps/`, credited, pins recalibrated. Globe albedo stays
-    procedural.
-13. Map layers, more places (Rall Elorim, Kurth, Panatham, Conventical of
-    Seran, Doxonar, Dryport), original logo on the title.
-14. Docs pickup 2026-09-11 evening (`504ed6a`).
-15. HUD overhaul (`2deaae5`). Hover was opening the info card and claiming
-    a right inset, so the Cosmere jumped — recording
-    `screenrecording-2026-09-12_00-02-54.mp4`. Card is overlay-on-click.
-    WASD unstolen. Chrome collapsible. Look sliders. Denser lore.
-    Owner: “that is MUUUUCH better.” This file: bedtime pickup.
+11. Lore Web, soundtrack, Moons tab, labelled minimap.
+12. Owner reversed the no-scans lock. Stewart plates into `public/maps/`,
+    credited, pins recalibrated. Globe albedo stays procedural.
+13. Map layers, more places, original logo on the title.
+14. HUD overhaul (`2deaae5`). Hover was opening the info card and claiming a
+    right inset, so the Cosmere jumped. Card is overlay-on-click.
+15. **Overnight 2026-09-12** (`2deaae5` → `e396462`, 22 commits). Graphics
+    overhaul, Shadesmar and the Spiritual Realm rebuilt as their own
+    renderers, lore past v1 parity, new chrome and landing page, 18fps →
+    45–60, city plates redrawn as plans. Pushed and live.
+16. Two faults found after the deploy, both worth remembering. A reader on
+    quality Low got a black canvas because the composer's only
+    render-to-screen pass was the one the low band disabled. And a black sky
+    with a working HUD is otherwise a lost WebGL context, which nothing used
+    to report. Both are in *Sharp edges*.
+17. **Handed over.** Owner is out of credits; the next session is a UI polish
+    pass. See *Known rough edges*.

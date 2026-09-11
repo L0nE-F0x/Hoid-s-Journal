@@ -1,26 +1,8 @@
 import * as THREE from 'three';
-import { bakePlanetMap, seedFromId } from '../cartography/planetMap.ts';
-import type { BiomeKind } from '../data/types.ts';
 
-export { seedFromId };
-
+/** Soft radial sprites: haloes, hub markers, Spiritual motes. Worlds are
+ *  baked on the GPU in `planetBake.ts` and do not come through here. */
 const cache = new Map<string, THREE.CanvasTexture>();
-
-export function planetTexture(kind: BiomeKind, seed = 1, cognitive = false): THREE.CanvasTexture {
-  const key = `${kind}:${seed}${cognitive ? ':c' : ''}`;
-  const hit = cache.get(key);
-  if (hit) return hit;
-  // Shadesmar is soft and dim; half resolution is plenty and keeps the realm
-  // switch from stalling on twenty fresh bakes.
-  const canvas = cognitive ? bakePlanetMap(kind, seed, 512, 256, true) : bakePlanetMap(kind, seed);
-  const tex = new THREE.CanvasTexture(canvas);
-  tex.colorSpace = THREE.SRGBColorSpace;
-  tex.anisotropy = 8;
-  tex.wrapS = THREE.RepeatWrapping;
-  tex.needsUpdate = true;
-  cache.set(key, tex);
-  return tex;
-}
 
 export function sunTexture(color: string): THREE.CanvasTexture {
   const key = `sun:${color}`;
@@ -31,10 +13,10 @@ export function sunTexture(color: string): THREE.CanvasTexture {
   canvas.width = S;
   canvas.height = S;
   const ctx = canvas.getContext('2d')!;
-  const g = ctx.createRadialGradient(S / 2, S / 2, 8, S / 2, S / 2, S / 2);
+  const g = ctx.createRadialGradient(S / 2, S / 2, 4, S / 2, S / 2, S / 2);
   g.addColorStop(0, '#ffffff');
-  g.addColorStop(0.18, color);
-  g.addColorStop(0.45, color);
+  g.addColorStop(0.12, color);
+  g.addColorStop(0.34, color + 'aa');
   g.addColorStop(1, 'rgba(0,0,0,0)');
   ctx.fillStyle = g;
   ctx.fillRect(0, 0, S, S);

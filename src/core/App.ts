@@ -79,12 +79,13 @@ export class App {
     this.rig = new CameraRig(this.camera, canvas);
 
     this.starfield = new Starfield();
-    this.orrery = new Orrery();
+    this.orrery = new Orrery(this.renderer);
     this.labels = new Labels();
     this.pins = new Pins();
     this.presence = new Presence();
     this.spiritual = new Spiritual();
 
+    this.scene.add(this.starfield.sky);
     this.scene.add(this.starfield.points);
     this.scene.add(this.orrery.group);
     this.scene.add(this.labels.group);
@@ -99,7 +100,8 @@ export class App {
     this.rig.setInputEnabled(false);
     this.rig.autoRotate = true;
     this.orrery.update(store.state.year, store.state.realm, store.state.era, 0, {
-      showOrbits: true, showMoons: true, showAtmospheres: true, showNebula: true, nebula: 1, scale: 'cosmere', focusedSystem: null,
+      showOrbits: true, showMoons: true, showAtmospheres: true, showNebula: true, nebula: 1,
+      scale: 'cosmere', focusedSystem: null, focusedBody: null, cameraDistance: 260,
     });
 
     this.disposers.push(store.on('cameraCue', (cue) => {
@@ -593,6 +595,7 @@ export class App {
     this.camera.aspect = w / Math.max(1, h);
     this.camera.updateProjectionMatrix();
     this.rig.setViewport(w, h);
+    this.orrery.setViewport(w * dpr, h * dpr);
     this.post.setSize(w, h);
   }
 
@@ -629,6 +632,8 @@ export class App {
       nebula: s.visual.nebula,
       scale: s.scale,
       focusedSystem: s.focusedSystem,
+      focusedBody: s.focusedBody,
+      cameraDistance: this.rig.distance,
     });
     this.trackFocus(s.scale, s.focusedBody, s.focusedLocation, s.cinematic);
 
@@ -657,7 +662,10 @@ export class App {
       this.pins.group.visible = false;
       this.presence.group.visible = false;
     }
-    this.starfield.update(t, this.canvas.clientHeight, FOV, s.visual.starSize, s.visual.exposure);
+    this.starfield.update(
+      t, this.canvas.clientHeight, FOV, s.visual.starSize, s.visual.exposure,
+      s.realm === 'cognitive' ? 1 : 0,
+    );
 
     this.post.composer.render();
 

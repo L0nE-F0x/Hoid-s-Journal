@@ -1,58 +1,238 @@
+#include "./lib/noise.glsl"
+
 uniform sampler2D uAlbedo;
-uniform vec3 uSunPos;
-uniform vec3 uSunColor;
-uniform vec3 uAtmosphere;
+/** r: elevation, g: water mask, b: night-light mask, a: roughness bias. */
+uniform sampler2D uData;
+uniform vec2  uTexel;
+uniform vec3  uSunPos;
+uniform vec3  uSunColor;
+uniform vec3  uAtmosphere;
 uniform float uTime;
 uniform float uHighstorm;
 uniform float uCognitive;
 uniform float uEmissive;
-uniform vec3 uEmissiveColor;
+uniform vec3  uEmissiveColor;
 uniform float uNightLights;
+uniform float uClouds;
+uniform vec3  uCloudTint;
+uniform float uCloudSpin;
+uniform float uRelief;
+uniform float uSpecular;
+uniform float uDetail;
+uniform float uSeed;
+uniform float uIce;
+uniform float uTidal;
+uniform float uRingShadow;
+uniform vec3  uRingAxis;
+uniform float uRingInner;
+uniform float uRingOuter;
 
 varying vec3 vWorld;
 varying vec3 vNormal;
 varying vec2 vUv;
+varying vec3 vObj;
+
+const float PI = 3.14159265359;
+
+float heightAt(vec2 uv) {
+  return texture2D(uData, uv).r;
+}
+
+/** GGX, trimmed to what a planet needs: one light, no IBL. */
+float specGGX(vec3 n, vec3 v, vec3 l, float rough) {
+  vec3 h = normalize(v + l);
+  float a = max(0.002, rough * rough);
+  float a2 = a * a;
+  float ndh = max(dot(n, h), 0.0);
+  float ndv = max(dot(n, v), 0.0001);
+  float ndl = max(dot(n, l), 0.0);
+  float d = ndh * ndh * (a2 - 1.0) + 1.0;
+  d = a2 / (PI * d * d);
+  float k = a * 0.5;
+  float gv = ndv / (ndv * (1.0 - k) + k);
+  float gl = ndl / (ndl * (1.0 - k) + k);
+  return d * gv * gl;
+}
+
+/** Cloud density over the sphere. Two advecting layers, ridged for filaments. */
+float cloudField(vec3 p, float t) {
+  vec3 q = p * 2.4 + vec3(uSeed);
+  float band = 0.55 + 0.45 * sin(p.y * 5.0 + fbm3(q * 0.7, 3, 2.03, 0.5) * 3.0);
+  float a = warped(q + vec3(t * 0.05, 0.0, 0.0), 4, 0.65);
+  float b = ridged(q * 1.9 + vec3(t * 0.09, t * 0.01, 0.0), 3, 2.1, 0.55);
+  float d = a * 0.62 + b * 0.5;
+  d = smoothstep(0.42, 0.86, d * (0.55 + 0.6 * band));
+  return d;
+}
 
 void main() {
   vec3 n = normalize(vNormal);
-  vec3 albedo = texture2D(uAlbedo, vUv).rgb;
+  vec4 base = texture2D(uAlbedo, vUv);
+  vec3 albedo = base.rgb;
+  vec4 data = texture2D(uData, vUv);
+  float water = data.g;
+  float lights = data.b;
 
   vec3 toSun = normalize(uSunPos - vWorld);
-  float ndl = max(0.0, dot(n, toSun));
-  float wrap = ndl * 0.72 + 0.28;
+  vec3 view = normalize(cameraPosition - vWorld);
+  float fres = 0.0;
+
+  // ---- surface normal -------------------------------------------------
+  // East / north frame on the sphere. Poles degenerate; the cos(lat) guard
+  // below stops the gradient exploding there.
+  vec3 up = abs(n.y) > 0.995 ? vec3(0.0, 0.0, 1.0) : vec3(0.0, 1.0, 0.0);
+  vec3 east = normalize(cross(up, n));
+  vec3 north = cross(n, east);
+
+  float cosLat = max(0.18, sqrt(max(0.0, 1.0 - n.y * n.y)));
+  float hL = heightAt(vUv - vec2(uTexel.x, 0.0));
+  float hR = heightAt(vUv + vec2(uTexel.x, 0.0));
+  float hD = heightAt(vUv - vec2(0.0, uTexel.y));
+  float hU = heightAt(vUv + vec2(0.0, uTexel.y));
+  vec2 grad = vec2((hR - hL) / cosLat, (hU - hD));
+
+  // High-frequency relief the baked plate cannot hold. Costs three extra
+  // noise evaluations and is what makes a close globe stop looking painted.
+  if (uDetail > 0.01) {
+    float e = 0.0035;
+    vec3 dp = vObj * 34.0 + vec3(uSeed * 3.1);
+    float c0 = warped(dp, 4, 0.5);
+    float cx = warped(dp + east * e * 34.0, 4, 0.5);
+    float cy = warped(dp + north * e * 34.0, 4, 0.5);
+    float land = 1.0 - water;
+    grad += vec2(cx - c0, cy - c0) * (34.0 * uDetail * (0.35 + 0.65 * land));
+  }
+
+  float relief = uRelief * (0.35 + 0.65 * (1.0 - water));
+  vec3 nSurf = normalize(n - (east * grad.x + north * grad.y) * relief);
+
+  // ---- direct light ---------------------------------------------------
+  float ndl = dot(nSurf, toSun);
+  float geoNdl = dot(n, toSun);
+  // Soft terminator: a planet's edge of night is a gradient, not a crease.
+  float shade = smoothstep(-0.14, 0.16, geoNdl);
+  float diff = max(0.0, ndl) * shade;
+  // A little wrap keeps the dark side from going pure black on a rough world.
+  float wrap = (max(0.0, ndl) * 0.86 + 0.14) * shade;
+
+  float rough = mix(0.34, 0.92, clamp(data.a + (1.0 - water) * 0.55, 0.0, 1.0));
   vec3 lit = albedo * wrap * uSunColor;
+  // Starlight and the system's own scattered light. Without a floor the dark
+  // hemisphere is a hole in the frame and the world reads as a crescent.
+  lit += albedo * vec3(0.030, 0.040, 0.072) * (1.0 - shade * 0.72);
 
-  // Night side city / hion glow
-  float night = pow(1.0 - ndl, 2.4);
-  lit += uEmissiveColor * uNightLights * night * albedo.g;
+  // Ocean glint. Only water, only near the specular lobe, and killed on the
+  // night side so a bloom pass cannot find it there.
+  float sea = water * uSpecular;
+  if (sea > 0.001) {
+    // Clamped: an unbounded GGX peak is a single blown pixel that the bloom
+    // and streak passes then smear into a bar across the whole equator.
+    float s = min(specGGX(nSurf, view, toSun, 0.30 + 0.20 * (1.0 - sea)), 2.6);
+    lit += uSunColor * s * sea * 0.26 * shade;
+  }
+  // Broad sheen on land, so mountains catch the low sun.
+  lit += uSunColor * min(specGGX(nSurf, view, toSun, rough), 3.0) * (1.0 - water) * 0.06 * shade;
 
-  // Roshar highstorm: a moving storm front, not a hemisphere. Same 7% of the
-  // circumference the atlas panel draws.
+  // ---- clouds ---------------------------------------------------------
+  if (uClouds > 0.001) {
+    vec3 cp = vObj;
+    float ca = uCloudSpin;
+    cp = vec3(cp.x * cos(ca) + cp.z * sin(ca), cp.y, -cp.x * sin(ca) + cp.z * cos(ca));
+    float d = cloudField(cp, uTime);
+    // Shadow: read the field again a step toward the sun and darken by it.
+    vec3 sunObj = normalize(cp + toSun * 0.14);
+    float sh = cloudField(sunObj, uTime);
+    lit *= 1.0 - sh * uClouds * 0.42 * shade;
+
+    float cover = d * uClouds;
+    float cl = max(0.0, dot(n, toSun)) * 0.78 + 0.22;
+    // Silver lining: clouds forward-scatter hard at grazing sun angles.
+    float ms = pow(max(0.0, dot(view, -toSun)), 6.0) * 0.6;
+    vec3 cloudCol = uCloudTint * (cl + ms) * uSunColor;
+    lit = mix(lit, cloudCol, cover * shade * 0.92);
+    // Cloud tops still lit a moment after the ground is dark.
+    lit += uCloudTint * cover * smoothstep(-0.28, 0.02, geoNdl) * (1.0 - shade) * 0.22;
+  }
+
+  // ---- ice caps -------------------------------------------------------
+  if (uIce > 0.001) {
+    float lat = abs(n.y);
+    float cap = smoothstep(0.78 - uIce * 0.22, 0.94, lat + warped(vObj * 6.0 + uSeed, 3, 0.4) * 0.12);
+    lit = mix(lit, vec3(0.90, 0.95, 1.02) * wrap * uSunColor, cap * uIce);
+  }
+
+  // ---- night side -----------------------------------------------------
+  float night = 1.0 - shade;
+  if (uNightLights > 0.001) {
+    // Settlement clumps, not a smear: threshold a noise field against the
+    // baked light mask so cities read as points from orbit.
+    float grid = warped(vObj * 90.0 + uSeed * 7.0, 3, 0.5);
+    float city = smoothstep(0.52, 0.78, grid) * lights;
+    float twinkle = 0.86 + 0.14 * sin(uTime * 2.1 + hash13(vObj * 40.0) * 40.0);
+    lit += uEmissiveColor * uNightLights * city * night * twinkle * 0.85;
+    lit += uEmissiveColor * uNightLights * lights * night * 0.06;
+  }
+
+  // ---- Roshar: the highstorm front ------------------------------------
   if (uHighstorm > 0.001) {
     float lon = vUv.x + uTime * 0.022;
     float dx = abs(fract(lon) - 0.5);
-    float band = smoothstep(0.035, 0.004, dx);
-    float wall = smoothstep(0.010, 0.0, abs(dx - 0.006));
+    float turb = warped(vObj * 9.0 + vec3(uTime * 0.25, 0.0, 0.0), 4, 0.7);
+    float band = smoothstep(0.022, 0.002, dx + turb * 0.008);
+    float wall = smoothstep(0.006, 0.0, abs(dx - 0.003 - turb * 0.002));
     float latFade = smoothstep(0.06, 0.20, vUv.y) * smoothstep(0.94, 0.78, vUv.y);
-    lit += vec3(0.62, 0.84, 1.0) * band * latFade * uHighstorm * 0.34;
-    lit += vec3(0.85, 0.95, 1.0) * wall * latFade * uHighstorm * 0.5;
+    float front = band * latFade * uHighstorm;
+    lit = mix(lit, vec3(0.36, 0.46, 0.63) * (0.22 + 0.85 * shade), front * 0.80);
+    lit += vec3(0.52, 0.70, 0.92) * front * 0.16 * (0.2 + 0.8 * shade);
+    lit += vec3(0.86, 0.93, 1.0) * wall * latFade * uHighstorm * 0.24 * (0.25 + 0.75 * shade);
+    // Stormlight in the wall, flickering where the turbulence peaks.
+    float flash = smoothstep(0.80, 0.97, turb) * band * latFade;
+    lit += vec3(0.68, 0.86, 1.0) * flash * uHighstorm * 0.30;
   }
 
-  // Limb lighting
-  vec3 view = normalize(cameraPosition - vWorld);
-  float fres = pow(1.0 - max(0.0, dot(n, view)), 2.6);
-  lit += uAtmosphere * fres * 0.85;
+  // ---- tidally locked worlds ------------------------------------------
+  if (uTidal > 0.001) {
+    // Taldain and Canticle: the story is the terminator, so make it burn.
+    float band = 1.0 - abs(geoNdl);
+    lit += vec3(1.0, 0.55, 0.18) * pow(max(0.0, band), 8.0) * uTidal * 0.5;
+  }
 
-  // Cognitive: the albedo already carries Shadesmar's reading of this world
-  // (bead ocean where the land is). Light it flatter — there is no sun over
-  // there — and let the beads catch a highlight.
+  // ---- ring shadow ----------------------------------------------------
+  if (uRingShadow > 0.001) {
+    // Project the surface point along the sun direction onto the ring plane.
+    vec3 axis = normalize(uRingAxis);
+    float denom = dot(toSun, axis);
+    if (abs(denom) > 0.001) {
+      vec3 local = vWorld - (uSunPos - uSunPos); // world-local: mesh sits at origin of its own frame
+      float t = -dot(vObj, axis) / denom;
+      if (t > 0.0) {
+        vec3 hit = vObj + toSun * t;
+        float r = length(hit - axis * dot(hit, axis));
+        float inRing = step(uRingInner, r) * step(r, uRingOuter);
+        float dens = inRing * (0.55 + 0.45 * sin(r * 60.0));
+        lit *= 1.0 - dens * uRingShadow * shade;
+      }
+    }
+  }
+
+  // ---- limb -----------------------------------------------------------
+  fres = pow(1.0 - max(0.0, dot(n, view)), 3.2);
+  // Only the lit limb glows: a rim light on the night side is a giveaway.
+  lit += uAtmosphere * fres * (0.18 + 0.82 * shade) * 0.22;
+
+  // ---- Shadesmar ------------------------------------------------------
   if (uCognitive > 0.001) {
-    vec3 flatLit = albedo * (0.58 + 0.42 * ndl) + vec3(0.05, 0.03, 0.10);
-    float glint = pow(max(0.0, dot(reflect(-toSun, n), view)), 26.0);
-    flatLit += vec3(0.60, 0.42, 0.95) * glint * 0.55;
-    lit = mix(lit, flatLit, uCognitive);
+    // No sun over there. Flat ambient, and the beads do the work.
+    vec3 flat_ = albedo * (0.52 + 0.30 * max(0.0, geoNdl)) + vec3(0.05, 0.03, 0.11);
+    float beads = warped(vObj * 120.0 + uSeed, 3, 0.5);
+    float glint = smoothstep(0.72, 0.95, beads) * (1.0 - water);
+    flat_ += vec3(0.72, 0.56, 1.0) * glint * 0.55;
+    float glass = specGGX(nSurf, view, normalize(view + vec3(0.0, 1.0, 0.0)), 0.08) * water;
+    flat_ += vec3(0.55, 0.68, 0.95) * glass * 0.6;
+    flat_ += vec3(0.38, 0.28, 0.70) * fres * 0.9;
+    lit = mix(lit, flat_, uCognitive);
   }
 
-  lit += uEmissiveColor * uEmissive;
-  gl_FragColor = vec4(lit, 1.0);
+  lit += uEmissiveColor * uEmissive * (fres * 2.2 + 0.10) * shade;
+  gl_FragColor = vec4(max(lit, 0.0), 1.0);
 }

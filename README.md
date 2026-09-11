@@ -8,8 +8,10 @@ mists, Nalthis' colour, the dark of Threnody — hanging in the same sky. Time
 is an instrument. The three Realms are places. Magic is a set of tables you
 can actually use while you reread.
 
-This is the successor to [Hoid's Journal](https://github.com/L0nE-F0x),
-rebuilt from first principles. The original is preserved untouched.
+This is the successor to the original Hoid's Journal, rebuilt from first
+principles. The original is preserved untouched.
+
+Source: [L0nE-F0x/Hoid-s-Journal](https://github.com/L0nE-F0x/Hoid-s-Journal).
 
 **Not affiliated with Dragonsteel Entertainment or Brandon Sanderson.**
 The Cosmere and all related names are their trademarks.
@@ -22,6 +24,9 @@ npm run dev
 ```
 
 Open [http://127.0.0.1:5174](http://127.0.0.1:5174).
+
+Netlify: connect this GitHub repo, branch `master`. The build is
+`npm run build`, the publish directory is `dist`.
 
 ## What it is
 

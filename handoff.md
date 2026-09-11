@@ -2,7 +2,8 @@
 
 **Read this first.** Live top-of-todo across sessions.
 
-Repo: `/home/lonefox/Projects/Cephandrius` (local git, **no remote yet**)
+Repo: `/home/lonefox/Projects/Cephandrius`
+Remote: https://github.com/L0nE-F0x/Hoid-s-Journal
 Original v1 (museum, **do not edit**): `/home/lonefox/Projects/ApexForge/cosmere-interactive-map`
 Visual/architecture parent: `/home/lonefox/Projects/Aetherfield`
 
@@ -15,14 +16,11 @@ Architecture lock: `AGENTS.md` + `DESIGN.md`. This file is only the live todo.
 
 # ▶ START HERE — next session
 
-**2026-09-11 (night) — the roadmap list is shipped except for a GitHub
-remote, a Netlify site, a soundtrack, and the Lore Web. Local `master`,
-still no remote.**
+**2026-09-11 (night) — the code is on GitHub. Connect Netlify to
+`L0nE-F0x/Hoid-s-Journal`, branch `master`, publish `dist`.**
 
-The atlas has places, the Realms have connective tissue, the journal has
-beats, and the ship path that can be done locally is done. Open this file,
-run the app, pick **Do next** if you want a remote or music or a Lore Web.
-Verify visuals with `npm run shot`.
+Soundtrack and Lore Web are the remaining product calls. Verify visuals
+with `npm run shot`.
 
 ```bash
 cd /home/lonefox/Projects/Cephandrius
@@ -42,7 +40,7 @@ with every shot.
 
 `npx tsc --noEmit` and `npm run build` were clean when this was written.
 
-Git: first commit is **done** (local `master`, still **no remote**).
+Git: `master` tracks `origin` at https://github.com/L0nE-F0x/Hoid-s-Journal.
 
 ## What changed this session
 
@@ -72,8 +70,8 @@ Git: first commit is **done** (local `master`, still **no remote**).
   ladder (auto / high / medium / low — nebula and bloom first, globe
   tessellation last), a quiet rumble in Look (off by default), `npm run bench`,
   phone layout under 900px.
-- **Not this session, need you:** GitHub remote, Netlify site, a soundtrack
-  (rumble is the procedural half), Lore Web.
+- **Need you:** connect Netlify to the GitHub repo (build `npm run build`,
+  publish `dist`, Node 22). Soundtrack and Lore Web are product, not plumbing.
 
 ### Seventh pass — city scale is a nested layer
 
@@ -310,8 +308,9 @@ needs you, or is a new product.
 
 ### 1. Put it on the internet
 
-- GitHub remote. Local `master` only, still.
-- Netlify: `netlify.toml` is ready (`npm run build`, publish `dist`). No site.
+- ~~GitHub remote~~ **done** — https://github.com/L0nE-F0x/Hoid-s-Journal (`master`).
+- Netlify: `netlify.toml` is ready (`npm run build`, publish `dist`, Node 22).
+  Connect the GitHub repo in the Netlify UI; there is no site yet.
 
 ### 2. Soundtrack
 

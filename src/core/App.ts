@@ -641,7 +641,8 @@ export class App {
     store.set('viewHeading', this.rig.heading);
 
     this.labels.update(
-      this.orrery, this.camera, s.readProgress, s.visual.showLabels, s.scale,
+      this.orrery, this.camera, s.readProgress,
+      s.visual.showLabels && s.shell === 'play', s.scale,
       s.focusedSystem, s.focusedBody,
     );
     this.pins.update(

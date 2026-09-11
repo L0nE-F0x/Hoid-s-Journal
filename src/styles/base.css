@@ -1,20 +1,41 @@
+/**
+ * Cephandrius chrome.
+ *
+ * The look is a brass-and-glass instrument with a journal set into it, not a
+ * dashboard: hairline rules instead of borders, tracked small caps instead of
+ * pills, one signal colour instead of a gradient on everything. Ink and
+ * lamplight — the cyan is a state, not a decoration.
+ */
 :root {
-  --ceph-bg-deep: #05060d;
-  --ceph-panel-bg: rgba(9, 11, 22, 0.78);
-  --ceph-border: rgba(140, 180, 255, 0.18);
-  --ceph-border-strong: rgba(140, 180, 255, 0.28);
-  --ceph-cyan: #5ee7ff;
-  --ceph-violet: #a56bff;
-  --ceph-amber: #f5c16e;
-  --ceph-green: #4ade80;
-  --ceph-text: #dce6f5;
-  --ceph-text-dim: #8a95ad;
-  --ceph-text-faint: #7c88a3;
-  --ceph-danger: #ff6b6b;
+  --ceph-bg-deep: #05060c;
+  --ceph-ink: #070810;
+  --ceph-panel-bg: rgba(9, 11, 19, 0.76);
+  --ceph-panel-raised: rgba(16, 19, 30, 0.84);
+  --ceph-rule: rgba(206, 221, 255, 0.13);
+  --ceph-border: rgba(206, 221, 255, 0.13);
+  --ceph-border-strong: rgba(206, 221, 255, 0.30);
+
+  /* One signal, one warm. Everything else is ink and paper. */
+  --ceph-cyan: #6fd7e8;
+  --ceph-violet: #a98cf0;
+  --ceph-gold: #d9b25f;
+  --ceph-amber: #d9b25f;
+  --ceph-green: #7fc99a;
+  --ceph-danger: #e8746a;
+
+  --ceph-text: #e4e7ef;
+  --ceph-text-dim: #97a0b4;
+  --ceph-text-faint: #6e788d;
+
   --ceph-ease: cubic-bezier(0.16, 1, 0.3, 1);
   --ceph-ease-spring: cubic-bezier(0.34, 1.42, 0.44, 1);
   --ceph-stagger: 45ms;
-  --ceph-font: ui-sans-serif, Inter, system-ui, -apple-system, sans-serif;
+
+  /* The journal voice is set in a book face; the instrument is not. */
+  --ceph-display: ui-serif, 'Iowan Old Style', 'Palatino Linotype', Palatino,
+    'Hoefler Text', Georgia, 'Liberation Serif', 'Times New Roman', serif;
+  --ceph-font: ui-sans-serif, Inter, 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --ceph-mono: ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, Consolas, monospace;
   --ceph-touch: 44px;
 }
 
@@ -42,7 +63,7 @@
   color: inherit;
 }
 
-.ceph-root ::selection { background: rgba(94, 231, 255, 0.3); }
+.ceph-root ::selection { background: rgba(111, 215, 232, 0.26); }
 
 @media (prefers-reduced-motion: reduce) {
   .ceph-root, .ceph-root * {
@@ -54,56 +75,69 @@
 .ceph-root button:focus-visible,
 .ceph-root a:focus-visible,
 .ceph-root [tabindex]:focus-visible {
-  outline: 2px solid var(--ceph-cyan);
+  outline: 1px solid var(--ceph-cyan);
   outline-offset: 2px;
-  border-radius: 6px;
+  border-radius: 2px;
 }
+
+/* --- surfaces ------------------------------------------------------------ */
 
 .ceph-panel {
   /* Chrome is glass, not a hit target. Interactive children opt back in.
      A full-card capture was eating clicks meant for the sky. */
   pointer-events: none;
   background:
-    linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0) 28%),
+    linear-gradient(180deg, rgba(255,255,255,0.035) 0%, rgba(255,255,255,0) 34%),
     var(--ceph-panel-bg);
-  backdrop-filter: blur(20px) saturate(1.1);
-  -webkit-backdrop-filter: blur(20px) saturate(1.1);
-  border: 1px solid var(--ceph-border);
-  border-radius: 12px;
+  backdrop-filter: blur(22px) saturate(1.08);
+  -webkit-backdrop-filter: blur(22px) saturate(1.08);
+  border: 1px solid var(--ceph-rule);
+  border-radius: 3px;
   position: relative;
   overflow: hidden;
+  box-shadow: 0 18px 48px -24px rgba(0, 0, 0, 0.9);
 }
+/* The lit top edge of a pane of glass. */
 .ceph-panel::after {
   content: '';
   position: absolute;
   inset: 0 auto auto 0;
   width: 100%;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(186, 230, 255, 0.35), transparent);
+  background: linear-gradient(90deg, transparent, rgba(206, 226, 255, 0.34), transparent);
   pointer-events: none;
 }
 
 .ceph-kicker {
-  font-size: 10.5px;
-  letter-spacing: 0.14em;
+  font-size: 9.5px;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--ceph-text-dim);
+  color: var(--ceph-text-faint);
+  font-weight: 500;
+}
+
+/* A hairline rule with optional text, the way a plate is titled. */
+.ceph-rule {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--ceph-rule) 18%, var(--ceph-rule) 82%, transparent);
+  border: 0;
+  margin: 0;
 }
 
 .ceph-wordmark {
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.24em;
-  background: linear-gradient(120deg, var(--ceph-cyan), var(--ceph-violet));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  font-family: var(--ceph-display);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.30em;
+  text-indent: 0.30em;
+  color: var(--ceph-text);
   border: none;
   padding: 0;
   cursor: pointer;
   pointer-events: auto;
-  background-color: transparent;
+  background: transparent;
 }
+.ceph-wordmark:hover { color: var(--ceph-cyan); }
 
 .ceph-timeline,
 .ceph-atlas,
@@ -116,72 +150,95 @@
   pointer-events: auto;
 }
 
+/* --- controls ------------------------------------------------------------ */
+
 .ceph-btn {
   pointer-events: auto;
   appearance: none;
-  border: 1px solid var(--ceph-border);
-  background: rgba(255,255,255,0.03);
-  color: var(--ceph-text);
-  border-radius: 8px;
-  padding: 8px 12px;
-  font-size: 11px;
-  letter-spacing: 0.12em;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--ceph-text-dim);
+  border-radius: 2px;
+  padding: 7px 10px;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   cursor: pointer;
-  transition: border-color 180ms var(--ceph-ease), box-shadow 180ms var(--ceph-ease), color 180ms var(--ceph-ease);
+  position: relative;
+  transition: color 160ms var(--ceph-ease), border-color 160ms var(--ceph-ease);
 }
-.ceph-btn:hover {
-  border-color: var(--ceph-border-strong);
-  color: var(--ceph-cyan);
-  box-shadow: 0 0 12px rgba(94, 231, 255, 0.18);
+/* Hover is a rule under the word, like a pen line. Not a glowing capsule. */
+.ceph-btn::after {
+  content: '';
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 3px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0;
+  transform: scaleX(0.4);
+  transition: opacity 160ms var(--ceph-ease), transform 220ms var(--ceph-ease);
 }
+.ceph-btn:hover { color: var(--ceph-text); }
+.ceph-btn:hover::after { opacity: 0.55; transform: none; }
 .ceph-btn.is-on {
-  border-color: var(--ceph-cyan);
   color: var(--ceph-cyan);
-  box-shadow: 0 0 14px rgba(94, 231, 255, 0.22);
-  background: rgba(94, 231, 255, 0.08);
+  border-color: color-mix(in srgb, var(--ceph-cyan) 34%, transparent);
+  background: color-mix(in srgb, var(--ceph-cyan) 7%, transparent);
 }
+.ceph-btn.is-on::after { opacity: 0; }
+
 .ceph-btn--primary {
-  background: linear-gradient(120deg, var(--ceph-cyan), var(--ceph-violet));
-  color: #071018;
-  border: none;
-  font-weight: 700;
+  border-color: color-mix(in srgb, var(--ceph-gold) 52%, transparent);
+  color: var(--ceph-gold);
+  background: color-mix(in srgb, var(--ceph-gold) 8%, transparent);
+  font-weight: 600;
 }
-.ceph-btn--primary:hover { color: #071018; filter: brightness(1.08); }
+.ceph-btn--primary:hover {
+  color: #14100a;
+  background: var(--ceph-gold);
+  border-color: var(--ceph-gold);
+}
+.ceph-btn--primary:hover::after { opacity: 0; }
 
 .ceph-chip {
   pointer-events: auto;
-  border: 1px solid var(--ceph-border);
-  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--ceph-rule);
+  background: rgba(255,255,255,0.022);
   color: var(--ceph-text-dim);
-  border-radius: 999px;
-  padding: 4px 10px;
-  font-size: 10.5px;
-  letter-spacing: 0.08em;
+  border-radius: 2px;
+  padding: 4px 9px;
+  font-size: 10px;
+  letter-spacing: 0.10em;
   text-transform: uppercase;
   cursor: pointer;
+  transition: color 150ms var(--ceph-ease), border-color 150ms var(--ceph-ease);
 }
+.ceph-chip:hover { color: var(--ceph-text); border-color: var(--ceph-border-strong); }
 .ceph-chip.is-on {
-  background: linear-gradient(120deg, var(--ceph-cyan), var(--ceph-violet));
-  color: #071018;
-  border-color: transparent;
+  background: color-mix(in srgb, var(--ceph-cyan) 12%, transparent);
+  color: var(--ceph-cyan);
+  border-color: color-mix(in srgb, var(--ceph-cyan) 48%, transparent);
 }
 
+/* Canonicity is a margin note, not a badge. */
 .ceph-canon {
   display: inline-block;
   font-size: 9px;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  padding: 2px 6px;
-  border-radius: 4px;
-  border: 1px solid currentColor;
+  padding: 1px 0 1px 9px;
+  border: 0;
+  border-left: 2px solid currentColor;
 }
-.ceph-canon--canon { color: #4ade80; }
-.ceph-canon--wob { color: #fbbf24; }
-.ceph-canon--speculation { color: #c084fc; }
-.ceph-canon--noncanon { color: #71717a; }
+.ceph-canon--canon { color: #7fc99a; }
+.ceph-canon--wob { color: var(--ceph-gold); }
+.ceph-canon--speculation { color: #b79bf0; }
+.ceph-canon--noncanon { color: #6e788d; }
 
 @keyframes ceph-panel-in {
-  from { opacity: 0; transform: translateY(8px); }
+  from { opacity: 0; transform: translateY(6px); }
   to { opacity: 1; transform: none; }
 }

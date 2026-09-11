@@ -1,3 +1,9 @@
+/**
+ * The landing page is a title plate laid over a live sky: rules, a serif
+ * wordmark, an epigraph in the journal's own voice, and the index of what is
+ * actually inside. No gradient capsules — the picture behind it is the
+ * decoration.
+ */
 .ceph-title {
   position: fixed;
   inset: 0;
@@ -23,92 +29,278 @@
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(ellipse at 50% 42%, rgba(5, 6, 13, 0.08) 0%, rgba(5, 6, 13, 0.42) 58%, rgba(5, 6, 13, 0.78) 100%),
-    linear-gradient(to top, rgba(5, 6, 13, 0.72) 0%, rgba(5, 6, 13, 0) 28%);
+    radial-gradient(ellipse 46% 42% at 50% 46%, rgba(5, 6, 12, 0.62) 0%, rgba(5, 6, 12, 0.16) 66%, rgba(5, 6, 12, 0) 100%),
+    linear-gradient(to top, rgba(5, 6, 12, 0.80) 0%, rgba(5, 6, 12, 0) 26%),
+    linear-gradient(to bottom, rgba(5, 6, 12, 0.42) 0%, rgba(5, 6, 12, 0) 20%);
 }
 
-.ceph-title-center {
+.ceph-title-frame {
   position: relative;
   z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: min(560px, calc(100% - 40px));
+  width: min(720px, calc(100% - 44px));
   text-align: center;
 }
 
+/* --- lockup -------------------------------------------------------------- */
+
+.ceph-title-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  animation: ceph-title-rise 900ms var(--ceph-ease) both;
+}
+
+/* The journal's own mark is a square plate on near-black. A radial mask takes
+   the corners off and leaves a seal; blend modes cannot reach the canvas from
+   inside the title's own stacking context. */
 .ceph-title-mark {
-  width: 108px;
-  height: 108px;
-  margin-bottom: 18px;
-  border-radius: 18px;
-  filter: drop-shadow(0 0 18px rgba(94, 231, 255, 0.28));
+  width: 92px;
+  height: 92px;
+  margin-bottom: 20px;
+  opacity: 0.95;
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 46%, rgba(0,0,0,0.55) 60%, transparent 72%);
+  mask-image: radial-gradient(circle at 50% 50%, #000 46%, rgba(0,0,0,0.55) 60%, transparent 72%);
+  filter: drop-shadow(0 0 26px rgba(150, 200, 255, 0.20)) contrast(1.06);
+}
+
+.ceph-title-rule {
+  width: 100%;
+  max-width: 560px;
+  opacity: 0.8;
 }
 
 .ceph-title-wordmark {
   margin: 0;
-  font-size: clamp(28px, 6vw, 52px);
-  font-weight: 300;
-  letter-spacing: 0.34em;
-  text-indent: 0.34em;
-  text-transform: uppercase;
-  background: linear-gradient(120deg, #eaf4ff 0%, var(--ceph-cyan) 45%, var(--ceph-violet) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  padding: 16px 0 14px;
+  font-family: var(--ceph-display);
+  font-size: clamp(30px, 6.4vw, 60px);
+  font-weight: 400;
+  letter-spacing: 0.36em;
+  text-indent: 0.36em;
+  line-height: 1;
+  color: #f2ece0;
+  text-shadow: 0 2px 30px rgba(0, 0, 0, 0.85), 0 0 60px rgba(150, 190, 255, 0.12);
 }
 
 .ceph-title-tag {
-  margin: 10px 0 0;
-  font-size: 12px;
-  letter-spacing: 0.42em;
+  margin: 14px 0 0;
+  font-size: 10.5px;
+  letter-spacing: 0.46em;
+  text-indent: 0.46em;
   text-transform: uppercase;
-  color: var(--ceph-text-dim);
+  color: var(--ceph-gold);
+  opacity: 0.88;
 }
 
-.ceph-title-pitch {
-  margin: 22px 0 0;
-  max-width: 42ch;
-  color: var(--ceph-text-dim);
-  line-height: 1.55;
-  font-size: 14px;
+/* --- epigraph ------------------------------------------------------------ */
+
+.ceph-title-epigraph {
+  margin: 40px 0 0;
+  max-width: 46ch;
+  animation: ceph-title-rise 900ms 160ms var(--ceph-ease) both;
 }
+.ceph-title-quote {
+  margin: 0;
+  font-family: var(--ceph-display);
+  font-style: italic;
+  font-size: clamp(15px, 2.1vw, 19px);
+  line-height: 1.62;
+  color: #d6d2c6;
+  text-wrap: balance;
+}
+.ceph-title-cite {
+  display: block;
+  margin-top: 12px;
+  font-style: normal;
+  font-size: 9.5px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--ceph-text-faint);
+}
+
+.ceph-title-kicker {
+  margin: 30px 0 0;
+  font-size: 10.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ceph-text-dim);
+  animation: ceph-title-rise 900ms 240ms var(--ceph-ease) both;
+}
+
+/* --- actions ------------------------------------------------------------- */
 
 .ceph-title-actions {
   display: flex;
-  gap: 12px;
-  margin-top: 28px;
+  gap: 14px;
+  margin-top: 30px;
   flex-wrap: wrap;
   justify-content: center;
+  animation: ceph-title-rise 900ms 320ms var(--ceph-ease) both;
 }
 
-.ceph-title-enter {
+.ceph-title-action {
   pointer-events: auto;
   appearance: none;
-  border: none;
-  border-radius: 999px;
-  padding: 14px 28px;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
   cursor: pointer;
-  color: #071018;
-  background: linear-gradient(120deg, var(--ceph-cyan), var(--ceph-violet));
-  box-shadow: 0 0 28px rgba(94, 231, 255, 0.28);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  min-width: 218px;
+  padding: 15px 22px 13px;
+  border: 1px solid var(--ceph-rule);
+  border-radius: 2px;
+  background: rgba(9, 11, 19, 0.44);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: border-color 220ms var(--ceph-ease), background 220ms var(--ceph-ease),
+    transform 220ms var(--ceph-ease);
+}
+.ceph-title-action:hover {
+  border-color: var(--ceph-border-strong);
+  background: rgba(16, 19, 30, 0.62);
+  transform: translateY(-1px);
+}
+.ceph-title-action-main {
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ceph-text);
+}
+.ceph-title-action-sub {
+  font-size: 10px;
+  letter-spacing: 0.10em;
+  color: var(--ceph-text-faint);
 }
 
-.ceph-title-disclaimer {
+.ceph-title-action--go {
+  border-color: color-mix(in srgb, var(--ceph-gold) 48%, transparent);
+  background: color-mix(in srgb, var(--ceph-gold) 9%, rgba(9, 11, 19, 0.44));
+}
+.ceph-title-action--go .ceph-title-action-main { color: var(--ceph-gold); }
+.ceph-title-action--go:hover {
+  border-color: var(--ceph-gold);
+  background: color-mix(in srgb, var(--ceph-gold) 18%, rgba(9, 11, 19, 0.5));
+}
+
+.ceph-title-skip {
+  pointer-events: auto;
+  appearance: none;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  margin-top: 18px;
+  padding: 6px 4px;
+  font-size: 10px;
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
+  color: var(--ceph-text-faint);
+  border-bottom: 1px solid transparent;
+  animation: ceph-title-rise 900ms 380ms var(--ceph-ease) both;
+}
+.ceph-title-skip:hover {
+  color: var(--ceph-text-dim);
+  border-bottom-color: var(--ceph-rule);
+}
+
+/* --- index --------------------------------------------------------------- */
+
+.ceph-title-index {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px 0;
+  margin-top: 40px;
+  padding-top: 18px;
+  border-top: 1px solid var(--ceph-rule);
+  width: 100%;
+  max-width: 620px;
+  animation: ceph-title-rise 900ms 460ms var(--ceph-ease) both;
+}
+/* Separated by a dot, not a rule: a wrapped row of rules leaves orphan
+   dividers hanging at the end of each line. */
+.ceph-title-count {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+  padding: 3px 12px;
+}
+.ceph-title-count + .ceph-title-count { position: relative; }
+.ceph-title-count + .ceph-title-count::before {
+  content: '·';
   position: absolute;
-  bottom: calc(18px + var(--ceph-safe-bottom));
+  left: -2px;
+  color: var(--ceph-text-faint);
+  opacity: 0.5;
+}
+.ceph-title-count b {
+  font-family: var(--ceph-display);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ceph-text);
+  font-variant-numeric: tabular-nums;
+}
+.ceph-title-count span {
+  font-size: 9.5px;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--ceph-text-faint);
+}
+
+/* --- footer -------------------------------------------------------------- */
+
+.ceph-title-foot {
+  position: absolute;
+  bottom: calc(16px + var(--ceph-safe-bottom));
   left: 24px;
   right: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  z-index: 1;
+}
+.ceph-title-disclaimer {
+  margin: 0;
+  max-width: 88ch;
   text-align: center;
-  font-size: 10px;
-  line-height: 1.5;
+  font-size: 9.5px;
+  line-height: 1.62;
   color: var(--ceph-text-faint);
-  max-width: 72ch;
-  margin: 0 auto;
+  opacity: 0.78;
+}
+.ceph-title-credit {
+  font-size: 9.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ceph-text-faint);
+  text-decoration: none;
+  border-bottom: 1px solid var(--ceph-rule);
+  padding-bottom: 1px;
+}
+.ceph-title-credit:hover { color: var(--ceph-text-dim); }
+
+@keyframes ceph-title-rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
 }
 
-@keyframes ceph-spin { to { transform: rotate(360deg); } }
+@media (max-width: 780px) {
+  .ceph-title-mark { width: 60px; height: 60px; margin-bottom: 16px; }
+  .ceph-title-epigraph { margin-top: 26px; }
+  .ceph-title-actions { margin-top: 24px; gap: 10px; }
+  .ceph-title-action { min-width: 0; flex: 1 1 220px; }
+  .ceph-title-index { margin-top: 26px; gap: 0; }
+  .ceph-title-count { padding: 3px 9px; }
+  .ceph-title-foot { left: 12px; right: 12px; }
+  .ceph-title-disclaimer { font-size: 8.5px; max-height: 5.4em; overflow: hidden; }
+}
+@media (max-height: 760px) {
+  .ceph-title-index { display: none; }
+  .ceph-title-epigraph { margin-top: 26px; }
+}

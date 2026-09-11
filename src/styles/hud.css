@@ -54,7 +54,7 @@
   display: inline-block;
   margin-top: 0;
   padding: 3px 9px;
-  border-radius: 999px;
+  border-radius: 2px;
   border: 1px solid color-mix(in srgb, var(--ceph-amber) 55%, transparent);
   background: color-mix(in srgb, var(--ceph-amber) 12%, transparent);
   color: var(--ceph-amber);
@@ -97,22 +97,28 @@
   gap: 10px;
   margin-bottom: 8px;
 }
+/* The playhead control is an instrument key: a hairline ring, a warm glyph. */
 .ceph-play {
-  width: 34px;
-  height: 34px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
-  border: none;
+  border: 1px solid color-mix(in srgb, var(--ceph-gold) 46%, transparent);
   cursor: pointer;
   pointer-events: auto;
-  background: linear-gradient(120deg, var(--ceph-cyan), var(--ceph-violet));
-  color: #071018;
-  font-size: 13px;
+  background: color-mix(in srgb, var(--ceph-gold) 9%, transparent);
+  color: var(--ceph-gold);
+  font-size: 11px;
+  line-height: 1;
+  transition: background 180ms var(--ceph-ease), color 180ms var(--ceph-ease);
 }
+.ceph-play:hover { background: var(--ceph-gold); color: #14100a; }
 .ceph-year {
-  font-size: 12px;
-  letter-spacing: 0.08em;
-  color: var(--ceph-amber);
+  font-family: var(--ceph-display);
+  font-size: 13.5px;
+  letter-spacing: 0.03em;
+  color: #ddd6c6;
   flex: 1;
+  line-height: 1.35;
 }
 .ceph-era-row {
   display: flex;
@@ -120,14 +126,51 @@
   margin-top: 8px;
   flex-wrap: wrap;
 }
+/* A ruled scale with a brass index, not a stock range input. */
 .ceph-slider {
   width: 100%;
   pointer-events: auto;
-  accent-color: var(--ceph-cyan);
+  appearance: none;
+  height: 18px;
+  background: transparent;
+  cursor: pointer;
+}
+.ceph-slider::-webkit-slider-runnable-track {
+  height: 3px;
+  border-radius: 0;
+  background:
+    repeating-linear-gradient(90deg, var(--ceph-rule) 0 1px, transparent 1px calc(100% / 36)),
+    linear-gradient(90deg, rgba(206,221,255,0.20), rgba(206,221,255,0.20));
+  background-size: 100% 100%, 100% 1px;
+  background-position: 0 0, 0 1px;
+  background-repeat: repeat-x, no-repeat;
+}
+.ceph-slider::-moz-range-track {
+  height: 3px;
+  background: rgba(206, 221, 255, 0.20);
+}
+.ceph-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 3px;
+  height: 15px;
+  margin-top: -6px;
+  border-radius: 1px;
+  background: var(--ceph-gold);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--ceph-gold) 70%, transparent);
+  border: 0;
+}
+.ceph-slider::-moz-range-thumb {
+  width: 3px;
+  height: 15px;
+  border-radius: 1px;
+  border: 0;
+  background: var(--ceph-gold);
 }
 
 .ceph-ticker {
   font-size: 11px;
+  font-style: italic;
+  font-family: var(--ceph-display);
   color: var(--ceph-text-dim);
   line-height: 1.4;
   margin: 0 0 8px;
@@ -169,8 +212,10 @@
 }
 .ceph-panel-drawer h2 {
   margin: 0 0 4px;
-  font-size: 18px;
-  font-weight: 600;
+  font-family: var(--ceph-display);
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: 0.012em;
 }
 .ceph-drawer-head {
   display: flex;
@@ -179,12 +224,12 @@
   margin: 4px 36px 0 0;
 }
 .ceph-swatch {
-  width: 36px;
-  height: 36px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   flex: 0 0 auto;
-  box-shadow: 0 0 16px currentColor;
-  border: 1px solid rgba(255,255,255,0.18);
+  box-shadow: 0 0 18px -2px currentColor;
+  border: 1px solid rgba(255,255,255,0.20);
 }
 .ceph-fields {
   display: grid;
@@ -193,10 +238,11 @@
   margin-top: 14px;
 }
 .ceph-field {
-  background: rgba(0,0,0,0.32);
-  border: 1px solid var(--ceph-border);
-  border-radius: 10px;
-  padding: 8px 10px;
+  background: rgba(0,0,0,0.26);
+  border: 0;
+  border-left: 1px solid var(--ceph-rule);
+  border-radius: 0;
+  padding: 6px 10px;
 }
 .ceph-field-label {
   font-size: 9px;
@@ -248,7 +294,7 @@
   pointer-events: auto;
 }
 .ceph-modal-card {
-  width: min(860px, calc(100% - 32px));
+  width: min(880px, calc(100% - 32px));
   max-height: min(86vh, 720px);
   overflow: auto;
   padding: 22px 24px 28px;
@@ -262,14 +308,18 @@
 .ceph-card {
   pointer-events: auto;
   text-align: left;
-  padding: 12px;
-  border-radius: 10px;
-  border: 1px solid var(--ceph-border);
-  background: rgba(255,255,255,0.03);
+  padding: 11px 12px;
+  border-radius: 2px;
+  border: 1px solid var(--ceph-rule);
+  background: rgba(255,255,255,0.022);
   cursor: pointer;
+  transition: border-color 160ms var(--ceph-ease), background 160ms var(--ceph-ease);
 }
-.ceph-card:hover { border-color: var(--ceph-cyan); }
-.ceph-card.is-on { border-color: var(--ceph-cyan); background: rgba(94, 231, 255, 0.08); }
+.ceph-card:hover { border-color: var(--ceph-border-strong); background: rgba(255,255,255,0.045); }
+.ceph-card.is-on {
+  border-color: color-mix(in srgb, var(--ceph-cyan) 52%, transparent);
+  background: color-mix(in srgb, var(--ceph-cyan) 9%, transparent);
+}
 .ceph-table {
   width: 100%;
   border-collapse: collapse;
@@ -284,13 +334,17 @@
 .ceph-search {
   width: 100%;
   pointer-events: auto;
-  background: rgba(0,0,0,0.35);
-  border: 1px solid var(--ceph-border);
-  border-radius: 10px;
-  padding: 10px 12px;
+  background: rgba(0,0,0,0.30);
+  border: 0;
+  border-bottom: 1px solid var(--ceph-rule);
+  border-radius: 0;
+  padding: 9px 2px;
   outline: none;
+  font-size: 12.5px;
+  letter-spacing: 0.02em;
 }
-.ceph-search:focus { border-color: var(--ceph-cyan); }
+.ceph-search::placeholder { color: var(--ceph-text-faint); }
+.ceph-search:focus { border-bottom-color: var(--ceph-cyan); }
 
 .ceph-look-slider {
   display: grid;
@@ -316,9 +370,9 @@
   position: fixed;
   z-index: 60;
   pointer-events: none;
-  padding: 5px 9px;
-  font-size: 10.5px;
-  letter-spacing: 0.08em;
+  padding: 5px 10px;
+  font-size: 10px;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   opacity: 0;
   transform: translate(-50%, -130%);

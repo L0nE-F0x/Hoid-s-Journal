@@ -51,7 +51,8 @@ export function mountMinimap(root: HTMLElement): { destroy(): void } {
 
   const paint = () => {
     const s = store.state;
-    const room = s.shell === 'play' && s.realm !== 'spiritual' && s.view !== 'web';
+    const room = s.shell === 'play' && !s.cinematic
+      && s.realm !== 'spiritual' && s.view !== 'web';
     const show = room && s.chrome.minimap && !s.selected;
     panel.classList.toggle('is-on', show);
     restore.classList.toggle('is-on', room && !s.chrome.minimap && !s.selected);

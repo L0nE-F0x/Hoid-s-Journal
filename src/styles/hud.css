@@ -459,3 +459,15 @@
   font-weight: 500;
   border-bottom-color: var(--ceph-border-strong);
 }
+
+/* Stood down for the opening flight. Pointer events go with it, so a stray
+   click during the cinematic cannot open a panel behind the skip button.
+   `animation: none` is load-bearing: the top bar's entrance animation has
+   `fill-mode: both`, and an animated value beats a plain declaration. */
+.ceph-topbar.is-hushed,
+.ceph-timeline.is-hushed {
+  animation: none;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 420ms var(--ceph-ease);
+}

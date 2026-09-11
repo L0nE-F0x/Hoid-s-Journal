@@ -57,6 +57,7 @@ function mote(colour: string, corona: number): { mesh: THREE.Mesh; mat: THREE.Sh
       uCoreRadius: { value: 0.18 },
       uFlare: { value: 0.22 },
       uCorona: { value: corona },
+      uGain: { value: 1 },
     },
     vertexShader: sunVert,
     fragmentShader: sunFrag,

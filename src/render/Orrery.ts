@@ -121,6 +121,7 @@ export class Orrery {
           uCoreRadius: { value: 0.15 },
           uFlare: { value: 0.55 },
           uCorona: { value: 1 },
+          uGain: { value: 1 },
         },
         vertexShader: sunVert,
         fragmentShader: sunFrag,

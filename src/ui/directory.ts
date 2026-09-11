@@ -18,7 +18,8 @@ type DirTab = 'systems' | 'worlds' | 'moons' | 'people' | 'dragons' | 'shards' |
 
 export function directoryIsOpen(): boolean {
   const s = store.state;
-  return s.shell === 'play' && !atlasIsOpen() && s.view !== 'web' && s.chrome.directory;
+  return s.shell === 'play' && !s.cinematic && !atlasIsOpen()
+    && s.view !== 'web' && s.chrome.directory;
 }
 
 function flyTo(id: string): void {
@@ -131,7 +132,8 @@ export function mountDirectory(root: HTMLElement): { destroy(): void } {
   const paint = () => {
     const s = store.state;
     const show = directoryIsOpen();
-    const canRestore = s.shell === 'play' && !atlasIsOpen() && s.view !== 'web' && !s.chrome.directory;
+    const canRestore = s.shell === 'play' && !s.cinematic && !atlasIsOpen()
+      && s.view !== 'web' && !s.chrome.directory;
     panel.classList.toggle('is-on', show);
     restore.classList.toggle('is-on', canRestore);
     measure();

@@ -40,7 +40,9 @@ function localUv(focusU: number, focusV: number, u: number, v: number): { u: num
 /** The atlas is on whenever a world is the subject and we are down at it. */
 export function atlasIsOpen(): boolean {
   const s = store.state;
-  return s.shell === 'play' && !!s.focusedBody &&
+  // The opening flight crosses three scales in twelve seconds. Panels that
+  // slide in and out behind it turn a cinematic into a slideshow.
+  return s.shell === 'play' && !s.cinematic && !!s.focusedBody &&
     (s.scale === 'globe' || s.scale === 'surface' || s.scale === 'city');
 }
 

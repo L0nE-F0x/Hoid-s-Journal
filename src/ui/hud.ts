@@ -186,7 +186,11 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
       : null;
     const trail = ['Cosmere', sys, body, loc, grain].filter(Boolean).join(' · ');
     scaleLabel.textContent = `${trail} · ${realm}`;
-    back.classList.toggle('is-on', s.scale !== 'cosmere' && s.realm !== 'spiritual');
+    back.classList.toggle('is-on', s.scale !== 'cosmere' && s.realm !== 'spiritual' && !s.cinematic);
+    // The top bar and the playhead stand down for the opening flight too.
+    // Skip is the only control the first twelve seconds need.
+    topbar.classList.toggle('is-hushed', s.cinematic);
+    timeline.classList.toggle('is-hushed', s.cinematic);
     btnDir.classList.toggle('is-on', s.chrome.directory);
     timeline.classList.toggle('is-thin', !s.chrome.timeline);
     btnTimeMin.textContent = s.chrome.timeline ? '▾' : '▴';
@@ -431,7 +435,7 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
     listen(readingLabel, 'click', () => store.set('panel', 'spoilers')),
     store.on('readingNow', refreshReading),
     listen(window, 'resize', () => measure()),
-    store.on('cinematic', (on) => skip.classList.toggle('is-on', on)),
+    store.on('cinematic', (on) => { skip.classList.toggle('is-on', on); refreshScale(); }),
     store.on('shell', (shell) => {
       hud.classList.toggle('is-on', shell === 'play');
       measure();

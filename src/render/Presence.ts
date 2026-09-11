@@ -4,6 +4,8 @@ import { keplerWorld } from '../layout/kepler.ts';
 import { hubWorld } from '../layout/cognitive.ts';
 import type { Orrery } from './Orrery.ts';
 import { sunTexture } from './planetTextures.ts';
+import sunVert from '../shaders/sun.vert';
+import sunFrag from '../shaders/sun.frag';
 
 const _off = new THREE.Vector3();
 
@@ -38,7 +40,7 @@ function labelSprite(text: string, tint: string): THREE.Sprite {
  */
 export class Presence {
   readonly group = new THREE.Group();
-  private readonly chars: { id: string; mesh: THREE.Mesh }[] = [];
+  private readonly chars: { id: string; mesh: THREE.Mesh; mat: THREE.ShaderMaterial }[] = [];
   private readonly lines: { id: string; line: THREE.Line }[] = [];
   private readonly yolen = new THREE.Vector3();
   private readonly trail: THREE.Line;
@@ -47,17 +49,36 @@ export class Presence {
   private readonly hubs: { id: string; mesh: THREE.Mesh; halo: THREE.Sprite; label: THREE.Sprite; pos: THREE.Vector3 }[] = [];
 
   constructor() {
-    const geo = new THREE.SphereGeometry(0.08, 10, 8);
+    // A person is a mote of light, not a marble. Flat discs at this size read
+    // as confetti scattered over the world they are standing on.
+    const quad = new THREE.PlaneGeometry(2, 2);
     for (const ch of COSMERE.characters) {
-      const mat = new THREE.MeshBasicMaterial({
-        color: ch.color,
+      const colour = new THREE.Color(ch.color);
+      const mat = new THREE.ShaderMaterial({
+        uniforms: {
+          uSize: { value: 0.2 },
+          uColor: { value: colour },
+          uHot: { value: colour.clone().lerp(new THREE.Color(0xffffff), 0.30) },
+          uTime: { value: 0 },
+          uSeed: { value: Math.random() * 40 },
+          uCoreRadius: { value: 0.26 },
+          uFlare: { value: 0 },
+          uCorona: { value: 0.5 },
+          // A person is a light, not a star. Full gain blew every mote to
+          // white and the streak pass smeared them across the frame.
+          uGain: { value: 0.30 },
+        },
+        vertexShader: sunVert,
+        fragmentShader: sunFrag,
         transparent: true,
-        opacity: 0.95,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending,
       });
-      const mesh = new THREE.Mesh(geo, mat);
+      const mesh = new THREE.Mesh(quad, mat);
+      mesh.frustumCulled = false;
       mesh.userData = { kind: 'character', id: ch.id };
       this.group.add(mesh);
-      this.chars.push({ id: ch.id, mesh });
+      this.chars.push({ id: ch.id, mesh, mat });
     }
 
     // Worldhopper trail: where one person has been, era by era.
@@ -167,11 +188,13 @@ export class Presence {
       // A mote is a marker, not a world: hold it at a few pixels across, or a
       // globe portrait turns into a bowl of marbles.
       const d = camera.position.distanceTo(row.mesh.position);
-      const s = Math.min(1.2, Math.max(0.22, d * 0.061));
+      const s = Math.min(0.62, Math.max(0.10, d * 0.030));
       // In Shadesmar the cognitive ones are the locals; bodies are shadows.
       const here = !cognitive || ch.cognitive;
-      row.mesh.scale.setScalar(s * (ch.cognitive ? 1.35 : 1) * (here ? 1 : 0.6));
-      (row.mesh.material as THREE.MeshBasicMaterial).opacity = here ? 0.95 : 0.3;
+      row.mat.uniforms.uSize.value = s * (ch.cognitive ? 1.35 : 1) * (here ? 1 : 0.6);
+      row.mat.uniforms.uTime.value = year;
+      row.mat.uniforms.uCorona.value = here ? 0.55 : 0.2;
+      row.mat.uniforms.uGain.value = here ? 0.30 : 0.12;
     }
 
     const linesOn = showShardLines && (scale === 'cosmere' || scale === 'system');

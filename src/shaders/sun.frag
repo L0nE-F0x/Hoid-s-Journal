@@ -13,6 +13,8 @@ uniform float uSeed;
 uniform float uCoreRadius;
 uniform float uFlare;
 uniform float uCorona;
+/** Overall gain. A star is 1; a person standing on a world is far less. */
+uniform float uGain;
 
 varying vec2 vUv;
 
@@ -64,6 +66,7 @@ void main() {
   col += mix(uColor, vec3(1.0), 0.55) * streak;
   col += uHot * disc * 0.55;
 
+  col *= uGain;
   float a = clamp(max(col.r, max(col.g, col.b)), 0.0, 1.0);
   a = max(a, disc);
   gl_FragColor = vec4(col, a);

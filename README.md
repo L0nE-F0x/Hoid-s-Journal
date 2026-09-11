@@ -76,6 +76,15 @@ See `handoff.md` (live todo), `AGENTS.md` (invariants), and `DESIGN.md` (locks).
 Worlds are baked on the GPU from one recipe table that both the renderer and
 the atlas panel read, so a continent sits in the same place on the plate and
 on the globe. The sky, the Spiritual field and Shadesmar's glass are baked
-once at boot rather than marched per frame. `npm run perf` reports frames
-per second in each Realm with the expensive layers toggled off one at a
-time; run it before and after any renderer change.
+once at boot rather than marched per frame.
+
+```bash
+npm run shot -- --focus roshar --scale globe --out /tmp/roshar.png
+npm run test:interaction   # 36 checks through real mouse and keyboard
+npm run audit:ui           # clicks every control, reports the ones that do nothing
+npm run perf               # fps per Realm, expensive layers toggled off one at a time
+```
+
+Run `perf` before and after any renderer change. `window.__ceph.diagnose()`
+in the console prints the driver, drawing buffer, pixel ratio and program
+count — the first thing to ask for when someone reports a black sky.

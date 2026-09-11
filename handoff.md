@@ -16,66 +16,79 @@ Architecture lock: `AGENTS.md` + `DESIGN.md`. This file is the live todo.
 
 # ▶ START HERE — next session
 
-**2026-09-12, overnight.** Owner asked for a graphics overhaul, Cognitive
-Realm rebuilt, v1 lore parity, and a landing page that does not read as a
-template. All four landed. 20 commits from `2deaae5` to the present, all
-local — **nothing has been pushed**, so the live site is still the old build.
+**2026-09-12 overnight → handed over.** The previous session did a graphics
+overhaul, rebuilt the Cognitive and Spiritual Realms, brought the lore to v1
+parity and past it, and replaced the chrome and the landing page. Twenty-two
+commits from `2deaae5` to `e396462`. **All of it is pushed and live.**
 
-What changed, in one paragraph each:
+**Your job is the next layer: UI polish and dead controls.** The owner's
+words: "there is lots of final polish in the UI, I've found a bunch of things
+that don't work properly, buttons that don't click etc." They ran out of
+credits before listing them, so that list does not exist. `npm run audit:ui`
+is a start (see *Known rough edges* below) but it only finds controls that
+change nothing at all — it cannot find a control that does the wrong thing,
+or one that works but feels broken. Click through the product yourself.
+
+Git: `master` tracking https://github.com/L0nE-F0x/Hoid-s-Journal, level
+with origin. Live site: https://thecosmere.netlify.app — **it deploys on
+push, so `git push` is the deploy.** Hard-refresh after one; the service
+worker will otherwise serve the old shell.
+**Do not edit the v1 repo** at `ApexForge/cosmere-interactive-map`.
+
+```bash
+cd /home/lonefox/Projects/Cephandrius
+git pull
+npm install
+npm run dev              # http://127.0.0.1:5174
+
+# Second shell. This is how you check visual work.
+npm run shot -- --focus roshar --scale globe --out /tmp/roshar.png
+npm run test:interaction # 36 checks through real mouse and keyboard
+npm run audit:ui         # clicks every control, reports the ones that do nothing
+npm run perf             # fps per Realm, expensive layers toggled off one at a time
+```
+
+**Do not verify visuals in a Chrome tab you are not looking at.** A
+background tab throttles `requestAnimationFrame`, so damped camera flights
+never converge and every screenshot lies. `tools/screenshot.mjs` drives
+headless Chrome at 60fps and prints `fps`, `scale`, `body` and `insets`.
+
+`window.__ceph = { store, app, ui, diagnose }` is the harness handle only.
+`__ceph.diagnose()` prints the driver, the drawing buffer, the pixel ratio,
+the program count and any fault — ask for it first when someone reports a
+black sky.
+
+Last known green: `npx tsc --noEmit`, `npm run build`, and
+`npm run test:interaction` (**36/36**) with `npm run dev` already up.
+Re-run all three before you push.
+
+---
+
+## What the last session changed
 
 - **Worlds.** Every globe is baked on the GPU — an albedo plate and an
   (elevation, water, lights, roughness) plate — and lit by a shader with
   height-derived normals, a cloud deck that casts its own shadow, night-side
   city lights, ice, ring shadows and a soft terminator. Atmospheres are
   marched single scattering. Suns are limb-darkened photospheres with a
-  moving corona. Nebulae are marched volumes. Five gas giants wear rings.
+  moving corona. Nebulae are marched volumes. Five gas giants wear rings and
+  the ten Vorin ones are ten colours over three shared bakes.
 - **Shadesmar.** Its own renderer: a bead ocean per system, a soul field,
   worldhopper roads that pulse, fifteen named Cognitive sites with their own
-  marker shapes, and a post grade of its own. Nothing over there is lit by
-  a star any more.
-- **Spiritual.** One light Shattered into sixteen, threads of Connection
-  with pulses running them, Splintered Shards shown as the fragments they
-  are, Connection / Identity / Fortune as great circles, four Dawnshards on
-  a wider ring.
-- **Lore.** Moons 5 → 22 (Lumar's twelve lunagrees are the point). Seven
-  dragons and the Sleepless in the roster with their own Directory tab.
-  Locations 86 → 124. Glossary 82 → 123. Ten perpendicularities. Fifteen
-  Cognitive sites.
-- **Chrome.** One signal colour and one warm; hairline rules; a book face
-  for the journal's own voice. The landing page is a title plate over a live
-  sky with an epigraph and an index counted from the data.
-- **Speed.** 18fps → 45–60 everywhere. The biggest single cause was not a
-  shader: thirty-one worlds × two Realms × a 2048×1024 plate pair is 1.4 GB
-  of texture, and an integrated GPU pages that rather than say so.
-
-Git: `master` tracking https://github.com/L0nE-F0x/Hoid-s-Journal.
-Live site (owner connected Netlify): https://thecosmere.netlify.app — it
-deploys on push, so `git push` is the deploy. Nothing is pushed yet.
-**Do not edit the v1 repo.** Pull before you start.
-
-```bash
-cd /home/lonefox/Projects/Cephandrius
-git pull
-npm install
-npm run dev          # http://127.0.0.1:5174
-
-# Second shell — this is how you check visual work:
-npm run shot -- --focus roshar --scale globe --out /tmp/roshar.png
-```
-
-**Do not verify visuals in a Chrome tab you are not looking at.** A
-background tab throttles `requestAnimationFrame`, so damped camera flights
-never converge and every screenshot lies. `tools/screenshot.mjs` drives
-headless Chrome at 60fps and prints `fps`, `scale`, `body`, and `insets`.
-`window.__ceph = { store, app, ui }` is the harness handle only.
-
-Last known green: `npx tsc --noEmit`, `npm run build`, and
-`npm run test:interaction` (**36/36**) with `npm run dev` already up.
-Re-run those if you touch code.
-
-`npm run perf` prints frames per second at Cosmere, in Shadesmar, in the
-Spiritual Realm and at globe scale, with the expensive layers toggled off
-one at a time. Run it before and after any renderer change.
+  marker shapes, and a post grade of its own. Nothing over there is lit by a
+  star any more.
+- **Spiritual.** One light Shattered into sixteen, threads of Connection with
+  pulses running them, Splintered Shards shown as the fragments they are,
+  Connection / Identity / Fortune as great circles, four Dawnshards outside.
+- **Lore.** Moons 5 → 22 (Lumar's twelve lunagrees rain into their seas).
+  Seven dragons and the Sleepless, with their own Directory tab. Locations
+  86 → 124. Glossary 82 → 123. Ten perpendicularities. Fifteen Cognitive
+  sites.
+- **Chrome.** One signal colour and one warm, hairline rules, a book face for
+  the journal's own voice. The landing page is a title plate over a live sky
+  with an epigraph and an index counted from the data. City plates are drawn
+  plans on parchment.
+- **Speed.** 18fps → 45–60 everywhere.
 
 ---
 
@@ -212,39 +225,52 @@ Treat this as current truth, not a wishlist.
 
 ## Do next (priority order)
 
-The product is shippable. Do not invent a new pillar.
+### 1. The UI pass the owner asked for
 
-### 1. Push it
+This is the whole brief. Controls that do nothing, controls that do the wrong
+thing, and anything that feels unfinished. Start with *Known rough edges*
+below, then click through every panel at a desktop width and at 420px.
 
-- GitHub: https://github.com/L0nE-F0x/Hoid-s-Journal
-- Live: https://thecosmere.netlify.app (`npm run build`, `dist`, Node 22).
-  After a `master` push, hard-refresh the site.
-- `npm run og` regenerates the social card from the new title plate.
+Places worth looking hardest, because they changed most and have the least
+test coverage:
 
-### 2. Optional depth, only if a reread reaches for it
+- **Directory** (`src/ui/directory.ts`). Eight tabs now, and the search box
+  filters the current tab only. Check every tab at every scale and in every
+  Realm — some rows fly to a subject, some only select, and the difference is
+  not obvious to a reader.
+- **Atlas** (`src/ui/atlas.ts`). Layer chips on the Stewart plates, landmark
+  chips on city plates, the pin ↔ globe round trip.
+- **Look panel** (`src/ui/modals.ts`). Every slider and toggle should visibly
+  do something. Quality is the one that hid a black-screen bug for a day.
+- **Lore Web** (`src/ui/loreWeb.ts`). Legend toggles, node drag, the path
+  readout. It has no scroll or pinch zoom; the auto-fit is all there is.
+- **Codex** search results and the Arcanum tables on a narrow screen.
+
+### 2. Verify, then push
+
+`npx tsc --noEmit`, `npm run build`, `npm run test:interaction`,
+`npm run audit:ui`. A push is a deploy.
+
+### 3. Optional depth, only if a reread reaches for it
 
 - Landmark UVs for the Stewart **city** rasters. The interaction test picks
-  landmarks from the roster chips because those scans have no calibrated
-  UVs. Do not "fix" that by guessing — measure them off the plates.
-- Azimir has no Stewart plate. Others without one use `cityMap.ts`, which
-  is fine.
+  landmarks from the roster chips because those scans have no calibrated UVs.
+  Do not "fix" that by guessing — measure them off the plates.
 - More relations in `data/relationships.ts`. The Lore Web is only as good as
   its edges, and there are 61.
-- Gas giants share one recipe with different seeds. Jes through Ishi could
-  each get their own palette if a reread ever cares which is which.
+- Azimir has no Stewart plate. Worlds without one use `cityMap.ts`, which is
+  now a real plan generator rather than a placeholder.
 
-### 3. Renderer ideas not taken
+### 4. Renderer ideas not taken
 
 Written down so the next session does not rediscover them:
 
 - **Godrays** from the local star at system scale. `postprocessing` has
   `GodRaysEffect` but it wants one light mesh, and there are thirteen suns.
-- **Depth of field** at globe scale. Tried on paper, not built: the risk is
-  it reads as a blur bug rather than as a lens.
-- **Aurora** on the Invested worlds. Cheap in the planet shader, would need
+- **Depth of field** at globe scale. The risk is that it reads as a blur bug
+  rather than as a lens.
+- **Aurora** on the Invested worlds. Cheap in the planet shader, but it needs
   a canon check per world before it goes in.
-- **Spore streams** from Lumar's twelve lunagrees down to their seas. The
-  most lore-accurate showpiece left on the table.
 
 ## Sharp edges / do not re-break
 

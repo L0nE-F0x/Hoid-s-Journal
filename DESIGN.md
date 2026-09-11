@@ -42,14 +42,27 @@ Isaac Stewart maps are in the atlas, with credit.
 
 ```
 src/
-  core/     App, CameraRig, store, urlState, persist
-  data/     typed lore with stable string IDs, citations, spoiler arcs
-  layout/   positions derived from data + time + realm
-  render/   Three only
-  shaders/  GLSL
-  ui/       DOM; never imports three
-  styles/   one file per UI module
+  core/        App, CameraRig, store, urlState, persist
+  data/        typed lore with stable string IDs, citations, spoiler arcs
+  layout/      positions derived from data + time + realm
+  cartography/ recipes.ts (the one description of a world), the CPU baker for
+               the atlas panel, Stewart raster registry, city plans. No Three.
+  render/      Three only. Orrery, Shadesmar, Spiritual, the GPU bakers, post
+  shaders/     GLSL. lib/ is included, never copied
+  ui/          DOM; never imports three
+  styles/      one file per UI module
 ```
+
+One recipe table, two bakers. `cartography/recipes.ts` is the only
+description of what a world looks like. `render/planetBake.ts` renders it on
+the GPU for the globe at two resolutions; `cartography/planetMap.ts` is its
+CPU twin for the atlas panel, which cannot import Three. Change one without
+the other and the plate and the globe start disagreeing about where a
+continent is.
+
+Anything that does not change per frame is baked once at boot: the sky, the
+Spiritual field, Shadesmar's glass, the world plates. Marching a static field
+per pixel per frame cost more than every planet and post pass combined.
 
 - TypeScript, Vite 6, Three r180, `postprocessing`, `vite-plugin-glsl`
 - No React. Vanilla DOM, Aetherfield-style `el()` helper
@@ -73,11 +86,18 @@ suns at tens of units. The camera *is* the zoom.
 
 ## Realms
 
-- **Physical** — the orrery.
-- **Cognitive** — bead oceans where land was, Silverlight routes, cognitive
-  entities stay bright.
-- **Spiritual** — not a map. Connection, Fortune, Identity; sixteen motes
-  around a unity core. Pre-Shattering: Adonalsium whole.
+Each Realm is its own renderer and its own grade, not a filter on the orrery.
+
+- **Physical** — the orrery. Worlds, moons, rings, orbits, nebulae.
+- **Cognitive** — a bead ocean per system, the light of every mind over them,
+  worldhopper roads, and the places that stand in Shadesmar itself:
+  Silverlight, Celebrant, Lasting Integrity, the Ire Fortress, the Grand
+  Knell, the perpendicularities from the far side, the three named Rosharan
+  Expanses. Nothing over there is lit by a star, and the grade says so.
+- **Spiritual** — not a map. One light Shattered into sixteen, threads of
+  Connection between them, Splintered Shards drawn as the fragments they
+  became, Connection / Identity / Fortune as great circles, the four
+  Dawnshards on a wider and older ring. Pre-Shattering: Adonalsium whole.
 
 ## Time
 
@@ -108,9 +128,14 @@ rasters in `public/maps/`, always credited. They are not equirectangular —
 do not drape them on the globe. Other worlds and remaining cities still
 use the procedural atlas / `cityMap.ts`.
 
-HUD chrome: Aetherfield instrument (frosted glass, hairline, tracked labels)
-tinted Honor-cyan / Odium-amber / Cultivation-green. Wordmark is a clipped
-cyan→violet gradient, letter-spaced.
+HUD chrome: a brass-and-glass instrument with a journal set into it. One
+signal colour (cyan, meaning *state*) and one warm (gold, meaning *the
+journal*). Hairline rules rather than borders, 2px corners rather than 12,
+tracked small caps rather than capsules; a button's hover is a pen line under
+the word. Headings, the wordmark, the year and the ticker are set in a book
+face; the instrument stays in the grotesque. No gradients on controls — the
+picture behind the glass is the decoration. Tokens live in
+`src/styles/base.css` and nothing should hard-code a colour past them.
 
 ## Honest chronology
 

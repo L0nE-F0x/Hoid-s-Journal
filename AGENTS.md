@@ -34,6 +34,13 @@ Breaking either of these is how this turns into a tangle:
    Globe albedo stays procedural, so a pin on the 3-D continent is
    approximate.
 
+4. **Exactly one enabled pass renders to the canvas, and there is always
+   one.** `postprocessing`'s `EffectComposer` hands that job to whichever
+   pass was added last. Disabling the last pass therefore draws the whole
+   chain into a buffer nobody reads — a black canvas over a working HUD.
+   `routeOutput()` in `render/post.ts` owns it; `test:interaction` asserts it
+   at every quality band.
+
 ## Product locks (do not quietly reverse)
 
 - Rereaders first. Default progress is "fully read." First-run still offers a

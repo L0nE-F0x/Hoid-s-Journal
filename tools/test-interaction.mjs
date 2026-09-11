@@ -117,6 +117,19 @@ async function run() {
     let s = await state(page);
     check('title: shell is play', s.shell === 'play', s.shell);
     check('cinematic ends at Cosmere', s.scale === 'cosmere', s.scale);
+    check('directory lists systems at Cosmere',
+      await page.evaluate(() => !!document.querySelector('.ceph-directory.is-on')));
+
+    check('Help opens', await clickLabel(page, '^help$'));
+    await sleep(200);
+    check('Help is a panel', (await state(page)).panel === 'help', (await state(page)).panel);
+    await page.keyboard.press('Escape');
+    await sleep(150);
+    check('Realms opens a picker', await clickLabel(page, '^realms$'));
+    await sleep(200);
+    check('Realms is a panel', (await state(page)).panel === 'realms', (await state(page)).panel);
+    await page.keyboard.press('Escape');
+    await sleep(150);
 
     // Cosmere → system, by clicking the star itself.
     let at = await screenOf(page, "a.orrery.systemPosition('rosharan')");

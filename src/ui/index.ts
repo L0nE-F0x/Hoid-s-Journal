@@ -6,6 +6,7 @@ import { COSMERE } from '../data/index.ts';
 import { store } from '../core/store.ts';
 import { listen } from './dom.ts';
 import { mountAtlas } from './atlas.ts';
+import { mountDirectory } from './directory.ts';
 import { mountHud } from './hud.ts';
 import { mountModals } from './modals.ts';
 import { mountTitle } from './title.ts';
@@ -22,6 +23,7 @@ export function mountUI(root: HTMLElement): UIHandles {
   const title = mountTitle(root);
   const hud = mountHud(root, { onHome: () => title.open() });
   const atlas = mountAtlas(root);
+  const directory = mountDirectory(root);
   const modals = mountModals(root);
 
   const keys = listen(window, 'keydown', (ev) => {
@@ -49,6 +51,7 @@ export function mountUI(root: HTMLElement): UIHandles {
     if (store.state.shell !== 'play') return;
     if (k === 'c') store.set('realm', store.state.realm === 'cognitive' ? 'physical' : 'cognitive');
     if (k === 'v') store.set('realm', store.state.realm === 'spiritual' ? 'physical' : 'spiritual');
+    if (k === 'h' || k === '?') store.set('panel', store.state.panel === 'help' ? 'none' : 'help');
     if (k === 'a') store.set('panel', store.state.panel === 'arcanum' ? 'none' : 'arcanum');
     if (k === 'k' || k === '/') {
       e.preventDefault();
@@ -74,6 +77,7 @@ export function mountUI(root: HTMLElement): UIHandles {
       title.destroy();
       hud.destroy();
       atlas.destroy();
+      directory.destroy();
       modals.destroy();
       root.classList.remove('ceph-root');
     },

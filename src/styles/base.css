@@ -60,7 +60,9 @@
 }
 
 .ceph-panel {
-  pointer-events: auto;
+  /* Chrome is glass, not a hit target. Interactive children opt back in.
+     A full-card capture was eating clicks meant for the sky. */
+  pointer-events: none;
   background:
     linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0) 28%),
     var(--ceph-panel-bg);
@@ -103,6 +105,15 @@
   background-color: transparent;
 }
 
+.ceph-timeline,
+.ceph-atlas,
+.ceph-panel-drawer,
+.ceph-modal,
+.ceph-modal-card,
+.ceph-directory {
+  pointer-events: auto;
+}
+
 .ceph-btn {
   pointer-events: auto;
   appearance: none;
@@ -121,6 +132,12 @@
   border-color: var(--ceph-border-strong);
   color: var(--ceph-cyan);
   box-shadow: 0 0 12px rgba(94, 231, 255, 0.18);
+}
+.ceph-btn.is-on {
+  border-color: var(--ceph-cyan);
+  color: var(--ceph-cyan);
+  box-shadow: 0 0 14px rgba(94, 231, 255, 0.22);
+  background: rgba(94, 231, 255, 0.08);
 }
 .ceph-btn--primary {
   background: linear-gradient(120deg, var(--ceph-cyan), var(--ceph-violet));

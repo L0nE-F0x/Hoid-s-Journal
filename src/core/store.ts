@@ -78,7 +78,7 @@ export interface AppState {
   cinematic: boolean;
   viewHeading: number;
   searchQuery: string;
-  panel: 'none' | 'arcanum' | 'codex' | 'spoilers' | 'settings';
+  panel: 'none' | 'arcanum' | 'codex' | 'spoilers' | 'settings' | 'help' | 'realms';
   magicId: string | null;
 }
 

@@ -61,7 +61,13 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
   const btnSpoil = mkTool('Journal', 'Reading progress');
   const btnRealm = mkTool('Realms', 'Physical / Cognitive / Spiritual (C / V)');
   const btnLook = mkTool('Look', 'Orbits, moons, nebulae, labels');
-  const tools = el('div', { className: 'ceph-tools' }, [btnCodex, btnArc, btnSpoil, btnRealm, btnLook]);
+  const btnHelp = mkTool('Help', 'How to read the sky (H)');
+  const tools = el('div', { className: 'ceph-tools' }, [btnCodex, btnArc, btnSpoil, btnRealm, btnLook, btnHelp]);
+  const back = el('button', {
+    className: 'ceph-btn ceph-back',
+    text: '← Cosmere',
+    attrs: { type: 'button', title: 'Frame the whole Cosmere (F)' },
+  });
 
   const play = el('button', { className: 'ceph-play', text: '❚❚', attrs: { type: 'button', title: 'Play / pause time' } });
   const yearEl = el('div', { className: 'ceph-year', text: COSMERE.eras[3]!.realDate });
@@ -89,7 +95,7 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
   const skip = el('button', { className: 'ceph-btn ceph-btn--primary ceph-skip', text: 'Skip · Space', attrs: { type: 'button' } });
   const tooltip = el('div', { className: 'ceph-panel ceph-tooltip', text: '' });
 
-  const hud = el('div', { className: 'ceph-hud' }, [command, tools, timeline, ticker, drawer, skip, tooltip]);
+  const hud = el('div', { className: 'ceph-hud' }, [command, tools, back, timeline, ticker, drawer, skip, tooltip]);
   root.append(hud);
 
   /**
@@ -163,6 +169,13 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
       : null;
     const trail = ['Cosmere', sys, body, loc, grain].filter(Boolean).join(' · ');
     scaleLabel.textContent = `${trail} · ${realm}`;
+    back.classList.toggle('is-on', s.scale !== 'cosmere' && s.realm !== 'spiritual');
+    btnCodex.classList.toggle('is-on', s.panel === 'codex');
+    btnArc.classList.toggle('is-on', s.panel === 'arcanum');
+    btnSpoil.classList.toggle('is-on', s.panel === 'spoilers');
+    btnLook.classList.toggle('is-on', s.panel === 'settings');
+    btnHelp.classList.toggle('is-on', s.panel === 'help');
+    btnRealm.classList.toggle('is-on', s.panel === 'realms' || s.realm !== 'physical');
   };
 
   const refreshTime = () => {
@@ -187,6 +200,14 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
     if (!hit || crowded) { drawer.style.display = 'none'; measure(); return; }
     drawer.style.display = '';
     drawer.replaceChildren();
+    const close = el('button', {
+      className: 'ceph-btn',
+      text: '×',
+      attrs: { type: 'button', title: 'Close' },
+      style: { float: 'right', padding: '2px 8px', fontSize: '16px' },
+    });
+    listen(close, 'click', () => { store.set('selected', null); store.set('hovered', null); });
+    drawer.append(close);
     if (isNewThisArc(hit.obj as { book?: string; arc?: string }, store.state.readingNow)) {
       drawer.append(el('div', { className: 'ceph-reading ceph-reading--chip', text: '✦ new this arc' }));
     }
@@ -228,13 +249,16 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
         el('p', { className: 'ceph-fact', text: d.fact }),
       );
     } else if (hit.kind === 'system') {
-      const s = hit.obj;
-      const worlds = COSMERE.bodies.filter((b) => b.system === s.id).map((b) => b.name).join(', ');
+      const sys = hit.obj;
+      const worlds = COSMERE.bodies.filter((b) => b.system === sys.id && b.kind !== 'gas-giant').map((b) => b.name).join(', ');
       drawer.append(
-        el('div', { className: 'ceph-kicker', text: 'System' }),
-        el('h2', { text: s.name }),
-        el('p', { className: 'ceph-fact', text: worlds }),
+        el('div', { className: 'ceph-kicker', text: 'System · click the rings to enter' }),
+        el('h2', { text: sys.name }),
+        el('p', { className: 'ceph-fact', text: worlds || 'Gas giants and the star.' }),
       );
+      const go = el('button', { className: 'ceph-btn ceph-btn--primary', text: 'Enter this system', style: { marginTop: '14px' } });
+      listen(go, 'click', () => store.set('cameraCue', { kind: 'focus', id: sys.id, scale: 'system' }));
+      drawer.append(go);
     } else if (hit.kind === 'location') {
       const l = hit.obj;
       drawer.append(
@@ -314,11 +338,9 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
     listen(btnArc, 'click', () => store.set('panel', store.state.panel === 'arcanum' ? 'none' : 'arcanum')),
     listen(btnSpoil, 'click', () => store.set('panel', store.state.panel === 'spoilers' ? 'none' : 'spoilers')),
     listen(btnLook, 'click', () => store.set('panel', store.state.panel === 'settings' ? 'none' : 'settings')),
-    listen(btnRealm, 'click', () => {
-      const order = ['physical', 'cognitive', 'spiritual'] as const;
-      const i = order.indexOf(store.state.realm);
-      store.set('realm', order[(i + 1) % order.length]!);
-    }),
+    listen(btnHelp, 'click', () => store.set('panel', store.state.panel === 'help' ? 'none' : 'help')),
+    listen(btnRealm, 'click', () => store.set('panel', store.state.panel === 'realms' ? 'none' : 'realms')),
+    listen(back, 'click', () => store.set('cameraCue', { kind: 'frame' })),
     listen(skip, 'click', () => store.set('cameraCue', { kind: 'skip-cinematic' })),
     listen(window, 'mousemove', (e) => {
       const m = e as MouseEvent;
@@ -338,6 +360,7 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
     store.on('isPlaying', refreshTime),
     store.on('scale', () => { refreshScale(); refreshDrawer(); }),
     store.on('realm', refreshScale),
+    store.on('panel', refreshScale),
     store.on('focusedBody', refreshScale),
     store.on('focusedSystem', refreshScale),
     store.on('focusedLocation', refreshScale),
@@ -347,7 +370,7 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
       const h = entityById(store.state.hovered);
       tooltip.classList.toggle('is-on', !!h && !store.state.selected);
       tooltip.textContent = h
-        ? ('name' in h.obj ? h.obj.name : '')
+        ? `${'name' in h.obj ? h.obj.name : ''} · ${h.kind === 'body' ? 'world' : h.kind} · click`
         : '';
     }),
   ];

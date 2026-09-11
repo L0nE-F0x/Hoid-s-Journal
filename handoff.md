@@ -16,11 +16,11 @@ Architecture lock: `AGENTS.md` + `DESIGN.md`. This file is only the live todo.
 
 # ▶ START HERE — next session
 
-**2026-09-11 (night) — the code is on GitHub. Connect Netlify to
-`L0nE-F0x/Hoid-s-Journal`, branch `master`, publish `dist`.**
+**2026-09-11 (night) — picking actually matches the picture.** Orbit rings
+are clickable, HUD glass no longer eats the sky, a directory lists every
+system, Help and Realms are real panels. Push is on `master`.
 
-Soundtrack and Lore Web are the remaining product calls. Verify visuals
-with `npm run shot`.
+Soundtrack and Lore Web are still product calls. Verify with `npm run shot`.
 
 ```bash
 cd /home/lonefox/Projects/Cephandrius
@@ -43,6 +43,23 @@ with every shot.
 Git: `master` tracks `origin` at https://github.com/L0nE-F0x/Hoid-s-Journal.
 
 ## What changed this session
+
+### Ninth pass — the sky is clickable, and the journal has a directory
+
+v1 let you click a card in a sidebar and fly. This one drew beautiful
+orbit rings you could not hit, then put a glass panel over the ones you
+could. That is why "none of the buttons / planets worked."
+
+- **Picking matches the picture.** At Cosmere you click the orbit cloud
+  (the size of the outer world), not a 5-pixel star. Cursor turns pointer.
+- **HUD chrome no longer captures the sky.** Panels are not hit targets;
+  buttons, the atlas, the timeline and the drawer are.
+- **Directory** on the left at Cosmere / system: every system, then every
+  world, searchable. A miss on the globe is not a dead end.
+- **Realms** opens a picker, not a silent cycle. **Help** explains the
+  nested click. Tools light up when their panel is open. **← Cosmere**
+  sits at the top when you are in. Codex browses systems before you type.
+  Drawer has a close.
 
 ### Eighth pass — the rest of the list
 
@@ -294,7 +311,7 @@ Scan as a second scale, deep links, Hoid as the journal’s voice.
   link restores the place and the beat; the title screen still gates it.
   Progress + visual in localStorage.
 - PWA: manifest, offline shell (`public/sw.js`), install prompt in Look.
-- Harnesses: `npm run shot` (capture), `npm run test:interaction` (22 checks
+- Harnesses: `npm run shot` (capture), `npm run test:interaction` (27 checks
   through real input), `npm run bench` (fps by scale), `npm run og` (social card),
   `npm run icons` (PNG install marks).
 - Disclaimer on the title screen.

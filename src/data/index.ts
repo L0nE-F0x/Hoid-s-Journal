@@ -205,6 +205,11 @@ export function charactersOnBody(bodyId: string, era: number): Character[] {
   return CHARACTERS.filter((c) => characterAt(c, era)?.body === bodyId);
 }
 
+/** Outer orbit of a system, for framing and for clicking the rings you can see. */
+export function systemExtent(systemId: string): number {
+  return BODIES.filter((b) => b.system === systemId).reduce((m, b) => Math.max(m, b.orbit.a), 4);
+}
+
 export function bodyByName(name: string): Body | undefined {
   const n = name.toLowerCase();
   return BODIES.find((b) => n.includes(b.name.toLowerCase()));

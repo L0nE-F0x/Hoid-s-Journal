@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { COSMERE, HUBS, bodyById, canEnterCity, characterAt, eraAt, hubById, isVisible } from '../data/index.ts';
+import { COSMERE, HUBS, bodyById, canEnterCity, characterAt, eraAt, hubById, isVisible, systemExtent } from '../data/index.ts';
 import { uvFacing, uvOnBody } from '../layout/surface.ts';
 import { CameraRig, type Waypoint } from './CameraRig.ts';
 import { store, type CameraCue, type Scale } from './store.ts';
@@ -12,7 +12,7 @@ import { SPIRITUAL_RADIUS, Spiritual } from '../render/Spiritual.ts';
 import { Starfield } from '../render/Starfield.ts';
 
 const FOV = 52;
-const CLICK_SLOP = 6;
+const CLICK_SLOP = 12;
 /** Playhead years per second at rate 1. Slow enough that orbits drift. */
 const YEARS_PER_SECOND = 0.08;
 const _ride = new THREE.Vector3();
@@ -20,7 +20,7 @@ const _pick = new THREE.Vector3();
 const _surf = new THREE.Vector3();
 const _toCam = new THREE.Vector3();
 /** How far from a subject a click still counts, in CSS pixels. */
-const PICK_SLOP = 15;
+const PICK_SLOP = 28;
 
 type PickKind = 'system' | 'body' | 'location' | 'character' | 'shard' | 'hub';
 /** How far off the sun axis the camera stands. Bigger = more terminator. */
@@ -376,7 +376,11 @@ export class App {
       for (const sys of COSMERE.systems) {
         if (!isVisible(sys, s.readProgress)) continue;
         const p = this.orrery.systemPosition(sys.id);
-        if (p) consider(sys.id, 'system', p, 1.6);
+        if (!p) continue;
+        // At Cosmere the orbit rings are the thing you see. A 1.6-unit sun
+        // is a few pixels; the rings are the size of a hand. Click those.
+        const r = s.scale === 'cosmere' ? systemExtent(sys.id) : 2.4;
+        consider(sys.id, 'system', p, r);
       }
       if (s.realm === 'cognitive') {
         for (const hub of HUBS) {
@@ -425,6 +429,7 @@ export class App {
     }
 
     const hit = best as { id: string; kind: PickKind } | null;
+    this.canvas.style.cursor = hit ? 'pointer' : 'grab';
     if (!hit) {
       if (s.hovered) store.set('hovered', null);
       this.hoverAnchor?.(null);

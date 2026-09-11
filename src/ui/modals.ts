@@ -29,14 +29,16 @@ export function mountModals(root: HTMLElement): { destroy(): void } {
     if (panel === 'none') return;
 
     const card = el('div', { className: 'ceph-panel ceph-modal-card' });
-    const close = el('button', { className: 'ceph-btn', text: 'Close', style: { float: 'right' } });
+    const close = el('button', { className: 'ceph-btn', text: 'Close', attrs: { type: 'button' } });
     listen(close, 'click', () => store.set('panel', 'none'));
-    card.append(close);
+    card.append(el('div', { style: { display: 'flex', justifyContent: 'flex-end', marginBottom: '4px' } }, [close]));
 
     if (panel === 'arcanum') renderArcanum(card);
     else if (panel === 'codex') renderCodex(card);
     else if (panel === 'spoilers') renderSpoilers(card);
     else if (panel === 'settings') renderSettings(card);
+    else if (panel === 'help') renderHelp(card);
+    else if (panel === 'realms') renderRealms(card);
 
     const modal = el('div', { className: 'ceph-modal' }, [card]);
     listen(modal, 'click', (e) => {
@@ -107,7 +109,22 @@ function renderCodex(card: HTMLElement): void {
     const q = input.value.trim().toLowerCase();
     store.set('searchQuery', input.value);
     results.replaceChildren();
-    if (q.length < 2) return;
+    if (q.length < 2) {
+      results.append(el('div', { className: 'ceph-kicker', text: 'Browse systems' }));
+      for (const sys of COSMERE.systems) {
+        if (!isVisible(sys, store.state.readProgress)) continue;
+        const b = el('button', { className: 'ceph-card' }, [
+          el('div', { className: 'ceph-kicker', text: 'system' }),
+          el('div', { text: sys.name, style: { fontWeight: '600' } }),
+        ]);
+        listen(b, 'click', () => {
+          store.set('panel', 'none');
+          store.set('cameraCue', { kind: 'focus', id: sys.id, scale: 'system' });
+        });
+        results.append(b);
+      }
+      return;
+    }
     const hits: { id: string; label: string; kind: string; fact: string; fresh: boolean }[] = [];
     const push = (id: string, label: string, kind: string, fact: string, vis: { book?: string; arc?: string }) => {
       if (!isVisible(vis, store.state.readProgress)) return;
@@ -186,6 +203,44 @@ function renderCodex(card: HTMLElement): void {
   card.append(input, results);
   queueMicrotask(() => input.focus());
   if (store.state.searchQuery.length >= 2) run();
+}
+
+function renderHelp(card: HTMLElement): void {
+  card.append(
+    el('div', { className: 'ceph-kicker', text: 'How to read the sky' }),
+    el('h2', { text: 'The journal is a map you fly' }),
+    el('p', { className: 'ceph-fact', text: 'Click a system — the orbit rings, not just the star — to dive in. Click a world to read its globe. Click again for the surface, and once more for a city plate. Esc walks back out. The directory on the left lists everything in the current sky if a click misses.' }),
+    el('p', { className: 'ceph-fact', html: '<b>Drag</b> orbit · <b>scroll</b> zoom · <b>Space</b> play time · <b>1–6</b> eras · <b>C</b> Cognitive · <b>V</b> Spiritual · <b>F</b> frame Cosmere · <b>K</b> Codex · <b>A</b> Arcanum · <b>H</b> this help.' }),
+    el('p', { className: 'ceph-fact', text: 'Journal sets where you are in the books. The sky hides what you have not reached. Default is fully read.' }),
+    el('p', { className: 'ceph-fact', style: { color: 'var(--ceph-text-dim)' }, text: 'Unofficial fan project. Not affiliated with Dragonsteel or Brandon Sanderson.' }),
+  );
+}
+
+function renderRealms(card: HTMLElement): void {
+  card.append(
+    el('div', { className: 'ceph-kicker', text: 'The three Realms' }),
+    el('h2', { text: 'Where do you stand?' }),
+  );
+  const grid = el('div', { className: 'ceph-grid' });
+  const rows: { id: 'physical' | 'cognitive' | 'spiritual'; title: string; fact: string }[] = [
+    { id: 'physical', title: 'Physical', fact: 'The orrery. Worlds, orbits, the sky you reread in.' },
+    { id: 'cognitive', title: 'Cognitive · Shadesmar', fact: 'Bead oceans where land was. Silverlight and the roads worldhoppers walk. C toggles.' },
+    { id: 'spiritual', title: 'Spiritual', fact: 'Not a map. Sixteen Shards around a unity core. Click a Shard to see where it sits. V toggles.' },
+  ];
+  for (const r of rows) {
+    const on = store.state.realm === r.id;
+    const b = el('button', { className: `ceph-card${on ? ' is-on' : ''}` }, [
+      el('div', { className: 'ceph-kicker', text: on ? 'you are here' : 'Realm' }),
+      el('div', { text: r.title, style: { fontWeight: '600', marginTop: '6px' } }),
+      el('div', { text: r.fact, style: { color: 'var(--ceph-text-dim)', marginTop: '6px', fontSize: '12px' } }),
+    ]);
+    listen(b, 'click', () => {
+      store.set('realm', r.id);
+      store.set('panel', 'none');
+    });
+    grid.append(b);
+  }
+  card.append(grid);
 }
 
 function applyReading(series: string | null, arc: number): void {

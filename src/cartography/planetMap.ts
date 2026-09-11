@@ -44,12 +44,33 @@ function rgb(h: string): number[] {
   return [parseInt(n.slice(0, 2), 16), parseInt(n.slice(2, 4), 16), parseInt(n.slice(4, 6), 16)];
 }
 
+/** A landmass: centre u, centre v, half-width, half-height, weight. */
+type Blob = [number, number, number, number, number];
+
+/**
+ * Continents, not noise. Each entry places a landmass where this world's
+ * places actually are, and the noise supplies the coastline. Original
+ * cartography: the shapes are ours, the relative geography is the books'.
+ */
+function shapeAt(blobs: Blob[], u: number, v: number): number {
+  let m = 0;
+  for (const [cu, cv, ru, rv, w] of blobs) {
+    let du = Math.abs(u - cu);
+    du = Math.min(du, 1 - du);
+    const dv = (v - cv) / rv;
+    const d = (du / ru) ** 2 + dv * dv;
+    m += w * Math.exp(-d * 1.45);
+  }
+  return m;
+}
+
 interface Recipe {
   land: number[];
   land2: number[];
   ocean: number[];
   threshold: number;
   warp: number;
+  shape?: Blob[];
   bands?: boolean;
   split?: boolean;
   wedges?: number[][];
@@ -62,20 +83,60 @@ interface Recipe {
 }
 
 const RECIPES: Record<BiomeKind, Recipe> = {
-  roshar: { land: rgb('#b08958'), land2: rgb('#6e4e32'), ocean: rgb('#1c3d48'), threshold: 0.50, warp: 2.8 },
-  'scadrial-ash': { land: rgb('#5b5248'), land2: rgb('#3a332c'), ocean: rgb('#46413b'), threshold: 0.62, warp: 1.6, cap: rgb('#6e6459') },
-  'scadrial-basin': { land: rgb('#4a6b3a'), land2: rgb('#6a8a4a'), ocean: rgb('#2a4a6a'), threshold: 0.48, warp: 1.8, lights: true },
-  nalthis: { land: rgb('#2d6a3a'), land2: rgb('#c45a8a'), ocean: rgb('#2a6a8a'), threshold: 0.44, warp: 2.2 },
+  // Roshar: one supercontinent, Shinovar at its western edge, the Shattered
+  // Plains east, Thaylenah and the Reshi Isles offshore.
+  roshar: { land: rgb('#b08958'), land2: rgb('#6e4e32'), ocean: rgb('#1c3d48'), threshold: 0.50, warp: 2.8,
+    shape: [
+      [0.55, 0.55, 0.30, 0.23, 1.0], [0.82, 0.50, 0.18, 0.18, 0.95],
+      [0.36, 0.62, 0.13, 0.12, 0.8], [0.24, 0.40, 0.09, 0.10, 0.75],
+      [0.93, 0.52, 0.08, 0.10, 0.7], [0.62, 0.82, 0.05, 0.05, 0.85],
+      [0.10, 0.52, 0.035, 0.045, 0.8], [0.745, 0.28, 0.05, 0.045, 0.7],
+    ] },
+  // The Final Empire: one ash-choked landmass, Terris in the far north.
+  'scadrial-ash': { land: rgb('#5b5248'), land2: rgb('#3a332c'), ocean: rgb('#46413b'), threshold: 0.62, warp: 1.6, cap: rgb('#6e6459'),
+    shape: [
+      [0.47, 0.46, 0.20, 0.16, 1.05], [0.60, 0.29, 0.10, 0.09, 0.8],
+      [0.44, 0.62, 0.09, 0.08, 0.75],
+    ] },
+  // After the Catacendre: the Basin, the Roughs beyond it, and the Southern
+  // Continent the Malwish came from.
+  'scadrial-basin': { land: rgb('#4a6b3a'), land2: rgb('#6a8a4a'), ocean: rgb('#2a4a6a'), threshold: 0.48, warp: 1.8, lights: true,
+    shape: [
+      [0.50, 0.47, 0.18, 0.15, 1.05], [0.76, 0.33, 0.15, 0.13, 0.95],
+      [0.60, 0.69, 0.09, 0.08, 0.8], [0.52, 0.82, 0.14, 0.09, 0.9],
+    ] },
+  // Hallandren on the coast, Idris in the highlands north of it.
+  nalthis: { land: rgb('#2d6a3a'), land2: rgb('#c45a8a'), ocean: rgb('#2a6a8a'), threshold: 0.44, warp: 2.2,
+    shape: [
+      [0.56, 0.60, 0.17, 0.15, 1.05], [0.49, 0.29, 0.10, 0.09, 0.85],
+      [0.66, 0.71, 0.11, 0.09, 0.85],
+    ] },
   taldain: { land: rgb('#e8c878'), land2: rgb('#c9a24a'), ocean: rgb('#0f1220'), threshold: 0.5, warp: 1.4, split: true },
-  sel: { land: rgb('#6a5a8a'), land2: rgb('#8a7ab0'), ocean: rgb('#2a3a6a'), threshold: 0.47, warp: 2.0 },
-  threnody: { land: rgb('#1a2a1a'), land2: rgb('#0d140d'), ocean: rgb('#111827'), threshold: 0.52, warp: 2.8 },
+  // Arelon and Fjorden on one mass; Teod is its own peninsula to the north.
+  sel: { land: rgb('#6a5a8a'), land2: rgb('#8a7ab0'), ocean: rgb('#2a3a6a'), threshold: 0.47, warp: 2.0,
+    shape: [
+      [0.52, 0.47, 0.20, 0.14, 1.05], [0.72, 0.41, 0.14, 0.12, 0.95],
+      [0.60, 0.62, 0.09, 0.08, 0.75], [0.22, 0.28, 0.07, 0.07, 0.9],
+    ] },
+  // The Homeland and the Forests, one continent with a long coast.
+  threnody: { land: rgb('#1a2a1a'), land2: rgb('#0d140d'), ocean: rgb('#111827'), threshold: 0.52, warp: 2.8,
+    shape: [[0.47, 0.50, 0.19, 0.17, 1.05], [0.41, 0.59, 0.09, 0.08, 0.7]] },
   lumar: { land: rgb('#14532d'), land2: rgb('#166534'), ocean: rgb('#064e3b'), threshold: 0.72, warp: 1.2, wedges: ['#34d399', '#f43f5e', '#22d3ee', '#a855f7', '#fbbf24', '#fb7185', '#64748b', '#2dd4bf', '#f97316', '#818cf8', '#eab308', '#f472b6'].map(rgb) },
   canticle: { land: rgb('#1c1917'), land2: rgb('#7c2d12'), ocean: rgb('#0c0a09'), threshold: 0.55, warp: 1.6, terminator: true },
-  komashi: { land: rgb('#0b1020'), land2: rgb('#111827'), ocean: rgb('#020617'), threshold: 0.6, warp: 1.4, hion: true },
-  yolen: { land: rgb('#d6d3d1'), land2: rgb('#a8a29e'), ocean: rgb('#334155'), threshold: 0.5, warp: 2.1, fain: true },
+  komashi: { land: rgb('#0b1020'), land2: rgb('#111827'), ocean: rgb('#020617'), threshold: 0.6, warp: 1.4, hion: true,
+    shape: [[0.50, 0.50, 0.24, 0.18, 1.05], [0.63, 0.48, 0.10, 0.09, 0.6]] },
+  yolen: { land: rgb('#d6d3d1'), land2: rgb('#a8a29e'), ocean: rgb('#334155'), threshold: 0.5, warp: 2.1, fain: true,
+    shape: [[0.38, 0.44, 0.17, 0.16, 1.0], [0.68, 0.56, 0.14, 0.14, 0.95]] },
   ashyn: { land: rgb('#7c2d12'), land2: rgb('#fbbf24'), ocean: rgb('#1c1917'), threshold: 0.5, warp: 2.6 },
   braize: { land: rgb('#3f1212'), land2: rgb('#1c0a0a'), ocean: rgb('#0c0a09'), threshold: 0.7, warp: 1.8 },
-  'first-sun': { land: rgb('#166534'), land2: rgb('#854d0e'), ocean: rgb('#0e4a5c'), threshold: 0.58, warp: 3.2 },
+  // The Pantheon: an archipelago, and nothing else for a long way.
+  'first-sun': { land: rgb('#166534'), land2: rgb('#854d0e'), ocean: rgb('#0e4a5c'), threshold: 0.58, warp: 3.2,
+    shape: [
+      [0.52, 0.50, 0.045, 0.05, 1.0], [0.58, 0.44, 0.035, 0.04, 0.95],
+      [0.46, 0.44, 0.028, 0.032, 0.9], [0.57, 0.57, 0.03, 0.034, 0.9],
+      [0.44, 0.56, 0.025, 0.03, 0.85], [0.63, 0.51, 0.022, 0.026, 0.8],
+      [0.38, 0.49, 0.02, 0.024, 0.8],
+    ] },
   gas: { land: rgb('#3b82f6'), land2: rgb('#1e3a8a'), ocean: rgb('#0f172a'), threshold: 0.5, warp: 0.6, bands: true },
   barren: { land: rgb('#57534e'), land2: rgb('#292524'), ocean: rgb('#1c1917'), threshold: 0.55, warp: 1.5 },
   oceanic: { land: rgb('#14532d'), land2: rgb('#365314'), ocean: rgb('#164e63'), threshold: 0.62, warp: 2.4 },
@@ -132,10 +193,11 @@ export function bakePlanetMap(
 
       let n = fbm(nx * 2.2 + nz, ny * 2.2, 5);
       if (r.bands) n = 0.5 + 0.5 * Math.sin(v * 28 + n * 4);
+      if (r.shape) n = n * 0.5 + Math.min(1.2, shapeAt(r.shape, u, v)) * 0.62;
 
-      const isLand = n > r.threshold;
+      const isLand = n > (r.shape ? 0.5 : r.threshold);
       if (cognitive) {
-        const t = Math.min(1, Math.abs(n - r.threshold) * 2.4);
+        const t = Math.min(1, Math.abs(n - (r.shape ? 0.5 : r.threshold)) * 2.4);
         let col: number[];
         if (isLand) {
           // Bead ocean: obsidian spheres, the odd one catching the light.
@@ -162,7 +224,11 @@ export function bakePlanetMap(
         const heat = Math.exp(-((u - 0.55) ** 2) * 40);
         col = mix(mix(r.land, rgb('#fb923c'), heat), rgb('#7c2d12'), n * 0.4);
       } else {
-        col = isLand ? mix(r.land, r.land2, (n - r.threshold) * 2) : r.ocean;
+        const thr = r.shape ? 0.5 : r.threshold;
+        // Shelf to abyss, so an ocean is not one flat colour.
+        col = isLand
+          ? mix(r.land, r.land2, (n - thr) * 2)
+          : mix(r.ocean, mix(r.ocean, [4, 6, 14], 0.55), Math.min(1, (thr - n) * 2.6));
       }
 
       if (r.fain && n > 0.62) col = mix(col, rgb('#86efac'), 0.45);

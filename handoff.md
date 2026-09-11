@@ -15,7 +15,8 @@ Architecture lock: `AGENTS.md` + `DESIGN.md`. This file is only the live todo.
 
 # ▶ START HERE — next session
 
-**2026-09-11 (later) — globe framing and the atlas link shipped; two commits.**
+**2026-09-11 (later) — framing, the atlas link, picking and the reading
+companion shipped. Four commits, local only.**
 
 The engine flies and a focused world now reads as a portrait. Open this file,
 run the app, pick the highest item under **Do next**, ship it, verify with
@@ -42,6 +43,27 @@ with every shot.
 Git: first commit is **done** (local `master`, still **no remote**).
 
 ## What changed this session
+
+### Third pass — picking and the companion
+
+- **Picking is screen-space now.** Project the candidates the current scale
+  offers, take the nearest, prefer the subject whose disc the pointer is
+  inside and then the nearest to camera. A raycast cannot hit a planet one
+  pixel across, and the sun sprites' quads were swallowing clicks. Cosmere →
+  system → globe → surface works on single clicks; `Esc` walks back out and
+  clears the focus as it goes (verified, all four steps).
+- **The publication-safe preset was a no-op.** It keyed off `readingNow`,
+  which nothing set, so it revealed everything — in a spoiler-first product.
+  The spoiler panel now has the Reading Companion: pick the book you are on,
+  step the arc, and the journal syncs publication-safe. `✦ new this arc`
+  chips appear in the drawer, the Codex and the atlas roster, and the beat
+  shows in the HUD command panel.
+- Publication order is per **series**, so a series that overlaps another's
+  publication run is hidden wholesale. It errs toward hiding, which is the
+  safe direction, but per-book ordering would be more honest. `PUB_ORDER` in
+  `src/data/catalog.ts` is where that lives.
+- The atlas now hangs off the command panel's measured bottom edge
+  (`--ceph-command-bottom`) instead of a hard-coded 88px.
 
 ### Second pass — the atlas is now wired to the globe
 
@@ -154,9 +176,13 @@ Scan as a second scale, deep links, Hoid as the journal’s voice.
 - Title over a live Roshar globe. Skip button + Space.
 - HUD: timeline (era-weighted), Pre/Post/MB1/SA/MB2/Far chips, ticker,
   Codex / Arcanum / Journal / Realms.
-- Spoiler checklist with per-series arc steppers + publication-safe preset.
+- Reading Companion: pick your book, step the arc, journal syncs
+  publication-safe. Per-series steppers for manual overrides. ✦ chips mark
+  what the current arc revealed.
 - Arcanum: 15 magics, Allomancy/Feruchemy/Surges/Heightenings tables.
 - Codex search, name-ranked (exact “Roshar” no longer opens Ashyn).
+- Screen-space picking: single clicks dive Cosmere → system → globe →
+  surface at any distance; `Esc` walks back out.
 - Surface atlas overlay: unwrapped biome map, collision-placed labels,
   highstorm band on Roshar, era-true character chips. Pins are two-way: map to
   globe and globe to map.
@@ -195,16 +221,7 @@ The map-to-globe link works. What is left is depth.
   world: continents do not correspond to the pins on them. Deciding how far to
   take original cartography is the open product question here.
 
-### 2. Clicking the Cosmere has to be reliable
-
-- System suns vs planet meshes fight for picks at Cosmere distance.
-- Double-click or a single confident click should dive system → globe.
-- ~~`Esc` pops city → surface → globe → system → Cosmere~~ wired; walk it
-  once by hand anyway, city scale has nothing in it to pop from yet.
-- ~~Labels~~ done: system names at Cosmere, planet names in-system, the
-  focused world on a globe, place names on the pins.
-
-### 3. Three Realms as places, not filters
+### 2. Three Realms as places, not filters
 
 Physical orrery is the only one that currently feels like a world.
 
@@ -215,14 +232,13 @@ Physical orrery is the only one that currently feels like a world.
   readable diagram, Pre-Shattering Adonalsium whole, post-Shattering 16
   sparks. Not a map.
 
-### 4. Companion depth (the journal)
+### 3. Companion depth (the journal)
 
-- Reading Companion “I am on *Words of Radiance*” → sync + **✦ new this
-  arc** chips. `readingNow` is in the store; the UI does not drive it yet.
-  Publication-safe preset exists but uses `readingNow` which is usually null,
-  so it currently reveals **everything**.
-- Codex: jump-to-location, jump-to-character (fly to their world this era).
-  Magic hits already open Arcanum.
+- ~~Reading Companion + ✦ new this arc chips~~ **done.** What is missing is
+  depth: `fieldNotes`, per-arc "what changed" summaries, and a way to see
+  what a given arc *added* rather than only what it unlocked.
+- Codex: jump-to-location and jump-to-character still only select; they
+  should fly. Bodies already fly, magic hits already open Arcanum.
 - Settings panel is coded in `modals.ts` but nothing in the HUD opens
   `panel: 'settings'`.
 - Worldhopper trail when a character is selected (v1 dashed path across
@@ -231,7 +247,7 @@ Physical orrery is the only one that currently feels like a world.
   `PERPS`).
 - Investiture: shardworlds should *feel* Invested (already a v1 gem).
 
-### 5. Data still thin vs the 100x brief
+### 4. Data still thin vs the 100x brief
 
 Stable string IDs are the right model. Content is a port of v1 plus extra
 pins, not an encyclopedia.
@@ -245,7 +261,7 @@ pins, not an encyclopedia.
 - Canon `fieldNotes` barely used. Keep the badge system honest.
 - Dragons, Dawnshards, Sleepless from v1 are **not ported**.
 
-### 6. Ship path (do not skip forever)
+### 5. Ship path (do not skip forever)
 
 - First git commit + GitHub remote.
 - `public/og.jpg` (title over live Roshar). OG tags already expect it.

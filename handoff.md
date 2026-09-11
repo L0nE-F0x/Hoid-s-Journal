@@ -16,7 +16,8 @@ Architecture lock: `AGENTS.md` + `DESIGN.md`. This file is only the live todo.
 # ▶ START HERE — next session
 
 **2026-09-11 (later) — framing, the atlas link, picking, the reading
-companion and both other Realms shipped. Seven commits, local only.**
+companion, both other Realms, a phone layout, the offline shell and an
+interaction test. Ten commits, local only, no remote yet.**
 
 The engine flies and a focused world now reads as a portrait. Open this file,
 run the app, pick the highest item under **Do next**, ship it, verify with
@@ -43,6 +44,24 @@ with every shot.
 Git: first commit is **done** (local `master`, still **no remote**).
 
 ## What changed this session
+
+### Fifth pass — connections, phones, ship path
+
+- **Worldhopper trails.** Selecting a person draws their path across the eras
+  in their colour, each stop at that era's world in that era's own year.
+- **Perpendicularities are visible.** Each one with known geography names the
+  place it stands at, rings that pin on the globe, and shows in the drawer.
+  Scadrial's two sit either side of the Catacendre, so the era moves the door.
+- **A phone layout that leaves room for the world.** Panels now report the
+  edge they cover *by name* and the store takes the union — one writer per
+  edge did not survive panels that move between edges. Command band on top,
+  timeline on the bottom, tools above it, atlas as a sheet between; the drawer
+  stands down when it would only repeat what the atlas is naming.
+- **Ship path:** `public/sw.js` (assets cache-first, shell network-first,
+  production only), an install button in the Look panel, and `npm run og`
+  which renders `public/og.jpg` from the real title screen.
+- **`npm run test:interaction`:** 17 checks driving real mouse and keyboard
+  through the whole flow. It exits non-zero, so it can gate work.
 
 ### Fourth pass — the other two Realms
 
@@ -215,8 +234,9 @@ Scan as a second scale, deep links, Hoid as the journal’s voice.
   named Shards with per-era status, three axes, clickable.
 - Deep-link hash (`#y=&realm=&scale=&system=&body=`). Progress + visual in
   localStorage.
-- PWA manifest exists. **No service worker yet.**
-- Headless capture harness: `npm run shot` (`tools/screenshot.mjs`).
+- PWA: manifest, offline shell (`public/sw.js`), install prompt in Look.
+- Harnesses: `npm run shot` (capture), `npm run test:interaction` (17 checks
+  through real input), `npm run og` (social card).
 - Disclaimer on the title screen.
 
 ---
@@ -258,10 +278,6 @@ tissue, not the frame.
 - ~~Reading Companion + ✦ new this arc chips~~ **done.** What is missing is
   depth: `fieldNotes`, per-arc "what changed" summaries, and a way to see
   what a given arc *added* rather than only what it unlocked.
-- Worldhopper trail when a character is selected (v1 dashed path across
-  systems over eras).
-- Perpendicularities as 3D markers, not just data (`src/data/locations.ts`
-  `PERPS`).
 - Investiture: shardworlds should *feel* Invested (already a v1 gem).
 
 ### 4. Data still thin vs the 100x brief
@@ -281,12 +297,13 @@ pins, not an encyclopedia.
 ### 5. Ship path (do not skip forever)
 
 - First git commit + GitHub remote.
-- `public/og.jpg` (title over live Roshar). OG tags already expect it.
-- Service worker + install prompt. Manifest is a stub.
+- ~~`public/og.jpg`~~ **done** — regenerate with `npm run og`.
+- ~~Service worker + install prompt~~ **done**. The manifest still only has
+  an SVG icon; real PNG icons would help install banners.
 - Netlify: `netlify.toml` is ready (`npm run build`, publish `dist`).
   No site yet.
-- ~~Screenshot harness~~ **done** (`tools/screenshot.mjs`). Still want
-  Aetherfield's interaction and bench harnesses.
+- ~~Screenshot and interaction harnesses~~ **done** (`npm run shot`,
+  `npm run test:interaction`). A bench harness is still missing.
 - Adaptive quality ladder (nebula/bloom first, globe tessellation last).
 - Mobile: atlas + HUD overlap. Aetherfield’s one-top-row / one-bottom-bar
   under 900px is the pattern.
@@ -312,7 +329,8 @@ pins, not an encyclopedia.
   import it. Cartography is the three-free path.
 - `node_modules` may contain unused junk (Rapier showed up in a tree listing
   even though it is not a dependency). Do not add physics.
-- No tests. Typecheck + `npm run shot` by eye.
+- No unit tests. `npm run test:interaction` covers the flow end to end; the
+  rest is typecheck plus `npm run shot` by eye.
 - Original v1 Surface Scan used **copyrighted map rasters**. Never copy them
   into this repo. Recreate.
 

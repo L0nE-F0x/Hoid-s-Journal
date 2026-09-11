@@ -130,6 +130,7 @@ export class Pins {
     scale: string,
     hot: string | null,
     realm = 'physical',
+    showPerps = true,
   ): void {
     const show = scale === 'globe' || scale === 'surface' || scale === 'city';
     this.group.visible = show;
@@ -166,7 +167,7 @@ export class Pins {
       }
       // A perpendicularity rides its place: same spot, bigger ring.
       const perp = this.perps.find((p) => p.at === loc.id);
-      if (perp) {
+      if (perp && showPerps) {
         perp.sprite.visible = true;
         perp.sprite.position.copy(sprite.position);
         perp.sprite.scale.setScalar(size * 3.4);

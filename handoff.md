@@ -16,16 +16,14 @@ Architecture lock: `AGENTS.md` + `DESIGN.md`. This file is the live todo.
 
 # ▶ START HERE — next session
 
-**2026-09-11 evening leave-off.** The atlas is in a good stopping place.
-Isaac Stewart plates are in the atlas and credited. Lore Web, soundtrack,
-directory, city scale, and Realms all ship. The owner is driving home;
-this rewrite is so another agent can sit down tonight without reconstructing
-the day from a stale diary.
+**2026-09-12 night.** HUD overhaul: hover is a tooltip (the info card
+no longer shoves the sky), WASD never opens panels, chrome is one top bar
+plus collapsible directory / timeline / galaxy. Help copy credits Stewart.
+Look has v1-style toggles plus bloom/exposure sliders. Denser people and
+glossary. `npm run test:interaction` is **32/32**.
 
 Git: `master` tracking https://github.com/L0nE-F0x/Hoid-s-Journal.
-Product code last landed in `3ce26e8` (Stewart layers + title logo); this
-file is the evening pickup on top of that. **Do not edit the v1 repo.**
-Pull before you start.
+**Do not edit the v1 repo.** Pull before you start.
 
 ```bash
 cd /home/lonefox/Projects/Cephandrius
@@ -149,11 +147,9 @@ The product is shippable locally. Do not invent a new pillar.
   **Connect the GitHub repo in the Netlify UI.** There is no site yet.
   An agent cannot finish this without the owner's Netlify login.
 
-### 2. Leftover copy (one line, if you touch UI)
+### 2. Leftover copy
 
-Help still says "Official map scans are not used." That is false.
-`src/ui/modals.ts` → `renderHelp`. The atlas already prints
-`MAP_CREDIT` when a Stewart plate is up.
+Help copy was fixed 2026-09-12. Stewart credit is in Help and on the atlas.
 
 ### 3. Optional depth, only if a reread reaches for it
 
@@ -179,6 +175,11 @@ Help still says "Official map scans are not used." That is false.
 - **Playhead.** `YEARS_PER_SECOND` is `0.08`. Focusing a world pauses
   time. The camera rides the orbital frame. Bumping the rate back up
   makes globes strobe and the damped camera miss.
+- **Hover vs click.** Hover sets `hovered` and a tooltip only. The info
+  card reads `selected`. The card is an overlay: it must never call
+  `setInset`. That jump is what the 2026-09-12 recording showed.
+- **WASD.** Fly keys are `w a s d q e`. HUD keydown returns before
+  opening any panel on those letters. Arcanum is a button, not `A`.
 - **Picking.** Cosmere hits use `systemExtent()` (orbit cloud). Do not
   go back to a tiny star sprite. HUD `.ceph-panel` must stay
   click-through except buttons / atlas / timeline / drawer.

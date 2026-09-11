@@ -12,29 +12,47 @@
   transition: opacity 420ms var(--ceph-ease), visibility 0s;
 }
 
-.ceph-command {
+.ceph-topbar {
   position: fixed;
-  top: calc(16px + var(--ceph-safe-top));
-  left: 16px;
-  z-index: 25;
-  padding: 12px 16px;
+  top: calc(10px + var(--ceph-safe-top));
+  left: 12px;
+  right: 12px;
+  z-index: 28;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 8px 6px 10px;
+  pointer-events: auto;
   animation: ceph-panel-in 500ms var(--ceph-ease) both;
 }
-.ceph-command-top {
+.ceph-topbar-left {
   display: flex;
   align-items: center;
   gap: 10px;
+  min-width: 0;
+  flex: 1 1 auto;
 }
 .ceph-command-sub {
-  margin-top: 4px;
   font-size: 10.5px;
   letter-spacing: 0.08em;
   color: var(--ceph-text-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ceph-icon-btn {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  flex: 0 0 auto;
+  font-size: 14px;
+  line-height: 1;
 }
 
 .ceph-reading {
   display: inline-block;
-  margin-top: 8px;
+  margin-top: 0;
   padding: 3px 9px;
   border-radius: 999px;
   border: 1px solid color-mix(in srgb, var(--ceph-amber) 55%, transparent);
@@ -51,22 +69,27 @@
 }
 
 .ceph-tools {
-  position: fixed;
-  top: calc(16px + var(--ceph-safe-top));
-  right: 16px;
   display: flex;
-  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
   z-index: 25;
+  pointer-events: none;
+}
+.ceph-topbar .ceph-btn {
+  padding: 6px 10px;
+  font-size: 10px;
 }
 
 .ceph-timeline {
   position: fixed;
   left: 50%;
-  bottom: calc(18px + var(--ceph-safe-bottom));
+  bottom: calc(14px + var(--ceph-safe-bottom));
   transform: translateX(-50%);
-  width: min(720px, calc(100% - 32px));
-  padding: 12px 16px 14px;
+  width: min(640px, calc(100% - 32px));
+  padding: 10px 14px 12px;
   z-index: 25;
+  pointer-events: auto;
 }
 .ceph-timeline-top {
   display: flex;
@@ -104,43 +127,45 @@
 }
 
 .ceph-ticker {
-  position: fixed;
-  left: 16px;
-  bottom: calc(96px + var(--ceph-safe-bottom));
-  max-width: min(420px, calc(100% - 32px));
-  padding: 10px 14px;
-  font-size: 12px;
+  font-size: 11px;
   color: var(--ceph-text-dim);
-  line-height: 1.45;
+  line-height: 1.4;
+  margin: 0 0 8px;
+  max-height: 2.8em;
+  overflow: hidden;
   pointer-events: none;
+}
+.ceph-timeline.is-thin .ceph-slider,
+.ceph-timeline.is-thin .ceph-era-row,
+.ceph-timeline.is-thin .ceph-ticker {
+  display: none;
+}
+.ceph-timeline.is-thin {
+  padding: 8px 12px;
+  width: min(420px, calc(100% - 32px));
 }
 .ceph-tools {
   pointer-events: none;
 }
-.ceph-command {
-  pointer-events: none;
-}
+.ceph-tools .ceph-btn { pointer-events: auto; }
 .ceph-back {
-  position: fixed;
-  top: calc(16px + var(--ceph-safe-top));
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 26;
   display: none;
   pointer-events: auto;
+  flex: 0 0 auto;
 }
 .ceph-back.is-on { display: inline-flex; }
 
 .ceph-panel-drawer {
   position: fixed;
-  top: calc(72px + var(--ceph-safe-top));
-  right: 16px;
-  width: min(380px, calc(100% - 32px));
-  max-height: calc(100vh - 180px);
+  top: calc(var(--ceph-command-bottom, 56px) + 10px);
+  right: 12px;
+  width: min(340px, calc(100% - 24px));
+  max-height: calc(100vh - 200px);
   overflow: auto;
-  padding: 16px 18px 20px;
-  z-index: 30;
-  animation: ceph-panel-in 400ms var(--ceph-ease) both;
+  padding: 14px 16px 18px;
+  z-index: 27;
+  pointer-events: auto;
+  animation: ceph-panel-in 280ms var(--ceph-ease) both;
 }
 .ceph-panel-drawer h2 {
   margin: 0 0 4px;
@@ -267,6 +292,15 @@
 }
 .ceph-search:focus { border-color: var(--ceph-cyan); }
 
+.ceph-look-slider {
+  display: grid;
+  gap: 4px;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--ceph-text-dim);
+  pointer-events: auto;
+}
+
 .ceph-skip {
   position: fixed;
   bottom: calc(118px + var(--ceph-safe-bottom));
@@ -293,39 +327,30 @@
 
 /* Phones: one top band, one bottom bar, everything else between them. */
 @media (max-width: 900px) {
-  .ceph-timeline {
-    width: calc(100% - 12px);
-    padding: 10px 12px 12px;
-  }
-  .ceph-command {
+  .ceph-topbar {
     left: 6px;
     right: 6px;
-    width: auto;
-    padding: 8px 12px;
-    display: flex;
-    align-items: baseline;
-    gap: 10px;
+    top: calc(6px + var(--ceph-safe-top));
     flex-wrap: wrap;
+    padding: 6px 8px;
   }
-  .ceph-command .ceph-kicker { display: none; }
-  .ceph-command-sub { margin-top: 0; }
-  .ceph-reading { margin-top: 0; }
+  .ceph-topbar-left { flex-wrap: wrap; }
   .ceph-tools {
-    top: auto;
-    bottom: calc(var(--ceph-timeline-top, 160px));
-    left: 6px;
-    right: 6px;
+    width: 100%;
     justify-content: flex-start;
-    gap: 6px;
     overflow-x: auto;
+    flex-wrap: nowrap;
     scrollbar-width: none;
-    padding-bottom: 2px;
   }
   .ceph-tools::-webkit-scrollbar { display: none; }
   .ceph-tools .ceph-btn {
     padding: 5px 9px;
     font-size: 10px;
     flex: 0 0 auto;
+  }
+  .ceph-timeline {
+    width: calc(100% - 12px);
+    padding: 10px 12px 12px;
   }
   .ceph-ticker { display: none; }
   .ceph-panel-drawer {

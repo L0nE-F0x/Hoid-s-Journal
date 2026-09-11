@@ -129,6 +129,8 @@ export class Presence {
     scale: string,
     cognitive = false,
     selected: string | null = null,
+    showCharacters = true,
+    showShardLines = true,
   ): void {
     const yolenPos = orrery.bodyPosition('yolen') ?? this.yolen;
     this.updateTrail(orrery, camera, progress, scale, selected);
@@ -136,7 +138,7 @@ export class Presence {
 
     // On a surface scan the pins are the subject; a swarm of people-dots at
     // the same apparent size just competes with them.
-    const motesOn = scale !== 'surface' && scale !== 'city';
+    const motesOn = showCharacters && scale !== 'surface' && scale !== 'city';
     for (const row of this.chars) {
       const ch = COSMERE.characters.find((c) => c.id === row.id);
       if (!motesOn || !ch || !isVisible(ch, progress)) { row.mesh.visible = false; continue; }
@@ -161,7 +163,7 @@ export class Presence {
       (row.mesh.material as THREE.MeshBasicMaterial).opacity = here ? 0.95 : 0.3;
     }
 
-    const linesOn = scale === 'cosmere' || scale === 'system';
+    const linesOn = showShardLines && (scale === 'cosmere' || scale === 'system');
     for (const row of this.lines) {
       const sh = COSMERE.shards.find((s) => s.id === row.id);
       if (!sh) { row.line.visible = false; continue; }

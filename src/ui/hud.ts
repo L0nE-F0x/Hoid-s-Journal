@@ -70,34 +70,38 @@ function entityById(id: string | null) {
 }
 
 export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy(): void } {
-  const word = el('button', { className: 'ceph-wordmark', text: BRAND_WORDMARK, attrs: { type: 'button' } });
+  const word = el('button', { className: 'ceph-wordmark', text: BRAND_WORDMARK, attrs: { type: 'button', title: BRAND_TAGLINE } });
   const scaleLabel = el('div', { className: 'ceph-command-sub', text: 'Cosmere · Physical' });
   const readingLabel = el('button', { className: 'ceph-reading', text: '', attrs: { type: 'button', title: 'Reading companion' } });
   readingLabel.style.display = 'none';
-  const command = el('div', { className: 'ceph-panel ceph-command' }, [
-    el('div', { className: 'ceph-command-top' }, [word]),
-    el('div', { className: 'ceph-kicker', text: BRAND_TAGLINE, style: { marginTop: '4px' } }),
-    scaleLabel,
-    readingLabel,
-  ]);
-
-  const mkTool = (label: string, title: string) =>
-    el('button', { className: 'ceph-btn', text: label, attrs: { type: 'button', title } });
-  const btnCodex = mkTool('Codex', 'Search the journal (K)');
-  const btnArc = mkTool('Arcanum', 'Magic systems (A)');
-  const btnSpoil = mkTool('Journal', 'Reading progress');
-  const btnRealm = mkTool('Realms', 'Physical / Cognitive / Spiritual (C / V)');
-  const btnLook = mkTool('Look', 'Orbits, moons, nebulae, labels');
-  const btnHelp = mkTool('Help', 'How to read the sky (H)');
-  const btnShare = mkTool('Share', 'Copy a link to this view');
-  const btnWeb = mkTool('Web', 'Lore Web — six degrees of Hoid (L)');
-  const btnMusic = mkTool('Music', 'Soundtrack');
-  const tools = el('div', { className: 'ceph-tools' }, [btnCodex, btnArc, btnSpoil, btnRealm, btnLook, btnHelp, btnShare, btnWeb, btnMusic]);
+  const btnDir = el('button', {
+    className: 'ceph-btn ceph-icon-btn',
+    text: '☰',
+    attrs: { type: 'button', title: 'Toggle directory' },
+  });
   const back = el('button', {
     className: 'ceph-btn ceph-back',
     text: '← Cosmere',
     attrs: { type: 'button', title: 'Frame the whole Cosmere (F)' },
   });
+
+  const mkTool = (label: string, title: string) =>
+    el('button', { className: 'ceph-btn', text: label, attrs: { type: 'button', title } });
+  const btnCodex = mkTool('Codex', 'Search the journal (K /)');
+  const btnArc = mkTool('Arcanum', 'Magic systems');
+  const btnSpoil = mkTool('Journal', 'Reading progress');
+  const btnRealm = mkTool('Realms', 'Physical / Cognitive / Spiritual (C / V)');
+  const btnLook = mkTool('Look', 'Display settings');
+  const btnHelp = mkTool('Help', 'How to read the sky (H)');
+  const btnShare = mkTool('Share', 'Copy a link to this view');
+  const btnWeb = mkTool('Web', 'Lore Web — six degrees of Hoid (L)');
+  const btnMusic = mkTool('Music', 'Soundtrack');
+  const tools = el('div', { className: 'ceph-tools' }, [btnCodex, btnArc, btnSpoil, btnRealm, btnLook, btnWeb, btnMusic, btnHelp, btnShare]);
+
+  const topbar = el('div', { className: 'ceph-panel ceph-topbar' }, [
+    el('div', { className: 'ceph-topbar-left' }, [btnDir, word, scaleLabel, readingLabel, back]),
+    tools,
+  ]);
 
   const play = el('button', { className: 'ceph-play', text: '❚❚', attrs: { type: 'button', title: 'Play / pause time' } });
   const yearEl = el('div', { className: 'ceph-year', text: COSMERE.eras[3]!.realDate });
@@ -116,71 +120,50 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
   const faster = el('button', { className: 'ceph-chip', text: '+', attrs: { type: 'button', title: 'Faster' } });
   const rateEl = el('span', { className: 'ceph-rate', text: '1×' });
   const speed = el('div', { className: 'ceph-speed' }, [slower, rateEl, faster]);
+  const btnTimeMin = el('button', {
+    className: 'ceph-btn ceph-icon-btn',
+    text: '▾',
+    attrs: { type: 'button', title: 'Minimise timeline' },
+  });
+  const ticker = el('div', { className: 'ceph-ticker', text: COSMERE.eras[3]!.event });
   const timeline = el('div', { className: 'ceph-panel ceph-timeline' }, [
-    el('div', { className: 'ceph-timeline-top' }, [play, yearEl, speed]),
+    el('div', { className: 'ceph-timeline-top' }, [play, yearEl, speed, btnTimeMin]),
+    ticker,
     slider,
     eraRow,
   ]);
-
-  const ticker = el('div', { className: 'ceph-panel ceph-ticker', text: COSMERE.eras[3]!.event });
 
   const drawer = el('div', { className: 'ceph-panel ceph-panel-drawer', style: { display: 'none' } });
 
   const skip = el('button', { className: 'ceph-btn ceph-btn--primary ceph-skip', text: 'Skip · Space', attrs: { type: 'button' } });
   const tooltip = el('div', { className: 'ceph-panel ceph-tooltip', text: '' });
 
-  const hud = el('div', { className: 'ceph-hud' }, [command, tools, back, timeline, ticker, drawer, skip, tooltip]);
+  const hud = el('div', { className: 'ceph-hud' }, [topbar, timeline, drawer, skip, tooltip]);
   root.append(hud);
 
   /**
-   * The HUD owns the right and bottom insets; the atlas owns left and top.
-   * The camera frames its subject in what is left (see CameraRig.setInsets).
+   * Stable chrome owns insets. The info card is an overlay: it must never
+   * report an inset, or hovering/selecting a world shoves the sky.
    */
   const measure = () => {
-    // The command panel grows when a book is being tracked; the atlas hangs
-    // off its bottom edge rather than a hard-coded offset.
-    const cmd = command.getBoundingClientRect();
+    const bar = topbar.getBoundingClientRect();
     document.documentElement.style.setProperty(
-      '--ceph-command-bottom', `${Math.round(cmd.bottom)}px`,
+      '--ceph-command-bottom', `${Math.round(bar.bottom)}px`,
     );
     const tl = timeline.getBoundingClientRect();
-    const tb = tools.getBoundingClientRect();
-    document.documentElement.style.setProperty(
-      '--ceph-tools-bottom', `${Math.round(tb.bottom)}px`,
-    );
-    // Phone anchors: the tools sit above the timeline, the atlas above them.
     document.documentElement.style.setProperty(
       '--ceph-timeline-top', `${Math.round(Math.max(0, window.innerHeight - tl.top + 8))}px`,
     );
-    document.documentElement.style.setProperty(
-      '--ceph-tools-top', `${Math.round(Math.max(0, window.innerHeight - tb.top))}px`,
-    );
+    document.documentElement.style.setProperty('--ceph-tools-top', '0px');
+    store.setInset('drawer', null);
+    store.setInset('tools', null);
     if (!hud.classList.contains('is-on')) {
       store.setInset('timeline', null);
-      store.setInset('drawer', null);
       store.setInset('chrome', null);
-      store.setInset('tools', null);
       return;
     }
+    store.setInset('chrome', { top: Math.round(bar.bottom + 8) });
     store.setInset('timeline', { bottom: Math.round(Math.max(0, window.innerHeight - tl.top + 10)) });
-
-    // On a phone the chrome is two bands: the command line across the top and
-    // the tool row just above the timeline. On a desktop both are corner cards
-    // and claim nothing.
-    const narrow = window.innerWidth <= 900;
-    store.setInset('chrome', narrow ? { top: Math.round(cmd.bottom + 8) } : null);
-    store.setInset('tools', narrow
-      ? { bottom: Math.round(Math.max(0, window.innerHeight - tb.top + 8)) }
-      : null);
-
-    if (drawer.style.display === 'none') {
-      store.setInset('drawer', null);
-      return;
-    }
-    const d = drawer.getBoundingClientRect();
-    store.setInset('drawer', d.width > window.innerWidth * 0.5
-      ? { top: Math.round(d.bottom + 10) }
-      : { right: Math.round(Math.max(0, window.innerWidth - d.left + 12)) });
   };
 
   const refreshReading = () => {
@@ -204,6 +187,10 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
     const trail = ['Cosmere', sys, body, loc, grain].filter(Boolean).join(' · ');
     scaleLabel.textContent = `${trail} · ${realm}`;
     back.classList.toggle('is-on', s.scale !== 'cosmere' && s.realm !== 'spiritual');
+    btnDir.classList.toggle('is-on', s.chrome.directory);
+    timeline.classList.toggle('is-thin', !s.chrome.timeline);
+    btnTimeMin.textContent = s.chrome.timeline ? '▾' : '▴';
+    btnTimeMin.title = s.chrome.timeline ? 'Minimise timeline' : 'Expand timeline';
     btnCodex.classList.toggle('is-on', s.panel === 'codex');
     btnArc.classList.toggle('is-on', s.panel === 'arcanum');
     btnSpoil.classList.toggle('is-on', s.panel === 'spoilers');
@@ -228,7 +215,8 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
   };
 
   const refreshDrawer = () => {
-    const id = store.state.selected ?? store.state.hovered;
+    // Hover is a tooltip. The card opens only on a click, so the sky does not jump.
+    const id = store.state.selected;
     const hit = entityById(id);
     // A phone cannot afford both sheets, and on a globe the atlas already
     // names the world the drawer would be describing.
@@ -425,6 +413,8 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
     listen(btnLook, 'click', () => store.set('panel', store.state.panel === 'settings' ? 'none' : 'settings')),
     listen(btnHelp, 'click', () => store.set('panel', store.state.panel === 'help' ? 'none' : 'help')),
     listen(btnRealm, 'click', () => store.set('panel', store.state.panel === 'realms' ? 'none' : 'realms')),
+    listen(btnDir, 'click', () => store.patchChrome({ directory: !store.state.chrome.directory })),
+    listen(btnTimeMin, 'click', () => store.patchChrome({ timeline: !store.state.chrome.timeline })),
     listen(back, 'click', () => store.set('cameraCue', { kind: 'frame' })),
     listen(skip, 'click', () => store.set('cameraCue', { kind: 'skip-cinematic' })),
     listen(window, 'mousemove', (e) => {
@@ -449,12 +439,12 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
     store.on('panel', refreshScale),
     store.on('view', refreshScale),
     store.on('visual', refreshScale),
+    store.on('chrome', () => { refreshScale(); measure(); }),
     store.on('focusedBody', refreshScale),
     store.on('focusedSystem', refreshScale),
     store.on('focusedLocation', refreshScale),
     store.on('selected', () => { refreshDrawer(); measure(); }),
     store.on('hovered', () => {
-      if (!store.state.selected) { refreshDrawer(); measure(); }
       const h = entityById(store.state.hovered);
       tooltip.classList.toggle('is-on', !!h && !store.state.selected);
       tooltip.textContent = h

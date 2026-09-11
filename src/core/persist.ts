@@ -1,9 +1,10 @@
 import { COSMERE, fullProgress } from '../data/index.ts';
-import { store, type VisualState } from './store.ts';
+import { store, type ChromeState, type VisualState } from './store.ts';
 
 const KEY_PROGRESS = 'cephandrius.readProgress';
 const KEY_READING = 'cephandrius.readingNow';
 const KEY_VISUAL = 'cephandrius.visual';
+const KEY_CHROME = 'cephandrius.chrome';
 
 export function restoreSettings(): void {
   try {
@@ -31,6 +32,11 @@ export function restoreSettings(): void {
     const vis = localStorage.getItem(KEY_VISUAL);
     if (vis) Object.assign(store.state.visual, JSON.parse(vis) as Partial<VisualState>);
   } catch { /* ignore */ }
+
+  try {
+    const ch = localStorage.getItem(KEY_CHROME);
+    if (ch) Object.assign(store.state.chrome, JSON.parse(ch) as Partial<ChromeState>);
+  } catch { /* ignore */ }
 }
 
 export function connectSettingsPersistence(): void {
@@ -45,5 +51,8 @@ export function connectSettingsPersistence(): void {
   });
   store.on('visual', (v) => {
     try { localStorage.setItem(KEY_VISUAL, JSON.stringify(v)); } catch { /* ignore */ }
+  });
+  store.on('chrome', (v) => {
+    try { localStorage.setItem(KEY_CHROME, JSON.stringify(v)); } catch { /* ignore */ }
   });
 }

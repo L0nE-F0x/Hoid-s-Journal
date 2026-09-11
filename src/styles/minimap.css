@@ -1,7 +1,7 @@
 .ceph-minimap {
   position: fixed;
-  right: 16px;
-  bottom: calc(118px + var(--ceph-safe-bottom));
+  right: 12px;
+  bottom: calc(var(--ceph-timeline-top, 118px) + 8px);
   z-index: 24;
   padding: 8px 8px 10px;
   display: none;
@@ -9,7 +9,23 @@
   animation: ceph-panel-in 420ms var(--ceph-ease) both;
 }
 .ceph-minimap.is-on { display: block; }
-.ceph-minimap .ceph-kicker { margin: 0 2px 6px; }
+.ceph-mm-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 0 2px 6px;
+}
+.ceph-mm-head .ceph-kicker { margin: 0; }
+.ceph-mm-hide { width: 24px; height: 24px; padding: 0; font-size: 14px; }
+.ceph-mm-restore {
+  position: fixed;
+  right: 12px;
+  bottom: calc(var(--ceph-timeline-top, 118px) + 8px);
+  z-index: 24;
+  display: none;
+}
+.ceph-mm-restore.is-on { display: inline-flex; }
 .ceph-mm-canvas {
   display: block;
   width: 200px;

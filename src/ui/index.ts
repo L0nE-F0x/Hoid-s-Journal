@@ -40,7 +40,13 @@ export function mountUI(root: HTMLElement): UIHandles {
     if (k === 'escape') {
       if (store.state.panel !== 'none') { store.set('panel', 'none'); return; }
       if (store.state.view === 'web') { store.set('view', 'sky'); return; }
-      if (store.state.shell === 'play') store.set('cameraCue', { kind: 'pop' });
+      if (store.state.shell === 'play') {
+        if (store.state.scale === 'cosmere' && store.state.realm === 'physical' && store.state.selected) {
+          store.set('selected', null);
+          return;
+        }
+        store.set('cameraCue', { kind: 'pop' });
+      }
       return;
     }
     if (k === ' ') {
@@ -54,6 +60,8 @@ export function mountUI(root: HTMLElement): UIHandles {
       return;
     }
     if (store.state.shell !== 'play') return;
+    // WASD / QE fly the camera. Never steal them for panels.
+    if ('wasdqe'.includes(k)) return;
     if (k === 'c') store.set('realm', store.state.realm === 'cognitive' ? 'physical' : 'cognitive');
     if (k === 'v') store.set('realm', store.state.realm === 'spiritual' ? 'physical' : 'spiritual');
     if (k === 'l') {
@@ -61,7 +69,10 @@ export function mountUI(root: HTMLElement): UIHandles {
       return;
     }
     if (k === 'h' || k === '?') store.set('panel', store.state.panel === 'help' ? 'none' : 'help');
-    if (k === 'a') store.set('panel', store.state.panel === 'arcanum' ? 'none' : 'arcanum');
+    if (k === 'm') {
+      store.patchChrome({ minimap: !store.state.chrome.minimap });
+      return;
+    }
     if (k === 'k' || k === '/') {
       e.preventDefault();
       store.set('panel', 'codex');

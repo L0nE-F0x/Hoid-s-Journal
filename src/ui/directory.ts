@@ -4,6 +4,7 @@
  */
 import {
   COSMERE,
+  DAWNSHARDS,
   bodyById,
   characterAt,
   isVisible,
@@ -13,11 +14,11 @@ import { atlasIsOpen } from './atlas.ts';
 import { el, listen } from './dom.ts';
 import '../styles/directory.css';
 
-type DirTab = 'systems' | 'worlds' | 'moons' | 'people' | 'shards' | 'doors';
+type DirTab = 'systems' | 'worlds' | 'moons' | 'people' | 'shards' | 'doors' | 'dawnshards';
 
 export function directoryIsOpen(): boolean {
   const s = store.state;
-  return s.shell === 'play' && !atlasIsOpen() && s.view !== 'web';
+  return s.shell === 'play' && !atlasIsOpen() && s.view !== 'web' && s.chrome.directory;
 }
 
 function flyTo(id: string): void {
@@ -53,6 +54,10 @@ function flyTo(id: string): void {
     store.set('selected', id);
     return;
   }
+  if (DAWNSHARDS.some((d) => d.id === id)) {
+    store.set('selected', id);
+    return;
+  }
   const perp = COSMERE.perps.find((p) => p.id === id);
   if (perp?.at) store.set('cameraCue', { kind: 'focus', id: perp.at, scale: 'surface' });
   else if (perp) store.set('cameraCue', { kind: 'focus', id: perp.body, scale: 'globe' });
@@ -68,13 +73,23 @@ export function mountDirectory(root: HTMLElement): { destroy(): void } {
   const list = el('div', { className: 'ceph-dir-list' });
   const kicker = el('div', { className: 'ceph-kicker', text: 'Directory' });
   const title = el('div', { className: 'ceph-atlas-title', text: 'Systems' });
+  const collapse = el('button', {
+    className: 'ceph-btn ceph-icon-btn',
+    text: '‹',
+    attrs: { type: 'button', title: 'Hide directory' },
+  });
   const panel = el('div', { className: 'ceph-panel ceph-directory' }, [
-    el('div', { className: 'ceph-atlas-head' }, [kicker, title]),
+    el('div', { className: 'ceph-atlas-head' }, [kicker, title, collapse]),
     tabs,
     search,
     list,
   ]);
-  root.append(panel);
+  const restore = el('button', {
+    className: 'ceph-btn ceph-dir-restore',
+    text: 'Directory',
+    attrs: { type: 'button', title: 'Show directory' },
+  });
+  root.append(panel, restore);
 
   const TAB: { id: DirTab; label: string }[] = [
     { id: 'systems', label: 'Systems' },
@@ -83,6 +98,7 @@ export function mountDirectory(root: HTMLElement): { destroy(): void } {
     { id: 'people', label: 'People' },
     { id: 'shards', label: 'Shards' },
     { id: 'doors', label: 'Doors' },
+    { id: 'dawnshards', label: 'Dawnshards' },
   ];
   for (const t of TAB) {
     const b = el('button', { className: 'ceph-chip', text: t.label, attrs: { type: 'button' } });
@@ -114,7 +130,9 @@ export function mountDirectory(root: HTMLElement): { destroy(): void } {
   const paint = () => {
     const s = store.state;
     const show = directoryIsOpen();
+    const canRestore = s.shell === 'play' && !atlasIsOpen() && s.view !== 'web' && !s.chrome.directory;
     panel.classList.toggle('is-on', show);
+    restore.classList.toggle('is-on', canRestore);
     measure();
     if (!show) return;
     if (s.realm === 'spiritual') tab = 'shards';
@@ -161,11 +179,16 @@ export function mountDirectory(root: HTMLElement): { destroy(): void } {
         const era = sh.eras.find((e) => e.era === s.era) ?? sh.eras[sh.eras.length - 1];
         push(row(sh.id, sh.name, era?.status ?? 'shard', sh.color, sh.desc));
       }
-    } else {
+    } else if (tab === 'doors') {
       for (const p of COSMERE.perps) {
         if (!isVisible(p, s.readProgress) || !match(p.name)) continue;
         const body = bodyById[p.body];
         push(row(p.id, p.name, body?.name ?? p.body, '#c4b5fd', p.fact));
+      }
+    } else {
+      for (const d of DAWNSHARDS) {
+        if (!isVisible(d, s.readProgress) || !match(d.name)) continue;
+        push(row(d.id, d.name, d.command, '#fde68a', d.fact));
       }
     }
     if (!list.childElementCount) {
@@ -175,6 +198,8 @@ export function mountDirectory(root: HTMLElement): { destroy(): void } {
 
   const offs = [
     listen(search, 'input', () => { store.set('searchQuery', search.value); paint(); }),
+    listen(collapse, 'click', () => store.patchChrome({ directory: false })),
+    listen(restore, 'click', () => store.patchChrome({ directory: true })),
     listen(window, 'resize', () => measure()),
     store.on('shell', paint),
     store.on('scale', paint),
@@ -185,9 +210,10 @@ export function mountDirectory(root: HTMLElement): { destroy(): void } {
     store.on('era', paint),
     store.on('readProgress', paint),
     store.on('view', paint),
+    store.on('chrome', paint),
   ];
   paint();
   return {
-    destroy() { offs.forEach((o) => o()); panel.remove(); },
+    destroy() { offs.forEach((o) => o()); panel.remove(); restore.remove(); },
   };
 }

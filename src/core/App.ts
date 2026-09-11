@@ -99,7 +99,7 @@ export class App {
     this.rig.setInputEnabled(false);
     this.rig.autoRotate = true;
     this.orrery.update(store.state.year, store.state.realm, store.state.era, 0, {
-      showOrbits: true, showMoons: true, showAtmospheres: true, showNebula: true, scale: 'cosmere', focusedSystem: null,
+      showOrbits: true, showMoons: true, showAtmospheres: true, showNebula: true, nebula: 1, scale: 'cosmere', focusedSystem: null,
     });
 
     this.disposers.push(store.on('cameraCue', (cue) => {
@@ -433,7 +433,7 @@ export class App {
     if (!hit) {
       if (s.hovered) store.set('hovered', null);
       this.hoverAnchor?.(null);
-      if (click && s.scale === 'cosmere') store.set('selected', null);
+      if (click) store.set('selected', null);
       return;
     }
     store.set('hovered', hit.id);
@@ -626,6 +626,7 @@ export class App {
       showMoons: s.visual.showMoons,
       showAtmospheres: s.visual.showAtmospheres,
       showNebula: s.visual.showNebula,
+      nebula: s.visual.nebula,
       scale: s.scale,
       focusedSystem: s.focusedSystem,
     });
@@ -640,11 +641,12 @@ export class App {
     );
     this.pins.update(
       this.orrery, this.camera, s.readProgress, s.focusedBody, s.scale,
-      s.hovered ?? s.focusedLocation, s.realm,
+      s.hovered ?? s.focusedLocation, s.realm, s.visual.showPerps,
     );
     this.presence.update(
       this.orrery, this.camera, s.era, s.year, s.readProgress, s.scale,
       s.realm === 'cognitive', s.selected,
+      s.visual.showCharacters, s.visual.showShardLines,
     );
     this.spiritual.update(
       t, s.era, s.realm === 'spiritual', this.camera, s.readProgress, s.selected,

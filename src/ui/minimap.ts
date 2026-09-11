@@ -13,8 +13,21 @@ const H = 156;
 export function mountMinimap(root: HTMLElement): { destroy(): void } {
   const canvas = el('canvas', { className: 'ceph-mm-canvas', attrs: { width: String(W), height: String(H) } });
   const label = el('div', { className: 'ceph-kicker', text: 'Galaxy' });
-  const panel = el('div', { className: 'ceph-panel ceph-minimap' }, [label, canvas]);
-  root.append(panel);
+  const hide = el('button', {
+    className: 'ceph-btn ceph-icon-btn ceph-mm-hide',
+    text: '×',
+    attrs: { type: 'button', title: 'Hide galaxy chart (M)' },
+  });
+  const panel = el('div', { className: 'ceph-panel ceph-minimap' }, [
+    el('div', { className: 'ceph-mm-head' }, [label, hide]),
+    canvas,
+  ]);
+  const restore = el('button', {
+    className: 'ceph-btn ceph-mm-restore',
+    text: 'Galaxy',
+    attrs: { type: 'button', title: 'Show galaxy chart (M)' },
+  });
+  root.append(panel, restore);
 
   const pts = () => {
     const xs = COSMERE.systems.map((s) => s.position[0]);
@@ -38,8 +51,10 @@ export function mountMinimap(root: HTMLElement): { destroy(): void } {
 
   const paint = () => {
     const s = store.state;
-    const show = s.shell === 'play' && s.realm !== 'spiritual' && s.view !== 'web';
+    const room = s.shell === 'play' && s.realm !== 'spiritual' && s.view !== 'web';
+    const show = room && s.chrome.minimap && !s.selected;
     panel.classList.toggle('is-on', show);
+    restore.classList.toggle('is-on', room && !s.chrome.minimap && !s.selected);
     if (!show) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
@@ -79,12 +94,16 @@ export function mountMinimap(root: HTMLElement): { destroy(): void } {
 
   const offs = [
     listen(canvas, 'click', (e) => hit(e as MouseEvent)),
+    listen(hide, 'click', () => store.patchChrome({ minimap: false })),
+    listen(restore, 'click', () => store.patchChrome({ minimap: true })),
     store.on('shell', paint),
     store.on('realm', paint),
     store.on('focusedSystem', paint),
     store.on('readProgress', paint),
     store.on('view', paint),
+    store.on('chrome', paint),
+    store.on('selected', paint),
   ];
   paint();
-  return { destroy() { offs.forEach((o) => o()); panel.remove(); } };
+  return { destroy() { offs.forEach((o) => o()); panel.remove(); restore.remove(); } };
 }

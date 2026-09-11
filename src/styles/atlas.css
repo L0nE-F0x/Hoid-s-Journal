@@ -1,7 +1,7 @@
 .ceph-atlas {
   position: fixed;
   /* Hangs off the command panel, which grows when a book is being tracked. */
-  top: calc(var(--ceph-command-bottom, 88px) + 12px);
+  top: calc(var(--ceph-command-bottom, 56px) + 12px);
   left: 16px;
   width: min(480px, calc(100vw - 32px));
   z-index: 24;
@@ -15,7 +15,7 @@
 @media (max-width: 900px) {
   .ceph-atlas {
     top: auto;
-    bottom: calc(var(--ceph-tools-top, 200px) + 8px);
+    bottom: calc(var(--ceph-timeline-top, 160px) + 8px);
     left: 6px;
     right: 6px;
     width: auto;

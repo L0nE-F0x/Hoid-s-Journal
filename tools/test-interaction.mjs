@@ -120,6 +120,17 @@ async function run() {
     check('directory lists systems at Cosmere',
       await page.evaluate(() => !!document.querySelector('.ceph-directory.is-on')));
 
+    // Hover is a tooltip. It must not open the info card or shove the sky.
+    {
+      const hoverAt = await screenOf(page, "a.orrery.systemPosition('taldainian')");
+      if (hoverAt) await page.mouse.move(hoverAt.x, hoverAt.y);
+      await sleep(280);
+      s = await state(page);
+      check('hover does not select', !s.selected, String(s.selected));
+      check('hover does not claim a right inset', s.insets.right === 0, JSON.stringify(s.insets));
+      await page.mouse.move(8, 8);
+    }
+
     check('Help opens', await clickLabel(page, '^help$'));
     await sleep(200);
     check('Help is a panel', (await state(page)).panel === 'help', (await state(page)).panel);

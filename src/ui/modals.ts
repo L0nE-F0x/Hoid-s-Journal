@@ -209,10 +209,10 @@ function renderHelp(card: HTMLElement): void {
   card.append(
     el('div', { className: 'ceph-kicker', text: 'How to read the sky' }),
     el('h2', { text: 'The journal is a map you fly' }),
-    el('p', { className: 'ceph-fact', text: 'Click a system — the orbit rings, not just the star — to dive in. Click a world to read its globe. Click again for the surface, and once more for a city plate. Esc walks back out. The directory on the left lists everything in the current sky if a click misses.' }),
-    el('p', { className: 'ceph-fact', html: '<b>Drag</b> orbit · <b>scroll</b> zoom · <b>WASD</b> fly · <b>Space</b> play time · <b>+/−</b> on the timeline for speed · <b>1–6</b> eras · <b>C</b> Cognitive · <b>V</b> Spiritual · <b>L</b> Lore Web · <b>F</b> frame Cosmere · <b>K</b> Codex · <b>A</b> Arcanum · <b>H</b> this help. Music is the original journal soundtrack. Official map scans are not used.' }),
-    el('p', { className: 'ceph-fact', text: 'Journal sets where you are in the books. The sky hides what you have not reached. Default is fully read.' }),
-    el('p', { className: 'ceph-fact', style: { color: 'var(--ceph-text-dim)' }, text: 'Unofficial fan project. Not affiliated with Dragonsteel or Brandon Sanderson.' }),
+    el('p', { className: 'ceph-fact', text: 'Hover a world for its name. Click to open the card — the sky stays put. Click the orbit rings, not just the star, to dive in. Click a world for its globe, again for the surface, again for a city plate. Esc walks back out. ☰ hides the directory.' }),
+    el('p', { className: 'ceph-fact', html: '<b>Drag</b> orbit · <b>scroll</b> zoom · <b>WASD / QE</b> fly (those keys never open panels) · <b>Space</b> play time · <b>+/−</b> on the timeline for speed · <b>1–6</b> eras · <b>C</b> Cognitive · <b>V</b> Spiritual · <b>L</b> Lore Web · <b>M</b> galaxy chart · <b>F</b> frame Cosmere · <b>K</b> or <b>/</b> Codex · <b>H</b> this help. Arcanum, Journal, Share and Music are buttons.' }),
+    el('p', { className: 'ceph-fact', text: 'Roshar and Scadrial atlas plates are Isaac Stewart\'s cartography, credited on the map. Globes stay painterly. Journal sets where you are in the books; the sky hides what you have not reached. Default is fully read.' }),
+    el('p', { className: 'ceph-fact', style: { color: 'var(--ceph-text-dim)' }, text: 'Unofficial fan project. Not affiliated with Dragonsteel or Brandon Sanderson. Cartography by Isaac Stewart.' }),
   );
 }
 
@@ -349,20 +349,49 @@ function renderSettings(card: HTMLElement): void {
     listen(b, 'click', () => store.patchVisual({ [key]: !v[key] }));
     return b;
   };
-  card.append(el('div', { style: { display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '12px' } }, [
+  card.append(el('div', { className: 'ceph-kicker', text: 'The sky', style: { marginTop: '14px' } }));
+  card.append(el('div', { style: { display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '8px' } }, [
     toggle('showOrbits', 'Orbits'),
     toggle('showMoons', 'Moons'),
     toggle('showNebula', 'Nebulae'),
     toggle('showLabels', 'Labels'),
     toggle('showAtmospheres', 'Atmospheres'),
+    toggle('showCharacters', 'People'),
+    toggle('showShardLines', 'Shard lines'),
+    toggle('showPerps', 'Doors'),
+  ]));
+  card.append(el('div', { className: 'ceph-kicker', text: 'Feel', style: { marginTop: '16px' } }));
+  card.append(el('div', { style: { display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '8px' } }, [
     toggle('autoRotate', 'Auto-rotate (title)'),
     toggle('rumble', 'Rumble'),
     toggle('music', 'Soundtrack'),
   ]));
+  const slider = (key: 'bloom' | 'exposure' | 'starSize' | 'nebula', label: string, min: number, max: number) => {
+    const row = el('label', { className: 'ceph-look-slider' });
+    const cap = el('span', { text: `${label}  ${v[key].toFixed(2)}` });
+    const input = el('input', {
+      className: 'ceph-slider',
+      attrs: { type: 'range', min: String(min), max: String(max), step: '0.05', value: String(v[key]) },
+    }) as HTMLInputElement;
+    listen(input, 'input', () => {
+      const n = Number(input.value);
+      store.patchVisual({ [key]: n });
+      cap.textContent = `${label}  ${n.toFixed(2)}`;
+    });
+    row.append(cap, input);
+    return row;
+  };
+  card.append(el('div', { className: 'ceph-kicker', text: 'Picture', style: { marginTop: '16px' } }));
+  card.append(el('div', { style: { display: 'grid', gap: '8px', marginTop: '8px' } }, [
+    slider('bloom', 'Bloom', 0, 2),
+    slider('exposure', 'Exposure', 0.4, 2),
+    slider('starSize', 'Stars', 0.4, 2.4),
+    slider('nebula', 'Nebula', 0, 2),
+  ]));
   const q = el('button', {
     className: 'ceph-chip is-on',
     text: `Quality · ${v.quality}`,
-    style: { marginTop: '10px' },
+    style: { marginTop: '12px' },
   });
   listen(q, 'click', () => {
     const order = ['auto', 'high', 'medium', 'low'] as const;

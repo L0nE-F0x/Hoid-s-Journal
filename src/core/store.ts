@@ -21,11 +21,21 @@ export interface VisualState {
   showOrbits: boolean;
   showMoons: boolean;
   showAtmospheres: boolean;
+  showCharacters: boolean;
+  showShardLines: boolean;
+  showPerps: boolean;
   motionBlur: boolean;
   autoRotate: boolean;
   quality: Quality;
   rumble: boolean;
   music: boolean;
+}
+
+/** Collapsible chrome. Overlay panels must not live here — they do not own the sky. */
+export interface ChromeState {
+  directory: boolean;
+  minimap: boolean;
+  timeline: boolean;
 }
 
 export interface ViewInsets {
@@ -74,6 +84,7 @@ export interface AppState {
   /** Reading Companion: series + arc the reader is currently in. */
   readingNow: { series: string; arc: number } | null;
   visual: VisualState;
+  chrome: ChromeState;
   insets: ViewInsets;
   stats: Stats;
   cameraCue: CameraCue | null;
@@ -96,12 +107,19 @@ export function defaultVisual(): VisualState {
     showOrbits: true,
     showMoons: true,
     showAtmospheres: true,
+    showCharacters: true,
+    showShardLines: true,
+    showPerps: true,
     motionBlur: false,
     autoRotate: true,
     quality: 'auto',
     rumble: false,
     music: false,
   };
+}
+
+export function defaultChrome(): ChromeState {
+  return { directory: true, minimap: true, timeline: true };
 }
 
 export function defaultInsets(): ViewInsets {
@@ -131,6 +149,7 @@ class Store {
     readProgress: {},
     readingNow: null,
     visual: defaultVisual(),
+    chrome: defaultChrome(),
     insets: defaultInsets(),
     stats: { fps: 0, drawCalls: 0, ms: 0 },
     cameraCue: null,
@@ -182,6 +201,11 @@ class Store {
   patchVisual(patch: Partial<VisualState>): void {
     Object.assign(this.state.visual, patch);
     this.touch('visual');
+  }
+
+  patchChrome(patch: Partial<ChromeState>): void {
+    Object.assign(this.state.chrome, patch);
+    this.touch('chrome');
   }
 
   private insetSources = new Map<string, Partial<ViewInsets>>();

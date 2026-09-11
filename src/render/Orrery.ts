@@ -252,6 +252,7 @@ export class Orrery {
     showMoons: boolean;
     showAtmospheres: boolean;
     showNebula: boolean;
+    nebula: number;
     scale: string;
     focusedSystem: string | null;
   }): void {
@@ -322,8 +323,8 @@ export class Orrery {
     const globe = visual.scale === 'globe' || visual.scale === 'surface' || visual.scale === 'city';
     for (const n of this.nebulae) {
       n.visible = visual.showNebula && !globe;
-      n.scale.setScalar(cognitive ? 36 : 28);
-      (n.material as THREE.SpriteMaterial).opacity = cognitive ? 0.8 : 0.55;
+      n.scale.setScalar((cognitive ? 36 : 28) * Math.max(0.35, visual.nebula));
+      (n.material as THREE.SpriteMaterial).opacity = (cognitive ? 0.8 : 0.55) * visual.nebula;
     }
     for (const spr of this.sunSprites.values()) {
       spr.visible = !globe;

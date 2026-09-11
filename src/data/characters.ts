@@ -344,4 +344,109 @@ export const CHARACTERS: Character[] = [
       { era: 2, system: 'taldainian', body: 'taldain' },
       { era: 3, system: 'rosharan', body: 'roshar' },
     ]),
+  ch('syl', 'Sylphrena', '#7dd3fc', 'stormlight', 'Roshar', 'Syl',
+    'Honorspren, Windrunner bond',
+    'Kaladin\'s spren. Ancient, loyal, and still learning what a joke is.', true, [
+      { era: 3, system: 'rosharan', body: 'roshar' },
+    ]),
+  ch('pattern', 'Pattern', '#c4b5fd', 'stormlight', 'Roshar', 'Pattern',
+    'Cryptic, Lightweaver bond',
+    'Shallan\'s spren of lies. He likes truths more than she does.', true, [
+      { era: 3, system: 'rosharan', body: 'roshar' },
+    ]),
+  ch('ivory', 'Ivory', '#1e1b4b', 'stormlight', 'Roshar', 'Ivory',
+    'Inkspren, Elsecaller bond',
+    'Jasnah\'s spren. Logic first, the Physical Realm second.', true, [
+      { era: 3, system: 'rosharan', body: 'roshar' },
+    ]),
+  ch('stormfather', 'The Stormfather', '#1e3a8a', 'stormlight', 'Roshar', 'Rider of Storms',
+    'Cognitive Shadow of Honor, Bondsmith spren',
+    'The highstorm given a mind. Dalinar\'s bond, and Tanavast\'s last voice.', true, [
+      { era: 3, system: 'rosharan', body: 'roshar' },
+    ]),
+  ch('nightwatcher', 'The Nightwatcher', '#166534', 'stormlight', 'Roshar', 'Nightwatcher',
+    'Splinter of Cultivation, boon and curse',
+    'She grants what you ask and takes what she will. The Valley is hers.', true, [
+      { era: 3, system: 'rosharan', body: 'roshar' },
+    ]),
+  ch('sibling', 'The Sibling', '#a7f3d0', 'stormlight', 'Roshar', 'Sibling',
+    'Bondsmith spren of Urithiru',
+    'Tower-spren, half Honor and half Cultivation. Navani woke them.', true, [
+      { era: 3, system: 'rosharan', body: 'roshar' },
+    ], { arc: 'row' }),
+  ch('nale', 'Nale', '#0f172a', 'stormlight', 'Roshar', 'Nin, Herald of Justice',
+    'Herald of the Skybreakers',
+    'The only Herald still trying to keep an oath. It is not going well.', true, [
+      { era: 3, system: 'rosharan', body: 'roshar' },
+    ]),
+  ch('taln', 'Taln', '#7f1d1d', 'stormlight', 'Roshar', 'Talenelat, Stonesinew',
+    'Herald of War',
+    'He held Braize alone for four thousand years. Then he broke, and did not.', true, [
+      { era: 3, system: 'rosharan', body: 'roshar' },
+    ]),
+  ch('ishar', 'Ishar', '#ca8a04', 'stormlight', 'Roshar', 'Tukiri, Herald of Luck',
+    'Herald of the Bondsmiths',
+    'Mad god-priest of Tukar. The Oathpact was his idea.', true, [
+      { era: 3, system: 'rosharan', body: 'roshar' },
+    ]),
+  ch('gavilar', 'Gavilar Kholin', '#1d4ed8', 'stormlight', 'Roshar', 'King of Alethkar',
+    'King, seeker of old powers',
+    'United Alethkar. Died the night the Parshendi learned what a treaty costs.', false, [
+      { era: 3, system: 'rosharan', body: 'roshar' },
+    ]),
+  ch('sadeas', 'Torol Sadeas', '#b91c1c', 'stormlight', 'Roshar', 'Highprince of Information',
+    'Alethi highprince',
+    'Dalinar\'s rival. The Tower, the plate, the betrayal.', false, [
+      { era: 3, system: 'rosharan', body: 'roshar' },
+    ]),
+  ch('evi', 'Evi Kholin', '#fde68a', 'stormlight', 'Roshar', 'Evi',
+    'Riran, Dalinar\'s wife',
+    'She asked him to be better. Rathalas answered.', false, [
+      { era: 3, system: 'rosharan', body: 'roshar' },
+    ], { arc: 'oathbringer' }),
+  ch('maya', 'Mayalaran', '#86efac', 'stormlight', 'Roshar', 'Maya',
+    'Deadeye cultivationspren',
+    'Adolin\'s Shardblade, who is not as dead as the Recreance promised.', true, [
+      { era: 3, system: 'rosharan', body: 'roshar' },
+    ], { arc: 'oathbringer' }),
+  ch('timbre', 'Timbre', '#4ade80', 'stormlight', 'Roshar', 'Timbre',
+    'Lightspren, Willshaper bond',
+    'Venli\'s spren, small enough to hide in a gemheart.', true, [
+      { era: 3, system: 'rosharan', body: 'roshar' },
+    ], { arc: 'oathbringer' }),
+  ch('telsin', 'Telsin Ladrian', '#e11d48', 'mistborn2', 'Scadrial', 'Sequence',
+    'Twinborn, Set, avatar of Autonomy',
+    'Wax\'s sister. The Set\'s Sequence. Autonomy looked at her and smiled.', false, [
+      { era: 4, system: 'scadrian', body: 'scadrial' },
+    ], { arc: 'sos' }),
+  ch('arclo', 'Arclo', '#86efac', 'stormlight', 'Roshar', 'Arclo',
+    'Dysian Aimian, Sleepless',
+    'A swarm that sat in Kharbranth\'s Palanaeum and talked philosophy with Lift.', true, [
+      { era: 3, system: 'rosharan', body: 'roshar' },
+    ], { arc: 'edgedancer' }),
+  ch('blushweaver', 'Blushweaver', '#fb7185', 'warbreaker', 'Nalthis', 'Blushweaver the Honest',
+    'Returned',
+    'A goddess of honesty who never wore enough clothing for the job.', false, [
+      { era: 2, system: 'nalthian', body: 'nalthis' },
+    ]),
+  ch('denth', 'Denth', '#64748b', 'warbreaker', 'Nalthis', 'VaraTreledees',
+    'Returned, mercenary',
+    'Vasher\'s brother, once. A smile that hid a thousand Breaths of hurt.', false, [
+      { era: 2, system: 'nalthian', body: 'nalthis' },
+    ]),
+  ch('dilaf', 'Dilaf', '#dc2626', 'elantris', 'Sel', 'Gragdet',
+    'Dakhor monk',
+    'Hrathen\'s arteth, and something older and crueller than Shu-Dereth.', false, [
+      { era: 1, system: 'selish', body: 'sel' },
+    ]),
+  ch('breeze', 'Breeze', '#f59e0b', 'mistborn1', 'Scadrial', 'Ladrian',
+    'Soother',
+    'A nobleman who pushed emotions for a living, and a crew that let him.', false, [
+      { era: 2, system: 'scadrian', body: 'scadrial' },
+    ]),
+  ch('ham', 'Ham', '#78716c', 'mistborn1', 'Scadrial', 'Hammond',
+    'Pewterarm, philosopher',
+    'Thug with a taste for ethics. The crew\'s conscience in a pewter lining.', false, [
+      { era: 2, system: 'scadrian', body: 'scadrial' },
+    ]),
 ];

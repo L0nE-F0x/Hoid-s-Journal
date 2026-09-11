@@ -36,6 +36,25 @@ const SCENES = [
   { name: 'panel · help', setup: (s) => s.set('panel', 'help') },
 ];
 
+/** True when the page still has the app on it. */
+async function alive(page) {
+  try {
+    return await page.evaluate(() => typeof window.__ceph !== 'undefined');
+  } catch {
+    return false;
+  }
+}
+
+async function boot(page, URL) {
+  await page.goto(URL, { waitUntil: 'domcontentloaded', timeout: 40000 });
+  await page.waitForFunction('window.__ceph !== undefined', { timeout: 60000, polling: 200 });
+  await page.evaluate(() => {
+    window.__ceph.ui.enter();
+    window.__ceph.store.set('cameraCue', { kind: 'skip-cinematic' });
+  });
+  await sleep(2200);
+}
+
 async function run() {
   const browser = await puppeteer.launch({
     executablePath, headless: true,
@@ -44,21 +63,17 @@ async function run() {
       '--disable-dev-shm-usage', '--window-size=1512,900'],
   });
   const dead = [];
+  const fatal = [];
   const errors = [];
   try {
     const page = await browser.newPage();
     await page.setViewport({ width: 1512, height: 900 });
     page.on('pageerror', (e) => errors.push(e.message));
     page.on('console', (m) => { if (m.type() === 'error') errors.push(m.text()); });
-    await page.goto(URL, { waitUntil: 'domcontentloaded', timeout: 40000 });
-    await page.waitForFunction('window.__ceph !== undefined', { timeout: 60000, polling: 200 });
-    await page.evaluate(() => {
-      window.__ceph.ui.enter();
-      window.__ceph.store.set('cameraCue', { kind: 'skip-cinematic' });
-    });
-    await sleep(2500);
+    await boot(page, URL);
 
     for (const scene of SCENES) {
+      if (!(await alive(page))) await boot(page, URL);
       await page.evaluate(() => {
         const s = window.__ceph.store;
         s.set('panel', 'none');
@@ -83,6 +98,7 @@ async function run() {
       });
 
       for (let i = 0; i < labels.length; i++) {
+        if (!(await alive(page))) await boot(page, URL);
         const before = await page.evaluate(() => ({
           state: JSON.stringify(window.__ceph.store.state),
           dom: document.getElementById('ui-root').innerHTML.length,
@@ -98,7 +114,18 @@ async function run() {
           return true;
         }, i);
         if (!clicked) continue;
-        await sleep(260);
+        await sleep(200);
+
+        // A control that takes the whole app with it is the loudest kind of
+        // broken, and the sweep used to die on it instead of naming it.
+        if (!(await alive(page))) {
+          fatal.push(`${scene.name.padEnd(16)} ${(labels[i].text || '(icon)').padEnd(26)} ${labels[i].cls.slice(0, 46)}`);
+          await boot(page, URL);
+          await page.evaluate(`(${scene.setup.toString()})(window.__ceph.store)`);
+          await sleep(900);
+          continue;
+        }
+
         const after = await page.evaluate(() => ({
           state: JSON.stringify(window.__ceph.store.state),
           dom: document.getElementById('ui-root').innerHTML.length,
@@ -108,13 +135,17 @@ async function run() {
         }
         // Put the scene back the way the sweep found it.
         await page.evaluate(`(${scene.setup.toString()})(window.__ceph.store)`);
-        await sleep(180);
+        await sleep(140);
       }
     }
   } finally {
     await browser.close();
   }
 
+  if (fatal.length) {
+    console.log(`\n${fatal.length} control(s) TOOK THE APP DOWN when clicked:\n`);
+    for (const f of fatal) console.log('  ' + f);
+  }
   console.log(`\n${dead.length} control(s) changed nothing when clicked:\n`);
   for (const d of dead) console.log('  ' + d);
   if (errors.length) {

@@ -66,3 +66,20 @@
     overflow: auto;
   }
 }
+
+/* Hands auto-fit back after a reader has zoomed or panned. */
+.ceph-web-reset {
+  pointer-events: auto;
+  align-self: flex-start;
+  margin: 10px 0 4px;
+  border: 1px solid var(--ceph-rule);
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--ceph-text-dim);
+  padding: 5px 10px;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.ceph-web-reset:hover { color: var(--ceph-text); border-color: var(--ceph-border-strong); }

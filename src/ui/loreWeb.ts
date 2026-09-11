@@ -46,6 +46,13 @@ export function mountLoreWeb(root: HTMLElement): { destroy(): void } {
   let zoom = 1;
   let panX = 0;
   let panY = 0;
+  /**
+   * Auto-fit holds the whole graph in view, which puts a hundred and thirty
+   * nodes at about a third scale — below the threshold that reveals people's
+   * names. Scrolling or panning hands control over; Reset gives it back.
+   */
+  let manual = false;
+  let panning: { x: number; y: number } | null = null;
 
   const edgeKey = (a: string, b: string) => (a < b ? `${a}|${b}` : `${b}|${a}`);
 
@@ -143,7 +150,13 @@ export function mountLoreWeb(root: HTMLElement): { destroy(): void } {
 
   const paintLegend = () => {
     legend.replaceChildren(el('div', { className: 'ceph-kicker', text: 'Lore Web' }));
-    legend.append(el('div', { className: 'ceph-web-hint', text: 'Click a node. The shortest path to Hoid lights up. Drag to rearrange.' }));
+    legend.append(el('div', {
+      className: 'ceph-web-hint',
+      text: 'Click a node for its path to Hoid. Drag a node to move it, drag the background to pan, scroll to zoom. Names appear as you go in.',
+    }));
+    const reset = el('button', { className: 'ceph-web-reset', text: 'Fit to frame', attrs: { type: 'button' } });
+    listen(reset, 'click', () => { manual = false; });
+    legend.append(reset);
     for (const [type, meta] of Object.entries(REL_TYPES)) {
       const off = hide.has(type);
       const b = el('button', { className: `ceph-web-type${off ? ' is-off' : ''}`, attrs: { type: 'button' } }, [
@@ -206,7 +219,7 @@ export function mountLoreWeb(root: HTMLElement): { destroy(): void } {
    * off the edge of the canvas and the reader never knows it is there.
    */
   const fit = () => {
-    if (!nodes.length) return;
+    if (!nodes.length || manual) return;
     let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
     for (const n of nodes) {
       minX = Math.min(minX, n.x - n.r); maxX = Math.max(maxX, n.x + n.r);
@@ -307,7 +320,7 @@ export function mountLoreWeb(root: HTMLElement): { destroy(): void } {
   const show = () => {
     const on = store.state.view === 'web' && store.state.shell === 'play';
     host.classList.toggle('is-on', on);
-    if (on) { resize(); rebuild(); zoom = 0.5; panX = 0; panY = 0; }
+    if (on) { resize(); rebuild(); zoom = 0.5; panX = 0; panY = 0; manual = false; }
   };
 
   const offs = [
@@ -319,14 +332,47 @@ export function mountLoreWeb(root: HTMLElement): { destroy(): void } {
         store.set('selected', drag.id);
         trace();
         canvas.setPointerCapture(e.pointerId);
+        return;
       }
+      // Empty space drags the view, the way every other map does.
+      panning = { x: e.clientX, y: e.clientY };
+      manual = true;
+      canvas.setPointerCapture(e.pointerId);
+      canvas.style.cursor = 'grabbing';
     }),
     listen(canvas, 'pointermove', (ev) => {
-      if (!drag) return;
-      const p = toLocal(ev as PointerEvent);
-      drag.x = p.x; drag.y = p.y; drag.vx = 0; drag.vy = 0;
+      const e = ev as PointerEvent;
+      if (drag) {
+        const p = toLocal(e);
+        drag.x = p.x; drag.y = p.y; drag.vx = 0; drag.vy = 0;
+        return;
+      }
+      if (!panning) {
+        canvas.style.cursor = hitNode(toLocal(e).x, toLocal(e).y) ? 'pointer' : 'grab';
+        return;
+      }
+      panX += (e.clientX - panning.x) / zoom;
+      panY += (e.clientY - panning.y) / zoom;
+      panning = { x: e.clientX, y: e.clientY };
     }),
-    listen(canvas, 'pointerup', () => { drag = null; }),
+    listen(canvas, 'pointerup', () => {
+      drag = null;
+      panning = null;
+      canvas.style.cursor = 'grab';
+    }),
+    listen(canvas, 'wheel', (ev) => {
+      const e = ev as WheelEvent;
+      e.preventDefault();
+      manual = true;
+      const r = canvas.getBoundingClientRect();
+      // Zoom about the pointer, not the middle, or reading a corner is a chore.
+      const mx = e.clientX - r.left - w / 2;
+      const my = e.clientY - r.top - h / 2;
+      const before = { x: mx / zoom - panX, y: my / zoom - panY };
+      zoom = Math.min(3.2, Math.max(0.18, zoom * (e.deltaY < 0 ? 1.12 : 1 / 1.12)));
+      panX = mx / zoom - before.x;
+      panY = my / zoom - before.y;
+    }, { passive: false }),
     listen(window, 'resize', () => { if (host.classList.contains('is-on')) resize(); }),
     store.on('view', show),
     store.on('shell', show),

@@ -1,9 +1,12 @@
 import {
   COSMERE,
   bodyById,
+  canEnterCity,
   characterById,
+  cityById,
   eraAt,
   isNewThisArc,
+  landmarkById,
   perpAt,
   seriesById,
   sliderToYear,
@@ -26,6 +29,8 @@ function entityById(id: string | null) {
   if (ch) return { kind: 'character' as const, obj: ch };
   const loc = COSMERE.locations.find((l) => l.id === id);
   if (loc) return { kind: 'location' as const, obj: loc };
+  const mark = landmarkById[id];
+  if (mark) return { kind: 'landmark' as const, obj: mark };
   const sh = COSMERE.shards.find((s) => s.id === id);
   if (sh) return { kind: 'shard' as const, obj: sh };
   return null;
@@ -147,7 +152,10 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
     const sys = s.focusedSystem ? COSMERE.systems.find((x) => x.id === s.focusedSystem)?.name : null;
     const body = s.focusedBody ? bodyById[s.focusedBody]?.name : null;
     const loc = s.focusedLocation ? COSMERE.locations.find((l) => l.id === s.focusedLocation)?.name : null;
-    const trail = ['Cosmere', sys, body, loc].filter(Boolean).join(' · ');
+    const grain = s.scale === 'city'
+      ? (s.focusedLocation && cityById[s.focusedLocation] ? 'city plate' : 'local scan')
+      : null;
+    const trail = ['Cosmere', sys, body, loc, grain].filter(Boolean).join(' · ');
     scaleLabel.textContent = `${trail} · ${realm}`;
   };
 
@@ -218,6 +226,23 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
           el('div', { text: perp.fact }),
         ]));
       }
+      if (canEnterCity(l, store.state.era, store.state.realm) && store.state.scale !== 'city') {
+        const go = el('button', {
+          className: 'ceph-btn ceph-btn--primary',
+          text: cityById[l.id] ? 'Open the city plate' : 'Look closer',
+          style: { marginTop: '14px' },
+        });
+        listen(go, 'click', () => store.set('cameraCue', { kind: 'focus', id: l.id, scale: 'city' }));
+        drawer.append(go);
+      }
+    } else if (hit.kind === 'landmark') {
+      const m = hit.obj;
+      const city = COSMERE.locations.find((l) => l.id === m.city);
+      drawer.append(
+        el('div', { className: 'ceph-kicker', text: city?.name ?? m.city }),
+        el('h2', { text: m.name }),
+        el('p', { className: 'ceph-fact', text: m.desc }),
+      );
     } else if (hit.kind === 'character') {
       const c = hit.obj;
       drawer.append(

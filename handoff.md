@@ -15,13 +15,12 @@ Architecture lock: `AGENTS.md` + `DESIGN.md`. This file is only the live todo.
 
 # ▶ START HERE — next session
 
-**2026-09-11 (later) — framing, the atlas link, picking, the reading
-companion, both other Realms, a phone layout, the offline shell and an
-interaction test. Ten commits, local only, no remote yet.**
+**2026-09-11 (evening) — city plates, geography that matches the pins,
+and deep links that actually restore a place. Local `master`, no remote
+yet.**
 
-The engine flies and a focused world now reads as a portrait. Open this file,
-run the app, pick the highest item under **Do next**, ship it, verify with
-`npm run shot`.
+The nested zoom now goes all the way down. Open this file, run the app, pick
+the highest item under **Do next**, ship it, verify with `npm run shot`.
 
 ```bash
 cd /home/lonefox/Projects/Cephandrius
@@ -44,6 +43,33 @@ with every shot.
 Git: first commit is **done** (local `master`, still **no remote**).
 
 ## What changed this session
+
+### Seventh pass — city scale is a nested layer
+
+- **City plates.** Urithiru, Kholinar, Kharbranth, Luthadel, Elendel,
+  Elantris, T'Telir, Kilahito, Kezare, Beacon and Union each have an original
+  plate. Landmarks are data with UVs on *our* plate, spoiler-gated like
+  everything else. The atlas draws the plate; the globe stays as context.
+- **A second click dives.** Globe → surface → city, one scale per click.
+  Places without a plate get a local crop of the same world map, so
+  Hearthstone is still a place you can stand in. Continents and seas stay
+  at surface. `Esc` already knew city → surface.
+- Codex search hits a plated city (or a landmark) and flies to the plate.
+  The drawer offers "Open the city plate" from the surface.
+
+### Sixth pass — geography and deep links (landed, then the session died)
+
+- **Worlds have continents now.** `planetMap` recipes place landmasses where
+  the pins actually are; noise only frays the coastline. Roshar is one
+  supercontinent, Sel has Teod off its own peninsula, the Pantheon is an
+  archipelago, Scadrial changes shape across the Catacendre. Shadesmar
+  inherits the mask, so the bead ocean is the shape of the land.
+- **Deep links are a save state.** The hash carries `loc` and `reading`, and
+  opening one flies to what it names instead of playing the intro. The title
+  screen still stands in front, because that is where the disclaimer lives.
+- Framing bug the links exposed: a subject framed before the HUD exists was
+  framed for the wrong rectangle. The camera re-fits when the free rectangle
+  changes, and stops the moment the reader takes the zoom.
 
 ### Fifth pass — connections, phones, ship path
 
@@ -221,9 +247,10 @@ Scan as a second scale, deep links, Hoid as the journal’s voice.
 - Codex search, name-ranked (exact “Roshar” no longer opens Ashyn).
 - Screen-space picking: single clicks dive Cosmere → system → globe →
   surface at any distance; `Esc` walks back out.
-- Surface atlas overlay: unwrapped biome map, collision-placed labels,
+- Surface atlas overlay: unwrapped biome map with placed continents, collision-placed labels,
   highstorm band on Roshar, era-true character chips. Pins are two-way: map to
-  globe and globe to map.
+  globe and globe to map. City scale: original plates for the named cities,
+  a local crop everywhere else you can stand.
 - Scadrial biome swap (ash → basin, sky and caps with it) when era ≥ 3.
 - Character motes on their current world, sized to a few pixels at any scale.
   Shard lines Yolen → current seat.
@@ -232,8 +259,9 @@ Scan as a second scale, deep links, Hoid as the journal’s voice.
 - Cognitive Realm: a baked Shadesmar map (bead ocean / glass plains) on the
   globe and in the atlas. Spiritual Realm: a framed diagram — core, sixteen
   named Shards with per-era status, three axes, clickable.
-- Deep-link hash (`#y=&realm=&scale=&system=&body=`). Progress + visual in
-  localStorage.
+- Deep-link hash (`#y=&realm=&scale=&system=&body=&loc=&reading=`). A shared
+  link restores the place and the beat; the title screen still gates it.
+  Progress + visual in localStorage.
 - PWA: manifest, offline shell (`public/sw.js`), install prompt in Look.
 - Harnesses: `npm run shot` (capture), `npm run test:interaction` (17 checks
   through real input), `npm run og` (social card).
@@ -243,22 +271,23 @@ Scan as a second scale, deep links, Hoid as the journal’s voice.
 
 ## Do next (priority order)
 
-Work top-down. Do not start a city layer or a Lore Web while the atlas still
-feels like a prototype.
+Work top-down. Do not start a Lore Web while the atlas still wants more
+places and more honest maps.
 
-### 1. City scale, and the rest of the atlas
+### 1. The rest of the atlas
 
-The map-to-globe link works. What is left is depth.
+City scale exists. What is left is depth and honesty.
 
-- City scale is specified (`scale: 'city'`) and **empty**. `Esc` already pops
-  city → surface → globe. Original city plates (procedural or generated,
-  never scans): Urithiru, Kholinar, Luthadel/Elendel, T'Telir, Elantris.
+- ~~City plates for the named cities~~ **done** (Urithiru, Kholinar,
+  Kharbranth, Luthadel, Elendel, Elantris, T'Telir, Kilahito, Kezare,
+  Beacon, Union). A local crop covers everywhere else you can stand.
+  More plates (Narak, Azimir, Fadrex) if a reread actually reaches for them.
 - Location coverage is better but still thin on Komashi, Canticle, Threnody
   and First of the Sun. Add only names you can source; the canon badge is
   supposed to mean something.
-- The atlas map is procedural noise. It reads as a world but it is not *that*
-  world: continents do not correspond to the pins on them. Deciding how far to
-  take original cartography is the open product question here.
+- Continents now sit under their pins. They are still *our* shapes — deciding
+  how far to take original cartography is the open product question. Do not
+  trace Isaac Stewart.
 
 ### 2. Realms: what is left
 

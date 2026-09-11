@@ -153,7 +153,9 @@ export class Pins {
       const d = camera.position.distanceTo(sprite.position);
       const isHot = loc.id === hot;
       const size = Math.min(1.2, Math.max(0.03, d * 0.017));
+      const dim = scale === 'city' && !!hot && loc.id !== hot;
       sprite.scale.setScalar(size * (isHot ? 1.7 : 1));
+      (sprite.material as THREE.SpriteMaterial).opacity = dim ? 0.28 : 1;
       if (isHot) {
         hotPos = sprite.position;
         hotName = loc.name;

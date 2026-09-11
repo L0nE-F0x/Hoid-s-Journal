@@ -3,8 +3,10 @@ import {
   bodyById,
   characterAt,
   characterById,
+  cityById,
   isNewThisArc,
   isVisible,
+  landmarkById,
   publicationSafeProgress,
   seriesById,
 } from '../data/index.ts';
@@ -114,6 +116,7 @@ function renderCodex(card: HTMLElement): void {
     for (const m of COSMERE.magics) push(m.id, m.name, 'magic', m.desc, m);
     for (const g of COSMERE.glossary) push(g.id, g.term, 'term', g.def, g);
     for (const l of COSMERE.locations) push(l.id, l.name, 'place', l.desc, l);
+    for (const m of Object.values(landmarkById)) push(m.id, m.name, 'place', m.desc, m);
     hits.sort((a, b) => {
       const score = (h: { label: string }) => {
         const n = h.label.toLowerCase();
@@ -145,7 +148,16 @@ function renderCodex(card: HTMLElement): void {
           return;
         }
         if (COSMERE.locations.some((l) => l.id === h.id)) {
-          store.set('cameraCue', { kind: 'focus', id: h.id, scale: 'surface' });
+          store.set('cameraCue', {
+            kind: 'focus', id: h.id,
+            scale: cityById[h.id] ? 'city' : 'surface',
+          });
+          return;
+        }
+        const mark = landmarkById[h.id];
+        if (mark) {
+          store.set('cameraCue', { kind: 'focus', id: mark.city, scale: 'city' });
+          store.set('selected', mark.id);
           return;
         }
         const ch = characterById[h.id];

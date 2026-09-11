@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { COSMERE, bodyById, characterAt, eraAt, isVisible } from '../data/index.ts';
+import { COSMERE, bodyById, canEnterCity, characterAt, eraAt, isVisible } from '../data/index.ts';
 import { uvFacing, uvOnBody } from '../layout/surface.ts';
 import { CameraRig, type Waypoint } from './CameraRig.ts';
 import { store, type CameraCue, type Scale } from './store.ts';
@@ -426,7 +426,11 @@ export class App {
     }
     if (hit.kind === 'location') {
       const loc = COSMERE.locations.find((l) => l.id === hit.id);
-      if (loc) this.focusLocation(loc.id, loc.body, 'surface');
+      if (!loc) return;
+      const dive = s.focusedLocation === loc.id
+        && (s.scale === 'surface' || s.scale === 'city')
+        && canEnterCity(loc, s.era, s.realm);
+      this.focusLocation(loc.id, loc.body, dive ? 'city' : 'surface');
       return;
     }
     if (hit.kind === 'system') {
@@ -481,8 +485,9 @@ export class App {
     this.orrery.setSpinLock(bodyId, theta - face.theta);
     // Soften a polar stare a little; a globe reads better near the equator.
     this.rig.setAngles(theta, Math.PI / 2 + (face.phi - Math.PI / 2) * 0.85);
-    const dist = this.rig.framingDistance(body.radius, 0.74);
-    this.framing = { radius: body.radius, fill: 0.74, commanded: dist };
+    const fill = scale === 'city' ? 0.86 : 0.74;
+    const dist = this.rig.framingDistance(body.radius, fill);
+    this.framing = { radius: body.radius, fill, commanded: dist };
     this.rig.flyTo(p, dist, 2.0);
   }
 

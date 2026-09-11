@@ -176,6 +176,38 @@ export interface Location extends Cited {
   eraMaps?: string[];
 }
 
+/** A named feature on an original city plate. UVs are 0..1 on *our* plate. */
+export interface CityLandmark {
+  id: string;
+  city: string;
+  name: string;
+  u: number;
+  v: number;
+  color: string;
+  desc: string;
+  book?: string;
+  arc?: string;
+}
+
+export type CityKind =
+  | 'urithiru'
+  | 'kholinar'
+  | 'kharbranth'
+  | 'luthadel'
+  | 'elendel'
+  | 'elantris'
+  | 'ttelir'
+  | 'kilahito'
+  | 'kezare'
+  | 'hover';
+
+export interface CityPlate {
+  id: string;
+  kind: CityKind;
+  kicker: string;
+  landmarks: CityLandmark[];
+}
+
 export interface Perpendicularity extends Cited {
   id: string;
   name: string;

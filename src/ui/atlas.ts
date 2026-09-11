@@ -1,9 +1,13 @@
+import { bakeCityMap } from '../cartography/cityMap.ts';
 import { bakePlanetMap, seedFromId } from '../cartography/planetMap.ts';
 import {
   bodyById,
+  canEnterCity,
   charactersOnBody,
+  cityById,
   isNewThisArc,
   isVisible,
+  landmarkById,
   locationsOn,
   scadrialBiome,
 } from '../data/index.ts';
@@ -13,6 +17,23 @@ import '../styles/atlas.css';
 
 const W = 800;
 const H = 400;
+/** How much of the world map a local scan covers, in UV. */
+const LOCAL_U = 0.20;
+const LOCAL_V = 0.20;
+
+function wrapDelta(du: number): number {
+  if (du > 0.5) return du - 1;
+  if (du < -0.5) return du + 1;
+  return du;
+}
+
+/** World-map UV → local-scan UV, or null if the pin is outside the window. */
+function localUv(focusU: number, focusV: number, u: number, v: number): { u: number; v: number } | null {
+  const lu = 0.5 + wrapDelta(u - focusU) / LOCAL_U;
+  const lv = 0.5 + (v - focusV) / LOCAL_V;
+  if (lu < 0 || lu > 1 || lv < 0 || lv > 1) return null;
+  return { u: lu, v: lv };
+}
 
 /** The atlas is on whenever a world is the subject and we are down at it. */
 export function atlasIsOpen(): boolean {
@@ -74,14 +95,68 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
     });
   };
 
-  const composeMap = () => {
+  const worldMap = () => {
     const s = store.state;
     const body = s.focusedBody ? bodyById[s.focusedBody] : undefined;
-    const ctx = mapLayer.getContext('2d');
-    if (!ctx || !body) return;
+    if (!body) return null;
     const biome = body.id === 'scadrial' ? scadrialBiome(s.era) : body.biome;
-    const cognitive = s.realm === 'cognitive';
-    ctx.drawImage(bakePlanetMap(biome, seedFromId(body.id), 1024, 512, cognitive), 0, 0, W, H);
+    return bakePlanetMap(biome, seedFromId(body.id), 1024, 512, s.realm === 'cognitive');
+  };
+
+  const blitLocal = (ctx: CanvasRenderingContext2D, map: HTMLCanvasElement, fu: number, fv: number) => {
+    const mw = map.width;
+    const mh = map.height;
+    const sw = LOCAL_U * mw;
+    const sh = LOCAL_V * mh;
+    const sx = (((fu - LOCAL_U / 2) % 1) + 1) % 1 * mw;
+    const sy = Math.max(0, Math.min(mh - sh, (fv - LOCAL_V / 2) * mh));
+    if (sx + sw <= mw) {
+      ctx.drawImage(map, sx, sy, sw, sh, 0, 0, W, H);
+      return;
+    }
+    const w1 = mw - sx;
+    const frac = w1 / sw;
+    ctx.drawImage(map, sx, sy, w1, sh, 0, 0, W * frac, H);
+    ctx.drawImage(map, 0, sy, sw - w1, sh, W * frac, 0, W * (1 - frac), H);
+  };
+
+  const composeMap = () => {
+    const s = store.state;
+    const ctx = mapLayer.getContext('2d');
+    if (!ctx) return;
+    ctx.clearRect(0, 0, W, H);
+    if (s.scale === 'city' && s.focusedLocation) {
+      const plate = bakeCityMap(s.focusedLocation, W, H);
+      if (plate) {
+        ctx.drawImage(plate, 0, 0, W, H);
+        return;
+      }
+      const loc = locationsOn(s.focusedBody ?? '', s.era).find((l) => l.id === s.focusedLocation);
+      const map = worldMap();
+      if (loc && map) { blitLocal(ctx, map, loc.u, loc.v); return; }
+    }
+    const map = worldMap();
+    if (map) ctx.drawImage(map, 0, 0, W, H);
+  };
+
+  const pinRows = (): { id: string; name: string; u: number; v: number; color: string }[] => {
+    const s = store.state;
+    if (s.scale === 'city' && s.focusedLocation && cityById[s.focusedLocation]) {
+      return cityById[s.focusedLocation]!.landmarks
+        .filter((m) => isVisible(m, s.readProgress))
+        .map((m) => ({ id: m.id, name: m.name, u: m.u, v: m.v, color: m.color }));
+    }
+    if (s.scale === 'city' && s.focusedLocation) {
+      const focus = visibleLocations().find((l) => l.id === s.focusedLocation);
+      if (!focus) return [];
+      const rows = [];
+      for (const loc of visibleLocations()) {
+        const uv = localUv(focus.u, focus.v, loc.u, loc.v);
+        if (uv) rows.push({ id: loc.id, name: loc.name, u: uv.u, v: uv.v, color: loc.color });
+      }
+      return rows;
+    }
+    return visibleLocations().map((l) => ({ id: l.id, name: l.name, u: l.u, v: l.v, color: l.color }));
   };
 
   /**
@@ -94,7 +169,7 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
     const ctx = pinLayer.getContext('2d');
     if (!ctx) return;
     ctx.clearRect(0, 0, W, H);
-    const rows = visibleLocations();
+    const rows = pinRows();
     const isHot = (id: string) => s.selected === id || s.hovered === id || s.focusedLocation === id;
 
     for (const loc of rows) {
@@ -143,6 +218,20 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
     const s = store.state;
     roster.replaceChildren();
     if (!s.focusedBody) return;
+    const plate = s.scale === 'city' && s.focusedLocation ? cityById[s.focusedLocation] : undefined;
+    if (plate) {
+      roster.append(el('div', { className: 'ceph-kicker', text: 'On this plate', style: { width: '100%' } }));
+      for (const m of plate.landmarks) {
+        if (!isVisible(m, s.readProgress)) continue;
+        const chip = el('button', {
+          className: 'ceph-atlas-chip',
+          text: m.name,
+          style: { borderColor: m.color },
+        });
+        listen(chip, 'click', () => store.set('selected', m.id));
+        roster.append(chip);
+      }
+    }
     const people = charactersOnBody(s.focusedBody, s.era).filter((c) => isVisible(c, s.readProgress));
     if (people.length) {
       roster.append(el('div', { className: 'ceph-kicker', text: 'Present this era', style: { width: '100%' } }));
@@ -166,7 +255,7 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
     if (!ctx) return;
     ctx.drawImage(mapLayer, 0, 0);
 
-    if (s.focusedBody === 'roshar' && s.realm === 'physical') {
+    if (s.focusedBody === 'roshar' && s.realm === 'physical' && s.scale !== 'city') {
       const t = (performance.now() / 1000) * 0.022;
       const x = ((0.5 - (t % 1) + 1) % 1) * W;
       const g = ctx.createLinearGradient(x - 28, 0, x + 28, 0);
@@ -188,7 +277,16 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
     if (!show || !s.focusedBody) return;
     const body = bodyById[s.focusedBody];
     if (!body) return;
-    title.textContent = s.realm === 'cognitive' ? `${body.name} · Shadesmar` : body.name;
+    const loc = s.focusedLocation
+      ? visibleLocations().find((l) => l.id === s.focusedLocation)
+      : undefined;
+    if (s.scale === 'city' && loc) {
+      kicker.textContent = cityById[loc.id] ? 'City plate' : 'Local scan';
+      title.textContent = loc.name;
+    } else {
+      kicker.textContent = 'Cartography';
+      title.textContent = s.realm === 'cognitive' ? `${body.name} · Shadesmar` : body.name;
+    }
     composeMap();
     composePins();
     composeRoster();
@@ -200,17 +298,27 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
     const u = (ev.clientX - rect.left) / rect.width;
     const v = (ev.clientY - rect.top) / rect.height;
     let best: { id: string; d: number } | null = null;
-    for (const loc of visibleLocations()) {
-      const d = Math.hypot(loc.u - u, loc.v - v);
-      if (d < 0.045 && (!best || d < best.d)) best = { id: loc.id, d };
+    for (const row of pinRows()) {
+      const d = Math.hypot(row.u - u, row.v - v);
+      if (d < 0.045 && (!best || d < best.d)) best = { id: row.id, d };
     }
     if (!best) {
       if (!click && store.state.hovered) store.set('hovered', null);
       return;
     }
-    // A pin on the map is a place on the world: turn the globe to face it.
-    if (click) store.set('cameraCue', { kind: 'focus', id: best.id, scale: 'surface' });
-    else store.set('hovered', best.id);
+    if (!click) { store.set('hovered', best.id); return; }
+    const s = store.state;
+    const landmark = landmarkById[best.id];
+    if (landmark) {
+      store.set('selected', landmark.id);
+      return;
+    }
+    const loc = visibleLocations().find((l) => l.id === best.id);
+    if (!loc) return;
+    const dive = s.focusedLocation === loc.id
+      && (s.scale === 'surface' || s.scale === 'city')
+      && canEnterCity(loc, s.era, s.realm);
+    store.set('cameraCue', { kind: 'focus', id: loc.id, scale: dive ? 'city' : 'surface' });
   };
 
   const offs = [
@@ -225,7 +333,10 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
     store.on('shell', refresh),
     store.on('selected', () => { composePins(); paint(); }),
     store.on('hovered', () => { composePins(); paint(); }),
-    store.on('focusedLocation', () => { composePins(); paint(); }),
+    store.on('focusedLocation', () => {
+      if (store.state.scale === 'city') refresh();
+      else { composePins(); paint(); }
+    }),
     store.on('readProgress', refresh),
     store.on('readingNow', refresh),
   ];

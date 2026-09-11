@@ -1,5 +1,6 @@
 import { BODIES, ERAS, MOONS, PUB_ORDER, SERIES, SYSTEMS, TIMELINE_NOTE, WORLD_EPOCHS } from './catalog.ts';
 import { CHARACTERS } from './characters.ts';
+import { CITY_PLATES, cityById, landmarkById } from './cities.ts';
 import { GLOSSARY } from './glossary.ts';
 import { LOCATIONS, PERPS } from './locations.ts';
 import { MAGICS } from './magics.ts';
@@ -7,6 +8,8 @@ import { SHARDS } from './shards.ts';
 import type {
   Body, Character, CharacterEra, Cosmere, Location, Perpendicularity, Series,
 } from './types.ts';
+
+export { CITY_PLATES, cityById, landmarkById };
 
 export type { Cosmere } from './types.ts';
 export * from './types.ts';
@@ -137,6 +140,24 @@ export function locationsOn(bodyId: string, era?: number): Location[] {
     }
     return true;
   });
+}
+
+/** Continents and seas stay at surface; a place you can stand in can go closer. */
+const REGION_ICONS = new Set(['land', 'sea', 'storm', 'grass', 'forest', 'peak', 'lake', 'scroll']);
+
+/**
+ * City scale is a nested layer: an original plate if we drew one, otherwise
+ * a crop of the same world map the globe is using.
+ */
+export function canEnterCity(
+  loc: Location, era?: number, realm?: string,
+): boolean {
+  if (loc.realm === 'cognitive' || realm === 'cognitive' || realm === 'spiritual') return false;
+  if (era !== undefined && loc.eraMaps && !locationsOn(loc.body, era).some((l) => l.id === loc.id)) {
+    return false;
+  }
+  if (cityById[loc.id]) return true;
+  return !REGION_ICONS.has(loc.icon);
 }
 
 /** The perpendicularity standing at a place, if the geography is known. */

@@ -103,6 +103,7 @@ async function capture(flags, label) {
         fps: Math.round(s.stats.fps),
         scale: s.scale,
         body: s.focusedBody,
+        loc: s.focusedLocation,
         insets: s.insets,
       };
     });
@@ -110,7 +111,7 @@ async function capture(flags, label) {
     await shoot(page);
     console.error(
       `[${label}] renderer=${info.renderer} fps=${info.fps} scale=${info.scale} ` +
-      `body=${info.body} insets=${JSON.stringify(info.insets)} -> ${OUT}`,
+      `body=${info.body} loc=${info.loc} insets=${JSON.stringify(info.insets)} -> ${OUT}`,
     );
     const noise = logs.filter((l) => !/vite|hmr/i.test(l));
     if (noise.length) console.error('--- console ---\n' + noise.slice(0, 30).join('\n'));

@@ -159,6 +159,30 @@ async function run() {
       at = await screenOf(page, "a.pins.markerPosition('urithiru')");
       off = at ? Math.hypot(at.x - centre.x, at.y - centre.y) : 999;
       check('the place it names faces the camera', off < 60, `${Math.round(off)}px off`);
+      await page.mouse.click(pin.x, pin.y);
+      await settle(page);
+      s = await state(page);
+      check('a second click opens the city plate', s.scale === 'city' && s.focusedLocation === 'urithiru',
+        `${s.scale}/${s.focusedLocation}`);
+      const plateTitle = await page.evaluate(() => document.querySelector('.ceph-atlas-title')?.textContent);
+      check('city plate is titled for the place', plateTitle === 'Urithiru', String(plateTitle));
+      const atrium = await page.evaluate(() => {
+        const c = document.querySelector('.ceph-atlas-canvas');
+        if (!c) return null;
+        const r = c.getBoundingClientRect();
+        return { x: r.left + r.width * 0.42, y: r.top + r.height * 0.52 };
+      });
+      if (atrium) {
+        await page.mouse.click(atrium.x, atrium.y);
+        await sleep(250);
+        s = await state(page);
+        check('a landmark on the plate selects', s.selected === 'urithiru-atrium', s.selected);
+      }
+      await page.keyboard.press('Escape');
+      await settle(page);
+      s = await state(page);
+      check('Esc pops city → surface', s.scale === 'surface' && s.focusedLocation === 'urithiru',
+        `${s.scale}/${s.focusedLocation}`);
     }
 
     // Esc walks back out, one scale at a time.

@@ -176,10 +176,28 @@ export class Orrery {
     }
   }
 
+  /**
+   * Ten gas giants named after the Vorin numerals share three bakes between
+   * them and are told apart by a tint. Ten separate plate pairs for worlds
+   * nobody lands on is memory spent on the wrong thing, and one bake for all
+   * ten would make the outer system a row of identical blue marbles.
+   */
+  private plateSeed(body: Body): number {
+    if (body.kind !== 'gas-giant') return seedFromId(body.id);
+    return 11 + (seedFromId(body.id) % 3) * 29;
+  }
+
+  private plateTint(body: Body): THREE.Color {
+    if (body.kind !== 'gas-giant') return new THREE.Color(0xffffff);
+    // Toward the world's own colour, but not all the way: the bands still
+    // have to read as cloud rather than as a flat wash.
+    return new THREE.Color(0xffffff).lerp(new THREE.Color(body.color), 0.88).multiplyScalar(1.15);
+  }
+
   private makePlanetMat(body: Body): THREE.ShaderMaterial {
     const biome = biomeOf(body, 0);
     const recipe = recipeFor(biome);
-    const plates = planetPlates(this.renderer, biome, seedFromId(body.id), false, PLATE_SMALL);
+    const plates = planetPlates(this.renderer, biome, this.plateSeed(body), false, PLATE_SMALL);
     // Each system's light carries its own star's colour, part way: full
     // saturation would repaint the world, none of it makes every sky the same.
     const sun = new THREE.Color(0xfff1d0);
@@ -212,6 +230,7 @@ export class Orrery {
         uRingAxis: { value: new THREE.Vector3(0, 1, 0) },
         uRingInner: { value: RINGED[body.id]?.[0] ?? 0 },
         uRingOuter: { value: RINGED[body.id]?.[1] ?? 0 },
+        uTint: { value: this.plateTint(body) },
       },
       vertexShader: planetVert,
       fragmentShader: planetFrag,
@@ -232,7 +251,9 @@ export class Orrery {
         uniforms: {
           uCentre: { value: new THREE.Vector3() },
           uSunPos: { value: new THREE.Vector3() },
-          uSunColor: { value: new THREE.Color(0xffffff) },
+          uSunColor: { value: gas
+            ? new THREE.Color(0xffffff).lerp(new THREE.Color(body.color), 0.45)
+            : new THREE.Color(0xffffff) },
           uPlanetRadius: { value: body.radius },
           uAtmoRadius: { value: body.radius * shell },
           uDensity: { value: gas ? 1.5 : 1.25 },
@@ -505,7 +526,7 @@ export class Orrery {
       budget--;
       node.skin = skin;
       const size = node.body.id === this.detailed ? PLATE_LARGE : PLATE_SMALL;
-      const plates = planetPlates(this.renderer, kind, seedFromId(node.body.id), shadesmar, size);
+      const plates = planetPlates(this.renderer, kind, this.plateSeed(node.body), shadesmar, size);
       const recipe = recipeFor(kind);
       node.mat.uniforms.uAlbedo.value = plates.albedo;
       node.mat.uniforms.uData.value = plates.data;

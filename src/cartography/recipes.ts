@@ -212,9 +212,12 @@ export const RECIPES: Record<string, Recipe> = {
       [0.38, 0.49, 0.02, 0.024, 0.8], [0.28, 0.62, 0.030, 0.030, 0.7],
     ],
   },
+  // Neutral on purpose. Ten gas giants share three bakes and are told apart
+  // by a per-world tint in the planet shader; a blue plate multiplied by a
+  // green tint is murk, not a green world.
   gas: {
-    land: '#3b82f6', land2: '#1e3a8a', land3: '#93c5fd',
-    ocean: '#0f172a', oceanDeep: '#060b16',
+    land: '#c2ccdb', land2: '#78808f', land3: '#eef3fa',
+    ocean: '#39414f', oceanDeep: '#222833',
     threshold: 0.5, warp: 0.8, bands: true, relief: 0.25, ridges: 0,
     clouds: 0, specular: 0, ice: 0,
   },

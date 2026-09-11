@@ -26,6 +26,8 @@ uniform float uRingShadow;
 uniform vec3  uRingAxis;
 uniform float uRingInner;
 uniform float uRingOuter;
+/** Multiplies the plate. Lets worlds share a bake and still look unalike. */
+uniform vec3  uTint;
 
 varying vec3 vWorld;
 varying vec3 vNormal;
@@ -75,7 +77,7 @@ float cloudField(vec3 p, float t) {
 void main() {
   vec3 n = normalize(vNormal);
   vec4 base = texture2D(uAlbedo, vUv);
-  vec3 albedo = base.rgb;
+  vec3 albedo = base.rgb * uTint;
   vec4 data = texture2D(uData, vUv);
   float water = data.g;
   float lights = data.b;

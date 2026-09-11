@@ -70,7 +70,7 @@ headless Chrome at 60fps and prints `fps`, `scale`, `body`, and `insets`.
 `window.__ceph = { store, app, ui }` is the harness handle only.
 
 Last known green: `npx tsc --noEmit`, `npm run build`, and
-`npm run test:interaction` (**32/32**) with `npm run dev` already up.
+`npm run test:interaction` (**36/36**) with `npm run dev` already up.
 Re-run those if you touch code.
 
 `npm run perf` prints frames per second at Cosmere, in Shadesmar, in the
@@ -191,7 +191,7 @@ Treat this as current truth, not a wishlist.
 - Reading Companion, Codex, Arcanum (12 tables), Share, time speed, galaxy
   minimap, soundtrack, PWA.
 - Deep-link hash `#y=&realm=&scale=&system=&body=&loc=&reading=`.
-- Harnesses: `npm run shot`, `npm run test:interaction` (32 checks),
+- Harnesses: `npm run shot`, `npm run test:interaction` (36 checks),
   `npm run perf`, `npm run bench`.
 
 ### What the atlas holds
@@ -261,7 +261,13 @@ Written down so the next session does not rediscover them:
 - **Disc geometry is unit-radius**, scaled by the model matrix. A shader
   reading `position.xy` gets 0..1, not world units. That bug hid two others
   before it was found.
-- **A black sky with a working HUD is a lost WebGL context.** Every DOM panel
+- **Exactly one enabled pass may render to the canvas, and there must always
+  be one.** `EffectComposer.addPass` hands that job to whichever pass was
+  added last. Disabling SMAA on the low quality band therefore left the whole
+  chain drawing into a buffer nobody read: a black canvas over a working HUD
+  at 132fps. `routeOutput()` in `post.ts` owns this, and
+  `test:interaction` asserts it for every band.
+- **A black sky with a working HUD can also be a lost WebGL context.** Every DOM panel
   keeps running, so it reads as "the app is fine, the Cosmere is missing".
   `webglcontextlost` is handled now and says so on screen; `__ceph.diagnose()`
   prints the driver, the drawing buffer, the program count and the fault.

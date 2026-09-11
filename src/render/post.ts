@@ -149,13 +149,26 @@ export function createPostChain(
   });
 
   const grade = new GradeEffect();
-  composer.addPass(new EffectPass(camera, streak, bloom, chromatic, vignette, grain, toneMapping, grade));
+  const mainPass = new EffectPass(camera, streak, bloom, chromatic, vignette, grain, toneMapping, grade);
+  composer.addPass(mainPass);
 
   // Edges last, on the graded image. The globes are smooth spheres against a
   // near-black sky; without this every limb crawls.
   const smaa = new SMAAEffect({ preset: SMAAPreset.HIGH });
   const smaaPass = new EffectPass(camera, smaa);
   composer.addPass(smaaPass);
+
+  /**
+   * Exactly one enabled pass may render to the canvas, and there must always
+   * be one. `addPass` hands that job to whichever pass was added last, so
+   * simply disabling SMAA on the low quality band left the composer drawing
+   * into a buffer nobody read — a black canvas over a working HUD, at a
+   * suspiciously high frame rate.
+   */
+  const routeOutput = (): void => {
+    smaaPass.renderToScreen = smaaPass.enabled;
+    mainPass.renderToScreen = !smaaPass.enabled;
+  };
 
   // Each Realm gets its own grade. Shadesmar has no sun, so its picture is
   // cooler, flatter and further into the violet; the Spiritual Realm is all
@@ -167,6 +180,8 @@ export function createPostChain(
   } as const;
   let realm: keyof typeof GRADES = 'physical';
   let bloomScale = 1;
+
+  routeOutput();
 
   return {
     composer,
@@ -194,6 +209,7 @@ export function createPostChain(
       streak.blendMode.opacity.value = band === 'low' ? 0 : 1;
       (streak.uniforms.get('uStrength')!).value = band === 'low' ? 0 : band === 'medium' ? 0.35 : 0.55;
       smaaPass.enabled = band !== 'low';
+      routeOutput();
     },
     setSize: (w, h) => {
       composer.setSize(w, h);

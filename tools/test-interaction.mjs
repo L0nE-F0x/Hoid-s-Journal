@@ -255,6 +255,22 @@ async function run() {
     await settle(page);
     check('V leaves it again', (await state(page)).realm === 'physical');
 
+    // Every quality band must still reach the canvas. Disabling the last
+    // pass once left the composer drawing into a buffer nobody read, which
+    // looks exactly like a working app with the Cosmere missing.
+    for (const band of ['low', 'medium', 'high', 'auto']) {
+      const out = await page.evaluate((q) => {
+        window.__ceph.store.set('visual', { ...window.__ceph.store.state.visual, quality: q });
+        const passes = window.__ceph.app.post.composer.passes;
+        const onScreen = passes.filter((p) => p.enabled && p.renderToScreen);
+        return { n: onScreen.length, last: passes[passes.length - 1].enabled };
+      }, band);
+      check(`quality ${band} still reaches the canvas`, out.n === 1, `${out.n} passes render to screen`);
+    }
+    await page.evaluate(() => {
+      window.__ceph.store.set('visual', { ...window.__ceph.store.state.visual, quality: 'auto' });
+    });
+
     // Reading companion gates the sky.
     await page.evaluate(() => window.__ceph.store.set('panel', 'spoilers'));
     await sleep(400);

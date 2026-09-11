@@ -73,36 +73,58 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
     ctx.drawImage(bakePlanetMap(biome, seedFromId(body.id)), 0, 0, W, H);
   };
 
+  /**
+   * Pins first, then as many names as fit. A crowded continent gets dots and
+   * the names that do not collide, rather than a wall of overlapping text; the
+   * selected place always keeps its label.
+   */
   const composePins = () => {
     const s = store.state;
     const ctx = pinLayer.getContext('2d');
     if (!ctx) return;
     ctx.clearRect(0, 0, W, H);
-    for (const loc of visibleLocations()) {
+    const rows = visibleLocations();
+    const isHot = (id: string) => s.selected === id || s.hovered === id || s.focusedLocation === id;
+
+    for (const loc of rows) {
       const px = loc.u * W;
       const py = loc.v * H;
-      const hot = s.selected === loc.id || s.hovered === loc.id || s.focusedLocation === loc.id;
+      const hot = isHot(loc.id);
       if (hot) {
         ctx.beginPath();
-        ctx.arc(px, py, 13, 0, Math.PI * 2);
+        ctx.arc(px, py, 18, 0, Math.PI * 2);
         ctx.strokeStyle = 'rgba(234,244,255,0.85)';
-        ctx.lineWidth = 1.5;
+        ctx.lineWidth = 2;
         ctx.stroke();
       }
       ctx.beginPath();
-      ctx.arc(px, py, hot ? 7 : 4.5, 0, Math.PI * 2);
+      ctx.arc(px, py, hot ? 10 : 6.5, 0, Math.PI * 2);
       ctx.fillStyle = loc.color;
       ctx.fill();
-      ctx.lineWidth = 1.5;
-      ctx.strokeStyle = hot ? '#eaf4ff' : 'rgba(5,6,13,0.7)';
+      ctx.lineWidth = 2.5;
+      ctx.strokeStyle = hot ? '#eaf4ff' : 'rgba(5,6,13,0.75)';
       ctx.stroke();
-      ctx.font = `${hot ? 700 : 600} 13px Inter, ui-sans-serif, sans-serif`;
+    }
+
+    const placed: { x0: number; y0: number; x1: number; y1: number }[] = [];
+    const ordered = [...rows].sort((a, b) => Number(isHot(b.id)) - Number(isHot(a.id)));
+    for (const loc of ordered) {
+      const hot = isHot(loc.id);
+      ctx.font = `${hot ? 700 : 600} 22px Inter, ui-sans-serif, sans-serif`;
+      const w = ctx.measureText(loc.name).width;
+      const x = loc.u * W + (hot ? 26 : 14);
+      const y = loc.v * H;
+      const box = { x0: x - 4, y0: y - 13, x1: x + w + 4, y1: y + 13 };
+      if (box.x1 > W || box.y0 < 0 || box.y1 > H) continue;
+      if (placed.some((r) => box.x0 < r.x1 && box.x1 > r.x0 && box.y0 < r.y1 && box.y1 > r.y0)) continue;
+      placed.push(box);
       ctx.textAlign = 'left';
       ctx.textBaseline = 'middle';
-      ctx.fillStyle = 'rgba(5,6,13,0.75)';
-      ctx.fillText(loc.name, px + (hot ? 18 : 9), py + 1);
+      ctx.lineWidth = 4;
+      ctx.strokeStyle = 'rgba(5,6,13,0.85)';
+      ctx.strokeText(loc.name, x, y);
       ctx.fillStyle = hot ? '#eaf4ff' : '#dce6f5';
-      ctx.fillText(loc.name, px + (hot ? 17 : 8), py);
+      ctx.fillText(loc.name, x, y);
     }
   };
 

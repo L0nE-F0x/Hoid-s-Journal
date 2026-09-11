@@ -15,7 +15,7 @@ Architecture lock: `AGENTS.md` + `DESIGN.md`. This file is only the live todo.
 
 # ▶ START HERE — next session
 
-**2026-09-11 (later) — globe framing shipped, first commit made.**
+**2026-09-11 (later) — globe framing and the atlas link shipped; two commits.**
 
 The engine flies and a focused world now reads as a portrait. Open this file,
 run the app, pick the highest item under **Do next**, ship it, verify with
@@ -42,6 +42,46 @@ with every shot.
 Git: first commit is **done** (local `master`, still **no remote**).
 
 ## What changed this session
+
+### Second pass — the atlas is now wired to the globe
+
+- **Clicking a pin on the map turns the world to it.** The camera solves the
+  latitude and the body's spin solves the longitude, with the camera standing
+  sunward, so the place you picked faces you *and* is lit. Hovering the map
+  highlights the same marker in 3-D; picking a marker in 3-D drives the map.
+- `src/layout/surface.ts` is the single uv-to-body convention and it matches
+  `THREE.SphereGeometry`. The old pin maths negated z, so every pin had been
+  sitting at a mirrored longitude.
+- Pins are camera-facing markers (bright core, dark ring) at constant apparent
+  size. The hot one gets a 3-D name label.
+- Atlas composes a map layer and a pin layer once per change and blits them;
+  only the storm band is per-frame now. Map labels are placed with collision
+  tests, so a crowded Alethkar drops names instead of stacking them.
+- Atlas and renderer share a clock, so Roshar's storm front is at the same
+  longitude on the map as on the globe.
+- Catacendre verified end to end: MB1 gives the ash map, ash pins, ash sky and
+  ash polar caps; MB2 gives the basin, the Wax & Wayne pins and Harmony's blue.
+- Locations: 51 → 72. Added Rosharan regions (Iri, Herdaz, Marat, Tukar, Reshi
+  Isles, New Natanan, Revolar, Babatharnam), Scadrian era pins (Vetitan,
+  Weathering, Southern Continent), Sel (Duladel, JinDo, Dakhor), Nalthis
+  (Court of the Gods, Tears of Edgli), Lossand, the Homeland, two more Lumar
+  seas, Sori. Crowded pins were nudged apart; a proximity check is worth
+  re-running when you add more.
+
+**Three lighting bugs found while verifying, all of them global:**
+
+- The atmosphere shell measured its rim against `+n` on back faces, where it
+  is 1.0 across the whole disc. Every planet wore a flat wash of its own
+  atmosphere colour. It is a rim now.
+- Roshar's highstorm band covered a quarter of the planet's circumference.
+  Now the same 7% front the atlas draws.
+- Bloom threshold (0.34) sat below a fully lit planet, so the sunward half fed
+  the bloom and came back white. Now 0.62.
+
+Also: labels are sized to read and gated by scale, the Cosmere frames from the
+centroid of the systems, and each system's starlight carries its star's colour.
+
+### First pass — globe framing
 
 - **Globe framing (old item 1) is fixed.** Root cause was not the camera
   offset: the playhead ran at 1.15 years/second while orbital periods are
@@ -117,9 +157,10 @@ Scan as a second scale, deep links, Hoid as the journal’s voice.
 - Spoiler checklist with per-series arc steppers + publication-safe preset.
 - Arcanum: 15 magics, Allomancy/Feruchemy/Surges/Heightenings tables.
 - Codex search, name-ranked (exact “Roshar” no longer opens Ashyn).
-- Surface atlas overlay: unwrapped biome map, labeled pins, highstorm band
-  on Roshar, era-true character chips.
-- Scadrial biome swap (ash → basin) when era ≥ 3.
+- Surface atlas overlay: unwrapped biome map, collision-placed labels,
+  highstorm band on Roshar, era-true character chips. Pins are two-way: map to
+  globe and globe to map.
+- Scadrial biome swap (ash → basin, sky and caps with it) when era ≥ 3.
 - Character motes on their current world, sized to a few pixels at any scale.
   Shard lines Yolen → current seat.
 - Panel-aware framing: `store.insets` (atlas = left/top, HUD = right/bottom)
@@ -138,35 +179,30 @@ Scan as a second scale, deep links, Hoid as the journal’s voice.
 Work top-down. Do not start a city layer or a Lore Web while the atlas still
 feels like a prototype.
 
-### 1. Make the atlas the reread tool
+### 1. City scale, and the rest of the atlas
 
-This is why the owner still opens v1 mid-book.
+The map-to-globe link works. What is left is depth.
 
-- Clicking an atlas pin should **mean something on the globe** (spin/highlight
-  the pin in 3D, not just select in the drawer).
-- Scadrial Catacendre: scrub MB1 → MB2 and the **atlas map** must swap ash
-  → basin with the matching pins (`eraMaps: 'ash'|'basin'`). Verify it, it
-  is a must-ship pillar.
-- Roshar highstorm on the atlas currently **repaints the whole map every
-  frame**. Cache the base blit; only redraw the band + pins.
-- Location coverage is a first pass. Add until each published world feels
-  walkable: Sel (Arelon, Teod, Fjorden, Rose Empire), Nalthis (T'Telir,
-  Idris, Court of Gods), Taldain Dayside/Darkside, Lumar's twelve seas,
-  Threnody Homeland vs Forests, Canticle's race-the-dawn cities, Komashi
-  Torio/Kilahito, First of the Sun Pantheon. UVs are **ours**, not Isaac's.
-- City scale is specified (`scale: 'city'`) and empty. After continent
-  pins feel good, original city plates (procedural or generated, never
-  scans): Urithiru, Kholinar, Luthadel/Elendel, T'Telir, Elantris.
+- City scale is specified (`scale: 'city'`) and **empty**. `Esc` already pops
+  city → surface → globe. Original city plates (procedural or generated,
+  never scans): Urithiru, Kholinar, Luthadel/Elendel, T'Telir, Elantris.
+- Location coverage is better but still thin on Komashi, Canticle, Threnody
+  and First of the Sun. Add only names you can source; the canon badge is
+  supposed to mean something.
+- Perpendicularities are data only (`src/data/locations.ts` `PERPS`). They
+  should be 3-D markers on their worlds.
+- The atlas map is procedural noise. It reads as a world but it is not *that*
+  world: continents do not correspond to the pins on them. Deciding how far to
+  take original cartography is the open product question here.
 
 ### 2. Clicking the Cosmere has to be reliable
 
 - System suns vs planet meshes fight for picks at Cosmere distance.
 - Double-click or a single confident click should dive system → globe.
-- `Esc` pops city → surface → globe → system → Cosmere. Walk it. Fix
-  whatever skips a level or gets stuck.
-- Labels: system names at Cosmere distance, planet names in-system,
-  location names on globe. They were oversized, then distance-culled.
-  They still need a pass.
+- ~~`Esc` pops city → surface → globe → system → Cosmere~~ wired; walk it
+  once by hand anyway, city scale has nothing in it to pop from yet.
+- ~~Labels~~ done: system names at Cosmere, planet names in-system, the
+  focused world on a globe, place names on the pins.
 
 ### 3. Three Realms as places, not filters
 
@@ -230,16 +266,14 @@ pins, not an encyclopedia.
 
 ## Known bugs / sharp edges
 
-- `F` (frame the Cosmere) is still a fixed radius 268 with the systems
-  bunched to one side of frame. Same treatment as the system framing would fix
-  it: measure the spread, frame that.
-- Roshar's title shot blows out to white on the sunward limb. Lighting/art,
-  not framing.
+- Cosmere framing uses a tuned 0.78 factor for the flattening of the system
+  cloud. It is eyeballed; a real projected-bounds fit would be exact.
 - Time playhead is a fan axis. Printed dates must stay per-world. Cross-world
   coincidence is `speculation`.
-- Atlas highstorm full-map repaint every frame on Roshar.
 - The atlas measures its rect on every store-driven repaint (forced layout).
   Cheap today; if it shows up in a profile, move it to a ResizeObserver.
+- Atlas pin UVs are placed by eye. Nothing stops two pins landing on top of
+  each other in a future edit except the proximity check you run yourself.
 - Publication-safe preset without `readingNow` reveals all series.
 - `layout/kepler.ts` imports Three. Fine for the renderer; UI must not
   import it. Cartography is the three-free path.

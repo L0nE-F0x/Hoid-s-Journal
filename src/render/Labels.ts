@@ -86,8 +86,10 @@ export class Labels {
         const body = COSMERE.bodies.find((b) => b.id === l.id);
         const p = orrery.bodyPosition(l.id);
         if (!body || !p) { l.sprite.visible = false; continue; }
+        // On a surface scan the place has the name; the world's own label just
+        // rides off the top of the frame.
         const inScope = globe
-          ? body.id === focusedBody
+          ? body.id === focusedBody && scale === 'globe'
           : scale === 'system' && (!focusedSystem || body.system === focusedSystem);
         const dist = camera.position.distanceTo(p);
         l.sprite.visible = inScope && isVisible(body, progress) && dist < 160;

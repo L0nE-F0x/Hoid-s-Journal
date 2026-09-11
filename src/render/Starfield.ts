@@ -3,6 +3,7 @@ import starVert from '../shaders/star.vert';
 import starFrag from '../shaders/star.frag';
 import skyVert from '../shaders/sky.vert';
 import skyFrag from '../shaders/sky.frag';
+import { skyPlates } from './skyBake.ts';
 
 const COUNT = 24000;
 /** Stars cluster toward the galactic plane, so the band has grain in it. */
@@ -33,7 +34,7 @@ export class Starfield {
   private readonly material: THREE.ShaderMaterial;
   private readonly skyMaterial: THREE.ShaderMaterial;
 
-  constructor() {
+  constructor(renderer: THREE.WebGLRenderer) {
     const pos = new Float32Array(COUNT * 3);
     const color = new Float32Array(COUNT * 3);
     const size = new Float32Array(COUNT);
@@ -99,13 +100,12 @@ export class Starfield {
     this.points.frustumCulled = false;
     this.points.renderOrder = -900;
 
+    const sky = skyPlates(renderer);
     this.skyMaterial = new THREE.ShaderMaterial({
       uniforms: {
-        uTime: { value: 0 },
+        uPhysical: { value: sky.physical },
+        uCognitiveMap: { value: sky.cognitive },
         uIntensity: { value: 1 },
-        uBandTint: { value: new THREE.Color(0xbfd3ff) },
-        uDustTint: { value: new THREE.Color(0x3a2a4a) },
-        uGlowTint: { value: new THREE.Color(0xffd9a8) },
         uCognitive: { value: 0 },
       },
       vertexShader: skyVert,
@@ -129,7 +129,6 @@ export class Starfield {
     u.uStarSize.value = starSize;
     u.uExposure.value = exposure;
     const s = this.skyMaterial.uniforms;
-    s.uTime.value = time;
     s.uIntensity.value = exposure;
     s.uCognitive.value = cognitive;
   }

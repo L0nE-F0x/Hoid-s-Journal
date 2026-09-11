@@ -17,7 +17,7 @@ import nebulaVert from '../shaders/nebula.vert';
 import nebulaFrag from '../shaders/nebula.frag';
 import ringVert from '../shaders/ring.vert';
 import ringFrag from '../shaders/ring.frag';
-import { planetPlates, seedFromId } from './planetBake.ts';
+import { PLATE_LARGE, PLATE_SMALL, planetPlates, seedFromId } from './planetBake.ts';
 
 const _off = new THREE.Vector3();
 const _sun = new THREE.Vector3();
@@ -86,7 +86,9 @@ export class Orrery {
   private lastCognitive = false;
   private band: 'high' | 'medium' | 'low' = 'high';
   private viewport = new THREE.Vector2(1512, 900);
-  private plateSize = 1024;
+  /** The world in front of the camera, currently wearing its large plates. */
+  private detailed: string | null = null;
+  private nebulaSteps = 9;
 
   constructor(renderer: THREE.WebGLRenderer) {
     this.renderer = renderer;
@@ -154,7 +156,9 @@ export class Orrery {
         fragmentShader: nebulaFrag,
         transparent: true,
         depthWrite: false,
-        side: THREE.DoubleSide,
+        // Back faces march exactly the same ray as the front ones. Shading
+        // both is double the cost for an identical pixel.
+        side: THREE.FrontSide,
         blending: THREE.AdditiveBlending,
       });
       const mesh = new THREE.Mesh(geo, mat);
@@ -169,7 +173,7 @@ export class Orrery {
   private makePlanetMat(body: Body): THREE.ShaderMaterial {
     const biome = biomeOf(body, 0);
     const recipe = recipeFor(biome);
-    const plates = planetPlates(this.renderer, biome, seedFromId(body.id), false, this.plateSize);
+    const plates = planetPlates(this.renderer, biome, seedFromId(body.id), false, PLATE_SMALL);
     // Each system's light carries its own star's colour, part way: full
     // saturation would repaint the world, none of it makes every sky the same.
     const sun = new THREE.Color(0xfff1d0);
@@ -303,7 +307,7 @@ export class Orrery {
       const sunPos = this.systemPos.get(body.system)!;
       this.bodyNodes.set(body.id, {
         body, mesh, atmo, ring, mat, atmoMat, ringMat, systemId: body.system, sunPos,
-        skin: `${biomeOf(body, 0)}:false`, trail, trailGeo,
+        skin: `${biomeOf(body, 0)}:false:${PLATE_SMALL}`, trail, trailGeo,
       });
       this.bodyWorld.set(body.id, new THREE.Vector3());
     }
@@ -408,8 +412,7 @@ export class Orrery {
       node.atmoMat.uniforms.uSteps.value = steps;
       node.atmoMat.uniforms.uLightSteps.value = lightSteps;
     }
-    const nebSteps = band === 'low' ? 4 : band === 'medium' ? 7 : 11;
-    for (const n of this.nebulae) n.mat.uniforms.uSteps.value = nebSteps;
+    this.nebulaSteps = band === 'low' ? 5 : band === 'medium' ? 7 : 9;
     for (const m of this.moonMats.values()) {
       m.uniforms.uDetail.value = band === 'low' ? 0 : 1;
     }
@@ -434,6 +437,19 @@ export class Orrery {
 
     const globe = visual.scale === 'globe' || visual.scale === 'surface' || visual.scale === 'city';
 
+    // Only the world you are standing over is worth a 2048×1024 pair. Every
+    // world at once is a gigabyte and a half of texture, which an integrated
+    // part will page in and out rather than admit it cannot hold.
+    const wantDetail = globe ? visual.focusedBody : null;
+    if (wantDetail !== this.detailed) {
+      this.detailed = wantDetail;
+      const node = wantDetail ? this.bodyNodes.get(wantDetail) : null;
+      if (node) node.skin = '';
+      for (const other of this.bodyNodes.values()) {
+        if (other !== node && other.skin.endsWith(`:${PLATE_LARGE}`)) other.skin = '';
+      }
+    }
+
     // Era and Realm both repaint worlds: the Catacendre is a map swap with a
     // sky to match, and Shadesmar is the same landmass read the other way.
     // Rebinding every albedo in one frame stalls, so spend a small budget.
@@ -444,12 +460,14 @@ export class Orrery {
     let budget = flipped ? 4 : 2;
     for (const node of this.bodyNodes.values()) {
       const kind = biomeOf(node.body, era);
-      const skin = `${kind}:${shadesmar}`;
+      const want = node.body.id === this.detailed ? PLATE_LARGE : PLATE_SMALL;
+      const skin = `${kind}:${shadesmar}:${want}`;
       if (node.skin === skin) continue;
       if (budget <= 0) continue;
       budget--;
       node.skin = skin;
-      const plates = planetPlates(this.renderer, kind, seedFromId(node.body.id), shadesmar, this.plateSize);
+      const size = node.body.id === this.detailed ? PLATE_LARGE : PLATE_SMALL;
+      const plates = planetPlates(this.renderer, kind, seedFromId(node.body.id), shadesmar, size);
       const recipe = recipeFor(kind);
       node.mat.uniforms.uAlbedo.value = plates.albedo;
       node.mat.uniforms.uData.value = plates.data;
@@ -541,7 +559,7 @@ export class Orrery {
       const on = visual.showNebula && !globe;
       n.mesh.visible = on;
       if (!on) continue;
-      const r = (shadesmar ? 34 : 26) * Math.max(0.35, visual.nebula);
+      const r = (shadesmar ? 28 : 26) * Math.max(0.35, visual.nebula);
       n.mesh.scale.setScalar(r);
       n.mat.uniforms.uRadius.value = r;
       n.mat.uniforms.uTime.value = time;
@@ -549,7 +567,11 @@ export class Orrery {
       // fog the worlds you came to look at.
       const inside = visual.scale === 'system' && visual.focusedSystem === n.system;
       n.mat.uniforms.uOpacity.value = (shadesmar ? 0.9 : 0.72) * visual.nebula * (inside ? 0.28 : 1);
-      n.mat.uniforms.uDensity.value = shadesmar ? 1.25 : 1;
+      n.mat.uniforms.uDensity.value = shadesmar ? 1.45 : 1;
+      // Thirteen overlapping volumes at Cosmere distance are each a few
+      // hundred pixels across; they do not need the step count a close one
+      // does, and together they are the most expensive thing in the frame.
+      n.mat.uniforms.uSteps.value = visual.scale === 'cosmere' ? this.nebulaSteps - 3 : this.nebulaSteps;
     }
 
     for (const [id, mesh] of this.suns) {

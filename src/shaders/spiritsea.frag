@@ -1,42 +1,31 @@
-#include "./lib/noise.glsl"
-
 /**
  * The Spiritual Realm has no geography, so this is not a place — it is the
- * light everything is made of. A dome of drifting filaments, brightest toward
- * the centre of the diagram, so the sixteen motes have something to hang in.
+ * light everything is made of. Two baked plates, whole and Shattered,
+ * sampled by a direction that turns slowly so the field drifts.
  */
 
-uniform float uTime;
+uniform sampler2D uWholeMap;
+uniform sampler2D uShatteredMap;
 uniform float uIntensity;
-uniform vec3  uWarm;
-uniform vec3  uCool;
 uniform float uWhole;
+uniform float uTime;
 
 varying vec3 vDir;
 
+const float TAU = 6.28318530718;
+const float PI = 3.14159265359;
+
 void main() {
   vec3 d = normalize(vDir);
-
-  // Filaments: ridged noise stretched along a slow drift, so the field reads
-  // as threads of Connection rather than as cloud.
-  vec3 q = d * 2.6;
-  q.y += uTime * 0.012;
-  float warp = warped(q * 0.9, 4, 0.7);
-  float strands = ridged(q * 3.2 + warp * 1.4, 4, 2.05, 0.55);
-  float web = pow(smoothstep(0.62, 0.99, strands), 1.6);
-
-  float haze = fbm3(d * 1.7 + 9.0, 4, 2.05, 0.5) * 0.5 + 0.5;
-
-  // Everything leans toward one horizon: before the Shattering there is a
-  // single source, and after it the memory of one.
-  float toward = max(0.0, dot(d, normalize(vec3(0.0, 1.0, 0.35))));
-
-  // Near-black, with light only where a filament runs. The Realm is made of
-  // light but it is not a lit room; a bright field flattens every mote in it.
-  vec3 col = mix(uCool, uWarm, toward * 0.55 + web * 0.45);
-  col *= (0.004 + 0.115 * web + 0.012 * haze);
-  col += uWarm * pow(toward, 7.0) * (0.010 + 0.060 * uWhole);
-  col += vec3(0.006, 0.008, 0.020);
-
+  // Turn the lookup rather than the noise: the same drift for one rotation.
+  float a = uTime * 0.006;
+  d = vec3(d.x * cos(a) + d.z * sin(a), d.y, -d.x * sin(a) + d.z * cos(a));
+  vec2 uv = vec2(
+    atan(d.z, d.x) / TAU + 0.5,
+    asin(clamp(d.y, -1.0, 1.0)) / PI + 0.5
+  );
+  vec3 shattered = texture2D(uShatteredMap, uv).rgb;
+  vec3 whole = texture2D(uWholeMap, uv).rgb;
+  vec3 col = pow(mix(shattered, whole, uWhole), vec3(2.2));
   gl_FragColor = vec4(col * uIntensity, 1.0);
 }

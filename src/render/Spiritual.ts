@@ -7,6 +7,7 @@ import sunVert from '../shaders/sun.vert';
 import sunFrag from '../shaders/sun.frag';
 import skyVert from '../shaders/sky.vert';
 import seaFrag from '../shaders/spiritsea.frag';
+import { spiritPlates } from './skyBake.ts';
 
 const RING = 18;
 const DAWN_RING = 30;
@@ -103,14 +104,15 @@ export class Spiritual {
   private readonly worldChip: THREE.Sprite;
   private worldChipKey = '';
 
-  constructor() {
+  constructor(renderer: THREE.WebGLRenderer) {
     // --- the light everything is made of --------------------------------
+    const field = spiritPlates(renderer);
     this.seaMat = new THREE.ShaderMaterial({
       uniforms: {
         uTime: { value: 0 },
         uIntensity: { value: 1 },
-        uWarm: { value: new THREE.Color(0xffd9a0) },
-        uCool: { value: new THREE.Color(0x5f7cc8) },
+        uWholeMap: { value: field.whole },
+        uShatteredMap: { value: field.shattered },
         uWhole: { value: 0 },
       },
       vertexShader: skyVert,

@@ -31,13 +31,13 @@ void main() {
   float limb = 0.42 + 0.58 * pow(mu, 0.62);
   vec3 gran = vec3(0.0);
   if (disc > 0.001) {
-    float g = fbm3(vec3(uv * 9.0, uTime * 0.08 + uSeed), 4, 2.1, 0.55);
+    float g = fbm3(vec3(uv * 9.0, uTime * 0.08 + uSeed), 3, 2.1, 0.55);
     gran = mix(uColor, uHot, 0.55 + 0.45 * g) * limb * (0.92 + 0.22 * g);
   }
 
   // Corona: ridged filaments sheared around the disc, falling off with r^-2.
   float rr = max(d, core * 0.9);
-  float fil = ridged(vec3(cos(ang) * 2.4, sin(ang) * 2.4, uTime * 0.05 + uSeed * 3.0) + rr * 1.6, 4, 2.1, 0.55);
+  float fil = ridged(vec3(cos(ang) * 2.4, sin(ang) * 2.4, uTime * 0.05 + uSeed * 3.0) + rr * 1.6, 3, 2.1, 0.55);
   float coronaFall = core * core / (rr * rr);
   float corona = coronaFall * (0.35 + 0.85 * fil) * uCorona;
   corona *= smoothstep(1.0, 0.25, d);

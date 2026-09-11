@@ -31,6 +31,11 @@ vec2 raySphere(vec3 centre, float radius, vec3 ro, vec3 rd) {
   return vec2(max(-b - h, 0.0), far - max(-b - h, 0.0));
 }
 
+/**
+ * Five noise evaluations, not sixteen. This runs once per march step, eleven
+ * steps deep, across thirteen overlapping volumes — a domain warp in here is
+ * paid for two hundred times per pixel.
+ */
 float cloud(vec3 p) {
   vec3 q = (p - uCentre) / uRadius;
   float r = length(q);
@@ -38,9 +43,9 @@ float cloud(vec3 p) {
   float shell = pow(max(0.0, 1.0 - r), 1.6);
   vec3 n = q * 2.6 + vec3(uSeed * 4.0);
   n.y += uTime * 0.008;
-  float f = warped(n, 4, 0.85);
-  float wisp = ridged(n * 2.3 + 7.0, 3, 2.1, 0.55);
-  float d = (f * 0.55 + 0.45) * 0.7 + wisp * 0.45;
+  float f = fbm3(n, 3, 2.05, 0.5);
+  float wisp = ridged(n * 2.3 + 7.0, 2, 2.1, 0.55);
+  float d = (f * 0.5 + 0.5) * 0.72 + wisp * 0.45;
   d = smoothstep(0.38, 0.95, d);
   // A hollow core: the star has cleared the middle.
   float core = smoothstep(0.02, 0.22, r);

@@ -310,18 +310,6 @@ export const CHARACTERS: Character[] = [
       { era: 1, system: 'selish', body: 'sel' },
       { era: 4, system: 'lumar', body: 'lumar-world' },
     ]),
-  ch('frost', 'Frost', '#e2e8f0', 'core', 'Yolen', 'Frost',
-    'Dragon, Seventeenth Shard',
-    'A dragon of Yolen who will not intervene, and writes to those who do.', false, [
-      { era: 0, system: 'yolish', body: 'yolen' },
-      { era: 1, system: 'yolish', body: 'yolen' },
-      { era: 3, system: 'yolish', body: 'yolen' },
-    ]),
-  ch('xisis', 'Xisisrefliel', '#f43f5e', 'tress', 'Lumar', 'Xisis, the dragon of the Crimson Sea',
-    'Dragon, aether scholar',
-    'Lives under the Crimson Sea. Trades in servants and spore-lore.', false, [
-      { era: 4, system: 'lumar', body: 'lumar-world' },
-    ]),
   ch('nikli', 'Nikli', '#a1a1aa', 'stormlight', 'Roshar', 'Nikli, Dysian Aimian',
     'Sleepless, hordeling swarm',
     'A Sleepless who tried to keep a Dawnshard off the board, and failed kindly.', false, [
@@ -419,11 +407,6 @@ export const CHARACTERS: Character[] = [
     'Wax\'s sister. The Set\'s Sequence. Autonomy looked at her and smiled.', false, [
       { era: 4, system: 'scadrian', body: 'scadrial' },
     ], { arc: 'sos' }),
-  ch('arclo', 'Arclo', '#86efac', 'stormlight', 'Roshar', 'Arclo',
-    'Dysian Aimian, Sleepless',
-    'A swarm that sat in Kharbranth\'s Palanaeum and talked philosophy with Lift.', true, [
-      { era: 3, system: 'rosharan', body: 'roshar' },
-    ], { arc: 'edgedancer' }),
   ch('blushweaver', 'Blushweaver', '#fb7185', 'warbreaker', 'Nalthis', 'Blushweaver the Honest',
     'Returned',
     'A goddess of honesty who never wore enough clothing for the job.', false, [
@@ -495,7 +478,7 @@ CHARACTERS.push(
     ALL_ERAS('yolish', 'yolen'),
     { arc: 'wat', canon: 'wob', sources: ['Wind and Truth', 'Word of Brandon'] }),
 
-  drake('xisisrefliel', 'Xisisrefliel', '#f87171', 'tress', 'Xisis · Foil',
+  drake('xisis', 'Xisisrefliel', '#f87171', 'tress', 'Xisis · Foil',
     'Tenth Heightening Awakener · aether research · crimson spore work · pianist',
     'A morally flexible dragon who takes human servants in exchange for boons — off-world technology, medical treatment, passage. Keeps a large establishment in Silverlight.',
     'A dragon scholar studying aethers beneath Lumar’s Crimson Sea, aboard the ship Dynamic. Dislikes Hoid, which puts him in respectable company.',

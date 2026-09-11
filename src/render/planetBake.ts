@@ -8,10 +8,21 @@ import bakeFrag from '../shaders/planetBake.frag';
  * (elevation, water, lights, roughness) — into render targets the planet
  * shader samples. The CPU baker in `cartography/planetMap.ts` reads the same
  * recipes for the atlas panel, which cannot import Three.
+ *
+ * Two tiers, because thirty-one worlds × two Realms × a 2048×1024 pair is one
+ * and a half gigabytes of texture and an integrated GPU will start swapping
+ * rather than say so. Everything gets a small plate at boot; the world you are
+ * actually looking at gets a large one, and the large ones are evicted.
  */
 
 const MAX_BLOBS = 14;
 const MAX_WEDGES = 12;
+/** Every world, always resident. 1024×512 each. */
+export const PLATE_SMALL = 512;
+/** The world in front of you. 2048×1024. */
+export const PLATE_LARGE = 1024;
+/** How many large plate pairs stay alive at once. */
+const LARGE_BUDGET = 3;
 
 export interface PlanetPlates {
   albedo: THREE.Texture;
@@ -20,8 +31,14 @@ export interface PlanetPlates {
   recipe: ReturnType<typeof recipeFor>;
 }
 
-const cache = new Map<string, PlanetPlates>();
-let quad: THREE.Mesh | null = null;
+interface Entry extends PlanetPlates {
+  key: string;
+  targets: THREE.WebGLRenderTarget[];
+  used: number;
+}
+
+const cache = new Map<string, Entry>();
+let clock = 0;
 let scene: THREE.Scene | null = null;
 let cam: THREE.OrthographicCamera | null = null;
 let material: THREE.ShaderMaterial | null = null;
@@ -67,7 +84,7 @@ function ensureQuad(): THREE.ShaderMaterial {
     depthTest: false,
     depthWrite: false,
   });
-  quad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), material);
+  const quad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), material);
   quad.frustumCulled = false;
   scene = new THREE.Scene();
   scene.add(quad);
@@ -129,6 +146,18 @@ function makeTarget(w: number, h: number, srgb: boolean): THREE.WebGLRenderTarge
   return rt;
 }
 
+/** Drop the least recently used large plates once the budget is exceeded. */
+function evict(): void {
+  const large = [...cache.values()]
+    .filter((e) => e.key.endsWith(`:${PLATE_LARGE}`) || e.key.includes(`:${PLATE_LARGE}:`))
+    .sort((a, b) => a.used - b.used);
+  while (large.length > LARGE_BUDGET) {
+    const gone = large.shift()!;
+    for (const rt of gone.targets) rt.dispose();
+    cache.delete(gone.key);
+  }
+}
+
 /**
  * Plates for one world. Cached: a realm flip or a Catacendre swap re-asks for
  * a different key, never a re-bake of one it already has.
@@ -138,11 +167,14 @@ export function planetPlates(
   kind: string,
   seed: number,
   cognitive: boolean,
-  size = 1024,
+  size = PLATE_SMALL,
 ): PlanetPlates {
-  const key = `${kind}:${seed}:${size}${cognitive ? ':c' : ''}`;
+  const key = `${kind}:${seed}${cognitive ? ':c' : ''}:${size}`;
   const hit = cache.get(key);
-  if (hit) return hit;
+  if (hit) {
+    hit.used = ++clock;
+    return hit;
+  }
 
   const mat = ensureQuad();
   const recipe = recipeFor(kind);
@@ -168,14 +200,18 @@ export function planetPlates(
   renderer.setRenderTarget(prevTarget);
   renderer.autoClear = prevAuto;
 
-  const plates: PlanetPlates = {
+  const entry: Entry = {
+    key,
     albedo: albedoRT.texture,
     data: dataRT.texture,
     texel: new THREE.Vector2(1 / W, 1 / H),
     recipe,
+    targets: [albedoRT, dataRT],
+    used: ++clock,
   };
-  cache.set(key, plates);
-  return plates;
+  cache.set(key, entry);
+  if (size === PLATE_LARGE) evict();
+  return entry;
 }
 
 export function seedFromId(id: string): number {

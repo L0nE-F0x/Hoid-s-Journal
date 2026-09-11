@@ -21,8 +21,11 @@ void main() {
   gl_Position = projectionMatrix * mv;
   float dist = max(-mv.z, 0.001);
   float wanted = aSize * uScale * uSizeScale / dist;
-  float clamped = max(wanted, 1.6);
-  gl_PointSize = min(clamped, 26.0);
+  float clamped = max(wanted, 1.5);
+  // Capped hard: seven thousand additive points twenty-six pixels across is
+  // five million blended fragments a frame, and they read as fog rather than
+  // as the lights of individual minds.
+  gl_PointSize = min(clamped, 9.0);
   float pulse = 0.62 + 0.38 * sin(uTime * 1.1 + aSeed * 40.0);
   vBright = clamp(wanted / clamped, 0.05, 1.0) * pulse;
   vColor = aColor;

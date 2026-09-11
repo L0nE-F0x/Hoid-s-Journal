@@ -54,13 +54,20 @@ float specGGX(vec3 n, vec3 v, vec3 l, float rough) {
   return d * gv * gl;
 }
 
-/** Cloud density over the sphere. Two advecting layers, ridged for filaments. */
+/**
+ * Cloud density over the sphere. Two advecting layers, ridged for filaments.
+ *
+ * Seven noise evaluations, not twenty: this runs twice per pixel (once for the
+ * deck, once for the shadow it throws) over a globe that fills the frame, and
+ * a domain warp in here cost more than the whole atmosphere pass.
+ */
 float cloudField(vec3 p, float t) {
   vec3 q = p * 2.4 + vec3(uSeed);
-  float band = 0.55 + 0.45 * sin(p.y * 5.0 + fbm3(q * 0.7, 3, 2.03, 0.5) * 3.0);
-  float a = warped(q + vec3(t * 0.05, 0.0, 0.0), 4, 0.65);
-  float b = ridged(q * 1.9 + vec3(t * 0.09, t * 0.01, 0.0), 3, 2.1, 0.55);
-  float d = a * 0.62 + b * 0.5;
+  vec3 flow = q + vec3(t * 0.05, 0.0, t * 0.01);
+  float a = fbm3(flow, 4, 2.05, 0.5);
+  float b = ridged(flow * 2.1 + 7.0, 3, 2.1, 0.55);
+  float band = 0.55 + 0.45 * sin(p.y * 5.0 + a * 3.4);
+  float d = (a * 0.5 + 0.5) * 0.62 + b * 0.5;
   d = smoothstep(0.42, 0.86, d * (0.55 + 0.6 * band));
   return d;
 }
@@ -96,9 +103,9 @@ void main() {
   if (uDetail > 0.01) {
     float e = 0.0035;
     vec3 dp = vObj * 34.0 + vec3(uSeed * 3.1);
-    float c0 = warped(dp, 4, 0.5);
-    float cx = warped(dp + east * e * 34.0, 4, 0.5);
-    float cy = warped(dp + north * e * 34.0, 4, 0.5);
+    float c0 = fbm3(dp, 4, 2.05, 0.5);
+    float cx = fbm3(dp + east * e * 34.0, 4, 2.05, 0.5);
+    float cy = fbm3(dp + north * e * 34.0, 4, 2.05, 0.5);
     float land = 1.0 - water;
     grad += vec2(cx - c0, cy - c0) * (34.0 * uDetail * (0.35 + 0.65 * land));
   }
@@ -157,16 +164,17 @@ void main() {
   // ---- ice caps -------------------------------------------------------
   if (uIce > 0.001) {
     float lat = abs(n.y);
-    float cap = smoothstep(0.78 - uIce * 0.22, 0.94, lat + warped(vObj * 6.0 + uSeed, 3, 0.4) * 0.12);
+    float cap = smoothstep(0.78 - uIce * 0.22, 0.94, lat + fbm3(vObj * 6.0 + uSeed, 3, 2.05, 0.5) * 0.12);
     lit = mix(lit, vec3(0.90, 0.95, 1.02) * wrap * uSunColor, cap * uIce);
   }
 
   // ---- night side -----------------------------------------------------
   float night = 1.0 - shade;
-  if (uNightLights > 0.001) {
+  // Only the dark side pays for city lights, and only where there are any.
+  if (uNightLights > 0.001 && night > 0.02 && lights > 0.001) {
     // Settlement clumps, not a smear: threshold a noise field against the
     // baked light mask so cities read as points from orbit.
-    float grid = warped(vObj * 90.0 + uSeed * 7.0, 3, 0.5);
+    float grid = fbm3(vObj * 90.0 + uSeed * 7.0, 3, 2.07, 0.5) * 0.5 + 0.5;
     float city = smoothstep(0.52, 0.78, grid) * lights;
     float twinkle = 0.86 + 0.14 * sin(uTime * 2.1 + hash13(vObj * 40.0) * 40.0);
     lit += uEmissiveColor * uNightLights * city * night * twinkle * 0.85;
@@ -177,7 +185,7 @@ void main() {
   if (uHighstorm > 0.001) {
     float lon = vUv.x + uTime * 0.022;
     float dx = abs(fract(lon) - 0.5);
-    float turb = warped(vObj * 9.0 + vec3(uTime * 0.25, 0.0, 0.0), 4, 0.7);
+    float turb = fbm3(vObj * 9.0 + vec3(uTime * 0.25, 0.0, 0.0), 4, 2.05, 0.5) * 0.5 + 0.5;
     float band = smoothstep(0.022, 0.002, dx + turb * 0.008);
     float wall = smoothstep(0.006, 0.0, abs(dx - 0.003 - turb * 0.002));
     float latFade = smoothstep(0.06, 0.20, vUv.y) * smoothstep(0.94, 0.78, vUv.y);
@@ -229,7 +237,7 @@ void main() {
     vec3 flat_ = albedo * key;
 
     // Beads: obsidian spheres, a few of them catching the light at a time.
-    float beadField = warped(vObj * 150.0 + uSeed, 3, 0.5);
+    float beadField = fbm3(vObj * 150.0 + uSeed, 3, 2.07, 0.5) * 0.5 + 0.5;
     float bead = smoothstep(0.58, 0.92, beadField) * (1.0 - water);
     flat_ += vec3(0.44, 0.33, 0.78) * bead * 0.30;
     flat_ *= 1.0 - (1.0 - water) * 0.18;
@@ -240,7 +248,7 @@ void main() {
     flat_ += vec3(0.42, 0.52, 0.82) * glass * 0.16;
 
     // Souls: the lights of everything that thinks, seen through the surface.
-    float souls = smoothstep(0.80, 0.99, warped(vObj * 26.0 + uSeed * 3.0, 3, 0.6));
+    float souls = smoothstep(0.80, 0.99, fbm3(vObj * 26.0 + uSeed * 3.0, 3, 2.05, 0.5) * 0.5 + 0.5);
     flat_ += vec3(0.82, 0.74, 1.0) * souls * (1.0 - water) * 0.30
       * (0.7 + 0.3 * sin(uTime * 1.6 + hash13(vObj * 12.0) * 30.0));
 

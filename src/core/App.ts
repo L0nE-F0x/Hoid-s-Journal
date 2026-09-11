@@ -84,13 +84,13 @@ export class App {
     this.camera = new THREE.PerspectiveCamera(FOV, 1, 0.1, 8000);
     this.rig = new CameraRig(this.camera, canvas);
 
-    this.starfield = new Starfield();
+    this.starfield = new Starfield(this.renderer);
     this.orrery = new Orrery(this.renderer);
     this.labels = new Labels();
     this.pins = new Pins();
     this.presence = new Presence();
-    this.spiritual = new Spiritual();
-    this.shadesmar = new Shadesmar();
+    this.spiritual = new Spiritual(this.renderer);
+    this.shadesmar = new Shadesmar(this.renderer);
 
     this.scene.add(this.starfield.sky);
     this.scene.add(this.starfield.points);
@@ -678,7 +678,7 @@ export class App {
       s.visual.showCharacters, s.visual.showShardLines,
     );
     this.shadesmar.update(
-      t, s.realm === 'cognitive' && !s.cinematic, s.scale,
+      t, s.realm === 'cognitive' && !s.cinematic, s.scale, s.focusedSystem,
       this.canvas.clientHeight, FOV, s.readProgress,
       (id) => hubWorld(id, (sys) => this.orrery.systemPosition(sys), _hub),
     );

@@ -320,8 +320,11 @@ export class Spiritual {
       if (show) {
         const s = apparent(m.pos, 0.042);
         m.label.scale.set(s * 6, s, 1);
-        const out = RING + 4.0 + s * 1.4;
-        m.label.position.set(Math.cos(a) * out, m.pos.y + 2.2 + s * 0.5, Math.sin(a) * out);
+        // Names sit outside the ring, and alternate up and down: sixteen of
+        // them on one circle collide wherever the ring foreshortens.
+        const out = RING + 6.4 + s * 1.5;
+        const stagger = (i % 2 === 0 ? 1 : -1) * (2.4 + s * 0.55);
+        m.label.position.set(Math.cos(a) * out, m.pos.y + stagger, Math.sin(a) * out);
       }
 
       // --- threads of Connection ----------------------------------------

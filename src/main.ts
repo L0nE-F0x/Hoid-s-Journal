@@ -1,5 +1,6 @@
 import { App } from './core/App.ts';
 import { connectSettingsPersistence, restoreSettings } from './core/persist.ts';
+import { connectPwa } from './core/pwa.ts';
 import { store } from './core/store.ts';
 import { connectUrlState } from './core/urlState.ts';
 import { eraAt, fullProgress } from './data/index.ts';
@@ -57,6 +58,7 @@ async function main(): Promise<void> {
 
   connectUrlState();
   connectSettingsPersistence();
+  connectPwa(() => store.touch('panel'));
 
   setBoot(0.7, 'Lighting the systems');
   const app = new App(canvas, {

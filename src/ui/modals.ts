@@ -8,6 +8,7 @@ import {
   publicationSafeProgress,
   seriesById,
 } from '../data/index.ts';
+import { canInstall, promptInstall } from '../core/pwa.ts';
 import { store } from '../core/store.ts';
 import { el, listen } from './dom.ts';
 
@@ -258,4 +259,18 @@ function renderSettings(card: HTMLElement): void {
     toggle('showAtmospheres', 'Atmospheres'),
     toggle('autoRotate', 'Auto-rotate (title)'),
   ]));
+
+  if (canInstall()) {
+    const install = el('button', {
+      className: 'ceph-btn ceph-btn--primary',
+      text: 'Install the journal',
+      style: { marginTop: '18px' },
+    });
+    listen(install, 'click', () => { void promptInstall(); });
+    card.append(
+      el('div', { className: 'ceph-kicker', text: 'Offline', style: { marginTop: '20px' } }),
+      el('p', { className: 'ceph-fact', text: 'Keep Cephandrius on the device and open it without a connection.' }),
+      install,
+    );
+  }
 }

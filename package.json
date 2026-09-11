@@ -8,7 +8,8 @@
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
-    "shot": "node tools/screenshot.mjs"
+    "shot": "node tools/screenshot.mjs",
+    "og": "node tools/screenshot.mjs --intro --width 1200 --height 630 --settle 2400 --quality 90 --eval \"document.querySelector('.ceph-title-actions').style.visibility='hidden'\" --out public/og.jpg"
   },
   "dependencies": {
     "postprocessing": "^6.37.8",

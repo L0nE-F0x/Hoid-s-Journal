@@ -15,8 +15,8 @@ Architecture lock: `AGENTS.md` + `DESIGN.md`. This file is only the live todo.
 
 # ▶ START HERE — next session
 
-**2026-09-11 (later) — framing, the atlas link, picking and the reading
-companion shipped. Four commits, local only.**
+**2026-09-11 (later) — framing, the atlas link, picking, the reading
+companion and both other Realms shipped. Seven commits, local only.**
 
 The engine flies and a focused world now reads as a portrait. Open this file,
 run the app, pick the highest item under **Do next**, ship it, verify with
@@ -43,6 +43,25 @@ with every shot.
 Git: first commit is **done** (local `master`, still **no remote**).
 
 ## What changed this session
+
+### Fourth pass — the other two Realms
+
+- **Shadesmar is a place.** It was a shader inversion of the physical albedo.
+  It now bakes a second reading of the same noise mask: the Physical Realm's
+  land is a bead ocean, its seas are glass plains. The atlas panel draws the
+  same map, titled `· Shadesmar`, so map and globe cannot disagree. Light goes
+  flat with a bead glint, skies turn violet, physical people dim to shadows,
+  cognitive ones stay bright. Albedo rebinds are spread a few bodies per frame
+  so the switch does not stall; cognitive maps bake at half resolution.
+- **The Spiritual Realm was broken**, not thin: a textureless sprite showing as
+  a 2px orange square, motes sized for a camera that was never there, and the
+  physical sky drawing over all of it. It is now a diagram with its own camera
+  stage — unity core, sixteen named Shards in a ring, Connection / Fortune /
+  Identity as labelled axes, per-era status on every mote (Splintered shrinks
+  and dims, Harmony's merger sits larger), click-to-open in the drawer, and
+  Adonalsium whole and alone before the Shattering. Leaving puts you back.
+- Codex hits fly to the place, the person's world this era, or the world.
+- The Look panel finally has a button in the HUD.
 
 ### Third pass — picking and the companion
 
@@ -191,7 +210,9 @@ Scan as a second scale, deep links, Hoid as the journal’s voice.
   Shard lines Yolen → current seat.
 - Panel-aware framing: `store.insets` (atlas = left/top, HUD = right/bottom)
   drives the camera's view offset and framing distance.
-- Cognitive = shader invert + glints. Spiritual = 16 motes / Adonalsium core.
+- Cognitive Realm: a baked Shadesmar map (bead ocean / glass plains) on the
+  globe and in the atlas. Spiritual Realm: a framed diagram — core, sixteen
+  named Shards with per-era status, three axes, clickable.
 - Deep-link hash (`#y=&realm=&scale=&system=&body=`). Progress + visual in
   localStorage.
 - PWA manifest exists. **No service worker yet.**
@@ -221,26 +242,22 @@ The map-to-globe link works. What is left is depth.
   world: continents do not correspond to the pins on them. Deciding how far to
   take original cartography is the open product question here.
 
-### 2. Three Realms as places, not filters
+### 2. Realms: what is left
 
-Physical orrery is the only one that currently feels like a world.
+Both non-physical Realms are real places now. What is missing is connective
+tissue, not the frame.
 
-- **Cognitive:** bead-ocean planets (land → dark sea), Silverlight routes,
-  cognitive entities stay bright, physical people dim. v1 had this. Shader
-  invert is a placeholder.
-- **Spiritual:** motes exist. Needs Connection/Fortune/Identity as a
-  readable diagram, Pre-Shattering Adonalsium whole, post-Shattering 16
-  sparks. Not a map.
+- **Cognitive:** Silverlight, and worldhopper routes between systems. The bead
+  ocean reads well up close; at Cosmere distance the Realm barely changes.
+- **Spiritual:** the three axes are labels, not yet meaning. A selected Shard
+  could draw its Connection to the worlds it touches this era.
+- Perpendicularities belong in both Realms (`PERPS` is still data only).
 
 ### 3. Companion depth (the journal)
 
 - ~~Reading Companion + ✦ new this arc chips~~ **done.** What is missing is
   depth: `fieldNotes`, per-arc "what changed" summaries, and a way to see
   what a given arc *added* rather than only what it unlocked.
-- Codex: jump-to-location and jump-to-character still only select; they
-  should fly. Bodies already fly, magic hits already open Arcanum.
-- Settings panel is coded in `modals.ts` but nothing in the HUD opens
-  `panel: 'settings'`.
 - Worldhopper trail when a character is selected (v1 dashed path across
   systems over eras).
 - Perpendicularities as 3D markers, not just data (`src/data/locations.ts`

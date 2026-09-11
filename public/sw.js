@@ -6,7 +6,7 @@
  * up as soon as the reader is online again.
  */
 const CACHE = 'ceph-v1';
-const SHELL = ['./', './index.html', './manifest.webmanifest', './mark.svg'];
+const SHELL = ['./', './index.html', './manifest.webmanifest', './mark.svg', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', (event) => {
   event.waitUntil((async () => {

@@ -6,8 +6,9 @@ function ch(
   id: string, name: string, color: string, book: string, origin: string,
   aliases: string, abilities: string, fact: string, cognitive: boolean,
   eras: Character['eras'],
+  extra: Partial<Character> = {},
 ): Character {
-  return { id, name, color, book, origin, aliases, abilities, fact, cognitive, eras, canon: C, sources: [book] };
+  return { id, name, color, book, origin, aliases, abilities, fact, cognitive, eras, canon: C, sources: [book], ...extra };
 }
 
 export const CHARACTERS: Character[] = [
@@ -20,7 +21,7 @@ export const CHARACTERS: Character[] = [
       { era: 3, system: 'rosharan', body: 'roshar' },
       { era: 4, system: 'scadrian', body: 'scadrial' },
       { era: 5, system: 'canticle', body: 'canticle-world' },
-    ]),
+    ], { fieldNotes: { origin: { canon: 'wob', note: 'Yolen is the strongest current reading, not a page-stated fact in every book.' } } }),
   ch('vin', 'Vin', '#77aaff', 'mistborn1', 'Scadrial', 'Valette Renoux',
     'Mistborn, Splinter of Preservation',
     'Ascended to become the vessel of Preservation.', false,
@@ -279,5 +280,68 @@ export const CHARACTERS: Character[] = [
     'A man of Patji facing a sky full of other worlds.', false, [
       { era: 4, system: 'drominad', body: 'first-of-the-sun' },
       { era: 5, system: 'drominad', body: 'first-of-the-sun' },
+    ]),
+  ch('mraize', 'Mraize', '#a3a3a3', 'stormlight', 'Unknown', 'Mraize',
+    'Ghostblood, worldhopper',
+    'Shallan\'s would-be master. A hunter who collects worlds like trophies.', false, [
+      { era: 3, system: 'rosharan', body: 'roshar' },
+    ]),
+  ch('iyatil', 'Iyatil', '#fb923c', 'stormlight', 'Scadrial (south)', 'Iyatil',
+    'Ghostblood, mask, worldhopper',
+    'Mraize\'s master. The mask is Malwish; the errand is Thaidakar\'s.', false, [
+      { era: 3, system: 'rosharan', body: 'roshar' },
+      { era: 4, system: 'scadrian', body: 'scadrial' },
+    ]),
+  ch('felt', 'Felt', '#64748b', 'mistborn1', 'Scadrial', 'Felt',
+    'Worldhopper, lookout',
+    'House Venture\'s spy, later a scout on the Shattered Plains. Still looking.', false, [
+      { era: 2, system: 'scadrian', body: 'scadrial' },
+      { era: 3, system: 'rosharan', body: 'roshar' },
+    ]),
+  ch('design', 'Design', '#22d3ee', 'stormlight', 'Roshar', 'Design',
+    'Cryptic, Hoid\'s spren',
+    'A spren who learned to walk off Roshar. She has opinions about hats.', true, [
+      { era: 3, system: 'rosharan', body: 'roshar' },
+      { era: 4, system: 'utol', body: 'komashi' },
+    ]),
+  ch('riina', 'Riina', '#a78bfa', 'tress', 'Sel', 'The Sorceress',
+    'Elantrian, aether-wise',
+    'An Ire-adjacent Elantrian on Lumar, cursing sailors from a midnight tower.', false, [
+      { era: 1, system: 'selish', body: 'sel' },
+      { era: 4, system: 'lumar', body: 'lumar-world' },
+    ]),
+  ch('frost', 'Frost', '#e2e8f0', 'core', 'Yolen', 'Frost',
+    'Dragon, Seventeenth Shard',
+    'A dragon of Yolen who will not intervene, and writes to those who do.', false, [
+      { era: 0, system: 'yolish', body: 'yolen' },
+      { era: 1, system: 'yolish', body: 'yolen' },
+      { era: 3, system: 'yolish', body: 'yolen' },
+    ]),
+  ch('xisis', 'Xisisrefliel', '#f43f5e', 'tress', 'Lumar', 'Xisis, the dragon of the Crimson Sea',
+    'Dragon, aether scholar',
+    'Lives under the Crimson Sea. Trades in servants and spore-lore.', false, [
+      { era: 4, system: 'lumar', body: 'lumar-world' },
+    ]),
+  ch('nikli', 'Nikli', '#a1a1aa', 'stormlight', 'Roshar', 'Nikli, Dysian Aimian',
+    'Sleepless, hordeling swarm',
+    'A Sleepless who tried to keep a Dawnshard off the board, and failed kindly.', false, [
+      { era: 3, system: 'rosharan', body: 'roshar' },
+    ]),
+  ch('nightblood', 'Nightblood', '#111827', 'warbreaker', 'Nalthis', 'Sword-nimi',
+    'Awakened sword, Destroy Evil',
+    'A thousand Breaths in a blade. Vasher\'s, then Szeth\'s. It wants to help.', true, [
+      { era: 2, system: 'nalthian', body: 'nalthis' },
+      { era: 3, system: 'rosharan', body: 'roshar' },
+    ]),
+  ch('lopen', 'Lopen', '#fbbf24', 'stormlight', 'Roshar', 'The Lopen',
+    'Windrunner Radiant',
+    'Herdazian, one-armed, then two. The universe is invited to his family.', false, [
+      { era: 3, system: 'rosharan', body: 'roshar' },
+    ]),
+  ch('baon', 'Baon', '#b45309', 'whitesand', 'Taldain', 'Baon, Blunt',
+    'Dynastic soldier, Seventeenth Shard',
+    'Khriss\'s guard on Dayside; later hunting Hoid with Galladon and Demoux.', false, [
+      { era: 2, system: 'taldainian', body: 'taldain' },
+      { era: 3, system: 'rosharan', body: 'roshar' },
     ]),
 ];

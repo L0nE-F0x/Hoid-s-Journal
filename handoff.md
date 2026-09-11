@@ -15,12 +15,14 @@ Architecture lock: `AGENTS.md` + `DESIGN.md`. This file is only the live todo.
 
 # ▶ START HERE — next session
 
-**2026-09-11 (evening) — city plates, geography that matches the pins,
-and deep links that actually restore a place. Local `master`, no remote
-yet.**
+**2026-09-11 (night) — the roadmap list is shipped except for a GitHub
+remote, a Netlify site, a soundtrack, and the Lore Web. Local `master`,
+still no remote.**
 
-The nested zoom now goes all the way down. Open this file, run the app, pick
-the highest item under **Do next**, ship it, verify with `npm run shot`.
+The atlas has places, the Realms have connective tissue, the journal has
+beats, and the ship path that can be done locally is done. Open this file,
+run the app, pick **Do next** if you want a remote or music or a Lore Web.
+Verify visuals with `npm run shot`.
 
 ```bash
 cd /home/lonefox/Projects/Cephandrius
@@ -43,6 +45,35 @@ with every shot.
 Git: first commit is **done** (local `master`, still **no remote**).
 
 ## What changed this session
+
+### Eighth pass — the rest of the list
+
+- **Thin worlds have places.** Komashi (steamwell, Dreamwatch, the Shroud),
+  Canticle (the Refuge, the Corridor), Threnody (the Crossroads, the Fort),
+  First of the Sun (the Homeisles). Names only, sourced.
+- **Silverlight is a city in Shadesmar**, not on a planet. Worldhopper routes
+  draw between systems (via Silverlight where that is the road). Press `C`
+  at Cosmere distance and the Realm is no longer a palette swap.
+- **Doors on both sides.** Perpendicularities show in Shadesmar as well as
+  the Physical — atlas and globe.
+- **A selected Shard draws Connection:** a line to the core, and the world
+  it sits on this era, labelled. Seat-lines from Yolen brighten when you
+  pick a Shard in the physical Cosmere.
+- **Shardworlds glow.** A slow emissive pulse on Invested globes.
+- **The journal names what a beat added.** Tracking a book shows a short
+  "this beat added" note and ✦ chips for the entities that arc introduced.
+  `fieldNotes` finally render in the drawer (Hoid's origin, Vax's magic).
+- **Denser data:** +12 people (worldhoppers, Frost, Xisis, Nikli, Nightblood,
+  Lopen, Baon…), glossary ~20 → ~55, interactive tables for Hemalurgy,
+  Voidbinding, Fabrials, AonDor, Forgery, Sand, Aviar, Aethers. Dawnshards
+  are Codex-searchable. Dragons and Sleepless are in the journal, not a
+  separate toy.
+- **Ship path, locally:** PNG install icons (`npm run icons`), a quality
+  ladder (auto / high / medium / low — nebula and bloom first, globe
+  tessellation last), a quiet rumble in Look (off by default), `npm run bench`,
+  phone layout under 900px.
+- **Not this session, need you:** GitHub remote, Netlify site, a soundtrack
+  (rumble is the procedural half), Lore Web.
 
 ### Seventh pass — city scale is a nested layer
 
@@ -257,88 +288,47 @@ Scan as a second scale, deep links, Hoid as the journal’s voice.
 - Panel-aware framing: `store.insets` (atlas = left/top, HUD = right/bottom)
   drives the camera's view offset and framing distance.
 - Cognitive Realm: a baked Shadesmar map (bead ocean / glass plains) on the
-  globe and in the atlas. Spiritual Realm: a framed diagram — core, sixteen
-  named Shards with per-era status, three axes, clickable.
+  globe and in the atlas. Silverlight and worldhopper routes at Cosmere
+  distance. Perpendicularities as doors on both sides. Spiritual Realm: a
+  framed diagram — core, sixteen named Shards with per-era status, three axes,
+  click-to-connect a Shard to the world it sits on this era.
 - Deep-link hash (`#y=&realm=&scale=&system=&body=&loc=&reading=`). A shared
   link restores the place and the beat; the title screen still gates it.
   Progress + visual in localStorage.
 - PWA: manifest, offline shell (`public/sw.js`), install prompt in Look.
-- Harnesses: `npm run shot` (capture), `npm run test:interaction` (17 checks
-  through real input), `npm run og` (social card).
+- Harnesses: `npm run shot` (capture), `npm run test:interaction` (22 checks
+  through real input), `npm run bench` (fps by scale), `npm run og` (social card),
+  `npm run icons` (PNG install marks).
 - Disclaimer on the title screen.
 
 ---
 
 ## Do next (priority order)
 
-Work top-down. Do not start a Lore Web while the atlas still wants more
-places and more honest maps.
+The atlas, Realms, companion, and local ship path are in. What is left
+needs you, or is a new product.
 
-### 1. The rest of the atlas
+### 1. Put it on the internet
 
-City scale exists. What is left is depth and honesty.
+- GitHub remote. Local `master` only, still.
+- Netlify: `netlify.toml` is ready (`npm run build`, publish `dist`). No site.
 
-- ~~City plates for the named cities~~ **done** (Urithiru, Kholinar,
-  Kharbranth, Luthadel, Elendel, Elantris, T'Telir, Kilahito, Kezare,
-  Beacon, Union). A local crop covers everywhere else you can stand.
-  More plates (Narak, Azimir, Fadrex) if a reread actually reaches for them.
-- Location coverage is better but still thin on Komashi, Canticle, Threnody
-  and First of the Sun. Add only names you can source; the canon badge is
-  supposed to mean something.
-- Continents now sit under their pins. They are still *our* shapes — deciding
-  how far to take original cartography is the open product question. Do not
-  trace Isaac Stewart.
+### 2. Soundtrack
 
-### 2. Realms: what is left
+- ~~Procedural rumble that follows scale~~ **done**, off until Look → Rumble.
+- v1 had music. Original only — no licensed tracks. This is a differentiator
+  vs Aetherfield and it is not started.
 
-Both non-physical Realms are real places now. What is missing is connective
-tissue, not the frame.
+### 3. Lore Web (six degrees of Hoid)
 
-- **Cognitive:** Silverlight, and worldhopper routes between systems. The bead
-  ocean reads well up close; at Cosmere distance the Realm barely changes.
-- **Spiritual:** the three axes are labels, not yet meaning. A selected Shard
-  could draw its Connection to the worlds it touches this era.
-- Perpendicularities show in the Physical Realm only; they are doors, so
-  they belong in Shadesmar too.
+The atlas is no longer a prototype. This is the next *product* if you want
+one. Physics graph in v1; do not copy the O(n²) canvas version.
 
-### 3. Companion depth (the journal)
+### 4. Optional depth, if a reread reaches for it
 
-- ~~Reading Companion + ✦ new this arc chips~~ **done.** What is missing is
-  depth: `fieldNotes`, per-arc "what changed" summaries, and a way to see
-  what a given arc *added* rather than only what it unlocked.
-- Investiture: shardworlds should *feel* Invested (already a v1 gem).
-
-### 4. Data still thin vs the 100x brief
-
-Stable string IDs are the right model. Content is a port of v1 plus extra
-pins, not an encyclopedia.
-
-- Characters: 52, era→body. Need more worldhoppers and supporting cast,
-  still spoiler-gated.
-- Glossary ~20 terms. Want the v1 Codex density × 10, cited.
-- Magic tables: Allomancy/Feruchemy/Surges/Heightenings are good.
-  Hemalurgy, Voidbinding, Fabrials, AonDor, Forgery, Sand, Aviar, Aethers
-  still lack interactive tables.
-- Canon `fieldNotes` barely used. Keep the badge system honest.
-- Dragons, Dawnshards, Sleepless from v1 are **not ported**.
-
-### 5. Ship path (do not skip forever)
-
-- First git commit + GitHub remote.
-- ~~`public/og.jpg`~~ **done** — regenerate with `npm run og`.
-- ~~Service worker + install prompt~~ **done**. The manifest still only has
-  an SVG icon; real PNG icons would help install banners.
-- Netlify: `netlify.toml` is ready (`npm run build`, publish `dist`).
-  No site yet.
-- ~~Screenshot and interaction harnesses~~ **done** (`npm run shot`,
-  `npm run test:interaction`). A bench harness is still missing.
-- Adaptive quality ladder (nebula/bloom first, globe tessellation last).
-- Mobile: atlas + HUD overlap. Aetherfield’s one-top-row / one-bottom-bar
-  under 900px is the pattern.
-- Audio: v1 had a soundtrack + procedural rumble that followed zoom/system.
-  Differentiator vs Aetherfield. Not started.
-- Lore Web (six degrees of Hoid): **after** 1–4. Physics graph in v1; do
-  not copy the O(n²) canvas version.
+- More city plates: Narak, Azimir, Fadrex.
+- Continents are still *our* shapes. Do not trace Isaac Stewart.
+- Glossary can go denser. Characters can go wider. Keep the badge honest.
 
 ---
 

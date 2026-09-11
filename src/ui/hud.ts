@@ -4,7 +4,9 @@ import {
   canEnterCity,
   characterById,
   cityById,
+  dawnshardById,
   eraAt,
+  hubById,
   isNewThisArc,
   landmarkById,
   perpAt,
@@ -31,6 +33,10 @@ function entityById(id: string | null) {
   if (loc) return { kind: 'location' as const, obj: loc };
   const mark = landmarkById[id];
   if (mark) return { kind: 'landmark' as const, obj: mark };
+  const hub = hubById[id];
+  if (hub) return { kind: 'hub' as const, obj: hub };
+  const ds = dawnshardById[id];
+  if (ds) return { kind: 'dawnshard' as const, obj: ds };
   const sh = COSMERE.shards.find((s) => s.id === id);
   if (sh) return { kind: 'shard' as const, obj: sh };
   return null;
@@ -121,7 +127,7 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
     // On a phone the chrome is two bands: the command line across the top and
     // the tool row just above the timeline. On a desktop both are corner cards
     // and claim nothing.
-    const narrow = window.innerWidth <= 720;
+    const narrow = window.innerWidth <= 900;
     store.setInset('chrome', narrow ? { top: Math.round(cmd.bottom + 8) } : null);
     store.setInset('tools', narrow
       ? { bottom: Math.round(Math.max(0, window.innerHeight - tb.top + 8)) }
@@ -176,7 +182,7 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
     const hit = entityById(id);
     // A phone cannot afford both sheets, and on a globe the atlas already
     // names the world the drawer would be describing.
-    const crowded = window.innerWidth <= 720 && atlasIsOpen() &&
+    const crowded = window.innerWidth <= 900 && atlasIsOpen() &&
       id === store.state.focusedBody;
     if (!hit || crowded) { drawer.style.display = 'none'; measure(); return; }
     drawer.style.display = '';
@@ -184,6 +190,7 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
     if (isNewThisArc(hit.obj as { book?: string; arc?: string }, store.state.readingNow)) {
       drawer.append(el('div', { className: 'ceph-reading ceph-reading--chip', text: '✦ new this arc' }));
     }
+    const notes = 'fieldNotes' in hit.obj ? hit.obj.fieldNotes : undefined;
     if (hit.kind === 'body') {
       const b = hit.obj;
       drawer.append(
@@ -204,6 +211,22 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
         listen(go, 'click', () => store.set('cameraCue', { kind: 'focus', id: b.id, scale: 'surface' }));
         drawer.append(go);
       }
+    } else if (hit.kind === 'hub') {
+      const h = hit.obj;
+      drawer.append(
+        el('div', { className: 'ceph-kicker', text: 'Cognitive city' }),
+        el('h2', { text: h.name }),
+        el('span', { className: `ceph-canon ceph-canon--${h.canon}`, text: h.canon }),
+        el('p', { className: 'ceph-fact', text: h.fact }),
+      );
+    } else if (hit.kind === 'dawnshard') {
+      const d = hit.obj;
+      drawer.append(
+        el('div', { className: 'ceph-kicker', text: `Dawnshard · ${d.command}` }),
+        el('h2', { text: d.name }),
+        el('span', { className: `ceph-canon ceph-canon--${d.canon}`, text: d.canon }),
+        el('p', { className: 'ceph-fact', text: d.fact }),
+      );
     } else if (hit.kind === 'system') {
       const s = hit.obj;
       const worlds = COSMERE.bodies.filter((b) => b.system === s.id).map((b) => b.name).join(', ');
@@ -266,6 +289,15 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
           el('div', { html: `<b>Location</b> ${row?.loc ?? '—'}` }),
         ]),
       );
+    }
+    if (notes) {
+      const box = el('div', { className: 'ceph-meta', style: { marginTop: '10px' } });
+      for (const [k, n] of Object.entries(notes)) {
+        box.append(el('div', {
+          html: `<b>${k}</b> <span class="ceph-canon ceph-canon--${n.canon}">${n.canon}</span> — ${n.note}`,
+        }));
+      }
+      drawer.append(box);
     }
   };
 

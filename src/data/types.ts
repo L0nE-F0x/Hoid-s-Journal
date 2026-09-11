@@ -224,6 +224,45 @@ export interface WorldEpoch {
   canon: CanonLevel;
 }
 
+/** A city that does not sit on a planet — Silverlight, in Shadesmar. */
+export interface Hub extends Cited {
+  id: string;
+  name: string;
+  color: string;
+  book: string;
+  fact: string;
+  /** System ids; layout averages their positions. */
+  between: string[];
+}
+
+/** A known Cognitive path between systems. */
+export interface WorldhopperRoute {
+  id: string;
+  from: string;
+  to: string;
+  via?: string;
+  book: string;
+  arc?: string;
+  fact: string;
+}
+
+export interface Dawnshard extends Cited {
+  id: string;
+  name: string;
+  command: string;
+  holder: string;
+  book: string;
+  arc?: string;
+  fact: string;
+}
+
+export interface ArcNote {
+  series: string;
+  arc: string;
+  added: string;
+  note: string;
+}
+
 export interface Cosmere {
   series: Series[];
   eras: Era[];

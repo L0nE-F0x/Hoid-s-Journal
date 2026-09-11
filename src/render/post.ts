@@ -47,6 +47,7 @@ class GradeEffect extends Effect {
 export interface PostChain {
   composer: EffectComposer;
   setBloom(intensity: number): void;
+  setQuality(band: 'high' | 'medium' | 'low'): void;
   setSize(width: number, height: number): void;
   dispose(): void;
 }
@@ -94,6 +95,16 @@ export function createPostChain(
   return {
     composer,
     setBloom: (v) => { bloom.intensity = v * 0.95; },
+    setQuality: (band) => {
+      bloom.kernelSize = band === 'low' ? KernelSize.SMALL
+        : band === 'medium' ? KernelSize.LARGE
+          : KernelSize.HUGE;
+      grain.blendMode.opacity.value = band === 'low' ? 0.01 : 0.026;
+      chromatic.offset.set(
+        band === 'low' ? 0 : 0.00028,
+        band === 'low' ? 0 : 0.00028,
+      );
+    },
     setSize: (w, h) => composer.setSize(w, h),
     dispose: () => composer.dispose(),
   };

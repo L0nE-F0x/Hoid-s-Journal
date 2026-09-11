@@ -71,6 +71,22 @@ export const MAGICS: Magic[] = [
     mechanics: 'Spike steals Allomancy, Feruchemy, attributes, or other powers depending on metal and bind point. Charges decay unspiked.',
     users: 'Steel Inquisitors, the Lord Ruler, Ruin, the Set',
     canon: C, sources: ['Mistborn Era 1', 'The Hero of Ages', 'Mistborn Era 2'],
+    table: {
+      kind: 'hemalurgy',
+      cols: ['Metal', 'Steals', 'Typical bind'],
+      rows: [
+        ['Iron', 'Human strength', 'Pewterarm / koloss'],
+        ['Steel', 'Allomantic Physical powers', 'Inquisitor eye-spike'],
+        ['Tin', 'Senses', 'Inquisitor ear / eye'],
+        ['Pewter', 'Feruchemical Physical', 'Keepers, stolen'],
+        ['Zinc', 'Emotional Allomancy (Riot)', 'Spike through the heart'],
+        ['Brass', 'Emotional Allomancy (Soothe)', 'Spike through the heart'],
+        ['Copper', 'Mental Fortitude / Memory', 'Kandra Blessing'],
+        ['Bronze', 'Mental Allomancy (Seek)', 'Inquisitor'],
+        ['Atium', 'Any power, at great cost', 'Ruin\'s favourite'],
+        ['Gold', 'Hybrid Feruchemy (health)', 'Bloodmaker stolen'],
+      ],
+    },
   },
   {
     id: 'surgebinding', name: 'Surgebinding', world: 'Roshar', book: 'stormlight', shard: 'Honor & Cultivation',
@@ -103,6 +119,21 @@ export const MAGICS: Magic[] = [
     mechanics: 'Fused are reborn into singer bodies each Everstorm, each wielding a Surge-like power.',
     users: 'The Fused, Regals, Voidbringers',
     canon: C, sources: ['The Stormlight Archive'],
+    table: {
+      kind: 'fused',
+      cols: ['Brand', 'Surge-like', 'Notes'],
+      rows: [
+        ['Fannahn-im', 'Cohesion', 'Deepest Ones; stone-walkers'],
+        ['Macrousian', 'Abrasion', 'Heavenly Ones\' cousins in friction'],
+        ['Nex-im', 'Transportation', 'The most feared; few remain'],
+        ['Shanay-im', 'Gravitation', 'Heavenly Ones; the sky is theirs'],
+        ['Magnified Ones', 'Progression', 'Growth as a weapon'],
+        ['Flowing Ones', 'Abrasion', 'The slick and the swift'],
+        ['Focused Ones', 'Division', 'Burn what they touch'],
+        ['Altered Ones', 'Transformation', 'Soulcasting, Voidish'],
+        ['Husked Ones', 'Illumination', 'Leave a husk and step out of it'],
+      ],
+    },
   },
   {
     id: 'old-magic', name: 'Old Magic', world: 'Roshar', book: 'stormlight', shard: 'Cultivation',
@@ -119,6 +150,20 @@ export const MAGICS: Magic[] = [
     mechanics: 'Caged spren + gem + metal cage. Augmenters, diminishers, pairs (conjoined), and warning fabrials.',
     users: 'Artifabrians, Navani Kholin, the Thaylen',
     canon: C, sources: ['The Stormlight Archive', 'Rhythm of War'],
+    table: {
+      kind: 'fabrials',
+      cols: ['Type', 'Spren / method', 'Does'],
+      rows: [
+        ['Augmenter', 'Flamespren, etc.', 'Increase an attribute'],
+        ['Diminisher', 'Caged opposite', 'Reduce an attribute'],
+        ['Pairing (conjoined)', 'Two cages, one spren-split', 'Move together across distance'],
+        ['Warning', 'Alterspren', 'Alert when a condition is met'],
+        ['Attracting', 'Logicspren / others', 'Pull a substance'],
+        ['Repelling', 'Opposite of attract', 'Push a substance'],
+        ['Clock', 'Timespren', 'Keep hours through a storm'],
+        ['Heating', 'Flamespren', 'Warm a room, a stew, a tower'],
+      ],
+    },
   },
   {
     id: 'awakening', name: 'Awakening', world: 'Nalthis', book: 'warbreaker', shard: 'Endowment',
@@ -151,6 +196,20 @@ export const MAGICS: Magic[] = [
     mechanics: 'Precise Aon strokes release power; the Chasm Line/Reod broke it until corrected.',
     users: 'Elantrians, Raoden',
     canon: C, sources: ['Elantris', 'Arcanum Unbounded — Sel essay'],
+    table: {
+      kind: 'aons',
+      cols: ['Aon', 'Means', 'Used for'],
+      rows: [
+        ['Aon Aon', 'The base, Arelon itself', 'Every other Aon is modified from this'],
+        ['Rao', 'Spirit, essence', 'The shape of Elantris and its four gate-roads'],
+        ['Daa', 'Power, dynamism', 'A combat Aon, a burst'],
+        ['Ien', 'Heal', 'Raoden\'s first working Aon after the Chasm Line'],
+        ['Tia', 'Travel', 'Instant motion, if you know the destination'],
+        ['Edo', 'Protection', 'A shield, a wall of light'],
+        ['Shao', 'Transform, illusion', 'Disguise; cousin to Forgery\'s lie'],
+        ['Ehe', 'Fire', 'Light and heat'],
+      ],
+    },
   },
   {
     id: 'forgery', name: 'Forgery', world: 'Sel', book: 'emperorssoul', shard: 'Devotion & Dominion',
@@ -159,6 +218,17 @@ export const MAGICS: Magic[] = [
     mechanics: 'A stamp must match what could have been. Essence Marks rewrite a person temporarily.',
     users: 'Forgers, Shai, the Bloodsealers, Dakhor monks',
     canon: C, sources: ["The Emperor's Soul"],
+    table: {
+      kind: 'forgery',
+      cols: ['Stamp', 'Rewrites', 'Constraint'],
+      rows: [
+        ['Soulstamp', 'An object\'s history', 'Must be a history that could have been'],
+        ['Essence Mark', 'A person, for a time', 'The soul resists an implausible life'],
+        ['Resealing', 'Flesh, as if never wounded', 'A cousin-art; not a full Forgery'],
+        ['Bloodsealing', 'A body, as a tracker or ward', 'Dzhamar; needs blood'],
+        ['Remembering', 'A broken thing, as whole', 'The stamp has to believe it too'],
+      ],
+    },
   },
   {
     id: 'sand-mastery', name: 'Sand Mastery', world: 'Taldain', book: 'whitesand', shard: 'Autonomy',
@@ -167,6 +237,17 @@ export const MAGICS: Magic[] = [
     mechanics: 'Mastering sand makes it glow and respond to the wielder\'s will; overmastering can kill.',
     users: 'Sand Masters of the Diem, Kenton',
     canon: C, sources: ['White Sand'],
+    table: {
+      kind: 'sand',
+      cols: ['Term', 'Means'],
+      rows: [
+        ['Ribbon', 'A line of mastered sand, under the wielder\'s will'],
+        ['Overmastering', 'Pushing past your water. It can kill you.'],
+        ['White sand', 'Invested Dayside sand. It glows while mastered, then dulls.'],
+        ['Deep sand', 'Where the sandlings are. The Diem does not go lightly.'],
+        ['Mastrell', 'Highest rank of the Diem. Kenton was denied it, then was it.'],
+      ],
+    },
   },
   {
     id: 'aviar', name: 'Aviar', world: 'First of the Sun', book: 'sixthofdusk', shard: 'Autonomy (Patji)',
@@ -175,6 +256,15 @@ export const MAGICS: Magic[] = [
     mechanics: 'An Aviar must visit Patji\'s Eye to gain its ability.',
     users: 'Sixth of the Dusk, Pantheon trappers',
     canon: C, sources: ['Sixth of the Dusk'],
+    table: {
+      kind: 'aviar',
+      cols: ['Aviar', 'Talent'],
+      rows: [
+        ['Kokerlii', 'Hides the mind from the island\'s predators'],
+        ['Sak', 'Shows a vision of your corpse — a death you might still avoid'],
+        ['Others (unnamed)', 'Each species grants one talent, after Patji\'s Eye'],
+      ],
+    },
   },
   {
     id: 'yolish-lightweaving', name: 'Yolish Lightweaving', world: 'Yolen', book: 'core', shard: '—',
@@ -191,6 +281,19 @@ export const MAGICS: Magic[] = [
     mechanics: 'Each spore colour has distinct behaviour (Verdant vines, Roseite crystal, Zephyr gas, Midnight mimics…).',
     users: 'Tress, the Sorceress, aether-bonded sailors',
     canon: C, sources: ['Tress of the Emerald Sea'],
+    table: {
+      kind: 'aethers',
+      cols: ['Sea / spore', 'When wet'],
+      rows: [
+        ['Verdant', 'Vines. Fast, hungry, useful.'],
+        ['Crimson', 'Spores that seek blood. Do not bleed in that sea.'],
+        ['Roseite', 'Crystal. Beautiful, and it will grow through you.'],
+        ['Midnight', 'Essence that mimics. The Sorceress\'s sea.'],
+        ['Zephyr', 'Air, violently. Sails and explosions.'],
+        ['Sunlight', 'Fire. Water is a match.'],
+        ['The other six', 'Twelve moons, twelve rains. Water is always the trigger.'],
+      ],
+    },
   },
   {
     id: 'hion', name: 'Hion & Nightmare Painting', world: 'Komashi', book: 'yumi', shard: 'Virtuosity',

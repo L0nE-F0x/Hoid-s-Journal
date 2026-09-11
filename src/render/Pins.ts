@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { COSMERE, bodyById, isVisible } from '../data/index.ts';
+import { COSMERE, bodyById, isVisible, perpAt } from '../data/index.ts';
 import { uvOnBody } from '../layout/surface.ts';
 import type { Orrery } from './Orrery.ts';
 
@@ -129,6 +129,7 @@ export class Pins {
     focusedBody: string | null,
     scale: string,
     hot: string | null,
+    realm = 'physical',
   ): void {
     const show = scale === 'globe' || scale === 'surface' || scale === 'city';
     this.group.visible = show;
@@ -143,7 +144,10 @@ export class Pins {
       if (!loc) { sprite.visible = false; continue; }
       const body = bodyById[loc.body];
       const origin = orrery.bodyPosition(loc.body);
-      const vis = !!body && !!origin && isVisible(loc, progress) &&
+      const side = realm === 'cognitive'
+        ? loc.realm === 'cognitive' || !!perpAt(loc.id)
+        : loc.realm !== 'cognitive';
+      const vis = !!body && !!origin && isVisible(loc, progress) && side &&
         (!focusedBody || focusedBody === loc.body);
       sprite.visible = vis;
       if (!vis || !body || !origin) continue;

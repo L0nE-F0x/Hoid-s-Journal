@@ -223,7 +223,7 @@
 .ceph-tooltip.is-on { opacity: 1; }
 
 /* Phones: one top band, one bottom bar, everything else between them. */
-@media (max-width: 720px) {
+@media (max-width: 900px) {
   .ceph-timeline {
     width: calc(100% - 12px);
     padding: 10px 12px 12px;

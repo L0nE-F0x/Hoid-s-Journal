@@ -8,6 +8,8 @@ export type ShellMode = 'title' | 'play';
 export type Realm = 'physical' | 'cognitive' | 'spiritual';
 export type Scale = 'cosmere' | 'system' | 'globe' | 'surface' | 'city';
 
+export type Quality = 'auto' | 'high' | 'medium' | 'low';
+
 export interface VisualState {
   bloom: number;
   exposure: number;
@@ -20,6 +22,8 @@ export interface VisualState {
   showAtmospheres: boolean;
   motionBlur: boolean;
   autoRotate: boolean;
+  quality: Quality;
+  rumble: boolean;
 }
 
 export interface ViewInsets {
@@ -91,6 +95,8 @@ export function defaultVisual(): VisualState {
     showAtmospheres: true,
     motionBlur: false,
     autoRotate: true,
+    quality: 'auto',
+    rumble: false,
   };
 }
 

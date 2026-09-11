@@ -1,7 +1,8 @@
 import * as THREE from 'three';
-import { COSMERE, bodyById, bodyByName, characterAt, isVisible } from '../data/index.ts';
+import { COSMERE, HUBS, ROUTES, bodyById, bodyByName, characterAt, hubById, isVisible } from '../data/index.ts';
 import { keplerWorld } from '../layout/kepler.ts';
 import type { Orrery } from './Orrery.ts';
+import { sunTexture } from './planetTextures.ts';
 
 const _off = new THREE.Vector3();
 
@@ -17,6 +18,8 @@ export class Presence {
   private readonly trail: THREE.Line;
   private readonly trailMat: THREE.LineDashedMaterial;
   private readonly stops: THREE.Mesh[] = [];
+  private readonly hubs: { id: string; mesh: THREE.Mesh; halo: THREE.Sprite; label: THREE.Sprite; pos: THREE.Vector3 }[] = [];
+  private readonly routes: THREE.Line[] = [];
 
   constructor() {
     const geo = new THREE.SphereGeometry(0.08, 10, 8);
@@ -57,6 +60,48 @@ export class Presence {
     const yolen = COSMERE.systems.find((s) => s.id === 'yolish');
     if (yolen) this.yolen.set(...yolen.position);
 
+    const hubGeo = new THREE.SphereGeometry(0.7, 16, 12);
+    for (const hub of HUBS) {
+      const mesh = new THREE.Mesh(hubGeo, new THREE.MeshBasicMaterial({
+        color: hub.color, transparent: true, opacity: 0.95,
+      }));
+      const halo = new THREE.Sprite(new THREE.SpriteMaterial({
+        map: sunTexture(hub.color),
+        blending: THREE.AdditiveBlending,
+        depthWrite: false,
+        transparent: true,
+        opacity: 0.55,
+      }));
+      const canvas = document.createElement('canvas');
+      canvas.width = 512; canvas.height = 96;
+      const ctx = canvas.getContext('2d')!;
+      ctx.font = '600 34px Inter, ui-sans-serif, sans-serif';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.shadowColor = 'rgba(0,0,0,0.9)'; ctx.shadowBlur = 14;
+      ctx.fillStyle = '#eaf4ff';
+      ctx.fillText(hub.name, 256, 48);
+      const label = new THREE.Sprite(new THREE.SpriteMaterial({
+        map: new THREE.CanvasTexture(canvas), transparent: true, depthTest: false,
+      }));
+      mesh.visible = false;
+      halo.visible = false;
+      label.visible = false;
+      this.group.add(mesh, halo, label);
+      this.hubs.push({ id: hub.id, mesh, halo, label, pos: new THREE.Vector3() });
+    }
+    for (const route of ROUTES) {
+      const geo = new THREE.BufferGeometry().setAttribute(
+        'position', new THREE.BufferAttribute(new Float32Array(9), 3),
+      );
+      const line = new THREE.Line(geo, new THREE.LineDashedMaterial({
+        color: 0xb39dfb, dashSize: 2.2, gapSize: 1.4, transparent: true, opacity: 0.45,
+      }));
+      line.visible = false;
+      line.userData = { id: route.id };
+      this.group.add(line);
+      this.routes.push(line);
+    }
+
     for (const sh of COSMERE.shards) {
       const geoLine = new THREE.BufferGeometry().setFromPoints([
         new THREE.Vector3(), new THREE.Vector3(),
@@ -87,6 +132,7 @@ export class Presence {
   ): void {
     const yolenPos = orrery.bodyPosition('yolen') ?? this.yolen;
     this.updateTrail(orrery, camera, progress, scale, selected);
+    this.updateHubs(orrery, camera, progress, scale, cognitive, selected);
 
     // On a surface scan the pins are the subject; a swarm of people-dots at
     // the same apparent size just competes with them.
@@ -124,12 +170,100 @@ export class Presence {
       const dest = eraRow ? bodyByName(eraRow.loc) ?? bodyByName(sh.world) : bodyByName(sh.world);
       const destPos = dest ? orrery.bodyPosition(dest.id) : null;
       if (!destPos) { row.line.visible = false; continue; }
-      row.line.visible = linesOn;
+      const hot = selected === sh.id;
+      // In Shadesmar the roads are worldhopper routes, not Shard-seat lines.
+      row.line.visible = !cognitive && (linesOn || hot);
       const pos = row.line.geometry.getAttribute('position') as THREE.BufferAttribute;
       pos.setXYZ(0, yolenPos.x, yolenPos.y, yolenPos.z);
       pos.setXYZ(1, destPos.x, destPos.y, destPos.z);
       pos.needsUpdate = true;
       row.line.computeLineDistances();
+      const mat = row.line.material as THREE.LineDashedMaterial;
+      mat.opacity = hot ? 0.95 : linesOn ? 0.55 : 0;
+      mat.dashSize = hot ? 0.4 : 0.8;
+    }
+  }
+
+  /** Where a Cognitive hub is standing this frame. */
+  hubPosition(id: string): THREE.Vector3 | undefined {
+    const row = this.hubs.find((h) => h.id === id);
+    return row?.mesh.visible ? row.pos : row?.pos;
+  }
+
+  private hubWorld(orrery: Orrery, id: string, into: THREE.Vector3): THREE.Vector3 | null {
+    const hub = hubById[id];
+    if (!hub) return null;
+    into.set(0, 0, 0);
+    let n = 0;
+    for (const sys of hub.between) {
+      const p = orrery.systemPosition(sys);
+      if (!p) continue;
+      into.add(p);
+      n++;
+    }
+    if (!n) return null;
+    return into.multiplyScalar(1 / n);
+  }
+
+  /**
+   * Silverlight and the roads to it: only in Shadesmar, and only at a
+   * distance where a city between stars can still be a city.
+   */
+  private updateHubs(
+    orrery: Orrery,
+    camera: THREE.Camera,
+    progress: Record<string, number>,
+    scale: string,
+    cognitive: boolean,
+    selected: string | null,
+  ): void {
+    const show = cognitive && (scale === 'cosmere' || scale === 'system');
+    for (const row of this.hubs) {
+      const hub = hubById[row.id];
+      const p = hub && isVisible(hub, progress) ? this.hubWorld(orrery, hub.id, row.pos) : null;
+      const on = show && !!p;
+      row.mesh.visible = on;
+      row.halo.visible = on;
+      row.label.visible = on;
+      if (!on || !p) continue;
+      row.mesh.position.copy(p);
+      row.halo.position.copy(p);
+      const d = camera.position.distanceTo(p);
+      const s = Math.min(4.5, Math.max(0.8, d * 0.018));
+      const hot = selected === row.id;
+      row.mesh.scale.setScalar(s * (hot ? 1.4 : 1));
+      row.halo.scale.setScalar(s * 4.5);
+      const ls = Math.max(8, Math.min(80, d * 0.12));
+      row.label.scale.set(ls, ls * 0.19, 1);
+      row.label.position.copy(p);
+      row.label.position.y += s * 2.2;
+    }
+    for (let i = 0; i < this.routes.length; i++) {
+      const line = this.routes[i]!;
+      const route = ROUTES[i];
+      if (!route || !show || !isVisible(route, progress)) { line.visible = false; continue; }
+      const a = orrery.systemPosition(route.from);
+      const b = orrery.systemPosition(route.to);
+      if (!a || !b) { line.visible = false; continue; }
+      const pos = line.geometry.getAttribute('position') as THREE.BufferAttribute;
+      pos.setXYZ(0, a.x, a.y, a.z);
+      if (route.via) {
+        const mid = this.hubWorld(orrery, route.via, _off);
+        if (mid) {
+          pos.setXYZ(1, mid.x, mid.y, mid.z);
+          pos.setXYZ(2, b.x, b.y, b.z);
+          line.geometry.setDrawRange(0, 3);
+        } else {
+          pos.setXYZ(1, b.x, b.y, b.z);
+          line.geometry.setDrawRange(0, 2);
+        }
+      } else {
+        pos.setXYZ(1, b.x, b.y, b.z);
+        line.geometry.setDrawRange(0, 2);
+      }
+      pos.needsUpdate = true;
+      line.visible = true;
+      line.computeLineDistances();
     }
   }
 

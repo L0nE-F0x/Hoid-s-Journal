@@ -200,6 +200,11 @@ async function run() {
     await sleep(700);
     s = await state(page);
     check('C enters the Cognitive Realm', s.realm === 'cognitive', s.realm);
+    const silver = await page.evaluate(() => {
+      const p = window.__ceph.app.presence.hubPosition('silverlight');
+      return p ? p.length() > 1 : false;
+    });
+    check('Silverlight stands in Shadesmar', silver);
     await page.keyboard.press('v');
     await settle(page);
     s = await state(page);

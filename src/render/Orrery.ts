@@ -48,7 +48,9 @@ export class Orrery {
   private readonly moonMeshes = new Map<string, THREE.Mesh>();
   private readonly moonMats = new Map<string, THREE.ShaderMaterial>();
   private readonly bodyWorld = new Map<string, THREE.Vector3>();
-  private readonly sphere = new THREE.SphereGeometry(1, 48, 32);
+  private readonly sphereHigh = new THREE.SphereGeometry(1, 48, 32);
+  private readonly sphereLow = new THREE.SphereGeometry(1, 24, 16);
+  private sphere = this.sphereHigh;
   private readonly moonGeo = new THREE.SphereGeometry(1, 16, 12);
   private spinLockId: string | null = null;
   private spinLock = 0;
@@ -237,6 +239,14 @@ export class Orrery {
     this.spinLock = spin;
   }
 
+  /** Globe tessellation last on the quality ladder. */
+  setQuality(band: 'high' | 'medium' | 'low'): void {
+    const geo = band === 'low' ? this.sphereLow : this.sphereHigh;
+    if (geo === this.sphere) return;
+    this.sphere = geo;
+    for (const node of this.bodyNodes.values()) node.mesh.geometry = geo;
+  }
+
   update(year: number, realm: Realm, era: number, time: number, visual: {
     showOrbits: boolean;
     showMoons: boolean;
@@ -285,6 +295,8 @@ export class Orrery {
       node.mat.uniforms.uTime.value = time;
       node.mat.uniforms.uCognitive.value = cognitive;
       node.mat.uniforms.uHighstorm.value = node.body.id === 'roshar' && realm === 'physical' ? 1 : 0;
+      const invested = node.body.kind === 'shardworld' && node.body.shards.length > 0 && realm === 'physical';
+      node.mat.uniforms.uEmissive.value = invested ? 0.05 + 0.03 * Math.sin(time * 0.7) : 0;
       node.atmoMat.uniforms.uSunPos.value.copy(_sun);
       node.atmo.visible = visual.showAtmospheres;
       node.mesh.rotation.y = this.spinLockId === node.body.id ? this.spinLock : time * 0.04;
@@ -308,10 +320,14 @@ export class Orrery {
     // the nebula washes the whole frame teal. The planet is the subject: the
     // shader still lights it from the real sun position.
     const globe = visual.scale === 'globe' || visual.scale === 'surface' || visual.scale === 'city';
-    for (const n of this.nebulae) n.visible = visual.showNebula && !globe;
+    for (const n of this.nebulae) {
+      n.visible = visual.showNebula && !globe;
+      n.scale.setScalar(cognitive ? 36 : 28);
+      (n.material as THREE.SpriteMaterial).opacity = cognitive ? 0.8 : 0.55;
+    }
     for (const spr of this.sunSprites.values()) {
       spr.visible = !globe;
-      spr.scale.setScalar(visual.scale === 'system' ? 2.8 : 2.35);
+      spr.scale.setScalar(visual.scale === 'system' ? 2.8 : cognitive ? 3.1 : 2.35);
     }
   }
 }

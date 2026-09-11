@@ -50,6 +50,9 @@ export class Spiritual {
   private readonly coreGlow: THREE.Sprite;
   private readonly coreLabel: THREE.Sprite;
   private readonly axes: { sprite: THREE.Sprite; line: THREE.Line }[] = [];
+  private readonly bond: THREE.Line;
+  private readonly worldChip: THREE.Sprite;
+  private worldChipKey = '';
 
   constructor() {
     this.core = new THREE.Mesh(
@@ -96,6 +99,16 @@ export class Spiritual {
       this.group.add(sprite, line);
       this.axes.push({ sprite, line });
     }
+
+    this.bond = new THREE.Line(
+      new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(), new THREE.Vector3()]),
+      new THREE.LineBasicMaterial({ color: 0xffe9a8, transparent: true, opacity: 0.85 }),
+    );
+    this.bond.visible = false;
+    this.group.add(this.bond);
+    this.worldChip = textSprite('', 'rgba(226,238,255,0.9)', 32, 600);
+    this.worldChip.visible = false;
+    this.group.add(this.worldChip);
 
     this.group.visible = false;
   }
@@ -186,6 +199,39 @@ export class Spiritual {
       line.geometry.computeBoundingSphere();
       sprite.visible = !whole;
       line.visible = !whole;
+    }
+
+    // A selected Shard draws Connection: a line to the core, and the world
+    // it sits on this era — so the axes are not only labels.
+    const picked = selected ? this.motes.find((m) => m.id === selected) : undefined;
+    const sh = picked ? COSMERE.shards.find((s) => s.id === picked.id) : undefined;
+    if (!whole && picked && sh && picked.mesh.visible) {
+      const pos = this.bond.geometry.getAttribute('position') as THREE.BufferAttribute;
+      pos.setXYZ(0, 0, 0, 0);
+      pos.setXYZ(1, picked.pos.x, picked.pos.y, picked.pos.z);
+      pos.needsUpdate = true;
+      this.bond.geometry.computeBoundingSphere();
+      this.bond.visible = true;
+      (this.bond.material as THREE.LineBasicMaterial).color.set(sh.color);
+      const row = sh.eras.find((e) => e.era === era) ?? sh.eras[sh.eras.length - 1];
+      const where = row?.loc ?? sh.world;
+      this.worldChip.visible = true;
+      const key = `${sh.id}:${where}`;
+      if (this.worldChipKey !== key) {
+        this.worldChipKey = key;
+        const mat = this.worldChip.material as THREE.SpriteMaterial;
+        const chip = textSprite(where.toUpperCase(), sh.color, 30, 600);
+        const next = (chip.material as THREE.SpriteMaterial).map;
+        mat.map = next;
+        mat.needsUpdate = true;
+      }
+      const s = apparent(picked.pos, 0.04);
+      this.worldChip.scale.set(s * 5.2, s, 1);
+      this.worldChip.position.copy(picked.pos).multiplyScalar(1.35);
+      this.worldChip.position.y += 2.4;
+    } else {
+      this.bond.visible = false;
+      this.worldChip.visible = false;
     }
   }
 }

@@ -12,7 +12,7 @@
 .ceph-atlas.is-on { display: block; }
 
 /* Phone: a sheet above the bottom bar, not a column over the world. */
-@media (max-width: 720px) {
+@media (max-width: 900px) {
   .ceph-atlas {
     top: auto;
     bottom: calc(var(--ceph-tools-top, 200px) + 8px);

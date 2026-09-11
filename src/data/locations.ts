@@ -172,6 +172,27 @@ export const LOCATIONS: Location[] = [
 
   loc('sori', 'Sori', 'first-of-the-sun', 'sixthofdusk', 0.58, 0.44, '#a3e635', 'island',
     'One of the Pantheon islands. Safer than Patji. Everything is.'),
+
+  // Thin worlds: names a reread actually reaches for. Placement is ours.
+  loc('torio-steamwell', 'Torio steamwell', 'komashi', 'yumi', 0.36, 0.54, '#e879f9', 'home',
+    'Yumi stacked stones beside the steam, and the spirits came.'),
+  loc('dreamwatch', 'Dreamwatch', 'komashi', 'yumi', 0.64, 0.46, '#22d3ee', 'keep',
+    'Kilahito\'s painter corps. Nightmares stop at their wall, most nights.'),
+  loc('the-shroud', 'The Shroud', 'komashi', 'yumi', 0.50, 0.22, '#111827', 'storm',
+    'The darkness the machine made of the sky. Hion cuts it; nothing else does.'),
+
+  loc('the-refuge', 'The Refuge', 'canticle-world', 'sunlit', 0.58, 0.62, '#fde68a', 'keep',
+    'A cavern of the old world, under the killing sun. The Cinder King\'s prize.'),
+  loc('the-corridor', 'The Corridor', 'canticle-world', 'sunlit', 0.42, 0.50, '#fb923c', 'land',
+    'The sun-scoured path the hover-cities race. Dawn on one side, night on the other.'),
+
+  loc('the-crossroads', 'The Crossroads', 'threnody', 'shadowsforsilence', 0.48, 0.56, '#a8a29e', 'home',
+    'Silence Montane\'s waystop. Fire, blood, and running are all against the Rules.'),
+  loc('the-fort', 'The Fort', 'threnody', 'shadowsforsilence', 0.40, 0.44, '#78716c', 'keep',
+    'A Homeland fort on the Forests\' edge. Safer than the trees. Not safe.'),
+
+  loc('homeisles', 'The Homeisles', 'first-of-the-sun', 'sixthofdusk', 0.28, 0.62, '#86efac', 'island',
+    'The Eelakin islands, away from the Pantheon. Traps are for Patji; this is home.'),
 ];
 
 export const PERPS: Perpendicularity[] = [

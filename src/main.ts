@@ -1,5 +1,6 @@
 import { App } from './core/App.ts';
 import { connectSettingsPersistence, restoreSettings } from './core/persist.ts';
+import { connectAudio } from './core/audio.ts';
 import { connectPwa } from './core/pwa.ts';
 import { store } from './core/store.ts';
 import { connectUrlState } from './core/urlState.ts';
@@ -59,6 +60,7 @@ async function main(): Promise<void> {
   const deepLink = connectUrlState();
   connectSettingsPersistence();
   connectPwa(() => store.touch('panel'));
+  connectAudio();
 
   setBoot(0.7, 'Lighting the systems');
   const app = new App(canvas, {

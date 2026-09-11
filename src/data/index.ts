@@ -2,14 +2,18 @@ import { BODIES, ERAS, MOONS, PUB_ORDER, SERIES, SYSTEMS, TIMELINE_NOTE, WORLD_E
 import { CHARACTERS } from './characters.ts';
 import { CITY_PLATES, cityById, landmarkById } from './cities.ts';
 import { GLOSSARY } from './glossary.ts';
+import { ARC_NOTES, arcNoteFor } from './journal.ts';
 import { LOCATIONS, PERPS } from './locations.ts';
 import { MAGICS } from './magics.ts';
+import { DAWNSHARDS, HUBS, ROUTES, dawnshardById, hubById } from './realms.ts';
 import { SHARDS } from './shards.ts';
 import type {
   Body, Character, CharacterEra, Cosmere, Location, Perpendicularity, Series,
 } from './types.ts';
 
 export { CITY_PLATES, cityById, landmarkById };
+export { ARC_NOTES, arcNoteFor };
+export { DAWNSHARDS, HUBS, ROUTES, dawnshardById, hubById };
 
 export type { Cosmere } from './types.ts';
 export * from './types.ts';
@@ -144,6 +148,26 @@ export function locationsOn(bodyId: string, era?: number): Location[] {
 
 /** Continents and seas stay at surface; a place you can stand in can go closer. */
 const REGION_ICONS = new Set(['land', 'sea', 'storm', 'grass', 'forest', 'peak', 'lake', 'scroll']);
+
+/** Names this beat put on the map, not just unlocked. */
+export function addedThisArc(
+  now: ReadingNow,
+): { kind: string; name: string }[] {
+  if (!now) return [];
+  const s = seriesById[now.series];
+  const arcId = s?.arcs[now.arc]?.id;
+  if (!arcId) return [];
+  const rows: { kind: string; name: string }[] = [];
+  const take = (kind: string, name: string, item: { book?: string; arc?: string }) => {
+    if (item.book === now.series && item.arc === arcId) rows.push({ kind, name });
+  };
+  for (const b of BODIES) take('world', b.name, b);
+  for (const c of CHARACTERS) take('person', c.name, c);
+  for (const l of LOCATIONS) take('place', l.name, l);
+  for (const g of GLOSSARY) take('term', g.term, g);
+  for (const m of MAGICS) take('magic', m.name, m);
+  return rows;
+}
 
 /**
  * City scale is a nested layer: an original plate if we drew one, otherwise

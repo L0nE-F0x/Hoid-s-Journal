@@ -10,6 +10,8 @@
     "preview": "vite preview",
     "shot": "node tools/screenshot.mjs",
     "test:interaction": "node tools/test-interaction.mjs",
+    "bench": "node tools/bench.mjs",
+    "icons": "node tools/icons.mjs",
     "og": "node tools/screenshot.mjs --intro --width 1200 --height 630 --settle 2400 --quality 90 --eval \"document.querySelector('.ceph-title-actions').style.visibility='hidden'\" --out public/og.jpg"
   },
   "dependencies": {

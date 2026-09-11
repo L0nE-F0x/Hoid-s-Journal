@@ -1,9 +1,13 @@
 import {
   COSMERE,
   bodyById,
+  addedThisArc,
+  arcNoteFor,
   characterAt,
   characterById,
   cityById,
+  DAWNSHARDS,
+  HUBS,
   isNewThisArc,
   isVisible,
   landmarkById,
@@ -117,6 +121,8 @@ function renderCodex(card: HTMLElement): void {
     for (const g of COSMERE.glossary) push(g.id, g.term, 'term', g.def, g);
     for (const l of COSMERE.locations) push(l.id, l.name, 'place', l.desc, l);
     for (const m of Object.values(landmarkById)) push(m.id, m.name, 'place', m.desc, m);
+    for (const h of HUBS) push(h.id, h.name, 'place', h.fact, h);
+    for (const d of DAWNSHARDS) push(d.id, d.name, 'relic', d.fact, d);
     hits.sort((a, b) => {
       const score = (h: { label: string }) => {
         const n = h.label.toLowerCase();
@@ -158,6 +164,11 @@ function renderCodex(card: HTMLElement): void {
         if (mark) {
           store.set('cameraCue', { kind: 'focus', id: mark.city, scale: 'city' });
           store.set('selected', mark.id);
+          return;
+        }
+        if (HUBS.some((x) => x.id === h.id)) {
+          store.set('cameraCue', { kind: 'focus', id: h.id, scale: 'cosmere' });
+          store.set('realm', 'cognitive');
           return;
         }
         const ch = characterById[h.id];
@@ -224,6 +235,26 @@ function renderSpoilers(card: HTMLElement): void {
     );
   }
   card.append(pick, arcRow);
+  if (now) {
+    const s = seriesById[now.series];
+    const note = s ? arcNoteFor(now.series, now.arc, s.arcs) : undefined;
+    if (note) {
+      card.append(
+        el('div', { className: 'ceph-kicker', text: 'This beat added', style: { marginTop: '16px' } }),
+        el('p', { className: 'ceph-fact', text: note.added }),
+        el('p', { className: 'ceph-fact', text: note.note, style: { color: 'var(--ceph-text-dim)' } }),
+      );
+    }
+    const fresh = addedThisArc(now);
+    if (fresh.length) {
+      const wrap = el('div', { style: { display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '8px' } });
+      for (const row of fresh.slice(0, 24)) {
+        wrap.append(el('span', { className: 'ceph-atlas-chip', text: `✦ ${row.name}`,
+          style: { border: '1px solid var(--ceph-border)', borderRadius: '999px', padding: '2px 8px', fontSize: '10.5px' } }));
+      }
+      card.append(wrap);
+    }
+  }
   const list = el('div', { style: { display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '16px' } });
   for (const s of COSMERE.series) {
     const prog = store.state.readProgress[s.id] ?? s.arcs.length - 1;
@@ -270,7 +301,19 @@ function renderSettings(card: HTMLElement): void {
     toggle('showLabels', 'Labels'),
     toggle('showAtmospheres', 'Atmospheres'),
     toggle('autoRotate', 'Auto-rotate (title)'),
+    toggle('rumble', 'Rumble'),
   ]));
+  const q = el('button', {
+    className: 'ceph-chip is-on',
+    text: `Quality · ${v.quality}`,
+    style: { marginTop: '10px' },
+  });
+  listen(q, 'click', () => {
+    const order = ['auto', 'high', 'medium', 'low'] as const;
+    const i = order.indexOf(store.state.visual.quality);
+    store.patchVisual({ quality: order[(i + 1) % order.length]! });
+  });
+  card.append(q);
 
   if (canInstall()) {
     const install = el('button', {

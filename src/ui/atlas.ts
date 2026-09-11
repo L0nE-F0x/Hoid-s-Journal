@@ -9,6 +9,7 @@ import {
   isVisible,
   landmarkById,
   locationsOn,
+  perpAt,
   scadrialBiome,
 } from '../data/index.ts';
 import { store } from '../core/store.ts';
@@ -91,7 +92,10 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
     if (!s.focusedBody) return [];
     return locationsOn(s.focusedBody, s.era).filter((l) => {
       if (!isVisible(l, s.readProgress)) return false;
-      return (s.realm === 'cognitive') === (l.realm === 'cognitive');
+      if (s.realm === 'cognitive') {
+        return l.realm === 'cognitive' || !!perpAt(l.id);
+      }
+      return l.realm !== 'cognitive';
     });
   };
 

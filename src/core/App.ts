@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { COSMERE, bodyById, canEnterCity, characterAt, eraAt, isVisible } from '../data/index.ts';
+import { COSMERE, HUBS, bodyById, canEnterCity, characterAt, eraAt, hubById, isVisible } from '../data/index.ts';
 import { uvFacing, uvOnBody } from '../layout/surface.ts';
 import { CameraRig, type Waypoint } from './CameraRig.ts';
 import { store, type CameraCue, type Scale } from './store.ts';
@@ -22,7 +22,7 @@ const _toCam = new THREE.Vector3();
 /** How far from a subject a click still counts, in CSS pixels. */
 const PICK_SLOP = 15;
 
-type PickKind = 'system' | 'body' | 'location' | 'character' | 'shard';
+type PickKind = 'system' | 'body' | 'location' | 'character' | 'shard' | 'hub';
 /** How far off the sun axis the camera stands. Bigger = more terminator. */
 const GLOBE_SUN_OFFSET = 0.7;
 const SURFACE_SUN_OFFSET = 0.95;
@@ -56,6 +56,9 @@ export class App {
   private follow: { id: string; pos: THREE.Vector3; heading: number } | null = null;
   /** What the last framing asked for, so panels opening later can re-fit. */
   private framing: { radius: number; fill: number; commanded: number } | null = null;
+  private autoBand: 'high' | 'medium' | 'low' = 'high';
+  private fpsSlow = 0;
+  private fpsFast = 0;
 
   constructor(canvas: HTMLCanvasElement, opts: { onHoverAnchor?: (p: { x: number; y: number } | null) => void } = {}) {
     this.canvas = canvas;
@@ -108,7 +111,7 @@ export class App {
     }));
     this.disposers.push(store.on('visual', (v) => {
       this.rig.autoRotate = v.autoRotate && store.state.shell === 'title';
-      this.post.setBloom(v.bloom);
+      this.applyQuality();
     }));
     this.disposers.push(store.on('realm', (realm, prev) => {
       if (realm === 'spiritual') {
@@ -131,6 +134,7 @@ export class App {
       this.refit();
     }));
     this.rig.setInsets(store.state.insets);
+    this.applyQuality();
   }
 
   start(): void {
@@ -238,6 +242,7 @@ export class App {
   private focusId(id: string, scale: Scale): void {
     const loc = COSMERE.locations.find((l) => l.id === id);
     if (loc) { this.focusLocation(loc.id, loc.body, scale === 'city' ? 'city' : 'surface'); return; }
+    if (hubById[id]) { this.focusHub(id); return; }
     const body = bodyById[id];
     if (body) {
       const p = this.orrery.bodyPosition(id);
@@ -373,6 +378,13 @@ export class App {
         const p = this.orrery.systemPosition(sys.id);
         if (p) consider(sys.id, 'system', p, 1.6);
       }
+      if (s.realm === 'cognitive') {
+        for (const hub of HUBS) {
+          if (!isVisible(hub, s.readProgress)) continue;
+          const p = this.presence.hubPosition(hub.id);
+          if (p) consider(hub.id, 'hub', p, 1.8);
+        }
+      }
     }
     if (s.scale !== 'cosmere') {
       for (const body of COSMERE.bodies) {
@@ -389,7 +401,9 @@ export class App {
         const spin = this.orrery.bodySpin(s.focusedBody);
         for (const loc of COSMERE.locations) {
           if (loc.body !== body.id || !isVisible(loc, s.readProgress)) continue;
-          if ((s.realm === 'cognitive') !== (loc.realm === 'cognitive')) continue;
+          if (s.realm === 'cognitive') {
+            if (loc.realm !== 'cognitive' && !COSMERE.perps.some((p) => p.at === loc.id)) continue;
+          } else if (loc.realm === 'cognitive') continue;
           uvOnBody(loc.u, loc.v, body.radius * 1.015, spin, _surf);
           // Skip the far side: the globe is in the way.
           _toCam.copy(this.camera.position).sub(origin).sub(_surf).normalize();
@@ -431,6 +445,10 @@ export class App {
         && (s.scale === 'surface' || s.scale === 'city')
         && canEnterCity(loc, s.era, s.realm);
       this.focusLocation(loc.id, loc.body, dive ? 'city' : 'surface');
+      return;
+    }
+    if (hit.kind === 'hub') {
+      this.focusHub(hit.id);
       return;
     }
     if (hit.kind === 'system') {
@@ -488,6 +506,29 @@ export class App {
     const fill = scale === 'city' ? 0.86 : 0.74;
     const dist = this.rig.framingDistance(body.radius, fill);
     this.framing = { radius: body.radius, fill, commanded: dist };
+    this.rig.flyTo(p, dist, 2.0);
+  }
+
+  private focusHub(id: string): void {
+    const hub = hubById[id];
+    if (!hub) return;
+    const p = new THREE.Vector3();
+    let n = 0;
+    for (const sys of hub.between) {
+      const at = this.orrery.systemPosition(sys);
+      if (!at) continue;
+      p.add(at);
+      n++;
+    }
+    if (!n) return;
+    p.multiplyScalar(1 / n);
+    store.set('selected', id);
+    store.set('focusedBody', null);
+    store.set('focusedLocation', null);
+    store.set('scale', 'cosmere');
+    store.set('realm', 'cognitive');
+    const dist = this.rig.framingDistance(8, 0.45);
+    this.framing = { radius: 8, fill: 0.45, commanded: dist };
     this.rig.flyTo(p, dist, 2.0);
   }
 
@@ -594,7 +635,7 @@ export class App {
     );
     this.pins.update(
       this.orrery, this.camera, s.readProgress, s.focusedBody, s.scale,
-      s.hovered ?? s.focusedLocation,
+      s.hovered ?? s.focusedLocation, s.realm,
     );
     this.presence.update(
       this.orrery, this.camera, s.era, s.year, s.readProgress, s.scale,
@@ -619,9 +660,34 @@ export class App {
       store.state.stats.fps = this.frames / this.fpsAccum;
       store.state.stats.ms = (this.fpsAccum / this.frames) * 1000;
       store.touch('stats');
+      this.stepQuality(store.state.stats.fps);
       this.frames = 0;
       this.fpsAccum = 0;
     }
+  }
+
+  private stepQuality(fps: number): void {
+    if (store.state.visual.quality !== 'auto') return;
+    if (fps < 28) { this.fpsSlow++; this.fpsFast = 0; }
+    else if (fps > 52) { this.fpsFast++; this.fpsSlow = 0; }
+    else { this.fpsSlow = 0; this.fpsFast = 0; return; }
+    let next = this.autoBand;
+    if (this.fpsSlow > 4) next = this.autoBand === 'high' ? 'medium' : 'low';
+    if (this.fpsFast > 8) next = this.autoBand === 'low' ? 'medium' : 'high';
+    if (next === this.autoBand) return;
+    this.autoBand = next;
+    this.fpsSlow = 0;
+    this.fpsFast = 0;
+    this.applyQuality();
+  }
+
+  private applyQuality(): void {
+    const v = store.state.visual;
+    const band = v.quality === 'auto' ? this.autoBand : v.quality;
+    const k = band === 'low' ? 0.4 : band === 'medium' ? 0.7 : 1;
+    this.post.setBloom(v.bloom * k);
+    this.post.setQuality(band);
+    this.orrery.setQuality(band);
   }
 
   dispose(): void {

@@ -223,9 +223,9 @@ function renderRealms(card: HTMLElement): void {
   );
   const grid = el('div', { className: 'ceph-grid' });
   const rows: { id: 'physical' | 'cognitive' | 'spiritual'; title: string; fact: string }[] = [
-    { id: 'physical', title: 'Physical', fact: 'The orrery. Worlds, orbits, the sky you reread in.' },
-    { id: 'cognitive', title: 'Cognitive · Shadesmar', fact: 'Bead oceans where land was. Silverlight and the roads worldhoppers walk. C toggles.' },
-    { id: 'spiritual', title: 'Spiritual', fact: 'Not a map. Sixteen Shards around a unity core. Click a Shard to see where it sits. V toggles.' },
+    { id: 'physical', title: 'Physical', fact: 'The orrery. Thirteen systems, their worlds and moons, and the sky you reread in.' },
+    { id: 'cognitive', title: 'Cognitive · Shadesmar', fact: 'Bead oceans where land was, and the light of every mind over them. Silverlight, Celebrant, Lasting Integrity, the Grand Knell, the Expanses, and the roads between. C toggles.' },
+    { id: 'spiritual', title: 'Spiritual', fact: 'Not a map. One light Shattered into sixteen, still Connected, with the broken ones shown as the fragments they are. Click a Shard to see where it sits. V toggles.' },
   ];
   for (const r of rows) {
     const on = store.state.realm === r.id;
@@ -318,8 +318,8 @@ function renderSpoilers(card: HTMLElement): void {
       el('span', { className: 'ceph-kicker', text: prog < 0 ? 'unread' : s.arcs[prog]?.label ?? 'done' }),
     ]);
     const row = el('div');
-    const less = el('button', { className: 'ceph-btn', text: '−' });
-    const more = el('button', { className: 'ceph-btn', text: '+' });
+    const less = el('button', { className: 'ceph-btn ceph-btn--step', text: '−' });
+    const more = el('button', { className: 'ceph-btn ceph-btn--step', text: '+' });
     listen(less, 'click', () => store.patchProgress(s.id, Math.max(-1, prog - 1)));
     listen(more, 'click', () => store.patchProgress(s.id, Math.min(s.arcs.length - 1, prog + 1)));
     row.append(label, el('div', { style: { display: 'flex', gap: '8px', marginTop: '6px' } }, [less, more]));

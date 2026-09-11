@@ -8,19 +8,38 @@ interface Label {
   kind: 'body' | 'system';
 }
 
-function makeLabel(text: string, color: string): THREE.CanvasTexture {
+/**
+ * A name that holds up over a nebula. A blurred shadow is not enough on a
+ * bright background — these get an ink outline as well, and systems are set
+ * in the same tracked caps the chrome uses.
+ */
+function makeLabel(text: string, color: string, kind: 'body' | 'system'): THREE.CanvasTexture {
+  const W = 640;
+  const H = 112;
   const canvas = document.createElement('canvas');
-  canvas.width = 512;
-  canvas.height = 96;
+  canvas.width = W;
+  canvas.height = H;
   const ctx = canvas.getContext('2d')!;
-  ctx.clearRect(0, 0, 512, 96);
-  ctx.font = '600 36px Inter, ui-sans-serif, system-ui, sans-serif';
+  ctx.clearRect(0, 0, W, H);
+
+  const label = kind === 'system' ? text.toUpperCase() : text;
+  ctx.font = kind === 'system'
+    ? '500 32px Inter, ui-sans-serif, system-ui, sans-serif'
+    : '600 38px Inter, ui-sans-serif, system-ui, sans-serif';
+  ctx.letterSpacing = kind === 'system' ? '5px' : '0.5px';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.shadowColor = 'rgba(0,0,0,0.85)';
-  ctx.shadowBlur = 12;
+
+  ctx.shadowColor = 'rgba(2,3,8,0.92)';
+  ctx.shadowBlur = 16;
+  ctx.lineJoin = 'round';
+  ctx.lineWidth = 6;
+  ctx.strokeStyle = 'rgba(2,3,8,0.88)';
+  ctx.strokeText(label, W / 2, H / 2);
+  ctx.shadowBlur = 0;
   ctx.fillStyle = color;
-  ctx.fillText(text, 256, 48);
+  ctx.fillText(label, W / 2, H / 2);
+
   const tex = new THREE.CanvasTexture(canvas);
   tex.needsUpdate = true;
   return tex;
@@ -32,7 +51,7 @@ export class Labels {
 
   constructor() {
     for (const s of COSMERE.systems) {
-      this.labels.push(this.make(s.id, s.name, '#9fb4d0', 'system'));
+      this.labels.push(this.make(s.id, s.name, '#cdd8ea', 'system'));
     }
     for (const b of COSMERE.bodies) {
       if (b.kind === 'gas-giant') continue;
@@ -42,13 +61,13 @@ export class Labels {
 
   private make(id: string, name: string, color: string, kind: Label['kind']): Label {
     const mat = new THREE.SpriteMaterial({
-      map: makeLabel(name, color),
+      map: makeLabel(name, color, kind),
       transparent: true,
       depthTest: false,
       depthWrite: false,
     });
     const sprite = new THREE.Sprite(mat);
-    sprite.scale.set(7.2, 1.35, 1);
+    sprite.scale.set(7.2, 1.26, 1);
     sprite.userData = { kind, id };
     this.group.add(sprite);
     return { id, sprite, kind };
@@ -80,8 +99,8 @@ export class Labels {
         l.sprite.visible = isVisible(sys, progress);
         l.sprite.position.copy(p);
         l.sprite.position.y += 4.2;
-        const s = Math.max(8, Math.min(120, dist * 0.14));
-        l.sprite.scale.set(s, s * 0.19, 1);
+        const s = Math.max(10, Math.min(140, dist * 0.20));
+        l.sprite.scale.set(s, s * 0.175, 1);
       } else {
         const body = COSMERE.bodies.find((b) => b.id === l.id);
         const p = orrery.bodyPosition(l.id);
@@ -98,7 +117,7 @@ export class Labels {
         // Constant apparent size: a fixed floor turns into a billboard the
         // size of the planet once you are close enough to read one.
         const s = Math.max(0.5, Math.min(80, dist * 0.22));
-        l.sprite.scale.set(s, s * 0.19, 1);
+        l.sprite.scale.set(s, s * 0.175, 1);
       }
     }
   }

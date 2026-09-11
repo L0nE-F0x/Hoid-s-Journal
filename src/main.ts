@@ -56,7 +56,7 @@ async function main(): Promise<void> {
     console.warn('[cephandrius] UI layer unavailable, renderer only:', err);
   }
 
-  connectUrlState();
+  const deepLink = connectUrlState();
   connectSettingsPersistence();
   connectPwa(() => store.touch('panel'));
 
@@ -74,7 +74,10 @@ async function main(): Promise<void> {
     boot.root.classList.add('done');
     setTimeout(() => boot.root.remove(), 800);
     store.set('ready', true);
-    app.playIntro();
+    // A shared link is a save state: fly to what it names instead of playing
+    // the opening. The title stays up — that is where the disclaimer lives.
+    if (deepLink) store.set('cameraCue', { kind: 'focus', id: deepLink.id, scale: deepLink.scale });
+    else app.playIntro();
   });
 }
 

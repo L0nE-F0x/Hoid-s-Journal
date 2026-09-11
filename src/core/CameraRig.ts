@@ -307,6 +307,16 @@ export class CameraRig {
     this.goalTheta += deltaTheta;
   }
 
+  /** The distance the rig is heading for, whoever last asked for it. */
+  get goalDistance(): number { return this.goalRadius; }
+
+  /** Change how far out we stand without touching where we are looking. */
+  setDistance(distance: number, damping = 3.2): void {
+    this.goalRadius = clamp(distance, this.minRadius, this.maxRadius);
+    this.damping = damping;
+    this.goalDamping = 6.5;
+  }
+
   flyTo(point: THREE.Vector3, distance: number, damping = 2.2): void {
     this.path = [];
     this.goalTarget.copy(point);

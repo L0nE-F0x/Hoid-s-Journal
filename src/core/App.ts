@@ -54,6 +54,8 @@ export class App {
   private disposers: (() => void)[] = [];
   private hoverAnchor: ((p: { x: number; y: number } | null) => void) | undefined;
   private follow: { id: string; pos: THREE.Vector3; heading: number } | null = null;
+  /** What the last framing asked for, so panels opening later can re-fit. */
+  private framing: { radius: number; fill: number; commanded: number } | null = null;
 
   constructor(canvas: HTMLCanvasElement, opts: { onHoverAnchor?: (p: { x: number; y: number } | null) => void } = {}) {
     this.canvas = canvas;
@@ -124,7 +126,10 @@ export class App {
         else this.frameCosmere(2.2);
       }
     }));
-    this.disposers.push(store.on('insets', (v) => this.rig.setInsets(v)));
+    this.disposers.push(store.on('insets', (v) => {
+      this.rig.setInsets(v);
+      this.refit();
+    }));
     this.rig.setInsets(store.state.insets);
   }
 
@@ -223,6 +228,7 @@ export class App {
     }
     // The spread is a 3-D radius but the systems lie in a flattened plane seen
     // at an angle, so the on-screen width is roughly three quarters of it.
+    this.framing = null;
     this.rig.flyTo(centre, this.rig.framingDistance(spread * 0.78, 0.86, 'width'), damping);
     store.set('scale', 'cosmere');
     store.set('focusedSystem', null);
@@ -255,7 +261,9 @@ export class App {
         const dz = p.z - sun.z;
         this.rig.setAngles(Math.atan2(dx, dz) + Math.PI - GLOBE_SUN_OFFSET, 1.02);
       }
-      this.rig.flyTo(p, globe ? this.rig.framingDistance(body.radius) : 42, 2.0);
+      const dist = globe ? this.rig.framingDistance(body.radius) : 42;
+      this.framing = globe ? { radius: body.radius, fill: 0.52, commanded: dist } : null;
+      this.rig.flyTo(p, dist, 2.0);
       return;
     }
     const sys = COSMERE.systems.find((s) => s.id === id);
@@ -267,6 +275,7 @@ export class App {
       const outer = COSMERE.bodies
         .filter((b) => b.system === id)
         .reduce((m, b) => Math.max(m, b.orbit.a), 8);
+      this.framing = null;
       this.rig.flyTo(p, this.rig.framingDistance(outer * 0.95, 0.92), 2.1);
       store.set('focusedSystem', id);
       store.set('focusedBody', null);
@@ -431,6 +440,24 @@ export class App {
   }
 
   /**
+   * Panels can open after a subject is framed — a deep link lands before the
+   * HUD exists — so re-fit when the free rectangle changes, unless the reader
+   * has taken the zoom into their own hands since.
+   */
+  private refit(): void {
+    const f = this.framing;
+    if (!f) return;
+    if (Math.abs(this.rig.goalDistance - f.commanded) > f.commanded * 0.02) {
+      this.framing = null;
+      return;
+    }
+    const want = this.rig.framingDistance(f.radius, f.fill);
+    if (Math.abs(want - f.commanded) < 0.02) return;
+    f.commanded = want;
+    this.rig.setDistance(want);
+  }
+
+  /**
    * Turn the globe until a place on it is facing the camera, with the camera
    * still standing sunward so the place is lit. The camera solves the
    * latitude, the body's spin solves the longitude.
@@ -454,7 +481,9 @@ export class App {
     this.orrery.setSpinLock(bodyId, theta - face.theta);
     // Soften a polar stare a little; a globe reads better near the equator.
     this.rig.setAngles(theta, Math.PI / 2 + (face.phi - Math.PI / 2) * 0.85);
-    this.rig.flyTo(p, this.rig.framingDistance(body.radius, 0.74), 2.0);
+    const dist = this.rig.framingDistance(body.radius, 0.74);
+    this.framing = { radius: body.radius, fill: 0.74, commanded: dist };
+    this.rig.flyTo(p, dist, 2.0);
   }
 
   /**

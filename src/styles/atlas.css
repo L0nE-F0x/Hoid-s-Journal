@@ -44,6 +44,13 @@
   cursor: crosshair;
   background: #05060d;
 }
+.ceph-atlas-credit {
+  margin-top: 6px;
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ceph-text-dim);
+}
 .ceph-atlas-roster {
   display: flex;
   flex-wrap: wrap;

@@ -26,8 +26,8 @@ Breaking either of these is how this turns into a tangle:
   spoiler gate.
 - Nested cinematic: planet → system → Cosmere, then the HUD.
 - Every published world is in scope, nested (globe + surface).
-- Original / procedural art only. No Isaac Stewart scans, no Coppermind
-  portraits.
+- Globe textures stay procedural. Atlas plates may use Isaac Stewart
+  cartography, credited. No Coppermind portraits.
 - No battle simulator. The atlas is the product.
 - Public name: **Cephandrius — Hoid's Journal**.
 - Unofficial fan project. Dragonsteel disclaimer on the title screen.

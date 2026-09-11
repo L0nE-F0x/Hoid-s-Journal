@@ -17,8 +17,8 @@ store wall, title over a live scene.
 4. **Pillars.** Orrery + time, spoiler companion, Arcanum, three Realms,
    Roshar surface, Scadrial surface (Catacendre map-swap), Codex. Lore Web
    is later. **Battle sim is cut.**
-5. **Art.** Original and procedural only. No official map scans, no Coppermind
-   portraits.
+5. **Art.** Globe textures stay procedural. Atlas world and city plates may
+   use Isaac Stewart's cartography, always credited. No Coppermind portraits.
 6. **Name.** Cephandrius — Hoid's Journal.
 
 ## Why v1 still matters
@@ -37,6 +37,7 @@ Preserve these *ideas*, not the machine:
 
 Throw away: globals, integer indices, Canvas2D + shadowBlur, Tailwind CDN,
 duplicated `roshar/` tree, emoji-as-icon, Coppermind hotlinks, battle sim.
+Isaac Stewart maps are in again, with credit, at the owner's request.
 
 ## Technical spine
 

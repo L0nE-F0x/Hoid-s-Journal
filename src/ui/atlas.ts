@@ -1,4 +1,5 @@
 import { bakeCityMap } from '../cartography/cityMap.ts';
+import { cityMapFile, getOfficialMap, MAP_CREDIT, worldMapFile } from '../cartography/officialMaps.ts';
 import { bakePlanetMap, seedFromId } from '../cartography/planetMap.ts';
 import {
   bodyById,
@@ -55,9 +56,11 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
   const title = el('div', { className: 'ceph-atlas-title', text: 'Surface scan' });
   const kicker = el('div', { className: 'ceph-kicker', text: 'Cartography' });
   const roster = el('div', { className: 'ceph-atlas-roster' });
+  const credit = el('div', { className: 'ceph-atlas-credit', text: '' });
   const panel = el('div', { className: 'ceph-panel ceph-atlas' }, [
     el('div', { className: 'ceph-atlas-head' }, [kicker, title]),
     canvas,
+    credit,
     roster,
   ]);
   root.append(panel);
@@ -103,11 +106,16 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
     const s = store.state;
     const body = s.focusedBody ? bodyById[s.focusedBody] : undefined;
     if (!body) return null;
+    const official = getOfficialMap(
+      worldMapFile(body.id, s.era, s.realm === 'cognitive'),
+      () => { composeMap(); composePins(); paint(); },
+    );
+    if (official) return official;
     const biome = body.id === 'scadrial' ? scadrialBiome(s.era) : body.biome;
     return bakePlanetMap(biome, seedFromId(body.id), 1024, 512, s.realm === 'cognitive');
   };
 
-  const blitLocal = (ctx: CanvasRenderingContext2D, map: HTMLCanvasElement, fu: number, fv: number) => {
+  const blitLocal = (ctx: CanvasRenderingContext2D, map: CanvasImageSource & { width: number; height: number }, fu: number, fv: number) => {
     const mw = map.width;
     const mh = map.height;
     const sw = LOCAL_U * mw;
@@ -130,6 +138,11 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
     if (!ctx) return;
     ctx.clearRect(0, 0, W, H);
     if (s.scale === 'city' && s.focusedLocation) {
+      const raster = getOfficialMap(cityMapFile(s.focusedLocation), () => { composeMap(); paint(); });
+      if (raster) {
+        ctx.drawImage(raster, 0, 0, W, H);
+        return;
+      }
       const plate = bakeCityMap(s.focusedLocation, W, H);
       if (plate) {
         ctx.drawImage(plate, 0, 0, W, H);
@@ -145,7 +158,7 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
 
   const pinRows = (): { id: string; name: string; u: number; v: number; color: string }[] => {
     const s = store.state;
-    if (s.scale === 'city' && s.focusedLocation && cityById[s.focusedLocation]) {
+    if (s.scale === 'city' && s.focusedLocation && cityById[s.focusedLocation] && !cityMapFile(s.focusedLocation)) {
       return cityById[s.focusedLocation]!.landmarks
         .filter((m) => isVisible(m, s.readProgress))
         .map((m) => ({ id: m.id, name: m.name, u: m.u, v: m.v, color: m.color }));
@@ -284,13 +297,17 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
     const loc = s.focusedLocation
       ? visibleLocations().find((l) => l.id === s.focusedLocation)
       : undefined;
+    const official = s.scale === 'city' && loc
+      ? !!cityMapFile(loc.id)
+      : !!worldMapFile(body.id, s.era, s.realm === 'cognitive');
     if (s.scale === 'city' && loc) {
-      kicker.textContent = cityById[loc.id] ? 'City plate' : 'Local scan';
+      kicker.textContent = official ? 'City plate' : (cityById[loc.id] ? 'City plate' : 'Local scan');
       title.textContent = loc.name;
     } else {
-      kicker.textContent = 'Cartography';
+      kicker.textContent = official ? 'Cartography' : 'Cartography';
       title.textContent = s.realm === 'cognitive' ? `${body.name} · Shadesmar` : body.name;
     }
+    credit.textContent = official ? MAP_CREDIT : '';
     composeMap();
     composePins();
     composeRoster();

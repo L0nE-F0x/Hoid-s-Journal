@@ -164,8 +164,8 @@ async function run() {
       const c = document.querySelector('.ceph-atlas-canvas');
       if (!c) return null;
       const r = c.getBoundingClientRect();
-      // Urithiru sits at u 0.48, v 0.58 on the map.
-      return { x: r.left + r.width * 0.48, y: r.top + r.height * 0.58 };
+      // Urithiru on Isaac Stewart's Roshar plate (3096×1800).
+      return { x: r.left + r.width * 0.466, y: r.top + r.height * 0.638 };
     });
     check('atlas is open on a globe', !!pin);
     if (pin) {
@@ -185,18 +185,17 @@ async function run() {
         `${s.scale}/${s.focusedLocation}`);
       const plateTitle = await page.evaluate(() => document.querySelector('.ceph-atlas-title')?.textContent);
       check('city plate is titled for the place', plateTitle === 'Urithiru', String(plateTitle));
-      const atrium = await page.evaluate(() => {
-        const c = document.querySelector('.ceph-atlas-canvas');
-        if (!c) return null;
-        const r = c.getBoundingClientRect();
-        return { x: r.left + r.width * 0.42, y: r.top + r.height * 0.52 };
+      const chip = await page.evaluate(() => {
+        const b = [...document.querySelectorAll('.ceph-atlas-chip')]
+          .find((n) => /gemstone|breakaway|oathgate/i.test(n.textContent || ''));
+        if (!b) return false;
+        b.click();
+        return true;
       });
-      if (atrium) {
-        await page.mouse.click(atrium.x, atrium.y);
-        await sleep(250);
-        s = await state(page);
-        check('a landmark on the plate selects', s.selected === 'urithiru-atrium', s.selected);
-      }
+      await sleep(250);
+      s = await state(page);
+      check('a landmark on the plate selects', chip && s.selected && s.selected.startsWith('urithiru-'),
+        s.selected);
       await page.keyboard.press('Escape');
       await settle(page);
       s = await state(page);

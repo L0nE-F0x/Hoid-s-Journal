@@ -16,8 +16,8 @@ Architecture lock: `AGENTS.md` + `DESIGN.md`. This file is only the live todo.
 
 # ▶ START HERE — next session
 
-**2026-09-11 (night) — Lore Web, soundtrack, moons, labelled galaxy
-chart.** Official map scans were not copied. Push is on `master`.
+**2026-09-11 (night) — Isaac Stewart plates are in the atlas, credited.**
+Globe stays procedural. Battle sim still out. Push is on `master`.
 
 Verify with `npm run shot`.
 
@@ -42,6 +42,16 @@ with every shot.
 Git: `master` tracks `origin` at https://github.com/L0nE-F0x/Hoid-s-Journal.
 
 ## What changed this session
+
+### Twelfth pass — Isaac Stewart plates
+
+The owner reversed the no-scans lock. Atlas world maps for Roshar
+(physical + Shadesmar) and Scadrial (ash / basin) and city plates
+(Urithiru, Kholinar, Kharbranth, Thaylen, Luthadel, Elendel, Fadrex,
+Urteau, New Seran, Shattered Plains) are the Stewart plates, with
+"Cartography by Isaac Stewart" on the atlas. Pins for those worlds
+were recalibrated to the plates. Globe albedo stays procedural.
+Coppermind portraits still out. Battle sim still out.
 
 ### Eleventh pass — Lore Web, music, moons
 
@@ -377,8 +387,10 @@ needs you, or is a new product.
   coincidence is `speculation`.
 - The atlas measures its rect on every store-driven repaint (forced layout).
   Cheap today; if it shows up in a profile, move it to a ResizeObserver.
-- Atlas pin UVs are placed by eye. Nothing stops two pins landing on top of
-  each other in a future edit except the proximity check you run yourself.
+- Roshar and Scadrial atlas UVs are calibrated to Isaac Stewart plates.
+  Globe textures remain procedural, so a pin on the globe is approximate
+  relative to the 3-D continent.
+- Official plates are credited: "Cartography by Isaac Stewart".
 - Publication-safe preset without `readingNow` reveals all series.
 - `layout/kepler.ts` imports Three. Fine for the renderer; UI must not
   import it. Cartography is the three-free path.

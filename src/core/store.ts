@@ -173,9 +173,24 @@ class Store {
     this.touch('visual');
   }
 
-  patchInsets(patch: Partial<ViewInsets>): void {
+  private insetSources = new Map<string, Partial<ViewInsets>>();
+
+  /**
+   * Each panel reports the edge it covers under its own name; the camera gets
+   * the union. Panels move between edges at narrow widths, so one writer per
+   * edge is not a model that survives a phone.
+   */
+  setInset(source: string, rect: Partial<ViewInsets> | null): void {
+    if (rect) this.insetSources.set(source, rect);
+    else if (!this.insetSources.delete(source)) return;
     const prev = this.state.insets;
-    const next = { ...prev, ...patch };
+    const next = defaultInsets();
+    for (const r of this.insetSources.values()) {
+      next.left = Math.max(next.left, r.left ?? 0);
+      next.right = Math.max(next.right, r.right ?? 0);
+      next.top = Math.max(next.top, r.top ?? 0);
+      next.bottom = Math.max(next.bottom, r.bottom ?? 0);
+    }
     if (
       next.left === prev.left &&
       next.right === prev.right &&

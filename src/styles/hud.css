@@ -222,8 +222,50 @@
 }
 .ceph-tooltip.is-on { opacity: 1; }
 
+/* Phones: one top band, one bottom bar, everything else between them. */
 @media (max-width: 720px) {
-  .ceph-timeline { width: calc(100% - 16px); }
-  .ceph-command { left: 8px; right: 8px; width: auto; }
-  .ceph-tools { top: calc(88px + var(--ceph-safe-top)); }
+  .ceph-timeline {
+    width: calc(100% - 12px);
+    padding: 10px 12px 12px;
+  }
+  .ceph-command {
+    left: 6px;
+    right: 6px;
+    width: auto;
+    padding: 8px 12px;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .ceph-command .ceph-kicker { display: none; }
+  .ceph-command-sub { margin-top: 0; }
+  .ceph-reading { margin-top: 0; }
+  .ceph-tools {
+    top: auto;
+    bottom: calc(var(--ceph-timeline-top, 160px));
+    left: 6px;
+    right: 6px;
+    justify-content: flex-start;
+    gap: 6px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: 2px;
+  }
+  .ceph-tools::-webkit-scrollbar { display: none; }
+  .ceph-tools .ceph-btn {
+    padding: 5px 9px;
+    font-size: 10px;
+    flex: 0 0 auto;
+  }
+  .ceph-ticker { display: none; }
+  .ceph-panel-drawer {
+    top: calc(var(--ceph-command-bottom, 60px) + 8px);
+    left: 6px;
+    right: 6px;
+    width: auto;
+    max-height: 30vh;
+    padding: 12px 14px 14px;
+  }
+  .ceph-modal-card { padding: 18px 16px 22px; }
 }

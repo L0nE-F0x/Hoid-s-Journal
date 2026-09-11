@@ -12,6 +12,7 @@ import {
 } from '../data/index.ts';
 import { store } from '../core/store.ts';
 import { BRAND_TAGLINE, BRAND_WORDMARK } from './brand.ts';
+import { atlasIsOpen } from './atlas.ts';
 import { el, listen } from './dom.ts';
 import '../styles/hud.css';
 
@@ -87,19 +88,48 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
   const measure = () => {
     // The command panel grows when a book is being tracked; the atlas hangs
     // off its bottom edge rather than a hard-coded offset.
+    const cmd = command.getBoundingClientRect();
     document.documentElement.style.setProperty(
-      '--ceph-command-bottom', `${Math.round(command.getBoundingClientRect().bottom)}px`,
+      '--ceph-command-bottom', `${Math.round(cmd.bottom)}px`,
+    );
+    const tl = timeline.getBoundingClientRect();
+    const tb = tools.getBoundingClientRect();
+    document.documentElement.style.setProperty(
+      '--ceph-tools-bottom', `${Math.round(tb.bottom)}px`,
+    );
+    // Phone anchors: the tools sit above the timeline, the atlas above them.
+    document.documentElement.style.setProperty(
+      '--ceph-timeline-top', `${Math.round(Math.max(0, window.innerHeight - tl.top + 8))}px`,
+    );
+    document.documentElement.style.setProperty(
+      '--ceph-tools-top', `${Math.round(Math.max(0, window.innerHeight - tb.top))}px`,
     );
     if (!hud.classList.contains('is-on')) {
-      store.patchInsets({ right: 0, bottom: 0 });
+      store.setInset('timeline', null);
+      store.setInset('drawer', null);
+      store.setInset('chrome', null);
+      store.setInset('tools', null);
       return;
     }
-    const t = timeline.getBoundingClientRect();
-    const bottom = Math.round(Math.max(0, window.innerHeight - t.top + 10));
-    const open = drawer.style.display !== 'none';
+    store.setInset('timeline', { bottom: Math.round(Math.max(0, window.innerHeight - tl.top + 10)) });
+
+    // On a phone the chrome is two bands: the command line across the top and
+    // the tool row just above the timeline. On a desktop both are corner cards
+    // and claim nothing.
+    const narrow = window.innerWidth <= 720;
+    store.setInset('chrome', narrow ? { top: Math.round(cmd.bottom + 8) } : null);
+    store.setInset('tools', narrow
+      ? { bottom: Math.round(Math.max(0, window.innerHeight - tb.top + 8)) }
+      : null);
+
+    if (drawer.style.display === 'none') {
+      store.setInset('drawer', null);
+      return;
+    }
     const d = drawer.getBoundingClientRect();
-    const right = open ? Math.round(Math.max(0, window.innerWidth - d.left + 12)) : 0;
-    store.patchInsets({ right, bottom });
+    store.setInset('drawer', d.width > window.innerWidth * 0.5
+      ? { top: Math.round(d.bottom + 10) }
+      : { right: Math.round(Math.max(0, window.innerWidth - d.left + 12)) });
   };
 
   const refreshReading = () => {
@@ -136,7 +166,11 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
   const refreshDrawer = () => {
     const id = store.state.selected ?? store.state.hovered;
     const hit = entityById(id);
-    if (!hit) { drawer.style.display = 'none'; measure(); return; }
+    // A phone cannot afford both sheets, and on a globe the atlas already
+    // names the world the drawer would be describing.
+    const crowded = window.innerWidth <= 720 && atlasIsOpen() &&
+      id === store.state.focusedBody;
+    if (!hit || crowded) { drawer.style.display = 'none'; measure(); return; }
     drawer.style.display = '';
     drawer.replaceChildren();
     if (isNewThisArc(hit.obj as { book?: string; arc?: string }, store.state.readingNow)) {
@@ -245,7 +279,7 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
     store.on('year', refreshTime),
     store.on('era', refreshTime),
     store.on('isPlaying', refreshTime),
-    store.on('scale', refreshScale),
+    store.on('scale', () => { refreshScale(); refreshDrawer(); }),
     store.on('realm', refreshScale),
     store.on('focusedBody', refreshScale),
     store.on('focusedSystem', refreshScale),

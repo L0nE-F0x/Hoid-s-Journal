@@ -14,6 +14,13 @@ import '../styles/atlas.css';
 const W = 800;
 const H = 400;
 
+/** The atlas is on whenever a world is the subject and we are down at it. */
+export function atlasIsOpen(): boolean {
+  const s = store.state;
+  return s.shell === 'play' && !!s.focusedBody &&
+    (s.scale === 'globe' || s.scale === 'surface' || s.scale === 'city');
+}
+
 function layer(): HTMLCanvasElement {
   const c = document.createElement('canvas');
   c.width = W;
@@ -39,20 +46,22 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
   const pinLayer = layer();
 
   /**
-   * The atlas owns the left and top insets; the HUD owns right and bottom.
-   * Measured rather than assumed, because the panel goes full-width on a phone
-   * and the roster grows with the era.
+   * Report the edge this panel actually covers. It is a left column on a
+   * desktop and a bottom sheet on a phone, so measure rather than assume.
    */
   const measure = () => {
     if (!panel.classList.contains('is-on')) {
-      store.patchInsets({ left: 0, top: 0 });
+      store.setInset('atlas', null);
       return;
     }
     const r = panel.getBoundingClientRect();
     if (r.width > window.innerWidth * 0.5) {
-      store.patchInsets({ left: 0, top: Math.round(r.bottom + 12) });
+      const top = r.top < window.innerHeight * 0.4;
+      store.setInset('atlas', top
+        ? { top: Math.round(r.bottom + 10) }
+        : { bottom: Math.round(window.innerHeight - r.top + 10) });
     } else {
-      store.patchInsets({ left: Math.round(r.right + 12), top: 0 });
+      store.setInset('atlas', { left: Math.round(r.right + 12) });
     }
   };
 
@@ -173,8 +182,7 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
 
   const refresh = () => {
     const s = store.state;
-    const show = s.shell === 'play' && !!s.focusedBody &&
-      (s.scale === 'globe' || s.scale === 'surface' || s.scale === 'city');
+    const show = atlasIsOpen();
     panel.classList.toggle('is-on', show);
     measure();
     if (!show || !s.focusedBody) return;

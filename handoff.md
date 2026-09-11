@@ -256,8 +256,6 @@ The map-to-globe link works. What is left is depth.
 - Location coverage is better but still thin on Komashi, Canticle, Threnody
   and First of the Sun. Add only names you can source; the canon badge is
   supposed to mean something.
-- Perpendicularities are data only (`src/data/locations.ts` `PERPS`). They
-  should be 3-D markers on their worlds.
 - The atlas map is procedural noise. It reads as a world but it is not *that*
   world: continents do not correspond to the pins on them. Deciding how far to
   take original cartography is the open product question here.
@@ -271,7 +269,8 @@ tissue, not the frame.
   ocean reads well up close; at Cosmere distance the Realm barely changes.
 - **Spiritual:** the three axes are labels, not yet meaning. A selected Shard
   could draw its Connection to the worlds it touches this era.
-- Perpendicularities belong in both Realms (`PERPS` is still data only).
+- Perpendicularities show in the Physical Realm only; they are doors, so
+  they belong in Shadesmar too.
 
 ### 3. Companion depth (the journal)
 

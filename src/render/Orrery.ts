@@ -17,11 +17,14 @@ import nebulaVert from '../shaders/nebula.vert';
 import nebulaFrag from '../shaders/nebula.frag';
 import ringVert from '../shaders/ring.vert';
 import ringFrag from '../shaders/ring.frag';
+import sporeVert from '../shaders/spore.vert';
+import sporeFrag from '../shaders/spore.frag';
 import { PLATE_LARGE, PLATE_SMALL, planetPlates, seedFromId } from './planetBake.ts';
 
 const _off = new THREE.Vector3();
 const _sun = new THREE.Vector3();
 const _world = new THREE.Vector3();
+const _up = new THREE.Vector3(0, 1, 0);
 
 /** Which recipe a world wears at this point in its history. */
 function biomeOf(body: Body, era: number) {
@@ -73,6 +76,7 @@ export class Orrery {
   private readonly orbitLines = new Map<string, Line2>();
   private readonly moonMeshes = new Map<string, THREE.Mesh>();
   private readonly moonMats = new Map<string, THREE.ShaderMaterial>();
+  private readonly lunagrees: { moon: string; mesh: THREE.Mesh; mat: THREE.ShaderMaterial }[] = [];
   private readonly bodyWorld = new Map<string, THREE.Vector3>();
   private readonly sphereHigh = new THREE.SphereGeometry(1, 128, 72);
   private readonly sphereMid = new THREE.SphereGeometry(1, 64, 40);
@@ -100,6 +104,7 @@ export class Orrery {
     this.buildBodies();
     this.buildOrbits();
     this.buildMoons();
+    this.buildLunagrees();
   }
 
   private buildSuns(): void {
@@ -376,6 +381,38 @@ export class Orrery {
     }
   }
 
+  /**
+   * Lumar's twelve columns of falling spore. Geostationary, so each one
+   * stands over the sea it makes and never moves off it — which is the whole
+   * reason that world's oceans are twelve different colours.
+   */
+  private buildLunagrees(): void {
+    const geo = new THREE.CylinderGeometry(1, 1, 1, 18, 1, true);
+    for (const moon of COSMERE.moons) {
+      if (moon.parent !== 'lumar-world') continue;
+      const mat = new THREE.ShaderMaterial({
+        uniforms: {
+          uColor: { value: new THREE.Color(moon.color) },
+          uTime: { value: 0 },
+          uSeed: { value: seedFromId(moon.id) * 0.61 },
+          uOpacity: { value: 1 },
+        },
+        vertexShader: sporeVert,
+        fragmentShader: sporeFrag,
+        transparent: true,
+        depthWrite: false,
+        side: THREE.DoubleSide,
+        blending: THREE.AdditiveBlending,
+      });
+      const mesh = new THREE.Mesh(geo, mat);
+      mesh.frustumCulled = false;
+      mesh.renderOrder = 2;
+      mesh.visible = false;
+      this.group.add(mesh);
+      this.lunagrees.push({ moon: moon.id, mesh, mat });
+    }
+  }
+
   bodyPosition(id: string): THREE.Vector3 | undefined {
     return this.bodyWorld.get(id);
   }
@@ -542,6 +579,8 @@ export class Orrery {
       if (sun && mat) mat.uniforms.uSunPos.value.copy(sun);
     }
 
+    this.updateLunagrees(time, realm, visual.scale, visual.showMoons);
+
     const orbitsOn = visual.showOrbits && realm === 'physical'
       && (visual.scale === 'cosmere' || visual.scale === 'system');
     for (const [id, line] of this.orbitLines) {
@@ -583,6 +622,34 @@ export class Orrery {
       mat.uniforms.uSize.value = size;
       mat.uniforms.uCorona.value = shadesmar ? 0.35 : 1;
       mat.uniforms.uFlare.value = visual.scale === 'cosmere' ? 0.75 : 0.4;
+    }
+  }
+
+  /** Stand each spore column between its moon and the sea it falls into. */
+  private updateLunagrees(time: number, realm: Realm, scale: string, showMoons: boolean): void {
+    const lumar = this.bodyWorld.get('lumar-world');
+    const body = this.bodyNodes.get('lumar-world')?.body;
+    const close = scale === 'globe' || scale === 'surface' || scale === 'city' || scale === 'system';
+    for (const row of this.lunagrees) {
+      const moonPos = this.moonMeshes.get(row.moon)?.position;
+      const on = !!lumar && !!body && !!moonPos && close && showMoons && realm === 'physical';
+      row.mesh.visible = on;
+      if (!on || !lumar || !body || !moonPos) continue;
+
+      _off.subVectors(moonPos, lumar);
+      const far = _off.length();
+      _off.normalize();
+      // From just above the sea to just under the moon.
+      const from = body.radius * 0.99;
+      const to = far - 0.16;
+      const len = Math.max(0.01, to - from);
+      _world.copy(lumar).addScaledVector(_off, from + len * 0.5);
+      row.mesh.position.copy(_world);
+      row.mesh.quaternion.setFromUnitVectors(_up, _off);
+      // Wide where it meets the water, narrower under the moon.
+      row.mesh.scale.set(body.radius * 0.17, len, body.radius * 0.17);
+      row.mat.uniforms.uTime.value = time;
+      row.mat.uniforms.uOpacity.value = scale === 'system' ? 0.7 : 1;
     }
   }
 

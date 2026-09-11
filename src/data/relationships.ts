@@ -73,4 +73,22 @@ export const RELATIONS: Relation[] = [
   { a: { kind: 'character', id: 'nightblood' }, b: { kind: 'character', id: 'szeth' }, type: 'bond', label: 'Wields Nightblood', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'frost' }, b: { kind: 'body', id: 'yolen' }, type: 'ally', label: 'Dragon of Yolen', book: 'core', canon: C },
   { a: { kind: 'character', id: 'xisis' }, b: { kind: 'body', id: 'lumar-world' }, type: 'ally', label: 'Under the Crimson Sea', book: 'tress', canon: C },
+
+  // --- the dragons of Yolen, and the Sleepless ---------------------------
+  { a: { kind: 'character', id: 'hoid' }, b: { kind: 'character', id: 'frost' }, type: 'ally', label: 'Oldest friends, and opponents', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'frost' }, b: { kind: 'character', id: 'illistandrista' }, type: 'family', label: 'Uncle & niece', book: 'emberdark', canon: C },
+  { a: { kind: 'character', id: 'frost' }, b: { kind: 'character', id: 'frosts-sister' }, type: 'family', label: 'Brother & sister', book: 'emberdark', canon: W },
+  { a: { kind: 'character', id: 'frosts-sister' }, b: { kind: 'character', id: 'illistandrista' }, type: 'family', label: 'Parent & child', book: 'emberdark', canon: W },
+  { a: { kind: 'character', id: 'hoid' }, b: { kind: 'character', id: 'illistandrista' }, type: 'mentor', label: 'Master & apprentice', book: 'emberdark', canon: C },
+  { a: { kind: 'character', id: 'koravellium' }, b: { kind: 'shard', id: 'cultivation' }, type: 'vessel', label: 'Holds Cultivation', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'koravellium' }, b: { kind: 'character', id: 'taravangian' }, type: 'rival', label: 'Engineered his ascension', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'medelantorius' }, b: { kind: 'shard', id: 'valor' }, type: 'vessel', label: 'Holds Valor', book: 'stormlight', canon: W },
+  { a: { kind: 'character', id: 'medelantorius' }, b: { kind: 'character', id: 'hoid' }, type: 'romance', label: 'Together, once', book: 'stormlight', canon: W },
+  { a: { kind: 'character', id: 'xisis' }, b: { kind: 'character', id: 'hoid' }, type: 'rival', label: 'Dislikes him, like most dragons', book: 'tress', canon: C },
+  { a: { kind: 'character', id: 'xisis' }, b: { kind: 'body', id: 'lumar-world' }, type: 'ally', label: 'Studies the aethers here', book: 'tress', canon: C },
+  { a: { kind: 'character', id: 'vambrakastram' }, b: { kind: 'character', id: 'frost' }, type: 'ally', label: 'Both of Yolen', book: 'core', canon: W },
+  { a: { kind: 'character', id: 'arclo' }, b: { kind: 'character', id: 'sleepless-hordes' }, type: 'family', label: 'One of them', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'sleepless-hordes' }, b: { kind: 'dawnshard', id: 'dawnshard-change' }, type: 'ally', label: 'Guarded it at Akinah', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'arclo' }, b: { kind: 'character', id: 'lift' }, type: 'ally', label: 'Talked philosophy in the Palanaeum', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'rysn' }, b: { kind: 'dawnshard', id: 'dawnshard-change' }, type: 'bond', label: 'Bears it', book: 'stormlight', canon: C },
 ];

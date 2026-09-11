@@ -42,6 +42,10 @@ export function mountLoreWeb(root: HTMLElement): { destroy(): void } {
   let pathE = new Set<string>();
   let raf = 0;
   let w = 1, h = 1;
+  /** Damped auto-fit, so the whole graph stays in the frame as it settles. */
+  let zoom = 1;
+  let panX = 0;
+  let panY = 0;
 
   const edgeKey = (a: string, b: string) => (a < b ? `${a}|${b}` : `${b}|${a}`);
 
@@ -155,7 +159,13 @@ export function mountLoreWeb(root: HTMLElement): { destroy(): void } {
   };
 
   const step = () => {
-    const k = 0.04, repulsion = 14000, damping = 0.86, center = 0.004;
+    const k = 0.05, repulsion = 11000, damping = 0.84, center = 0.014;
+    /** Nothing may move faster than this. Unbounded, one close pair flings a
+     *  chain of nodes off the canvas and the auto-fit zooms out to find it. */
+    const maxV = 18;
+    /** Nor further out than this, however hard it is pushed. */
+    const bound = 900;
+
     for (const e of edges) {
       if (hide.has(e.type)) continue;
       const dx = e.b.x - e.a.x, dy = e.b.y - e.a.y;
@@ -169,9 +179,11 @@ export function mountLoreWeb(root: HTMLElement): { destroy(): void } {
       for (let j = i + 1; j < nodes.length; j++) {
         const n1 = nodes[i]!, n2 = nodes[j]!;
         const dx = n2.x - n1.x, dy = n2.y - n1.y;
-        const distSq = dx * dx + dy * dy || 1;
+        const distSq = Math.max(64, dx * dx + dy * dy);
         const dist = Math.sqrt(distSq);
-        const f = repulsion / distSq;
+        // Capped: two nodes that land on top of each other would otherwise
+        // push each other to infinity in one frame.
+        const f = Math.min(repulsion / distSq, 40);
         const fx = (dx / dist) * f, fy = (dy / dist) * f;
         n1.vx -= fx; n1.vy -= fy;
         n2.vx += fx; n2.vy += fy;
@@ -179,9 +191,37 @@ export function mountLoreWeb(root: HTMLElement): { destroy(): void } {
     }
     for (const n of nodes) {
       n.vx -= n.x * center; n.vy -= n.y * center;
+      const speed = Math.hypot(n.vx, n.vy);
+      if (speed > maxV) { n.vx *= maxV / speed; n.vy *= maxV / speed; }
       if (n !== drag) { n.x += n.vx; n.y += n.vy; }
+      const out = Math.hypot(n.x, n.y);
+      if (out > bound) { n.x *= bound / out; n.y *= bound / out; n.vx *= 0.4; n.vy *= 0.4; }
       n.vx *= damping; n.vy *= damping;
     }
+  };
+
+  /**
+   * Fit the whole graph in the frame. A force layout of a hundred and thirty
+   * nodes settles wherever it likes; without this, half the Cosmere ends up
+   * off the edge of the canvas and the reader never knows it is there.
+   */
+  const fit = () => {
+    if (!nodes.length) return;
+    let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+    for (const n of nodes) {
+      minX = Math.min(minX, n.x - n.r); maxX = Math.max(maxX, n.x + n.r);
+      minY = Math.min(minY, n.y - n.r); maxY = Math.max(maxY, n.y + n.r);
+    }
+    const pad = 72;
+    const want = Math.min(
+      (w - pad * 2) / Math.max(1, maxX - minX),
+      (h - pad * 2) / Math.max(1, maxY - minY),
+    );
+    const target = Math.min(1.5, Math.max(0.30, want));
+    // Damped, or the view lurches every time a node drifts past the edge.
+    zoom += (target - zoom) * 0.06;
+    panX += ((minX + maxX) * -0.5 - panX) * 0.06;
+    panY += ((minY + maxY) * -0.5 - panY) * 0.06;
   };
 
   const draw = () => {
@@ -190,6 +230,8 @@ export function mountLoreWeb(root: HTMLElement): { destroy(): void } {
     ctx.clearRect(0, 0, w, h);
     ctx.save();
     ctx.translate(w / 2, h / 2);
+    ctx.scale(zoom, zoom);
+    ctx.translate(panX, panY);
     for (const e of edges) {
       if (hide.has(e.type)) continue;
       const hot = pathE.has(edgeKey(e.a.key, e.b.key));
@@ -197,7 +239,7 @@ export function mountLoreWeb(root: HTMLElement): { destroy(): void } {
       ctx.moveTo(e.a.x, e.a.y);
       ctx.lineTo(e.b.x, e.b.y);
       ctx.strokeStyle = hot ? e.color : `${e.color}55`;
-      ctx.lineWidth = hot ? 2.2 : 1;
+      ctx.lineWidth = (hot ? 2.2 : 1) / zoom;
       ctx.stroke();
     }
     const sel = store.state.selected;
@@ -209,13 +251,19 @@ export function mountLoreWeb(root: HTMLElement): { destroy(): void } {
       ctx.fill();
       if (hot) {
         ctx.strokeStyle = '#eaf4ff';
-        ctx.lineWidth = 1.6;
+        ctx.lineWidth = 1.6 / zoom;
         ctx.stroke();
       }
-      ctx.fillStyle = hot ? '#eaf4ff' : 'rgba(220,230,245,0.72)';
-      ctx.font = `${hot ? 600 : 500} 11px Inter, ui-sans-serif, sans-serif`;
+      // A hundred and thirty names at once is a grey smear. Shards, worlds
+      // and Dawnshards are the map; people label themselves when you zoom in,
+      // or when they are on the path you asked for.
+      const named = hot || n.kind !== 'character' || zoom > 0.78;
+      if (!named) continue;
+      ctx.fillStyle = hot ? '#eaf4ff'
+        : n.kind === 'character' ? 'rgba(214,224,242,0.58)' : 'rgba(226,236,252,0.86)';
+      ctx.font = `${hot ? 600 : 500} ${((n.kind === 'character' ? 10.5 : 12) / zoom).toFixed(2)}px Inter, ui-sans-serif, sans-serif`;
       ctx.textAlign = 'center';
-      ctx.fillText(n.name, n.x, n.y + n.r + 12);
+      ctx.fillText(n.name, n.x, n.y + n.r + 12 / zoom);
     }
     ctx.restore();
   };
@@ -224,12 +272,16 @@ export function mountLoreWeb(root: HTMLElement): { destroy(): void } {
     raf = requestAnimationFrame(loop);
     if (store.state.view !== 'web' || store.state.shell !== 'play') return;
     step();
+    fit();
     draw();
   };
 
   const toLocal = (ev: PointerEvent) => {
     const r = canvas.getBoundingClientRect();
-    return { x: ev.clientX - r.left - w / 2, y: ev.clientY - r.top - h / 2 };
+    return {
+      x: (ev.clientX - r.left - w / 2) / zoom - panX,
+      y: (ev.clientY - r.top - h / 2) / zoom - panY,
+    };
   };
   const hitNode = (x: number, y: number) => {
     let best: Node | null = null;
@@ -255,7 +307,7 @@ export function mountLoreWeb(root: HTMLElement): { destroy(): void } {
   const show = () => {
     const on = store.state.view === 'web' && store.state.shell === 'play';
     host.classList.toggle('is-on', on);
-    if (on) { resize(); rebuild(); }
+    if (on) { resize(); rebuild(); zoom = 0.5; panX = 0; panY = 0; }
   };
 
   const offs = [

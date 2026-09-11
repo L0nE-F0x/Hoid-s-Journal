@@ -47,7 +47,8 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
   const btnArc = mkTool('Arcanum', 'Magic systems (A)');
   const btnSpoil = mkTool('Journal', 'Reading progress');
   const btnRealm = mkTool('Realms', 'Physical / Cognitive / Spiritual (C / V)');
-  const tools = el('div', { className: 'ceph-tools' }, [btnCodex, btnArc, btnSpoil, btnRealm]);
+  const btnLook = mkTool('Look', 'Orbits, moons, nebulae, labels');
+  const tools = el('div', { className: 'ceph-tools' }, [btnCodex, btnArc, btnSpoil, btnRealm, btnLook]);
 
   const play = el('button', { className: 'ceph-play', text: '❚❚', attrs: { type: 'button', title: 'Play / pause time' } });
   const yearEl = el('div', { className: 'ceph-year', text: COSMERE.eras[3]!.realDate });
@@ -213,6 +214,7 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
     listen(btnCodex, 'click', () => store.set('panel', store.state.panel === 'codex' ? 'none' : 'codex')),
     listen(btnArc, 'click', () => store.set('panel', store.state.panel === 'arcanum' ? 'none' : 'arcanum')),
     listen(btnSpoil, 'click', () => store.set('panel', store.state.panel === 'spoilers' ? 'none' : 'spoilers')),
+    listen(btnLook, 'click', () => store.set('panel', store.state.panel === 'settings' ? 'none' : 'settings')),
     listen(btnRealm, 'click', () => {
       const order = ['physical', 'cognitive', 'spiritual'] as const;
       const i = order.indexOf(store.state.realm);

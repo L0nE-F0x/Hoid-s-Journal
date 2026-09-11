@@ -10,6 +10,11 @@ import moonFrag from '../shaders/moon.frag';
 import { planetTexture, seedFromId, sunTexture } from './planetTextures.ts';
 
 const _off = new THREE.Vector3();
+
+/** Which recipe a world wears at this point in its history. */
+function biomeOf(body: Body, era: number) {
+  return body.id === 'scadrial' ? scadrialBiome(era) : body.biome;
+}
 const _sun = new THREE.Vector3();
 const _world = new THREE.Vector3();
 
@@ -26,7 +31,11 @@ interface BodyNode {
   atmoMat: THREE.ShaderMaterial;
   systemId: string;
   sunPos: THREE.Vector3;
+  /** Which albedo is currently bound, so swaps can be spread over frames. */
+  skin: string;
 }
+
+const SHADESMAR_SKY = '#8b6bd6';
 
 export class Orrery {
   readonly group = new THREE.Group();
@@ -43,9 +52,8 @@ export class Orrery {
   private readonly moonGeo = new THREE.SphereGeometry(1, 16, 12);
   private spinLockId: string | null = null;
   private spinLock = 0;
-  private scadrialTexAsh = planetTexture('scadrial-ash', 2);
-  private scadrialTexBasin = planetTexture('scadrial-basin', 3);
   private lastBiome: 'scadrial-ash' | 'scadrial-basin' = 'scadrial-ash';
+  private lastCognitive = false;
 
   constructor() {
     for (const s of COSMERE.systems) {
@@ -107,7 +115,7 @@ export class Orrery {
   }
 
   private makePlanetMat(body: Body): THREE.ShaderMaterial {
-    const biome = body.id === 'scadrial' ? 'scadrial-ash' : body.biome;
+    const biome = biomeOf(body, 0);
     // Each system's light carries its own star's colour, part way: full
     // saturation would repaint the world, none of it makes every sky the same.
     const sun = new THREE.Color(0xfff1d0);
@@ -158,6 +166,7 @@ export class Orrery {
       const sunPos = this.systemPos.get(body.system)!;
       this.bodyNodes.set(body.id, {
         body, mesh, atmo, mat, atmoMat, systemId: body.system, sunPos,
+        skin: `${biomeOf(body, 0)}:false`,
       });
       this.bodyWorld.set(body.id, new THREE.Vector3());
     }
@@ -236,23 +245,32 @@ export class Orrery {
     scale: string;
     focusedSystem: string | null;
   }): void {
-    const cognitive = realm === 'cognitive' ? 1 : 0;
+    const shadesmar = realm === 'cognitive';
+    const cognitive = shadesmar ? 1 : 0;
     const spiritual = realm === 'spiritual';
     this.group.visible = !spiritual;
 
-    // The Catacendre is a map swap, and the sky changes with it: ash haze
-    // before, Harmony's blue after.
+    // Era and Realm both repaint worlds: the Catacendre is a map swap with a
+    // sky to match, and Shadesmar is the same landmass read the other way.
+    // Rebinding every albedo in one frame stalls, so spend a small budget.
     const biome = scadrialBiome(era);
-    if (biome !== this.lastBiome) {
-      this.lastBiome = biome;
-      const scad = this.bodyNodes.get('scadrial');
-      if (scad) {
-        const basin = biome === 'scadrial-basin';
-        scad.mat.uniforms.uAlbedo.value = basin ? this.scadrialTexBasin : this.scadrialTexAsh;
-        const sky = basin ? scad.body.color : '#c9a07a';
-        scad.mat.uniforms.uAtmosphere.value.set(sky);
-        scad.atmoMat.uniforms.uColor.value.set(sky);
-      }
+    const flipped = biome !== this.lastBiome || shadesmar !== this.lastCognitive;
+    this.lastBiome = biome;
+    this.lastCognitive = shadesmar;
+    let budget = flipped ? 3 : 1;
+    for (const node of this.bodyNodes.values()) {
+      const kind = biomeOf(node.body, era);
+      const skin = `${kind}:${shadesmar}`;
+      if (node.skin === skin) continue;
+      if (budget <= 0) continue;
+      budget--;
+      node.skin = skin;
+      node.mat.uniforms.uAlbedo.value = planetTexture(kind, seedFromId(node.body.id), shadesmar);
+      const sky = shadesmar ? SHADESMAR_SKY
+        : node.body.id === 'scadrial' && kind === 'scadrial-ash' ? '#c9a07a'
+          : node.body.color;
+      node.mat.uniforms.uAtmosphere.value.set(sky);
+      node.atmoMat.uniforms.uColor.value.set(sky);
     }
 
     for (const node of this.bodyNodes.values()) {

@@ -71,7 +71,8 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
     const ctx = mapLayer.getContext('2d');
     if (!ctx || !body) return;
     const biome = body.id === 'scadrial' ? scadrialBiome(s.era) : body.biome;
-    ctx.drawImage(bakePlanetMap(biome, seedFromId(body.id)), 0, 0, W, H);
+    const cognitive = s.realm === 'cognitive';
+    ctx.drawImage(bakePlanetMap(biome, seedFromId(body.id), 1024, 512, cognitive), 0, 0, W, H);
   };
 
   /**
@@ -179,7 +180,7 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
     if (!show || !s.focusedBody) return;
     const body = bodyById[s.focusedBody];
     if (!body) return;
-    title.textContent = body.name;
+    title.textContent = s.realm === 'cognitive' ? `${body.name} · Shadesmar` : body.name;
     composeMap();
     composePins();
     composeRoster();

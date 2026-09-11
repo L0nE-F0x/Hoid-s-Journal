@@ -56,6 +56,7 @@ export class Presence {
     year: number,
     progress: Record<string, number>,
     scale: string,
+    cognitive = false,
   ): void {
     const yolenPos = orrery.bodyPosition('yolen') ?? this.yolen;
 
@@ -80,7 +81,10 @@ export class Presence {
       // globe portrait turns into a bowl of marbles.
       const d = camera.position.distanceTo(row.mesh.position);
       const s = Math.min(1.2, Math.max(0.22, d * 0.061));
-      row.mesh.scale.setScalar(s * (ch.cognitive ? 1.35 : 1));
+      // In Shadesmar the cognitive ones are the locals; bodies are shadows.
+      const here = !cognitive || ch.cognitive;
+      row.mesh.scale.setScalar(s * (ch.cognitive ? 1.35 : 1) * (here ? 1 : 0.6));
+      (row.mesh.material as THREE.MeshBasicMaterial).opacity = here ? 0.95 : 0.3;
     }
 
     const linesOn = scale === 'cosmere' || scale === 'system';

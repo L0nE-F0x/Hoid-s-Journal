@@ -81,6 +81,12 @@ const RECIPES: Record<BiomeKind, Recipe> = {
   oceanic: { land: rgb('#14532d'), land2: rgb('#365314'), ocean: rgb('#164e63'), threshold: 0.62, warp: 2.4 },
 };
 
+const BEAD = rgb('#0a0714');
+const BEAD2 = rgb('#2f1b57');
+const GLINT = rgb('#b39dfb');
+const GLASS = rgb('#73819e');
+const GLASS2 = rgb('#3d4c69');
+
 const canvasCache = new Map<string, HTMLCanvasElement>();
 
 export function seedFromId(id: string): number {
@@ -89,8 +95,15 @@ export function seedFromId(id: string): number {
   return (h % 97) + 1;
 }
 
-export function bakePlanetMap(kind: BiomeKind, seed = 1, W = 1024, H = 512): HTMLCanvasElement {
-  const key = `${kind}:${seed}:${W}x${H}`;
+/**
+ * `cognitive` bakes the Shadesmar reading of the same landmass: the Physical
+ * Realm's land is a bead ocean over there, and its seas are glass plains. Same
+ * mask, different palette, so the map and the globe cannot disagree.
+ */
+export function bakePlanetMap(
+  kind: BiomeKind, seed = 1, W = 1024, H = 512, cognitive = false,
+): HTMLCanvasElement {
+  const key = `${kind}:${seed}:${W}x${H}${cognitive ? ':c' : ''}`;
   const hit = canvasCache.get(key);
   if (hit) return hit;
 
@@ -120,17 +133,36 @@ export function bakePlanetMap(kind: BiomeKind, seed = 1, W = 1024, H = 512): HTM
       let n = fbm(nx * 2.2 + nz, ny * 2.2, 5);
       if (r.bands) n = 0.5 + 0.5 * Math.sin(v * 28 + n * 4);
 
+      const isLand = n > r.threshold;
+      if (cognitive) {
+        const t = Math.min(1, Math.abs(n - r.threshold) * 2.4);
+        let col: number[];
+        if (isLand) {
+          // Bead ocean: obsidian spheres, the odd one catching the light.
+          col = mix(BEAD, BEAD2, t);
+          if (hash(x * 1.7, y * 2.3) > 0.978) col = mix(col, GLINT, 0.85);
+        } else {
+          col = mix(GLASS, GLASS2, t);
+        }
+        const i0 = (y * W + x) * 4;
+        d[i0] = col[0]!;
+        d[i0 + 1] = col[1]!;
+        d[i0 + 2] = col[2]!;
+        d[i0 + 3] = 255;
+        continue;
+      }
+
       let col: number[];
       if (r.wedges) {
         const sea = r.wedges[Math.floor(u * r.wedges.length) % r.wedges.length]!;
-        col = n > r.threshold ? mix(r.land, r.land2, n) : sea;
+        col = isLand ? mix(r.land, r.land2, n) : sea;
       } else if (r.split) {
         col = u < 0.5 ? mix(r.land, r.land2, n) : mix(r.ocean, rgb('#020617'), n * 0.5);
       } else if (r.terminator) {
         const heat = Math.exp(-((u - 0.55) ** 2) * 40);
         col = mix(mix(r.land, rgb('#fb923c'), heat), rgb('#7c2d12'), n * 0.4);
       } else {
-        col = n > r.threshold ? mix(r.land, r.land2, (n - r.threshold) * 2) : r.ocean;
+        col = isLand ? mix(r.land, r.land2, (n - r.threshold) * 2) : r.ocean;
       }
 
       if (r.fain && n > 0.62) col = mix(col, rgb('#86efac'), 0.45);

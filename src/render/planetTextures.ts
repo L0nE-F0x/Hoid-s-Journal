@@ -6,11 +6,13 @@ export { seedFromId };
 
 const cache = new Map<string, THREE.CanvasTexture>();
 
-export function planetTexture(kind: BiomeKind, seed = 1): THREE.CanvasTexture {
-  const key = `${kind}:${seed}`;
+export function planetTexture(kind: BiomeKind, seed = 1, cognitive = false): THREE.CanvasTexture {
+  const key = `${kind}:${seed}${cognitive ? ':c' : ''}`;
   const hit = cache.get(key);
   if (hit) return hit;
-  const canvas = bakePlanetMap(kind, seed);
+  // Shadesmar is soft and dim; half resolution is plenty and keeps the realm
+  // switch from stalling on twenty fresh bakes.
+  const canvas = cognitive ? bakePlanetMap(kind, seed, 512, 256, true) : bakePlanetMap(kind, seed);
   const tex = new THREE.CanvasTexture(canvas);
   tex.colorSpace = THREE.SRGBColorSpace;
   tex.anisotropy = 8;

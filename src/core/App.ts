@@ -529,7 +529,10 @@ export class App {
       this.orrery, this.camera, s.readProgress, s.focusedBody, s.scale,
       s.hovered ?? s.focusedLocation,
     );
-    this.presence.update(this.orrery, this.camera, s.era, s.year, s.readProgress, s.scale);
+    this.presence.update(
+      this.orrery, this.camera, s.era, s.year, s.readProgress, s.scale,
+      s.realm === 'cognitive',
+    );
     this.spiritual.update(t, s.era, s.realm === 'spiritual');
     this.starfield.update(t, this.canvas.clientHeight, FOV, s.visual.starSize, s.visual.exposure);
 

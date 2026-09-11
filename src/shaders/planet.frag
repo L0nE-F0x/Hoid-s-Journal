@@ -43,13 +43,14 @@ void main() {
   float fres = pow(1.0 - max(0.0, dot(n, view)), 2.6);
   lit += uAtmosphere * fres * 0.85;
 
-  // Cognitive: invert land/sea, cool the palette, bead-sea glints
+  // Cognitive: the albedo already carries Shadesmar's reading of this world
+  // (bead ocean where the land is). Light it flatter — there is no sun over
+  // there — and let the beads catch a highlight.
   if (uCognitive > 0.001) {
-    vec3 inv = vec3(1.0) - albedo;
-    vec3 shade = mix(lit, inv * 0.35 + vec3(0.08, 0.04, 0.18), uCognitive);
-    float glint = pow(max(0.0, dot(reflect(-toSun, n), view)), 18.0);
-    shade += vec3(0.55, 0.35, 0.9) * glint * uCognitive * 0.6;
-    lit = shade;
+    vec3 flatLit = albedo * (0.58 + 0.42 * ndl) + vec3(0.05, 0.03, 0.10);
+    float glint = pow(max(0.0, dot(reflect(-toSun, n), view)), 26.0);
+    flatLit += vec3(0.60, 0.42, 0.95) * glint * 0.55;
+    lit = mix(lit, flatLit, uCognitive);
   }
 
   lit += uEmissiveColor * uEmissive;

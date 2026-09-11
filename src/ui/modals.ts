@@ -1,6 +1,8 @@
 import {
   COSMERE,
   bodyById,
+  characterAt,
+  characterById,
   isNewThisArc,
   isVisible,
   publicationSafeProgress,
@@ -136,7 +138,21 @@ function renderCodex(card: HTMLElement): void {
           return;
         }
         store.set('selected', h.id);
-        if (bodyById[h.id]) store.set('cameraCue', { kind: 'focus', id: h.id, scale: 'globe' });
+        // A Codex hit should take you there, not just tick a box.
+        if (bodyById[h.id]) {
+          store.set('cameraCue', { kind: 'focus', id: h.id, scale: 'globe' });
+          return;
+        }
+        if (COSMERE.locations.some((l) => l.id === h.id)) {
+          store.set('cameraCue', { kind: 'focus', id: h.id, scale: 'surface' });
+          return;
+        }
+        const ch = characterById[h.id];
+        const where = ch ? characterAt(ch, store.state.era)?.body : undefined;
+        if (where) {
+          store.set('cameraCue', { kind: 'focus', id: where, scale: 'globe' });
+          store.set('selected', h.id);
+        }
       });
       results.append(row);
     }

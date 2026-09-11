@@ -32,13 +32,31 @@ Netlify: connect this GitHub repo, branch `master`. The build is
 
 | Layer | What you get |
 | --- | --- |
-| Cosmere | Flyable 3D orrery of every published system |
-| System | Real orbits, moons, perpendicularities, Investiture |
-| Globe | A planet you can read: atmosphere, weather, era |
-| Surface | Continent and city atlas. Roshar and Scadrial use Isaac Stewart plates, credited. Other worlds are ours. |
+| Cosmere | Flyable 3D orrery of thirteen systems, with marched nebulae and a painted galaxy behind them |
+| System | Kepler orbits, twenty-two moons, ringed gas giants, perpendicularities |
+| Globe | A planet you can read: terrain, a cloud deck that casts shadows, night-side cities, ice, a marched atmosphere, and Roshar's highstorm crossing it |
+| Surface | Continent and city atlas. Roshar and Scadrial use Isaac Stewart plates, credited. Other worlds are baked from the same recipes as their globes. |
 | Time | Era-weighted playhead; per-world calendars stay honest |
-| Realms | Physical / Cognitive / Spiritual as distinct spaces |
+| Realms | Physical, Cognitive and Spiritual, each with its own renderer and its own grade |
 | Companion | Spoiler checklist, Codex, Arcanum, Lore Web |
+
+### What is in it
+
+Thirteen systems · eighteen worlds and ten Rosharan gas giants · twenty-two
+moons · sixteen Shards · ninety people, seven of them dragons · a hundred
+and twenty-four places · fifteen Cognitive sites · ten perpendicularities ·
+fifteen magic systems with twelve tables · a hundred and twenty-three
+glossary terms · four Dawnshards.
+
+### The three Realms
+
+**Physical** is the orrery. **Cognitive** is Shadesmar: a bead ocean over
+each system's worlds, the light of every mind in the Cosmere hanging over
+it, worldhopper roads between them, and the places that stand there —
+Silverlight, Celebrant, Lasting Integrity, the Ire Fortress, the Grand
+Knell, the three named Rosharan Expanses. **Spiritual** is not a map: one
+light Shattered into sixteen, every piece still Connected, with the
+Splintered ones shown as the fragments they are.
 
 ## Controls
 
@@ -54,3 +72,10 @@ Arcanum, Music and Share are buttons. Official maps are credited on the atlas.
 ## Architecture
 
 See `handoff.md` (live todo), `AGENTS.md` (invariants), and `DESIGN.md` (locks).
+
+Worlds are baked on the GPU from one recipe table that both the renderer and
+the atlas panel read, so a continent sits in the same place on the plate and
+on the globe. The sky, the Spiritual field and Shadesmar's glass are baked
+once at boot rather than marched per frame. `npm run perf` reports frames
+per second in each Realm with the expensive layers toggled off one at a
+time; run it before and after any renderer change.

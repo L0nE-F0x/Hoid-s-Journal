@@ -16,10 +16,36 @@ Architecture lock: `AGENTS.md` + `DESIGN.md`. This file is the live todo.
 
 # ▶ START HERE — next session
 
-**2026-09-12 bedtime.** Owner said the HUD is much better. Wrap is docs
-only. Product last landed in `2deaae5` (hover no longer shoves the sky;
-WASD never opens panels; one top bar; collapsible directory / timeline /
-galaxy; Look sliders; denser people + glossary). Help credits Stewart.
+**2026-09-12, overnight.** Owner asked for a graphics overhaul, Cognitive
+Realm rebuilt, v1 lore parity, and a landing page that does not read as a
+template. All four landed. Nine commits from `2deaae5` to the present.
+
+What changed, in one paragraph each:
+
+- **Worlds.** Every globe is baked on the GPU — an albedo plate and an
+  (elevation, water, lights, roughness) plate — and lit by a shader with
+  height-derived normals, a cloud deck that casts its own shadow, night-side
+  city lights, ice, ring shadows and a soft terminator. Atmospheres are
+  marched single scattering. Suns are limb-darkened photospheres with a
+  moving corona. Nebulae are marched volumes. Five gas giants wear rings.
+- **Shadesmar.** Its own renderer: a bead ocean per system, a soul field,
+  worldhopper roads that pulse, fifteen named Cognitive sites with their own
+  marker shapes, and a post grade of its own. Nothing over there is lit by
+  a star any more.
+- **Spiritual.** One light Shattered into sixteen, threads of Connection
+  with pulses running them, Splintered Shards shown as the fragments they
+  are, Connection / Identity / Fortune as great circles, four Dawnshards on
+  a wider ring.
+- **Lore.** Moons 5 → 22 (Lumar's twelve lunagrees are the point). Seven
+  dragons and the Sleepless in the roster with their own Directory tab.
+  Locations 86 → 124. Glossary 82 → 123. Ten perpendicularities. Fifteen
+  Cognitive sites.
+- **Chrome.** One signal colour and one warm; hairline rules; a book face
+  for the journal's own voice. The landing page is a title plate over a live
+  sky with an epigraph and an index counted from the data.
+- **Speed.** 18fps → 45–60 everywhere. The biggest single cause was not a
+  shader: thirty-one worlds × two Realms × a 2048×1024 plate pair is 1.4 GB
+  of texture, and an integrated GPU pages that rather than say so.
 
 Git: `master` tracking https://github.com/L0nE-F0x/Hoid-s-Journal.
 Live site (owner connected Netlify): https://thecosmere.netlify.app
@@ -41,9 +67,13 @@ never converge and every screenshot lies. `tools/screenshot.mjs` drives
 headless Chrome at 60fps and prints `fps`, `scale`, `body`, and `insets`.
 `window.__ceph = { store, app, ui }` is the harness handle only.
 
-Last known green: `npx tsc --noEmit` and `npm run test:interaction`
-(**32/32**, including hover-must-not-select / hover-must-not-claim-a-right-inset)
-with `npm run dev` already up. Re-run those if you touch code.
+Last known green: `npx tsc --noEmit`, `npm run build`, and
+`npm run test:interaction` (**32/32**) with `npm run dev` already up.
+Re-run those if you touch code.
+
+`npm run perf` prints frames per second at Cosmere, in Shadesmar, in the
+Spiritual Realm and at globe scale, with the expensive layers toggled off
+one at a time. Run it before and after any renderer change.
 
 ---
 
@@ -72,15 +102,26 @@ Scan as a second scale, deep links, Hoid as the journal's voice.
 ```
 src/core/store.ts          UI ↔ renderer wall. chrome persisted with visual.
 src/cartography/           Atlas maps. No Three.
+  recipes.ts               One recipe per world. BOTH bakers read this.
+  planetMap.ts             CPU twin of the GPU baker, for the atlas panel
   officialMaps.ts          Stewart rasters + layers + MAP_CREDIT
-  planetMap.ts             Procedural world atlas (non-Stewart worlds)
   cityMap.ts               Procedural city plates (Elantris, T'Telir, …)
+src/render/planetBake.ts   GPU plates. Two tiers, LRU on the large one.
+src/render/skyBake.ts      Sky and Spiritual field, baked once at boot.
+src/render/Orrery.ts       Worlds, atmospheres, suns, nebulae, rings, orbits
+src/render/Shadesmar.ts    Bead oceans, soul field, worldhopper roads
+src/render/Spiritual.ts    Adonalsium, the sixteen, the axes, the Dawnshards
+src/render/post.ts         AGX + bloom + streaks + SMAA, graded per Realm
+src/shaders/lib/           noise.glsl and skyfield.glsl. Included, not copied.
+src/layout/cognitive.ts    Where a Cognitive site stands. A reading aid.
 src/data/locations.ts      Place UVs. Roshar/Scadrial calibrated to plates.
+src/data/realms.ts         Cognitive sites, worldhopper routes, Dawnshards
 src/data/cities.ts         Landmark UVs on *our* procedural plates.
 src/ui/atlas.ts            Blits official rasters or procedural canvases
 src/ui/hud.ts              Top bar, tooltip-on-hover, overlay card-on-click
 src/ui/loreWeb.ts          2D force graph. No Three.
 src/ui/brand.ts            Disclaimer includes Stewart credit
+src/styles/base.css        The design tokens. One signal colour, one warm.
 public/maps/               Stewart plates (~26MB). Already in git.
 public/audio/soundtrack.mp3
 public/logo.png            Title mark + apple-touch
@@ -94,78 +135,133 @@ Treat this as current truth, not a wishlist.
 
 - Vite 6 + TypeScript + Three r180 + `postprocessing` + GLSL. No React.
   Store wall: `src/ui/**` talks only to `src/core/store.ts`.
-- Live 3D Cosmere: 13 systems, Kepler orbits, moons, procedural globes,
-  atmospheres, HDR bloom/ACES/grain/vignette. Quality ladder (auto / high /
-  medium / low).
-- Nested cinematic, then HUD. Title over a live Roshar globe. Skip + Space.
-  Original journal logo on the title (`public/logo.png`).
-- Screen-space picking. At Cosmere you click the **orbit cloud** (outer
-  world), not a 5-pixel star. HUD glass is `pointer-events: none` except
-  interactive children. Single clicks dive Cosmere → system → globe →
-  surface → city. `Esc` walks back out. Hover is a tooltip; the info card
-  opens on **click** as an overlay and **must not** report camera insets.
-- One top bar (wordmark, scale crumb, tools). Directory / timeline /
-  galaxy collapse (☰, ▾, × / `M`). Galaxy ducks when a card is open.
-- Directory (left): Systems, Worlds, People, Shards, Doors, Moons,
-  Dawnshards. Search filters the current tab. Info card is a field grid
-  with a colour swatch. Fly-to from a person or a system.
+- **Worlds.** Plates are baked on the GPU from `cartography/recipes.ts`
+  (`render/planetBake.ts`), two tiers: 1024×512 for every world, 2048×1024
+  for the one you are standing over, three of those resident at a time. The
+  planet shader does height-derived normals, clamped ocean glint, a cloud
+  deck with its own shadow, night-side settlement lights, ice caps, ring
+  shadows and a soft terminator with a starlight floor under it.
+- **Atmosphere** is marched single scattering on the front faces of a shell,
+  clipped at the ground, so the haze covers the disc and the terminator goes
+  orange. Sample counts follow the quality band.
+- **Sky** is two baked equirectangular plates (Physical and Cognitive) with
+  a galactic band, dust lanes and emission regions, crossfaded by realm.
+  Stars are 24,000 points on a blackbody distribution, clustered toward the
+  band. Both bake once at boot; marching the field cost more than everything
+  else in the scene put together.
+- **Suns** are limb-darkened photospheres with granulation, a moving corona
+  and instrument flare. **Nebulae** are marched volumes. **Orbits** are
+  screen-width lines with a comet trail at the world. Five gas giants wear
+  **rings** with a planet shadow swept across them.
+- **Post:** AGX tone mapping, bloom, anamorphic streaks, chromatic
+  aberration, vignette, grain, SMAA, and a grade that changes with the Realm.
+- **Shadesmar** (`render/Shadesmar.ts`): a bead ocean per system, a soul
+  field of 4,200 lights clustered on the worlds, worldhopper roads that
+  pulse, and fifteen Cognitive sites from `data/realms.ts` — Silverlight,
+  Celebrant, Lasting Integrity, the Ire Fortress, the Grand Knell, the
+  perpendicularities from the Cognitive side, and the three named Rosharan
+  Expanses. Placement is `layout/cognitive.ts` and says it is a reading aid.
+- **Spiritual** (`render/Spiritual.ts`): Adonalsium whole before the
+  Shattering, then sixteen motes with threads of Connection carrying pulses,
+  Splintered Shards as nine orbiting fragments, the three axes as great
+  circles, four Dawnshards on a wider ring.
+- Nested cinematic, then HUD. Title plate over a live Roshar. Original
+  journal logo, masked into a seal.
+- Screen-space picking. At Cosmere you click the **orbit cloud**, not a
+  5-pixel star. HUD glass is `pointer-events: none` except interactive
+  children. Single clicks dive Cosmere → system → globe → surface → city.
+  `Esc` walks back out. Hover is a tooltip; the card opens on **click** as
+  an overlay and **must not** report camera insets.
+- One top bar (wordmark, scale crumb, tools). Directory / timeline / galaxy
+  collapse. Directory tabs: Systems, Worlds, Moons, People, Dragons, Shards,
+  Doors, Dawnshards.
 - Surface atlas: Roshar (physical + Shadesmar) and Scadrial (ash / basin,
-  plus starchart / endpaper layers) are Stewart plates. Layer chips switch
-  drawings. Pins two-way with the globe. Atlas width 480px. Credit line
-  when an official plate is showing.
+  plus starchart / endpaper layers) are Stewart plates, credited. Everything
+  else uses the CPU twin of the GPU baker in `cartography/planetMap.ts`, so
+  the plate and the globe agree about where a continent is.
 - City plates: Stewart rasters for Urithiru, Kholinar, Kharbranth, Thaylen
-  City, Shattered Plains / Narak (with warcamp layers), Luthadel (survey /
-  endpaper / Kredik Shaw), Elendel (basin / Lost Metal), Fadrex, Urteau,
-  New Seran. Other plated cities (Elantris, T'Telir, Kilahito, Kezare,
-  Beacon, Union, …) still use `cityMap.ts`. Places without a plate get a
-  local crop of the world map.
+  City, Shattered Plains / Narak, Luthadel, Elendel, Fadrex, Urteau, New
+  Seran. Others use `cityMap.ts`.
 - Scadrial Catacendre is a map swap (ash → basin, sky and caps with it).
-- Cognitive: baked Shadesmar, Silverlight as a city in Shadesmar (not on a
-  planet), worldhopper routes at Cosmere, perpendicularities as doors on
-  both sides. Spiritual: framed diagram (core, sixteen named Shards, axes).
-- Lore Web (`L` / Web button): force graph of people, shards, worlds,
-  Dawnshards. Spoiler-gated. Click a node for the shortest path to Hoid.
-  Drag to rearrange. Esc or Web again returns to the sky. `store.view` is
-  `'sky' | 'web'`.
-- Soundtrack (`Music` / Look). Off until asked. `public/audio/soundtrack.mp3`.
-  Procedural rumble is separate, also off by default.
-- Reading Companion, Codex, Arcanum (tables), Share (deep link), time
-  speed +/−, labelled galaxy minimap (hidden on a phone).
-- Deep-link hash `#y=&realm=&scale=&system=&body=&loc=&reading=`. Title
-  screen still gates a shared link because that is where the disclaimer
-  lives. Progress + visual in localStorage.
-- PWA: `public/sw.js`, install in Look, `npm run icons` / `npm run og`.
+- Lore Web (`L`): force graph with a damped auto-fit, capped repulsion and
+  bounded positions. Shards, worlds and Dawnshards stay labelled; people
+  label on zoom or when on the path you asked for.
+- Reading Companion, Codex, Arcanum (12 tables), Share, time speed, galaxy
+  minimap, soundtrack, PWA.
+- Deep-link hash `#y=&realm=&scale=&system=&body=&loc=&reading=`.
 - Harnesses: `npm run shot`, `npm run test:interaction` (32 checks),
-  `npm run bench`.
+  `npm run perf`, `npm run bench`.
 
----
+### What the atlas holds
+
+| | |
+| --- | --- |
+| Systems | 13 |
+| Worlds | 18 (plus 10 Rosharan gas giants) |
+| Moons | 22 |
+| Shards | 16 |
+| People | 90, including 7 dragons and the Sleepless |
+| Places | 124 |
+| Cognitive sites | 15 |
+| Perpendicularities | 10 |
+| Magic systems | 15, with 12 tables |
+| Glossary | 123 terms |
+| Dawnshards | 4 |
 
 ## Do next (priority order)
 
-The product is shippable locally. Do not invent a new pillar.
+The product is shippable. Do not invent a new pillar.
 
-### 1. Put it on the internet
+### 1. Push it
 
 - GitHub: https://github.com/L0nE-F0x/Hoid-s-Journal
 - Live: https://thecosmere.netlify.app (`npm run build`, `dist`, Node 22).
-  Owner connected it. After a `master` push, hard-refresh the site.
+  After a `master` push, hard-refresh the site.
+- `npm run og` regenerates the social card from the new title plate.
 
 ### 2. Optional depth, only if a reread reaches for it
 
-- More Stewart city plates if they exist in v1 `assets/images` and are
-  worth the bytes (Azimir has no plate yet). Do not re-copy rasters that
-  are already in `public/maps/`.
-- Worlds without Stewart plates still use our procedural atlas. That is
-  fine.
-- Landmark UVs in `src/data/cities.ts` were drawn for *our* procedural
-  plates. On Stewart city rasters the interaction test selects landmarks
-  from the roster chips, not by clicking a UV on the scan — the scans
-  have no calibrated landmark UVs. Do not "fix" that by guessing.
-- Glossary / characters can still go denser. Keep the canonicity badge honest.
+- Landmark UVs for the Stewart **city** rasters. The interaction test picks
+  landmarks from the roster chips because those scans have no calibrated
+  UVs. Do not "fix" that by guessing — measure them off the plates.
+- Azimir has no Stewart plate. Others without one use `cityMap.ts`, which
+  is fine.
+- More relations in `data/relationships.ts`. The Lore Web is only as good as
+  its edges, and there are 61.
+- Gas giants share one recipe with different seeds. Jes through Ishi could
+  each get their own palette if a reread ever cares which is which.
 
----
+### 3. Renderer ideas not taken
+
+Written down so the next session does not rediscover them:
+
+- **Godrays** from the local star at system scale. `postprocessing` has
+  `GodRaysEffect` but it wants one light mesh, and there are thirteen suns.
+- **Depth of field** at globe scale. Tried on paper, not built: the risk is
+  it reads as a blur bug rather than as a lens.
+- **Aurora** on the Invested worlds. Cheap in the planet shader, would need
+  a canon check per world before it goes in.
+- **Spore streams** from Lumar's twelve lunagrees down to their seas. The
+  most lore-accurate showpiece left on the table.
 
 ## Sharp edges / do not re-break
+
+- **Texture memory is the first thing to check when it is slow.** Plates are
+  two-tier for a reason (`PLATE_SMALL` / `PLATE_LARGE` in `planetBake.ts`).
+  Giving every world the large pair is 1.4 GB and the symptom is not an
+  error, it is 3fps in Shadesmar.
+- **Do not march a field that never changes.** The sky, the Spiritual field
+  and Shadesmar's glass are baked. Each of them, marched per pixel per
+  frame, cost more than every planet and post pass combined.
+- **`fwidth` is not guaranteed** in a GLSL ES 1.00 fragment shader. Where it
+  comes back zero, a mip fade never happens and a lattice becomes moiré.
+  Measure the projected size from the depth and a pixel-scale uniform.
+- **Disc geometry is unit-radius**, scaled by the model matrix. A shader
+  reading `position.xy` gets 0..1, not world units. That bug hid two others
+  before it was found.
+- **Alpha is coverage, not brightness.** Deriving a transparent surface's
+  alpha from its own colour lets any texture on it modulate opacity, and the
+  tone curve's toe turns a quarter-stop of that into visible banding.
 
 - **Globe vs atlas mismatch.** Roshar and Scadrial atlas UVs are on
   Stewart plates. Globe albedo is procedural, so a pin on the 3-D

@@ -20,6 +20,13 @@ Breaking either of these is how this turns into a tangle:
    is derived in `src/layout/` and consumed by `src/render/`. Baking orrery
    coordinates into lore is how the v1 surface maps rotted.
 
+3. **One recipe table, two bakers.** `src/cartography/recipes.ts` is the only
+   description of what a world looks like. `render/planetBake.ts` renders it
+   on the GPU for the globe; `cartography/planetMap.ts` is its CPU twin for
+   the atlas panel, which cannot import Three. Change one baker without the
+   other and the plate and the globe start disagreeing about where a
+   continent is.
+
    Atlas UVs (`Location.u/v`) *are* 0–1 on the plate currently shown, not on
    the globe. Roshar is calibrated to `public/maps/roshar_full.jpg`
    (3096×1800); Scadrial ash to `final_empire.jpg` (2048×1555) and basin to
@@ -49,6 +56,9 @@ npm run build        # tsc --noEmit + vite build
 npm run shot -- --focus roshar --scale globe --out /tmp/roshar.png
 npm run shot -- --intro --settle 8000 --out /tmp/intro.png
 npm run shot -- --eval "__ceph.store.set('realm','cognitive')" --out /tmp/c.png
+
+npm run test:interaction   # 32 checks through real mouse and keyboard
+npm run perf               # fps per Realm, expensive layers toggled off
 ```
 
 Do visual work through `npm run shot`, not by eyeballing a browser tab: a

@@ -116,6 +116,12 @@ export class Pins {
     this.group.add(this.label);
   }
 
+  /** Where a marker ended up this frame. Used by the interaction test. */
+  markerPosition(id: string): THREE.Vector3 | undefined {
+    const sprite = this.markers.find((m) => m.userData.id === id);
+    return sprite?.visible ? sprite.position : undefined;
+  }
+
   update(
     orrery: Orrery,
     camera: THREE.Camera,

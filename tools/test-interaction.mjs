@@ -1,0 +1,225 @@
+/**
+ * End-to-end interaction test.
+ *
+ *   npm run dev            # in one shell
+ *   npm run test:interaction
+ *
+ * Drives real mouse and keyboard input through Chrome rather than poking the
+ * store, because the interesting failures live between the two: picking a
+ * planet that is a pixel wide, the camera framing into the rectangle the
+ * panels leave, a pin on the map turning the globe to the place it names.
+ * Exits non-zero on the first failure.
+ */
+import puppeteer from 'puppeteer-core';
+import { existsSync } from 'node:fs';
+import process from 'node:process';
+
+const args = Object.fromEntries(
+  process.argv.slice(2).reduce((acc, a, i, arr) => {
+    if (a.startsWith('--')) acc.push([a.slice(2), arr[i + 1]?.startsWith('--') ? true : arr[i + 1]]);
+    return acc;
+  }, []),
+);
+const URL = args.url ?? 'http://127.0.0.1:5174/';
+const BROWSERS = ['/usr/bin/chromium', '/usr/bin/google-chrome-stable', '/usr/bin/google-chrome'];
+const executablePath = BROWSERS.find(existsSync);
+if (!executablePath) throw new Error('No chromium/chrome binary found');
+
+const results = [];
+function check(name, ok, detail = '') {
+  results.push({ name, ok, detail });
+  console.log(`${ok ? '  PASS' : '  FAIL'}  ${name}${detail ? ` — ${detail}` : ''}`);
+}
+
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+/** Wait for the damped camera to stop moving, rather than sleeping blindly. */
+async function settle(page, timeout = 12000) {
+  const started = Date.now();
+  let previous = null;
+  while (Date.now() - started < timeout) {
+    const now = await page.evaluate(() => {
+      const r = window.__ceph.app.rig;
+      return [r.distance, ...r.target.toArray(), ...r.camera.position.toArray()]
+        .map((n) => Math.round(n * 10) / 10).join(',');
+    });
+    if (now === previous) return true;
+    previous = now;
+    await sleep(220);
+  }
+  return false;
+}
+
+const state = (page) => page.evaluate(() => ({ ...window.__ceph.store.state }));
+
+/** Screen position of a world-space point the app can hand us. */
+async function screenOf(page, expr) {
+  return page.evaluate((code) => {
+    const a = window.__ceph.app;
+    // eslint-disable-next-line no-new-func
+    const p = new Function('a', `return ${code}`)(a);
+    if (!p) return null;
+    const v = p.clone().project(a.camera);
+    return { x: (v.x * 0.5 + 0.5) * window.innerWidth, y: (-v.y * 0.5 + 0.5) * window.innerHeight };
+  }, expr);
+}
+
+/** Middle of the rectangle the panels leave the camera. */
+async function freeCentre(page) {
+  return page.evaluate(() => {
+    const i = window.__ceph.store.state.insets;
+    return {
+      x: (i.left + (window.innerWidth - i.right)) / 2,
+      y: (i.top + (window.innerHeight - i.bottom)) / 2,
+    };
+  });
+}
+
+async function clickLabel(page, re) {
+  return page.evaluate((pattern) => {
+    const rx = new RegExp(pattern, 'i');
+    const b = [...document.querySelectorAll('button')].find((el) => {
+      if (!rx.test(el.textContent ?? '')) return false;
+      const r = el.getBoundingClientRect();
+      return r.width > 0 && r.height > 0 && getComputedStyle(el).visibility !== 'hidden';
+    });
+    if (!b) return false;
+    b.click();
+    return true;
+  }, re);
+}
+
+async function run() {
+  const browser = await puppeteer.launch({
+    executablePath,
+    headless: true,
+    args: [
+      '--no-sandbox', '--headless=new', '--enable-gpu', '--use-gl=angle',
+      '--use-angle=gl-egl', '--ignore-gpu-blocklist', '--enable-unsafe-swiftshader',
+      '--disable-dev-shm-usage', '--window-size=1512,900',
+    ],
+  });
+  try {
+    const page = await browser.newPage();
+    await page.setViewport({ width: 1512, height: 900, deviceScaleFactor: 1 });
+    const errors = [];
+    page.on('pageerror', (e) => errors.push(e.message));
+    page.on('console', (m) => { if (m.type() === 'error') errors.push(m.text()); });
+
+    await page.goto(URL, { waitUntil: 'domcontentloaded', timeout: 30000 });
+    await page.waitForFunction('window.__ceph !== undefined', { timeout: 60000, polling: 200 });
+    check('boots', true);
+
+    // Title → play, and skip the opening flight.
+    check('title: enter', await clickLabel(page, 'enter the cosmere'));
+    await page.evaluate(() => window.__ceph.store.set('cameraCue', { kind: 'skip-cinematic' }));
+    await settle(page);
+    let s = await state(page);
+    check('title: shell is play', s.shell === 'play', s.shell);
+    check('cinematic ends at Cosmere', s.scale === 'cosmere', s.scale);
+
+    // Cosmere → system, by clicking the star itself.
+    let at = await screenOf(page, "a.orrery.systemPosition('rosharan')");
+    await page.mouse.click(at.x, at.y);
+    await settle(page);
+    s = await state(page);
+    check('click a system dives to it', s.scale === 'system' && s.focusedSystem === 'rosharan',
+      `${s.scale}/${s.focusedSystem}`);
+
+    // System → globe, by clicking a planet that is a few pixels wide.
+    at = await screenOf(page, "a.orrery.bodyPosition('roshar')");
+    await page.mouse.click(at.x, at.y);
+    await settle(page);
+    s = await state(page);
+    check('click a planet dives to its globe', s.scale === 'globe' && s.focusedBody === 'roshar',
+      `${s.scale}/${s.focusedBody}`);
+
+    // Framed in what the panels leave, not in the middle of the canvas.
+    let centre = await freeCentre(page);
+    at = await screenOf(page, "a.orrery.bodyPosition('roshar')");
+    let off = Math.hypot(at.x - centre.x, at.y - centre.y);
+    check('globe is framed in the free rectangle', off < 24, `${Math.round(off)}px off`);
+
+    // Atlas pin → the globe turns to face it.
+    const pin = await page.evaluate(() => {
+      const c = document.querySelector('.ceph-atlas-canvas');
+      if (!c) return null;
+      const r = c.getBoundingClientRect();
+      // Urithiru sits at u 0.48, v 0.58 on the map.
+      return { x: r.left + r.width * 0.48, y: r.top + r.height * 0.58 };
+    });
+    check('atlas is open on a globe', !!pin);
+    if (pin) {
+      await page.mouse.click(pin.x, pin.y);
+      await settle(page);
+      s = await state(page);
+      check('atlas pin selects its place', s.focusedLocation === 'urithiru' && s.scale === 'surface',
+        `${s.scale}/${s.focusedLocation}`);
+      centre = await freeCentre(page);
+      at = await screenOf(page, "a.pins.markerPosition('urithiru')");
+      off = at ? Math.hypot(at.x - centre.x, at.y - centre.y) : 999;
+      check('the place it names faces the camera', off < 60, `${Math.round(off)}px off`);
+    }
+
+    // Esc walks back out, one scale at a time.
+    const walk = [];
+    for (let i = 0; i < 3; i++) {
+      await page.keyboard.press('Escape');
+      await settle(page);
+      walk.push((await state(page)).scale);
+    }
+    check('Esc walks surface → globe → system → Cosmere',
+      walk.join(',') === 'globe,system,cosmere', walk.join(','));
+
+    // Realms.
+    await page.keyboard.press('c');
+    await sleep(700);
+    s = await state(page);
+    check('C enters the Cognitive Realm', s.realm === 'cognitive', s.realm);
+    await page.keyboard.press('v');
+    await settle(page);
+    s = await state(page);
+    const spiritual = await page.evaluate(() => window.__ceph.app.spiritual.group.visible);
+    check('V enters the Spiritual Realm', s.realm === 'spiritual' && spiritual, s.realm);
+    await page.keyboard.press('v');
+    await settle(page);
+    check('V leaves it again', (await state(page)).realm === 'physical');
+
+    // Reading companion gates the sky.
+    await page.evaluate(() => window.__ceph.store.set('panel', 'spoilers'));
+    await sleep(400);
+    const synced = await page.evaluate(() => {
+      const sel = document.querySelector('.ceph-modal-card select');
+      if (!sel) return null;
+      sel.value = 'stormlight';
+      sel.dispatchEvent(new Event('change', { bubbles: true }));
+      return true;
+    });
+    await sleep(400);
+    s = await state(page);
+    check('reading companion syncs publication-safe',
+      !!synced && s.readProgress.mistborn2 === -1 && s.readProgress.elantris >= 0,
+      JSON.stringify({ mb2: s.readProgress.mistborn2, el: s.readProgress.elantris }));
+    await page.evaluate(() => window.__ceph.store.set('panel', 'none'));
+
+    // A phone still leaves the world a band to live in.
+    await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 1 });
+    await page.evaluate(() => window.dispatchEvent(new Event('resize')));
+    await page.evaluate(() => window.__ceph.store.set('cameraCue', { kind: 'focus', id: 'roshar', scale: 'globe' }));
+    await settle(page);
+    const band = await page.evaluate(() => {
+      const i = window.__ceph.store.state.insets;
+      return (window.innerHeight - i.top - i.bottom) / window.innerHeight;
+    });
+    check('phone leaves a viewing band', band > 0.25, `${Math.round(band * 100)}% of height`);
+
+    check('no page errors', errors.length === 0, errors.slice(0, 2).join(' | '));
+  } finally {
+    await browser.close();
+  }
+}
+
+await run();
+const failed = results.filter((r) => !r.ok);
+console.log(`\n${results.length - failed.length}/${results.length} passed`);
+process.exit(failed.length ? 1 : 0);

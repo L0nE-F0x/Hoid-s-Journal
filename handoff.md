@@ -81,7 +81,6 @@ src/ui/atlas.ts            Blits official rasters or procedural canvases
 src/ui/hud.ts              Top bar, tooltip-on-hover, overlay card-on-click
 src/ui/loreWeb.ts          2D force graph. No Three.
 src/ui/brand.ts            Disclaimer includes Stewart credit
-src/core/store.ts          chrome: { directory, minimap, timeline } persisted
 public/maps/               Stewart plates (~26MB). Already in git.
 public/audio/soundtrack.mp3
 public/logo.png            Title mark + apple-touch

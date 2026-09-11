@@ -65,6 +65,7 @@ Drag to orbit · right/middle/shift-drag to pan · scroll to zoom.
 `Space` play/pause time · `←` `→` step · `1`–`6` jump era.
 Focusing a world holds the playhead; `Space` sets it running again.
 `C` Cognitive · `V` Spiritual · `L` Lore Web · `M` galaxy · `/` search · `K` Codex.
+In the Lore Web, scroll zooms and dragging the background pans.
 `Esc` backs out a scale (city → surface → globe → system → Cosmere) or leaves the Web.
 Hover names a world; click opens its card. WASD/QE fly and never open panels.
 Arcanum, Music and Share are buttons. Official maps are credited on the atlas.

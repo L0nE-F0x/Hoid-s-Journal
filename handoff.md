@@ -223,6 +223,40 @@ Treat this as current truth, not a wishlist.
 | Glossary | 123 terms |
 | Dawnshards | 4 |
 
+## Known rough edges
+
+The owner's handover note: *"there is lots of final polish in the UI, I've
+found a bunch of things that don't work properly, buttons that don't click
+etc."* They ran out of credits before listing them. **That list does not
+exist** — treat the ones below as a starting point, not as the brief.
+
+Found and fixed in the handover session, so you do not chase them again:
+
+- The Lore Web had no zoom or pan. Auto-fit put a hundred and thirty nodes at
+  about a third scale, below the threshold that reveals people's names, so
+  those names were unreachable. Scroll and drag work now, with "Fit to frame"
+  to hand control back.
+- Something in the sweep took the whole page down once, hard enough that
+  `window.__ceph` disappeared. `audit:ui` survives that now and names the
+  control, but it did not reproduce on the second run. **If you see the app
+  vanish after a click, that is real and unresolved.**
+
+Open, and worth looking at first:
+
+- **`npm run audit:ui`** reports controls that change neither the store nor
+  the DOM. It cannot see a control that does the *wrong* thing, one whose hit
+  area is wrong, or one that works but reads as dead. Those are eyes-only.
+- **Naming trap.** The top-bar button labelled *Journal* opens the panel whose
+  id is `spoilers`. There is no `'journal'` panel; setting one silently
+  renders an empty modal. Either rename the id or reject unknown panel ids.
+- **Touch.** Everything was verified with a mouse. Pinch, long-press and
+  drag-vs-tap on the atlas, the Lore Web and the globe are unexercised.
+- **Keyboard.** `WASD/QE` are fly keys and must never open a panel. That is
+  load-bearing and tested; anything you add to the keymap has to respect it.
+- **Focus and reachability.** Tab order across the panels has never been
+  checked, and several controls are icon-only with a `title` but no
+  accessible name.
+
 ## Do next (priority order)
 
 ### 1. The UI pass the owner asked for
@@ -365,8 +399,10 @@ Timeline +/− changes speed. `1`–`6` eras · `C` Cognitive · `V` Spiritual �
 `L` Lore Web · `M` galaxy chart · `K`/`/` Codex · `H`/`?` Help · `F` frame
 Cosmere · `Esc` pop scale / close panel / leave the Web / close a card
 at Cosmere. Hover names a world; click opens the card.
-Title: Enter the Cosmere · I need spoilers hidden · Skip to the sky.
+Title: Enter the Cosmere · Hide what I have not read · Skip the flight.
 Arcanum, Journal, Music, Share are buttons. WASD/QE never open panels.
+In the Lore Web: scroll zooms, dragging the background pans, dragging a node
+moves it, and "Fit to frame" returns to auto-fit.
 
 ---
 

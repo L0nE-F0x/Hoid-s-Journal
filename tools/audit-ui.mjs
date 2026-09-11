@@ -65,6 +65,7 @@ async function run() {
   const dead = [];
   const fatal = [];
   const errors = [];
+  const swept = [];
   try {
     const page = await browser.newPage();
     await page.setViewport({ width: 1512, height: 900 });
@@ -97,6 +98,7 @@ async function run() {
         return out;
       });
 
+      swept.push(`${scene.name.padEnd(16)} ${labels.length} control(s)`);
       for (let i = 0; i < labels.length; i++) {
         if (!(await alive(page))) await boot(page, URL);
         const before = await page.evaluate(() => ({
@@ -142,6 +144,8 @@ async function run() {
     await browser.close();
   }
 
+  console.log('\nswept:');
+  for (const line of swept) console.log('  ' + line);
   if (fatal.length) {
     console.log(`\n${fatal.length} control(s) TOOK THE APP DOWN when clicked:\n`);
     for (const f of fatal) console.log('  ' + f);

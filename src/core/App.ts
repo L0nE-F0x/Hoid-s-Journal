@@ -595,6 +595,7 @@ export class App {
     this.rig.setViewport(w, h);
     this.orrery.setViewport(w * dpr, h * dpr);
     this.shadesmar.setViewport(w * dpr, h * dpr);
+    this.spiritual.setViewport(w * dpr, h * dpr);
     this.post.setSize(w, h);
   }
 

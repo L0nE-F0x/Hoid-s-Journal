@@ -163,7 +163,7 @@ export function createPostChain(
   const GRADES = {
     physical: { sat: 0.30, con: 0.22, shadow: [0.80, 0.89, 1.16], high: [1.07, 1.00, 0.92], vig: 0.66, bloom: 1.15 },
     cognitive: { sat: 0.14, con: 0.30, shadow: [0.74, 0.70, 1.22], high: [0.96, 0.94, 1.10], vig: 0.86, bloom: 1.45 },
-    spiritual: { sat: 0.40, con: 0.16, shadow: [1.00, 0.96, 1.05], high: [1.12, 1.06, 0.98], vig: 0.44, bloom: 1.30 },
+    spiritual: { sat: 0.38, con: 0.20, shadow: [0.92, 0.94, 1.10], high: [1.14, 1.07, 0.96], vig: 0.62, bloom: 1.35 },
   } as const;
   let realm: keyof typeof GRADES = 'physical';
   let bloomScale = 1;

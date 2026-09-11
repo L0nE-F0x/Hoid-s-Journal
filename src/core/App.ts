@@ -8,7 +8,7 @@ import { Orrery } from '../render/Orrery.ts';
 import { Pins } from '../render/Pins.ts';
 import { Presence } from '../render/Presence.ts';
 import { createPostChain, type PostChain } from '../render/post.ts';
-import { Spiritual } from '../render/Spiritual.ts';
+import { SPIRITUAL_RADIUS, Spiritual } from '../render/Spiritual.ts';
 import { Starfield } from '../render/Starfield.ts';
 
 const FOV = 52;
@@ -22,7 +22,7 @@ const _toCam = new THREE.Vector3();
 /** How far from a subject a click still counts, in CSS pixels. */
 const PICK_SLOP = 15;
 
-type PickKind = 'system' | 'body' | 'location' | 'character';
+type PickKind = 'system' | 'body' | 'location' | 'character' | 'shard';
 /** How far off the sun axis the camera stands. Bigger = more terminator. */
 const GLOBE_SUN_OFFSET = 0.7;
 const SURFACE_SUN_OFFSET = 0.95;
@@ -107,6 +107,22 @@ export class App {
     this.disposers.push(store.on('visual', (v) => {
       this.rig.autoRotate = v.autoRotate && store.state.shell === 'title';
       this.post.setBloom(v.bloom);
+    }));
+    this.disposers.push(store.on('realm', (realm, prev) => {
+      if (realm === 'spiritual') {
+        this.rig.flyTo(
+          new THREE.Vector3(),
+          this.rig.framingDistance(SPIRITUAL_RADIUS, 0.85, 'width'),
+          2.2,
+        );
+        this.rig.setAngles(Math.PI * 0.25, 1.18);
+      } else if (prev === 'spiritual') {
+        const body = store.state.focusedBody;
+        const sys = store.state.focusedSystem;
+        if (body) this.focusId(body, store.state.scale === 'cosmere' ? 'globe' : store.state.scale);
+        else if (sys) this.focusId(sys, 'system');
+        else this.frameCosmere(2.2);
+      }
     }));
     this.disposers.push(store.on('insets', (v) => this.rig.setInsets(v)));
     this.rig.setInsets(store.state.insets);
@@ -324,6 +340,23 @@ export class App {
       if (better) best = { id, kind, inside, d, far };
     };
 
+    if (s.realm === 'spiritual') {
+      for (const sh of COSMERE.shards) {
+        if (!isVisible(sh, s.readProgress)) continue;
+        const p = this.spiritual.motePosition(sh.id);
+        if (p) consider(sh.id, 'shard', p, 1.2);
+      }
+      const shard = best as { id: string } | null;
+      if (!shard) {
+        if (s.hovered) store.set('hovered', null);
+        if (click) store.set('selected', null);
+        return;
+      }
+      store.set('hovered', shard.id);
+      if (click) store.set('selected', shard.id);
+      return;
+    }
+
     const globe = isGlobeScale(s.scale);
     if (!globe) {
       for (const sys of COSMERE.systems) {
@@ -533,7 +566,15 @@ export class App {
       this.orrery, this.camera, s.era, s.year, s.readProgress, s.scale,
       s.realm === 'cognitive',
     );
-    this.spiritual.update(t, s.era, s.realm === 'spiritual');
+    this.spiritual.update(
+      t, s.era, s.realm === 'spiritual', this.camera, s.readProgress, s.selected,
+    );
+    if (s.realm === 'spiritual') {
+      // Nothing physical belongs in here, not even the names.
+      this.labels.group.visible = false;
+      this.pins.group.visible = false;
+      this.presence.group.visible = false;
+    }
     this.starfield.update(t, this.canvas.clientHeight, FOV, s.visual.starSize, s.visual.exposure);
 
     this.post.composer.render();

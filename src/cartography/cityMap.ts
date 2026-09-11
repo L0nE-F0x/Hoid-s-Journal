@@ -1,324 +1,533 @@
 /**
- * Original city plates. No Three — the atlas blits these the same way it
- * blits world maps. UVs are 0..1 on the plate, not on the globe.
+ * Original city plates, drawn as ink on parchment.
+ *
+ * These sit in the same panel as Isaac Stewart's city rasters, so they have to
+ * belong to the same family: a ruled border, a warm ground, a compass, a scale
+ * bar, and a street plan someone could have surveyed. The earlier version was
+ * a noise fill with a few circles on it and looked exactly like that next to
+ * the real thing.
+ *
+ * No Three — the atlas blits these the same way it blits world maps. UVs are
+ * 0..1 on the plate, not on the globe.
  */
 import { cityById } from '../data/cities.ts';
 import type { CityKind } from '../data/types.ts';
 
-function hash(x: number, y: number): number {
-  const s = Math.sin(x * 127.1 + y * 311.7) * 43758.5453;
-  return s - Math.floor(s);
-}
-function noise(x: number, y: number): number {
-  const ix = Math.floor(x);
-  const iy = Math.floor(y);
-  const fx = x - ix;
-  const fy = y - iy;
-  const ux = fx * fx * (3 - 2 * fx);
-  const uy = fy * fy * (3 - 2 * fy);
-  const a = hash(ix, iy);
-  const b = hash(ix + 1, iy);
-  const c = hash(ix, iy + 1);
-  const d = hash(ix + 1, iy + 1);
-  return a + (b - a) * ux + (c - a) * uy + (a - b - c + d) * ux * uy;
-}
-function fbm(x: number, y: number, oct = 4): number {
-  let v = 0, a = 0.5, f = 1;
-  for (let i = 0; i < oct; i++) { v += a * noise(x * f, y * f); a *= 0.5; f *= 2.05; }
-  return v;
-}
-function mix(a: number[], b: number[], t: number): number[] {
-  const u = t < 0 ? 0 : t > 1 ? 1 : t;
-  return [a[0]! + (b[0]! - a[0]!) * u, a[1]! + (b[1]! - a[1]!) * u, a[2]! + (b[2]! - a[2]!) * u];
-}
-function rgb(h: string): number[] {
-  const n = h.replace('#', '');
-  return [parseInt(n.slice(0, 2), 16), parseInt(n.slice(2, 4), 16), parseInt(n.slice(4, 6), 16)];
-}
+/* -------------------------------------------------------------------------
+ * page
+ * ---------------------------------------------------------------------- */
 
 interface Page {
-  W: number; H: number;
+  W: number;
+  H: number;
   canvas: HTMLCanvasElement;
   ctx: CanvasRenderingContext2D;
-  img: ImageData;
-  d: Uint8ClampedArray;
+  /** Deterministic per-plate random, so a plate never changes under a reader. */
+  rnd: () => number;
 }
 
-function page(W: number, H: number): Page {
+function page(W: number, H: number, seed: number): Page {
   const canvas = document.createElement('canvas');
-  canvas.width = W; canvas.height = H;
+  canvas.width = W;
+  canvas.height = H;
   const ctx = canvas.getContext('2d')!;
-  const img = ctx.createImageData(W, H);
-  return { W, H, canvas, ctx, img, d: img.data };
+  let s = seed * 9301 + 49297;
+  const rnd = () => {
+    s = (s * 9301 + 49297) % 233280;
+    return s / 233280;
+  };
+  return { W, H, canvas, ctx, rnd };
 }
 
-function fill(p: Page, fn: (u: number, v: number, x: number, y: number) => number[]): void {
-  const { W, H, d } = p;
-  for (let y = 0; y < H; y++) {
-    const v = y / H;
-    for (let x = 0; x < W; x++) {
-      const col = fn(x / W, v, x, y);
-      const i = (y * W + x) * 4;
-      d[i] = col[0]!; d[i + 1] = col[1]!; d[i + 2] = col[2]!; d[i + 3] = 255;
-    }
+const px = (p: Page, u: number) => u * p.W;
+const py = (p: Page, v: number) => v * p.H;
+/** Radius in height units, so a circle stays a circle on a 2:1 plate. */
+const rx = (p: Page, r: number) => (r * p.H) / p.W;
+
+/* -------------------------------------------------------------------------
+ * palettes
+ * ---------------------------------------------------------------------- */
+
+interface Palette {
+  /** Parchment, light and shadowed. */
+  paper: string;
+  paperDark: string;
+  /** The pen. */
+  ink: string;
+  inkSoft: string;
+  /** Blocks, water, and the one accent a plate is allowed. */
+  block: string;
+  water: string;
+  accent: string;
+  /** Some worlds are not drawn on paper at all. */
+  dark?: boolean;
+}
+
+const VORIN: Palette = {
+  paper: '#e4d7b8', paperDark: '#c8b489', ink: '#4a3823', inkSoft: 'rgba(74,56,35,0.42)',
+  block: 'rgba(120,96,62,0.30)', water: '#9fb9b4', accent: '#9a6b2f',
+};
+const SCADRIAL: Palette = {
+  paper: '#ded3bb', paperDark: '#b9a888', ink: '#3f3628', inkSoft: 'rgba(63,54,40,0.40)',
+  block: 'rgba(96,86,62,0.32)', water: '#a6b6b0', accent: '#8a5a2b',
+};
+const SELISH: Palette = {
+  paper: '#e0d9c6', paperDark: '#bdb39b', ink: '#3c3550', inkSoft: 'rgba(60,53,80,0.40)',
+  block: 'rgba(92,84,120,0.28)', water: '#a3b5c9', accent: '#6b5a9a',
+};
+const NALTHIS: Palette = {
+  paper: '#e7dcc4', paperDark: '#c6b492', ink: '#4a2f3c', inkSoft: 'rgba(74,47,60,0.40)',
+  block: 'rgba(150,96,120,0.24)', water: '#8fb6c4', accent: '#b0537f',
+};
+const TALDAIN: Palette = {
+  paper: '#efe0b4', paperDark: '#d2be84', ink: '#4d3a1c', inkSoft: 'rgba(77,58,28,0.40)',
+  block: 'rgba(130,102,50,0.28)', water: '#9cc0c6', accent: '#a8761f',
+};
+const KOMASHI: Palette = {
+  paper: '#0e1424', paperDark: '#070b16', ink: '#5de7ff', inkSoft: 'rgba(93,231,255,0.30)',
+  block: 'rgba(93,231,255,0.10)', water: '#123047', accent: '#e879f9', dark: true,
+};
+const CANTICLE: Palette = {
+  paper: '#221510', paperDark: '#120b08', ink: '#f0a35a', inkSoft: 'rgba(240,163,90,0.30)',
+  block: 'rgba(240,163,90,0.12)', water: '#3a1d10', accent: '#ffd08a', dark: true,
+};
+
+/* -------------------------------------------------------------------------
+ * the sheet
+ * ---------------------------------------------------------------------- */
+
+/** Warm ground with fibre, foxing and a burnt edge. Or a dark plate. */
+function sheet(p: Page, pal: Palette): void {
+  const { ctx, W, H } = p;
+  ctx.fillStyle = pal.paper;
+  ctx.fillRect(0, 0, W, H);
+
+  // Fibre: short strokes in two directions, very low contrast.
+  ctx.globalAlpha = pal.dark ? 0.05 : 0.09;
+  ctx.strokeStyle = pal.paperDark;
+  ctx.lineWidth = 1;
+  for (let i = 0; i < 900; i++) {
+    const x = p.rnd() * W;
+    const y = p.rnd() * H;
+    const len = 2 + p.rnd() * 9;
+    const horiz = p.rnd() > 0.5;
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(x + (horiz ? len : 0), y + (horiz ? 0 : len));
+    ctx.stroke();
   }
-  p.ctx.putImageData(p.img, 0, 0);
-}
-
-function vignette(p: Page): void {
-  const g = p.ctx.createRadialGradient(p.W * 0.5, p.H * 0.5, p.H * 0.2, p.W * 0.5, p.H * 0.5, p.H * 0.78);
-  g.addColorStop(0, 'rgba(5,6,13,0)');
-  g.addColorStop(1, 'rgba(5,6,13,0.42)');
-  p.ctx.fillStyle = g;
-  p.ctx.fillRect(0, 0, p.W, p.H);
-}
-
-function circle(p: Page, u: number, v: number, rH: number, stroke: string, width = 2): void {
-  p.ctx.beginPath();
-  p.ctx.arc(u * p.W, v * p.H, rH * p.H, 0, Math.PI * 2);
-  p.ctx.strokeStyle = stroke;
-  p.ctx.lineWidth = width;
-  p.ctx.stroke();
-}
-
-function disc(p: Page, u: number, v: number, rH: number, fillStyle: string): void {
-  p.ctx.beginPath();
-  p.ctx.arc(u * p.W, v * p.H, rH * p.H, 0, Math.PI * 2);
-  p.ctx.fillStyle = fillStyle;
-  p.ctx.fill();
-}
-
-function line(p: Page, u0: number, v0: number, u1: number, v1: number, stroke: string, width = 2): void {
-  p.ctx.beginPath();
-  p.ctx.moveTo(u0 * p.W, v0 * p.H);
-  p.ctx.lineTo(u1 * p.W, v1 * p.H);
-  p.ctx.strokeStyle = stroke;
-  p.ctx.lineWidth = width;
-  p.ctx.stroke();
-}
-
-function rect(p: Page, u: number, v: number, wu: number, hv: number, fillStyle: string, stroke?: string): void {
-  p.ctx.fillStyle = fillStyle;
-  p.ctx.fillRect(u * p.W, v * p.H, wu * p.W, hv * p.H);
-  if (stroke) {
-    p.ctx.strokeStyle = stroke;
-    p.ctx.lineWidth = 1.5;
-    p.ctx.strokeRect(u * p.W, v * p.H, wu * p.W, hv * p.H);
+  // Foxing: the brown blooms old paper gets.
+  ctx.globalAlpha = pal.dark ? 0.05 : 0.10;
+  ctx.fillStyle = pal.paperDark;
+  for (let i = 0; i < 40; i++) {
+    const r = 4 + p.rnd() * 26;
+    ctx.beginPath();
+    ctx.arc(p.rnd() * W, p.rnd() * H, r, 0, Math.PI * 2);
+    ctx.fill();
   }
+  ctx.globalAlpha = 1;
+
+  // Edge burn.
+  const g = ctx.createRadialGradient(W * 0.5, H * 0.5, H * 0.30, W * 0.5, H * 0.5, H * 0.92);
+  g.addColorStop(0, 'rgba(0,0,0,0)');
+  g.addColorStop(1, pal.dark ? 'rgba(0,0,0,0.55)' : 'rgba(70,48,20,0.30)');
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, W, H);
 }
 
-/** Round radius in height-units, so a circle stays a circle on a 2:1 plate. */
-function rad(u: number, v: number, cu: number, cv: number, W: number, H: number): number {
-  const dx = (u - cu) * (W / H);
-  const dy = v - cv;
-  return Math.hypot(dx, dy);
-}
-
-function urithiru(p: Page): void {
-  const stone = rgb('#3d4550'); const stone2 = rgb('#1f2933');
-  const snow = rgb('#dce6f0'); const glow = rgb('#7dd3fc');
-  fill(p, (u, v) => {
-    const n = fbm(u * 6 + 2, v * 6 + 4);
-    const r = rad(u, v, 0.42, 0.52, p.W, p.H);
-    const ridge = 0.5 + 0.5 * Math.sin((u * 14 + v * 9) + n * 3);
-    let col = mix(stone2, mix(stone, rgb('#6b5d4d'), 0.45), n * 0.65 + ridge * 0.25);
-    if (r < 0.28) {
-      const ring = 0.5 + 0.5 * Math.sin(r * 72);
-      col = mix(mix(stone, rgb('#6b7280'), ring), glow, Math.max(0, 0.18 - r) * 4);
-    } else if (n > 0.6 && v < 0.42) col = mix(col, snow, (n - 0.6) * 2.2);
-    return col;
-  });
-  for (let i = 1; i <= 8; i++) circle(p, 0.42, 0.52, 0.035 * i, 'rgba(186,230,253,0.35)', 1.4);
-  disc(p, 0.42, 0.52, 0.028, 'rgba(125,211,252,0.9)');
-  disc(p, 0.72, 0.64, 0.11, 'rgba(30,41,59,0.7)');
-  circle(p, 0.72, 0.64, 0.11, 'rgba(251,191,36,0.85)', 2);
-  for (let i = 0; i < 10; i++) {
-    const a = (i / 10) * Math.PI * 2;
-    disc(p, 0.72 + Math.cos(a) * 0.07, 0.64 + Math.sin(a) * 0.14, 0.016, 'rgba(251,191,36,0.8)');
+/** The ruled border a surveyed plate has, with ticks at the corners. */
+function frame(p: Page, pal: Palette): void {
+  const { ctx, W, H } = p;
+  const m = Math.round(H * 0.045);
+  ctx.strokeStyle = pal.ink;
+  ctx.globalAlpha = 0.75;
+  ctx.lineWidth = 2;
+  ctx.strokeRect(m, m, W - m * 2, H - m * 2);
+  ctx.globalAlpha = 0.45;
+  ctx.lineWidth = 1;
+  ctx.strokeRect(m + 6, m + 6, W - m * 2 - 12, H - m * 2 - 12);
+  // Corner ticks.
+  ctx.globalAlpha = 0.7;
+  ctx.lineWidth = 2;
+  const t = 14;
+  for (const [cx, cy, sx, sy] of [
+    [m, m, 1, 1], [W - m, m, -1, 1], [m, H - m, 1, -1], [W - m, H - m, -1, -1],
+  ] as [number, number, number, number][]) {
+    ctx.beginPath();
+    ctx.moveTo(cx + sx * t, cy);
+    ctx.lineTo(cx, cy);
+    ctx.lineTo(cx, cy + sy * t);
+    ctx.stroke();
   }
-  disc(p, 0.32, 0.62, 0.05, 'rgba(253,230,138,0.35)');
+  ctx.globalAlpha = 1;
 }
 
-function kholinar(p: Page): void {
-  const sand = rgb('#b4532a'); const sand2 = rgb('#7c2d12'); const street = rgb('#c4a574');
-  fill(p, (u, v) => {
-    const n = fbm(u * 7, v * 7 + 3);
-    const blade = Math.abs(Math.sin(u * 14 + v * 1.4 + n)) > 0.72;
-    let col = mix(sand, sand2, n);
-    if (blade) col = mix(col, rgb('#431407'), 0.7);
-    const wall = rad(u, v, 0.48, 0.48, p.W, p.H);
-    if (wall > 0.36 && wall < 0.40) col = mix(col, rgb('#44403c'), 0.8);
-    if (wall < 0.36) col = mix(col, street, 0.18);
-    return col;
-  });
-  rect(p, 0.44, 0.12, 0.12, 0.16, 'rgba(251,191,36,0.55)', 'rgba(251,191,36,0.9)');
-  disc(p, 0.82, 0.48, 0.055, 'rgba(167,139,250,0.45)');
-  circle(p, 0.82, 0.48, 0.055, 'rgba(167,139,250,0.95)', 2);
-  disc(p, 0.56, 0.60, 0.04, 'rgba(253,230,138,0.4)');
-}
-
-function kharbranth(p: Page): void {
-  const sea = rgb('#0e4a5c'); const sea2 = rgb('#164e63');
-  const stone = rgb('#8b7355'); const cliff = rgb('#44403c');
-  fill(p, (u, v) => {
-    const n = fbm(u * 8, v * 8);
-    const cx = 0.48, cy = 0.52;
-    const r = rad(u, v, cx, cy, p.W, p.H);
-    const ang = Math.atan2(v - cy, (u - cx) * (p.W / p.H));
-    const crescent = r > 0.08 && r < 0.28 && ang > -0.4 && ang < 3.2;
-    if (r < 0.12) return mix(rgb('#22d3ee'), sea, r * 6);
-    if (crescent) {
-      const terrace = 0.5 + 0.5 * Math.sin(r * 90);
-      return mix(mix(stone, cliff, terrace), rgb('#a78bfa'), v < 0.38 ? 0.15 : 0);
-    }
-    return v > 0.42 ? mix(sea, sea2, n) : mix(cliff, stone, n);
-  });
-  disc(p, 0.62, 0.36, 0.035, 'rgba(167,139,250,0.7)');
-  rect(p, 0.33, 0.26, 0.10, 0.08, 'rgba(196,181,253,0.45)', 'rgba(196,181,253,0.9)');
-}
-
-function luthadel(p: Page): void {
-  const ash = rgb('#4b453c'); const ash2 = rgb('#2a2620'); const fire = rgb('#b45309');
-  fill(p, (u, v) => {
-    const n = fbm(u * 9, v * 9);
-    const r = rad(u, v, 0.50, 0.50, p.W, p.H);
-    let col = mix(ash, ash2, n);
-    if (r < 0.42) col = mix(col, rgb('#57534e'), 0.25);
-    if (Math.abs(r - 0.42) < 0.018) col = rgb('#1c1917');
-    const river = Math.abs(v - (0.62 + (u - 0.5) * 0.18)) < 0.025 && r < 0.5;
-    if (river) col = mix(rgb('#334155'), rgb('#1e293b'), n);
-    if (r < 0.12 && v < 0.46) col = mix(rgb('#111010'), fire, n * 0.35);
-    return col;
-  });
-  circle(p, 0.50, 0.50, 0.42, 'rgba(28,25,23,0.95)', 4);
-  for (let i = 0; i < 8; i++) {
-    const a = (i / 8) * Math.PI * 2 + 0.4;
-    rect(p, 0.50 + Math.cos(a) * 0.16 - 0.025, 0.50 + Math.sin(a) * 0.32 - 0.04,
-      0.05, 0.08, 'rgba(214,164,76,0.4)', 'rgba(214,164,76,0.8)');
-  }
-  for (let i = 0; i < 7; i++) {
-    disc(p, 0.50 + (i - 3) * 0.018, 0.34 - Math.abs(i - 3) * 0.01, 0.012 + (i === 3 ? 0.02 : 0), '#111010');
-  }
-}
-
-function elendel(p: Page): void {
-  const green = rgb('#3f6b3a'); const green2 = rgb('#6a8a4a'); const canal = rgb('#3b82c4');
-  fill(p, (u, v) => {
-    const n = fbm(u * 6, v * 6);
-    const r = rad(u, v, 0.50, 0.50, p.W, p.H);
-    const ang = Math.atan2(v - 0.50, (u - 0.50) * (p.W / p.H));
-    const oct = Math.floor(((ang + Math.PI) / (Math.PI * 2)) * 8);
-    let col = mix(green, green2, n * 0.5 + (oct % 2) * 0.12);
-    if (r < 0.40) col = mix(col, rgb('#d6d3c0'), 0.25);
-    if (r < 0.08) col = mix(col, rgb('#d6a44c'), 0.7);
-    const spoke = Math.abs((ang / (Math.PI / 4)) % 1 - 0.5) < 0.06 && r < 0.4;
-    const ring = Math.abs(r - 0.22) < 0.012;
-    if (spoke || ring) col = mix(col, canal, 0.85);
-    return col;
-  });
-  circle(p, 0.50, 0.50, 0.40, 'rgba(214,164,76,0.55)', 2);
-  disc(p, 0.50, 0.50, 0.045, 'rgba(214,164,76,0.85)');
-  disc(p, 0.74, 0.52, 0.03, 'rgba(103,232,249,0.5)');
-}
-
-function elantris(p: Page): void {
-  const land = rgb('#4b5563'); const land2 = rgb('#6b7280'); const glow = rgb('#c4b5fd');
-  fill(p, (u, v) => {
-    const n = fbm(u * 5, v * 5);
-    const r = rad(u, v, 0.48, 0.48, p.W, p.H);
-    let col = mix(land, land2, n);
-    if (r < 0.32) {
-      const aon = 0.5 + 0.5 * Math.sin(r * 40) * Math.cos(u * 20);
-      col = mix(mix(rgb('#a1a1aa'), glow, 0.45), glow, Math.max(0, 0.08 - r) * 5 + aon * 0.15);
-    }
-    if (Math.abs(r - 0.32) < 0.014) col = mix(glow, rgb('#e9d5ff'), 0.4);
-    return col;
-  });
-  circle(p, 0.48, 0.48, 0.32, 'rgba(196,181,253,0.95)', 3);
-  line(p, 0.48, 0.10, 0.48, 0.86, 'rgba(167,139,250,0.55)', 2);
-  line(p, 0.22, 0.48, 0.78, 0.48, 'rgba(167,139,250,0.55)', 2);
-  disc(p, 0.48, 0.16, 0.03, 'rgba(167,139,250,0.8)');
-  disc(p, 0.48, 0.80, 0.03, 'rgba(167,139,250,0.8)');
-  disc(p, 0.28, 0.48, 0.03, 'rgba(167,139,250,0.8)');
-  disc(p, 0.68, 0.48, 0.03, 'rgba(167,139,250,0.8)');
-  rect(p, 0.64, 0.54, 0.18, 0.16, 'rgba(221,214,254,0.35)', 'rgba(221,214,254,0.8)');
-}
-
-function ttelir(p: Page): void {
-  const jungle = rgb('#166534'); const jungle2 = rgb('#14532d');
-  const sand = rgb('#e8c4a0'); const sea = rgb('#0e7490'); const sea2 = rgb('#155e75');
-  fill(p, (u, v) => {
-    const n = fbm(u * 7, v * 7);
-    if (v > 0.68 + n * 0.06) return mix(sea, sea2, n);
-    if (v < 0.22) return mix(jungle, jungle2, n);
-    let col = mix(sand, rgb('#d6a574'), n);
-    if (u > 0.52 && u < 0.78 && v > 0.22 && v < 0.42) {
-      const pal = [rgb('#c084fc'), rgb('#f472b6'), rgb('#22d3ee'), rgb('#fbbf24'), rgb('#34d399')];
-      col = pal[Math.floor(u * 18 + v * 8) % pal.length]!;
-      col = mix(col, sand, 0.25);
-    }
-    return col;
-  });
-  rect(p, 0.54, 0.22, 0.24, 0.20, 'rgba(192,132,252,0.15)', 'rgba(192,132,252,0.7)');
-  for (let i = 0; i < 6; i++) {
-    line(p, 0.40 + i * 0.03, 0.70, 0.40 + i * 0.03, 0.84, 'rgba(15,23,42,0.45)', 2);
-  }
-  disc(p, 0.38, 0.48, 0.05, 'rgba(134,239,172,0.35)');
-}
-
-function kilahito(p: Page): void {
-  const night = rgb('#0b1020'); const night2 = rgb('#111827');
-  const cyan = rgb('#22d3ee'); const mag = rgb('#e879f9');
-  fill(p, (u, v) => {
-    const n = fbm(u * 10, v * 10);
-    let col = mix(night, night2, n);
-    const hionV = Math.abs(Math.sin(u * 22));
-    const hionH = Math.abs(Math.sin(v * 16));
-    if (hionV > 0.94) col = mix(col, cyan, 0.9);
-    if (hionH > 0.95) col = mix(col, mag, 0.85);
-    if (n > 0.62) col = mix(col, rgb('#1e293b'), 0.5);
-    return col;
-  });
-  rect(p, 0.26, 0.32, 0.14, 0.16, 'rgba(232,121,249,0.18)', 'rgba(232,121,249,0.7)');
-  rect(p, 0.54, 0.50, 0.16, 0.14, 'rgba(34,211,238,0.18)', 'rgba(34,211,238,0.7)');
-}
-
-function kezare(p: Page): void {
-  const sand = rgb('#e8c878'); const sand2 = rgb('#c9a24a'); const water = rgb('#38bdf8');
-  fill(p, (u, v) => {
-    const n = fbm(u * 8, v * 8);
-    const river = Math.abs(v - (0.58 + Math.sin(u * 8) * 0.06)) < 0.04;
-    if (river) return mix(water, rgb('#0e7490'), n);
-    let col = mix(sand, sand2, n);
-    const r = rad(u, v, 0.48, 0.44, p.W, p.H);
-    if (r < 0.28) col = mix(col, rgb('#a16207'), 0.2);
-    return col;
-  });
-  rect(p, 0.40, 0.34, 0.12, 0.14, 'rgba(251,191,36,0.45)', 'rgba(251,191,36,0.9)');
-  rect(p, 0.56, 0.30, 0.12, 0.10, 'rgba(253,230,138,0.4)', 'rgba(253,230,138,0.85)');
-}
-
-function hover(p: Page, seed: number): void {
-  const ground = rgb('#1c1917'); const heat = rgb('#7c2d12'); const gold = rgb('#fbbf24');
-  fill(p, (u, v) => {
-    const n = fbm(u * 6 + seed, v * 6);
-    const dawn = Math.max(0, u - 0.62);
-    let col = mix(ground, heat, n * 0.5 + dawn * 1.4);
-    const city = rad(u, v, 0.48, 0.50, p.W, p.H);
-    if (city < 0.16) col = mix(mix(rgb('#292524'), gold, 0.35), gold, Math.max(0, 0.05 - city) * 8);
-    return col;
-  });
+function compass(p: Page, u: number, v: number, pal: Palette): void {
+  const { ctx } = p;
+  const cx = px(p, u);
+  const cy = py(p, v);
+  const r = p.H * 0.052;
+  ctx.save();
+  ctx.globalAlpha = 0.7;
+  ctx.strokeStyle = pal.ink;
+  ctx.fillStyle = pal.ink;
+  ctx.lineWidth = 1.2;
+  ctx.beginPath();
+  ctx.arc(cx, cy, r, 0, Math.PI * 2);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.arc(cx, cy, r * 0.72, 0, Math.PI * 2);
+  ctx.stroke();
+  // Four points, north filled.
   for (let i = 0; i < 4; i++) {
-    line(p, 0.20, 0.42 + i * 0.05, 0.78, 0.46 + i * 0.05, 'rgba(251,191,36,0.25)', 2);
+    const a = (i / 4) * Math.PI * 2 - Math.PI / 2;
+    const wide = r * 0.16;
+    ctx.beginPath();
+    ctx.moveTo(cx + Math.cos(a) * r, cy + Math.sin(a) * r);
+    ctx.lineTo(cx + Math.cos(a + Math.PI / 2) * wide, cy + Math.sin(a + Math.PI / 2) * wide);
+    ctx.lineTo(cx + Math.cos(a - Math.PI / 2) * wide, cy + Math.sin(a - Math.PI / 2) * wide);
+    ctx.closePath();
+    if (i === 0) ctx.fill(); else ctx.stroke();
   }
-  disc(p, 0.62, 0.44, 0.03, 'rgba(251,191,36,0.85)');
+  ctx.font = `600 ${Math.round(r * 0.52)}px Inter, ui-sans-serif, sans-serif`;
+  ctx.textAlign = 'center';
+  ctx.fillText('N', cx, cy - r * 1.32);
+  ctx.restore();
 }
+
+function scaleBar(p: Page, pal: Palette): void {
+  const { ctx, W, H } = p;
+  const x = W * 0.07;
+  const y = H * 0.90;
+  const w = W * 0.14;
+  ctx.save();
+  ctx.globalAlpha = 0.75;
+  ctx.strokeStyle = pal.ink;
+  ctx.fillStyle = pal.ink;
+  ctx.lineWidth = 1.2;
+  ctx.strokeRect(x, y, w, 7);
+  for (let i = 0; i < 4; i += 2) ctx.fillRect(x + (w / 4) * i, y, w / 4, 7);
+  ctx.font = `500 ${Math.round(H * 0.030)}px Inter, ui-sans-serif, sans-serif`;
+  ctx.textAlign = 'left';
+  ctx.globalAlpha = 0.6;
+  ctx.fillText('surveyed, not to scale', x, y - 7);
+  ctx.restore();
+}
+
+/* -------------------------------------------------------------------------
+ * plans
+ * ---------------------------------------------------------------------- */
+
+interface Plan {
+  pal: Palette;
+  /** Concentric ring roads and radial streets inside a wall. */
+  radial?: { rings: number; spokes: number; wall: boolean; gates: number };
+  /** Streets on a grid, optionally rotated. */
+  grid?: { cols: number; rows: number; tilt: number };
+  /** A river or canal system across the plate. */
+  water?: 'river' | 'bay' | 'canals' | 'none';
+  /** A keep, palace or tower at the middle. */
+  citadel?: 'keep' | 'tower' | 'terraces' | 'none';
+  /** Outlying hamlets beyond the wall. */
+  outskirts?: number;
+  /** A lattice of light instead of streets. */
+  lattice?: boolean;
+  /** The city is moving, and leaves a track. */
+  track?: boolean;
+}
+
+const CENTRE: [number, number] = [0.47, 0.50];
+
+function blocks(p: Page, pal: Palette, inside: (u: number, v: number) => boolean, n: number): void {
+  const { ctx } = p;
+  ctx.save();
+  ctx.fillStyle = pal.block;
+  ctx.strokeStyle = pal.inkSoft;
+  ctx.lineWidth = 1;
+  for (let i = 0; i < n; i++) {
+    const u = 0.10 + p.rnd() * 0.80;
+    const v = 0.12 + p.rnd() * 0.76;
+    if (!inside(u, v)) continue;
+    const w = (0.010 + p.rnd() * 0.026) * p.W;
+    const h = (0.020 + p.rnd() * 0.052) * p.H;
+    ctx.beginPath();
+    ctx.rect(px(p, u), py(p, v), w, h);
+    ctx.fill();
+    ctx.stroke();
+  }
+  ctx.restore();
+}
+
+function drawRadial(p: Page, pal: Palette, spec: NonNullable<Plan['radial']>): void {
+  const { ctx } = p;
+  const [cu, cv] = CENTRE;
+  const outer = 0.34;
+  ctx.save();
+  ctx.strokeStyle = pal.ink;
+  ctx.globalAlpha = 0.45;
+  ctx.lineWidth = 1.2;
+  for (let i = 1; i <= spec.rings; i++) {
+    const r = (outer * i) / spec.rings;
+    ctx.beginPath();
+    ctx.ellipse(px(p, cu), py(p, cv), rx(p, r) * p.W, r * p.H, 0, 0, Math.PI * 2);
+    ctx.stroke();
+  }
+  for (let i = 0; i < spec.spokes; i++) {
+    const a = (i / spec.spokes) * Math.PI * 2;
+    ctx.beginPath();
+    ctx.moveTo(px(p, cu), py(p, cv));
+    ctx.lineTo(px(p, cu + Math.cos(a) * rx(p, outer)), py(p, cv + Math.sin(a) * outer));
+    ctx.stroke();
+  }
+  if (spec.wall) {
+    ctx.globalAlpha = 0.85;
+    ctx.lineWidth = 3.5;
+    ctx.beginPath();
+    ctx.ellipse(px(p, cu), py(p, cv), rx(p, outer * 1.06) * p.W, outer * 1.06 * p.H, 0, 0, Math.PI * 2);
+    ctx.stroke();
+    // Gates: short breaks with a tick either side.
+    ctx.fillStyle = pal.paper;
+    for (let i = 0; i < spec.gates; i++) {
+      const a = (i / spec.gates) * Math.PI * 2 + 0.3;
+      const gx = px(p, cu + Math.cos(a) * rx(p, outer * 1.06));
+      const gy = py(p, cv + Math.sin(a) * outer * 1.06);
+      ctx.beginPath();
+      ctx.arc(gx, gy, 7, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.globalAlpha = 0.9;
+      ctx.strokeStyle = pal.accent;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(gx, gy, 5, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.strokeStyle = pal.ink;
+      ctx.globalAlpha = 0.85;
+      ctx.lineWidth = 3.5;
+    }
+  }
+  ctx.restore();
+  blocks(p, pal, (u, v) => {
+    const d = Math.hypot((u - cu) / rx(p, 1), v - cv);
+    return d < outer * 0.98 && d > outer * 0.10;
+  }, 260);
+}
+
+function drawGrid(p: Page, pal: Palette, spec: NonNullable<Plan['grid']>): void {
+  const { ctx } = p;
+  ctx.save();
+  ctx.translate(px(p, CENTRE[0]), py(p, CENTRE[1]));
+  ctx.rotate(spec.tilt);
+  ctx.strokeStyle = pal.ink;
+  ctx.globalAlpha = 0.40;
+  ctx.lineWidth = 1.1;
+  const halfW = p.W * 0.34;
+  const halfH = p.H * 0.36;
+  for (let i = 0; i <= spec.cols; i++) {
+    const x = -halfW + (i / spec.cols) * halfW * 2;
+    ctx.beginPath();
+    ctx.moveTo(x, -halfH);
+    ctx.lineTo(x, halfH);
+    ctx.stroke();
+  }
+  for (let i = 0; i <= spec.rows; i++) {
+    const y = -halfH + (i / spec.rows) * halfH * 2;
+    ctx.beginPath();
+    ctx.moveTo(-halfW, y);
+    ctx.lineTo(halfW, y);
+    ctx.stroke();
+  }
+  // Two avenues, heavier than the rest.
+  ctx.globalAlpha = 0.8;
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.moveTo(-halfW, 0);
+  ctx.lineTo(halfW, 0);
+  ctx.moveTo(0, -halfH);
+  ctx.lineTo(0, halfH);
+  ctx.stroke();
+  ctx.restore();
+  blocks(p, pal, (u, v) => Math.abs(u - CENTRE[0]) < 0.33 && Math.abs(v - CENTRE[1]) < 0.35, 300);
+}
+
+function drawWater(p: Page, pal: Palette, kind: NonNullable<Plan['water']>): void {
+  if (kind === 'none') return;
+  const { ctx, W, H } = p;
+  ctx.save();
+  ctx.fillStyle = pal.water;
+  ctx.globalAlpha = pal.dark ? 0.55 : 0.72;
+  if (kind === 'bay') {
+    ctx.beginPath();
+    ctx.ellipse(W * 0.46, H * 1.08, W * 0.42, H * 0.52, 0, 0, Math.PI * 2);
+    ctx.fill();
+  } else if (kind === 'river') {
+    ctx.beginPath();
+    ctx.moveTo(0, H * 0.70);
+    for (let i = 0; i <= 12; i++) {
+      const t = i / 12;
+      ctx.lineTo(W * t, H * (0.70 + Math.sin(t * 5 + 1) * 0.07));
+    }
+    ctx.lineTo(W, H * 0.86);
+    for (let i = 12; i >= 0; i--) {
+      const t = i / 12;
+      ctx.lineTo(W * t, H * (0.80 + Math.sin(t * 5 + 1) * 0.07));
+    }
+    ctx.closePath();
+    ctx.fill();
+  } else {
+    // Canals: three bands across the plan.
+    for (let i = 0; i < 3; i++) {
+      const y = H * (0.30 + i * 0.20);
+      ctx.fillRect(W * 0.10, y, W * 0.78, H * 0.026);
+    }
+    ctx.fillRect(W * 0.30, H * 0.22, W * 0.028, H * 0.56);
+  }
+  // A drawn shoreline.
+  ctx.globalAlpha = 0.5;
+  ctx.strokeStyle = pal.ink;
+  ctx.lineWidth = 1.4;
+  ctx.stroke();
+  ctx.restore();
+}
+
+function drawCitadel(p: Page, pal: Palette, kind: NonNullable<Plan['citadel']>): void {
+  if (kind === 'none') return;
+  const { ctx } = p;
+  const cx = px(p, CENTRE[0]);
+  const cy = py(p, CENTRE[1]);
+  ctx.save();
+  ctx.strokeStyle = pal.ink;
+  ctx.fillStyle = pal.accent;
+  ctx.lineWidth = 2;
+  if (kind === 'keep') {
+    ctx.globalAlpha = 0.30;
+    ctx.fillRect(cx - p.H * 0.075, cy - p.H * 0.075, p.H * 0.15, p.H * 0.15);
+    ctx.globalAlpha = 0.9;
+    ctx.strokeRect(cx - p.H * 0.075, cy - p.H * 0.075, p.H * 0.15, p.H * 0.15);
+    // Spires.
+    for (let i = 0; i < 9; i++) {
+      const a = (i / 9) * Math.PI * 2;
+      ctx.beginPath();
+      ctx.arc(cx + Math.cos(a) * p.H * 0.055, cy + Math.sin(a) * p.H * 0.055, 4, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  } else if (kind === 'tower') {
+    for (let i = 5; i >= 1; i--) {
+      const r = p.H * 0.020 * i;
+      ctx.globalAlpha = 0.22;
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.globalAlpha = 0.75;
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+  } else {
+    // Terraces stepping down to the water.
+    ctx.globalAlpha = 0.65;
+    for (let i = 1; i <= 9; i++) {
+      const r = p.H * 0.035 * i;
+      ctx.beginPath();
+      ctx.arc(cx, py(p, 0.86), r, Math.PI * 1.08, Math.PI * 1.92);
+      ctx.stroke();
+    }
+  }
+  ctx.restore();
+}
+
+function drawOutskirts(p: Page, pal: Palette, n: number): void {
+  const { ctx } = p;
+  ctx.save();
+  ctx.strokeStyle = pal.inkSoft;
+  ctx.fillStyle = pal.block;
+  ctx.lineWidth = 1;
+  for (let i = 0; i < n; i++) {
+    const a = p.rnd() * Math.PI * 2;
+    const d = 0.40 + p.rnd() * 0.12;
+    const u = CENTRE[0] + Math.cos(a) * rx(p, d);
+    const v = CENTRE[1] + Math.sin(a) * d;
+    if (u < 0.07 || u > 0.93 || v < 0.09 || v > 0.91) continue;
+    const s = p.H * (0.012 + p.rnd() * 0.018);
+    ctx.beginPath();
+    ctx.rect(px(p, u), py(p, v), s, s * 0.7);
+    ctx.fill();
+    ctx.stroke();
+  }
+  ctx.restore();
+}
+
+function drawLattice(p: Page, pal: Palette): void {
+  const { ctx, W, H } = p;
+  ctx.save();
+  ctx.lineCap = 'round';
+  for (let i = 0; i < 22; i++) {
+    const cyan = i % 2 === 0;
+    ctx.strokeStyle = cyan ? pal.ink : pal.accent;
+    ctx.globalAlpha = 0.55;
+    ctx.lineWidth = 1.6;
+    ctx.shadowColor = cyan ? pal.ink : pal.accent;
+    ctx.shadowBlur = 10;
+    const horiz = p.rnd() > 0.45;
+    if (horiz) {
+      const y = H * (0.12 + p.rnd() * 0.76);
+      ctx.beginPath();
+      ctx.moveTo(W * 0.06, y);
+      ctx.lineTo(W * 0.94, y);
+      ctx.stroke();
+    } else {
+      const x = W * (0.08 + p.rnd() * 0.84);
+      ctx.beginPath();
+      ctx.moveTo(x, H * 0.08);
+      ctx.lineTo(x, H * 0.92);
+      ctx.stroke();
+    }
+  }
+  ctx.restore();
+}
+
+function drawTrack(p: Page, pal: Palette): void {
+  const { ctx, W, H } = p;
+  ctx.save();
+  ctx.strokeStyle = pal.ink;
+  ctx.globalAlpha = 0.5;
+  ctx.setLineDash([14, 10]);
+  ctx.lineWidth = 2;
+  for (let i = 0; i < 3; i++) {
+    const y = H * (0.42 + i * 0.07);
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    ctx.lineTo(W, y + H * 0.04);
+    ctx.stroke();
+  }
+  ctx.setLineDash([]);
+  // The dawn line the city is running from.
+  const g = ctx.createLinearGradient(W * 0.62, 0, W, 0);
+  g.addColorStop(0, 'rgba(255,190,110,0)');
+  g.addColorStop(1, 'rgba(255,190,110,0.45)');
+  ctx.globalAlpha = 1;
+  ctx.fillStyle = g;
+  ctx.fillRect(W * 0.62, 0, W * 0.38, H);
+  ctx.restore();
+}
+
+/* -------------------------------------------------------------------------
+ * one plate per kind
+ * ---------------------------------------------------------------------- */
+
+const PLANS: Record<CityKind, Plan> = {
+  urithiru: { pal: VORIN, radial: { rings: 6, spokes: 10, wall: false, gates: 0 }, citadel: 'tower', water: 'none' },
+  kholinar: { pal: VORIN, radial: { rings: 4, spokes: 8, wall: true, gates: 6 }, citadel: 'keep', water: 'none', outskirts: 26 },
+  kharbranth: { pal: VORIN, water: 'bay', citadel: 'terraces', grid: { cols: 7, rows: 4, tilt: -0.10 }, outskirts: 14 },
+  luthadel: { pal: SCADRIAL, radial: { rings: 3, spokes: 12, wall: true, gates: 8 }, citadel: 'keep', water: 'river', outskirts: 30 },
+  elendel: { pal: SCADRIAL, grid: { cols: 12, rows: 8, tilt: 0.06 }, citadel: 'tower', water: 'canals', outskirts: 22 },
+  elantris: { pal: SELISH, radial: { rings: 5, spokes: 4, wall: true, gates: 4 }, citadel: 'tower', water: 'none', outskirts: 34 },
+  ttelir: { pal: NALTHIS, grid: { cols: 9, rows: 6, tilt: -0.05 }, citadel: 'keep', water: 'bay', outskirts: 18 },
+  kilahito: { pal: KOMASHI, lattice: true, grid: { cols: 8, rows: 5, tilt: 0 }, citadel: 'none', water: 'none' },
+  kezare: { pal: TALDAIN, radial: { rings: 4, spokes: 6, wall: false, gates: 0 }, citadel: 'keep', water: 'river', outskirts: 24 },
+  hover: { pal: CANTICLE, track: true, radial: { rings: 3, spokes: 6, wall: true, gates: 3 }, citadel: 'tower', water: 'none' },
+};
 
 const cache = new Map<string, HTMLCanvasElement>();
-
-const PAINT: Record<CityKind, (p: Page, seed: number) => void> = {
-  urithiru, kholinar, kharbranth, luthadel, elendel, elantris, ttelir, kilahito, kezare, hover,
-};
 
 export function bakeCityMap(id: string, W = 800, H = 400): HTMLCanvasElement | null {
   const spec = cityById[id];
@@ -326,9 +535,25 @@ export function bakeCityMap(id: string, W = 800, H = 400): HTMLCanvasElement | n
   const key = `${id}:${W}x${H}`;
   const hit = cache.get(key);
   if (hit) return hit;
-  const p = page(W, H);
-  PAINT[spec.kind](p, id.length);
-  vignette(p);
+
+  let seed = 0;
+  for (let i = 0; i < id.length; i++) seed = (seed * 31 + id.charCodeAt(i)) % 100000;
+  const p = page(W, H, seed + 1);
+  const plan = PLANS[spec.kind];
+  const pal = plan.pal;
+
+  sheet(p, pal);
+  if (plan.water) drawWater(p, pal, plan.water);
+  if (plan.track) drawTrack(p, pal);
+  if (plan.grid) drawGrid(p, pal, plan.grid);
+  if (plan.radial) drawRadial(p, pal, plan.radial);
+  if (plan.lattice) drawLattice(p, pal);
+  if (plan.outskirts) drawOutskirts(p, pal, plan.outskirts);
+  if (plan.citadel) drawCitadel(p, pal, plan.citadel);
+  frame(p, pal);
+  compass(p, 0.90, 0.19, pal);
+  scaleBar(p, pal);
+
   cache.set(key, p.canvas);
   return p.canvas;
 }

@@ -147,6 +147,57 @@
   font-size: 18px;
   font-weight: 600;
 }
+.ceph-drawer-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 4px 36px 0 0;
+}
+.ceph-swatch {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+  box-shadow: 0 0 16px currentColor;
+  border: 1px solid rgba(255,255,255,0.18);
+}
+.ceph-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 14px;
+}
+.ceph-field {
+  background: rgba(0,0,0,0.32);
+  border: 1px solid var(--ceph-border);
+  border-radius: 10px;
+  padding: 8px 10px;
+}
+.ceph-field-label {
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ceph-text-dim);
+}
+.ceph-field-val {
+  font-size: 12.5px;
+  margin-top: 4px;
+  line-height: 1.35;
+}
+.ceph-speed {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+  pointer-events: auto;
+}
+.ceph-rate {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--ceph-text-dim);
+  min-width: 2.4em;
+  text-align: center;
+}
 .ceph-fact {
   color: var(--ceph-text-dim);
   line-height: 1.55;

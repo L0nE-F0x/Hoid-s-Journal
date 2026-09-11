@@ -110,7 +110,8 @@
 .ceph-panel-drawer,
 .ceph-modal,
 .ceph-modal-card,
-.ceph-directory {
+.ceph-directory,
+.ceph-minimap {
   pointer-events: auto;
 }
 

@@ -68,6 +68,22 @@ function write(): void {
   history.replaceState(null, '', `${location.pathname}${location.search}#${next}`);
 }
 
+/** Force the hash current, then return the full URL for sharing. */
+export function shareUrl(): string {
+  write();
+  return location.href;
+}
+
+export async function copyShareLink(): Promise<boolean> {
+  const url = shareUrl();
+  try {
+    await navigator.clipboard.writeText(url);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 export function connectUrlState(): DeepTarget | null {
   const target = parse();
   let last = 0;

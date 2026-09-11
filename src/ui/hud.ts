@@ -2,6 +2,7 @@ import {
   COSMERE,
   bodyById,
   canEnterCity,
+  characterAt,
   characterById,
   cityById,
   dawnshardById,
@@ -16,10 +17,34 @@ import {
   yearToSlider,
 } from '../data/index.ts';
 import { store } from '../core/store.ts';
+import { copyShareLink } from '../core/urlState.ts';
 import { BRAND_TAGLINE, BRAND_WORDMARK } from './brand.ts';
 import { atlasIsOpen } from './atlas.ts';
 import { el, listen } from './dom.ts';
 import '../styles/hud.css';
+
+const TIME_RATES = [0.25, 1, 4, 16, 64];
+
+function field(label: string, value: string | undefined | null): HTMLElement | null {
+  if (!value || value === '—' || value === 'None') return null;
+  return el('div', { className: 'ceph-field' }, [
+    el('div', { className: 'ceph-field-label', text: label }),
+    el('div', { className: 'ceph-field-val', text: value }),
+  ]);
+}
+
+function fields(pairs: [string, string | undefined | null][]): HTMLElement {
+  const grid = el('div', { className: 'ceph-fields' });
+  for (const [k, v] of pairs) {
+    const n = field(k, v);
+    if (n) grid.append(n);
+  }
+  return grid;
+}
+
+function swatch(color: string): HTMLElement {
+  return el('div', { className: 'ceph-swatch', style: { background: color } });
+}
 
 function entityById(id: string | null) {
   if (!id) return null;
@@ -62,7 +87,8 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
   const btnRealm = mkTool('Realms', 'Physical / Cognitive / Spiritual (C / V)');
   const btnLook = mkTool('Look', 'Orbits, moons, nebulae, labels');
   const btnHelp = mkTool('Help', 'How to read the sky (H)');
-  const tools = el('div', { className: 'ceph-tools' }, [btnCodex, btnArc, btnSpoil, btnRealm, btnLook, btnHelp]);
+  const btnShare = mkTool('Share', 'Copy a link to this view');
+  const tools = el('div', { className: 'ceph-tools' }, [btnCodex, btnArc, btnSpoil, btnRealm, btnLook, btnHelp, btnShare]);
   const back = el('button', {
     className: 'ceph-btn ceph-back',
     text: '← Cosmere',
@@ -82,8 +108,12 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
     });
     eraRow.append(b);
   }
+  const slower = el('button', { className: 'ceph-chip', text: '−', attrs: { type: 'button', title: 'Slower' } });
+  const faster = el('button', { className: 'ceph-chip', text: '+', attrs: { type: 'button', title: 'Faster' } });
+  const rateEl = el('span', { className: 'ceph-rate', text: '1×' });
+  const speed = el('div', { className: 'ceph-speed' }, [slower, rateEl, faster]);
   const timeline = el('div', { className: 'ceph-panel ceph-timeline' }, [
-    el('div', { className: 'ceph-timeline-top' }, [play, yearEl]),
+    el('div', { className: 'ceph-timeline-top' }, [play, yearEl, speed]),
     slider,
     eraRow,
   ]);
@@ -187,6 +217,7 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
     ticker.textContent = era.event;
     slider.value = String(Math.round(yearToSlider(s.year) * 1000));
     play.textContent = s.isPlaying ? '❚❚' : '▶';
+    rateEl.textContent = `${s.timeRate}×`;
     [...eraRow.children].forEach((c, i) => c.classList.toggle('is-on', i === s.era));
   };
 
@@ -212,21 +243,25 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
       drawer.append(el('div', { className: 'ceph-reading ceph-reading--chip', text: '✦ new this arc' }));
     }
     const notes = 'fieldNotes' in hit.obj ? hit.obj.fieldNotes : undefined;
+    const head = el('div', { className: 'ceph-drawer-head' });
     if (hit.kind === 'body') {
       const b = hit.obj;
-      drawer.append(
+      head.append(swatch(b.color), el('div', {}, [
         el('div', { className: 'ceph-kicker', text: b.kind.replace('-', ' ') }),
         el('h2', { text: b.name }),
         el('span', { className: `ceph-canon ceph-canon--${b.canon}`, text: b.canon }),
-        el('p', { className: 'ceph-fact', text: b.fact }),
-        el('div', { className: 'ceph-meta' }, [
-          el('div', { html: `<b>System</b> ${COSMERE.systems.find((s) => s.id === b.system)?.name ?? b.system}` }),
-          el('div', { html: `<b>Shards</b> ${b.shards.join(', ') || '—'}` }),
-          el('div', { html: `<b>Magic</b> ${b.magic.join(', ') || '—'}` }),
-          el('div', { html: `<b>Species</b> ${b.species.join(', ') || '—'}` }),
-          el('div', { html: `<b>Sources</b> ${b.sources.join(' · ')}` }),
-        ]),
-      );
+      ]));
+      drawer.append(head);
+      drawer.append(el('p', { className: 'ceph-fact', text: b.fact }));
+      drawer.append(fields([
+        ['System', COSMERE.systems.find((s) => s.id === b.system)?.name],
+        ['Shards', b.shards.join(', ')],
+        ['Magic', b.magic.join(', ')],
+        ['Species', b.species.join(', ')],
+        ['Places', b.locations],
+        ['Sources', b.sources.join(' · ')],
+        ['Local date', worldDate(b.system, store.state.era)],
+      ]));
       if (b.hasSurface) {
         const go = el('button', { className: 'ceph-btn ceph-btn--primary', text: 'Surface scan', style: { marginTop: '14px' } });
         listen(go, 'click', () => store.set('cameraCue', { kind: 'focus', id: b.id, scale: 'surface' }));
@@ -234,45 +269,48 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
       }
     } else if (hit.kind === 'hub') {
       const h = hit.obj;
-      drawer.append(
+      head.append(swatch(h.color), el('div', {}, [
         el('div', { className: 'ceph-kicker', text: 'Cognitive city' }),
         el('h2', { text: h.name }),
         el('span', { className: `ceph-canon ceph-canon--${h.canon}`, text: h.canon }),
-        el('p', { className: 'ceph-fact', text: h.fact }),
-      );
+      ]));
+      drawer.append(head, el('p', { className: 'ceph-fact', text: h.fact }));
     } else if (hit.kind === 'dawnshard') {
       const d = hit.obj;
-      drawer.append(
+      head.append(el('div', {}, [
         el('div', { className: 'ceph-kicker', text: `Dawnshard · ${d.command}` }),
         el('h2', { text: d.name }),
         el('span', { className: `ceph-canon ceph-canon--${d.canon}`, text: d.canon }),
-        el('p', { className: 'ceph-fact', text: d.fact }),
-      );
+      ]));
+      drawer.append(head, el('p', { className: 'ceph-fact', text: d.fact }));
     } else if (hit.kind === 'system') {
       const sys = hit.obj;
-      const worlds = COSMERE.bodies.filter((b) => b.system === sys.id && b.kind !== 'gas-giant').map((b) => b.name).join(', ');
-      drawer.append(
+      const worlds = COSMERE.bodies.filter((b) => b.system === sys.id && b.kind !== 'gas-giant');
+      head.append(swatch(sys.sunColor), el('div', {}, [
         el('div', { className: 'ceph-kicker', text: 'System · click the rings to enter' }),
         el('h2', { text: sys.name }),
-        el('p', { className: 'ceph-fact', text: worlds || 'Gas giants and the star.' }),
-      );
+      ]));
+      drawer.append(head);
+      drawer.append(fields([
+        ['Worlds', worlds.map((b) => b.name).join(', ')],
+        ['Local date', worldDate(sys.id, store.state.era)],
+      ]));
       const go = el('button', { className: 'ceph-btn ceph-btn--primary', text: 'Enter this system', style: { marginTop: '14px' } });
       listen(go, 'click', () => store.set('cameraCue', { kind: 'focus', id: sys.id, scale: 'system' }));
       drawer.append(go);
     } else if (hit.kind === 'location') {
       const l = hit.obj;
-      drawer.append(
+      const perp = perpAt(l.id);
+      head.append(swatch(l.color), el('div', {}, [
         el('div', { className: 'ceph-kicker', text: bodyById[l.body]?.name ?? l.body }),
         el('h2', { text: l.name }),
-        el('p', { className: 'ceph-fact', text: l.desc }),
-      );
-      const perp = perpAt(l.id);
-      if (perp) {
-        drawer.append(el('div', { className: 'ceph-meta' }, [
-          el('div', { html: `<b>Perpendicularity</b> ${perp.name}` }),
-          el('div', { text: perp.fact }),
-        ]));
-      }
+      ]));
+      drawer.append(head, el('p', { className: 'ceph-fact', text: l.desc }));
+      drawer.append(fields([
+        ['World', bodyById[l.body]?.name],
+        ['Perpendicularity', perp?.name],
+      ]));
+      if (perp) drawer.append(el('p', { className: 'ceph-fact', text: perp.fact }));
       if (canEnterCity(l, store.state.era, store.state.realm) && store.state.scale !== 'city') {
         const go = el('button', {
           className: 'ceph-btn ceph-btn--primary',
@@ -285,34 +323,47 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
     } else if (hit.kind === 'landmark') {
       const m = hit.obj;
       const city = COSMERE.locations.find((l) => l.id === m.city);
-      drawer.append(
+      head.append(el('div', {}, [
         el('div', { className: 'ceph-kicker', text: city?.name ?? m.city }),
         el('h2', { text: m.name }),
-        el('p', { className: 'ceph-fact', text: m.desc }),
-      );
+      ]));
+      drawer.append(head, el('p', { className: 'ceph-fact', text: m.desc }));
     } else if (hit.kind === 'character') {
       const c = hit.obj;
-      drawer.append(
+      const at = characterAt(c, store.state.era);
+      const here = at?.body ? bodyById[at.body]?.name : null;
+      head.append(swatch(c.color), el('div', {}, [
         el('div', { className: 'ceph-kicker', text: c.origin }),
         el('h2', { text: c.name }),
-        el('p', { className: 'ceph-fact', text: c.fact }),
-        el('div', { className: 'ceph-meta' }, [
-          el('div', { html: `<b>Aliases</b> ${c.aliases}` }),
-          el('div', { html: `<b>Abilities</b> ${c.abilities}` }),
-        ]),
-      );
+      ]));
+      drawer.append(head, el('p', { className: 'ceph-fact', text: c.fact }));
+      drawer.append(fields([
+        ['Aliases', c.aliases],
+        ['Abilities', c.abilities],
+        ['This era', here],
+      ]));
+      if (at?.body) {
+        const go = el('button', { className: 'ceph-btn ceph-btn--primary', text: `Go to ${here}`, style: { marginTop: '14px' } });
+        listen(go, 'click', () => {
+          store.set('selected', c.id);
+          store.set('cameraCue', { kind: 'focus', id: at.body!, scale: 'globe' });
+        });
+        drawer.append(go);
+      }
     } else {
       const sh = hit.obj;
       const row = sh.eras.find((e) => e.era === store.state.era) ?? sh.eras[0];
-      drawer.append(
-        el('div', { className: 'ceph-kicker', text: 'Shard' }),
+      head.append(swatch(sh.color), el('div', {}, [
+        el('div', { className: 'ceph-kicker', text: 'Shard of Adonalsium' }),
         el('h2', { text: sh.name }),
-        el('p', { className: 'ceph-fact', text: sh.desc }),
-        el('div', { className: 'ceph-meta' }, [
-          el('div', { html: `<b>Vessel</b> ${row?.vessel ?? '—'}` }),
-          el('div', { html: `<b>Location</b> ${row?.loc ?? '—'}` }),
-        ]),
-      );
+      ]));
+      drawer.append(head, el('p', { className: 'ceph-fact', text: sh.desc }));
+      drawer.append(fields([
+        ['Vessel', row?.vessel],
+        ['Location', row?.loc],
+        ['Status', row?.status],
+        ['World', sh.world],
+      ]));
     }
     if (notes) {
       const box = el('div', { className: 'ceph-meta', style: { marginTop: '10px' } });
@@ -328,6 +379,19 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
   const offs = [
     listen(word, 'click', () => host.onHome()),
     listen(play, 'click', () => store.set('isPlaying', !store.state.isPlaying)),
+    listen(slower, 'click', () => {
+      const i = TIME_RATES.indexOf(store.state.timeRate);
+      store.set('timeRate', TIME_RATES[Math.max(0, (i < 0 ? 1 : i) - 1)]!);
+    }),
+    listen(faster, 'click', () => {
+      const i = TIME_RATES.indexOf(store.state.timeRate);
+      store.set('timeRate', TIME_RATES[Math.min(TIME_RATES.length - 1, (i < 0 ? 1 : i) + 1)]!);
+    }),
+    listen(btnShare, 'click', async () => {
+      const ok = await copyShareLink();
+      btnShare.textContent = ok ? 'Copied' : 'Share';
+      setTimeout(() => { btnShare.textContent = 'Share'; }, 1400);
+    }),
     listen(slider, 'input', () => {
       const y = sliderToYear(Number(slider.value) / 1000);
       store.set('isPlaying', false);
@@ -358,6 +422,7 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
     store.on('year', refreshTime),
     store.on('era', refreshTime),
     store.on('isPlaying', refreshTime),
+    store.on('timeRate', refreshTime),
     store.on('scale', () => { refreshScale(); refreshDrawer(); }),
     store.on('realm', refreshScale),
     store.on('panel', refreshScale),

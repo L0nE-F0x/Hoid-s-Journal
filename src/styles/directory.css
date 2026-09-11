@@ -11,7 +11,14 @@
   animation: ceph-panel-in 420ms var(--ceph-ease) both;
 }
 .ceph-directory.is-on { display: flex; flex-direction: column; }
-.ceph-dir-search { margin: 8px 0 10px; padding: 8px 10px; font-size: 12px; }
+.ceph-dir-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: 8px 0 6px;
+}
+.ceph-dir-search { margin: 0 0 10px; padding: 8px 10px; font-size: 12px; }
+.ceph-dir-row.is-on { border-color: var(--ceph-cyan); background: rgba(94, 231, 255, 0.08); }
 .ceph-dir-list {
   overflow: auto;
   display: flex;

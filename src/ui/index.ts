@@ -8,6 +8,7 @@ import { listen } from './dom.ts';
 import { mountAtlas } from './atlas.ts';
 import { mountDirectory } from './directory.ts';
 import { mountHud } from './hud.ts';
+import { mountMinimap } from './minimap.ts';
 import { mountModals } from './modals.ts';
 import { mountTitle } from './title.ts';
 
@@ -24,6 +25,7 @@ export function mountUI(root: HTMLElement): UIHandles {
   const hud = mountHud(root, { onHome: () => title.open() });
   const atlas = mountAtlas(root);
   const directory = mountDirectory(root);
+  const minimap = mountMinimap(root);
   const modals = mountModals(root);
 
   const keys = listen(window, 'keydown', (ev) => {
@@ -78,6 +80,7 @@ export function mountUI(root: HTMLElement): UIHandles {
       hud.destroy();
       atlas.destroy();
       directory.destroy();
+      minimap.destroy();
       modals.destroy();
       root.classList.remove('ceph-root');
     },

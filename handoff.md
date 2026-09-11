@@ -16,9 +16,10 @@ Architecture lock: `AGENTS.md` + `DESIGN.md`. This file is only the live todo.
 
 # ▶ START HERE — next session
 
-**2026-09-11 (night) — picking actually matches the picture.** Orbit rings
-are clickable, HUD glass no longer eats the sky, a directory lists every
-system, Help and Realms are real panels. Push is on `master`.
+**2026-09-11 (night) — the companion densifies.** Directory has tabs
+(systems / worlds / people / shards / doors), the info card is a field
+grid, a galaxy chart sits in the corner, Share copies a link, time has
+a speed. Push is on `master`.
 
 Soundtrack and Lore Web are still product calls. Verify with `npm run shot`.
 
@@ -43,6 +44,18 @@ with every shot.
 Git: `master` tracks `origin` at https://github.com/L0nE-F0x/Hoid-s-Journal.
 
 ## What changed this session
+
+### Tenth pass — the companion densifies
+
+v1's sidebar was a directory of everything, with a fat info card. We had
+a list of systems and a thin drawer. Now:
+
+- Directory tabs: Systems, Worlds, People, Shards, Doors. Search still
+  filters the current tab. Highlight the thing you have selected.
+- Info card: colour swatch, two-column fields (system, shards, magic,
+  species, local date, vessel…), fly-to from a person or a system.
+- Galaxy chart, bottom-right. Click a star to dive. Hidden on a phone.
+- Share copies a deep link. Timeline +/− changes playhead speed.
 
 ### Ninth pass — the sky is clickable, and the journal has a directory
 

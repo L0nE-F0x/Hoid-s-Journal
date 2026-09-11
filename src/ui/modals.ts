@@ -210,7 +210,7 @@ function renderHelp(card: HTMLElement): void {
     el('div', { className: 'ceph-kicker', text: 'How to read the sky' }),
     el('h2', { text: 'The journal is a map you fly' }),
     el('p', { className: 'ceph-fact', text: 'Click a system — the orbit rings, not just the star — to dive in. Click a world to read its globe. Click again for the surface, and once more for a city plate. Esc walks back out. The directory on the left lists everything in the current sky if a click misses.' }),
-    el('p', { className: 'ceph-fact', html: '<b>Drag</b> orbit · <b>scroll</b> zoom · <b>Space</b> play time · <b>1–6</b> eras · <b>C</b> Cognitive · <b>V</b> Spiritual · <b>F</b> frame Cosmere · <b>K</b> Codex · <b>A</b> Arcanum · <b>H</b> this help.' }),
+    el('p', { className: 'ceph-fact', html: '<b>Drag</b> orbit · <b>scroll</b> zoom · <b>WASD</b> fly · <b>Space</b> play time · <b>+/−</b> on the timeline for speed · <b>1–6</b> eras · <b>C</b> Cognitive · <b>V</b> Spiritual · <b>F</b> frame Cosmere · <b>K</b> Codex · <b>A</b> Arcanum · <b>H</b> this help. The directory and the galaxy chart both fly you if a click on the sky misses. Share copies a link to this view.' }),
     el('p', { className: 'ceph-fact', text: 'Journal sets where you are in the books. The sky hides what you have not reached. Default is fully read.' }),
     el('p', { className: 'ceph-fact', style: { color: 'var(--ceph-text-dim)' }, text: 'Unofficial fan project. Not affiliated with Dragonsteel or Brandon Sanderson.' }),
   );

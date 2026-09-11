@@ -15,17 +15,24 @@ Breaking either of these is how this turns into a tangle:
 1. **`src/ui/**` must not import `three` or anything in `src/render/**`.**
    The only channel between the UI and the renderer is `src/core/store.ts`.
    The UI mutates state, the renderer subscribes.
-2. **Lore is data, never positions.** `src/data/` describes worlds, shards,
-   people, magic, time. Layout (where a planet sits this year, in this Realm)
-   is derived in `src/layout/` and consumed by `src/render/`. Baking pixel
+2. **Lore is data, never Cosmere layout.** `src/data/` describes worlds,
+   shards, people, magic, time. Where a planet sits this year, in this Realm,
+   is derived in `src/layout/` and consumed by `src/render/`. Baking orrery
    coordinates into lore is how the v1 surface maps rotted.
+
+   Atlas UVs (`Location.u/v`) *are* 0–1 on the plate currently shown, not on
+   the globe. Roshar is calibrated to `public/maps/roshar_full.jpg`
+   (3096×1800); Scadrial ash to `final_empire.jpg` (2048×1555) and basin to
+   `elendel_basin.png` (795×1200). Other worlds sit on our procedural atlas.
+   Globe albedo stays procedural, so a pin on the 3-D continent is
+   approximate.
 
 ## Product locks (do not quietly reverse)
 
 - Rereaders first. Default progress is "fully read." First-run still offers a
   spoiler gate.
 - Nested cinematic: planet → system → Cosmere, then the HUD.
-- Every published world is in scope, nested (globe + surface).
+- Every published world is in scope, nested (globe + surface + city).
 - Globe textures stay procedural. Atlas plates may use Isaac Stewart
   cartography, credited. No Coppermind portraits.
 - Public name: **Cephandrius — Hoid's Journal**.

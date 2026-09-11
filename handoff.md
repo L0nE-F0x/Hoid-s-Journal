@@ -3,297 +3,51 @@
 **Read this first.** Live top-of-todo across sessions.
 
 Repo: `/home/lonefox/Projects/Cephandrius`
-Remote: https://github.com/L0nE-F0x/Hoid-s-Journal
+Remote: https://github.com/L0nE-F0x/Hoid-s-Journal (`master`)
 Original v1 (museum, **do not edit**): `/home/lonefox/Projects/ApexForge/cosmere-interactive-map`
 Visual/architecture parent: `/home/lonefox/Projects/Aetherfield`
 
 Product name: **Cephandrius — Hoid's Journal**
 Unofficial fan project. Dragonsteel disclaimer stays on the title screen.
 
-Architecture lock: `AGENTS.md` + `DESIGN.md`. This file is only the live todo.
+Architecture lock: `AGENTS.md` + `DESIGN.md`. This file is the live todo.
 
 ---
 
 # ▶ START HERE — next session
 
-**2026-09-11 (night) — Isaac Stewart plates are in the atlas, credited.
-Map layers, more places, original logo on the title.** Push is on `master`.
+**2026-09-11 evening leave-off.** The atlas is in a good stopping place.
+Isaac Stewart plates are in the atlas and credited. Lore Web, soundtrack,
+directory, city scale, and Realms all ship. The owner is driving home;
+this rewrite is so another agent can sit down tonight without reconstructing
+the day from a stale diary.
 
-Verify with `npm run shot`.
+Git: `master` tracking https://github.com/L0nE-F0x/Hoid-s-Journal.
+Product code last landed in `3ce26e8` (Stewart layers + title logo); this
+file is the evening pickup on top of that. **Do not edit the v1 repo.**
+Pull before you start.
 
 ```bash
 cd /home/lonefox/Projects/Cephandrius
+git pull
 npm install
 npm run dev          # http://127.0.0.1:5174
 
 # Second shell — this is how you check visual work:
-npm run shot -- --focus ashyn --scale globe --out /tmp/ashyn.png
+npm run shot -- --focus roshar --scale globe --out /tmp/roshar.png
 ```
 
-**Do not verify visuals in a foreground Chrome tab you are not looking at.**
-A background tab throttles `requestAnimationFrame` to roughly one frame per
-screenshot, so a damped camera flight never arrives and every capture shows a
-half-finished move. That wasted most of a session. `tools/screenshot.mjs`
-drives headless Chrome at 60fps and prints `fps`, `scale`, `body` and `insets`
-with every shot.
+**Do not verify visuals in a Chrome tab you are not looking at.** A
+background tab throttles `requestAnimationFrame`, so damped camera flights
+never converge and every screenshot lies. `tools/screenshot.mjs` drives
+headless Chrome at 60fps and prints `fps`, `scale`, `body`, and `insets`.
+`window.__ceph = { store, app, ui }` is the harness handle only.
 
-`npx tsc --noEmit` and `npm run build` were clean when this was written.
+Last known green (before this docs-only commit): `npx tsc --noEmit`,
+`npm run build`, and `npm run test:interaction` (**30/30**) with `npm run
+dev` already up. Re-run those if you touch code.
 
-Git: `master` tracks `origin` at https://github.com/L0nE-F0x/Hoid-s-Journal.
-
-## What changed this session
-
-### Thirteenth pass — layers, more places, the original mark
-
-- City and world plates with more than one Stewart drawing (Luthadel
-  survey / endpaper / Kredik Shaw, Elendel Lost Metal, Shattered Plains
-  warcamps, Scadrial starchart) switch from chips on the atlas.
-- More Stewart-calibrated places: Rall Elorim, Kurth, Panatham, the
-  Conventical of Seran, Doxonar, Dryport.
-- Title screen uses the original journal logo.
-
-### Twelfth pass — Isaac Stewart plates
-
-The owner reversed the no-scans lock. Atlas world maps for Roshar
-(physical + Shadesmar) and Scadrial (ash / basin) and city plates
-(Urithiru, Kholinar, Kharbranth, Thaylen, Luthadel, Elendel, Fadrex,
-Urteau, New Seran, Shattered Plains) are the Stewart plates, with
-"Cartography by Isaac Stewart" on the atlas. Pins for those worlds
-were recalibrated to the plates. Globe albedo stays procedural.
-
-### Eleventh pass — Lore Web, music, moons
-
-- **Lore Web (L).** Force graph of people, shards, worlds, Dawnshards.
-  Spoiler-gated. Click a node for the shortest path to Hoid. Drag to
-  rearrange. Esc or Web again returns to the sky. Not the v1 O(n²) canvas
-  clone — same idea, our IDs, our renderer.
-- **Soundtrack** from the original journal (`public/audio/soundtrack.mp3`).
-  Music button / Look toggle. Rumble still separate. Off until asked.
-- **Original logo** (`public/logo.png`) as the apple-touch icon. **Isaac
-  Stewart map rasters were not copied.** Those stay in the museum.
-- Directory **Moons** tab. Galaxy chart now names the stars.
-
-### Tenth pass — the companion densifies
-
-v1's sidebar was a directory of everything, with a fat info card. We had
-a list of systems and a thin drawer. Now:
-
-- Directory tabs: Systems, Worlds, People, Shards, Doors. Search still
-  filters the current tab. Highlight the thing you have selected.
-- Info card: colour swatch, two-column fields (system, shards, magic,
-  species, local date, vessel…), fly-to from a person or a system.
-- Galaxy chart, bottom-right. Click a star to dive. Hidden on a phone.
-- Share copies a deep link. Timeline +/− changes playhead speed.
-
-### Ninth pass — the sky is clickable, and the journal has a directory
-
-v1 let you click a card in a sidebar and fly. This one drew beautiful
-orbit rings you could not hit, then put a glass panel over the ones you
-could. That is why "none of the buttons / planets worked."
-
-- **Picking matches the picture.** At Cosmere you click the orbit cloud
-  (the size of the outer world), not a 5-pixel star. Cursor turns pointer.
-- **HUD chrome no longer captures the sky.** Panels are not hit targets;
-  buttons, the atlas, the timeline and the drawer are.
-- **Directory** on the left at Cosmere / system: every system, then every
-  world, searchable. A miss on the globe is not a dead end.
-- **Realms** opens a picker, not a silent cycle. **Help** explains the
-  nested click. Tools light up when their panel is open. **← Cosmere**
-  sits at the top when you are in. Codex browses systems before you type.
-  Drawer has a close.
-
-### Eighth pass — the rest of the list
-
-- **Thin worlds have places.** Komashi (steamwell, Dreamwatch, the Shroud),
-  Canticle (the Refuge, the Corridor), Threnody (the Crossroads, the Fort),
-  First of the Sun (the Homeisles). Names only, sourced.
-- **Silverlight is a city in Shadesmar**, not on a planet. Worldhopper routes
-  draw between systems (via Silverlight where that is the road). Press `C`
-  at Cosmere distance and the Realm is no longer a palette swap.
-- **Doors on both sides.** Perpendicularities show in Shadesmar as well as
-  the Physical — atlas and globe.
-- **A selected Shard draws Connection:** a line to the core, and the world
-  it sits on this era, labelled. Seat-lines from Yolen brighten when you
-  pick a Shard in the physical Cosmere.
-- **Shardworlds glow.** A slow emissive pulse on Invested globes.
-- **The journal names what a beat added.** Tracking a book shows a short
-  "this beat added" note and ✦ chips for the entities that arc introduced.
-  `fieldNotes` finally render in the drawer (Hoid's origin, Vax's magic).
-- **Denser data:** +12 people (worldhoppers, Frost, Xisis, Nikli, Nightblood,
-  Lopen, Baon…), glossary ~20 → ~55, interactive tables for Hemalurgy,
-  Voidbinding, Fabrials, AonDor, Forgery, Sand, Aviar, Aethers. Dawnshards
-  are Codex-searchable. Dragons and Sleepless are in the journal, not a
-  separate toy.
-- **Ship path, locally:** PNG install icons (`npm run icons`), a quality
-  ladder (auto / high / medium / low — nebula and bloom first, globe
-  tessellation last), a quiet rumble in Look (off by default), `npm run bench`,
-  phone layout under 900px.
-- **Need you:** connect Netlify to the GitHub repo (build `npm run build`,
-  publish `dist`, Node 22). Soundtrack and Lore Web are product, not plumbing.
-
-### Seventh pass — city scale is a nested layer
-
-- **City plates.** Urithiru, Kholinar, Kharbranth, Luthadel, Elendel,
-  Elantris, T'Telir, Kilahito, Kezare, Beacon and Union each have an original
-  plate. Landmarks are data with UVs on *our* plate, spoiler-gated like
-  everything else. The atlas draws the plate; the globe stays as context.
-- **A second click dives.** Globe → surface → city, one scale per click.
-  Places without a plate get a local crop of the same world map, so
-  Hearthstone is still a place you can stand in. Continents and seas stay
-  at surface. `Esc` already knew city → surface.
-- Codex search hits a plated city (or a landmark) and flies to the plate.
-  The drawer offers "Open the city plate" from the surface.
-
-### Sixth pass — geography and deep links (landed, then the session died)
-
-- **Worlds have continents now.** `planetMap` recipes place landmasses where
-  the pins actually are; noise only frays the coastline. Roshar is one
-  supercontinent, Sel has Teod off its own peninsula, the Pantheon is an
-  archipelago, Scadrial changes shape across the Catacendre. Shadesmar
-  inherits the mask, so the bead ocean is the shape of the land.
-- **Deep links are a save state.** The hash carries `loc` and `reading`, and
-  opening one flies to what it names instead of playing the intro. The title
-  screen still stands in front, because that is where the disclaimer lives.
-- Framing bug the links exposed: a subject framed before the HUD exists was
-  framed for the wrong rectangle. The camera re-fits when the free rectangle
-  changes, and stops the moment the reader takes the zoom.
-
-### Fifth pass — connections, phones, ship path
-
-- **Worldhopper trails.** Selecting a person draws their path across the eras
-  in their colour, each stop at that era's world in that era's own year.
-- **Perpendicularities are visible.** Each one with known geography names the
-  place it stands at, rings that pin on the globe, and shows in the drawer.
-  Scadrial's two sit either side of the Catacendre, so the era moves the door.
-- **A phone layout that leaves room for the world.** Panels now report the
-  edge they cover *by name* and the store takes the union — one writer per
-  edge did not survive panels that move between edges. Command band on top,
-  timeline on the bottom, tools above it, atlas as a sheet between; the drawer
-  stands down when it would only repeat what the atlas is naming.
-- **Ship path:** `public/sw.js` (assets cache-first, shell network-first,
-  production only), an install button in the Look panel, and `npm run og`
-  which renders `public/og.jpg` from the real title screen.
-- **`npm run test:interaction`:** 17 checks driving real mouse and keyboard
-  through the whole flow. It exits non-zero, so it can gate work.
-
-### Fourth pass — the other two Realms
-
-- **Shadesmar is a place.** It was a shader inversion of the physical albedo.
-  It now bakes a second reading of the same noise mask: the Physical Realm's
-  land is a bead ocean, its seas are glass plains. The atlas panel draws the
-  same map, titled `· Shadesmar`, so map and globe cannot disagree. Light goes
-  flat with a bead glint, skies turn violet, physical people dim to shadows,
-  cognitive ones stay bright. Albedo rebinds are spread a few bodies per frame
-  so the switch does not stall; cognitive maps bake at half resolution.
-- **The Spiritual Realm was broken**, not thin: a textureless sprite showing as
-  a 2px orange square, motes sized for a camera that was never there, and the
-  physical sky drawing over all of it. It is now a diagram with its own camera
-  stage — unity core, sixteen named Shards in a ring, Connection / Fortune /
-  Identity as labelled axes, per-era status on every mote (Splintered shrinks
-  and dims, Harmony's merger sits larger), click-to-open in the drawer, and
-  Adonalsium whole and alone before the Shattering. Leaving puts you back.
-- Codex hits fly to the place, the person's world this era, or the world.
-- The Look panel finally has a button in the HUD.
-
-### Third pass — picking and the companion
-
-- **Picking is screen-space now.** Project the candidates the current scale
-  offers, take the nearest, prefer the subject whose disc the pointer is
-  inside and then the nearest to camera. A raycast cannot hit a planet one
-  pixel across, and the sun sprites' quads were swallowing clicks. Cosmere →
-  system → globe → surface works on single clicks; `Esc` walks back out and
-  clears the focus as it goes (verified, all four steps).
-- **The publication-safe preset was a no-op.** It keyed off `readingNow`,
-  which nothing set, so it revealed everything — in a spoiler-first product.
-  The spoiler panel now has the Reading Companion: pick the book you are on,
-  step the arc, and the journal syncs publication-safe. `✦ new this arc`
-  chips appear in the drawer, the Codex and the atlas roster, and the beat
-  shows in the HUD command panel.
-- Publication order is per **series**, so a series that overlaps another's
-  publication run is hidden wholesale. It errs toward hiding, which is the
-  safe direction, but per-book ordering would be more honest. `PUB_ORDER` in
-  `src/data/catalog.ts` is where that lives.
-- The atlas now hangs off the command panel's measured bottom edge
-  (`--ceph-command-bottom`) instead of a hard-coded 88px.
-
-### Second pass — the atlas is now wired to the globe
-
-- **Clicking a pin on the map turns the world to it.** The camera solves the
-  latitude and the body's spin solves the longitude, with the camera standing
-  sunward, so the place you picked faces you *and* is lit. Hovering the map
-  highlights the same marker in 3-D; picking a marker in 3-D drives the map.
-- `src/layout/surface.ts` is the single uv-to-body convention and it matches
-  `THREE.SphereGeometry`. The old pin maths negated z, so every pin had been
-  sitting at a mirrored longitude.
-- Pins are camera-facing markers (bright core, dark ring) at constant apparent
-  size. The hot one gets a 3-D name label.
-- Atlas composes a map layer and a pin layer once per change and blits them;
-  only the storm band is per-frame now. Map labels are placed with collision
-  tests, so a crowded Alethkar drops names instead of stacking them.
-- Atlas and renderer share a clock, so Roshar's storm front is at the same
-  longitude on the map as on the globe.
-- Catacendre verified end to end: MB1 gives the ash map, ash pins, ash sky and
-  ash polar caps; MB2 gives the basin, the Wax & Wayne pins and Harmony's blue.
-- Locations: 51 → 72. Added Rosharan regions (Iri, Herdaz, Marat, Tukar, Reshi
-  Isles, New Natanan, Revolar, Babatharnam), Scadrian era pins (Vetitan,
-  Weathering, Southern Continent), Sel (Duladel, JinDo, Dakhor), Nalthis
-  (Court of the Gods, Tears of Edgli), Lossand, the Homeland, two more Lumar
-  seas, Sori. Crowded pins were nudged apart; a proximity check is worth
-  re-running when you add more.
-
-**Three lighting bugs found while verifying, all of them global:**
-
-- The atmosphere shell measured its rim against `+n` on back faces, where it
-  is 1.0 across the whole disc. Every planet wore a flat wash of its own
-  atmosphere colour. It is a rim now.
-- Roshar's highstorm band covered a quarter of the planet's circumference.
-  Now the same 7% front the atlas draws.
-- Bloom threshold (0.34) sat below a fully lit planet, so the sunward half fed
-  the bloom and came back white. Now 0.62.
-
-Also: labels are sized to read and gated by scale, the Cosmere frames from the
-centroid of the systems, and each system's starlight carries its star's colour.
-
-### First pass — globe framing
-
-- **Globe framing (old item 1) is fixed.** Root cause was not the camera
-  offset: the playhead ran at 1.15 years/second while orbital periods are
-  ~1 cycle/year, so a focused planet lapped its own orbit about twice a second
-  and the damped camera chased it off-frame. Three parts:
-  - `YEARS_PER_SECOND` is now `0.08`. Orbits drift instead of strobing, and
-    idling no longer walks you from Stormlight into Mistborn Era 2 in eleven
-    seconds.
-  - `App.trackFocus` rides the subject's orbital frame: the pose moves with
-    the planet and turns with the sun, so the shot stays centred and lit even
-    with time playing.
-  - Focusing a world **pauses the playhead** (`isPlaying = false`). Visible in
-    the HUD play button, reversible with Space. Reverse it if you disagree —
-    it is a product call, not a constraint.
-- **`store.insets` is now real.** The atlas reports left/top, the HUD reports
-  right/bottom, both measured from live rects. `CameraRig.setInsets` shifts the
-  frustum with `setViewOffset` (negative offset slides the subject right — that
-  is the sign that was wrong last time) and eases it, and
-  `CameraRig.framingDistance` picks a distance from the *free* rectangle, so a
-  planet fills the gap between the panels instead of hiding behind one.
-- **Sun and nebula are hidden at globe scale.** The Ashyn white disk was the
-  local sun sprite; the teal wash over every globe was the system nebula
-  sprite. The planet shader still lights from the real sun position.
-- Globe heading now stands on the *sunward* side, off-axis by 0.7 rad, so the
-  lit face is to camera with a terminator on one limb.
-- `CameraRig.setAngles` takes the short way round. Theta accumulates as you
-  drag, so a raw `atan2` goal used to spin the camera through the Cosmere.
-- Systems frame by their outer orbit, not a fixed 52 units, so Rosharan's ten
-  gas giants are in shot.
-- Character motes hold a constant few pixels instead of becoming bokeh
-  bubbles bigger than the planet.
-- Moons are lit (`src/shaders/moon.frag`); they were flat colour discs that
-  bloom turned into lamps.
-- Body labels no longer clamp to a minimum world size (a close planet's label
-  was the size of the planet) and sit closer to the limb.
-- The opening cinematic derives its scale from camera distance, so the sky is
-  dressed for the scale you are actually at during the pull-out.
-- **New: `tools/screenshot.mjs` + `npm run shot`** (puppeteer-core, system
-  Chrome). `window.__ceph = { store, app, ui }` is its handle.
+---
 
 ## Product locks (do not reverse)
 
@@ -303,117 +57,163 @@ Owner answered these. They are the spec.
 | --- | --- |
 | Audience | **Rereaders first.** Default progress = fully read. Spoiler gate exists for show-newcomers. |
 | First 20s | Nested cinematic: **Roshar highstorm → Rosharan system → Cosmere**, then HUD |
-| Scope | **Every published world, nested** (globe + surface). Not a slice. |
-| Must-ship pillars | Orrery + time, spoiler companion, Arcanum, three Realms, Roshar surface, Scadrial Catacendre map-swap, Codex, Lore Web |
-| Art | Globe textures procedural. Atlas plates may use Isaac Stewart cartography, credited. No Coppermind portraits. |
+| Scope | **Every published world, nested** (globe + surface + city). Not a slice. |
+| Pillars | Orrery + time, spoiler companion, Arcanum, three Realms, Roshar surface, Scadrial Catacendre map-swap, Codex, Lore Web |
+| Art | **Globe textures stay procedural.** Atlas world and city plates may use Isaac Stewart cartography, **always credited** (`MAP_CREDIT` = "Cartography by Isaac Stewart"). No Coppermind portraits. |
 | Name | Cephandrius — Hoid's Journal |
-| Usage | Owner rereads with it for *all* of: where is everyone, planet-while-reading, magic tables, connections, vibe |
+| Usage | Owner rereads with it for: where is everyone, planet-while-reading, magic tables, connections, vibe |
 
 v1 ideas to keep: spoiler-as-product, era-weighted time, Realms as places,
 canon badges, per-world calendars (never invent a universal year), Surface
-Scan as a second scale, deep links, Hoid as the journal’s voice.
+Scan as a second scale, deep links, Hoid as the journal's voice.
+
+---
+
+## Where to look
+
+```
+src/core/store.ts          UI ↔ renderer wall. Nothing else.
+src/cartography/           Atlas maps. No Three.
+  officialMaps.ts          Stewart rasters + layers + MAP_CREDIT
+  planetMap.ts             Procedural world atlas (non-Stewart worlds)
+  cityMap.ts               Procedural city plates (Elantris, T'Telir, …)
+src/data/locations.ts      Place UVs. Roshar/Scadrial calibrated to plates.
+src/data/cities.ts         Landmark UVs on *our* procedural plates.
+src/ui/atlas.ts            Blits official rasters or procedural canvases
+src/ui/loreWeb.ts          2D force graph. No Three.
+src/ui/brand.ts            Disclaimer includes Stewart credit
+public/maps/               Stewart plates (~26MB). Already in git.
+public/audio/soundtrack.mp3
+public/logo.png            Title mark + apple-touch
+```
 
 ---
 
 ## What already works
 
+Treat this as current truth, not a wishlist.
+
 - Vite 6 + TypeScript + Three r180 + `postprocessing` + GLSL. No React.
-- Store wall: `src/ui/**` talks only to `src/core/store.ts`. Atlas draws maps
-  via `src/cartography/planetMap.ts` (no Three).
+  Store wall: `src/ui/**` talks only to `src/core/store.ts`.
 - Live 3D Cosmere: 13 systems, Kepler orbits, moons, procedural globes,
-  atmospheres, HDR bloom/ACES/grain/vignette.
-- Title over a live Roshar globe. Skip button + Space.
-- HUD: timeline (era-weighted), Pre/Post/MB1/SA/MB2/Far chips, ticker,
-  Codex / Arcanum / Journal / Realms.
-- Reading Companion: pick your book, step the arc, journal syncs
-  publication-safe. Per-series steppers for manual overrides. ✦ chips mark
-  what the current arc revealed.
-- Arcanum: 15 magics, Allomancy/Feruchemy/Surges/Heightenings tables.
-- Codex search, name-ranked (exact “Roshar” no longer opens Ashyn).
-- Screen-space picking: single clicks dive Cosmere → system → globe →
-  surface at any distance; `Esc` walks back out.
-- Surface atlas overlay: unwrapped biome map with placed continents, collision-placed labels,
-  highstorm band on Roshar, era-true character chips. Pins are two-way: map to
-  globe and globe to map. City scale: original plates for the named cities,
-  a local crop everywhere else you can stand.
-- Scadrial biome swap (ash → basin, sky and caps with it) when era ≥ 3.
-- Character motes on their current world, sized to a few pixels at any scale.
-  Shard lines Yolen → current seat.
-- Panel-aware framing: `store.insets` (atlas = left/top, HUD = right/bottom)
-  drives the camera's view offset and framing distance.
-- Cognitive Realm: a baked Shadesmar map (bead ocean / glass plains) on the
-  globe and in the atlas. Silverlight and worldhopper routes at Cosmere
-  distance. Perpendicularities as doors on both sides. Spiritual Realm: a
-  framed diagram — core, sixteen named Shards with per-era status, three axes,
-  click-to-connect a Shard to the world it sits on this era.
-- Deep-link hash (`#y=&realm=&scale=&system=&body=&loc=&reading=`). A shared
-  link restores the place and the beat; the title screen still gates it.
-  Progress + visual in localStorage.
-- PWA: manifest, offline shell (`public/sw.js`), install prompt in Look.
-- Harnesses: `npm run shot` (capture), `npm run test:interaction` (27 checks
-  through real input), `npm run bench` (fps by scale), `npm run og` (social card),
-  `npm run icons` (PNG install marks).
-- Disclaimer on the title screen.
+  atmospheres, HDR bloom/ACES/grain/vignette. Quality ladder (auto / high /
+  medium / low).
+- Nested cinematic, then HUD. Title over a live Roshar globe. Skip + Space.
+  Original journal logo on the title (`public/logo.png`).
+- Screen-space picking. At Cosmere you click the **orbit cloud** (outer
+  world), not a 5-pixel star. HUD glass is `pointer-events: none` except
+  interactive children. Single clicks dive Cosmere → system → globe →
+  surface → city. `Esc` walks back out.
+- Directory (left): Systems, Worlds, People, Shards, Doors, **Moons**.
+  Search filters the current tab. Info card is a field grid with a colour
+  swatch. Fly-to from a person or a system.
+- Surface atlas: Roshar (physical + Shadesmar) and Scadrial (ash / basin,
+  plus starchart / endpaper layers) are Stewart plates. Layer chips switch
+  drawings. Pins two-way with the globe. Atlas width 480px. Credit line
+  when an official plate is showing.
+- City plates: Stewart rasters for Urithiru, Kholinar, Kharbranth, Thaylen
+  City, Shattered Plains / Narak (with warcamp layers), Luthadel (survey /
+  endpaper / Kredik Shaw), Elendel (basin / Lost Metal), Fadrex, Urteau,
+  New Seran. Other plated cities (Elantris, T'Telir, Kilahito, Kezare,
+  Beacon, Union, …) still use `cityMap.ts`. Places without a plate get a
+  local crop of the world map.
+- Scadrial Catacendre is a map swap (ash → basin, sky and caps with it).
+- Cognitive: baked Shadesmar, Silverlight as a city in Shadesmar (not on a
+  planet), worldhopper routes at Cosmere, perpendicularities as doors on
+  both sides. Spiritual: framed diagram (core, sixteen named Shards, axes).
+- Lore Web (`L` / Web button): force graph of people, shards, worlds,
+  Dawnshards. Spoiler-gated. Click a node for the shortest path to Hoid.
+  Drag to rearrange. Esc or Web again returns to the sky. `store.view` is
+  `'sky' | 'web'`.
+- Soundtrack (`Music` / Look). Off until asked. `public/audio/soundtrack.mp3`.
+  Procedural rumble is separate, also off by default.
+- Reading Companion, Codex, Arcanum (tables), Share (deep link), time
+  speed +/−, labelled galaxy minimap (hidden on a phone).
+- Deep-link hash `#y=&realm=&scale=&system=&body=&loc=&reading=`. Title
+  screen still gates a shared link because that is where the disclaimer
+  lives. Progress + visual in localStorage.
+- PWA: `public/sw.js`, install in Look, `npm run icons` / `npm run og`.
+- Harnesses: `npm run shot`, `npm run test:interaction` (30 checks),
+  `npm run bench`.
 
 ---
 
 ## Do next (priority order)
 
-The atlas, Realms, companion, and local ship path are in. What is left
-needs you, or is a new product.
+The product is shippable locally. Do not invent a new pillar.
 
-### 1. Put it on the internet
+### 1. Put it on the internet — needs the owner
 
-- ~~GitHub remote~~ **done** — https://github.com/L0nE-F0x/Hoid-s-Journal (`master`).
-- Netlify: `netlify.toml` is ready (`npm run build`, publish `dist`, Node 22).
-  Connect the GitHub repo in the Netlify UI; there is no site yet.
+- GitHub remote is done: https://github.com/L0nE-F0x/Hoid-s-Journal
+- `netlify.toml` is ready (`npm run build`, publish `dist`, Node 22).
+  **Connect the GitHub repo in the Netlify UI.** There is no site yet.
+  An agent cannot finish this without the owner's Netlify login.
 
-### 2. Soundtrack
+### 2. Leftover copy (one line, if you touch UI)
 
-- ~~Procedural rumble~~ **done**. ~~v1 soundtrack~~ **done** (`Music` /
-  Look). Off until asked.
+Help still says "Official map scans are not used." That is false.
+`src/ui/modals.ts` → `renderHelp`. The atlas already prints
+`MAP_CREDIT` when a Stewart plate is up.
 
-### 3. Lore Web (six degrees of Hoid)
+### 3. Optional depth, only if a reread reaches for it
 
-- ~~Force graph, path to Hoid, spoiler-gated~~ **done**. Press `L`.
-
-### 4. Optional depth, if a reread reaches for it
-
-- More city plates: Narak, Azimir, Fadrex.
-- Continents are still *our* shapes. Do not trace Isaac Stewart.
-- Glossary can go denser. Characters can go wider. Keep the badge honest.
+- More Stewart city plates if they exist in v1 `assets/images` and are
+  worth the bytes (Azimir has no plate yet). Do not re-copy rasters that
+  are already in `public/maps/`.
+- Worlds without Stewart plates still use our procedural atlas. That is
+  fine.
+- Landmark UVs in `src/data/cities.ts` were drawn for *our* procedural
+  plates. On Stewart city rasters the interaction test selects landmarks
+  from the roster chips, not by clicking a UV on the scan — the scans
+  have no calibrated landmark UVs. Do not "fix" that by guessing.
+- Glossary / characters can go denser. Keep the canonicity badge honest.
 
 ---
 
-## Known bugs / sharp edges
+## Sharp edges / do not re-break
 
-- Cosmere framing uses a tuned 0.78 factor for the flattening of the system
-  cloud. It is eyeballed; a real projected-bounds fit would be exact.
-- Time playhead is a fan axis. Printed dates must stay per-world. Cross-world
+- **Globe vs atlas mismatch.** Roshar and Scadrial atlas UVs are on
+  Stewart plates. Globe albedo is procedural, so a pin on the 3-D
+  continent is approximate. Do not warp the globe shader to match the
+  plate; the plates are not equirectangular.
+- **Playhead.** `YEARS_PER_SECOND` is `0.08`. Focusing a world pauses
+  time. The camera rides the orbital frame. Bumping the rate back up
+  makes globes strobe and the damped camera miss.
+- **Picking.** Cosmere hits use `systemExtent()` (orbit cloud). Do not
+  go back to a tiny star sprite. HUD `.ceph-panel` must stay
+  click-through except buttons / atlas / timeline / drawer.
+- **Pin convention.** `src/layout/surface.ts` matches `THREE.SphereGeometry`.
+  Negating z mirrors every pin.
+- **Atmosphere.** Rim uses the correct facing; `+n` on back faces washed
+  every globe. Bloom threshold is `0.62` — 0.34 whites out the sunward
+  hemisphere.
+- **Spoilers.** Publication-safe without `readingNow` reveals everything.
+  The companion has to set it.
+- **Share is a button.** `S` is not a shortcut (it stole WASD).
+- **Framing.** Camera re-fits when HUD insets appear. Deep links must
+  not frame before the free rectangle exists.
+- **Help / interaction test.** City landmark click is a roster chip, not
+  a click on the Stewart raster. Urithiru world-map UV is `0.466 / 0.638`
+  on `roshar_full.jpg` (3096×1800).
+- **Cosmere framing** uses a tuned 0.78 factor. Eyeballed.
+- **Time** is a fan axis. Printed dates stay per-world. Cross-world
   coincidence is `speculation`.
-- The atlas measures its rect on every store-driven repaint (forced layout).
-  Cheap today; if it shows up in a profile, move it to a ResizeObserver.
-- Roshar and Scadrial atlas UVs are calibrated to Isaac Stewart plates.
-  Globe textures remain procedural, so a pin on the globe is approximate
-  relative to the 3-D continent.
-- Official plates are credited: "Cartography by Isaac Stewart".
-- Publication-safe preset without `readingNow` reveals all series.
-- `layout/kepler.ts` imports Three. Fine for the renderer; UI must not
-  import it. Cartography is the three-free path.
-- `node_modules` may contain unused junk (Rapier showed up in a tree listing
-  even though it is not a dependency). Do not add physics.
-- No unit tests. `npm run test:interaction` covers the flow end to end; the
-  rest is typecheck plus `npm run shot` by eye.
-- Original v1 Surface Scan used **copyrighted map rasters**. Never copy them
-  into this repo. Recreate.
+- `layout/kepler.ts` imports Three. Fine for the renderer; UI must not.
+- No unit tests. Flow is `test:interaction`; the rest is typecheck plus
+  `npm run shot` by eye.
+- `node_modules` may contain unused junk. Do not add a physics engine.
 
 ---
 
 ## Invariants (repeat so they are not lost)
 
 1. **`src/ui/**` must not import `three` or `src/render/**`.** Store only.
-2. **Lore is data, never positions.** No pixel coordinates in lore tables.
-   Atlas UVs are 0..1 on *our* maps.
+   Lore Web is a 2D graph in the UI for this reason.
+2. **Lore is data, never Cosmere layout.** Where a planet sits this year,
+   in this Realm, is derived in `src/layout/`. Atlas UVs (`Location.u/v`)
+   *are* 0–1 on the plate currently shown: Roshar → `roshar_full.jpg`
+   3096×1800; Scadrial ash → `final_empire.jpg` 2048×1555; basin →
+   `elendel_basin.png` 795×1200. Other worlds sit on our procedural atlas.
 3. Do not edit `/home/lonefox/Projects/ApexForge/cosmere-interactive-map`.
 
 ---
@@ -423,6 +223,39 @@ needs you, or is a new product.
 Drag orbit · right/middle/shift pan · scroll zoom · WASD/QE fly.
 Space play/pause time (skips cinematic if one is running). Focusing a world
 pauses the playhead; Space restarts it and the camera rides the orbit.
-`1`–`6` eras · `C` Cognitive · `V` Spiritual · `A` Arcanum · `K`/`/` Codex.
-`F` frame Cosmere · `Esc` pop scale / close panel.
+Timeline +/− changes speed. `1`–`6` eras · `C` Cognitive · `V` Spiritual ·
+`L` Lore Web · `A` Arcanum · `K`/`/` Codex · `H`/`?` Help · `F` frame
+Cosmere · `Esc` pop scale / close panel / leave the Web.
 Title: Enter the Cosmere · I need spoilers hidden · Skip to the sky.
+Music is a button (Look also has the toggle). Share is a button.
+
+---
+
+## How we got here (so you do not undo it)
+
+Condensed. The old thirteen-pass diary contradicted itself after the
+Stewart lock flipped; this is the version that is true.
+
+1. Globe framing, insets, sunward heading, `npm run shot`.
+2. Atlas wired to the globe; pin z-sign; Catacendre map-swap; lighting
+   (atmosphere rim, storm band, bloom).
+3. Screen-space picking; Reading Companion actually sets `readingNow`.
+4. Shadesmar as a baked place; Spiritual as its own camera stage.
+5. Worldhopper trails, perpendicularities, phone layout, PWA, interaction
+   test.
+6. Continent recipes so land sits under the pins; deep links as save
+   state; camera re-fits when HUD insets land.
+7. City scale as a nested layer (procedural plates first).
+8. Thin-world places, Silverlight, doors on both sides, Shard Connection,
+   denser lore, icons, quality ladder, rumble, GitHub remote.
+9. Orbit-sized picking, directory, Help/Realms as real panels — this is
+   why clicks felt dead in an earlier screenshot.
+10. Denser companion, galaxy chart, Share, time speed.
+11. Lore Web, soundtrack, Moons tab, labelled minimap, logo as apple-touch.
+    *At that moment Stewart rasters were still in the museum.*
+12. Owner reversed the no-scans lock. Stewart plates copied into
+    `public/maps/`, credited, pins recalibrated. Globe albedo stays
+    procedural.
+13. Map layers, more places (Rall Elorim, Kurth, Panatham, Conventical of
+    Seran, Doxonar, Dryport), original logo on the title.
+14. This file: evening pickup. No product change.

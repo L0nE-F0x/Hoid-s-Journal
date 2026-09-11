@@ -13,7 +13,7 @@ store wall, title over a live scene.
    tutorial.
 2. **First 20 seconds.** Nested cinematic: Roshar (highstorm) → Rosharan
    system → the Cosmere. Then the companion HUD. The picture is the database.
-3. **Scope.** Every published world, nested (globe + surface). Not a slice.
+3. **Scope.** Every published world, nested (globe + surface + city). Not a slice.
 4. **Pillars.** Orrery + time, spoiler companion, Arcanum, three Realms,
    Roshar surface, Scadrial surface (Catacendre map-swap), Codex, Lore Web.
 5. **Art.** Globe textures stay procedural. Atlas world and city plates may
@@ -67,7 +67,7 @@ suns at tens of units. The camera *is* the zoom.
 | System | orrery | orbits, moons, perpendicularities |
 | Globe | one world | atmosphere, weather, continents |
 | Surface | projected atlas | locations, trails, era-true maps |
-| City | nested layer | original city plates |
+| City | nested layer | Stewart plates where we have them; original plates elsewhere |
 
 `Esc` pops one scale. Deep link remembers scale + subject + year + realm.
 
@@ -96,11 +96,17 @@ when `progress[series] >= requiredArc`. `book: 'core'` is always safe.
 Reading Companion: "I am on *Words of Radiance*" syncs the universe to that
 beat and chips anything new this arc.
 
-## Art bible (procedural)
+## Art bible
 
-Each world has a biome recipe, not a JPEG. Recipes produce equirectangular
-albedos, night lights, clouds, and a surface atlas. Style: painterly
+Each world has a biome recipe for the *globe*. Recipes produce
+equirectangular albedos, night lights, and clouds. Style: painterly
 cartography, not photoreal Earth. Shard colour is the emissive accent.
+
+The atlas is a different picture: Roshar and Scadrial world maps, and the
+city plates listed in `src/cartography/officialMaps.ts`, are Isaac Stewart
+rasters in `public/maps/`, always credited. They are not equirectangular —
+do not drape them on the globe. Other worlds and remaining cities still
+use the procedural atlas / `cityMap.ts`.
 
 HUD chrome: Aetherfield instrument (frosted glass, hairline, tracked labels)
 tinted Honor-cyan / Odium-amber / Cultivation-green. Wordmark is a clipped

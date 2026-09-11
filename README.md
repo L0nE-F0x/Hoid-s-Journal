@@ -35,10 +35,10 @@ Netlify: connect this GitHub repo, branch `master`. The build is
 | Cosmere | Flyable 3D orrery of every published system |
 | System | Real orbits, moons, perpendicularities, Investiture |
 | Globe | A planet you can read: atmosphere, weather, era |
-| Surface | Continent and city atlas (original maps, not scans) |
+| Surface | Continent and city atlas. Roshar and Scadrial use Isaac Stewart plates, credited. Other worlds are ours. |
 | Time | Era-weighted playhead; per-world calendars stay honest |
 | Realms | Physical / Cognitive / Spiritual as distinct spaces |
-| Companion | Spoiler checklist, Codex, Arcanum |
+| Companion | Spoiler checklist, Codex, Arcanum, Lore Web |
 
 ## Controls
 
@@ -46,8 +46,9 @@ Drag to orbit · right/middle/shift-drag to pan · scroll to zoom.
 `WASD` fly, `Q`/`E` rise and fall, `Shift` faster.
 `Space` play/pause time · `←` `→` step · `1`–`6` jump era.
 Focusing a world holds the playhead; `Space` sets it running again.
-`C` Cognitive · `V` Spiritual · `/` search · `A` Arcanum · `K` Codex.
-`Esc` backs out a scale (city → surface → globe → system → Cosmere).
+`C` Cognitive · `V` Spiritual · `L` Lore Web · `/` search · `A` Arcanum · `K` Codex.
+`Esc` backs out a scale (city → surface → globe → system → Cosmere) or leaves the Web.
+Music and Share are buttons. Official maps are credited on the atlas.
 
 ## Architecture
 

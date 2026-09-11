@@ -231,11 +231,16 @@ void main() {
     // of obsidian spheres, sea is a plain of black glass.
     float t = clamp(abs(c - thr) * 2.4, 0.0, 1.0);
     float bead = hash13(floor(p * 300.0));
-    vec3 beads = mix(vec3(0.055, 0.038, 0.105), vec3(0.212, 0.129, 0.384), t);
-    beads = mix(beads, vec3(0.74, 0.66, 1.0), step(0.974, bead) * 0.9);
-    vec3 glass = mix(vec3(0.30, 0.35, 0.47), vec3(0.13, 0.17, 0.27), t);
+    // Obsidian, not lavender. These are linear values written into an sRGB
+    // plate, so they display about twice as bright as they read here.
+    vec3 beads = mix(vec3(0.008, 0.006, 0.020), vec3(0.048, 0.028, 0.098), t);
+    beads = mix(beads, vec3(0.34, 0.26, 0.62), step(0.964, bead) * 0.9);
+    vec3 glass = mix(vec3(0.085, 0.105, 0.155), vec3(0.026, 0.034, 0.062), t);
     float sheen = smoothstep(0.58, 0.92, fbm3(p * 11.0 + uSeed, 4, 2.05, 0.5) * 0.5 + 0.5);
-    glass = mix(glass, vec3(0.48, 0.60, 0.86), sheen * 0.45);
+    glass = mix(glass, vec3(0.20, 0.27, 0.44), sheen * 0.5);
+    // Veins of light in the glass where the land above it meets the sea.
+    float seam = smoothstep(0.055, 0.0, abs(c - thr));
+    glass = mix(glass, vec3(0.30, 0.36, 0.66), seam * 0.55);
     col = mix(glass, beads, land);
   }
 

@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { COSMERE, HUBS, bodyById, canEnterCity, characterAt, eraAt, hubById, isVisible, systemExtent } from '../data/index.ts';
 import { uvFacing, uvOnBody } from '../layout/surface.ts';
+import { hubWorld } from '../layout/cognitive.ts';
 import { CameraRig, type Waypoint } from './CameraRig.ts';
 import { store, type CameraCue, type Scale } from './store.ts';
 import { Labels } from '../render/Labels.ts';
@@ -9,6 +10,7 @@ import { Pins } from '../render/Pins.ts';
 import { Presence } from '../render/Presence.ts';
 import { createPostChain, type PostChain } from '../render/post.ts';
 import { SPIRITUAL_RADIUS, Spiritual } from '../render/Spiritual.ts';
+import { Shadesmar } from '../render/Shadesmar.ts';
 import { Starfield } from '../render/Starfield.ts';
 
 const FOV = 52;
@@ -19,6 +21,7 @@ const _ride = new THREE.Vector3();
 const _pick = new THREE.Vector3();
 const _surf = new THREE.Vector3();
 const _toCam = new THREE.Vector3();
+const _hub = new THREE.Vector3();
 /** How far from a subject a click still counts, in CSS pixels. */
 const PICK_SLOP = 28;
 
@@ -42,6 +45,7 @@ export class App {
   private readonly pins: Pins;
   private readonly presence: Presence;
   private readonly spiritual: Spiritual;
+  private readonly shadesmar: Shadesmar;
   private readonly post: PostChain;
   private readonly canvas: HTMLCanvasElement;
   private readonly clock = new THREE.Clock();
@@ -84,6 +88,7 @@ export class App {
     this.pins = new Pins();
     this.presence = new Presence();
     this.spiritual = new Spiritual();
+    this.shadesmar = new Shadesmar();
 
     this.scene.add(this.starfield.sky);
     this.scene.add(this.starfield.points);
@@ -91,6 +96,7 @@ export class App {
     this.scene.add(this.labels.group);
     this.scene.add(this.pins.group);
     this.scene.add(this.presence.group);
+    this.scene.add(this.shadesmar.group);
     this.scene.add(this.spiritual.group);
 
     this.post = createPostChain(this.renderer, this.scene, this.camera);
@@ -520,15 +526,7 @@ export class App {
     const hub = hubById[id];
     if (!hub) return;
     const p = new THREE.Vector3();
-    let n = 0;
-    for (const sys of hub.between) {
-      const at = this.orrery.systemPosition(sys);
-      if (!at) continue;
-      p.add(at);
-      n++;
-    }
-    if (!n) return;
-    p.multiplyScalar(1 / n);
+    if (!hubWorld(id, (sys) => this.orrery.systemPosition(sys), p)) return;
     store.set('selected', id);
     store.set('focusedBody', null);
     store.set('focusedLocation', null);
@@ -596,6 +594,7 @@ export class App {
     this.camera.updateProjectionMatrix();
     this.rig.setViewport(w, h);
     this.orrery.setViewport(w * dpr, h * dpr);
+    this.shadesmar.setViewport(w * dpr, h * dpr);
     this.post.setSize(w, h);
   }
 
@@ -653,6 +652,11 @@ export class App {
       s.realm === 'cognitive', s.selected,
       s.visual.showCharacters, s.visual.showShardLines,
     );
+    this.shadesmar.update(
+      t, s.realm === 'cognitive' && !s.cinematic, s.scale,
+      this.canvas.clientHeight, FOV, s.readProgress,
+      (id) => hubWorld(id, (sys) => this.orrery.systemPosition(sys), _hub),
+    );
     this.spiritual.update(
       t, s.era, s.realm === 'spiritual', this.camera, s.readProgress, s.selected,
     );
@@ -667,6 +671,7 @@ export class App {
       s.realm === 'cognitive' ? 1 : 0,
     );
 
+    this.post.setRealm(s.realm);
     this.post.composer.render();
 
     this.frames++;

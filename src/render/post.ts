@@ -101,6 +101,7 @@ class GradeEffect extends Effect {
 
 export interface PostChain {
   composer: EffectComposer;
+  setRealm(realm: 'physical' | 'cognitive' | 'spiritual'): void;
   setBloom(intensity: number): void;
   setQuality(band: 'high' | 'medium' | 'low'): void;
   setSize(width: number, height: number): void;
@@ -156,9 +157,31 @@ export function createPostChain(
   const smaaPass = new EffectPass(camera, smaa);
   composer.addPass(smaaPass);
 
+  // Each Realm gets its own grade. Shadesmar has no sun, so its picture is
+  // cooler, flatter and further into the violet; the Spiritual Realm is all
+  // highlight and no shadow.
+  const GRADES = {
+    physical: { sat: 0.30, con: 0.22, shadow: [0.80, 0.89, 1.16], high: [1.07, 1.00, 0.92], vig: 0.66, bloom: 1.15 },
+    cognitive: { sat: 0.14, con: 0.30, shadow: [0.74, 0.70, 1.22], high: [0.96, 0.94, 1.10], vig: 0.86, bloom: 1.45 },
+    spiritual: { sat: 0.40, con: 0.16, shadow: [1.00, 0.96, 1.05], high: [1.12, 1.06, 0.98], vig: 0.44, bloom: 1.30 },
+  } as const;
+  let realm: keyof typeof GRADES = 'physical';
+  let bloomScale = 1;
+
   return {
     composer,
-    setBloom: (v) => { bloom.intensity = v * 1.15; },
+    setRealm: (next) => {
+      if (next === realm) return;
+      realm = next;
+      const g = GRADES[realm];
+      (grade.uniforms.get('uSaturation')!).value = g.sat;
+      (grade.uniforms.get('uContrast')!).value = g.con;
+      (grade.uniforms.get('uShadow')!.value as THREE.Color).setRGB(...g.shadow as [number, number, number]);
+      (grade.uniforms.get('uHighlight')!.value as THREE.Color).setRGB(...g.high as [number, number, number]);
+      vignette.darkness = g.vig;
+      bloom.intensity = bloomScale * g.bloom;
+    },
+    setBloom: (v) => { bloomScale = v; bloom.intensity = v * GRADES[realm].bloom; },
     setQuality: (band) => {
       bloom.kernelSize = band === 'low' ? KernelSize.SMALL
         : band === 'medium' ? KernelSize.LARGE

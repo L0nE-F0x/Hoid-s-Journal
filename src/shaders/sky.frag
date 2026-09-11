@@ -61,8 +61,8 @@ void main() {
     // Shadesmar's sky: a dark dome with a small hard sun and no stars worth
     // the name. Drain the band, keep a cold violet wash.
     float lum = dot(col, vec3(0.3, 0.6, 0.1));
-    vec3 cog = mix(vec3(lum * 0.35), vec3(0.10, 0.06, 0.22), 0.72);
-    cog += vec3(0.16, 0.10, 0.34) * pow(max(0.0, 1.0 - abs(lat)), 3.0) * 0.25;
+    vec3 cog = mix(vec3(lum * 0.30), vec3(0.026, 0.018, 0.058), 0.80);
+    cog += vec3(0.09, 0.06, 0.20) * pow(max(0.0, 1.0 - abs(lat)), 3.0) * 0.12;
     col = mix(col, cog, uCognitive);
   }
 

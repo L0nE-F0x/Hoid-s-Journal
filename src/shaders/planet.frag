@@ -222,14 +222,29 @@ void main() {
 
   // ---- Shadesmar ------------------------------------------------------
   if (uCognitive > 0.001) {
-    // No sun over there. Flat ambient, and the beads do the work.
-    vec3 flat_ = albedo * (0.52 + 0.30 * max(0.0, geoNdl)) + vec3(0.05, 0.03, 0.11);
-    float beads = warped(vObj * 120.0 + uSeed, 3, 0.5);
-    float glint = smoothstep(0.72, 0.95, beads) * (1.0 - water);
-    flat_ += vec3(0.72, 0.56, 1.0) * glint * 0.55;
-    float glass = specGGX(nSurf, view, normalize(view + vec3(0.0, 1.0, 0.0)), 0.08) * water;
-    flat_ += vec3(0.55, 0.68, 0.95) * glass * 0.6;
-    flat_ += vec3(0.38, 0.28, 0.70) * fres * 0.9;
+    // No sun over there — a small cold light that never moves, and a realm
+    // that reads by its own glow. Land is a bead ocean; sea is black glass.
+    vec3 cold = normalize(vec3(0.42, 0.78, 0.46));
+    float key = max(0.0, dot(nSurf, cold)) * 0.58 + 0.34;
+    vec3 flat_ = albedo * key;
+
+    // Beads: obsidian spheres, a few of them catching the light at a time.
+    float beadField = warped(vObj * 150.0 + uSeed, 3, 0.5);
+    float bead = smoothstep(0.58, 0.92, beadField) * (1.0 - water);
+    flat_ += vec3(0.44, 0.33, 0.78) * bead * 0.30;
+    flat_ *= 1.0 - (1.0 - water) * 0.18;
+
+    // Glass plains. Clamped hard: an unbounded highlight here put a blown
+    // white crater in the middle of every world in the Realm.
+    float glass = min(specGGX(nSurf, view, cold, 0.30), 2.0) * water;
+    flat_ += vec3(0.42, 0.52, 0.82) * glass * 0.16;
+
+    // Souls: the lights of everything that thinks, seen through the surface.
+    float souls = smoothstep(0.80, 0.99, warped(vObj * 26.0 + uSeed * 3.0, 3, 0.6));
+    flat_ += vec3(0.82, 0.74, 1.0) * souls * (1.0 - water) * 0.30
+      * (0.7 + 0.3 * sin(uTime * 1.6 + hash13(vObj * 12.0) * 30.0));
+
+    flat_ += vec3(0.30, 0.22, 0.58) * fres * 0.55;
     lit = mix(lit, flat_, uCognitive);
   }
 

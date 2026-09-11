@@ -224,15 +224,30 @@ export interface WorldEpoch {
   canon: CanonLevel;
 }
 
-/** A city that does not sit on a planet — Silverlight, in Shadesmar. */
+export type HubKind = 'city' | 'fortress' | 'port' | 'pool' | 'anomaly' | 'nexus';
+
+/**
+ * A place in the Cognitive Realm that is not on a planet. Either it sits
+ * between systems (Silverlight) and `between` averages their positions, or it
+ * stands off one system's own subastral at `offset` units on `bearing`.
+ */
 export interface Hub extends Cited {
   id: string;
   name: string;
   color: string;
   book: string;
+  arc?: string;
+  kind: HubKind;
   fact: string;
-  /** System ids; layout averages their positions. */
-  between: string[];
+  /** System ids; layout averages their positions. Empty for anchored sites. */
+  between?: string[];
+  /** Anchor system, when this stands in one subastral rather than between. */
+  system?: string;
+  /** Orrery units from the anchor, and bearing in radians. */
+  offset?: number;
+  bearing?: number;
+  /** Vertical offset, so a fortress and a port do not stack. */
+  rise?: number;
 }
 
 /** A known Cognitive path between systems. */

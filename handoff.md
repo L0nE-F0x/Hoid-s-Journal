@@ -18,7 +18,8 @@ Architecture lock: `AGENTS.md` + `DESIGN.md`. This file is the live todo.
 
 **2026-09-12, overnight.** Owner asked for a graphics overhaul, Cognitive
 Realm rebuilt, v1 lore parity, and a landing page that does not read as a
-template. All four landed. Nine commits from `2deaae5` to the present.
+template. All four landed. 20 commits from `2deaae5` to the present, all
+local — **nothing has been pushed**, so the live site is still the old build.
 
 What changed, in one paragraph each:
 
@@ -48,7 +49,8 @@ What changed, in one paragraph each:
   of texture, and an integrated GPU pages that rather than say so.
 
 Git: `master` tracking https://github.com/L0nE-F0x/Hoid-s-Journal.
-Live site (owner connected Netlify): https://thecosmere.netlify.app
+Live site (owner connected Netlify): https://thecosmere.netlify.app — it
+deploys on push, so `git push` is the deploy. Nothing is pushed yet.
 **Do not edit the v1 repo.** Pull before you start.
 
 ```bash

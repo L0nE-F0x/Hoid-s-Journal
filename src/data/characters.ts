@@ -450,3 +450,109 @@ export const CHARACTERS: Character[] = [
       { era: 2, system: 'scadrian', body: 'scadrial' },
     ]),
 ];
+
+/**
+ * The dragons of Yolen, and the Sleepless of Aimia.
+ *
+ * They sit in the same roster as everyone else — same eras, same trails, same
+ * Lore Web — because in the Cosmere they *are* people, they are just not human
+ * ones. The Directory tabs them separately so a reread can find them.
+ */
+function drake(
+  id: string, name: string, color: string, book: string, aliases: string,
+  abilities: string, biology: string, fact: string, eras: Character['eras'],
+  extra: Partial<Character> = {},
+): Character {
+  return {
+    id, name, color, book, origin: 'Yolen', aliases, abilities, fact,
+    cognitive: true, eras, kind: 'dragon', biology,
+    canon: 'canon', sources: [book], ...extra,
+  };
+}
+
+const ALL_ERAS = (system: string, body?: string): Character['eras'] =>
+  [0, 1, 2, 3, 4, 5].map((era) => ({ era, system, body }));
+
+CHARACTERS.push(
+  drake('frost', 'Frost', '#e0f2fe', 'stormlight', 'the oldest of them',
+    'Functionally immortal · shapeshifter · vast Cosmere knowledge',
+    'The oldest known being in the Cosmere, older than Hoid. In human form, a pale man of about sixty with a long silver beard in white and silver robes. Like all greater dragons he spent his first thirty years in human form before his First Light.',
+    "Hoid's oldest friend and fiercest philosophical opponent. Stayed on Yolen after the Shattering and holds to non-intervention; leads the Seventeenth Shard. The letters in the Stormlight epigraphs are to him.",
+    ALL_ERAS('yolish', 'yolen'),
+    { sources: ['The Stormlight Archive', 'Arcanum Unbounded', 'Word of Brandon'] }),
+
+  drake('koravellium', 'Koravellium Avast', '#4ade80', 'stormlight', 'Cultivation · Kor · Slammer',
+    'Vessel of Cultivation · future sight · boons and curses · spren-making',
+    'A dragon considered heretical on Yolen for refusing the worship her kind expected. Prefers human form with mortals. Immortal twice over — once by birth, once by Shard.',
+    'The dragon behind Cultivation. She helped Shatter Adonalsium, and she spent millennia engineering the ascension of Taravangian. Also called She Who Brings the Dews at Dawn.',
+    [{ era: 0, system: 'yolish', body: 'yolen' }, ...ALL_ERAS('rosharan', 'roshar').slice(1)],
+    { arc: 'row', sources: ['The Stormlight Archive', 'Word of Brandon'] }),
+
+  drake('medelantorius', 'Medelantorius', '#fbbf24', 'stormlight', 'Valor',
+    'Vessel of Valor · functionally immortal · shapeshifter · trained warrior',
+    'A dragon who was a warrior before the Shattering. Her draconic form is not described anywhere on the page.',
+    'Took up the Shard of Valor after the Shattering and has kept out of everything since; her location is unknown. She and Hoid were together, once. He has resolved to find her.',
+    ALL_ERAS('yolish', 'yolen'),
+    { arc: 'wat', canon: 'wob', sources: ['Wind and Truth', 'Word of Brandon'] }),
+
+  drake('xisisrefliel', 'Xisisrefliel', '#f87171', 'tress', 'Xisis · Foil',
+    'Tenth Heightening Awakener · aether research · crimson spore work · pianist',
+    'A morally flexible dragon who takes human servants in exchange for boons — off-world technology, medical treatment, passage. Keeps a large establishment in Silverlight.',
+    'A dragon scholar studying aethers beneath Lumar’s Crimson Sea, aboard the ship Dynamic. Dislikes Hoid, which puts him in respectable company.',
+    [...ALL_ERAS('yolish', 'yolen').slice(0, 4), { era: 4, system: 'lumar', body: 'lumar-world' }, { era: 5, system: 'yolish', body: 'yolen' }],
+    { sources: ['Tress of the Emerald Sea', 'Word of Brandon'] }),
+
+  drake('illistandrista', 'Illistandrista', '#f472b6', 'emberdark', 'Starling',
+    "Shapeshifter (manacled to human form) · ship's captain · Hoid's apprentice",
+    "Frost's niece, raised by him after her parents died. Eighty-seven years old during Isles of the Emberdark, which is young. Wears manacles that hold her in human form.",
+    "Captain of the Dynamic Storyteller's Incredible Conveyance and apprentice to Hoid. Searching the Drominad system for a perpendicularity, and for her uncle, whom she does not believe is dead.",
+    [{ era: 5, system: 'drominad', body: 'first-of-the-sun' }],
+    { arc: 'emberdark', sources: ['Isles of the Emberdark'] }),
+
+  drake('vambrakastram', 'Vambrakastram', '#c084fc', 'core', 'name only',
+    'Presumed standard greater-dragon abilities',
+    'Nothing is recorded but the name, which Brandon has confirmed. Like all greater dragons, presumed a functionally immortal shapeshifter.',
+    'One of the named Yolish dragons, and almost nothing else. This entry exists so the count is honest, not because the atlas knows anything.',
+    ALL_ERAS('yolish', 'yolen'),
+    { canon: 'wob', sources: ['Word of Brandon'] }),
+
+  drake('frosts-sister', "Frost's sister", '#94a3b8', 'emberdark', 'unnamed',
+    'Presumed standard greater-dragon abilities',
+    'A dragon known only by her relations. Died some time before Isles of the Emberdark, leaving Starling to Frost.',
+    'Sister to Frost and parent to Starling. The books have not given her a name, and neither will this.',
+    ALL_ERAS('yolish', 'yolen').slice(0, 5),
+    { canon: 'wob', sources: ['Isles of the Emberdark', 'Word of Brandon'] }),
+
+  {
+    id: 'arclo', name: 'Arclo', color: '#86efac', book: 'stormlight', arc: 'row',
+    origin: 'Aimia', aliases: 'the librarian', kind: 'sleepless',
+    abilities: 'Distributed mind · hivebody · deep Cosmere knowledge',
+    biology: 'A Dysian Aimian: one mind carried by thousands of cremling-like creatures, which can be assembled into a human shape or dispersed entirely. Losing a few is an inconvenience, not a death.',
+    fact: 'A Sleepless who posed as a librarian in the Palanaeum. Knows far more about the Cosmere than he volunteers, and volunteers more than most of his kind.',
+    cognitive: false,
+    canon: 'canon', sources: ['Rhythm of War', 'The Stormlight Archive'],
+    eras: [
+      { era: 1, system: 'rosharan', body: 'roshar' },
+      { era: 2, system: 'rosharan', body: 'roshar' },
+      { era: 3, system: 'rosharan', body: 'roshar' },
+      { era: 4, system: 'rosharan', body: 'roshar' },
+      { era: 5, system: 'rosharan', body: 'roshar' },
+    ],
+  },
+  {
+    id: 'sleepless-hordes', name: 'The Sleepless', color: '#4ade80', book: 'stormlight',
+    origin: 'Aimia', aliases: 'Dysian Aimians', kind: 'sleepless',
+    abilities: 'Hivemind · shape-building · centuries of patience',
+    biology: 'Each Sleepless is a collective of thousands of hordelings, bred for tasks — eyes, hands, memory. They build bodies the way a person builds a tool, and they have been building them since before the Recreance.',
+    fact: 'Ancient guardians of Aimia, and of at least one Dawnshard. They are why Akinah kills anyone who lands there, and why the Aimian islands stayed empty.',
+    cognitive: false,
+    canon: 'canon', sources: ['The Stormlight Archive', 'Dawnshard'],
+    eras: [
+      { era: 1, system: 'rosharan', body: 'roshar' },
+      { era: 2, system: 'rosharan', body: 'roshar' },
+      { era: 3, system: 'rosharan', body: 'roshar' },
+      { era: 4, system: 'rosharan', body: 'roshar' },
+      { era: 5, system: 'rosharan', body: 'roshar' },
+    ],
+  },
+);

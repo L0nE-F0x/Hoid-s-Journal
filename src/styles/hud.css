@@ -417,3 +417,15 @@
   }
   .ceph-modal-card { padding: 18px 16px 22px; }
 }
+
+/* A second paragraph on a card — what a thing physically is, under what it
+   did. Set in the book face so it reads as the journal, not as a field. */
+.ceph-fact--aside {
+  font-family: var(--ceph-display);
+  font-size: 12.5px;
+  font-style: italic;
+  color: var(--ceph-text-faint);
+  border-left: 1px solid var(--ceph-rule);
+  padding-left: 11px;
+  margin-top: 12px;
+}

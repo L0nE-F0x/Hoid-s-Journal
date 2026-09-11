@@ -247,23 +247,89 @@ function gasGiant(id: string, name: string, a: number, color: string, period: nu
   }];
 }
 
+/**
+ * Moons. Roshar's three and the named moons of Sel, Nalthis and Taldain are
+ * canon. Lumar's twelve are canon as a *count* — twelve lunagrees, twelve
+ * seas — but only six aethers are named on the page, so the other six are
+ * numbered and badged as speculation rather than given invented names.
+ */
 export const MOONS: Moon[] = [
   { id: 'salas', name: 'Salas', parent: 'roshar', book: 'stormlight', color: '#c084fc',
     orbit: { a: 2.4, e: 0.02, i: 0.04, omega: 0.1, period: 14.2 }, radius: 0.18,
-    fact: 'The smallest, violet moon of Roshar.', ...cited('stormlight', ['The Stormlight Archive']) },
+    fact: 'The smallest and first of Roshar\'s moons to rise, violet and dim. Vorin tradition gives each moon a Herald; Salas is the withdrawn one.',
+    ...cited('stormlight', ['The Stormlight Archive']) },
   { id: 'nomon', name: 'Nomon', parent: 'roshar', book: 'stormlight', color: '#bae6fd',
     orbit: { a: 3.15, e: 0.04, i: 0.03, omega: 1.2, period: 10.8 }, radius: 0.26,
-    fact: 'The bright, pale blue moon of Roshar.', ...cited('stormlight', ['The Stormlight Archive']) },
+    fact: 'The second and largest, pale blue and bright enough to read by. Said in Vorin myth to be Salas\' son.',
+    ...cited('stormlight', ['The Stormlight Archive']) },
   { id: 'mishim', name: 'Mishim', parent: 'roshar', book: 'stormlight', color: '#86efac',
     orbit: { a: 3.9, e: 0.06, i: 0.05, omega: 2.4, period: 8.5 }, radius: 0.21,
-    fact: 'The green moon of Roshar.', ...cited('stormlight', ['The Stormlight Archive']) },
+    fact: 'The third, green and clever. The Natan story of how Mishim was tricked down to the ground is one Hoid tells.',
+    ...cited('stormlight', ['The Stormlight Archive', 'Oathbringer']) },
   { id: 'oem', name: 'Oem', parent: 'sel', book: 'elantris', color: '#e0f2fe',
     orbit: { a: 2.8, e: 0.05, i: 0.04, omega: 1.1, period: 7.6 }, radius: 0.24,
-    fact: "Sel's moon.", ...cited('elantris', ['Elantris']) },
+    fact: "Sel's moon.", ...cited('elantris', ['Elantris', 'Arcanum Unbounded — Sel essay']) },
   { id: 'rrendos', name: 'Rrendos', parent: 'nalthis', book: 'warbreaker', color: '#e0f2fe',
     orbit: { a: 2.6, e: 0.03, i: 0.02, omega: 0.5, period: 9.3 }, radius: 0.22,
-    fact: "Nalthis' moon.", ...cited('warbreaker', ['Warbreaker']) },
+    fact: "Nalthis' moon.", ...cited('warbreaker', ['Warbreaker', 'Arcanum Unbounded']) },
+  { id: 'nizh-da', name: 'Nizh Da', parent: 'taldain', book: 'whitesand', color: '#cbd5e1',
+    orbit: { a: 2.9, e: 0.08, i: 0.05, omega: 3.0, period: 12.1 }, radius: 0.23,
+    fact: "Taldain's moon. On Dayside nobody looks up at it; on Darkside it is most of the sky they have.",
+    ...cited('whitesand', ['White Sand', 'Arcanum Unbounded']) },
+  ...lunagrees(),
+  { id: 'utol-moon-1', name: 'Anu', parent: 'utol-world', book: 'yumi', color: '#a1a1aa',
+    orbit: { a: 2.7, e: 0.03, i: 0.04, omega: 1.5, period: 13 }, radius: 0.21,
+    fact: 'A moon of UTol, the Sho Del world. Named here for the atlas; canon gives the moons but not their names.',
+    canon: S, sources: ['Yumi and the Nightmare Painter', 'Word of Brandon'] },
+  { id: 'komashi-moon', name: "Komashi's moon", parent: 'komashi', book: 'yumi', color: '#334155',
+    orbit: { a: 2.6, e: 0.04, i: 0.03, omega: 4.2, period: 11.4 }, radius: 0.19,
+    fact: 'Behind the shroud nobody on Komashi has seen it for generations. The machine that made the dark did not remove it.',
+    canon: S, sources: ['Yumi and the Nightmare Painter'] },
+  { id: 'first-sun-moon', name: "First of the Sun's moon", parent: 'first-of-the-sun', book: 'sixthofdusk', color: '#d9f99d',
+    orbit: { a: 2.5, e: 0.02, i: 0.03, omega: 2.2, period: 12.6 }, radius: 0.20,
+    fact: 'The Eelakin read the tides by it, and the tides are how you leave Patji alive.',
+    canon: S, sources: ['Sixth of the Dusk'] },
+  { id: 'braize-moon', name: "Braize's companion", parent: 'braize', book: 'stormlight', color: '#57534e',
+    orbit: { a: 2.2, e: 0.10, i: 0.09, omega: 0.9, period: 15.5 }, radius: 0.14,
+    fact: 'A cold rock over a colder world. Nothing in the text requires it; nothing forbids it either.',
+    canon: S, sources: ['Word of Brandon'] },
 ];
+
+/**
+ * Lumar's twelve geostationary moons. Each hangs over one sea and rains its
+ * own aether spores into it — the lunagrees are why the seas are coloured and
+ * why anything on that world is dangerous when wet.
+ */
+function lunagrees(): Moon[] {
+  const named: [string, string, string, string][] = [
+    ['verdant', 'Verdant Moon', '#34d399', 'Green spores. Vines, instantly, wherever water finds them — which is how Tress learned what a sea can do.'],
+    ['crimson', 'Crimson Moon', '#f43f5e', 'Roseite. It crystallises into hard pink structure, and it does not care what it grows through.'],
+    ['midnight', 'Midnight Moon', '#374151', 'Midnight Essence. It takes a shape from whatever mind is nearest, and then it keeps it.'],
+    ['zephyr', 'Zephyr Moon', '#93c5fd', 'Zephyr spores. They make air, violently, which is the only reason ships cross at all.'],
+    ['sunlight', 'Sunlight Moon', '#fde047', 'Sunlight spores. Fire waiting for water. Sailors carry them and hate carrying them.'],
+    ['roseite', 'Roseite Moon', '#fbcfe8', 'The rose aether, and the reason the Crimson is navigable at the edges.'],
+  ];
+  const rows: Moon[] = [];
+  for (let i = 0; i < 12; i++) {
+    const row = named[i];
+    const a = 2.1 + (i % 4) * 0.42;
+    const omega = (i / 12) * Math.PI * 2;
+    rows.push(row
+      ? {
+        id: `lumar-${row[0]}`, name: row[1], parent: 'lumar-world', book: 'tress', color: row[2],
+        orbit: { a, e: 0.01, i: 0.01, omega, period: 6 }, radius: 0.13,
+        fact: row[3], ...cited('tress', ['Tress of the Emerald Sea']),
+      }
+      : {
+        id: `lumar-lunagree-${i + 1}`, name: `Lunagree ${i + 1}`, parent: 'lumar-world', book: 'tress',
+        color: ['#5f6b82', '#24c9b4', '#f07a2a', '#7c8cf5', '#d9c22a', '#ef77b4'][i % 6]!,
+        orbit: { a, e: 0.01, i: 0.01, omega, period: 6 }, radius: 0.12,
+        fact: 'One of the twelve. The count is canon; this one\'s aether is not named on the page, so neither is it here.',
+        canon: S, sources: ['Tress of the Emerald Sea'],
+      });
+  }
+  return rows;
+}
 
 export const WORLD_EPOCHS: Record<string, WorldEpoch[]> = {
   yolish: [

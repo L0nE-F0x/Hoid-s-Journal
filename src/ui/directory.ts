@@ -14,7 +14,7 @@ import { atlasIsOpen } from './atlas.ts';
 import { el, listen } from './dom.ts';
 import '../styles/directory.css';
 
-type DirTab = 'systems' | 'worlds' | 'moons' | 'people' | 'shards' | 'doors' | 'dawnshards';
+type DirTab = 'systems' | 'worlds' | 'moons' | 'people' | 'dragons' | 'shards' | 'doors' | 'dawnshards';
 
 export function directoryIsOpen(): boolean {
   const s = store.state;
@@ -96,6 +96,7 @@ export function mountDirectory(root: HTMLElement): { destroy(): void } {
     { id: 'worlds', label: 'Worlds' },
     { id: 'moons', label: 'Moons' },
     { id: 'people', label: 'People' },
+    { id: 'dragons', label: 'Dragons' },
     { id: 'shards', label: 'Shards' },
     { id: 'doors', label: 'Doors' },
     { id: 'dawnshards', label: 'Dawnshards' },
@@ -166,12 +167,17 @@ export function mountDirectory(root: HTMLElement): { destroy(): void } {
         if (s.scale === 'system' && s.focusedSystem && parent?.system !== s.focusedSystem) continue;
         push(row(m.id, m.name, parent?.name ?? m.parent, m.color, m.fact));
       }
-    } else if (tab === 'people') {
+    } else if (tab === 'people' || tab === 'dragons') {
+      // Dragons and the Sleepless are people too; they just get their own
+      // tab so a reread can find the seven of them without scrolling ninety.
+      const wantDragons = tab === 'dragons';
       for (const c of COSMERE.characters) {
+        const otherKind = c.kind === 'dragon' || c.kind === 'sleepless';
+        if (otherKind !== wantDragons) continue;
         if (!isVisible(c, s.readProgress) || !match(c.name)) continue;
         const at = characterAt(c, s.era);
         if (s.scale === 'system' && s.focusedSystem && at && bodyById[at.body ?? '']?.system !== s.focusedSystem) continue;
-        push(row(c.id, c.name, c.origin, c.color, c.fact));
+        push(row(c.id, c.name, wantDragons ? (c.kind === 'dragon' ? 'dragon' : 'Sleepless') : c.origin, c.color, c.fact));
       }
     } else if (tab === 'shards') {
       for (const sh of COSMERE.shards) {

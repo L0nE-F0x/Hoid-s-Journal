@@ -339,11 +339,17 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
       const c = hit.obj;
       const at = characterAt(c, store.state.era);
       const here = at?.body ? bodyById[at.body]?.name : null;
+      const kicker = c.kind === 'dragon' ? `Dragon of Yolen · ${c.origin}`
+        : c.kind === 'sleepless' ? `Dysian Aimian · ${c.origin}`
+          : c.origin;
       head.append(swatch(c.color), el('div', {}, [
-        el('div', { className: 'ceph-kicker', text: c.origin }),
+        el('div', { className: 'ceph-kicker', text: kicker }),
         el('h2', { text: c.name }),
       ]));
       drawer.append(head, el('p', { className: 'ceph-fact', text: c.fact }));
+      if (c.biology) {
+        drawer.append(el('p', { className: 'ceph-fact ceph-fact--aside', text: c.biology }));
+      }
       drawer.append(fields([
         ['Aliases', c.aliases],
         ['Abilities', c.abilities],

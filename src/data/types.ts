@@ -119,6 +119,9 @@ export interface CharacterEra {
   body?: string;
 }
 
+/** What a person in the roster *is*. Drives the Directory's tabs. */
+export type CharacterKind = 'person' | 'dragon' | 'sleepless' | 'spren' | 'vessel';
+
 export interface Character extends Cited {
   id: string;
   name: string;
@@ -129,8 +132,12 @@ export interface Character extends Cited {
   origin: string;
   abilities: string;
   fact: string;
+  /** Native to the Cognitive Realm, or a frequent traveller in it. */
   cognitive: boolean;
   eras: CharacterEra[];
+  kind?: CharacterKind;
+  /** For the ones who are not human, what they actually are. */
+  biology?: string;
 }
 
 export interface Magic extends Cited {

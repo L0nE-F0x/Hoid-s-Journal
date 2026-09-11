@@ -54,6 +54,8 @@ export class App {
   private pointerDown = { x: 0, y: 0, t: 0 };
   private lastPointer = { x: 0, y: 0 };
   private frames = 0;
+  /** Monotonic frame counter. The test harness waits on this. */
+  frameCount = 0;
   private fpsAccum = 0;
   private disposers: (() => void)[] = [];
   private hoverAnchor: ((p: { x: number; y: number } | null) => void) | undefined;
@@ -143,6 +145,27 @@ export class App {
     }));
     this.rig.setInsets(store.state.insets);
     this.applyQuality();
+    this.warmUp();
+  }
+
+  /**
+   * Compile every Realm's materials before the reader can ask for one.
+   *
+   * Shadesmar and the Spiritual Realm are hidden groups, so Three skips them
+   * when it compiles the first frame — and then the press of C or V pays for
+   * three new shader programs in the middle of a camera flight. On this
+   * machine that stall was long enough to swallow the whole transition.
+   */
+  private warmUp(): void {
+    const groups = [this.shadesmar.group, this.spiritual.group];
+    const was = groups.map((g) => g.visible);
+    for (const g of groups) g.visible = true;
+    try {
+      this.renderer.compile(this.scene, this.camera);
+    } catch {
+      // A driver that will not pre-compile is not a reason to refuse to boot.
+    }
+    groups.forEach((g, i) => { g.visible = was[i]!; });
   }
 
   start(): void {
@@ -677,6 +700,7 @@ export class App {
     this.post.composer.render();
 
     this.frames++;
+    this.frameCount++;
     this.fpsAccum += dt;
     if (this.fpsAccum >= 0.5) {
       store.state.stats.fps = this.frames / this.fpsAccum;

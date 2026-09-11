@@ -33,18 +33,30 @@ function check(name, ok, detail = '') {
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-/** Wait for the damped camera to stop moving, rather than sleeping blindly. */
+/**
+ * Wait for the damped camera to stop moving, rather than sleeping blindly.
+ *
+ * A pose that has not changed is only evidence of stillness if a frame has
+ * actually run between the two samples. Without the frame counter this returns
+ * during a long first frame — a shader compile, say — and every check after it
+ * reads the state the app was in before the thing it is testing happened.
+ */
 async function settle(page, timeout = 12000) {
   const started = Date.now();
   let previous = null;
+  let frames = -1;
   while (Date.now() - started < timeout) {
     const now = await page.evaluate(() => {
       const r = window.__ceph.app.rig;
-      return [r.distance, ...r.target.toArray(), ...r.camera.position.toArray()]
-        .map((n) => Math.round(n * 10) / 10).join(',');
+      return {
+        pose: [r.distance, ...r.target.toArray(), ...r.camera.position.toArray()]
+          .map((n) => Math.round(n * 10) / 10).join(','),
+        frame: window.__ceph.app.frameCount,
+      };
     });
-    if (now === previous) return true;
-    previous = now;
+    if (now.pose === previous && now.frame > frames + 1) return true;
+    previous = now.pose;
+    frames = now.frame;
     await sleep(220);
   }
   return false;

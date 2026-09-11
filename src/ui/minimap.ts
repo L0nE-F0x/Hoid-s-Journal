@@ -38,7 +38,7 @@ export function mountMinimap(root: HTMLElement): { destroy(): void } {
 
   const paint = () => {
     const s = store.state;
-    const show = s.shell === 'play' && s.realm !== 'spiritual';
+    const show = s.shell === 'play' && s.realm !== 'spiritual' && s.view !== 'web';
     panel.classList.toggle('is-on', show);
     if (!show) return;
     const ctx = canvas.getContext('2d');
@@ -57,6 +57,10 @@ export function mountMinimap(root: HTMLElement): { destroy(): void } {
         ctx.lineWidth = 1.5;
         ctx.stroke();
       }
+      ctx.fillStyle = hot ? '#eaf4ff' : 'rgba(220,230,245,0.7)';
+      ctx.font = `${hot ? 600 : 500} 9px Inter, ui-sans-serif, sans-serif`;
+      ctx.textAlign = 'left';
+      ctx.fillText(p.name, p.x + 7, p.y + 3);
     }
   };
 
@@ -79,6 +83,7 @@ export function mountMinimap(root: HTMLElement): { destroy(): void } {
     store.on('realm', paint),
     store.on('focusedSystem', paint),
     store.on('readProgress', paint),
+    store.on('view', paint),
   ];
   paint();
   return { destroy() { offs.forEach((o) => o()); panel.remove(); } };

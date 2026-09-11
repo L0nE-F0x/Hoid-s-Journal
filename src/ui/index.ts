@@ -8,6 +8,7 @@ import { listen } from './dom.ts';
 import { mountAtlas } from './atlas.ts';
 import { mountDirectory } from './directory.ts';
 import { mountHud } from './hud.ts';
+import { mountLoreWeb } from './loreWeb.ts';
 import { mountMinimap } from './minimap.ts';
 import { mountModals } from './modals.ts';
 import { mountTitle } from './title.ts';
@@ -26,6 +27,7 @@ export function mountUI(root: HTMLElement): UIHandles {
   const atlas = mountAtlas(root);
   const directory = mountDirectory(root);
   const minimap = mountMinimap(root);
+  const web = mountLoreWeb(root);
   const modals = mountModals(root);
 
   const keys = listen(window, 'keydown', (ev) => {
@@ -37,6 +39,7 @@ export function mountUI(root: HTMLElement): UIHandles {
     const k = e.key.toLowerCase();
     if (k === 'escape') {
       if (store.state.panel !== 'none') { store.set('panel', 'none'); return; }
+      if (store.state.view === 'web') { store.set('view', 'sky'); return; }
       if (store.state.shell === 'play') store.set('cameraCue', { kind: 'pop' });
       return;
     }
@@ -53,6 +56,10 @@ export function mountUI(root: HTMLElement): UIHandles {
     if (store.state.shell !== 'play') return;
     if (k === 'c') store.set('realm', store.state.realm === 'cognitive' ? 'physical' : 'cognitive');
     if (k === 'v') store.set('realm', store.state.realm === 'spiritual' ? 'physical' : 'spiritual');
+    if (k === 'l') {
+      store.set('view', store.state.view === 'web' ? 'sky' : 'web');
+      return;
+    }
     if (k === 'h' || k === '?') store.set('panel', store.state.panel === 'help' ? 'none' : 'help');
     if (k === 'a') store.set('panel', store.state.panel === 'arcanum' ? 'none' : 'arcanum');
     if (k === 'k' || k === '/') {
@@ -81,6 +88,7 @@ export function mountUI(root: HTMLElement): UIHandles {
       atlas.destroy();
       directory.destroy();
       minimap.destroy();
+      web.destroy();
       modals.destroy();
       root.classList.remove('ceph-root');
     },

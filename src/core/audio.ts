@@ -1,10 +1,15 @@
 /**
- * A quiet rumble that follows scale. Off until the reader asks for it.
- * No soundtrack: original audio only, generated here.
+ * Soundtrack (from the original journal) plus a quiet rumble that follows
+ * scale. Both off until the reader asks.
  */
 import { store } from './store.ts';
 
 export function connectAudio(): () => void {
+  const music = new Audio(`${import.meta.env.BASE_URL}audio/soundtrack.mp3`);
+  music.loop = true;
+  music.preload = 'none';
+  music.volume = 0.42;
+
   let ctx: AudioContext | null = null;
   let osc: OscillatorNode | null = null;
   let gain: GainNode | null = null;
@@ -30,7 +35,14 @@ export function connectAudio(): () => void {
   };
 
   const tick = () => {
-    if (!store.state.visual.rumble || store.state.shell !== 'play') {
+    const play = store.state.shell === 'play';
+    if (store.state.visual.music && play) {
+      music.play().catch(() => undefined);
+    } else {
+      music.pause();
+    }
+
+    if (!store.state.visual.rumble || !play) {
       if (gain && ctx) gain.gain.setTargetAtTime(0, ctx.currentTime, 0.08);
       return;
     }
@@ -56,6 +68,7 @@ export function connectAudio(): () => void {
   tick();
   return () => {
     offs.forEach((o) => o());
+    music.pause();
     if (osc) try { osc.stop(); } catch { /* already stopped */ }
     ctx?.close().catch(() => undefined);
   };

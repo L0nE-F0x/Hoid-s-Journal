@@ -16,12 +16,10 @@ Architecture lock: `AGENTS.md` + `DESIGN.md`. This file is only the live todo.
 
 # ▶ START HERE — next session
 
-**2026-09-11 (night) — the companion densifies.** Directory has tabs
-(systems / worlds / people / shards / doors), the info card is a field
-grid, a galaxy chart sits in the corner, Share copies a link, time has
-a speed. Push is on `master`.
+**2026-09-11 (night) — Lore Web, soundtrack, moons, labelled galaxy
+chart.** Official map scans were not copied. Push is on `master`.
 
-Soundtrack and Lore Web are still product calls. Verify with `npm run shot`.
+Verify with `npm run shot`.
 
 ```bash
 cd /home/lonefox/Projects/Cephandrius
@@ -44,6 +42,18 @@ with every shot.
 Git: `master` tracks `origin` at https://github.com/L0nE-F0x/Hoid-s-Journal.
 
 ## What changed this session
+
+### Eleventh pass — Lore Web, music, moons
+
+- **Lore Web (L).** Force graph of people, shards, worlds, Dawnshards.
+  Spoiler-gated. Click a node for the shortest path to Hoid. Drag to
+  rearrange. Esc or Web again returns to the sky. Not the v1 O(n²) canvas
+  clone — same idea, our IDs, our renderer.
+- **Soundtrack** from the original journal (`public/audio/soundtrack.mp3`).
+  Music button / Look toggle. Rumble still separate. Off until asked.
+- **Original logo** (`public/logo.png`) as the apple-touch icon. **Isaac
+  Stewart map rasters were not copied.** Those stay in the museum.
+- Directory **Moons** tab. Galaxy chart now names the stars.
 
 ### Tenth pass — the companion densifies
 
@@ -344,14 +354,12 @@ needs you, or is a new product.
 
 ### 2. Soundtrack
 
-- ~~Procedural rumble that follows scale~~ **done**, off until Look → Rumble.
-- v1 had music. Original only — no licensed tracks. This is a differentiator
-  vs Aetherfield and it is not started.
+- ~~Procedural rumble~~ **done**. ~~v1 soundtrack~~ **done** (`Music` /
+  Look). Off until asked.
 
 ### 3. Lore Web (six degrees of Hoid)
 
-The atlas is no longer a prototype. This is the next *product* if you want
-one. Physics graph in v1; do not copy the O(n²) canvas version.
+- ~~Force graph, path to Hoid, spoiler-gated~~ **done**. Press `L`.
 
 ### 4. Optional depth, if a reread reaches for it
 

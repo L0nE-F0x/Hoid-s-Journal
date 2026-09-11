@@ -13,11 +13,11 @@ import { atlasIsOpen } from './atlas.ts';
 import { el, listen } from './dom.ts';
 import '../styles/directory.css';
 
-type DirTab = 'systems' | 'worlds' | 'people' | 'shards' | 'doors';
+type DirTab = 'systems' | 'worlds' | 'moons' | 'people' | 'shards' | 'doors';
 
 export function directoryIsOpen(): boolean {
   const s = store.state;
-  return s.shell === 'play' && !atlasIsOpen();
+  return s.shell === 'play' && !atlasIsOpen() && s.view !== 'web';
 }
 
 function flyTo(id: string): void {
@@ -33,6 +33,12 @@ function flyTo(id: string): void {
   }
   if (COSMERE.locations.some((l) => l.id === id)) {
     store.set('cameraCue', { kind: 'focus', id, scale: 'surface' });
+    return;
+  }
+  const moon = COSMERE.moons.find((m) => m.id === id);
+  if (moon) {
+    store.set('cameraCue', { kind: 'focus', id: moon.parent, scale: 'globe' });
+    store.set('selected', moon.id);
     return;
   }
   const ch = COSMERE.characters.find((c) => c.id === id);
@@ -73,6 +79,7 @@ export function mountDirectory(root: HTMLElement): { destroy(): void } {
   const TAB: { id: DirTab; label: string }[] = [
     { id: 'systems', label: 'Systems' },
     { id: 'worlds', label: 'Worlds' },
+    { id: 'moons', label: 'Moons' },
     { id: 'people', label: 'People' },
     { id: 'shards', label: 'Shards' },
     { id: 'doors', label: 'Doors' },
@@ -134,6 +141,13 @@ export function mountDirectory(root: HTMLElement): { destroy(): void } {
         if (s.scale === 'system' && s.focusedSystem && b.system !== s.focusedSystem) continue;
         push(row(b.id, b.name, b.kind.replace('-', ' '), b.color, b.fact));
       }
+    } else if (tab === 'moons') {
+      for (const m of COSMERE.moons) {
+        if (!isVisible(m, s.readProgress) || !match(m.name)) continue;
+        const parent = bodyById[m.parent];
+        if (s.scale === 'system' && s.focusedSystem && parent?.system !== s.focusedSystem) continue;
+        push(row(m.id, m.name, parent?.name ?? m.parent, m.color, m.fact));
+      }
     } else if (tab === 'people') {
       for (const c of COSMERE.characters) {
         if (!isVisible(c, s.readProgress) || !match(c.name)) continue;
@@ -170,6 +184,7 @@ export function mountDirectory(root: HTMLElement): { destroy(): void } {
     store.on('realm', paint),
     store.on('era', paint),
     store.on('readProgress', paint),
+    store.on('view', paint),
   ];
   paint();
   return {

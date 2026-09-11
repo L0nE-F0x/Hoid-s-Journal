@@ -50,6 +50,8 @@ function entityById(id: string | null) {
   if (!id) return null;
   const body = bodyById[id];
   if (body) return { kind: 'body' as const, obj: body };
+  const moon = COSMERE.moons.find((m) => m.id === id);
+  if (moon) return { kind: 'moon' as const, obj: moon };
   const sys = COSMERE.systems.find((s) => s.id === id);
   if (sys) return { kind: 'system' as const, obj: sys };
   const ch = characterById[id];
@@ -88,7 +90,9 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
   const btnLook = mkTool('Look', 'Orbits, moons, nebulae, labels');
   const btnHelp = mkTool('Help', 'How to read the sky (H)');
   const btnShare = mkTool('Share', 'Copy a link to this view');
-  const tools = el('div', { className: 'ceph-tools' }, [btnCodex, btnArc, btnSpoil, btnRealm, btnLook, btnHelp, btnShare]);
+  const btnWeb = mkTool('Web', 'Lore Web — six degrees of Hoid (L)');
+  const btnMusic = mkTool('Music', 'Soundtrack');
+  const tools = el('div', { className: 'ceph-tools' }, [btnCodex, btnArc, btnSpoil, btnRealm, btnLook, btnHelp, btnShare, btnWeb, btnMusic]);
   const back = el('button', {
     className: 'ceph-btn ceph-back',
     text: '← Cosmere',
@@ -206,6 +210,8 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
     btnLook.classList.toggle('is-on', s.panel === 'settings');
     btnHelp.classList.toggle('is-on', s.panel === 'help');
     btnRealm.classList.toggle('is-on', s.panel === 'realms' || s.realm !== 'physical');
+    btnWeb.classList.toggle('is-on', s.view === 'web');
+    btnMusic.classList.toggle('is-on', s.visual.music);
   };
 
   const refreshTime = () => {
@@ -265,6 +271,19 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
       if (b.hasSurface) {
         const go = el('button', { className: 'ceph-btn ceph-btn--primary', text: 'Surface scan', style: { marginTop: '14px' } });
         listen(go, 'click', () => store.set('cameraCue', { kind: 'focus', id: b.id, scale: 'surface' }));
+        drawer.append(go);
+      }
+    } else if (hit.kind === 'moon') {
+      const m = hit.obj;
+      const parent = bodyById[m.parent];
+      head.append(swatch(m.color), el('div', {}, [
+        el('div', { className: 'ceph-kicker', text: `Moon of ${parent?.name ?? m.parent}` }),
+        el('h2', { text: m.name }),
+      ]));
+      drawer.append(head, el('p', { className: 'ceph-fact', text: m.fact }));
+      if (parent) {
+        const go = el('button', { className: 'ceph-btn ceph-btn--primary', text: `Go to ${parent.name}`, style: { marginTop: '14px' } });
+        listen(go, 'click', () => store.set('cameraCue', { kind: 'focus', id: parent.id, scale: 'globe' }));
         drawer.append(go);
       }
     } else if (hit.kind === 'hub') {
@@ -392,6 +411,8 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
       btnShare.textContent = ok ? 'Copied' : 'Share';
       setTimeout(() => { btnShare.textContent = 'Share'; }, 1400);
     }),
+    listen(btnWeb, 'click', () => store.set('view', store.state.view === 'web' ? 'sky' : 'web')),
+    listen(btnMusic, 'click', () => store.patchVisual({ music: !store.state.visual.music })),
     listen(slider, 'input', () => {
       const y = sliderToYear(Number(slider.value) / 1000);
       store.set('isPlaying', false);
@@ -426,6 +447,8 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
     store.on('scale', () => { refreshScale(); refreshDrawer(); }),
     store.on('realm', refreshScale),
     store.on('panel', refreshScale),
+    store.on('view', refreshScale),
+    store.on('visual', refreshScale),
     store.on('focusedBody', refreshScale),
     store.on('focusedSystem', refreshScale),
     store.on('focusedLocation', refreshScale),

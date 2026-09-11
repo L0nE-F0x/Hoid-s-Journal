@@ -7,6 +7,7 @@
 export type ShellMode = 'title' | 'play';
 export type Realm = 'physical' | 'cognitive' | 'spiritual';
 export type Scale = 'cosmere' | 'system' | 'globe' | 'surface' | 'city';
+export type ViewMode = 'sky' | 'web';
 
 export type Quality = 'auto' | 'high' | 'medium' | 'low';
 
@@ -24,6 +25,7 @@ export interface VisualState {
   autoRotate: boolean;
   quality: Quality;
   rumble: boolean;
+  music: boolean;
 }
 
 export interface ViewInsets {
@@ -78,6 +80,7 @@ export interface AppState {
   cinematic: boolean;
   viewHeading: number;
   searchQuery: string;
+  view: ViewMode;
   panel: 'none' | 'arcanum' | 'codex' | 'spoilers' | 'settings' | 'help' | 'realms';
   magicId: string | null;
 }
@@ -97,6 +100,7 @@ export function defaultVisual(): VisualState {
     autoRotate: true,
     quality: 'auto',
     rumble: false,
+    music: false,
   };
 }
 
@@ -133,6 +137,7 @@ class Store {
     cinematic: false,
     viewHeading: 0,
     searchQuery: '',
+    view: 'sky',
     panel: 'none',
     magicId: null,
   };

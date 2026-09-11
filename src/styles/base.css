@@ -111,7 +111,8 @@
 .ceph-modal,
 .ceph-modal-card,
 .ceph-directory,
-.ceph-minimap {
+.ceph-minimap,
+.ceph-web {
   pointer-events: auto;
 }
 

@@ -6,6 +6,7 @@ import { ARC_NOTES, arcNoteFor } from './journal.ts';
 import { LOCATIONS, PERPS } from './locations.ts';
 import { MAGICS } from './magics.ts';
 import { DAWNSHARDS, HUBS, ROUTES, dawnshardById, hubById } from './realms.ts';
+import { RELATIONS, REL_TYPES } from './relationships.ts';
 import { SHARDS } from './shards.ts';
 import type {
   Body, Character, CharacterEra, Cosmere, Location, Perpendicularity, Series,
@@ -14,6 +15,7 @@ import type {
 export { CITY_PLATES, cityById, landmarkById };
 export { ARC_NOTES, arcNoteFor };
 export { DAWNSHARDS, HUBS, ROUTES, dawnshardById, hubById };
+export { RELATIONS, REL_TYPES };
 
 export type { Cosmere } from './types.ts';
 export * from './types.ts';

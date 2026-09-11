@@ -130,6 +130,12 @@ async function run() {
     check('Realms is a panel', (await state(page)).panel === 'realms', (await state(page)).panel);
     await page.keyboard.press('Escape');
     await sleep(150);
+    check('Lore Web opens', await clickLabel(page, '^web$'));
+    await sleep(400);
+    check('view is the Lore Web', (await state(page)).view === 'web', (await state(page)).view);
+    await page.keyboard.press('Escape');
+    await sleep(200);
+    check('Esc leaves the Lore Web', (await state(page)).view === 'sky', (await state(page)).view);
 
     // Cosmere → system, by clicking the star itself.
     let at = await screenOf(page, "a.orrery.systemPosition('rosharan')");

@@ -1,0 +1,114 @@
+.ceph-title {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 700ms var(--ceph-ease), visibility 0s 700ms;
+}
+.ceph-title.is-open {
+  pointer-events: auto;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 560ms var(--ceph-ease), visibility 0s;
+}
+
+.ceph-title-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 50% 42%, rgba(5, 6, 13, 0.08) 0%, rgba(5, 6, 13, 0.42) 58%, rgba(5, 6, 13, 0.78) 100%),
+    linear-gradient(to top, rgba(5, 6, 13, 0.72) 0%, rgba(5, 6, 13, 0) 28%);
+}
+
+.ceph-title-center {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: min(560px, calc(100% - 40px));
+  text-align: center;
+}
+
+.ceph-title-mark {
+  width: 108px;
+  height: 108px;
+  margin-bottom: 18px;
+  filter: drop-shadow(0 0 18px rgba(94, 231, 255, 0.28));
+  animation: ceph-spin 80s linear infinite;
+}
+
+.ceph-title-wordmark {
+  margin: 0;
+  font-size: clamp(28px, 6vw, 52px);
+  font-weight: 300;
+  letter-spacing: 0.34em;
+  text-indent: 0.34em;
+  text-transform: uppercase;
+  background: linear-gradient(120deg, #eaf4ff 0%, var(--ceph-cyan) 45%, var(--ceph-violet) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.ceph-title-tag {
+  margin: 10px 0 0;
+  font-size: 12px;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: var(--ceph-text-dim);
+}
+
+.ceph-title-pitch {
+  margin: 22px 0 0;
+  max-width: 42ch;
+  color: var(--ceph-text-dim);
+  line-height: 1.55;
+  font-size: 14px;
+}
+
+.ceph-title-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 28px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.ceph-title-enter {
+  pointer-events: auto;
+  appearance: none;
+  border: none;
+  border-radius: 999px;
+  padding: 14px 28px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  cursor: pointer;
+  color: #071018;
+  background: linear-gradient(120deg, var(--ceph-cyan), var(--ceph-violet));
+  box-shadow: 0 0 28px rgba(94, 231, 255, 0.28);
+}
+
+.ceph-title-disclaimer {
+  position: absolute;
+  bottom: calc(18px + var(--ceph-safe-bottom));
+  left: 24px;
+  right: 24px;
+  text-align: center;
+  font-size: 10px;
+  line-height: 1.5;
+  color: var(--ceph-text-faint);
+  max-width: 72ch;
+  margin: 0 auto;
+}
+
+@keyframes ceph-spin { to { transform: rotate(360deg); } }

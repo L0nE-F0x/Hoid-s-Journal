@@ -1,0 +1,168 @@
+:root {
+  --ceph-bg-deep: #05060d;
+  --ceph-panel-bg: rgba(9, 11, 22, 0.78);
+  --ceph-border: rgba(140, 180, 255, 0.18);
+  --ceph-border-strong: rgba(140, 180, 255, 0.28);
+  --ceph-cyan: #5ee7ff;
+  --ceph-violet: #a56bff;
+  --ceph-amber: #f5c16e;
+  --ceph-green: #4ade80;
+  --ceph-text: #dce6f5;
+  --ceph-text-dim: #8a95ad;
+  --ceph-text-faint: #7c88a3;
+  --ceph-danger: #ff6b6b;
+  --ceph-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --ceph-ease-spring: cubic-bezier(0.34, 1.42, 0.44, 1);
+  --ceph-stagger: 45ms;
+  --ceph-font: ui-sans-serif, Inter, system-ui, -apple-system, sans-serif;
+  --ceph-touch: 44px;
+}
+
+.ceph-root {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+  --ceph-safe-top: env(safe-area-inset-top, 0px);
+  --ceph-safe-bottom: env(safe-area-inset-bottom, 0px);
+  font-family: var(--ceph-font);
+  color: var(--ceph-text);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+}
+
+.ceph-root *,
+.ceph-root *::before,
+.ceph-root *::after { box-sizing: border-box; }
+
+.ceph-root button,
+.ceph-root input {
+  font-family: inherit;
+  color: inherit;
+}
+
+.ceph-root ::selection { background: rgba(94, 231, 255, 0.3); }
+
+@media (prefers-reduced-motion: reduce) {
+  .ceph-root, .ceph-root * {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+.ceph-root button:focus-visible,
+.ceph-root a:focus-visible,
+.ceph-root [tabindex]:focus-visible {
+  outline: 2px solid var(--ceph-cyan);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+.ceph-panel {
+  pointer-events: auto;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0) 28%),
+    var(--ceph-panel-bg);
+  backdrop-filter: blur(20px) saturate(1.1);
+  -webkit-backdrop-filter: blur(20px) saturate(1.1);
+  border: 1px solid var(--ceph-border);
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+}
+.ceph-panel::after {
+  content: '';
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(186, 230, 255, 0.35), transparent);
+  pointer-events: none;
+}
+
+.ceph-kicker {
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ceph-text-dim);
+}
+
+.ceph-wordmark {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  background: linear-gradient(120deg, var(--ceph-cyan), var(--ceph-violet));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  pointer-events: auto;
+  background-color: transparent;
+}
+
+.ceph-btn {
+  pointer-events: auto;
+  appearance: none;
+  border: 1px solid var(--ceph-border);
+  background: rgba(255,255,255,0.03);
+  color: var(--ceph-text);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: border-color 180ms var(--ceph-ease), box-shadow 180ms var(--ceph-ease), color 180ms var(--ceph-ease);
+}
+.ceph-btn:hover {
+  border-color: var(--ceph-border-strong);
+  color: var(--ceph-cyan);
+  box-shadow: 0 0 12px rgba(94, 231, 255, 0.18);
+}
+.ceph-btn--primary {
+  background: linear-gradient(120deg, var(--ceph-cyan), var(--ceph-violet));
+  color: #071018;
+  border: none;
+  font-weight: 700;
+}
+.ceph-btn--primary:hover { color: #071018; filter: brightness(1.08); }
+
+.ceph-chip {
+  pointer-events: auto;
+  border: 1px solid var(--ceph-border);
+  background: rgba(255,255,255,0.03);
+  color: var(--ceph-text-dim);
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.ceph-chip.is-on {
+  background: linear-gradient(120deg, var(--ceph-cyan), var(--ceph-violet));
+  color: #071018;
+  border-color: transparent;
+}
+
+.ceph-canon {
+  display: inline-block;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid currentColor;
+}
+.ceph-canon--canon { color: #4ade80; }
+.ceph-canon--wob { color: #fbbf24; }
+.ceph-canon--speculation { color: #c084fc; }
+.ceph-canon--noncanon { color: #71717a; }
+
+@keyframes ceph-panel-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}

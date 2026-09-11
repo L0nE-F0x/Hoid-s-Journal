@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <title>Cephandrius — Hoid's Journal</title>
+    <meta name="description" content="Cephandrius: an unofficial, spoiler-aware, nested atlas of Brandon Sanderson's Cosmere. Fly the systems, walk the Realms, and keep a journal that will not spoil you." />
+    <meta name="theme-color" content="#05060d" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Cephandrius" />
+    <link rel="icon" type="image/svg+xml" href="./mark.svg" />
+    <link rel="apple-touch-icon" href="./mark.svg" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="canonical" href="%SITE_URL%/" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Cephandrius" />
+    <meta property="og:url" content="%SITE_URL%/" />
+    <meta property="og:title" content="Cephandrius — Hoid's Journal" />
+    <meta property="og:description" content="An unofficial nested atlas of the Cosmere. Fly the systems. Walk the Realms. Keep a journal that will not spoil you." />
+    <meta property="og:image" content="%SITE_URL%/og.jpg" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Cephandrius — Hoid's Journal" />
+    <meta name="twitter:description" content="An unofficial nested atlas of the Cosmere." />
+    <meta name="twitter:image" content="%SITE_URL%/og.jpg" />
+    <style>
+      :root { color-scheme: dark; }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; height: 100%; background: #04050b; overflow: hidden; }
+      body { font-family: ui-sans-serif, Inter, system-ui, -apple-system, sans-serif; color: #dce6f5; }
+      #stage { position: fixed; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; }
+      #ui-root { position: fixed; inset: 0; pointer-events: none; }
+
+      #boot {
+        position: fixed; inset: 0; z-index: 9999;
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        gap: 18px; background: radial-gradient(ellipse at 50% 42%, #0b1024 0%, #04050b 68%);
+        transition: opacity 700ms cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      #boot.done { opacity: 0; pointer-events: none; }
+      #boot-scan {
+        position: absolute; inset: 0; pointer-events: none;
+        background: repeating-linear-gradient(
+          0deg, rgba(140, 180, 255, 0.03) 0px, rgba(140, 180, 255, 0.03) 1px,
+          transparent 1px, transparent 3px
+        );
+      }
+      #boot-mark {
+        width: 96px; height: 96px;
+        filter: drop-shadow(0 0 16px rgba(94, 231, 255, 0.3));
+        animation: boot-spin 80s linear infinite;
+      }
+      #boot-title {
+        font-size: clamp(22px, 4.6vw, 40px); font-weight: 300;
+        letter-spacing: 0.34em; text-indent: 0.34em; text-transform: uppercase;
+        background: linear-gradient(120deg, #eaf4ff 0%, #5ee7ff 45%, #a56bff 100%);
+        -webkit-background-clip: text; background-clip: text; color: transparent;
+        filter: drop-shadow(0 0 22px rgba(94, 231, 255, 0.4));
+        animation: boot-glow 3.2s ease-in-out infinite;
+      }
+      #boot-sub {
+        font-size: 11px; letter-spacing: 0.42em; text-transform: uppercase;
+        color: rgba(174, 199, 235, 0.55); margin-top: -6px;
+      }
+      #boot-pips { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; max-width: 220px; }
+      #boot-pips span { width: 6px; height: 6px; border-radius: 50%; box-shadow: 0 0 6px currentColor; }
+      #boot-track {
+        width: min(340px, 62vw); height: 2px; margin-top: 8px;
+        background: rgba(140, 180, 255, 0.14);
+        position: relative; overflow: visible; border-radius: 2px;
+      }
+      #boot-fill {
+        position: absolute; inset: 0 auto 0 0; width: 0%;
+        background: linear-gradient(90deg, #5ee7ff, #a56bff);
+        box-shadow: 0 0 14px #5ee7ff, 0 0 34px rgba(165, 107, 255, 0.6);
+        transition: width 320ms cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      #boot-label {
+        font-size: 10.5px; letter-spacing: 0.24em; text-transform: uppercase;
+        color: rgba(174, 199, 235, 0.68); font-variant-numeric: tabular-nums;
+      }
+      #boot-label.error { color: #ff8f7a; letter-spacing: 0.08em; text-transform: none; max-width: 46ch; text-align: center; line-height: 1.6; }
+      @keyframes boot-spin { to { transform: rotate(360deg); } }
+      @keyframes boot-glow {
+        0%, 100% { filter: drop-shadow(0 0 14px rgba(94, 231, 255, 0.28)); }
+        50% { filter: drop-shadow(0 0 28px rgba(165, 107, 255, 0.5)); }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        #boot, #boot-fill { transition: none; }
+        #boot-mark, #boot-title { animation: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="stage"></canvas>
+    <div id="ui-root"></div>
+    <div id="boot">
+      <div id="boot-scan"></div>
+      <img id="boot-mark" src="./mark.svg" alt="" width="96" height="96" />
+      <div id="boot-title">Cephandrius</div>
+      <div id="boot-sub">Hoid's Journal</div>
+      <div id="boot-pips" aria-hidden="true">
+        <span style="background:#38bdf8;color:#38bdf8"></span>
+        <span style="background:#4ade80;color:#4ade80"></span>
+        <span style="background:#ef4444;color:#ef4444"></span>
+        <span style="background:#77aaff;color:#77aaff"></span>
+        <span style="background:#f59e0b;color:#f59e0b"></span>
+        <span style="background:#a78bfa;color:#a78bfa"></span>
+        <span style="background:#f472b6;color:#f472b6"></span>
+        <span style="background:#f97316;color:#f97316"></span>
+      </div>
+      <div id="boot-track"><div id="boot-fill"></div></div>
+      <div id="boot-label">Opening the journal</div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

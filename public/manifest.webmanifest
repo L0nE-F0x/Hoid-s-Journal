@@ -1,0 +1,14 @@
+{
+  "id": "/",
+  "name": "Cephandrius — Hoid's Journal",
+  "short_name": "Cephandrius",
+  "description": "An unofficial, spoiler-aware, nested atlas of Brandon Sanderson's Cosmere.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#04050b",
+  "theme_color": "#05060d",
+  "icons": [
+    { "src": "./mark.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

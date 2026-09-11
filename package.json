@@ -1,0 +1,24 @@
+{
+  "name": "cephandrius",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Cephandrius — Hoid's Journal. An unofficial, spoiler-aware, nested atlas of Brandon Sanderson's Cosmere.",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "shot": "node tools/screenshot.mjs"
+  },
+  "dependencies": {
+    "postprocessing": "^6.37.8",
+    "three": "^0.180.0"
+  },
+  "devDependencies": {
+    "@types/three": "^0.180.0",
+    "puppeteer-core": "^25.10.0",
+    "typescript": "^5.7.0",
+    "vite": "^6.0.0",
+    "vite-plugin-glsl": "^1.3.1"
+  }
+}

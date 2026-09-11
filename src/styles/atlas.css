@@ -1,0 +1,71 @@
+.ceph-atlas {
+  position: fixed;
+  top: calc(88px + var(--ceph-safe-top));
+  left: 16px;
+  width: min(420px, calc(100vw - 32px));
+  z-index: 24;
+  padding: 12px 12px 14px;
+  display: none;
+  animation: ceph-panel-in 420ms var(--ceph-ease) both;
+}
+.ceph-atlas.is-on { display: block; }
+
+.ceph-atlas-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.ceph-atlas-title { font-weight: 600; letter-spacing: 0.04em; }
+.ceph-atlas-canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  border: 1px solid var(--ceph-border);
+  cursor: crosshair;
+  background: #05060d;
+}
+.ceph-atlas-roster {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+.ceph-atlas-chip {
+  pointer-events: auto;
+  border: 1px solid var(--ceph-border);
+  background: rgba(255,255,255,0.04);
+  color: var(--ceph-text);
+  border-radius: 999px;
+  padding: 3px 8px;
+  font-size: 10.5px;
+  cursor: pointer;
+}
+.ceph-atlas-chip:hover { border-color: var(--ceph-cyan); }
+
+.ceph-skip {
+  position: fixed;
+  bottom: calc(118px + var(--ceph-safe-bottom));
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 28;
+  display: none;
+  pointer-events: auto;
+}
+.ceph-skip.is-on { display: block; }
+
+.ceph-tooltip {
+  position: fixed;
+  z-index: 60;
+  pointer-events: none;
+  padding: 5px 9px;
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0;
+  transform: translate(-50%, -130%);
+  transition: opacity 120ms var(--ceph-ease);
+}
+.ceph-tooltip.is-on { opacity: 1; }

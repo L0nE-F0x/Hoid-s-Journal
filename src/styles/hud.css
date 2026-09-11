@@ -1,0 +1,211 @@
+.ceph-hud {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 500ms var(--ceph-ease), visibility 0s 500ms;
+}
+.ceph-hud.is-on {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 420ms var(--ceph-ease), visibility 0s;
+}
+
+.ceph-command {
+  position: fixed;
+  top: calc(16px + var(--ceph-safe-top));
+  left: 16px;
+  z-index: 25;
+  padding: 12px 16px;
+  animation: ceph-panel-in 500ms var(--ceph-ease) both;
+}
+.ceph-command-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.ceph-command-sub {
+  margin-top: 4px;
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  color: var(--ceph-text-dim);
+}
+
+.ceph-tools {
+  position: fixed;
+  top: calc(16px + var(--ceph-safe-top));
+  right: 16px;
+  display: flex;
+  gap: 8px;
+  z-index: 25;
+}
+
+.ceph-timeline {
+  position: fixed;
+  left: 50%;
+  bottom: calc(18px + var(--ceph-safe-bottom));
+  transform: translateX(-50%);
+  width: min(720px, calc(100% - 32px));
+  padding: 12px 16px 14px;
+  z-index: 25;
+}
+.ceph-timeline-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.ceph-play {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  pointer-events: auto;
+  background: linear-gradient(120deg, var(--ceph-cyan), var(--ceph-violet));
+  color: #071018;
+  font-size: 13px;
+}
+.ceph-year {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--ceph-amber);
+  flex: 1;
+}
+.ceph-era-row {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+.ceph-slider {
+  width: 100%;
+  pointer-events: auto;
+  accent-color: var(--ceph-cyan);
+}
+
+.ceph-ticker {
+  position: fixed;
+  left: 16px;
+  bottom: calc(96px + var(--ceph-safe-bottom));
+  max-width: min(420px, calc(100% - 32px));
+  padding: 10px 14px;
+  font-size: 12px;
+  color: var(--ceph-text-dim);
+  line-height: 1.45;
+}
+
+.ceph-panel-drawer {
+  position: fixed;
+  top: calc(72px + var(--ceph-safe-top));
+  right: 16px;
+  width: min(380px, calc(100% - 32px));
+  max-height: calc(100vh - 180px);
+  overflow: auto;
+  padding: 16px 18px 20px;
+  z-index: 30;
+  animation: ceph-panel-in 400ms var(--ceph-ease) both;
+}
+.ceph-panel-drawer h2 {
+  margin: 0 0 4px;
+  font-size: 18px;
+  font-weight: 600;
+}
+.ceph-fact {
+  color: var(--ceph-text-dim);
+  line-height: 1.55;
+  margin: 10px 0 0;
+}
+.ceph-meta {
+  display: grid;
+  gap: 4px;
+  margin-top: 12px;
+  font-size: 11.5px;
+  color: var(--ceph-text-dim);
+}
+.ceph-meta b { color: var(--ceph-text); font-weight: 600; }
+
+.ceph-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(4, 5, 11, 0.55);
+  pointer-events: auto;
+}
+.ceph-modal-card {
+  width: min(860px, calc(100% - 32px));
+  max-height: min(86vh, 720px);
+  overflow: auto;
+  padding: 22px 24px 28px;
+}
+.ceph-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 10px;
+  margin-top: 16px;
+}
+.ceph-card {
+  pointer-events: auto;
+  text-align: left;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--ceph-border);
+  background: rgba(255,255,255,0.03);
+  cursor: pointer;
+}
+.ceph-card:hover { border-color: var(--ceph-cyan); }
+.ceph-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 14px;
+  font-size: 12px;
+}
+.ceph-table th, .ceph-table td {
+  text-align: left;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--ceph-border);
+}
+.ceph-search {
+  width: 100%;
+  pointer-events: auto;
+  background: rgba(0,0,0,0.35);
+  border: 1px solid var(--ceph-border);
+  border-radius: 10px;
+  padding: 10px 12px;
+  outline: none;
+}
+.ceph-search:focus { border-color: var(--ceph-cyan); }
+
+.ceph-skip {
+  position: fixed;
+  bottom: calc(118px + var(--ceph-safe-bottom));
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 28;
+  display: none;
+  pointer-events: auto;
+}
+.ceph-skip.is-on { display: block; }
+
+.ceph-tooltip {
+  position: fixed;
+  z-index: 60;
+  pointer-events: none;
+  padding: 5px 9px;
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0;
+  transform: translate(-50%, -130%);
+}
+.ceph-tooltip.is-on { opacity: 1; }
+
+@media (max-width: 720px) {
+  .ceph-timeline { width: calc(100% - 16px); }
+  .ceph-command { left: 8px; right: 8px; width: auto; }
+  .ceph-tools { top: calc(88px + var(--ceph-safe-top)); }
+}

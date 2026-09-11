@@ -2,6 +2,7 @@ import { bakePlanetMap, seedFromId } from '../cartography/planetMap.ts';
 import {
   bodyById,
   charactersOnBody,
+  isNewThisArc,
   isVisible,
   locationsOn,
   scadrialBiome,
@@ -137,7 +138,12 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
       roster.append(el('div', { className: 'ceph-kicker', text: 'Present this era', style: { width: '100%' } }));
     }
     for (const c of people) {
-      const chip = el('button', { className: 'ceph-atlas-chip', text: c.name, style: { borderColor: c.color } });
+      const fresh = isNewThisArc(c, s.readingNow);
+      const chip = el('button', {
+        className: 'ceph-atlas-chip',
+        text: fresh ? `✦ ${c.name}` : c.name,
+        style: { borderColor: fresh ? 'var(--ceph-amber)' : c.color },
+      });
       listen(chip, 'click', () => store.set('selected', c.id));
       roster.append(chip);
     }
@@ -212,6 +218,7 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
     store.on('hovered', () => { composePins(); paint(); }),
     store.on('focusedLocation', () => { composePins(); paint(); }),
     store.on('readProgress', refresh),
+    store.on('readingNow', refresh),
   ];
 
   let raf = 0;

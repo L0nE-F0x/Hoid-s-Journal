@@ -1,6 +1,6 @@
 import * as THREE from 'three';
-import { COSMERE, bodyById, eraAt, isVisible } from '../data/index.ts';
-import { uvFacing } from '../layout/surface.ts';
+import { COSMERE, bodyById, characterAt, eraAt, isVisible } from '../data/index.ts';
+import { uvFacing, uvOnBody } from '../layout/surface.ts';
 import { CameraRig, type Waypoint } from './CameraRig.ts';
 import { store, type CameraCue, type Scale } from './store.ts';
 import { Labels } from '../render/Labels.ts';
@@ -16,6 +16,13 @@ const CLICK_SLOP = 6;
 /** Playhead years per second at rate 1. Slow enough that orbits drift. */
 const YEARS_PER_SECOND = 0.08;
 const _ride = new THREE.Vector3();
+const _pick = new THREE.Vector3();
+const _surf = new THREE.Vector3();
+const _toCam = new THREE.Vector3();
+/** How far from a subject a click still counts, in CSS pixels. */
+const PICK_SLOP = 15;
+
+type PickKind = 'system' | 'body' | 'location' | 'character';
 /** How far off the sun axis the camera stands. Bigger = more terminator. */
 const GLOBE_SUN_OFFSET = 0.7;
 const SURFACE_SUN_OFFSET = 0.95;
@@ -37,8 +44,6 @@ export class App {
   private readonly spiritual: Spiritual;
   private readonly post: PostChain;
   private readonly canvas: HTMLCanvasElement;
-  private readonly raycaster = new THREE.Raycaster();
-  private readonly pointer = new THREE.Vector2();
   private readonly clock = new THREE.Clock();
   private raf = 0;
   private running = false;
@@ -285,61 +290,111 @@ export class App {
     });
   }
 
+  /**
+   * Screen-space picking. A raycast cannot hit a planet that is one pixel
+   * across, which is most of them at Cosmere distance, and a sun sprite's
+   * quad swallowed clicks meant for what was in front of it. So project the
+   * candidates the current scale actually offers and take the nearest.
+   *
+   * A pointer inside a subject's own disc always beats a near miss, and among
+   * those the nearest to the camera wins.
+   */
   private pickAt(cx: number, cy: number, click: boolean): void {
     const rect = this.canvas.getBoundingClientRect();
-    this.pointer.x = ((cx - rect.left) / rect.width) * 2 - 1;
-    this.pointer.y = -((cy - rect.top) / rect.height) * 2 + 1;
-    this.raycaster.setFromCamera(this.pointer, this.camera);
-    const hits = this.raycaster.intersectObjects(
-      [...this.orrery.pickables, ...this.pins.pickables, ...this.presence.pickables],
-      false,
-    );
-    const hit = hits.find((h) => {
-      const id = h.object.userData.id as string | undefined;
-      const kind = h.object.userData.kind as string | undefined;
-      if (!id || !kind) return false;
-      if (kind === 'character') {
-        const ch = COSMERE.characters.find((c) => c.id === id);
-        return ch ? isVisible(ch, store.state.readProgress) : false;
+    const px = cx - rect.left;
+    const py = cy - rect.top;
+    const s = store.state;
+    const halfH = rect.height / 2;
+    const tan = Math.tan((FOV * Math.PI) / 360);
+
+    let best: { id: string; kind: PickKind; inside: boolean; d: number; far: number } | null = null;
+    const consider = (id: string, kind: PickKind, pos: THREE.Vector3, radius: number) => {
+      _pick.copy(pos).project(this.camera);
+      if (_pick.z >= 1) return;
+      const sx = (_pick.x * 0.5 + 0.5) * rect.width;
+      const sy = (-_pick.y * 0.5 + 0.5) * rect.height;
+      const d = Math.hypot(sx - px, sy - py);
+      const far = this.camera.position.distanceTo(pos);
+      const rPx = radius > 0 ? (radius / (far * tan)) * halfH : 0;
+      const inside = d <= rPx;
+      if (!inside && d > Math.max(PICK_SLOP, rPx + PICK_SLOP)) return;
+      if (!best) { best = { id, kind, inside, d, far }; return; }
+      if (inside !== best.inside) { if (inside) best = { id, kind, inside, d, far }; return; }
+      const better = inside ? far < best.far : d < best.d;
+      if (better) best = { id, kind, inside, d, far };
+    };
+
+    const globe = isGlobeScale(s.scale);
+    if (!globe) {
+      for (const sys of COSMERE.systems) {
+        if (!isVisible(sys, s.readProgress)) continue;
+        const p = this.orrery.systemPosition(sys.id);
+        if (p) consider(sys.id, 'system', p, 1.6);
       }
-      if (kind === 'location') {
-        const loc = COSMERE.locations.find((l) => l.id === id);
-        return loc ? isVisible(loc, store.state.readProgress) : false;
+    }
+    if (s.scale !== 'cosmere') {
+      for (const body of COSMERE.bodies) {
+        if (globe && body.system !== s.focusedSystem) continue;
+        if (!isVisible(body, s.readProgress)) continue;
+        const p = this.orrery.bodyPosition(body.id);
+        if (p) consider(body.id, 'body', p, body.radius);
       }
-      if (kind === 'body') {
-        const b = bodyById[id];
-        return b ? isVisible(b, store.state.readProgress) : false;
+    }
+    if (globe && s.focusedBody) {
+      const body = bodyById[s.focusedBody];
+      const origin = this.orrery.bodyPosition(s.focusedBody);
+      if (body && origin) {
+        const spin = this.orrery.bodySpin(s.focusedBody);
+        for (const loc of COSMERE.locations) {
+          if (loc.body !== body.id || !isVisible(loc, s.readProgress)) continue;
+          if ((s.realm === 'cognitive') !== (loc.realm === 'cognitive')) continue;
+          uvOnBody(loc.u, loc.v, body.radius * 1.015, spin, _surf);
+          // Skip the far side: the globe is in the way.
+          _toCam.copy(this.camera.position).sub(origin).sub(_surf).normalize();
+          if (_toCam.dot(_surf.clone().normalize()) < 0.02) continue;
+          consider(loc.id, 'location', _surf.add(origin), 0);
+        }
       }
-      const s = COSMERE.systems.find((x) => x.id === id);
-      return s ? isVisible(s, store.state.readProgress) : false;
-    });
+    }
+    if (s.scale === 'system' || s.scale === 'globe') {
+      for (const ch of COSMERE.characters) {
+        if (!isVisible(ch, s.readProgress)) continue;
+        const at = characterAt(ch, s.era);
+        if (!at?.body) continue;
+        if (globe && at.body !== s.focusedBody) continue;
+        const origin = this.orrery.bodyPosition(at.body);
+        if (!origin) continue;
+        consider(ch.id, 'character', origin, 0);
+      }
+    }
+
+    const hit = best as { id: string; kind: PickKind } | null;
     if (!hit) {
-      store.set('hovered', null);
+      if (s.hovered) store.set('hovered', null);
       this.hoverAnchor?.(null);
-      if (click && store.state.scale === 'cosmere') {
-        store.set('selected', null);
-      }
+      if (click && s.scale === 'cosmere') store.set('selected', null);
       return;
     }
-    const id = hit.object.userData.id as string;
-    const kind = hit.object.userData.kind as 'body' | 'system' | 'location' | 'character';
-    store.set('hovered', id);
+    store.set('hovered', hit.id);
     this.hoverAnchor?.({ x: cx, y: cy });
     if (!click) return;
-    if (kind === 'character') {
-      store.set('selected', id);
+    if (hit.kind === 'character') {
+      store.set('selected', hit.id);
       return;
     }
-    if (kind === 'location') {
-      const loc = COSMERE.locations.find((l) => l.id === id);
+    if (hit.kind === 'location') {
+      const loc = COSMERE.locations.find((l) => l.id === hit.id);
       if (loc) this.focusLocation(loc.id, loc.body, 'surface');
       return;
     }
-    if (kind === 'system') this.focusId(id, 'system');
-    else {
-      const next: Scale = store.state.scale === 'system' || store.state.scale === 'cosmere' ? 'globe' : 'surface';
-      this.focusId(id, next);
+    if (hit.kind === 'system') {
+      // Already inside it: one click keeps going, down to the nearest world.
+      if (s.scale === 'system' && s.focusedSystem === hit.id) return;
+      this.focusId(hit.id, 'system');
+      return;
     }
+    const next: Scale = s.focusedBody === hit.id && s.scale === 'globe' ? 'surface' : 'globe';
+    this.focusId(hit.id, next);
   }
 
   /**

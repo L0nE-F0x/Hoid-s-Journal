@@ -30,7 +30,6 @@ interface BodyNode {
 
 export class Orrery {
   readonly group = new THREE.Group();
-  readonly pickables: THREE.Object3D[] = [];
 
   private readonly systemPos = new Map<string, THREE.Vector3>();
   private readonly bodyNodes = new Map<string, BodyNode>();
@@ -75,7 +74,6 @@ export class Orrery {
       spr.userData = { kind: 'system', id: s.id };
       this.group.add(spr);
       this.sunSprites.set(s.id, spr);
-      this.pickables.push(spr);
     }
   }
 
@@ -157,7 +155,6 @@ export class Orrery {
       atmo.userData = { kind: 'body', id: body.id };
       this.group.add(mesh);
       this.group.add(atmo);
-      this.pickables.push(mesh);
       const sunPos = this.systemPos.get(body.system)!;
       this.bodyNodes.set(body.id, {
         body, mesh, atmo, mat, atmoMat, systemId: body.system, sunPos,

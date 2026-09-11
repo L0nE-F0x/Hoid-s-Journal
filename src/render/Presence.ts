@@ -10,7 +10,6 @@ const _off = new THREE.Vector3();
  */
 export class Presence {
   readonly group = new THREE.Group();
-  readonly pickables: THREE.Object3D[] = [];
   private readonly chars: { id: string; mesh: THREE.Mesh }[] = [];
   private readonly lines: { id: string; line: THREE.Line }[] = [];
   private readonly yolen = new THREE.Vector3();
@@ -26,7 +25,6 @@ export class Presence {
       const mesh = new THREE.Mesh(geo, mat);
       mesh.userData = { kind: 'character', id: ch.id };
       this.group.add(mesh);
-      this.pickables.push(mesh);
       this.chars.push({ id: ch.id, mesh });
     }
 

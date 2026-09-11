@@ -51,6 +51,34 @@ export function isVisible(
   return prog >= requiredArcIndex(item);
 }
 
+export type ReadingNow = { series: string; arc: number } | null;
+
+/**
+ * Publication-safe: everything published before the book you are reading is
+ * fair game, that book is revealed up to your arc, and anything published
+ * later is hidden. Without a book in hand there is nothing to be safe about,
+ * so it falls back to fully read.
+ */
+export function publicationSafeProgress(now: ReadingNow): Record<string, number> {
+  if (!now) return fullProgress();
+  const here = PUB_ORDER.indexOf(now.series);
+  if (here < 0) return fullProgress();
+  const p: Record<string, number> = {};
+  for (const s of SERIES) {
+    const i = PUB_ORDER.indexOf(s.id);
+    if (s.id === now.series) p[s.id] = Math.max(-1, Math.min(s.arcs.length - 1, now.arc));
+    else if (i < 0 || i < here) p[s.id] = s.arcs.length - 1;
+    else p[s.id] = -1;
+  }
+  return p;
+}
+
+/** Revealed by the exact arc the reader is in: the journal's ✦ chip. */
+export function isNewThisArc(item: { book?: string; arc?: string }, now: ReadingNow): boolean {
+  if (!now || !item.book || item.book === 'core' || item.book !== now.series) return false;
+  return requiredArcIndex(item) === now.arc;
+}
+
 export function fullProgress(): Record<string, number> {
   const p: Record<string, number> = {};
   for (const s of SERIES) p[s.id] = s.arcs.length - 1;

@@ -1,4 +1,14 @@
-import { COSMERE, bodyById, characterById, eraAt, sliderToYear, worldDate, yearToSlider } from '../data/index.ts';
+import {
+  COSMERE,
+  bodyById,
+  characterById,
+  eraAt,
+  isNewThisArc,
+  seriesById,
+  sliderToYear,
+  worldDate,
+  yearToSlider,
+} from '../data/index.ts';
 import { store } from '../core/store.ts';
 import { BRAND_TAGLINE, BRAND_WORDMARK } from './brand.ts';
 import { el, listen } from './dom.ts';
@@ -22,10 +32,13 @@ function entityById(id: string | null) {
 export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy(): void } {
   const word = el('button', { className: 'ceph-wordmark', text: BRAND_WORDMARK, attrs: { type: 'button' } });
   const scaleLabel = el('div', { className: 'ceph-command-sub', text: 'Cosmere · Physical' });
+  const readingLabel = el('button', { className: 'ceph-reading', text: '', attrs: { type: 'button', title: 'Reading companion' } });
+  readingLabel.style.display = 'none';
   const command = el('div', { className: 'ceph-panel ceph-command' }, [
     el('div', { className: 'ceph-command-top' }, [word]),
     el('div', { className: 'ceph-kicker', text: BRAND_TAGLINE, style: { marginTop: '4px' } }),
     scaleLabel,
+    readingLabel,
   ]);
 
   const mkTool = (label: string, title: string) =>
@@ -70,6 +83,11 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
    * The camera frames its subject in what is left (see CameraRig.setInsets).
    */
   const measure = () => {
+    // The command panel grows when a book is being tracked; the atlas hangs
+    // off its bottom edge rather than a hard-coded offset.
+    document.documentElement.style.setProperty(
+      '--ceph-command-bottom', `${Math.round(command.getBoundingClientRect().bottom)}px`,
+    );
     if (!hud.classList.contains('is-on')) {
       store.patchInsets({ right: 0, bottom: 0 });
       return;
@@ -80,6 +98,15 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
     const d = drawer.getBoundingClientRect();
     const right = open ? Math.round(Math.max(0, window.innerWidth - d.left + 12)) : 0;
     store.patchInsets({ right, bottom });
+  };
+
+  const refreshReading = () => {
+    const now = store.state.readingNow;
+    if (!now) { readingLabel.style.display = 'none'; return; }
+    const s = seriesById[now.series];
+    readingLabel.style.display = '';
+    readingLabel.textContent = `✦ reading · ${s?.arcs[now.arc]?.label ?? s?.title ?? now.series}`;
+    measure();
   };
 
   const refreshScale = () => {
@@ -110,6 +137,9 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
     if (!hit) { drawer.style.display = 'none'; measure(); return; }
     drawer.style.display = '';
     drawer.replaceChildren();
+    if (isNewThisArc(hit.obj as { book?: string; arc?: string }, store.state.readingNow)) {
+      drawer.append(el('div', { className: 'ceph-reading ceph-reading--chip', text: '✦ new this arc' }));
+    }
     if (hit.kind === 'body') {
       const b = hit.obj;
       drawer.append(
@@ -194,6 +224,8 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
       tooltip.style.left = `${m.clientX}px`;
       tooltip.style.top = `${m.clientY}px`;
     }),
+    listen(readingLabel, 'click', () => store.set('panel', 'spoilers')),
+    store.on('readingNow', refreshReading),
     listen(window, 'resize', () => measure()),
     store.on('cinematic', (on) => skip.classList.toggle('is-on', on)),
     store.on('shell', (shell) => {
@@ -221,6 +253,7 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
 
   refreshTime();
   refreshScale();
+  refreshReading();
   measure();
 
   return { destroy() { offs.forEach((o) => o()); hud.remove(); } };

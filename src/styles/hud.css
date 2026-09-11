@@ -32,6 +32,24 @@
   color: var(--ceph-text-dim);
 }
 
+.ceph-reading {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--ceph-amber) 55%, transparent);
+  background: color-mix(in srgb, var(--ceph-amber) 12%, transparent);
+  color: var(--ceph-amber);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  pointer-events: auto;
+  cursor: pointer;
+}
+.ceph-reading--chip {
+  margin: 0 0 10px;
+  cursor: default;
+}
+
 .ceph-tools {
   position: fixed;
   top: calc(16px + var(--ceph-safe-top));

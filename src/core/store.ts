@@ -190,6 +190,12 @@ class Store {
     this.touch('readProgress');
   }
 
+  /** Replace the whole progress map in one notification. */
+  setProgress(all: Record<string, number>): void {
+    this.state.readProgress = { ...all };
+    this.touch('readProgress');
+  }
+
   private queueFlush(): void {
     if (this.flushQueued) return;
     this.flushQueued = true;

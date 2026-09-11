@@ -1,4 +1,11 @@
-import { COSMERE, bodyById, isVisible, seriesById } from '../data/index.ts';
+import {
+  COSMERE,
+  bodyById,
+  isNewThisArc,
+  isVisible,
+  publicationSafeProgress,
+  seriesById,
+} from '../data/index.ts';
 import { store } from '../core/store.ts';
 import { el, listen } from './dom.ts';
 
@@ -31,6 +38,7 @@ export function mountModals(root: HTMLElement): { destroy(): void } {
 
   offs.push(store.on('panel', render));
   offs.push(store.on('magicId', () => { if (store.state.panel === 'arcanum') render(); }));
+  offs.push(store.on('readingNow', () => { if (store.state.panel === 'spoilers') render(); }));
   offs.push(store.on('readProgress', () => {
     if (store.state.panel === 'spoilers' || store.state.panel === 'codex' || store.state.panel === 'arcanum') render();
   }));
@@ -91,11 +99,11 @@ function renderCodex(card: HTMLElement): void {
     store.set('searchQuery', input.value);
     results.replaceChildren();
     if (q.length < 2) return;
-    const hits: { id: string; label: string; kind: string; fact: string }[] = [];
+    const hits: { id: string; label: string; kind: string; fact: string; fresh: boolean }[] = [];
     const push = (id: string, label: string, kind: string, fact: string, vis: { book?: string; arc?: string }) => {
       if (!isVisible(vis, store.state.readProgress)) return;
       if (!label.toLowerCase().includes(q) && !fact.toLowerCase().includes(q)) return;
-      hits.push({ id, label, kind, fact });
+      hits.push({ id, label, kind, fact, fresh: isNewThisArc(vis, store.state.readingNow) });
     };
     for (const b of COSMERE.bodies) push(b.id, b.name, 'world', b.fact, b);
     for (const c of COSMERE.characters) push(c.id, c.name, 'person', c.fact, c);
@@ -115,7 +123,8 @@ function renderCodex(card: HTMLElement): void {
     });
     for (const h of hits.slice(0, 40)) {
       const row = el('button', { className: 'ceph-card' }, [
-        el('div', { className: 'ceph-kicker', text: h.kind }),
+        el('div', { className: 'ceph-kicker', text: h.fresh ? `✦ ${h.kind} · new this arc` : h.kind,
+          style: h.fresh ? { color: 'var(--ceph-amber)' } : {} }),
         el('div', { text: h.label, style: { fontWeight: '600' } }),
         el('div', { text: h.fact, style: { color: 'var(--ceph-text-dim)', fontSize: '12px', marginTop: '4px' } }),
       ]);
@@ -139,12 +148,53 @@ function renderCodex(card: HTMLElement): void {
   if (store.state.searchQuery.length >= 2) run();
 }
 
+function applyReading(series: string | null, arc: number): void {
+  if (!series) {
+    store.set('readingNow', null);
+    return;
+  }
+  const now = { series, arc };
+  store.setProgress(publicationSafeProgress(now));
+  store.set('readingNow', now);
+}
+
 function renderSpoilers(card: HTMLElement): void {
   card.append(
     el('div', { className: 'ceph-kicker', text: 'Reading companion' }),
     el('h2', { text: 'Where are you in the story?' }),
-    el('p', { className: 'ceph-fact', text: 'Rereaders default to fully read. Step a series back if you want the Cosmere to hide what you have not reached.' }),
+    el('p', { className: 'ceph-fact', text: 'Rereaders default to fully read. Tell the journal what you are on and it syncs the Cosmere to that beat, publication-safe. Or step a single series back by hand.' }),
   );
+
+  // "I am on Words of Radiance": the beat the whole journal answers to.
+  const now = store.state.readingNow;
+  const pick = el('select', { className: 'ceph-search', style: { marginTop: '14px' } }) as HTMLSelectElement;
+  pick.append(el('option', { text: 'Not tracking a book — show everything', attrs: { value: '' } }));
+  for (const s of COSMERE.series) {
+    pick.append(el('option', {
+      text: s.title,
+      attrs: { value: s.id, ...(now?.series === s.id ? { selected: 'selected' } : {}) },
+    }));
+  }
+  listen(pick, 'change', () => {
+    const id = pick.value;
+    if (!id) { applyReading(null, 0); return; }
+    const s = seriesById[id];
+    applyReading(id, s ? s.arcs.length - 1 : 0);
+  });
+
+  const arcRow = el('div', { style: { display: 'flex', alignItems: 'center', gap: '8px', marginTop: '10px' } });
+  if (now) {
+    const s = seriesById[now.series];
+    const back = el('button', { className: 'ceph-btn', text: '←' });
+    const fwd = el('button', { className: 'ceph-btn', text: '→' });
+    listen(back, 'click', () => applyReading(now.series, Math.max(0, now.arc - 1)));
+    listen(fwd, 'click', () => applyReading(now.series, Math.min((s?.arcs.length ?? 1) - 1, now.arc + 1)));
+    arcRow.append(
+      back, fwd,
+      el('span', { className: 'ceph-reading', text: `✦ ${s?.arcs[now.arc]?.label ?? 'reading'}` }),
+    );
+  }
+  card.append(pick, arcRow);
   const list = el('div', { style: { display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '16px' } });
   for (const s of COSMERE.series) {
     const prog = store.state.readProgress[s.id] ?? s.arcs.length - 1;
@@ -160,19 +210,21 @@ function renderSpoilers(card: HTMLElement): void {
     row.append(label, el('div', { style: { display: 'flex', gap: '8px', marginTop: '6px' } }, [less, more]));
     list.append(row);
   }
-  const pub = el('button', { className: 'ceph-btn', text: 'Publication-safe preset', style: { marginTop: '12px' } });
-  listen(pub, 'click', () => {
-    const now = store.state.readingNow;
-    const idx = now ? COSMERE.pubOrder.indexOf(now.series) : COSMERE.pubOrder.length - 1;
-    for (const id of COSMERE.pubOrder) {
-      const s = seriesById[id];
-      if (!s) continue;
-      const i = COSMERE.pubOrder.indexOf(id);
-      store.patchProgress(id, i <= idx ? s.arcs.length - 1 : -1);
-    }
+  const pub = el('button', {
+    className: 'ceph-btn',
+    text: 'Re-apply publication-safe',
+    style: { marginTop: '12px' },
   });
+  listen(pub, 'click', () => {
+    const n = store.state.readingNow;
+    if (!n) return;
+    applyReading(n.series, n.arc);
+  });
+  if (!store.state.readingNow) pub.disabled = true;
+  card.append(el('div', { className: 'ceph-kicker', text: 'By series', style: { marginTop: '18px' } }));
   card.append(list, pub);
 }
+
 
 function renderSettings(card: HTMLElement): void {
   card.append(el('h2', { text: 'Look' }));

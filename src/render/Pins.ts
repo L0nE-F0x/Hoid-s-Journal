@@ -51,7 +51,7 @@ function labelTexture(text: string): THREE.CanvasTexture {
  */
 export class Pins {
   readonly group = new THREE.Group();
-  readonly pickables: THREE.Sprite[] = [];
+  private readonly markers: THREE.Sprite[] = [];
 
   private readonly label: THREE.Sprite;
   private labelId: string | null = null;
@@ -66,7 +66,7 @@ export class Pins {
       }));
       sprite.userData = { kind: 'location', id: loc.id, body: loc.body };
       this.group.add(sprite);
-      this.pickables.push(sprite);
+      this.markers.push(sprite);
     }
 
     this.label = new THREE.Sprite(new THREE.SpriteMaterial({
@@ -93,7 +93,7 @@ export class Pins {
     let hotPos: THREE.Vector3 | null = null;
     let hotName: string | null = null;
 
-    for (const sprite of this.pickables) {
+    for (const sprite of this.markers) {
       const loc = COSMERE.locations.find((l) => l.id === sprite.userData.id);
       if (!loc) { sprite.visible = false; continue; }
       const body = bodyById[loc.body];

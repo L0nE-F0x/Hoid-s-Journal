@@ -16,19 +16,16 @@ Architecture lock: `AGENTS.md` + `DESIGN.md`. This file is the live todo.
 
 # ▶ START HERE — next session
 
-**2026-09-12 lore pass 2.** The first timeline pass hid planets that do not
-exist yet and left their stars, orbits, names and galaxy dots. Pre-Shattering
-was empty rings labelled Lumar, Scadrian, UTol, Canticle. Coppermind: most
-worlds existed and were named before the Shattering; **Scadrial** is the
-exception (Ruin and Preservation built it after). Lumar, Canticle, UTol and
-Komashi sit in their rings at era 0; Scadrian is gone until era 1 — star,
-orbit, label, directory, galaxy, Shadesmar disc and picking all wait with
-the planet. `systemOnTheMap` is the gate. Interaction suite **56/56**.
+**2026-09-12 wrapped and live.** Lore depth, empty-system chrome, Cognitive
+sites after Spiritual, and clickable moons all shipped (`5e341f1` →
+`3d5fa17`). Last commit: *Moons were scenery until you opened the planet
+they belonged to*. Interaction suite **56/56**.
 
 Hard-refresh https://thecosmere.netlify.app after a deploy; the service
 worker otherwise keeps the old shell.
 
-**Your job is whatever they find on that deploy.**
+**Your job is whatever they find on that deploy.** Do not restart the lore
+or chrome hunt from scratch. If they come back with a list, work the list.
 
 Git: `master` tracking https://github.com/L0nE-F0x/Hoid-s-Journal, **level
 with origin**. Live site: https://thecosmere.netlify.app — **it deploys on
@@ -258,6 +255,18 @@ Found and fixed in the UI-polish session after that:
 - The Lore Web canvas sat above the HUD in z-order, so every top-bar click
   while the graph was open was a miss. The atlas also stayed up over it.
 
+Found and fixed in the lore / picking session after that:
+
+- Empty Pre-Shattering rings labelled Lumar, Scadrian, UTol, Canticle. Most
+  worlds existed before the Shattering; Scadrial is the exception. `systemOnTheMap`
+  hides a star with nothing in orbit. Do not put `eraMin` on Lumar / Canticle /
+  UTol / Komashi just because their books are late.
+- Leaving the Spiritual Realm left Shadesmar with roads and no cities.
+  Presence now sets `group.visible` every frame, the way Labels and Pins do.
+- Moons only drew on a focused globe and picking never asked. They light
+  in-system, on the globe, or when the camera is close. Click opens a card.
+  Worlds pick at Cosmere if they fill the pointer. Dawnshards pick in Spiritual.
+
 Open, leftover, not a brief:
 
 - **Touch on the atlas and globe.** Pinch, long-press and drag-vs-tap are
@@ -459,3 +468,12 @@ lock flipped; this is the version that is true.
     `eraMax`. Cultivation's perpendicularity, Silverlight, Luthadel, the
     sixteen Shards as sixteen — none of that is on the sky before the
     Shattering. `onTheMap()` is spoiler gate plus playhead. 49/49.
+21. **Empty systems.** First lore pass hid planets and left rings. Coppermind:
+    most worlds existed and were named before the Shattering; Scadrial did
+    not. `systemOnTheMap`. `60e04b9`.
+22. **Cognitive sites after Spiritual.** Presence never turned `group.visible`
+    back on. `95c1e7a`.
+23. **2026-09-12 wrap** (`60e04b9` → `3d5fa17`). Moons clickable, in the sky
+    without opening the parent globe, Dawnshards pickable, gas-giant names
+    in-system, Three Sisters lore and the fallen fourth moon under the
+    Shattered Plains. Pushed and live. Interaction suite 56/56.

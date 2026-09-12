@@ -10,6 +10,7 @@ import {
   isVisible,
   landmarkById,
   locationsOn,
+  onTheMap,
   perpAt,
   scadrialBiome,
 } from '../data/index.ts';
@@ -102,7 +103,8 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
     return locationsOn(s.focusedBody, s.era).filter((l) => {
       if (!isVisible(l, s.readProgress)) return false;
       if (s.realm === 'cognitive') {
-        return l.realm === 'cognitive' || !!perpAt(l.id);
+        const door = perpAt(l.id);
+        return l.realm === 'cognitive' || (!!door && onTheMap(door, s.readProgress, s.era));
       }
       return l.realm !== 'cognitive';
     });

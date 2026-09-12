@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { COSMERE, HUBS, bodyById, bodyByName, characterAt, hubById, isVisible } from '../data/index.ts';
+import { COSMERE, HUBS, bodyById, bodyByName, characterAt, hubById, isVisible, onTheMap } from '../data/index.ts';
 import { keplerWorld } from '../layout/kepler.ts';
 import { hubWorld } from '../layout/cognitive.ts';
 import type { Orrery } from './Orrery.ts';
@@ -166,7 +166,7 @@ export class Presence {
   ): void {
     const yolenPos = orrery.bodyPosition('yolen') ?? this.yolen;
     this.updateTrail(orrery, camera, progress, scale, selected);
-    this.updateHubs(orrery, camera, progress, scale, cognitive, selected, focusedSystem);
+    this.updateHubs(orrery, camera, progress, scale, cognitive, selected, focusedSystem, era);
 
     // On a surface scan the pins are the subject; a swarm of people-dots at
     // the same apparent size just competes with them.
@@ -200,7 +200,7 @@ export class Presence {
       row.mat.uniforms.uGain.value = here ? 0.30 : 0.12;
     }
 
-    const linesOn = showShardLines && (scale === 'cosmere' || scale === 'system');
+    const linesOn = showShardLines && era > 0 && (scale === 'cosmere' || scale === 'system');
     for (const row of this.lines) {
       const sh = COSMERE.shards.find((s) => s.id === row.id);
       if (!sh) { row.line.visible = false; continue; }
@@ -226,7 +226,7 @@ export class Presence {
   /** Where a Cognitive hub is standing this frame. */
   hubPosition(id: string): THREE.Vector3 | undefined {
     const row = this.hubs.find((h) => h.id === id);
-    return row?.mesh.visible ? row.pos : row?.pos;
+    return row?.mesh.visible ? row.pos : undefined;
   }
 
   private hubWorld(orrery: Orrery, id: string, into: THREE.Vector3): THREE.Vector3 | null {
@@ -247,11 +247,12 @@ export class Presence {
     cognitive: boolean,
     selected: string | null,
     focusedSystem: string | null,
+    era: number,
   ): void {
     const show = cognitive && scale !== 'city';
     for (const row of this.hubs) {
       const hub = hubById[row.id];
-      const p = hub && isVisible(hub, progress) ? this.hubWorld(orrery, hub.id, row.pos) : null;
+      const p = hub && onTheMap(hub, progress, era) ? this.hubWorld(orrery, hub.id, row.pos) : null;
       // Cosmere-famous sites (Silverlight, the Grand Knell, the Expanses) stay
       // up when you change scale. A pool beside one world waits until you are
       // in that system.

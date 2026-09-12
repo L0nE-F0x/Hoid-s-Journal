@@ -7,7 +7,9 @@ import {
   DAWNSHARDS,
   bodyById,
   characterAt,
+  inEra,
   isVisible,
+  onTheMap,
 } from '../data/index.ts';
 import { store } from '../core/store.ts';
 import { atlasIsOpen } from './atlas.ts';
@@ -177,12 +179,14 @@ export function mountDirectory(root: HTMLElement): { destroy(): void } {
     if (tab === 'systems') {
       for (const sys of COSMERE.systems) {
         if (!isVisible(sys, s.readProgress) || !match(sys.name)) continue;
-        const n = COSMERE.bodies.filter((b) => b.system === sys.id && b.kind !== 'gas-giant').length;
+        const n = COSMERE.bodies.filter((b) => b.system === sys.id && b.kind !== 'gas-giant'
+          && onTheMap(b, s.readProgress, s.era)).length;
+        if (n === 0) continue;
         push(row(sys.id, sys.name, n === 1 ? '1 world' : `${n} worlds`, sys.sunColor, `Enter the ${sys.name} system`));
       }
     } else if (tab === 'worlds') {
       for (const b of COSMERE.bodies) {
-        if (b.kind === 'gas-giant' || !isVisible(b, s.readProgress) || !match(b.name)) continue;
+        if (b.kind === 'gas-giant' || !onTheMap(b, s.readProgress, s.era) || !match(b.name)) continue;
         if (s.scale === 'system' && s.focusedSystem && b.system !== s.focusedSystem) continue;
         push(row(b.id, b.name, b.kind.replace('-', ' '), b.color, b.fact));
       }
@@ -190,6 +194,7 @@ export function mountDirectory(root: HTMLElement): { destroy(): void } {
       for (const m of COSMERE.moons) {
         if (!isVisible(m, s.readProgress) || !match(m.name)) continue;
         const parent = bodyById[m.parent];
+        if (parent && !inEra(parent, s.era)) continue;
         if (s.scale === 'system' && s.focusedSystem && parent?.system !== s.focusedSystem) continue;
         push(row(m.id, m.name, parent?.name ?? m.parent, m.color, m.fact));
       }
@@ -202,18 +207,20 @@ export function mountDirectory(root: HTMLElement): { destroy(): void } {
         if (otherKind !== wantDragons) continue;
         if (!isVisible(c, s.readProgress) || !match(c.name)) continue;
         const at = characterAt(c, s.era);
-        if (s.scale === 'system' && s.focusedSystem && at && bodyById[at.body ?? '']?.system !== s.focusedSystem) continue;
+        if (!at) continue;
+        if (s.scale === 'system' && s.focusedSystem && bodyById[at.body ?? '']?.system !== s.focusedSystem) continue;
         push(row(c.id, c.name, wantDragons ? (c.kind === 'dragon' ? 'dragon' : 'Sleepless') : c.origin, c.color, c.fact));
       }
     } else if (tab === 'shards') {
       for (const sh of COSMERE.shards) {
+        if (s.era <= 0) continue;
         if (!isVisible(sh, s.readProgress) || !match(sh.name)) continue;
         const era = sh.eras.find((e) => e.era === s.era) ?? sh.eras[sh.eras.length - 1];
         push(row(sh.id, sh.name, era?.status ?? 'shard', sh.color, sh.desc));
       }
     } else if (tab === 'doors') {
       for (const p of COSMERE.perps) {
-        if (!isVisible(p, s.readProgress) || !match(p.name)) continue;
+        if (!onTheMap(p, s.readProgress, s.era) || !match(p.name)) continue;
         const body = bodyById[p.body];
         push(row(p.id, p.name, body?.name ?? p.body, '#c4b5fd', p.fact));
       }

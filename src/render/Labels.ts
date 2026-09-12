@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { COSMERE, isVisible } from '../data/index.ts';
+import { COSMERE, inEra, isVisible } from '../data/index.ts';
 import type { Orrery } from './Orrery.ts';
 
 interface Label {
@@ -94,6 +94,7 @@ export class Labels {
     scale: string,
     focusedSystem: string | null,
     focusedBody: string | null,
+    era = 3,
   ): void {
     this.group.visible = show;
     if (!show) return;
@@ -117,7 +118,9 @@ export class Labels {
           ? l.id === focusedBody && scale === 'globe'
           : scale === 'system' && (!focusedSystem || l.system === focusedSystem);
         const dist = camera.position.distanceTo(p);
-        l.sprite.visible = inScope && isVisible(l.visibleItem, progress) && dist < 160;
+        const body = COSMERE.bodies.find((b) => b.id === l.id);
+        l.sprite.visible = inScope && isVisible(l.visibleItem, progress)
+          && (!body || inEra(body, era)) && dist < 160;
         l.sprite.position.copy(p);
         l.sprite.position.y += l.radius * 1.25 + 0.25;
         // Constant apparent size: a fixed floor turns into a billboard the

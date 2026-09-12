@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { Line2 } from 'three/examples/jsm/lines/Line2.js';
 import { LineGeometry } from 'three/examples/jsm/lines/LineGeometry.js';
 import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial.js';
-import { COSMERE, ROUTES, isVisible, systemExtent } from '../data/index.ts';
+import { COSMERE, ROUTES, onTheMap, systemExtent } from '../data/index.ts';
 import seaBakeFrag from '../shaders/seaBake.frag';
 import bakeVert from '../shaders/planetBake.vert';
 import shadesmarVert from '../shaders/shadesmar.vert';
@@ -190,6 +190,7 @@ export class Shadesmar {
     height: number,
     fov: number,
     progress: Record<string, number>,
+    era: number,
     hubAt: (id: string) => THREE.Vector3 | null,
   ): void {
     this.group.visible = visible;
@@ -217,7 +218,7 @@ export class Shadesmar {
 
     for (const row of this.routes) {
       const route = ROUTES.find((r) => r.id === row.id);
-      const seen = route ? isVisible(route, progress) : false;
+      const seen = route ? onTheMap(route, progress, era) : false;
       row.line.visible = wide && seen;
       const mat = row.line.material as LineMaterial;
       // Traffic: the road brightens in pulses, so it reads as used.

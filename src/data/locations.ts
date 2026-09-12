@@ -3,11 +3,25 @@ import type { Location, Perpendicularity } from './types.ts';
 const C = 'canon' as const;
 const W = 'wob' as const;
 
+/** First era a place exists, inferred from the book when not set by hand. */
+function eraMinFromBook(book: string): number {
+  if (book === 'core') return 0;
+  if (book === 'mistborn1' || book === 'secrethistory') return 2;
+  if (book === 'mistborn2') return 3;
+  if (book === 'tress' || book === 'yumi') return 4;
+  if (book === 'sunlit' || book === 'sixthofdusk' || book === 'emberdark') return 5;
+  return 1;
+}
+
 function loc(
   id: string, name: string, body: string, book: string, u: number, v: number,
   color: string, icon: string, desc: string, extra: Partial<Location> = {},
 ): Location {
-  return { id, name, body, book, u, v, color, icon, desc, canon: C, sources: [book], ...extra };
+  const ashOnly = extra.eraMaps?.includes('ash') && !extra.eraMaps.includes('basin');
+  const basinOnly = extra.eraMaps?.includes('basin') && !extra.eraMaps.includes('ash');
+  const eraMin = extra.eraMin ?? (ashOnly ? 2 : basinOnly ? 3 : eraMinFromBook(book));
+  const eraMax = extra.eraMax ?? (ashOnly ? 2 : undefined);
+  return { id, name, body, book, u, v, color, icon, desc, canon: C, sources: [book], eraMin, eraMax, ...extra };
 }
 
 export const LOCATIONS: Location[] = [
@@ -93,7 +107,7 @@ export const LOCATIONS: Location[] = [
   loc('kezare', 'Kezare', 'taldain', 'whitesand', 0.42, 0.48, '#fbbf24', 'city',
     'Dayside capital on the lossand, home of the Diem.'),
   loc('patji', 'Patji', 'first-of-the-sun', 'sixthofdusk', 0.52, 0.50, '#4ade80', 'island',
-    'The Father island of the Pantheon. Patji\'s Eye is a perpendicularity.'),
+    'The Father island of the Pantheon. Patji\'s Eye is a perpendicularity.', { eraMin: 1 }),
   loc('forests-of-hell', 'Forests of Hell', 'threnody', 'shadowsforsilence', 0.50, 0.52, '#78716c', 'forest',
     'Where the Simple Rules are the only law that matters.'),
   loc('diggens-point', "Diggen's Point", 'lumar-world', 'tress', 0.18, 0.48, '#6ee7b7', 'rock',
@@ -290,7 +304,7 @@ export const LOCATIONS: Location[] = [
     'A world Autonomy took and put an avatar on. The avatar took a name of her own.',
     { arc: 'tlm', sources: ['The Lost Metal'] }),
   loc('suluko', 'Suluko', 'first-of-the-sun', 'sixthofdusk', 0.470, 0.520, '#a3e635', 'island',
-    'A Pantheon island. Less lethal than Patji, which is not the same as safe.'),
+    'A Pantheon island. Less lethal than Patji, which is not the same as safe.', { eraMin: 1 }),
   loc('vathi-camp', 'The company camp', 'first-of-the-sun', 'sixthofdusk', 0.560, 0.520, '#fbbf24', 'home',
     'Off-worlders came to survey the Pantheon. The islands surveyed them back.', { arc: 'sixthofdusk' }),
   loc('longroad', 'The Long Road', 'canticle-world', 'sunlit', 0.500, 0.560, '#fb923c', 'land',
@@ -306,26 +320,33 @@ export const LOCATIONS: Location[] = [
 
 export const PERPS: Perpendicularity[] = [
   { id: 'well-of-ascension', name: 'The Well of Ascension', body: 'scadrial', book: 'mistborn1',
-    fact: 'Preservation\'s pool beneath Kredik Shaw. Used, then collapsed.', at: 'luthadel', canon: C, sources: ['Mistborn Era 1'] },
+    fact: 'Preservation\'s pool beneath Kredik Shaw. Used, then collapsed.', at: 'luthadel',
+    eraMin: 2, eraMax: 2, canon: C, sources: ['Mistborn Era 1'] },
   { id: 'harmony-pool', name: "Harmony's Perpendicularity", body: 'scadrial', book: 'mistborn2',
-    fact: 'The surviving Scadrian pool after the Catacendre.', at: 'elendel', canon: C, sources: ['Mistborn Era 2'] },
+    fact: 'The surviving Scadrian pool after the Catacendre.', at: 'elendel',
+    eraMin: 3, canon: C, sources: ['Mistborn Era 2'] },
   { id: 'elantris-pool', name: 'The Pool of Elantris', body: 'sel', book: 'elantris',
-    fact: 'Devotion\'s perpendicularity in the mountains above Elantris.', at: 'elantris-city', canon: C, sources: ['Elantris'] },
+    fact: 'Devotion\'s perpendicularity in the mountains above Elantris.', at: 'elantris-city',
+    eraMin: 1, canon: C, sources: ['Elantris'] },
   { id: 'cultivation-pool', name: "Cultivation's Perpendicularity", body: 'roshar', book: 'stormlight',
-    fact: 'The Horneater Peaks\' thermal oceans. A stable transit.', at: 'horneater-peaks', canon: C, sources: ['The Stormlight Archive'] },
+    fact: 'The Horneater Peaks\' thermal oceans. A stable transit.', at: 'horneater-peaks',
+    eraMin: 1, canon: C, sources: ['The Stormlight Archive'] },
   { id: 'honors-perp', name: "Honor's Perpendicularity", body: 'roshar', book: 'stormlight',
-    fact: 'Opened by Dalinar at Thaylen Field; not a stable geographic pool.', at: 'thaylen-city', canon: C, sources: ['Oathbringer'] },
+    fact: 'Opened by Dalinar at Thaylen Field; not a stable geographic pool.', at: 'thaylen-city',
+    eraMin: 3, eraMax: 3, canon: C, sources: ['Oathbringer'] },
   { id: 'tears-of-edgli', name: 'Tears of Edgli', body: 'nalthis', book: 'warbreaker',
-    fact: 'Flowers whose dye is Endowment\'s Investiture made pigment.', at: 'tears-of-edgli', canon: C, sources: ['Warbreaker'] },
+    fact: 'Flowers whose dye is Endowment\'s Investiture made pigment.', at: 'tears-of-edgli',
+    eraMin: 1, canon: C, sources: ['Warbreaker'] },
   { id: 'patjis-eye', name: "Patji's Eye", body: 'first-of-the-sun', book: 'sixthofdusk',
-    fact: 'A perpendicularity on the island Patji, source of Aviar powers.', at: 'patji', canon: C, sources: ['Sixth of the Dusk'] },
+    fact: 'A perpendicularity on the island Patji, source of Aviar powers.', at: 'patji',
+    eraMin: 1, canon: C, sources: ['Sixth of the Dusk'] },
   { id: 'pits-of-hathsin-perp', name: 'The Pits of Hathsin', body: 'scadrial', book: 'mistborn1',
     fact: 'Where Ruin\'s power crystallised into atium. Not a doorway so much as a wound that produced metal.',
-    at: 'pits-of-hathsin', canon: C, sources: ['Mistborn Era 1'] },
+    at: 'pits-of-hathsin', eraMin: 2, eraMax: 2, canon: C, sources: ['Mistborn Era 1'] },
   { id: 'dominion-pool', name: "Dominion's Pool", body: 'sel', book: 'elantris',
     fact: 'The second Selish perpendicularity. Dominion was Splintered with Devotion, and both pools remain.',
-    at: 'fjorden', canon: C, sources: ['Arcanum Unbounded — Sel essay'] },
+    at: 'fjorden', eraMin: 1, canon: C, sources: ['Arcanum Unbounded — Sel essay'] },
   { id: 'silverlight-nexus', name: 'The Silverlight Nexus', body: 'yolen', book: 'arcanum',
     fact: 'The crossing that made a city possible where no world is. Khriss came through it and stayed.',
-    canon: W, sources: ['Arcanum Unbounded', 'Word of Brandon'] },
+    eraMin: 1, canon: W, sources: ['Arcanum Unbounded', 'Word of Brandon'] },
 ];

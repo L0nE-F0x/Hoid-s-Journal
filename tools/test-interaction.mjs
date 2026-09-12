@@ -129,6 +129,12 @@ async function run() {
     let s = await state(page);
     check('title: shell is play', s.shell === 'play', s.shell);
     check('cinematic ends at Cosmere', s.scale === 'cosmere', s.scale);
+    // Nested dives below are a Stormlight-era reading. The playhead defaults
+    // to Pre-Shattering, when Urithiru and the Radiants do not exist yet.
+    await page.evaluate(() => {
+      window.__ceph.store.set('year', 1);
+      window.__ceph.store.set('era', 3);
+    });
     check('directory lists systems at Cosmere',
       await page.evaluate(() => !!document.querySelector('.ceph-directory.is-on')));
 
@@ -252,11 +258,29 @@ async function run() {
     await sleep(700);
     s = await state(page);
     check('C enters the Cognitive Realm', s.realm === 'cognitive', s.realm);
+    await page.evaluate(() => {
+      window.__ceph.store.set('year', -7999);
+      window.__ceph.store.set('era', 0);
+    });
+    await sleep(400);
+    const preDoors = await page.evaluate(() => ({
+      silver: !!window.__ceph.app.presence.hubPosition('silverlight'),
+      cultivation: !!window.__ceph.app.presence.hubPosition('cultivation-perp-cog'),
+    }));
+    const yolenOn = await page.evaluate(() => !!window.__ceph.app.orrery.bodyPosition('yolen'));
+    check('Pre-Shattering hides Cultivation\'s door', !preDoors.cultivation, JSON.stringify(preDoors));
+    check('Pre-Shattering hides Silverlight', !preDoors.silver, JSON.stringify(preDoors));
+    await page.evaluate(() => {
+      window.__ceph.store.set('year', 1);
+      window.__ceph.store.set('era', 3);
+    });
+    await sleep(400);
     const silver = await page.evaluate(() => {
       const p = window.__ceph.app.presence.hubPosition('silverlight');
       return p ? p.length() > 1 : false;
     });
-    check('Silverlight stands in Shadesmar', silver);
+    check('Silverlight stands in Shadesmar after the Shattering', silver);
+    check('Yolen exists before the Shattering', yolenOn);
     await page.keyboard.press('v');
     await settle(page);
     s = await state(page);

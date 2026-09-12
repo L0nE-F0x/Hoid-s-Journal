@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { COSMERE, COSMERE_EVENTS, HUBS, bodyById, canEnterCity, characterAt, eraAt, hubById, isVisible, systemExtent, yearToSlider } from '../data/index.ts';
+import { COSMERE, COSMERE_EVENTS, HUBS, bodyById, canEnterCity, characterAt, eraAt, hubById, isVisible, onTheMap, systemExtent, yearToSlider } from '../data/index.ts';
 import { uvFacing, uvOnBody } from '../layout/surface.ts';
 import { hubWorld } from '../layout/cognitive.ts';
 import { CameraRig, type Waypoint } from './CameraRig.ts';
@@ -460,6 +460,11 @@ export class App {
     };
 
     if (s.realm === 'spiritual') {
+      if (s.era <= 0) {
+        if (s.hovered) store.set('hovered', null);
+        if (click) store.set('selected', null);
+        return;
+      }
       for (const sh of COSMERE.shards) {
         if (!isVisible(sh, s.readProgress)) continue;
         const p = this.spiritual.motePosition(sh.id);
@@ -489,7 +494,7 @@ export class App {
       }
       if (s.realm === 'cognitive') {
         for (const hub of HUBS) {
-          if (!isVisible(hub, s.readProgress)) continue;
+          if (!onTheMap(hub, s.readProgress, s.era)) continue;
           const p = this.presence.hubPosition(hub.id);
           if (p) consider(hub.id, 'hub', p, 1.8);
         }
@@ -498,7 +503,7 @@ export class App {
     if (s.scale !== 'cosmere') {
       for (const body of COSMERE.bodies) {
         if (globe && body.system !== s.focusedSystem) continue;
-        if (!isVisible(body, s.readProgress)) continue;
+        if (!onTheMap(body, s.readProgress, s.era)) continue;
         const p = this.orrery.bodyPosition(body.id);
         if (p) consider(body.id, 'body', p, body.radius);
       }
@@ -509,9 +514,10 @@ export class App {
       if (body && origin) {
         const spin = this.orrery.bodySpin(s.focusedBody);
         for (const loc of COSMERE.locations) {
-          if (loc.body !== body.id || !isVisible(loc, s.readProgress)) continue;
+          if (loc.body !== body.id || !onTheMap(loc, s.readProgress, s.era)) continue;
           if (s.realm === 'cognitive') {
-            if (loc.realm !== 'cognitive' && !COSMERE.perps.some((p) => p.at === loc.id)) continue;
+            const door = COSMERE.perps.find((p) => p.at === loc.id);
+            if (loc.realm !== 'cognitive' && !(door && onTheMap(door, s.readProgress, s.era))) continue;
           } else if (loc.realm === 'cognitive') continue;
           uvOnBody(loc.u, loc.v, body.radius * 1.015, spin, _surf);
           // Skip the far side: the globe is in the way.
@@ -773,11 +779,11 @@ export class App {
     this.labels.update(
       this.orrery, this.camera, s.readProgress,
       s.visual.showLabels && s.shell === 'play', s.scale,
-      s.focusedSystem, s.focusedBody,
+      s.focusedSystem, s.focusedBody, s.era,
     );
     this.pins.update(
       this.orrery, this.camera, s.readProgress, s.focusedBody, s.scale,
-      s.hovered ?? s.focusedLocation, s.realm, s.visual.showPerps,
+      s.hovered ?? s.focusedLocation, s.realm, s.visual.showPerps, s.era,
     );
     this.presence.update(
       this.orrery, this.camera, s.era, s.year, s.readProgress, s.scale,
@@ -787,7 +793,7 @@ export class App {
     );
     this.shadesmar.update(
       t, s.realm === 'cognitive' && !s.cinematic, s.scale, s.focusedSystem,
-      this.canvas.clientHeight, FOV, s.readProgress,
+      this.canvas.clientHeight, FOV, s.readProgress, s.era,
       (id) => hubWorld(id, (sys) => this.orrery.systemPosition(sys), _hub),
     );
     this.spiritual.update(

@@ -436,3 +436,7 @@ lock flipped; this is the version that is true.
 19. **Perf pass.** LOD by scale, no atmospheres/clouds/moons at Cosmere,
     trails throttled, HUD year ticks throttled, bloom/SMAA stepped down from
     HUGE/HIGH, Cognitive plates warmed after boot. 46/46 still.
+20. **Timeline lore pass.** Places, doors, hubs and worlds now have `eraMin` /
+    `eraMax`. Cultivation's perpendicularity, Silverlight, Luthadel, the
+    sixteen Shards as sixteen — none of that is on the sky before the
+    Shattering. `onTheMap()` is spoiler gate plus playhead. 49/49.

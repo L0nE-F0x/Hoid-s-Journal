@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { Line2 } from 'three/examples/jsm/lines/Line2.js';
 import { LineGeometry } from 'three/examples/jsm/lines/LineGeometry.js';
 import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial.js';
-import { COSMERE, scadrialBiome, type Body } from '../data/index.ts';
+import { COSMERE, inEra, scadrialBiome, type Body } from '../data/index.ts';
 import { keplerOffset } from '../layout/kepler.ts';
 import type { Realm } from '../core/store.ts';
 import { recipeFor } from '../cartography/recipes.ts';
@@ -578,9 +578,9 @@ export class Orrery {
       this.bodyWorld.get(node.body.id)!.copy(_world);
 
       const inSystem = !visual.focusedSystem || node.body.system === visual.focusedSystem;
-      const showBody = globe
+      const showBody = inEra(node.body, era) && (globe
         ? node.body.id === visual.focusedBody
-        : visual.scale === 'cosmere' || inSystem;
+        : visual.scale === 'cosmere' || inSystem);
       node.mesh.visible = showBody;
       const geo = globe && node.body.id === visual.focusedBody
         ? (this.band === 'low' ? this.sphereMid : this.sphereHigh)
@@ -660,7 +660,8 @@ export class Orrery {
     // nebula washes the whole frame. The planet is the subject: the shader
     // still lights it from the real sun position.
     for (const n of this.nebulae) {
-      const on = visual.showNebula && !globe
+      const inhabited = [...this.bodyNodes.values()].some((b) => b.body.system === n.system && inEra(b.body, era));
+      const on = inhabited && visual.showNebula && !globe
         && (visual.scale !== 'system' || n.system === visual.focusedSystem);
       n.mesh.visible = on;
       if (!on) continue;
@@ -682,7 +683,8 @@ export class Orrery {
     }
 
     for (const [id, mesh] of this.suns) {
-      mesh.visible = !globe && (visual.scale !== 'system' || id === visual.focusedSystem);
+      const inhabited = [...this.bodyNodes.values()].some((n) => n.body.system === id && inEra(n.body, era));
+      mesh.visible = inhabited && !globe && (visual.scale !== 'system' || id === visual.focusedSystem);
       const mat = this.sunMats.get(id)!;
       mat.uniforms.uTime.value = time;
       const focused = visual.focusedSystem === id;

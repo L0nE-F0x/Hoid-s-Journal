@@ -147,12 +147,31 @@ export function worldDate(systemId: string, era: number): string | null {
   return best;
 }
 
+/** Whether a thing exists on the playhead, independent of spoiler gating. */
+export function inEra(item: { eraMin?: number; eraMax?: number }, era: number): boolean {
+  if (item.eraMin !== undefined && era < item.eraMin) return false;
+  if (item.eraMax !== undefined && era > item.eraMax) return false;
+  return true;
+}
+
+/** On the sky: published far enough, and the year has reached it. */
+export function onTheMap(
+  item: { book?: string; arc?: string; eraMin?: number; eraMax?: number },
+  progress: Record<string, number>,
+  era: number,
+): boolean {
+  return inEra(item, era) && isVisible(item, progress);
+}
+
 export function locationsOn(bodyId: string, era?: number): Location[] {
   return LOCATIONS.filter((l) => {
     if (l.body !== bodyId) return false;
+    if (era !== undefined && !inEra(l, era)) return false;
     if (!l.eraMaps || era === undefined) return true;
     if (bodyId === 'scadrial') {
-      return era >= 3 ? l.eraMaps.includes('basin') : l.eraMaps.includes('ash');
+      if (era >= 3) return l.eraMaps.includes('basin');
+      if (era >= 2) return l.eraMaps.includes('ash');
+      return false;
     }
     return true;
   });
@@ -202,7 +221,10 @@ export function perpAt(locationId: string): Perpendicularity | undefined {
 }
 
 export function scadrialBiome(era: number): 'scadrial-ash' | 'scadrial-basin' {
-  return era >= 3 ? 'scadrial-basin' : 'scadrial-ash';
+  if (era >= 3) return 'scadrial-basin';
+  if (era >= 2) return 'scadrial-ash';
+  // Classical Scadrial, before the ashmounts. We do not have a third plate.
+  return 'scadrial-basin';
 }
 
 export function characterAt(ch: Character, era: number): CharacterEra | null {

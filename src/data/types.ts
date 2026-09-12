@@ -83,6 +83,9 @@ export interface Body extends Cited {
   fact: string;
   biome: BiomeKind;
   hasSurface: boolean;
+  /** First playhead era this world exists as the thing we are drawing. */
+  eraMin?: number;
+  eraMax?: number;
 }
 
 export interface Moon extends Cited {
@@ -181,6 +184,8 @@ export interface Location extends Cited {
   desc: string;
   realm?: 'physical' | 'cognitive';
   eraMaps?: string[];
+  eraMin?: number;
+  eraMax?: number;
 }
 
 /** A named feature on an original city plate. UVs are 0..1 on *our* plate. */
@@ -223,6 +228,8 @@ export interface Perpendicularity extends Cited {
   fact: string;
   /** Location id it sits at, when the geography is known. */
   at?: string;
+  eraMin?: number;
+  eraMax?: number;
 }
 
 export interface WorldEpoch {
@@ -255,6 +262,8 @@ export interface Hub extends Cited {
   bearing?: number;
   /** Vertical offset, so a fortress and a port do not stack. */
   rise?: number;
+  eraMin?: number;
+  eraMax?: number;
 }
 
 /** A known Cognitive path between systems. */
@@ -266,6 +275,8 @@ export interface WorldhopperRoute {
   book: string;
   arc?: string;
   fact: string;
+  eraMin?: number;
+  eraMax?: number;
 }
 
 export interface Dawnshard extends Cited {

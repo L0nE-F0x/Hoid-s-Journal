@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { COSMERE, bodyById, isVisible, perpAt } from '../data/index.ts';
+import { COSMERE, bodyById, onTheMap, perpAt } from '../data/index.ts';
 import { uvOnBody } from '../layout/surface.ts';
 import type { Orrery } from './Orrery.ts';
 
@@ -131,6 +131,7 @@ export class Pins {
     hot: string | null,
     realm = 'physical',
     showPerps = true,
+    era = 3,
   ): void {
     const show = scale === 'globe' || scale === 'surface' || scale === 'city';
     this.group.visible = show;
@@ -145,10 +146,11 @@ export class Pins {
       if (!loc) { sprite.visible = false; continue; }
       const body = bodyById[loc.body];
       const origin = orrery.bodyPosition(loc.body);
+      const door = perpAt(loc.id);
       const side = realm === 'cognitive'
-        ? loc.realm === 'cognitive' || !!perpAt(loc.id)
+        ? loc.realm === 'cognitive' || (!!door && onTheMap(door, progress, era))
         : loc.realm !== 'cognitive';
-      const vis = !!body && !!origin && isVisible(loc, progress) && side &&
+      const vis = !!body && !!origin && onTheMap(loc, progress, era) && side &&
         (!focusedBody || focusedBody === loc.body);
       sprite.visible = vis;
       if (!vis || !body || !origin) continue;
@@ -167,7 +169,8 @@ export class Pins {
       }
       // A perpendicularity rides its place: same spot, bigger ring.
       const perp = this.perps.find((p) => p.at === loc.id);
-      if (perp && showPerps) {
+      const perpRow = door;
+      if (perp && showPerps && perpRow && onTheMap(perpRow, progress, era)) {
         perp.sprite.visible = true;
         perp.sprite.position.copy(sprite.position);
         perp.sprite.scale.setScalar(size * 3.4);

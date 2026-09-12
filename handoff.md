@@ -16,20 +16,23 @@ Architecture lock: `AGENTS.md` + `DESIGN.md`. This file is the live todo.
 
 # ▶ START HERE — next session
 
-**2026-09-12 overnight → handed over, then a UI pass.** Graphics overhaul
-and lore parity are pushed (`2deaae5` → `e396462`). The UI-polish session
-after that is **not pushed yet**: `master` is ahead of origin by the handover
-commits, plus uncommitted chrome fixes (Look chips, Journal restore, Lore
-Web stacking, Spiritual directory tabs, phone tool strip, pinch zoom).
+**2026-09-12 wrapped and live.** The overnight graphics pass and the UI
+polish that followed are both on `master` (`2deaae5` → `d05be1a`) and
+deployed. Last commit: *UI polish: books in the Journal, Settings that
+toggle, a playhead that starts at the Shattering*.
 
-**Still open:** pinch / drag-vs-tap on the atlas and globe. Tab order.
-The Shattering ring is the first Cosmere-wide beat; more beats can grow
-the same `EventFx` path. Click through any panel that still feels unfinished.
+The owner used the live site, listed thirteen things, and those shipped.
+Hard-refresh https://thecosmere.netlify.app after a deploy; the service
+worker otherwise keeps the old shell.
 
-Git: `master` tracking https://github.com/L0nE-F0x/Hoid-s-Journal, **ahead
-of origin**. Live site: https://thecosmere.netlify.app — **it deploys on
-push, so `git push` is the deploy.** Hard-refresh after one; the service
-worker will otherwise serve the old shell.
+**Your job is whatever they find on that deploy.** Do not restart the
+chrome hunt from scratch. If they come back with a list, work the list.
+If they come back with nothing, the leftovers below are optional depth,
+not a brief.
+
+Git: `master` tracking https://github.com/L0nE-F0x/Hoid-s-Journal, **level
+with origin**. Live site: https://thecosmere.netlify.app — **it deploys on
+push, so `git push` is the deploy.**
 **Do not edit the v1 repo** at `ApexForge/cosmere-interactive-map`.
 
 ```bash
@@ -255,47 +258,23 @@ Found and fixed in the UI-polish session after that:
 - The Lore Web canvas sat above the HUD in z-order, so every top-bar click
   while the graph was open was a miss. The atlas also stayed up over it.
 
-Open, and worth looking at first:
+Open, leftover, not a brief:
 
-- **`npm run audit:ui`** reports controls that change neither the store nor
-  the DOM. It cannot see a control that does the *wrong* thing, one whose hit
-  area is wrong, or one that works but reads as dead. Those are eyes-only.
-- **Touch.** Pinch, long-press and drag-vs-tap on the atlas and the globe are
-  still unexercised. The Lore Web now pinches.
-- **Keyboard.** `WASD/QE` are fly keys and must never open a panel. That is
-  load-bearing and tested; anything you add to the keymap has to respect it.
-- **Focus and reachability.** Tab order across the panels has never been
-  checked.
+- **Touch on the atlas and globe.** Pinch, long-press and drag-vs-tap are
+  still unexercised. The Lore Web pinches.
+- **Tab order** across the panels has never been checked.
+- **More sky beats.** The Shattering ring is the first Cosmere-wide event;
+  Catacendre / True Desolation can grow the same `EventFx` path
+  (`src/render/EventFx.ts`, `src/data/events.ts`).
+- **`npm run audit:ui`** only finds controls that change nothing at all.
 
 ## Do next (priority order)
 
-### 1. The UI pass the owner asked for
+### 1. Whatever the owner found on the live deploy
 
-This is the whole brief. Controls that do nothing, controls that do the wrong
-thing, and anything that feels unfinished. Start with *Known rough edges*
-below, then click through every panel at a desktop width and at 420px.
+That is the brief. The thirteen-item list they sent is done and pushed.
 
-Places worth looking hardest, because they changed most and have the least
-test coverage:
-
-- **Directory** (`src/ui/directory.ts`). Eight tabs now, and the search box
-  filters the current tab only. Check every tab at every scale and in every
-  Realm — some rows fly to a subject, some only select, and the difference is
-  not obvious to a reader.
-- **Atlas** (`src/ui/atlas.ts`). Layer chips on the Stewart plates, landmark
-  chips on city plates, the pin ↔ globe round trip.
-- **Look panel** (`src/ui/modals.ts`). Every slider and toggle should visibly
-  do something. Quality is the one that hid a black-screen bug for a day.
-- **Lore Web** (`src/ui/loreWeb.ts`). Legend toggles, node drag, the path
-  readout. It has no scroll or pinch zoom; the auto-fit is all there is.
-- **Codex** search results and the Arcanum tables on a narrow screen.
-
-### 2. Verify, then push
-
-`npx tsc --noEmit`, `npm run build`, `npm run test:interaction`,
-`npm run audit:ui`. A push is a deploy.
-
-### 3. Optional depth, only if a reread reaches for it
+### 2. Optional depth, only if a reread reaches for it
 
 - Landmark UVs for the Stewart **city** rasters. The interaction test picks
   landmarks from the roster chips because those scans have no calibrated UVs.
@@ -305,7 +284,7 @@ test coverage:
 - Azimir has no Stewart plate. Worlds without one use `cityMap.ts`, which is
   now a real plan generator rather than a placeholder.
 
-### 4. Renderer ideas not taken
+### 3. Renderer ideas not taken
 
 Written down so the next session does not rediscover them:
 
@@ -450,3 +429,9 @@ lock flipped; this is the version that is true.
     to report. Both are in *Sharp edges*.
 17. **Handed over.** Owner is out of credits; the next session is a UI polish
     pass. See *Known rough edges*.
+18. **2026-09-12 wrap** (`631fdb8` → `d05be1a`). UI polish and the owner's
+    thirteen-item list: every Cosmere book in the Journal, Settings chips
+    that light, title index off the disclaimer, surface zoom that moves,
+    menus renamed, Music off the top bar, galaxy chart under the top bar,
+    Cognitive sites that stay, playhead at Pre-Shattering, gold ticks and a
+    Shattering ring, new OG card. Pushed and live. Interaction suite 46/46.

@@ -30,7 +30,7 @@ const SCENES = [
   { name: 'lore web', setup: (s) => s.set('view', 'web') },
   { name: 'panel · codex', setup: (s) => s.set('panel', 'codex') },
   { name: 'panel · arcanum', setup: (s) => s.set('panel', 'arcanum') },
-  { name: 'panel · journal', setup: (s) => s.set('panel', 'spoilers') },
+  { name: 'panel · journal', setup: (s) => s.set('panel', 'journal') },
   { name: 'panel · realms', setup: (s) => s.set('panel', 'realms') },
   { name: 'panel · look', setup: (s) => s.set('panel', 'settings') },
   { name: 'panel · help', setup: (s) => s.set('panel', 'help') },
@@ -48,11 +48,20 @@ async function alive(page) {
 async function boot(page, URL) {
   await page.goto(URL, { waitUntil: 'domcontentloaded', timeout: 40000 });
   await page.waitForFunction('window.__ceph !== undefined', { timeout: 60000, polling: 200 });
-  await page.evaluate(() => {
-    window.__ceph.ui.enter();
-    window.__ceph.store.set('cameraCue', { kind: 'skip-cinematic' });
-  });
-  await sleep(2200);
+  // playIntro is queued on the next frame after __ceph exists. Skipping
+  // before that frame is a no-op, and the flight then hushes the HUD so
+  // globe/city/spiritual scenes look like three controls and a clean sweep.
+  await page.evaluate(() => window.__ceph.ui.enter());
+  await page.waitForFunction(
+    () => window.__ceph.store.state.cinematic === true,
+    { timeout: 8000, polling: 50 },
+  ).catch(() => {});
+  await page.evaluate(() => window.__ceph.store.set('cameraCue', { kind: 'skip-cinematic' }));
+  await page.waitForFunction(
+    () => window.__ceph.store.state.cinematic === false && window.__ceph.store.state.shell === 'play',
+    { timeout: 8000 },
+  );
+  await sleep(400);
 }
 
 async function run() {
@@ -84,11 +93,21 @@ async function run() {
       });
       await sleep(400);
       await page.evaluate(`(${scene.setup.toString()})(window.__ceph.store)`);
-      await sleep(1400);
+      // Scenes that fly the camera only finish opening their panels once the
+      // flight settles. Too short a wait sweeps three controls and calls the
+      // scene clean.
+      await sleep(3200);
+      if (/globe|surface|city/.test(scene.name)) {
+        await page.waitForFunction(
+          () => !!document.querySelector('.ceph-atlas.is-on'),
+          { timeout: 8000 },
+        ).catch(() => {});
+      }
 
       const labels = await page.evaluate(() => {
         const out = [];
         for (const b of document.querySelectorAll('#ui-root button')) {
+          if (b.disabled) continue;
           const r = b.getBoundingClientRect();
           if (r.width < 2 || r.height < 2) continue;
           if (getComputedStyle(b).visibility === 'hidden') continue;
@@ -107,6 +126,7 @@ async function run() {
         }));
         const clicked = await page.evaluate((idx) => {
           const vis = [...document.querySelectorAll('#ui-root button')].filter((b) => {
+            if (b.disabled) return false;
             const r = b.getBoundingClientRect();
             return r.width >= 2 && r.height >= 2 && getComputedStyle(b).visibility !== 'hidden';
           });

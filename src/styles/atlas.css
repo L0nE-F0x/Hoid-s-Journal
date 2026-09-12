@@ -19,10 +19,12 @@
     left: 6px;
     right: 6px;
     width: auto;
-    max-height: 34vh;
+    max-height: 32vh;
     overflow: auto;
     padding: 10px 10px 12px;
+    -webkit-overflow-scrolling: touch;
   }
+  .ceph-atlas-canvas { touch-action: none; }
   .ceph-atlas-roster { gap: 4px; }
   .ceph-atlas-chip { font-size: 10px; padding: 2px 7px; }
 }
@@ -74,28 +76,7 @@
   cursor: pointer;
 }
 .ceph-atlas-chip:hover { border-color: var(--ceph-cyan); }
-
-.ceph-skip {
-  position: fixed;
-  bottom: calc(118px + var(--ceph-safe-bottom));
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 28;
-  display: none;
-  pointer-events: auto;
+.ceph-atlas-chip.is-on {
+  border-color: color-mix(in srgb, var(--ceph-cyan) 52%, transparent);
+  background: color-mix(in srgb, var(--ceph-cyan) 9%, transparent);
 }
-.ceph-skip.is-on { display: block; }
-
-.ceph-tooltip {
-  position: fixed;
-  z-index: 60;
-  pointer-events: none;
-  padding: 5px 9px;
-  font-size: 10.5px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  opacity: 0;
-  transform: translate(-50%, -130%);
-  transition: opacity 120ms var(--ceph-ease);
-}
-.ceph-tooltip.is-on { opacity: 1; }

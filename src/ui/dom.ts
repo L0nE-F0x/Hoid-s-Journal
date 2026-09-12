@@ -27,6 +27,9 @@ export function el<K extends keyof HTMLElementTagNameMap>(
       node.setAttribute(k, v === true ? '' : String(v));
     }
   }
+  if (tag === 'button' && opts.attrs?.title && !node.getAttribute('aria-label')) {
+    node.setAttribute('aria-label', String(opts.attrs.title));
+  }
   if (opts.style) Object.assign(node.style, opts.style);
   for (const child of children) node.append(child);
   return node;

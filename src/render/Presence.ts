@@ -163,10 +163,11 @@ export class Presence {
     selected: string | null = null,
     showCharacters = true,
     showShardLines = true,
+    focusedSystem: string | null = null,
   ): void {
     const yolenPos = orrery.bodyPosition('yolen') ?? this.yolen;
     this.updateTrail(orrery, camera, progress, scale, selected);
-    this.updateHubs(orrery, camera, progress, scale, cognitive, selected);
+    this.updateHubs(orrery, camera, progress, scale, cognitive, selected, focusedSystem);
 
     // On a surface scan the pins are the subject; a swarm of people-dots at
     // the same apparent size just competes with them.
@@ -243,16 +244,20 @@ export class Presence {
     scale: string,
     cognitive: boolean,
     selected: string | null,
+    focusedSystem: string | null,
   ): void {
-    const show = cognitive && (scale === 'cosmere' || scale === 'system');
+    const show = cognitive && scale !== 'city';
     for (const row of this.hubs) {
       const hub = hubById[row.id];
       const p = hub && isVisible(hub, progress) ? this.hubWorld(orrery, hub.id, row.pos) : null;
-      // A pool beside one world is not a landmark you can see across the
-      // Cosmere. Anchored sites resolve when you are inside their system.
-      const local = !!hub?.system;
-      const near = !local || scale === 'system' || camera.position.distanceTo(row.pos) < 140;
-      const on = show && !!p && near;
+      // Cosmere-famous sites (Silverlight, the Grand Knell, the Expanses) stay
+      // up when you change scale. A pool beside one world waits until you are
+      // in that system.
+      const local = hub?.kind === 'pool' && !!hub.system;
+      const inSystem = !hub?.system || scale === 'cosmere' || hub.system === focusedSystem;
+      const near = !local || scale === 'system' || (scale === 'globe' && inSystem)
+        || camera.position.distanceTo(row.pos) < 180;
+      const on = show && !!p && inSystem && near;
       row.mesh.visible = on;
       row.halo.visible = on;
       row.label.visible = on;

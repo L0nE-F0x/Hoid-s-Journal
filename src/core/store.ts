@@ -8,6 +8,8 @@ export type ShellMode = 'title' | 'play';
 export type Realm = 'physical' | 'cognitive' | 'spiritual';
 export type Scale = 'cosmere' | 'system' | 'globe' | 'surface' | 'city';
 export type ViewMode = 'sky' | 'web';
+export const PANEL_IDS = ['none', 'arcanum', 'codex', 'journal', 'settings', 'help', 'realms'] as const;
+export type PanelId = typeof PANEL_IDS[number];
 
 export type Quality = 'auto' | 'high' | 'medium' | 'low';
 
@@ -88,11 +90,13 @@ export interface AppState {
   insets: ViewInsets;
   stats: Stats;
   cameraCue: CameraCue | null;
+  /** Named playhead beat to play a sky animation for. Renderer consumes it. */
+  skyEvent: string | null;
   cinematic: boolean;
   viewHeading: number;
   searchQuery: string;
   view: ViewMode;
-  panel: 'none' | 'arcanum' | 'codex' | 'spoilers' | 'settings' | 'help' | 'realms';
+  panel: PanelId;
   magicId: string | null;
   /**
    * Set when the renderer cannot draw: a lost WebGL context, or a driver that
@@ -148,10 +152,10 @@ class Store {
     focusedLocation: null,
     hovered: null,
     selected: null,
-    year: 2,
+    year: -8000,
     isPlaying: true,
     timeRate: 1,
-    era: 3,
+    era: 0,
     readProgress: {},
     readingNow: null,
     visual: defaultVisual(),
@@ -159,6 +163,7 @@ class Store {
     insets: defaultInsets(),
     stats: { fps: 0, drawCalls: 0, ms: 0 },
     cameraCue: null,
+    skyEvent: null,
     cinematic: false,
     viewHeading: 0,
     searchQuery: '',
@@ -186,6 +191,13 @@ class Store {
   }
 
   set<K extends StateKey>(key: K, value: AppState[K]): void {
+    if (key === 'panel') {
+      let panel = value as string;
+      // Old id from the handover notes. The button is labelled Journal.
+      if (panel === 'spoilers') panel = 'journal';
+      if (!(PANEL_IDS as readonly string[]).includes(panel)) return;
+      value = panel as AppState[K];
+    }
     const prev = this.state[key];
     if (prev === value) return;
     this.state[key] = value;

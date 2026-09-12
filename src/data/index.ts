@@ -1,4 +1,5 @@
-import { BODIES, ERAS, MOONS, PUB_ORDER, SERIES, SYSTEMS, TIMELINE_NOTE, WORLD_EPOCHS } from './catalog.ts';
+import { BODIES, ERAS, JOURNAL_BOOKS, MOONS, PUB_ORDER, SERIES, SYSTEMS, TIMELINE_NOTE, WORLD_EPOCHS } from './catalog.ts';
+import { COSMERE_EVENTS } from './events.ts';
 import { CHARACTERS } from './characters.ts';
 import { CITY_PLATES, cityById, landmarkById } from './cities.ts';
 import { GLOSSARY } from './glossary.ts';
@@ -14,8 +15,10 @@ import type {
 
 export { CITY_PLATES, cityById, landmarkById };
 export { ARC_NOTES, arcNoteFor };
+export { COSMERE_EVENTS, JOURNAL_BOOKS };
 export { DAWNSHARDS, HUBS, ROUTES, dawnshardById, hubById };
 export { RELATIONS, REL_TYPES };
+export type { CosmereEvent, SkyVisual } from './events.ts';
 
 export type { Cosmere } from './types.ts';
 export * from './types.ts';
@@ -40,6 +43,13 @@ export const COSMERE: Cosmere = {
 export const seriesById: Record<string, Series> = Object.fromEntries(SERIES.map((s) => [s.id, s]));
 export const bodyById: Record<string, Body> = Object.fromEntries(BODIES.map((b) => [b.id, b]));
 export const characterById: Record<string, Character> = Object.fromEntries(CHARACTERS.map((c) => [c.id, c]));
+
+export function bookArcIndex(series: string, arc: string): number {
+  const s = seriesById[series];
+  if (!s) return 0;
+  const i = s.arcs.findIndex((a) => a.id === arc);
+  return i < 0 ? 0 : i;
+}
 
 export function requiredArcIndex(item: { book?: string; arc?: string }): number {
   if (!item.book || item.book === 'core') return -1;

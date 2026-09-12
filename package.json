@@ -14,7 +14,7 @@
     "perf": "node tools/perf.mjs",
     "audit:ui": "node tools/audit-ui.mjs",
     "icons": "node tools/icons.mjs",
-    "og": "node tools/screenshot.mjs --intro --width 1200 --height 630 --settle 2400 --quality 90 --eval \"document.querySelector('.ceph-title-actions').style.visibility='hidden'\" --out public/og.jpg"
+    "og": "node tools/screenshot.mjs --intro --width 1200 --height 630 --settle 2400 --quality 90 --eval \"['.ceph-title-actions','.ceph-title-skip','.ceph-title-index','.ceph-title-foot'].forEach(s=>{const n=document.querySelector(s); if(n) n.style.display='none'})\" --out public/og.jpg"
   },
   "dependencies": {
     "postprocessing": "^6.37.8",

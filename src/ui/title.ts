@@ -89,7 +89,7 @@ export function mountTitle(root: HTMLElement): { enter(): void; open(): void; de
 
   const off1 = listen(enterBtn, 'click', () => enter());
   const off2 = listen(spoilBtn, 'click', () => {
-    store.set('panel', 'spoilers');
+    store.set('panel', 'journal');
     enter();
   });
   const offSkip = listen(skipBtn, 'click', () => {

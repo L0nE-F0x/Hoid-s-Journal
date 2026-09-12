@@ -22,23 +22,31 @@ export function directoryIsOpen(): boolean {
     && s.view !== 'web' && s.chrome.directory;
 }
 
+function leaveSpiritual(): void {
+  if (store.state.realm === 'spiritual') store.set('realm', 'physical');
+}
+
 function flyTo(id: string): void {
   store.set('panel', 'none');
   store.set('selected', id);
   if (bodyById[id]) {
+    leaveSpiritual();
     store.set('cameraCue', { kind: 'focus', id, scale: 'globe' });
     return;
   }
   if (COSMERE.systems.some((s) => s.id === id)) {
+    leaveSpiritual();
     store.set('cameraCue', { kind: 'focus', id, scale: 'system' });
     return;
   }
   if (COSMERE.locations.some((l) => l.id === id)) {
+    leaveSpiritual();
     store.set('cameraCue', { kind: 'focus', id, scale: 'surface' });
     return;
   }
   const moon = COSMERE.moons.find((m) => m.id === id);
   if (moon) {
+    leaveSpiritual();
     store.set('cameraCue', { kind: 'focus', id: moon.parent, scale: 'globe' });
     store.set('selected', moon.id);
     return;
@@ -46,6 +54,7 @@ function flyTo(id: string): void {
   const ch = COSMERE.characters.find((c) => c.id === id);
   const at = ch ? characterAt(ch, store.state.era) : null;
   if (at?.body) {
+    leaveSpiritual();
     store.set('cameraCue', { kind: 'focus', id: at.body, scale: 'globe' });
     store.set('selected', id);
     return;
@@ -56,16 +65,23 @@ function flyTo(id: string): void {
     return;
   }
   if (DAWNSHARDS.some((d) => d.id === id)) {
+    store.set('realm', 'spiritual');
     store.set('selected', id);
     return;
   }
   const perp = COSMERE.perps.find((p) => p.id === id);
-  if (perp?.at) store.set('cameraCue', { kind: 'focus', id: perp.at, scale: 'surface' });
-  else if (perp) store.set('cameraCue', { kind: 'focus', id: perp.body, scale: 'globe' });
+  if (perp?.at) {
+    leaveSpiritual();
+    store.set('cameraCue', { kind: 'focus', id: perp.at, scale: 'surface' });
+  } else if (perp) {
+    leaveSpiritual();
+    store.set('cameraCue', { kind: 'focus', id: perp.body, scale: 'globe' });
+  }
 }
 
 export function mountDirectory(root: HTMLElement): { destroy(): void } {
   let tab: DirTab = 'systems';
+  let lastRealm = store.state.realm;
   const search = el('input', {
     className: 'ceph-search ceph-dir-search',
     attrs: { placeholder: 'Find a world, person, shard…', type: 'search' },
@@ -114,7 +130,11 @@ export function mountDirectory(root: HTMLElement): { destroy(): void } {
       return;
     }
     const r = panel.getBoundingClientRect();
-    store.setInset('directory', { left: Math.round(r.right + 12) });
+    if (r.width > window.innerWidth * 0.5) {
+      store.setInset('directory', { bottom: Math.round(window.innerHeight - r.top + 10) });
+    } else {
+      store.setInset('directory', { left: Math.round(r.right + 12) });
+    }
   };
 
   const row = (id: string, name: string, kind: string, color: string, hint: string) => {
@@ -138,7 +158,11 @@ export function mountDirectory(root: HTMLElement): { destroy(): void } {
     restore.classList.toggle('is-on', canRestore);
     measure();
     if (!show) return;
-    if (s.realm === 'spiritual') tab = 'shards';
+    // Opening the Spiritual Realm lands on Shards; the other tabs still work.
+    if (s.realm !== lastRealm) {
+      lastRealm = s.realm;
+      if (s.realm === 'spiritual') tab = 'shards';
+    }
     const q = search.value.trim().toLowerCase();
     list.replaceChildren();
     [...tabs.children].forEach((c, i) => c.classList.toggle('is-on', TAB[i]!.id === tab));
@@ -205,7 +229,7 @@ export function mountDirectory(root: HTMLElement): { destroy(): void } {
   };
 
   const offs = [
-    listen(search, 'input', () => { store.set('searchQuery', search.value); paint(); }),
+    listen(search, 'input', () => { paint(); }),
     listen(collapse, 'click', () => store.patchChrome({ directory: false })),
     listen(restore, 'click', () => store.patchChrome({ directory: true })),
     listen(window, 'resize', () => measure()),

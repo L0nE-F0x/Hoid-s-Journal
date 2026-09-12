@@ -4,16 +4,24 @@ const C = 'canon' as const;
 const S = 'speculation' as const;
 
 export const SERIES: Series[] = [
-  { id: 'elantris', title: 'Elantris', single: true, arcs: [{ id: 'elantris', label: 'Elantris' }] },
+  { id: 'elantris', title: 'Elantris', arcs: [
+    { id: 'elantris', label: 'Elantris' },
+    { id: 'hope', label: 'The Hope of Elantris' },
+  ]},
   { id: 'emperorssoul', title: "The Emperor's Soul", single: true, arcs: [{ id: 'emperorssoul', label: "The Emperor's Soul" }] },
+  { id: 'eleventhmetal', title: 'The Eleventh Metal', single: true, arcs: [{ id: 'eleventhmetal', label: 'The Eleventh Metal' }] },
   { id: 'mistborn1', title: 'Mistborn Era 1', arcs: [
     { id: 'tfe', label: 'The Final Empire' },
     { id: 'woa', label: 'The Well of Ascension' },
     { id: 'hoa', label: 'The Hero of Ages' },
   ]},
-  { id: 'secrethistory', title: 'Mistborn: Secret History', single: true, arcs: [{ id: 'secrethistory', label: 'Secret History' }] },
+  { id: 'secrethistory', title: 'Mistborn: Secret History', single: true, arcs: [{ id: 'secrethistory', label: 'Mistborn: Secret History' }] },
   { id: 'warbreaker', title: 'Warbreaker', single: true, arcs: [{ id: 'warbreaker', label: 'Warbreaker' }] },
-  { id: 'whitesand', title: 'White Sand', single: true, arcs: [{ id: 'whitesand', label: 'White Sand' }] },
+  { id: 'whitesand', title: 'White Sand', arcs: [
+    { id: 'ws1', label: 'White Sand, Volume 1' },
+    { id: 'ws2', label: 'White Sand, Volume 2' },
+    { id: 'ws3', label: 'White Sand, Volume 3' },
+  ]},
   { id: 'stormlight', title: 'The Stormlight Archive', arcs: [
     { id: 'twok', label: 'The Way of Kings' },
     { id: 'wor', label: 'Words of Radiance' },
@@ -23,15 +31,16 @@ export const SERIES: Series[] = [
     { id: 'row', label: 'Rhythm of War' },
     { id: 'wat', label: 'Wind and Truth' },
   ]},
-  { id: 'arcanum', title: 'Arcanum Unbounded', single: true, arcs: [{ id: 'arcanum', label: 'Arcanum Unbounded' }] },
+  { id: 'arcanum', title: 'Arcanum Unbounded', single: true, arcs: [{ id: 'arcanum', label: 'Arcanum Unbounded: The Cosmere Collection' }] },
   { id: 'shadowsforsilence', title: 'Shadows for Silence in the Forests of Hell', single: true,
-    arcs: [{ id: 'shadowsforsilence', label: 'Shadows for Silence' }] },
+    arcs: [{ id: 'shadowsforsilence', label: 'Shadows for Silence in the Forests of Hell' }] },
   { id: 'sixthofdusk', title: 'Sixth of the Dusk', single: true, arcs: [{ id: 'sixthofdusk', label: 'Sixth of the Dusk' }] },
   { id: 'mistborn2', title: 'Mistborn Era 2', arcs: [
     { id: 'aol', label: 'The Alloy of Law' },
     { id: 'sos', label: 'Shadows of Self' },
     { id: 'bom', label: 'The Bands of Mourning' },
     { id: 'tlm', label: 'The Lost Metal' },
+    { id: 'jak', label: 'Allomancer Jak and the Pits of Eltania' },
   ]},
   { id: 'tress', title: 'Tress of the Emerald Sea', single: true, arcs: [{ id: 'tress', label: 'Tress of the Emerald Sea' }] },
   { id: 'yumi', title: 'Yumi and the Nightmare Painter', single: true, arcs: [{ id: 'yumi', label: 'Yumi and the Nightmare Painter' }] },
@@ -39,9 +48,44 @@ export const SERIES: Series[] = [
   { id: 'emberdark', title: 'Isles of the Emberdark', single: true, arcs: [{ id: 'emberdark', label: 'Isles of the Emberdark' }] },
 ];
 
+/** Every published Cosmere work, in the order the Journal lists them. */
+export const JOURNAL_BOOKS: { series: string; arc: string; title: string }[] = [
+  { series: 'elantris', arc: 'elantris', title: 'Elantris' },
+  { series: 'elantris', arc: 'hope', title: 'The Hope of Elantris' },
+  { series: 'emperorssoul', arc: 'emperorssoul', title: "The Emperor's Soul" },
+  { series: 'eleventhmetal', arc: 'eleventhmetal', title: 'The Eleventh Metal' },
+  { series: 'mistborn1', arc: 'tfe', title: 'The Final Empire' },
+  { series: 'mistborn1', arc: 'woa', title: 'The Well of Ascension' },
+  { series: 'mistborn1', arc: 'hoa', title: 'The Hero of Ages' },
+  { series: 'mistborn2', arc: 'aol', title: 'The Alloy of Law' },
+  { series: 'mistborn2', arc: 'sos', title: 'Shadows of Self' },
+  { series: 'mistborn2', arc: 'bom', title: 'The Bands of Mourning' },
+  { series: 'mistborn2', arc: 'tlm', title: 'The Lost Metal' },
+  { series: 'mistborn2', arc: 'jak', title: 'Allomancer Jak and the Pits of Eltania' },
+  { series: 'secrethistory', arc: 'secrethistory', title: 'Mistborn: Secret History' },
+  { series: 'warbreaker', arc: 'warbreaker', title: 'Warbreaker' },
+  { series: 'stormlight', arc: 'twok', title: 'The Way of Kings' },
+  { series: 'stormlight', arc: 'wor', title: 'Words of Radiance' },
+  { series: 'stormlight', arc: 'edgedancer', title: 'Edgedancer' },
+  { series: 'stormlight', arc: 'oathbringer', title: 'Oathbringer' },
+  { series: 'stormlight', arc: 'dawnshard', title: 'Dawnshard' },
+  { series: 'stormlight', arc: 'row', title: 'Rhythm of War' },
+  { series: 'stormlight', arc: 'wat', title: 'Wind and Truth' },
+  { series: 'whitesand', arc: 'ws1', title: 'White Sand, Volume 1' },
+  { series: 'whitesand', arc: 'ws2', title: 'White Sand, Volume 2' },
+  { series: 'whitesand', arc: 'ws3', title: 'White Sand, Volume 3' },
+  { series: 'shadowsforsilence', arc: 'shadowsforsilence', title: 'Shadows for Silence in the Forests of Hell' },
+  { series: 'sixthofdusk', arc: 'sixthofdusk', title: 'Sixth of the Dusk' },
+  { series: 'arcanum', arc: 'arcanum', title: 'Arcanum Unbounded: The Cosmere Collection' },
+  { series: 'tress', arc: 'tress', title: 'Tress of the Emerald Sea' },
+  { series: 'yumi', arc: 'yumi', title: 'Yumi and the Nightmare Painter' },
+  { series: 'sunlit', arc: 'sunlit', title: 'The Sunlit Man' },
+  { series: 'emberdark', arc: 'emberdark', title: 'Isles of the Emberdark' },
+];
+
 export const PUB_ORDER = [
   'elantris', 'mistborn1', 'warbreaker', 'stormlight', 'mistborn2',
-  'emperorssoul', 'shadowsforsilence', 'sixthofdusk', 'whitesand',
+  'eleventhmetal', 'emperorssoul', 'shadowsforsilence', 'sixthofdusk', 'whitesand',
   'secrethistory', 'arcanum', 'tress', 'yumi', 'sunlit', 'emberdark',
 ];
 

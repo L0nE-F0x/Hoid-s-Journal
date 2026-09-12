@@ -16,21 +16,18 @@ Architecture lock: `AGENTS.md` + `DESIGN.md`. This file is the live todo.
 
 # ▶ START HERE — next session
 
-**2026-09-12 overnight → handed over.** The previous session did a graphics
-overhaul, rebuilt the Cognitive and Spiritual Realms, brought the lore to v1
-parity and past it, and replaced the chrome and the landing page. Twenty-two
-commits from `2deaae5` to `e396462`. **All of it is pushed and live.**
+**2026-09-12 overnight → handed over, then a UI pass.** Graphics overhaul
+and lore parity are pushed (`2deaae5` → `e396462`). The UI-polish session
+after that is **not pushed yet**: `master` is ahead of origin by the handover
+commits, plus uncommitted chrome fixes (Look chips, Journal restore, Lore
+Web stacking, Spiritual directory tabs, phone tool strip, pinch zoom).
 
-**Your job is the next layer: UI polish and dead controls.** The owner's
-words: "there is lots of final polish in the UI, I've found a bunch of things
-that don't work properly, buttons that don't click etc." They ran out of
-credits before listing them, so that list does not exist. `npm run audit:ui`
-is a start (see *Known rough edges* below) but it only finds controls that
-change nothing at all — it cannot find a control that does the wrong thing,
-or one that works but feels broken. Click through the product yourself.
+**Still open:** pinch / drag-vs-tap on the atlas and globe. Tab order.
+The Shattering ring is the first Cosmere-wide beat; more beats can grow
+the same `EventFx` path. Click through any panel that still feels unfinished.
 
-Git: `master` tracking https://github.com/L0nE-F0x/Hoid-s-Journal, level
-with origin. Live site: https://thecosmere.netlify.app — **it deploys on
+Git: `master` tracking https://github.com/L0nE-F0x/Hoid-s-Journal, **ahead
+of origin**. Live site: https://thecosmere.netlify.app — **it deploys on
 push, so `git push` is the deploy.** Hard-refresh after one; the service
 worker will otherwise serve the old shell.
 **Do not edit the v1 repo** at `ApexForge/cosmere-interactive-map`.
@@ -43,7 +40,7 @@ npm run dev              # http://127.0.0.1:5174
 
 # Second shell. This is how you check visual work.
 npm run shot -- --focus roshar --scale globe --out /tmp/roshar.png
-npm run test:interaction # 36 checks through real mouse and keyboard
+npm run test:interaction # 46 checks through real mouse and keyboard
 npm run audit:ui         # clicks every control, reports the ones that do nothing
 npm run perf             # fps per Realm, expensive layers toggled off one at a time
 ```
@@ -58,9 +55,9 @@ headless Chrome at 60fps and prints `fps`, `scale`, `body` and `insets`.
 the program count and any fault — ask for it first when someone reports a
 black sky.
 
-Last known green: `npx tsc --noEmit`, `npm run build`, and
-`npm run test:interaction` (**36/36**) with `npm run dev` already up.
-Re-run all three before you push.
+Last known green: `npx tsc --noEmit` and
+`npm run test:interaction` (**46/46**) with `npm run dev` already up.
+Re-run those plus `npm run build` before you push.
 
 ---
 
@@ -204,7 +201,7 @@ Treat this as current truth, not a wishlist.
 - Reading Companion, Codex, Arcanum (12 tables), Share, time speed, galaxy
   minimap, soundtrack, PWA.
 - Deep-link hash `#y=&realm=&scale=&system=&body=&loc=&reading=`.
-- Harnesses: `npm run shot`, `npm run test:interaction` (36 checks),
+- Harnesses: `npm run shot`, `npm run test:interaction` (46 checks),
   `npm run perf`, `npm run bench`.
 
 ### What the atlas holds
@@ -241,21 +238,34 @@ Found and fixed in the handover session, so you do not chase them again:
   control, but it did not reproduce on the second run. **If you see the app
   vanish after a click, that is real and unresolved.**
 
+Found and fixed in the UI-polish session after that:
+
+- Look-panel chips patched the store and never lit. Quality never changed its
+  own label. Auto-rotate is title-only and is now disabled in play.
+- "Not tracking a book" cleared `readingNow` and left publication-safe holes.
+- The Spiritual directory snapped every paint back to Shards, so the other
+  tabs looked dead. Dawnshards now fly there; a world/person row leaves it.
+- Codex glossary hits selected an id the drawer did not know, so the click
+  closed the panel onto nothing.
+- The phone tool strip could not be swiped (`pointer-events: none` on the
+  scroller). Lore Web legend sat on the timeline (`--ceph-tools-top` is 0).
+- The Journal panel id is `journal`. Unknown ids are ignored; `spoilers`
+  still aliases through. Icon buttons with a `title` get an `aria-label`.
+- Lore Web pinch-zoom, and `+`/`−` at the ends of a series are disabled.
+- The Lore Web canvas sat above the HUD in z-order, so every top-bar click
+  while the graph was open was a miss. The atlas also stayed up over it.
+
 Open, and worth looking at first:
 
 - **`npm run audit:ui`** reports controls that change neither the store nor
   the DOM. It cannot see a control that does the *wrong* thing, one whose hit
   area is wrong, or one that works but reads as dead. Those are eyes-only.
-- **Naming trap.** The top-bar button labelled *Journal* opens the panel whose
-  id is `spoilers`. There is no `'journal'` panel; setting one silently
-  renders an empty modal. Either rename the id or reject unknown panel ids.
-- **Touch.** Everything was verified with a mouse. Pinch, long-press and
-  drag-vs-tap on the atlas, the Lore Web and the globe are unexercised.
+- **Touch.** Pinch, long-press and drag-vs-tap on the atlas and the globe are
+  still unexercised. The Lore Web now pinches.
 - **Keyboard.** `WASD/QE` are fly keys and must never open a panel. That is
   load-bearing and tested; anything you add to the keymap has to respect it.
 - **Focus and reachability.** Tab order across the panels has never been
-  checked, and several controls are icon-only with a `title` but no
-  accessible name.
+  checked.
 
 ## Do next (priority order)
 
@@ -395,12 +405,14 @@ Written down so the next session does not rediscover them:
 Drag orbit · right/middle/shift pan · scroll zoom · WASD/QE fly.
 Space play/pause time (skips cinematic if one is running). Focusing a world
 pauses the playhead; Space restarts it and the camera rides the orbit.
-Timeline +/− changes speed. `1`–`6` eras · `C` Cognitive · `V` Spiritual ·
-`L` Lore Web · `M` galaxy chart · `K`/`/` Codex · `H`/`?` Help · `F` frame
-Cosmere · `Esc` pop scale / close panel / leave the Web / close a card
-at Cosmere. Hover names a world; click opens the card.
+Timeline +/− changes speed. Gold ticks on the playhead are named beats
+(Shattering, Catacendre, True Desolation…). `1`–`6` eras · `C` Cognitive ·
+`V` Spiritual · `L` Lore Web · `M` galaxy chart · `K`/`/` Search · `H`/`?`
+Help · `F` frame Cosmere · `Esc` pop scale / close panel / leave the Web /
+close a card at Cosmere. Hover names a world; click opens the card.
 Title: Enter the Cosmere · Hide what I have not read · Skip the flight.
-Arcanum, Journal, Music, Share are buttons. WASD/QE never open panels.
+Arcanum, Journal, Settings and Share are buttons. Soundtrack lives in
+Settings. WASD/QE never open panels. Default playhead is Pre-Shattering.
 In the Lore Web: scroll zooms, dragging the background pans, dragging a node
 moves it, and "Fit to frame" returns to auto-fit.
 

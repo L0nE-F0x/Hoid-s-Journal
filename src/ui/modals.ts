@@ -13,6 +13,9 @@ import {
   landmarkById,
   publicationSafeProgress,
   seriesById,
+  fullProgress,
+  JOURNAL_BOOKS,
+  bookArcIndex,
 } from '../data/index.ts';
 import { canInstall, promptInstall } from '../core/pwa.ts';
 import { store } from '../core/store.ts';
@@ -35,7 +38,7 @@ export function mountModals(root: HTMLElement): { destroy(): void } {
 
     if (panel === 'arcanum') renderArcanum(card);
     else if (panel === 'codex') renderCodex(card);
-    else if (panel === 'spoilers') renderSpoilers(card);
+    else if (panel === 'journal') renderSpoilers(card);
     else if (panel === 'settings') renderSettings(card);
     else if (panel === 'help') renderHelp(card);
     else if (panel === 'realms') renderRealms(card);
@@ -49,9 +52,18 @@ export function mountModals(root: HTMLElement): { destroy(): void } {
 
   offs.push(store.on('panel', render));
   offs.push(store.on('magicId', () => { if (store.state.panel === 'arcanum') render(); }));
-  offs.push(store.on('readingNow', () => { if (store.state.panel === 'spoilers') render(); }));
+  offs.push(store.on('readingNow', () => { if (store.state.panel === 'journal') render(); }));
   offs.push(store.on('readProgress', () => {
-    if (store.state.panel === 'spoilers' || store.state.panel === 'codex' || store.state.panel === 'arcanum') render();
+    if (store.state.panel === 'journal' || store.state.panel === 'codex' || store.state.panel === 'arcanum') render();
+  }));
+  offs.push(store.on('visual', (vis) => {
+    if (store.state.panel !== 'settings') return;
+    for (const b of host.querySelectorAll<HTMLElement>('[data-visual]')) {
+      const key = b.getAttribute('data-visual') as keyof typeof vis;
+      const on = Boolean(vis[key]);
+      b.classList.toggle('is-on', on);
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+    }
   }));
 
   return { destroy() { offs.forEach((o) => o()); host.remove(); } };
@@ -188,6 +200,11 @@ function renderCodex(card: HTMLElement): void {
           store.set('realm', 'cognitive');
           return;
         }
+        if (COSMERE.shards.some((s) => s.id === h.id) || DAWNSHARDS.some((d) => d.id === h.id)) {
+          store.set('realm', 'spiritual');
+          store.set('selected', h.id);
+          return;
+        }
         const ch = characterById[h.id];
         const where = ch ? characterAt(ch, store.state.era)?.body : undefined;
         if (where) {
@@ -210,7 +227,7 @@ function renderHelp(card: HTMLElement): void {
     el('div', { className: 'ceph-kicker', text: 'How to read the sky' }),
     el('h2', { text: 'The journal is a map you fly' }),
     el('p', { className: 'ceph-fact', text: 'Hover a world for its name. Click to open the card — the sky stays put. Click the orbit rings, not just the star, to dive in. Click a world for its globe, again for the surface, again for a city plate. Esc walks back out. ☰ hides the directory.' }),
-    el('p', { className: 'ceph-fact', html: '<b>Drag</b> orbit · <b>scroll</b> zoom · <b>WASD / QE</b> fly (those keys never open panels) · <b>Space</b> play time · <b>+/−</b> on the timeline for speed · <b>1–6</b> eras · <b>C</b> Cognitive · <b>V</b> Spiritual · <b>L</b> Lore Web · <b>M</b> galaxy chart · <b>F</b> frame Cosmere · <b>K</b> or <b>/</b> Codex · <b>H</b> this help. Arcanum, Journal, Share and Music are buttons.' }),
+    el('p', { className: 'ceph-fact', html: '<b>Drag</b> orbit · <b>scroll</b> zoom · <b>WASD / QE</b> fly (those keys never open panels) · <b>Space</b> play time · <b>+/−</b> on the timeline for speed · click a tick for a named beat · <b>1–6</b> eras · <b>C</b> Cognitive · <b>V</b> Spiritual · <b>L</b> Lore Web · <b>M</b> galaxy chart · <b>F</b> frame Cosmere · <b>K</b> or <b>/</b> Search · <b>H</b> this help. Arcanum, Journal, Settings and Share are buttons. Soundtrack lives in Settings.' }),
     el('p', { className: 'ceph-fact', text: 'Roshar and Scadrial atlas plates are Isaac Stewart\'s cartography, credited on the map. Globes are procedural, baked from one recipe per world, so a coast on the plate is the same coast on the sphere. Journal sets where you are in the books; the sky hides what you have not reached. Default is fully read.' }),
     el('p', { className: 'ceph-fact', style: { color: 'var(--ceph-text-dim)' }, text: 'Unofficial fan project. Not affiliated with Dragonsteel or Brandon Sanderson. Cartography by Isaac Stewart.' }),
   );
@@ -246,6 +263,7 @@ function renderRealms(card: HTMLElement): void {
 function applyReading(series: string | null, arc: number): void {
   if (!series) {
     store.set('readingNow', null);
+    store.setProgress(fullProgress());
     return;
   }
   const now = { series, arc };
@@ -257,39 +275,29 @@ function renderSpoilers(card: HTMLElement): void {
   card.append(
     el('div', { className: 'ceph-kicker', text: 'Reading companion' }),
     el('h2', { text: 'Where are you in the story?' }),
-    el('p', { className: 'ceph-fact', text: 'Rereaders default to fully read. Tell the journal what you are on and it syncs the Cosmere to that beat, publication-safe. Or step a single series back by hand.' }),
+    el('p', { className: 'ceph-fact', text: 'Rereaders default to fully read. Pick the book you are on and the journal hides what was published after it. Every Cosmere work is in the list — not just the big series names.' }),
   );
 
-  // "I am on Words of Radiance": the beat the whole journal answers to.
   const now = store.state.readingNow;
   const pick = el('select', { className: 'ceph-search', style: { marginTop: '14px' } }) as HTMLSelectElement;
   pick.append(el('option', { text: 'Not tracking a book — show everything', attrs: { value: '' } }));
-  for (const s of COSMERE.series) {
+  for (const book of JOURNAL_BOOKS) {
+    const i = bookArcIndex(book.series, book.arc);
+    const here = now?.series === book.series && now.arc === i;
     pick.append(el('option', {
-      text: s.title,
-      attrs: { value: s.id, ...(now?.series === s.id ? { selected: 'selected' } : {}) },
+      text: book.title,
+      attrs: { value: `${book.series}:${book.arc}`, ...(here ? { selected: 'selected' } : {}) },
     }));
   }
   listen(pick, 'change', () => {
-    const id = pick.value;
-    if (!id) { applyReading(null, 0); return; }
-    const s = seriesById[id];
-    applyReading(id, s ? s.arcs.length - 1 : 0);
+    const v = pick.value;
+    if (!v) { applyReading(null, 0); return; }
+    const [series, arc] = v.split(':');
+    if (!series || !arc) return;
+    applyReading(series, bookArcIndex(series, arc));
   });
+  card.append(pick);
 
-  const arcRow = el('div', { style: { display: 'flex', alignItems: 'center', gap: '8px', marginTop: '10px' } });
-  if (now) {
-    const s = seriesById[now.series];
-    const back = el('button', { className: 'ceph-btn', text: '←' });
-    const fwd = el('button', { className: 'ceph-btn', text: '→' });
-    listen(back, 'click', () => applyReading(now.series, Math.max(0, now.arc - 1)));
-    listen(fwd, 'click', () => applyReading(now.series, Math.min((s?.arcs.length ?? 1) - 1, now.arc + 1)));
-    arcRow.append(
-      back, fwd,
-      el('span', { className: 'ceph-reading', text: `✦ ${s?.arcs[now.arc]?.label ?? 'reading'}` }),
-    );
-  }
-  card.append(pick, arcRow);
   if (now) {
     const s = seriesById[now.series];
     const note = s ? arcNoteFor(now.series, now.arc, s.arcs) : undefined;
@@ -310,43 +318,50 @@ function renderSpoilers(card: HTMLElement): void {
       card.append(wrap);
     }
   }
-  const list = el('div', { style: { display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '16px' } });
-  for (const s of COSMERE.series) {
-    const prog = store.state.readProgress[s.id] ?? s.arcs.length - 1;
-    const label = el('div', { style: { display: 'flex', justifyContent: 'space-between', gap: '8px' } }, [
-      el('strong', { text: s.title }),
-      el('span', { className: 'ceph-kicker', text: prog < 0 ? 'unread' : s.arcs[prog]?.label ?? 'done' }),
+
+  const list = el('div', { className: 'ceph-book-list' });
+  for (const book of JOURNAL_BOOKS) {
+    const i = bookArcIndex(book.series, book.arc);
+    const prog = store.state.readProgress[book.series] ?? (seriesById[book.series]?.arcs.length ?? 1) - 1;
+    const here = now?.series === book.series && now.arc === i;
+    const read = prog >= i;
+    const row = el('button', {
+      className: `ceph-book${here ? ' is-on' : ''}${read ? ' is-read' : ''}`,
+      attrs: { type: 'button' },
+    }, [
+      el('span', { className: 'ceph-book-mark', text: here ? '✦' : read ? '·' : '' }),
+      el('span', { className: 'ceph-book-title', text: book.title }),
     ]);
-    const row = el('div');
-    const less = el('button', { className: 'ceph-btn ceph-btn--step', text: '−' });
-    const more = el('button', { className: 'ceph-btn ceph-btn--step', text: '+' });
-    listen(less, 'click', () => store.patchProgress(s.id, Math.max(-1, prog - 1)));
-    listen(more, 'click', () => store.patchProgress(s.id, Math.min(s.arcs.length - 1, prog + 1)));
-    row.append(label, el('div', { style: { display: 'flex', gap: '8px', marginTop: '6px' } }, [less, more]));
+    listen(row, 'click', () => applyReading(book.series, i));
     list.append(row);
   }
-  const pub = el('button', {
+  const clear = el('button', {
     className: 'ceph-btn',
-    text: 'Re-apply publication-safe',
-    style: { marginTop: '12px' },
+    text: 'Show everything',
+    style: { marginTop: '14px' },
   });
-  listen(pub, 'click', () => {
-    const n = store.state.readingNow;
-    if (!n) return;
-    applyReading(n.series, n.arc);
-  });
-  if (!store.state.readingNow) pub.disabled = true;
-  card.append(el('div', { className: 'ceph-kicker', text: 'By series', style: { marginTop: '18px' } }));
-  card.append(list, pub);
+  listen(clear, 'click', () => applyReading(null, 0));
+  if (!now) clear.disabled = true;
+  card.append(el('div', { className: 'ceph-kicker', text: 'Every book', style: { marginTop: '18px' } }));
+  card.append(list, clear);
 }
 
 
 function renderSettings(card: HTMLElement): void {
-  card.append(el('h2', { text: 'Look' }));
+  card.append(el('h2', { text: 'Settings' }));
   const v = store.state.visual;
   const toggle = (key: keyof typeof v, label: string) => {
-    const b = el('button', { className: `ceph-chip${v[key] ? ' is-on' : ''}`, text: label });
-    listen(b, 'click', () => store.patchVisual({ [key]: !v[key] }));
+    const b = el('button', {
+      className: `ceph-chip${v[key] ? ' is-on' : ''}`,
+      text: label,
+      attrs: { type: 'button', 'data-visual': String(key), 'aria-pressed': v[key] ? 'true' : 'false' },
+    });
+    listen(b, 'click', () => {
+      const next = !store.state.visual[key];
+      store.patchVisual({ [key]: next });
+      b.classList.toggle('is-on', Boolean(next));
+      b.setAttribute('aria-pressed', next ? 'true' : 'false');
+    });
     return b;
   };
   card.append(el('div', { className: 'ceph-kicker', text: 'The sky', style: { marginTop: '14px' } }));
@@ -361,8 +376,13 @@ function renderSettings(card: HTMLElement): void {
     toggle('showPerps', 'Doors'),
   ]));
   card.append(el('div', { className: 'ceph-kicker', text: 'Feel', style: { marginTop: '16px' } }));
+  const auto = toggle('autoRotate', 'Auto-rotate (title)');
+  if (store.state.shell === 'play') {
+    auto.disabled = true;
+    auto.title = 'Turns the title sky only';
+  }
   card.append(el('div', { style: { display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '8px' } }, [
-    toggle('autoRotate', 'Auto-rotate (title)'),
+    auto,
     toggle('rumble', 'Rumble'),
     toggle('music', 'Soundtrack'),
   ]));
@@ -392,11 +412,14 @@ function renderSettings(card: HTMLElement): void {
     className: 'ceph-chip is-on',
     text: `Quality · ${v.quality}`,
     style: { marginTop: '12px' },
+    attrs: { type: 'button' },
   });
   listen(q, 'click', () => {
     const order = ['auto', 'high', 'medium', 'low'] as const;
     const i = order.indexOf(store.state.visual.quality);
-    store.patchVisual({ quality: order[(i + 1) % order.length]! });
+    const next = order[(i + 1) % order.length]!;
+    store.patchVisual({ quality: next });
+    q.textContent = `Quality · ${next}`;
   });
   card.append(q);
 

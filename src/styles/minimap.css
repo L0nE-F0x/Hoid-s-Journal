@@ -1,7 +1,8 @@
 .ceph-minimap {
   position: fixed;
   right: 12px;
-  bottom: calc(var(--ceph-timeline-top, 118px) + 8px);
+  top: calc(var(--ceph-command-bottom, 56px) + 12px);
+  bottom: auto;
   z-index: 24;
   padding: 8px 8px 10px;
   display: none;
@@ -21,7 +22,8 @@
 .ceph-mm-restore {
   position: fixed;
   right: 12px;
-  bottom: calc(var(--ceph-timeline-top, 118px) + 8px);
+  top: calc(var(--ceph-command-bottom, 56px) + 12px);
+  bottom: auto;
   z-index: 24;
   display: none;
 }

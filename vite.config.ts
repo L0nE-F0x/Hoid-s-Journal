@@ -6,7 +6,7 @@ function siteUrl(): Plugin {
   const url = (
     (env.CONTEXT === 'production' ? env.URL : env.DEPLOY_PRIME_URL || env.URL) ||
     env.VITE_SITE_URL ||
-    'https://cephandrius.local'
+    'https://thecosmere.netlify.app'
   ).replace(/\/$/, '');
 
   return {

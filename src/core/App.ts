@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { COSMERE, HUBS, bodyById, canEnterCity, characterAt, eraAt, hubById, isVisible, systemExtent } from '../data/index.ts';
+import { COSMERE, COSMERE_EVENTS, HUBS, bodyById, canEnterCity, characterAt, eraAt, hubById, isVisible, systemExtent } from '../data/index.ts';
 import { uvFacing, uvOnBody } from '../layout/surface.ts';
 import { hubWorld } from '../layout/cognitive.ts';
 import { CameraRig, type Waypoint } from './CameraRig.ts';
@@ -12,6 +12,7 @@ import { createPostChain, type PostChain } from '../render/post.ts';
 import { SPIRITUAL_RADIUS, Spiritual } from '../render/Spiritual.ts';
 import { Shadesmar } from '../render/Shadesmar.ts';
 import { Starfield } from '../render/Starfield.ts';
+import { EventFx } from '../render/EventFx.ts';
 
 const FOV = 52;
 const CLICK_SLOP = 12;
@@ -46,6 +47,7 @@ export class App {
   private readonly presence: Presence;
   private readonly spiritual: Spiritual;
   private readonly shadesmar: Shadesmar;
+  private readonly eventFx: EventFx;
   private readonly post: PostChain;
   private readonly canvas: HTMLCanvasElement;
   private readonly clock = new THREE.Clock();
@@ -65,6 +67,7 @@ export class App {
   private autoBand: 'high' | 'medium' | 'low' = 'high';
   private fpsSlow = 0;
   private fpsFast = 0;
+  private lastYear = store.state.year;
 
   constructor(canvas: HTMLCanvasElement, opts: { onHoverAnchor?: (p: { x: number; y: number } | null) => void } = {}) {
     this.canvas = canvas;
@@ -91,6 +94,7 @@ export class App {
     this.presence = new Presence();
     this.spiritual = new Spiritual(this.renderer);
     this.shadesmar = new Shadesmar(this.renderer);
+    this.eventFx = new EventFx();
 
     this.scene.add(this.starfield.sky);
     this.scene.add(this.starfield.points);
@@ -100,6 +104,7 @@ export class App {
     this.scene.add(this.presence.group);
     this.scene.add(this.shadesmar.group);
     this.scene.add(this.spiritual.group);
+    this.scene.add(this.eventFx.group);
 
     this.post = createPostChain(this.renderer, this.scene, this.camera);
 
@@ -114,6 +119,9 @@ export class App {
 
     this.disposers.push(store.on('cameraCue', (cue) => {
       if (cue) this.consumeCue(cue);
+    }));
+    this.disposers.push(store.on('skyEvent', (id) => {
+      if (id) this.playSkyEvent(id);
     }));
     this.disposers.push(store.on('shell', (shell) => {
       this.rig.setInputEnabled(shell === 'play');
@@ -202,6 +210,17 @@ export class App {
       store.set('focusedBody', null);
       store.set('focusedSystem', null);
     });
+  }
+
+  private playSkyEvent(id: string): void {
+    const ev = COSMERE_EVENTS.find((e) => e.id === id);
+    if (!ev) return;
+    if (store.state.skyEvent) store.set('skyEvent', null);
+    this.lastYear = ev.year;
+    const origin = this.orrery.bodyPosition('yolen')
+      ?? this.orrery.systemPosition('yolish')
+      ?? new THREE.Vector3();
+    this.eventFx.play(ev, origin);
   }
 
   private consumeCue(cue: CameraCue): void {
@@ -297,8 +316,9 @@ export class App {
         const dz = p.z - sun.z;
         this.rig.setAngles(Math.atan2(dx, dz) + Math.PI - GLOBE_SUN_OFFSET, 1.02);
       }
-      const dist = globe ? this.rig.framingDistance(body.radius) : 42;
-      this.framing = globe ? { radius: body.radius, fill: 0.52, commanded: dist } : null;
+      const fill = next === 'surface' ? 0.82 : 0.52;
+      const dist = globe ? this.rig.framingDistance(body.radius, fill) : 42;
+      this.framing = globe ? { radius: body.radius, fill, commanded: dist } : null;
       this.rig.flyTo(p, dist, 2.0);
       return;
     }
@@ -667,6 +687,14 @@ export class App {
         if (e !== s.era) store.set('era', e);
       }
     }
+    const y = store.state.year;
+    if (!s.cinematic) {
+      for (const ev of COSMERE_EVENTS) {
+        if (ev.visual && this.lastYear < ev.year && y >= ev.year) this.playSkyEvent(ev.id);
+      }
+    }
+    this.lastYear = y;
+    this.eventFx.update(dt);
 
     // The opening pull-out crosses three scales. Derive the scale from how far
     // out the camera actually is, or the sky stays dressed for a close-up.
@@ -705,6 +733,7 @@ export class App {
       this.orrery, this.camera, s.era, s.year, s.readProgress, s.scale,
       s.realm === 'cognitive', s.selected,
       s.visual.showCharacters, s.visual.showShardLines,
+      s.focusedSystem,
     );
     this.shadesmar.update(
       t, s.realm === 'cognitive' && !s.cinematic, s.scale, s.focusedSystem,

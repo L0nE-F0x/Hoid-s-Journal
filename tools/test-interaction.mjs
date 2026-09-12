@@ -153,9 +153,20 @@ async function run() {
     check('Realms is a panel', (await state(page)).panel === 'realms', (await state(page)).panel);
     await page.keyboard.press('Escape');
     await sleep(150);
-    check('Lore Web opens', await clickLabel(page, '^web$'));
+    check('Lore Web opens', await clickLabel(page, '^lore$'));
     await sleep(400);
     check('view is the Lore Web', (await state(page)).view === 'web', (await state(page)).view);
+    const webBtn = await page.evaluate(() => {
+      const b = [...document.querySelectorAll('button')].find((el) => /^lore$/i.test(el.textContent ?? ''));
+      if (!b) return null;
+      const r = b.getBoundingClientRect();
+      return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+    });
+    if (webBtn) await page.mouse.click(webBtn.x, webBtn.y);
+    await sleep(200);
+    check('Web still clicks over the graph', (await state(page)).view === 'sky', (await state(page)).view);
+    await clickLabel(page, '^lore$');
+    await sleep(200);
     await page.keyboard.press('Escape');
     await sleep(200);
     check('Esc leaves the Lore Web', (await state(page)).view === 'sky', (await state(page)).view);
@@ -272,12 +283,14 @@ async function run() {
     });
 
     // Reading companion gates the sky.
-    await page.evaluate(() => window.__ceph.store.set('panel', 'spoilers'));
+    await page.evaluate(() => window.__ceph.store.set('panel', 'journal'));
     await sleep(400);
+    const books = await page.evaluate(() => [...document.querySelectorAll('.ceph-book-title')].map((n) => n.textContent));
+    check('Journal lists individual books', books.includes('The Way of Kings') && books.includes('The Alloy of Law') && books.includes('The Hope of Elantris'), String(books.length));
     const synced = await page.evaluate(() => {
       const sel = document.querySelector('.ceph-modal-card select');
       if (!sel) return null;
-      sel.value = 'stormlight';
+      sel.value = 'stormlight:twok';
       sel.dispatchEvent(new Event('change', { bubbles: true }));
       return true;
     });
@@ -286,7 +299,101 @@ async function run() {
     check('reading companion syncs publication-safe',
       !!synced && s.readProgress.mistborn2 === -1 && s.readProgress.elantris >= 0,
       JSON.stringify({ mb2: s.readProgress.mistborn2, el: s.readProgress.elantris }));
+    const restored = await page.evaluate(() => {
+      const sel = document.querySelector('.ceph-modal-card select');
+      if (!sel) return false;
+      sel.value = '';
+      sel.dispatchEvent(new Event('change', { bubbles: true }));
+      return true;
+    });
+    await sleep(400);
+    s = await state(page);
+    check('clearing the companion restores fully read',
+      restored && s.readingNow === null && s.readProgress.mistborn2 >= 0,
+      JSON.stringify({ now: s.readingNow, mb2: s.readProgress.mistborn2 }));
     await page.evaluate(() => window.__ceph.store.set('panel', 'none'));
+
+    // Look chips must light when clicked — they used to patch state and stay dim.
+    check('Settings opens', await clickLabel(page, '^settings$'));
+    await sleep(200);
+    const orbits = await page.evaluate(() => {
+      const b = [...document.querySelectorAll('.ceph-chip')].find((el) => el.textContent === 'Orbits');
+      if (!b) return null;
+      const before = b.classList.contains('is-on');
+      b.click();
+      return { before, after: b.classList.contains('is-on') };
+    });
+    check('Settings toggle lights its chip', !!orbits && orbits.before !== orbits.after,
+      JSON.stringify(orbits));
+    if (orbits && orbits.before !== orbits.after) {
+      await page.evaluate(() => {
+        const b = [...document.querySelectorAll('.ceph-chip')].find((el) => el.textContent === 'Orbits');
+        b?.click();
+      });
+    }
+    await page.keyboard.press('Escape');
+    await sleep(150);
+
+    const kept = await page.evaluate(() => {
+      window.__ceph.store.set('panel', 'journal');
+      window.__ceph.store.set('panel', 'nope');
+      return window.__ceph.store.state.panel;
+    });
+    check('unknown panel ids are ignored', kept === 'journal', kept);
+    await page.evaluate(() => window.__ceph.store.set('panel', 'none'));
+
+    await page.evaluate(() => window.__ceph.store.set('realm', 'spiritual'));
+    await sleep(250);
+    const dirTab = await page.evaluate(() => {
+      const b = [...document.querySelectorAll('.ceph-dir-tabs button')]
+        .find((el) => el.textContent === 'Worlds');
+      if (!b) return null;
+      b.click();
+      return document.querySelector('.ceph-directory .ceph-atlas-title')?.textContent ?? null;
+    });
+    check('Spiritual directory can leave the Shards tab', dirTab === 'Worlds', String(dirTab));
+    const dawn = await page.evaluate(() => {
+      const tab = [...document.querySelectorAll('.ceph-dir-tabs button')]
+        .find((el) => el.textContent === 'Dawnshards');
+      tab?.click();
+      const row = document.querySelector('.ceph-dir-row');
+      row?.click();
+      const s = window.__ceph.store.state;
+      return { realm: s.realm, selected: s.selected };
+    });
+    check('Dawnshards fly to the Spiritual Realm',
+      dawn.realm === 'spiritual' && !!dawn.selected, JSON.stringify(dawn));
+    await page.evaluate(() => {
+      window.__ceph.store.set('selected', null);
+      window.__ceph.store.set('realm', 'physical');
+    });
+
+    const term = await page.evaluate(() => {
+      window.__ceph.store.set('panel', 'codex');
+      return true;
+    });
+    await sleep(200);
+    const termHit = await page.evaluate(() => {
+      const input = document.querySelector('.ceph-modal-card input');
+      if (!(input instanceof HTMLInputElement)) return null;
+      input.value = 'investiture';
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      const row = [...document.querySelectorAll('.ceph-card')]
+        .find((el) => /investiture/i.test(el.textContent || ''));
+      row?.click();
+      return {
+        panel: window.__ceph.store.state.panel,
+        selected: window.__ceph.store.state.selected,
+        title: document.querySelector('.ceph-panel-drawer h2')?.textContent ?? null,
+      };
+    });
+    check('a glossary hit opens a card',
+      !!term && termHit?.selected === 'investiture' && termHit.title === 'Investiture',
+      JSON.stringify(termHit));
+    await page.evaluate(() => {
+      window.__ceph.store.set('selected', null);
+      window.__ceph.store.set('panel', 'none');
+    });
 
     // A phone still leaves the world a band to live in.
     await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 1 });
@@ -298,6 +405,19 @@ async function run() {
       return (window.innerHeight - i.top - i.bottom) / window.innerHeight;
     });
     check('phone leaves a viewing band', band > 0.25, `${Math.round(band * 100)}% of height`);
+    const tools = await page.evaluate(() => {
+      const el = document.querySelector('.ceph-tools');
+      if (!(el instanceof HTMLElement)) return null;
+      const style = getComputedStyle(el);
+      return {
+        overflow: style.overflowX,
+        pointer: style.pointerEvents,
+        scrollable: el.scrollWidth > el.clientWidth + 2,
+      };
+    });
+    check('phone tool strip can scroll',
+      !!tools && tools.overflow === 'auto' && tools.pointer !== 'none',
+      JSON.stringify(tools));
 
     check('no page errors', errors.length === 0, errors.slice(0, 2).join(' | '));
   } finally {

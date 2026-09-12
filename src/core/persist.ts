@@ -28,6 +28,23 @@ export function restoreSettings(): void {
     if (rn) store.state.readingNow = JSON.parse(rn);
   } catch { /* ignore */ }
 
+  // Series that gained books after a fully-read save: keep them fully read
+  // unless the companion is already pinning a beat.
+  if (!store.state.readingNow) {
+    const grew: Record<string, number> = { elantris: 0, whitesand: 0, mistborn2: 3 };
+    const next = { ...store.state.readProgress };
+    let changed = false;
+    for (const s of COSMERE.series) {
+      const oldLast = grew[s.id];
+      if (oldLast === undefined) continue;
+      if (next[s.id] === oldLast && s.arcs.length - 1 > oldLast) {
+        next[s.id] = s.arcs.length - 1;
+        changed = true;
+      }
+    }
+    if (changed) store.state.readProgress = next;
+  }
+
   try {
     const vis = localStorage.getItem(KEY_VISUAL);
     if (vis) Object.assign(store.state.visual, JSON.parse(vis) as Partial<VisualState>);

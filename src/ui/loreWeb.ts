@@ -152,7 +152,7 @@ export function mountLoreWeb(root: HTMLElement): { destroy(): void } {
     legend.replaceChildren(el('div', { className: 'ceph-kicker', text: 'Lore Web' }));
     legend.append(el('div', {
       className: 'ceph-web-hint',
-      text: 'Click a node for its path to Hoid. Drag a node to move it, drag the background to pan, scroll to zoom. Names appear as you go in.',
+      text: 'Click a node for its path to Hoid. Drag a node to move it, drag the background to pan, scroll or pinch to zoom. Names appear as you go in.',
     }));
     const reset = el('button', { className: 'ceph-web-reset', text: 'Fit to frame', attrs: { type: 'button' } });
     listen(reset, 'click', () => { manual = false; });
@@ -323,25 +323,71 @@ export function mountLoreWeb(root: HTMLElement): { destroy(): void } {
     if (on) { resize(); rebuild(); zoom = 0.5; panX = 0; panY = 0; manual = false; }
   };
 
+  const pointers = new Map<number, { x: number; y: number }>();
+  let pinch: { dist: number; zoom: number; cx: number; cy: number; panX: number; panY: number } | null = null;
+
+  const pinchCentre = () => {
+    const [a, b] = [...pointers.values()];
+    if (!a || !b) return { x: 0, y: 0 };
+    return { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
+  };
+  const pinchDist = () => {
+    const [a, b] = [...pointers.values()];
+    if (!a || !b) return 1;
+    return Math.hypot(a.x - b.x, a.y - b.y) || 1;
+  };
+  const applyPinch = () => {
+    if (!pinch || pointers.size < 2) return;
+    const r = canvas.getBoundingClientRect();
+    const c = pinchCentre();
+    const mx = c.x - r.left - w / 2;
+    const my = c.y - r.top - h / 2;
+    zoom = Math.min(3.2, Math.max(0.18, pinch.zoom * (pinchDist() / pinch.dist)));
+    const worldX = pinch.cx / pinch.zoom - pinch.panX;
+    const worldY = pinch.cy / pinch.zoom - pinch.panY;
+    panX = mx / zoom - worldX;
+    panY = my / zoom - worldY;
+  };
+
   const offs = [
     listen(canvas, 'pointerdown', (ev) => {
       const e = ev as PointerEvent;
+      pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      canvas.setPointerCapture(e.pointerId);
+      if (pointers.size >= 2) {
+        drag = null;
+        panning = null;
+        manual = true;
+        const r = canvas.getBoundingClientRect();
+        const c = pinchCentre();
+        pinch = {
+          dist: pinchDist(),
+          zoom,
+          cx: c.x - r.left - w / 2,
+          cy: c.y - r.top - h / 2,
+          panX, panY,
+        };
+        return;
+      }
       const p = toLocal(e);
       drag = hitNode(p.x, p.y);
       if (drag) {
         store.set('selected', drag.id);
         trace();
-        canvas.setPointerCapture(e.pointerId);
         return;
       }
       // Empty space drags the view, the way every other map does.
       panning = { x: e.clientX, y: e.clientY };
       manual = true;
-      canvas.setPointerCapture(e.pointerId);
       canvas.style.cursor = 'grabbing';
     }),
     listen(canvas, 'pointermove', (ev) => {
       const e = ev as PointerEvent;
+      if (pointers.has(e.pointerId)) pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      if (pinch && pointers.size >= 2) {
+        applyPinch();
+        return;
+      }
       if (drag) {
         const p = toLocal(e);
         drag.x = p.x; drag.y = p.y; drag.vx = 0; drag.vy = 0;
@@ -355,10 +401,22 @@ export function mountLoreWeb(root: HTMLElement): { destroy(): void } {
       panY += (e.clientY - panning.y) / zoom;
       panning = { x: e.clientX, y: e.clientY };
     }),
-    listen(canvas, 'pointerup', () => {
+    listen(canvas, 'pointerup', (ev) => {
+      const e = ev as PointerEvent;
+      pointers.delete(e.pointerId);
+      if (pointers.size < 2) pinch = null;
+      if (pointers.size === 0) {
+        drag = null;
+        panning = null;
+        canvas.style.cursor = 'grab';
+      }
+    }),
+    listen(canvas, 'pointercancel', (ev) => {
+      const e = ev as PointerEvent;
+      pointers.delete(e.pointerId);
+      pinch = null;
       drag = null;
       panning = null;
-      canvas.style.cursor = 'grab';
     }),
     listen(canvas, 'wheel', (ev) => {
       const e = ev as WheelEvent;

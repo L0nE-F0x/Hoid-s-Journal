@@ -1,6 +1,7 @@
 .ceph-hud {
   position: fixed;
   inset: 0;
+  z-index: 28;
   pointer-events: none;
   opacity: 0;
   visibility: hidden;
@@ -74,7 +75,7 @@
   justify-content: flex-end;
   gap: 6px;
   z-index: 25;
-  pointer-events: none;
+  pointer-events: auto;
 }
 .ceph-topbar .ceph-btn {
   padding: 6px 10px;
@@ -127,6 +128,43 @@
   flex-wrap: wrap;
 }
 /* A ruled scale with a brass index, not a stock range input. */
+.ceph-slider-wrap {
+  position: relative;
+  margin: 2px 0 4px;
+}
+.ceph-time-marks {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 18px;
+  pointer-events: none;
+}
+.ceph-time-mark {
+  pointer-events: auto;
+  position: absolute;
+  top: 0;
+  width: 8px;
+  height: 18px;
+  margin-left: -4px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+.ceph-time-mark::before {
+  content: '';
+  position: absolute;
+  left: 3px;
+  top: 0;
+  width: 2px;
+  height: 7px;
+  border-radius: 1px;
+  background: var(--ceph-gold);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--ceph-gold) 70%, transparent);
+  opacity: 0.85;
+}
+.ceph-time-mark:hover::before { height: 11px; opacity: 1; }
 .ceph-slider {
   width: 100%;
   pointer-events: auto;
@@ -179,6 +217,7 @@
   pointer-events: none;
 }
 .ceph-timeline.is-thin .ceph-slider,
+.ceph-timeline.is-thin .ceph-slider-wrap,
 .ceph-timeline.is-thin .ceph-era-row,
 .ceph-timeline.is-thin .ceph-ticker {
   display: none;
@@ -186,9 +225,6 @@
 .ceph-timeline.is-thin {
   padding: 8px 12px;
   width: min(420px, calc(100% - 32px));
-}
-.ceph-tools {
-  pointer-events: none;
 }
 .ceph-tools .ceph-btn { pointer-events: auto; }
 .ceph-back {
@@ -331,6 +367,42 @@
   padding: 6px 8px;
   border-bottom: 1px solid var(--ceph-border);
 }
+.ceph-book-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 10px;
+  max-height: min(52vh, 480px);
+  overflow: auto;
+}
+.ceph-book {
+  pointer-events: auto;
+  display: grid;
+  grid-template-columns: 1.2em 1fr;
+  align-items: baseline;
+  gap: 8px;
+  width: 100%;
+  text-align: left;
+  padding: 7px 8px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  background: transparent;
+  color: var(--ceph-text);
+  cursor: pointer;
+}
+.ceph-book:hover { border-color: var(--ceph-rule); background: rgba(255,255,255,0.03); }
+.ceph-book.is-on {
+  border-color: color-mix(in srgb, var(--ceph-amber) 50%, transparent);
+  background: color-mix(in srgb, var(--ceph-amber) 10%, transparent);
+}
+.ceph-book.is-read .ceph-book-title { color: var(--ceph-text); }
+.ceph-book:not(.is-read) .ceph-book-title { color: var(--ceph-text-faint); }
+.ceph-book-mark {
+  color: var(--ceph-amber);
+  font-size: 11px;
+}
+.ceph-book-title { font-size: 13px; }
+
 .ceph-search {
   width: 100%;
   pointer-events: auto;
@@ -387,6 +459,7 @@
     top: calc(6px + var(--ceph-safe-top));
     flex-wrap: wrap;
     padding: 6px 8px;
+    gap: 6px;
   }
   .ceph-topbar-left { flex-wrap: wrap; }
   .ceph-tools {
@@ -395,11 +468,14 @@
     overflow-x: auto;
     flex-wrap: nowrap;
     scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x;
   }
   .ceph-tools::-webkit-scrollbar { display: none; }
   .ceph-tools .ceph-btn {
-    padding: 5px 9px;
+    padding: 6px 9px;
     font-size: 10px;
+    letter-spacing: 0.10em;
     flex: 0 0 auto;
   }
   .ceph-timeline {
@@ -416,6 +492,9 @@
     padding: 12px 14px 14px;
   }
   .ceph-modal-card { padding: 18px 16px 22px; }
+  .ceph-topbar-left { flex-wrap: nowrap; }
+  .ceph-command-sub { max-width: 42vw; }
+  .ceph-book-list { max-height: 42vh; }
 }
 
 /* A second paragraph on a card — what a thing physically is, under what it

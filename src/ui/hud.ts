@@ -1,5 +1,6 @@
 import {
   COSMERE,
+  COSMERE_EVENTS,
   bodyById,
   canEnterCity,
   characterAt,
@@ -66,6 +67,8 @@ function entityById(id: string | null) {
   if (ds) return { kind: 'dawnshard' as const, obj: ds };
   const sh = COSMERE.shards.find((s) => s.id === id);
   if (sh) return { kind: 'shard' as const, obj: sh };
+  const term = COSMERE.glossary.find((g) => g.id === id);
+  if (term) return { kind: 'term' as const, obj: term };
   return null;
 }
 
@@ -87,16 +90,15 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
 
   const mkTool = (label: string, title: string) =>
     el('button', { className: 'ceph-btn', text: label, attrs: { type: 'button', title } });
-  const btnCodex = mkTool('Codex', 'Search the journal (K /)');
+  const btnCodex = mkTool('Search', 'Search the journal (K /)');
   const btnArc = mkTool('Arcanum', 'Magic systems');
   const btnSpoil = mkTool('Journal', 'Reading progress');
   const btnRealm = mkTool('Realms', 'Physical / Cognitive / Spiritual (C / V)');
-  const btnLook = mkTool('Look', 'Display settings');
+  const btnLook = mkTool('Settings', 'Display settings');
   const btnHelp = mkTool('Help', 'How to read the sky (H)');
   const btnShare = mkTool('Share', 'Copy a link to this view');
-  const btnWeb = mkTool('Web', 'Lore Web — six degrees of Hoid (L)');
-  const btnMusic = mkTool('Music', 'Soundtrack');
-  const tools = el('div', { className: 'ceph-tools' }, [btnCodex, btnArc, btnSpoil, btnRealm, btnLook, btnWeb, btnMusic, btnHelp, btnShare]);
+  const btnWeb = mkTool('Lore', 'Lore Web — six degrees of Hoid (L)');
+  const tools = el('div', { className: 'ceph-tools' }, [btnCodex, btnArc, btnSpoil, btnRealm, btnLook, btnWeb, btnHelp, btnShare]);
 
   const topbar = el('div', { className: 'ceph-panel ceph-topbar' }, [
     el('div', { className: 'ceph-topbar-left' }, [btnDir, word, scaleLabel, readingLabel, back]),
@@ -104,7 +106,7 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
   ]);
 
   const play = el('button', { className: 'ceph-play', text: '❚❚', attrs: { type: 'button', title: 'Play / pause time' } });
-  const yearEl = el('div', { className: 'ceph-year', text: COSMERE.eras[3]!.realDate });
+  const yearEl = el('div', { className: 'ceph-year', text: COSMERE.eras[0]!.realDate });
   const slider = el('input', { className: 'ceph-slider', attrs: { type: 'range', min: '0', max: '1000', value: '500' } });
   const eraRow = el('div', { className: 'ceph-era-row' });
   const eraShort = ['Pre', 'Post', 'MB1', 'SA', 'MB2', 'Far'];
@@ -125,11 +127,27 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
     text: '▾',
     attrs: { type: 'button', title: 'Minimise timeline' },
   });
-  const ticker = el('div', { className: 'ceph-ticker', text: COSMERE.eras[3]!.event });
+  const ticker = el('div', { className: 'ceph-ticker', text: COSMERE.eras[0]!.event });
+  const marks = el('div', { className: 'ceph-time-marks' });
+  for (const ev of COSMERE_EVENTS) {
+    const u = yearToSlider(ev.year);
+    const m = el('button', {
+      className: 'ceph-time-mark',
+      attrs: { type: 'button', title: `${ev.name} — ${ev.fact}` },
+      style: { left: `${(u * 100).toFixed(2)}%` },
+    });
+    listen(m, 'click', () => {
+      store.set('isPlaying', false);
+      store.set('year', ev.year);
+      store.set('era', eraAt(ev.year));
+      store.set('skyEvent', ev.id);
+    });
+    marks.append(m);
+  }
   const timeline = el('div', { className: 'ceph-panel ceph-timeline' }, [
     el('div', { className: 'ceph-timeline-top' }, [play, yearEl, speed, btnTimeMin]),
     ticker,
-    slider,
+    el('div', { className: 'ceph-slider-wrap' }, [slider, marks]),
     eraRow,
   ]);
 
@@ -209,12 +227,11 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
     btnTimeMin.title = s.chrome.timeline ? 'Minimise timeline' : 'Expand timeline';
     btnCodex.classList.toggle('is-on', s.panel === 'codex');
     btnArc.classList.toggle('is-on', s.panel === 'arcanum');
-    btnSpoil.classList.toggle('is-on', s.panel === 'spoilers');
+    btnSpoil.classList.toggle('is-on', s.panel === 'journal');
     btnLook.classList.toggle('is-on', s.panel === 'settings');
     btnHelp.classList.toggle('is-on', s.panel === 'help');
     btnRealm.classList.toggle('is-on', s.panel === 'realms' || s.realm !== 'physical');
     btnWeb.classList.toggle('is-on', s.view === 'web');
-    btnMusic.classList.toggle('is-on', s.visual.music);
   };
 
   const refreshTime = () => {
@@ -223,7 +240,12 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
     const local = s.focusedSystem ? worldDate(s.focusedSystem, s.era) : null;
     const approx = era.canon !== 'canon' ? ' ≈' : '';
     yearEl.textContent = (local ?? era.realDate) + approx;
-    ticker.textContent = era.event;
+    const near = COSMERE_EVENTS.reduce((best, ev) => {
+      const d = Math.abs(ev.year - s.year);
+      if (!best || d < best.d) return { ev, d };
+      return best;
+    }, null as { ev: (typeof COSMERE_EVENTS)[number]; d: number } | null);
+    ticker.textContent = near && near.d < 40 ? near.ev.name + ' — ' + near.ev.fact : era.event;
     slider.value = String(Math.round(yearToSlider(s.year) * 1000));
     play.textContent = s.isPlaying ? '❚❚' : '▶';
     rateEl.textContent = `${s.timeRate}×`;
@@ -272,8 +294,8 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
         ['Sources', b.sources.join(' · ')],
         ['Local date', worldDate(b.system, store.state.era)],
       ]));
-      if (b.hasSurface) {
-        const go = el('button', { className: 'ceph-btn ceph-btn--primary', text: 'Surface scan', style: { marginTop: '14px' } });
+      if (b.hasSurface && store.state.scale === 'globe') {
+        const go = el('button', { className: 'ceph-btn ceph-btn--primary', text: 'Zoom to the surface', style: { marginTop: '14px' } });
         listen(go, 'click', () => store.set('cameraCue', { kind: 'focus', id: b.id, scale: 'surface' }));
         drawer.append(go);
       }
@@ -318,9 +340,11 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
         ['Worlds', worlds.map((b) => b.name).join(', ')],
         ['Local date', worldDate(sys.id, store.state.era)],
       ]));
-      const go = el('button', { className: 'ceph-btn ceph-btn--primary', text: 'Enter this system', style: { marginTop: '14px' } });
-      listen(go, 'click', () => store.set('cameraCue', { kind: 'focus', id: sys.id, scale: 'system' }));
-      drawer.append(go);
+      if (store.state.scale === 'cosmere' || store.state.focusedSystem !== sys.id) {
+        const go = el('button', { className: 'ceph-btn ceph-btn--primary', text: 'Enter this system', style: { marginTop: '14px' } });
+        listen(go, 'click', () => store.set('cameraCue', { kind: 'focus', id: sys.id, scale: 'system' }));
+        drawer.append(go);
+      }
     } else if (hit.kind === 'location') {
       const l = hit.obj;
       const perp = perpAt(l.id);
@@ -356,6 +380,14 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
         el('h2', { text: m.name }),
       ]));
       drawer.append(head, el('p', { className: 'ceph-fact', text: m.desc }));
+    } else if (hit.kind === 'term') {
+      const g = hit.obj;
+      head.append(el('div', {}, [
+        el('div', { className: 'ceph-kicker', text: 'Codex' }),
+        el('h2', { text: g.term }),
+        el('span', { className: `ceph-canon ceph-canon--${g.canon}`, text: g.canon }),
+      ]));
+      drawer.append(head, el('p', { className: 'ceph-fact', text: g.def }));
     } else if (hit.kind === 'character') {
       const c = hit.obj;
       const at = characterAt(c, store.state.era);
@@ -427,7 +459,6 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
       setTimeout(() => { btnShare.textContent = 'Share'; }, 1400);
     }),
     listen(btnWeb, 'click', () => store.set('view', store.state.view === 'web' ? 'sky' : 'web')),
-    listen(btnMusic, 'click', () => store.patchVisual({ music: !store.state.visual.music })),
     listen(slider, 'input', () => {
       const y = sliderToYear(Number(slider.value) / 1000);
       store.set('isPlaying', false);
@@ -436,7 +467,7 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
     }),
     listen(btnCodex, 'click', () => store.set('panel', store.state.panel === 'codex' ? 'none' : 'codex')),
     listen(btnArc, 'click', () => store.set('panel', store.state.panel === 'arcanum' ? 'none' : 'arcanum')),
-    listen(btnSpoil, 'click', () => store.set('panel', store.state.panel === 'spoilers' ? 'none' : 'spoilers')),
+    listen(btnSpoil, 'click', () => store.set('panel', store.state.panel === 'journal' ? 'none' : 'journal')),
     listen(btnLook, 'click', () => store.set('panel', store.state.panel === 'settings' ? 'none' : 'settings')),
     listen(btnHelp, 'click', () => store.set('panel', store.state.panel === 'help' ? 'none' : 'help')),
     listen(btnRealm, 'click', () => store.set('panel', store.state.panel === 'realms' ? 'none' : 'realms')),
@@ -449,7 +480,7 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
       tooltip.style.left = `${m.clientX}px`;
       tooltip.style.top = `${m.clientY}px`;
     }),
-    listen(readingLabel, 'click', () => store.set('panel', 'spoilers')),
+    listen(readingLabel, 'click', () => store.set('panel', 'journal')),
     store.on('readingNow', refreshReading),
     listen(window, 'resize', () => measure()),
     store.on('cinematic', (on) => { skip.classList.toggle('is-on', on); refreshScale(); }),

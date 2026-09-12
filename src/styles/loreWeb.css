@@ -13,6 +13,7 @@
   width: 100%;
   height: 100%;
   cursor: grab;
+  touch-action: none;
 }
 .ceph-web-legend {
   position: absolute;
@@ -61,7 +62,7 @@
 @media (max-width: 900px) {
   .ceph-web-legend {
     top: auto;
-    bottom: calc(var(--ceph-tools-top, 200px) + 8px);
+    bottom: calc(var(--ceph-timeline-top, 160px) + 8px);
     max-height: 28vh;
     overflow: auto;
   }

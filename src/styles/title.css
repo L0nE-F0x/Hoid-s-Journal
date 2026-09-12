@@ -12,6 +12,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding: 28px 0 118px;
   pointer-events: none;
   opacity: 0;
   visibility: hidden;
@@ -235,7 +236,8 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: 4px 0;
-  margin-top: 40px;
+  margin-top: 28px;
+  margin-bottom: 8px;
   padding-top: 18px;
   border-top: 1px solid var(--ceph-rule);
   width: 100%;

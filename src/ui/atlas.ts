@@ -42,7 +42,7 @@ export function atlasIsOpen(): boolean {
   const s = store.state;
   // The opening flight crosses three scales in twelve seconds. Panels that
   // slide in and out behind it turn a cinematic into a slideshow.
-  return s.shell === 'play' && !s.cinematic && !!s.focusedBody &&
+  return s.shell === 'play' && !s.cinematic && s.view !== 'web' && !!s.focusedBody &&
     (s.scale === 'globe' || s.scale === 'surface' || s.scale === 'city');
 }
 
@@ -247,7 +247,7 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
       for (const m of plate.landmarks) {
         if (!isVisible(m, s.readProgress)) continue;
         const chip = el('button', {
-          className: 'ceph-atlas-chip',
+          className: `ceph-atlas-chip${s.selected === m.id ? ' is-on' : ''}`,
           text: m.name,
           style: { borderColor: m.color },
         });
@@ -262,7 +262,7 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
     for (const c of people) {
       const fresh = isNewThisArc(c, s.readingNow);
       const chip = el('button', {
-        className: 'ceph-atlas-chip',
+        className: `ceph-atlas-chip${s.selected === c.id ? ' is-on' : ''}`,
         text: fresh ? `✦ ${c.name}` : c.name,
         style: { borderColor: fresh ? 'var(--ceph-amber)' : c.color },
       });
@@ -375,7 +375,8 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
     store.on('era', refresh),
     store.on('realm', refresh),
     store.on('shell', refresh),
-    store.on('selected', () => { composePins(); paint(); }),
+    store.on('view', refresh),
+    store.on('selected', () => { composePins(); composeRoster(); paint(); }),
     store.on('hovered', () => { composePins(); paint(); }),
     store.on('focusedLocation', () => {
       if (store.state.scale === 'city') refresh();

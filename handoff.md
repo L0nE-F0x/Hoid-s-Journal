@@ -16,12 +16,14 @@ Architecture lock: `AGENTS.md` + `DESIGN.md`. This file is the live todo.
 
 # ▶ START HERE — next session
 
-**2026-09-12 wrapped, then a perf pass.** UI polish is live. A follow-up
-scanned the renderer: view-switch stutter was moons drawn in every system,
-orbit trails rebuilt every frame, atmospheres marched at Cosmere scale, and
-the HUD notified on every playhead tick. Those are cut. Plates for both
-Realms warm in the idle frames after boot so the first press of C does not
-bake. Interaction suite 46/46.
+**2026-09-12 lore pass 2.** The first timeline pass hid planets that do not
+exist yet and left their stars, orbits, names and galaxy dots. Pre-Shattering
+was empty rings labelled Lumar, Scadrian, UTol, Canticle. Coppermind: most
+worlds existed and were named before the Shattering; **Scadrial** is the
+exception (Ruin and Preservation built it after). Lumar, Canticle, UTol and
+Komashi sit in their rings at era 0; Scadrian is gone until era 1 — star,
+orbit, label, directory, galaxy, Shadesmar disc and picking all wait with
+the planet. `systemOnTheMap` is the gate. Interaction suite **52/52**.
 
 Hard-refresh https://thecosmere.netlify.app after a deploy; the service
 worker otherwise keeps the old shell.
@@ -41,7 +43,7 @@ npm run dev              # http://127.0.0.1:5174
 
 # Second shell. This is how you check visual work.
 npm run shot -- --focus roshar --scale globe --out /tmp/roshar.png
-npm run test:interaction # 46 checks through real mouse and keyboard
+npm run test:interaction # 52 checks through real mouse and keyboard
 npm run audit:ui         # clicks every control, reports the ones that do nothing
 npm run perf             # fps per Realm, expensive layers toggled off one at a time
 ```
@@ -57,7 +59,7 @@ the program count and any fault — ask for it first when someone reports a
 black sky.
 
 Last known green: `npx tsc --noEmit` and
-`npm run test:interaction` (**46/46**) with `npm run dev` already up.
+`npm run test:interaction` (**52/52**) with `npm run dev` already up.
 Re-run those plus `npm run build` before you push.
 
 ---
@@ -202,7 +204,7 @@ Treat this as current truth, not a wishlist.
 - Reading Companion, Codex, Arcanum (12 tables), Share, time speed, galaxy
   minimap, soundtrack, PWA.
 - Deep-link hash `#y=&realm=&scale=&system=&body=&loc=&reading=`.
-- Harnesses: `npm run shot`, `npm run test:interaction` (46 checks),
+- Harnesses: `npm run shot`, `npm run test:interaction` (52 checks),
   `npm run perf`, `npm run bench`.
 
 ### What the atlas holds
@@ -341,6 +343,13 @@ Written down so the next session does not rediscover them:
 - **Picking.** Cosmere hits use `systemExtent()` (orbit cloud). Do not
   go back to a tiny star sprite. HUD `.ceph-panel` must stay
   click-through except buttons / atlas / timeline / drawer.
+- **Empty systems are not places.** `systemOnTheMap` hides the star,
+  orbit, label, galaxy dot, directory row and Shadesmar disc when no
+  in-era world remains. Scadrial is the one world built after the
+  Shattering; do not put `eraMin` on Lumar / Canticle / UTol / Komashi
+  just because their books are late. Named places still wait on the
+  playhead. Coppermind: Cosmere (most planets existed and were named
+  before the Shattering); Scadrian system (Scadrial did not).
 - **Pin convention.** `src/layout/surface.ts` matches `THREE.SphereGeometry`.
   Negating z mirrors every pin.
 - **Atmosphere.** Rim uses the correct facing; `+n` on back faces washed

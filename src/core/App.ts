@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { COSMERE, COSMERE_EVENTS, HUBS, bodyById, canEnterCity, characterAt, eraAt, hubById, isVisible, onTheMap, systemExtent, yearToSlider } from '../data/index.ts';
+import { COSMERE, COSMERE_EVENTS, HUBS, bodyById, canEnterCity, characterAt, eraAt, hubById, isVisible, onTheMap, systemExtent, systemOnTheMap, yearToSlider } from '../data/index.ts';
 import { uvFacing, uvOnBody } from '../layout/surface.ts';
 import { hubWorld } from '../layout/cognitive.ts';
 import { CameraRig, type Waypoint } from './CameraRig.ts';
@@ -299,9 +299,11 @@ export class App {
    * the far ones off the bottom of the frame.
    */
   private frameCosmere(damping: number): void {
+    const { era, readProgress } = store.state;
+    const live = COSMERE.systems.filter((sys) => systemOnTheMap(sys.id, readProgress, era));
     const centre = new THREE.Vector3();
     let n = 0;
-    for (const sys of COSMERE.systems) {
+    for (const sys of live) {
       const p = this.orrery.systemPosition(sys.id);
       if (!p) continue;
       centre.add(p);
@@ -309,7 +311,7 @@ export class App {
     }
     if (n) centre.multiplyScalar(1 / n);
     let spread = 40;
-    for (const sys of COSMERE.systems) {
+    for (const sys of live) {
       const p = this.orrery.systemPosition(sys.id);
       if (p) spread = Math.max(spread, centre.distanceTo(p));
     }
@@ -328,6 +330,8 @@ export class App {
     if (hubById[id]) { this.focusHub(id); return; }
     const body = bodyById[id];
     if (body) {
+      const st = store.state;
+      if (!onTheMap(body, st.readProgress, st.era)) return;
       const p = this.orrery.bodyPosition(id);
       if (!p) return;
       const next: Scale = scale === 'cosmere' ? 'globe' : scale;
@@ -357,6 +361,8 @@ export class App {
     }
     const sys = COSMERE.systems.find((s) => s.id === id);
     if (sys) {
+      const st = store.state;
+      if (!systemOnTheMap(id, st.readProgress, st.era)) return;
       const p = this.orrery.systemPosition(id);
       if (!p) return;
       // Frame the whole disc, not a fixed distance: the Rosharan system runs
@@ -484,7 +490,7 @@ export class App {
     const globe = isGlobeScale(s.scale);
     if (!globe) {
       for (const sys of COSMERE.systems) {
-        if (!isVisible(sys, s.readProgress)) continue;
+        if (!systemOnTheMap(sys.id, s.readProgress, s.era)) continue;
         const p = this.orrery.systemPosition(sys.id);
         if (!p) continue;
         // At Cosmere the orbit rings are the thing you see. A 1.6-unit sun
@@ -735,6 +741,21 @@ export class App {
       }
     }
     const y = store.state.year;
+    if (!s.cinematic && s.shell === 'play') {
+      const live = store.state;
+      const focused = live.focusedBody ? bodyById[live.focusedBody] : undefined;
+      if (focused && !onTheMap(focused, live.readProgress, live.era)) {
+        store.set('focusedBody', null);
+        store.set('focusedLocation', null);
+        if (live.focusedSystem && systemOnTheMap(live.focusedSystem, live.readProgress, live.era)) {
+          this.focusId(live.focusedSystem, 'system');
+        } else {
+          this.frameCosmere(1.8);
+        }
+      } else if (live.focusedSystem && !systemOnTheMap(live.focusedSystem, live.readProgress, live.era)) {
+        this.frameCosmere(1.8);
+      }
+    }
     if (!s.cinematic) {
       for (const ev of COSMERE_EVENTS) {
         if (ev.visual && this.lastYear < ev.year && y >= ev.year) this.playSkyEvent(ev.id);

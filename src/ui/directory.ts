@@ -10,6 +10,7 @@ import {
   inEra,
   isVisible,
   onTheMap,
+  systemOnTheMap,
 } from '../data/index.ts';
 import { store } from '../core/store.ts';
 import { atlasIsOpen } from './atlas.ts';
@@ -178,10 +179,10 @@ export function mountDirectory(root: HTMLElement): { destroy(): void } {
 
     if (tab === 'systems') {
       for (const sys of COSMERE.systems) {
-        if (!isVisible(sys, s.readProgress) || !match(sys.name)) continue;
+        if (!systemOnTheMap(sys.id, s.readProgress, s.era) || !match(sys.name)) continue;
         const n = COSMERE.bodies.filter((b) => b.system === sys.id && b.kind !== 'gas-giant'
           && onTheMap(b, s.readProgress, s.era)).length;
-        if (n === 0) continue;
+        if (!n) continue;
         push(row(sys.id, sys.name, n === 1 ? '1 world' : `${n} worlds`, sys.sunColor, `Enter the ${sys.name} system`));
       }
     } else if (tab === 'worlds') {

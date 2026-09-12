@@ -2,7 +2,7 @@
  * A 2-D chart of the designed Cosmere layout. No Three — positions come
  * from the catalog, clicks only set store cues.
  */
-import { COSMERE, isVisible } from '../data/index.ts';
+import { COSMERE, systemOnTheMap } from '../data/index.ts';
 import { store } from '../core/store.ts';
 import { el, listen } from './dom.ts';
 import '../styles/minimap.css';
@@ -30,8 +30,11 @@ export function mountMinimap(root: HTMLElement): { destroy(): void } {
   root.append(panel, restore);
 
   const pts = () => {
-    const xs = COSMERE.systems.map((s) => s.position[0]);
-    const zs = COSMERE.systems.map((s) => s.position[2]);
+    const s = store.state;
+    const live = COSMERE.systems.filter((sys) => systemOnTheMap(sys.id, s.readProgress, s.era));
+    if (!live.length) return [];
+    const xs = live.map((sys) => sys.position[0]);
+    const zs = live.map((sys) => sys.position[2]);
     const minX = Math.min(...xs);
     const maxX = Math.max(...xs);
     const minZ = Math.min(...zs);
@@ -40,12 +43,12 @@ export function mountMinimap(root: HTMLElement): { destroy(): void } {
     const sx = (W - pad * 2) / Math.max(1e-3, maxX - minX);
     const sz = (H - pad * 2) / Math.max(1e-3, maxZ - minZ);
     const k = Math.min(sx, sz);
-    return COSMERE.systems.map((s) => ({
-      id: s.id,
-      name: s.name,
-      color: s.sunColor,
-      x: pad + (s.position[0] - minX) * k,
-      y: pad + (s.position[2] - minZ) * k,
+    return live.map((sys) => ({
+      id: sys.id,
+      name: sys.name,
+      color: sys.sunColor,
+      x: pad + (sys.position[0] - minX) * k,
+      y: pad + (sys.position[2] - minZ) * k,
     }));
   };
 
@@ -62,7 +65,6 @@ export function mountMinimap(root: HTMLElement): { destroy(): void } {
     ctx.clearRect(0, 0, W, H);
     const rows = pts();
     for (const p of rows) {
-      if (!isVisible(COSMERE.systems.find((x) => x.id === p.id)!, s.readProgress)) continue;
       const hot = p.id === s.focusedSystem;
       ctx.beginPath();
       ctx.arc(p.x, p.y, hot ? 6 : 3.5, 0, Math.PI * 2);
@@ -101,6 +103,7 @@ export function mountMinimap(root: HTMLElement): { destroy(): void } {
     store.on('realm', paint),
     store.on('focusedSystem', paint),
     store.on('readProgress', paint),
+    store.on('era', paint),
     store.on('view', paint),
     store.on('chrome', paint),
     store.on('selected', paint),

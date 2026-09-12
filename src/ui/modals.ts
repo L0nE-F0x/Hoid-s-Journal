@@ -11,6 +11,7 @@ import {
   isNewThisArc,
   isVisible,
   landmarkById,
+  systemOnTheMap,
   publicationSafeProgress,
   seriesById,
   fullProgress,
@@ -124,7 +125,7 @@ function renderCodex(card: HTMLElement): void {
     if (q.length < 2) {
       results.append(el('div', { className: 'ceph-kicker', text: 'Browse systems' }));
       for (const sys of COSMERE.systems) {
-        if (!isVisible(sys, store.state.readProgress)) continue;
+        if (!systemOnTheMap(sys.id, store.state.readProgress, store.state.era)) continue;
         const b = el('button', { className: 'ceph-card' }, [
           el('div', { className: 'ceph-kicker', text: 'system' }),
           el('div', { text: sys.name, style: { fontWeight: '600' } }),

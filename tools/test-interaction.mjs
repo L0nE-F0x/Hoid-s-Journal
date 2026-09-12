@@ -270,7 +270,38 @@ async function run() {
     const yolenOn = await page.evaluate(() => !!window.__ceph.app.orrery.bodyPosition('yolen'));
     check('Pre-Shattering hides Cultivation\'s door', !preDoors.cultivation, JSON.stringify(preDoors));
     check('Pre-Shattering hides Silverlight', !preDoors.silver, JSON.stringify(preDoors));
+    await page.evaluate(() => window.__ceph.store.set('realm', 'physical'));
+    await sleep(400);
+    const preSky = await page.evaluate(() => {
+      const drawn = (kind, id) => window.__ceph.app.orrery.group.children.some(
+        (c) => c.visible && c.userData?.kind === kind && c.userData?.id === id,
+      );
+      const named = (kind, id) => window.__ceph.app.labels.group.children.some(
+        (c) => c.visible && c.userData?.kind === kind && c.userData?.id === id,
+      );
+      return {
+        scadrial: drawn('body', 'scadrial'),
+        scadrianSun: drawn('system', 'scadrian'),
+        scadrianOrbit: drawn('orbit', 'scadrial'),
+        scadrianName: named('system', 'scadrian'),
+        lumar: drawn('body', 'lumar-world'),
+        lumarOrbit: drawn('orbit', 'lumar-world'),
+        canticle: drawn('body', 'canticle-world'),
+        utol: drawn('body', 'utol-world'),
+        komashi: drawn('body', 'komashi'),
+        yolen: drawn('body', 'yolen'),
+        roshar: drawn('body', 'roshar'),
+      };
+    });
+    check('Pre-Shattering hides Scadrial, star, orbit and name',
+      !preSky.scadrial && !preSky.scadrianSun && !preSky.scadrianOrbit && !preSky.scadrianName,
+      JSON.stringify(preSky));
+    check('Pre-Shattering keeps Adonalsium-era worlds',
+      preSky.lumar && preSky.lumarOrbit && preSky.canticle && preSky.utol
+        && preSky.komashi && preSky.yolen && preSky.roshar,
+      JSON.stringify(preSky));
     await page.evaluate(() => {
+      window.__ceph.store.set('realm', 'cognitive');
       window.__ceph.store.set('year', 1);
       window.__ceph.store.set('era', 3);
     });
@@ -279,8 +310,13 @@ async function run() {
       const p = window.__ceph.app.presence.hubPosition('silverlight');
       return p ? p.length() > 1 : false;
     });
+    const scadrialAfter = await page.evaluate(() =>
+      window.__ceph.app.orrery.group.children.some(
+        (c) => c.visible && c.userData?.kind === 'body' && c.userData?.id === 'scadrial',
+      ));
     check('Silverlight stands in Shadesmar after the Shattering', silver);
     check('Yolen exists before the Shattering', yolenOn);
+    check('Scadrial stands after the Shattering', scadrialAfter);
     await page.keyboard.press('v');
     await settle(page);
     s = await state(page);

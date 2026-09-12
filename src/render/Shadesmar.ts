@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { Line2 } from 'three/examples/jsm/lines/Line2.js';
 import { LineGeometry } from 'three/examples/jsm/lines/LineGeometry.js';
 import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial.js';
-import { COSMERE, ROUTES, onTheMap, systemExtent } from '../data/index.ts';
+import { COSMERE, ROUTES, onTheMap, systemExtent, systemOnTheMap } from '../data/index.ts';
 import seaBakeFrag from '../shaders/seaBake.frag';
 import bakeVert from '../shaders/planetBake.vert';
 import shadesmarVert from '../shaders/shadesmar.vert';
@@ -206,7 +206,7 @@ export class Shadesmar {
       // Every island at once put a dozen pale ellipses across the frame and
       // buried the landmarks standing on them.
       const mine = scale !== 'system' || island.system === focusedSystem;
-      island.mesh.visible = wide && mine;
+      island.mesh.visible = wide && mine && systemOnTheMap(island.system, progress, era);
       island.mat.uniforms.uTime.value = time;
       island.mat.uniforms.uOpacity.value = scale === 'system' ? 0.85 : 1;
       island.mat.uniforms.uPxScale.value = (height * 0.5) / Math.tan((fov * Math.PI) / 360);

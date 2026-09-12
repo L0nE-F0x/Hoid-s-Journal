@@ -385,6 +385,7 @@ export class Orrery {
       line.computeLineDistances();
       line.frustumCulled = false;
       line.renderOrder = -1;
+      line.userData = { kind: 'orbit', id: body.id };
       this.group.add(line);
       this.orbitLines.set(body.id, line);
     }
@@ -607,7 +608,7 @@ export class Orrery {
       const a = node.atmoMat.uniforms;
       a.uCentre.value.copy(_world);
       a.uSunPos.value.copy(_sun);
-      node.atmo.visible = visual.showAtmospheres && !shadesmar && (
+      node.atmo.visible = showBody && visual.showAtmospheres && !shadesmar && (
         (globe && node.body.id === visual.focusedBody)
         || (visual.scale === 'system' && inSystem)
       );
@@ -616,26 +617,27 @@ export class Orrery {
         node.ring.position.copy(_world);
         node.ringMat.uniforms.uSunPos.value.copy(_sun);
         node.ringMat.uniforms.uCentre.value.copy(_world);
-        node.ring.visible = !shadesmar && visual.scale === 'system' && inSystem;
+        node.ring.visible = showBody && !shadesmar && visual.scale === 'system' && inSystem;
         u.uRingShadow.value = globe && node.body.id === visual.focusedBody && node.ring ? 0.7 : 0;
       }
 
       node.mesh.rotation.y = this.spinLockId === node.body.id ? this.spinLock : time * 0.04;
     }
 
-    this.updateTrails(year, visual.scale, visual.focusedSystem, realm);
+    this.updateTrails(year, visual.scale, visual.focusedSystem, realm, era);
 
     for (const moon of COSMERE.moons) {
       const mesh = this.moonMeshes.get(moon.id);
       const parent = this.bodyWorld.get(moon.parent);
       if (!mesh || !parent) continue;
       const parentNode = this.bodyNodes.get(moon.parent);
+      const parentLive = !!parentNode && inEra(parentNode.body, era);
       const inFocus = globe
         ? moon.parent === visual.focusedBody
         : visual.scale === 'system' && parentNode?.body.system === visual.focusedSystem;
       keplerOffset(moon.orbit, year, _off);
       mesh.position.copy(parent).add(_off);
-      mesh.visible = visual.showMoons && inFocus;
+      mesh.visible = visual.showMoons && inFocus && parentLive;
       if (!mesh.visible) continue;
       mesh.rotation.y = time * 0.05 + seedFromId(moon.id);
       const sun = parentNode?.sunPos;
@@ -643,24 +645,30 @@ export class Orrery {
       if (sun && mat) mat.uniforms.uSunPos.value.copy(sun);
     }
 
-    this.updateLunagrees(time, realm, visual.scale, visual.focusedSystem, visual.focusedBody, visual.showMoons);
+    this.updateLunagrees(time, realm, visual.scale, visual.focusedSystem, visual.focusedBody, visual.showMoons, era);
 
     const orbitsOn = visual.showOrbits && realm === 'physical'
       && (visual.scale === 'cosmere' || visual.scale === 'system');
     for (const [id, line] of this.orbitLines) {
       const body = this.bodyNodes.get(id)?.body;
+      const live = !!body && inEra(body, era);
       const own = !visual.focusedSystem || body?.system === visual.focusedSystem;
-      line.visible = orbitsOn && own;
+      line.visible = orbitsOn && own && live;
       if (!line.visible) continue;
       const mat = line.material as LineMaterial;
       mat.opacity = visual.scale === 'system' ? 0.42 : 0.28;
+    }
+
+    const lit = new Set<string>();
+    for (const n of this.bodyNodes.values()) {
+      if (inEra(n.body, era)) lit.add(n.body.system);
     }
 
     // At globe scale the local star is a bloom bomb a few units wide and the
     // nebula washes the whole frame. The planet is the subject: the shader
     // still lights it from the real sun position.
     for (const n of this.nebulae) {
-      const inhabited = [...this.bodyNodes.values()].some((b) => b.body.system === n.system && inEra(b.body, era));
+      const inhabited = lit.has(n.system);
       const on = inhabited && visual.showNebula && !globe
         && (visual.scale !== 'system' || n.system === visual.focusedSystem);
       n.mesh.visible = on;
@@ -683,7 +691,7 @@ export class Orrery {
     }
 
     for (const [id, mesh] of this.suns) {
-      const inhabited = [...this.bodyNodes.values()].some((n) => n.body.system === id && inEra(n.body, era));
+      const inhabited = lit.has(id);
       mesh.visible = inhabited && !globe && (visual.scale !== 'system' || id === visual.focusedSystem);
       const mat = this.sunMats.get(id)!;
       mat.uniforms.uTime.value = time;
@@ -699,14 +707,16 @@ export class Orrery {
   private updateLunagrees(
     time: number, realm: Realm, scale: string,
     focusedSystem: string | null, focusedBody: string | null, showMoons: boolean,
+    era: number,
   ): void {
     const lumar = this.bodyWorld.get('lumar-world');
     const body = this.bodyNodes.get('lumar-world')?.body;
+    const live = !!body && inEra(body, era);
     const here = (scale === 'system' && focusedSystem === 'lumar')
       || ((scale === 'globe' || scale === 'surface' || scale === 'city') && focusedBody === 'lumar-world');
     for (const row of this.lunagrees) {
       const moonPos = this.moonMeshes.get(row.moon)?.position;
-      const on = !!lumar && !!body && !!moonPos && here && showMoons && realm === 'physical';
+      const on = live && !!lumar && !!body && !!moonPos && here && showMoons && realm === 'physical';
       row.mesh.visible = on;
       if (!on || !lumar || !body || !moonPos) continue;
 
@@ -733,7 +743,7 @@ export class Orrery {
    * a light show, not a map.
    */
   private updateTrails(
-    year: number, scale: string, focusedSystem: string | null, realm: Realm,
+    year: number, scale: string, focusedSystem: string | null, realm: Realm, era: number,
   ): void {
     const on = realm === 'physical' && (scale === 'system' || scale === 'cosmere');
     const key = `${scale}:${focusedSystem ?? ''}:${realm}`;
@@ -748,7 +758,7 @@ export class Orrery {
       const mine = scale === 'system'
         ? node.body.system === focusedSystem
         : node.body.kind !== 'gas-giant';
-      if (!on || !mine) { node.trail.visible = false; continue; }
+      if (!on || !mine || !inEra(node.body, era)) { node.trail.visible = false; continue; }
       node.trail.visible = true;
       if (!rebuild) continue;
       const sysPos = node.sunPos;

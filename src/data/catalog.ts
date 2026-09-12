@@ -173,6 +173,9 @@ export const BODIES: Body[] = [
     species: ['Humans', 'Kandra', 'Koloss'], locations: 'Luthadel, Elendel',
     biome: 'scadrial-ash', hasSurface: true,
     fact: 'A world literally constructed by its Shards, originally suffering under ashfalls before being reformed.',
+    // The one world the Shards built from scratch after the Shattering.
+    // Aagal Nod and Aagal Uch were Adonalsium's; we do not draw them, so the
+    // labelled Scadrian system waits with this planet. Coppermind: Scadrian system.
     eraMin: 1,
     ...cited('mistborn1', ['Mistborn Era 1']) },
   { id: 'ashyn', name: 'Ashyn', system: 'rosharan', book: 'stormlight', kind: 'planet', color: '#fcd34d',
@@ -245,33 +248,33 @@ export const BODIES: Body[] = [
     locations: 'Forests of Hell', biome: 'threnody', hasSurface: true,
     fact: "A world scarred by a deadly clash between Odium and Ambition. Inhabitants follow strict Simple Rules to avoid deadly Cognitive shadows.",
     ...cited('shadowsforsilence', ['Shadows for Silence', 'Arcanum Unbounded — Threnody essay']) },
+  // Adonalsium-era worlds. Named places and later civilisations wait on the
+  // playhead; the planets do not. Coppermind: most worlds existed and were
+  // named before the Shattering. Canticle and its sun were likely his too
+  // (WoB 16261). UTol is a Sho Del world — that species is as old as Yolen.
   { id: 'lumar-world', name: 'Lumar', system: 'lumar', book: 'tress', kind: 'planet', color: '#67e8f9',
     orbit: { a: 13.2, e: 0.04, i: 0.01, omega: 0.3, period: 0.81 }, radius: 1.2,
     shards: [], magic: ['aether'], species: ['Humans'],
     locations: 'Emerald Sea, Crimson Sea', biome: 'lumar', hasSurface: true,
     fact: 'The oceans are made of fluidizing aether spores falling from twelve geostationary moons.',
-    eraMin: 4,
     ...cited('tress', ['Tress of the Emerald Sea']) },
   { id: 'canticle-world', name: 'Canticle', system: 'canticle', book: 'sunlit', kind: 'planet', color: '#f59e0b',
     orbit: { a: 7.9, e: 0.28, i: 0.06, omega: 2.5, period: 1.45 }, radius: 0.72,
     shards: [], magic: [], species: ['Humans', 'Charred'],
     locations: 'Hover-cities', biome: 'canticle', hasSurface: true,
     fact: 'The sun is so intense it melts the crust. Humanity survives in moving cities racing the dawn.',
-    eraMin: 5,
     ...cited('sunlit', ['The Sunlit Man']) },
   { id: 'utol-world', name: 'UTol', system: 'utol', book: 'yumi', kind: 'planet', color: '#a1a1aa',
     orbit: { a: 17.1, e: 0.05, i: 0.02, omega: 0.9, period: 0.88 }, radius: 1.12,
     shards: ['virtuosity'], magic: [], species: ['Sho Del'],
     locations: 'Unknown', biome: 'oceanic', hasSurface: true,
     fact: 'A primary home of the four-armed Sho Del species.',
-    eraMin: 4,
     ...cited('yumi', ['Yumi and the Nightmare Painter']) },
   { id: 'komashi', name: 'Komashi', system: 'utol', book: 'yumi', kind: 'shardworld', color: '#67e8f9',
     orbit: { a: 19.6, e: 0.07, i: 0.03, omega: 1.7, period: 0.88 }, radius: 1.14,
     shards: ['virtuosity'], magic: ['hion'], species: ['Humans', 'Nightmares'],
     locations: 'Torio, Kilahito', biome: 'komashi', hasSurface: true,
     fact: 'A world shrouded in darkness, powered by glowing magenta and cyan Hion lines.',
-    eraMin: 4,
     ...cited('yumi', ['Yumi and the Nightmare Painter']) },
   { id: 'obrodai-world', name: 'Obrodai', system: 'obrodai', book: 'mistborn2', kind: 'minor-shardworld', color: '#db2777',
     orbit: { a: 11.2, e: 0.13, i: 0.05, omega: 3.5, period: 0.92 }, radius: 1.16,

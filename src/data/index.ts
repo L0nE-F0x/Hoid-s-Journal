@@ -163,6 +163,18 @@ export function onTheMap(
   return inEra(item, era) && isVisible(item, progress);
 }
 
+/**
+ * A star is only a place if something in-era still orbits it. Empty rings
+ * (a Scadrian system before Scadrial exists) are not a destination.
+ */
+export function systemOnTheMap(
+  systemId: string,
+  progress: Record<string, number>,
+  era: number,
+): boolean {
+  return BODIES.some((b) => b.system === systemId && onTheMap(b, progress, era));
+}
+
 export function locationsOn(bodyId: string, era?: number): Location[] {
   return LOCATIONS.filter((l) => {
     if (l.body !== bodyId) return false;

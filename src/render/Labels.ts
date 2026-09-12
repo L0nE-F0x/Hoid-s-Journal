@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { COSMERE, inEra, isVisible } from '../data/index.ts';
+import { COSMERE, inEra, isVisible, systemOnTheMap } from '../data/index.ts';
 import type { Orrery } from './Orrery.ts';
 
 interface Label {
@@ -104,7 +104,7 @@ export class Labels {
         const p = orrery.systemPosition(l.id);
         if (!p || scale !== 'cosmere') { l.sprite.visible = false; continue; }
         const dist = camera.position.distanceTo(p);
-        l.sprite.visible = isVisible(l.visibleItem, progress);
+        l.sprite.visible = systemOnTheMap(l.id, progress, era);
         l.sprite.position.copy(p);
         l.sprite.position.y += 4.2;
         const s = Math.max(10, Math.min(140, dist * 0.20));

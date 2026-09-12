@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { COSMERE, COSMERE_EVENTS, HUBS, bodyById, canEnterCity, characterAt, eraAt, hubById, isVisible, onTheMap, systemExtent, systemOnTheMap, yearToSlider } from '../data/index.ts';
+import { COSMERE, COSMERE_EVENTS, DAWNSHARDS, HUBS, bodyById, canEnterCity, characterAt, eraAt, hubById, isVisible, moonById, onTheMap, systemExtent, systemOnTheMap, yearToSlider } from '../data/index.ts';
 import { uvFacing, uvOnBody } from '../layout/surface.ts';
 import { hubWorld } from '../layout/cognitive.ts';
 import { CameraRig, type Waypoint } from './CameraRig.ts';
@@ -27,7 +27,7 @@ const _hub = new THREE.Vector3();
 /** How far from a subject a click still counts, in CSS pixels. */
 const PICK_SLOP = 28;
 
-type PickKind = 'system' | 'body' | 'location' | 'character' | 'shard' | 'hub';
+type PickKind = 'system' | 'body' | 'location' | 'character' | 'shard' | 'hub' | 'moon' | 'dawnshard';
 /** How far off the sun axis the camera stands. Bigger = more terminator. */
 const GLOBE_SUN_OFFSET = 0.7;
 const SURFACE_SUN_OFFSET = 0.95;
@@ -119,6 +119,7 @@ export class App {
     this.orrery.update(store.state.year, store.state.realm, store.state.era, 0, {
       showOrbits: true, showMoons: true, showAtmospheres: true, showNebula: true, nebula: 1,
       scale: 'cosmere', focusedSystem: null, focusedBody: null, cameraDistance: 260,
+      cameraPos: this.camera.position,
     });
 
     this.disposers.push(store.on('cameraCue', (cue) => {
@@ -324,10 +325,32 @@ export class App {
     store.set('focusedBody', null);
   }
 
+  private focusMoon(id: string): void {
+    const moon = moonById[id];
+    if (!moon) return;
+    const parent = bodyById[moon.parent];
+    if (!parent) return;
+    const st = store.state;
+    if (!onTheMap(parent, st.readProgress, st.era)) return;
+    const p = this.orrery.moonPosition(id);
+    if (!p) return;
+    store.set('focusedBody', parent.id);
+    store.set('focusedSystem', parent.system);
+    store.set('focusedLocation', null);
+    store.set('selected', id);
+    store.set('scale', 'globe');
+    store.set('isPlaying', false);
+    const radius = Math.max(moon.radius * 6, 2.4);
+    const dist = this.rig.framingDistance(radius, 0.42);
+    this.framing = { radius, fill: 0.42, commanded: dist };
+    this.rig.flyTo(p, dist, 2.0);
+  }
+
   private focusId(id: string, scale: Scale): void {
     const loc = COSMERE.locations.find((l) => l.id === id);
     if (loc) { this.focusLocation(loc.id, loc.body, scale === 'city' ? 'city' : 'surface'); return; }
     if (hubById[id]) { this.focusHub(id); return; }
+    if (moonById[id]) { this.focusMoon(id); return; }
     const body = bodyById[id];
     if (body) {
       const st = store.state;
@@ -476,6 +499,11 @@ export class App {
         const p = this.spiritual.motePosition(sh.id);
         if (p) consider(sh.id, 'shard', p, 1.2);
       }
+      for (const d of DAWNSHARDS) {
+        if (!isVisible(d, s.readProgress)) continue;
+        const p = this.spiritual.dawnPosition(d.id);
+        if (p) consider(d.id, 'dawnshard', p, 1.4);
+      }
       const shard = best as { id: string } | null;
       if (!shard) {
         if (s.hovered) store.set('hovered', null);
@@ -506,13 +534,18 @@ export class App {
         }
       }
     }
-    if (s.scale !== 'cosmere') {
-      for (const body of COSMERE.bodies) {
-        if (globe && body.system !== s.focusedSystem) continue;
-        if (!onTheMap(body, s.readProgress, s.era)) continue;
-        const p = this.orrery.bodyPosition(body.id);
-        if (p) consider(body.id, 'body', p, body.radius);
-      }
+    for (const body of COSMERE.bodies) {
+      if (globe && body.system !== s.focusedSystem) continue;
+      if (!onTheMap(body, s.readProgress, s.era)) continue;
+      const p = this.orrery.bodyPosition(body.id);
+      if (p) consider(body.id, 'body', p, body.radius);
+    }
+    for (const moon of COSMERE.moons) {
+      if (!this.orrery.moonShown(moon.id) || !isVisible(moon, s.readProgress)) continue;
+      const parent = bodyById[moon.parent];
+      if (parent && !onTheMap(parent, s.readProgress, s.era)) continue;
+      const p = this.orrery.moonPosition(moon.id);
+      if (p) consider(moon.id, 'moon', p, Math.max(moon.radius, 0.4));
     }
     if (globe && s.focusedBody) {
       const body = bodyById[s.focusedBody];
@@ -571,6 +604,14 @@ export class App {
     }
     if (hit.kind === 'hub') {
       this.focusHub(hit.id);
+      return;
+    }
+    if (hit.kind === 'moon') {
+      this.focusMoon(hit.id);
+      return;
+    }
+    if (hit.kind === 'dawnshard' || hit.kind === 'shard') {
+      store.set('selected', hit.id);
       return;
     }
     if (hit.kind === 'system') {
@@ -782,6 +823,7 @@ export class App {
       focusedSystem: s.focusedSystem,
       focusedBody: s.focusedBody,
       cameraDistance: this.rig.distance,
+      cameraPos: this.camera.position,
     });
     this.trackFocus(s.scale, s.focusedBody, s.focusedLocation, s.cinematic);
 

@@ -23,6 +23,8 @@ import { PLATE_LARGE, PLATE_SMALL, planetPlates, seedFromId } from './planetBake
 
 const _off = new THREE.Vector3();
 const _sun = new THREE.Vector3();
+/** Camera this close to a parent world is close enough to see its moons. */
+const MOON_NEAR = 48;
 const _world = new THREE.Vector3();
 const _up = new THREE.Vector3(0, 1, 0);
 
@@ -76,6 +78,8 @@ export class Orrery {
   private readonly orbitLines = new Map<string, Line2>();
   private readonly moonMeshes = new Map<string, THREE.Mesh>();
   private readonly moonMats = new Map<string, THREE.ShaderMaterial>();
+  private readonly moonWorld = new Map<string, THREE.Vector3>();
+  private readonly moonOrbits = new Map<string, Line2>();
   private readonly lunagrees: { moon: string; mesh: THREE.Mesh; mat: THREE.ShaderMaterial }[] = [];
   private readonly bodyWorld = new Map<string, THREE.Vector3>();
   private readonly sphereHigh = new THREE.SphereGeometry(1, 128, 72);
@@ -411,12 +415,42 @@ export class Orrery {
       this.group.add(mesh);
       this.moonMeshes.set(moon.id, mesh);
       this.moonMats.set(moon.id, mat);
+      this.moonWorld.set(moon.id, new THREE.Vector3());
+
+      const steps = 96;
+      const pts: number[] = [];
+      for (let i = 0; i <= steps; i++) {
+        keplerOffset(moon.orbit, (i / steps) / Math.max(0.0001, moon.orbit.period), _off);
+        pts.push(_off.x, _off.y, _off.z);
+      }
+      const geo = new LineGeometry();
+      geo.setPositions(pts);
+      const lineMat = new LineMaterial({
+        color: new THREE.Color(moon.color).getHex(),
+        linewidth: 1.0,
+        transparent: true,
+        opacity: 0.32,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending,
+      });
+      lineMat.resolution.copy(this.viewport);
+      const line = new Line2(geo, lineMat);
+      line.computeLineDistances();
+      line.frustumCulled = false;
+      line.renderOrder = -1;
+      line.visible = false;
+      line.userData = { kind: 'moon-orbit', id: moon.id };
+      this.group.add(line);
+      this.moonOrbits.set(moon.id, line);
     }
   }
 
   setViewport(w: number, h: number): void {
     this.viewport.set(w, h);
     for (const line of this.orbitLines.values()) {
+      (line.material as LineMaterial).resolution.set(w, h);
+    }
+    for (const line of this.moonOrbits.values()) {
       (line.material as LineMaterial).resolution.set(w, h);
     }
     for (const node of this.bodyNodes.values()) {
@@ -458,6 +492,14 @@ export class Orrery {
 
   bodyPosition(id: string): THREE.Vector3 | undefined {
     return this.bodyWorld.get(id);
+  }
+
+  moonPosition(id: string): THREE.Vector3 | undefined {
+    return this.moonWorld.get(id);
+  }
+
+  moonShown(id: string): boolean {
+    return this.moonMeshes.get(id)?.visible ?? false;
   }
 
   systemPosition(id: string): THREE.Vector3 | undefined {
@@ -503,6 +545,7 @@ export class Orrery {
     focusedSystem: string | null;
     focusedBody: string | null;
     cameraDistance: number;
+    cameraPos: THREE.Vector3;
   }): void {
     const shadesmar = realm === 'cognitive';
     const cognitive = shadesmar ? 1 : 0;
@@ -629,16 +672,24 @@ export class Orrery {
     for (const moon of COSMERE.moons) {
       const mesh = this.moonMeshes.get(moon.id);
       const parent = this.bodyWorld.get(moon.parent);
-      if (!mesh || !parent) continue;
+      const at = this.moonWorld.get(moon.id);
+      if (!mesh || !parent || !at) continue;
       const parentNode = this.bodyNodes.get(moon.parent);
       const parentLive = !!parentNode && inEra(parentNode.body, era);
-      const inFocus = globe
-        ? moon.parent === visual.focusedBody
-        : visual.scale === 'system' && parentNode?.body.system === visual.focusedSystem;
       keplerOffset(moon.orbit, year, _off);
-      mesh.position.copy(parent).add(_off);
-      mesh.visible = visual.showMoons && inFocus && parentLive;
-      if (!mesh.visible) continue;
+      at.copy(parent).add(_off);
+      mesh.position.copy(at);
+      const inSystem = visual.scale === 'system' && parentNode?.body.system === visual.focusedSystem;
+      const onGlobe = globe && moon.parent === visual.focusedBody;
+      const near = visual.cameraPos.distanceTo(parent) < MOON_NEAR;
+      const on = visual.showMoons && parentLive && (onGlobe || inSystem || near);
+      mesh.visible = on;
+      const ring = this.moonOrbits.get(moon.id);
+      if (ring) {
+        ring.position.copy(parent);
+        ring.visible = on && visual.showOrbits && realm === 'physical';
+      }
+      if (!on) continue;
       mesh.rotation.y = time * 0.05 + seedFromId(moon.id);
       const sun = parentNode?.sunPos;
       const mat = this.moonMats.get(moon.id);

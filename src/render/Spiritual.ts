@@ -244,6 +244,10 @@ export class Spiritual {
     return this.motes.find((m) => m.id === id)?.pos;
   }
 
+  dawnPosition(id: string): THREE.Vector3 | undefined {
+    return this.dawn.find((d) => d.id === id)?.mesh.position;
+  }
+
   update(
     time: number,
     era: number,

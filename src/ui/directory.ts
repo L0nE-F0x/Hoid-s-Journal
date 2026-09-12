@@ -50,8 +50,7 @@ function flyTo(id: string): void {
   const moon = COSMERE.moons.find((m) => m.id === id);
   if (moon) {
     leaveSpiritual();
-    store.set('cameraCue', { kind: 'focus', id: moon.parent, scale: 'globe' });
-    store.set('selected', moon.id);
+    store.set('cameraCue', { kind: 'focus', id: moon.id, scale: 'globe' });
     return;
   }
   const ch = COSMERE.characters.find((c) => c.id === id);

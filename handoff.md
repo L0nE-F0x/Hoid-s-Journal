@@ -23,7 +23,7 @@ worlds existed and were named before the Shattering; **Scadrial** is the
 exception (Ruin and Preservation built it after). Lumar, Canticle, UTol and
 Komashi sit in their rings at era 0; Scadrian is gone until era 1 — star,
 orbit, label, directory, galaxy, Shadesmar disc and picking all wait with
-the planet. `systemOnTheMap` is the gate. Interaction suite **53/53**.
+the planet. `systemOnTheMap` is the gate. Interaction suite **56/56**.
 
 Hard-refresh https://thecosmere.netlify.app after a deploy; the service
 worker otherwise keeps the old shell.
@@ -43,7 +43,7 @@ npm run dev              # http://127.0.0.1:5174
 
 # Second shell. This is how you check visual work.
 npm run shot -- --focus roshar --scale globe --out /tmp/roshar.png
-npm run test:interaction # 53 checks through real mouse and keyboard
+npm run test:interaction # 56 checks through real mouse and keyboard
 npm run audit:ui         # clicks every control, reports the ones that do nothing
 npm run perf             # fps per Realm, expensive layers toggled off one at a time
 ```
@@ -59,7 +59,7 @@ the program count and any fault — ask for it first when someone reports a
 black sky.
 
 Last known green: `npx tsc --noEmit` and
-`npm run test:interaction` (**53/53**) with `npm run dev` already up.
+`npm run test:interaction` (**56/56**) with `npm run dev` already up.
 Re-run those plus `npm run build` before you push.
 
 ---
@@ -204,7 +204,7 @@ Treat this as current truth, not a wishlist.
 - Reading Companion, Codex, Arcanum (12 tables), Share, time speed, galaxy
   minimap, soundtrack, PWA.
 - Deep-link hash `#y=&realm=&scale=&system=&body=&loc=&reading=`.
-- Harnesses: `npm run shot`, `npm run test:interaction` (53 checks),
+- Harnesses: `npm run shot`, `npm run test:interaction` (56 checks),
   `npm run perf`, `npm run bench`.
 
 ### What the atlas holds
@@ -343,6 +343,11 @@ Written down so the next session does not rediscover them:
 - **Picking.** Cosmere hits use `systemExtent()` (orbit cloud). Do not
   go back to a tiny star sprite. HUD `.ceph-panel` must stay
   click-through except buttons / atlas / timeline / drawer.
+  Worlds, moons, hubs, shards and Dawnshards that exist in data are
+  clickable. Moons light when you are in their system, on their globe,
+  or the camera has come within `MOON_NEAR` of the parent — zooming
+  into Roshar at Cosmere scale is enough. Clicking a moon opens its
+  card and frames it.
 - **Presence owns `group.visible`.** Labels and pins set it every frame;
   Presence did not. App hides the group in the Spiritual Realm, and a
   return to Shadesmar used to keep the roads and drop Silverlight,

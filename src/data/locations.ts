@@ -29,7 +29,7 @@ export const LOCATIONS: Location[] = [
   loc('urithiru', 'Urithiru', 'roshar', 'stormlight', 0.466, 0.638, '#bae6fd', 'tower',
     'The tower-city in the mountains, seat of the Knights Radiant and the Sibling.', { arc: 'wor' }),
   loc('shattered-plains', 'Shattered Plains', 'roshar', 'stormlight', 0.831, 0.740, '#f87171', 'storm',
-    'A wasteland of broken plateaus. Warcamps on the west, Narak at the centre.'),
+    'A wasteland of broken plateaus. Warcamps west, Narak at the centre. Under the stone lie fragments of a fourth moon that died and fell before Honor arrived — a metal greater than aluminum, that hides even from a Shard.'),
   loc('kholinar', 'Kholinar', 'roshar', 'stormlight', 0.793, 0.487, '#fbbf24', 'crown',
     'Capital of Alethkar. Palaces, windblades, and an Oathgate.'),
   loc('kharbranth', 'Kharbranth', 'roshar', 'stormlight', 0.585, 0.765, '#a78bfa', 'bell',

@@ -305,8 +305,15 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
       head.append(swatch(m.color), el('div', {}, [
         el('div', { className: 'ceph-kicker', text: `Moon of ${parent?.name ?? m.parent}` }),
         el('h2', { text: m.name }),
+        el('span', { className: `ceph-canon ceph-canon--${m.canon}`, text: m.canon }),
       ]));
-      drawer.append(head, el('p', { className: 'ceph-fact', text: m.fact }));
+      drawer.append(head);
+      drawer.append(el('p', { className: 'ceph-fact', text: m.fact }));
+      drawer.append(fields([
+        ['World', parent?.name],
+        ['System', parent ? COSMERE.systems.find((s) => s.id === parent.system)?.name : null],
+        ['Sources', m.sources.join(' · ')],
+      ]));
       if (parent) {
         const go = el('button', { className: 'ceph-btn ceph-btn--primary', text: `Go to ${parent.name}`, style: { marginTop: '14px' } });
         listen(go, 'click', () => store.set('cameraCue', { kind: 'focus', id: parent.id, scale: 'globe' }));

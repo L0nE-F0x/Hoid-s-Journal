@@ -184,6 +184,10 @@ async function run() {
     s = await state(page);
     check('click a system dives to it', s.scale === 'system' && s.focusedSystem === 'rosharan',
       `${s.scale}/${s.focusedSystem}`);
+    const moonsInSystem = await page.evaluate(() =>
+      ['salas', 'nomon', 'mishim'].filter((id) => window.__ceph.app.orrery.moonShown(id)));
+    check('Roshar\'s moons are in the sky at system scale', moonsInSystem.length === 3,
+      moonsInSystem.join(','));
 
     // System → globe, by clicking a planet that is a few pixels wide.
     at = await screenOf(page, "a.orrery.bodyPosition('roshar')");
@@ -192,6 +196,41 @@ async function run() {
     s = await state(page);
     check('click a planet dives to its globe', s.scale === 'globe' && s.focusedBody === 'roshar',
       `${s.scale}/${s.focusedBody}`);
+    const moonsLit = await page.evaluate(() =>
+      ['salas', 'nomon', 'mishim'].filter((id) => window.__ceph.app.orrery.moonShown(id)));
+    check('Roshar\'s three moons stand at the globe', moonsLit.length === 3, moonsLit.join(','));
+    const moonHit = await page.evaluate(() => {
+      const a = window.__ceph.app;
+      const origin = a.orrery.bodyPosition('roshar');
+      if (!origin) return null;
+      const planet = origin.clone().project(a.camera);
+      const px = (planet.x * 0.5 + 0.5) * window.innerWidth;
+      const py = (-planet.y * 0.5 + 0.5) * window.innerHeight;
+      let best = null;
+      for (const id of ['salas', 'nomon', 'mishim']) {
+        if (!a.orrery.moonShown(id)) continue;
+        const p = a.orrery.moonPosition(id)?.clone().project(a.camera);
+        if (!p || p.z >= 1) continue;
+        const x = (p.x * 0.5 + 0.5) * window.innerWidth;
+        const y = (-p.y * 0.5 + 0.5) * window.innerHeight;
+        const d = Math.hypot(x - px, y - py);
+        if (d > 28 && (!best || d > best.d)) best = { id, x, y, d };
+      }
+      return best;
+    });
+    if (moonHit) {
+      await page.mouse.click(moonHit.x, moonHit.y);
+      await settle(page);
+      s = await state(page);
+      const card = await page.evaluate(() => document.querySelector('.ceph-panel-drawer h2')?.textContent ?? '');
+      check('click a moon opens its card',
+        s.selected === moonHit.id && /salas|nomon|mishim/i.test(card),
+        `${s.selected}/${card}`);
+      await page.evaluate(() => window.__ceph.store.set('cameraCue', { kind: 'focus', id: 'roshar', scale: 'globe' }));
+      await settle(page);
+    } else {
+      check('click a moon opens its card', false, 'no moon stood far enough from the disc');
+    }
 
     // Framed in what the panels leave, not in the middle of the canvas.
     let centre = await freeCentre(page);

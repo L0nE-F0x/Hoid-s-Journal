@@ -5,10 +5,11 @@ import type { Orrery } from './Orrery.ts';
 interface Label {
   id: string;
   sprite: THREE.Sprite;
-  kind: 'body' | 'system';
+  kind: 'body' | 'system' | 'moon';
   visibleItem: { book?: string; arc?: string };
   radius: number;
   system?: string;
+  parent?: string;
 }
 
 /**
@@ -16,7 +17,7 @@ interface Label {
  * bright background — these get an ink outline as well, and systems are set
  * in the same tracked caps the chrome uses.
  */
-function makeLabel(text: string, color: string, kind: 'body' | 'system'): THREE.CanvasTexture {
+function makeLabel(text: string, color: string, kind: 'body' | 'system' | 'moon'): THREE.CanvasTexture {
   const W = 640;
   const H = 112;
   const canvas = document.createElement('canvas');
@@ -57,8 +58,11 @@ export class Labels {
       this.labels.push(this.make(s.id, s.name, '#cdd8ea', 'system', s, 0));
     }
     for (const b of COSMERE.bodies) {
-      if (b.kind === 'gas-giant') continue;
       this.labels.push(this.make(b.id, b.name, b.color, 'body', b, b.radius, b.system));
+    }
+    for (const m of COSMERE.moons) {
+      const parent = COSMERE.bodies.find((b) => b.id === m.parent);
+      this.labels.push(this.make(m.id, m.name, m.color, 'moon', m, m.radius, parent?.system, m.parent));
     }
   }
 
@@ -67,6 +71,7 @@ export class Labels {
     visibleItem: { book?: string; arc?: string },
     radius: number,
     system?: string,
+    parent?: string,
   ): Label {
     const mat = new THREE.SpriteMaterial({
       map: makeLabel(name, color, kind),
@@ -78,7 +83,7 @@ export class Labels {
     sprite.scale.set(7.2, 1.26, 1);
     sprite.userData = { kind, id };
     this.group.add(sprite);
-    return { id, sprite, kind, visibleItem, radius, system };
+    return { id, sprite, kind, visibleItem, radius, system, parent };
   }
 
   /**
@@ -109,22 +114,30 @@ export class Labels {
         l.sprite.position.y += 4.2;
         const s = Math.max(10, Math.min(140, dist * 0.20));
         l.sprite.scale.set(s, s * 0.175, 1);
+      } else if (l.kind === 'moon') {
+        const p = orrery.moonPosition(l.id);
+        if (!p || !orrery.moonShown(l.id)) { l.sprite.visible = false; continue; }
+        const dist = camera.position.distanceTo(p);
+        l.sprite.visible = isVisible(l.visibleItem, progress) && dist < 70;
+        l.sprite.position.copy(p);
+        l.sprite.position.y += l.radius * 1.4 + 0.18;
+        const s = Math.max(0.4, Math.min(36, dist * 0.18));
+        l.sprite.scale.set(s, s * 0.175, 1);
       } else {
         const p = orrery.bodyPosition(l.id);
         if (!p) { l.sprite.visible = false; continue; }
         // On a surface scan the place has the name; the world's own label just
-        // rides off the top of the frame.
+        // rides off the top of the frame. Gas giants keep a name in-system.
         const inScope = globe
           ? l.id === focusedBody && scale === 'globe'
           : scale === 'system' && (!focusedSystem || l.system === focusedSystem);
         const dist = camera.position.distanceTo(p);
         const body = COSMERE.bodies.find((b) => b.id === l.id);
+        const close = dist < (body?.kind === 'gas-giant' ? 90 : 160);
         l.sprite.visible = inScope && isVisible(l.visibleItem, progress)
-          && (!body || inEra(body, era)) && dist < 160;
+          && (!body || inEra(body, era)) && close;
         l.sprite.position.copy(p);
         l.sprite.position.y += l.radius * 1.25 + 0.25;
-        // Constant apparent size: a fixed floor turns into a billboard the
-        // size of the planet once you are close enough to read one.
         const s = Math.max(0.5, Math.min(80, dist * 0.22));
         l.sprite.scale.set(s, s * 0.175, 1);
       }

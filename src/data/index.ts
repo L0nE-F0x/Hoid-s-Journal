@@ -10,7 +10,7 @@ import { DAWNSHARDS, HUBS, ROUTES, dawnshardById, hubById } from './realms.ts';
 import { RELATIONS, REL_TYPES } from './relationships.ts';
 import { SHARDS } from './shards.ts';
 import type {
-  Body, Character, CharacterEra, Cosmere, Location, Perpendicularity, Series,
+  Body, Character, CharacterEra, Cosmere, Location, Moon, Perpendicularity, Series,
 } from './types.ts';
 
 export { CITY_PLATES, cityById, landmarkById };
@@ -42,6 +42,7 @@ export const COSMERE: Cosmere = {
 
 export const seriesById: Record<string, Series> = Object.fromEntries(SERIES.map((s) => [s.id, s]));
 export const bodyById: Record<string, Body> = Object.fromEntries(BODIES.map((b) => [b.id, b]));
+export const moonById: Record<string, Moon> = Object.fromEntries(MOONS.map((m) => [m.id, m]));
 export const characterById: Record<string, Character> = Object.fromEntries(CHARACTERS.map((c) => [c.id, c]));
 
 export function bookArcIndex(series: string, arc: string): number {

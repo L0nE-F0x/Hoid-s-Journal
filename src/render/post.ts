@@ -33,7 +33,7 @@ class StreakEffect extends Effect {
       void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor) {
         vec3 sum = vec3(0.0);
         float wsum = 0.0;
-        for (int i = 1; i <= 16; i++) {
+        for (int i = 1; i <= 10; i++) {
           float fi = float(i);
           float w = exp(-fi * fi * 0.011);
           float o = fi * fi * 0.42 * uTexel.x;
@@ -126,9 +126,9 @@ export function createPostChain(
     luminanceThreshold: 0.60,
     luminanceSmoothing: 0.34,
     mipmapBlur: true,
-    radius: 0.86,
-    levels: 9,
-    kernelSize: KernelSize.HUGE,
+    radius: 0.78,
+    levels: 6,
+    kernelSize: KernelSize.LARGE,
   });
 
   const chromatic = new ChromaticAberrationEffect({
@@ -154,7 +154,7 @@ export function createPostChain(
 
   // Edges last, on the graded image. The globes are smooth spheres against a
   // near-black sky; without this every limb crawls.
-  const smaa = new SMAAEffect({ preset: SMAAPreset.HIGH });
+  const smaa = new SMAAEffect({ preset: SMAAPreset.MEDIUM });
   const smaaPass = new EffectPass(camera, smaa);
   composer.addPass(smaaPass);
 
@@ -199,8 +199,8 @@ export function createPostChain(
     setBloom: (v) => { bloomScale = v; bloom.intensity = v * GRADES[realm].bloom; },
     setQuality: (band) => {
       bloom.kernelSize = band === 'low' ? KernelSize.SMALL
-        : band === 'medium' ? KernelSize.LARGE
-          : KernelSize.HUGE;
+        : band === 'medium' ? KernelSize.MEDIUM
+          : KernelSize.LARGE;
       grain.blendMode.opacity.value = band === 'low' ? 0.01 : 0.024;
       chromatic.offset.set(
         band === 'low' ? 0 : 0.00032,

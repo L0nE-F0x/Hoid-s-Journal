@@ -118,7 +118,7 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
     );
     if (official) return official;
     const biome = body.id === 'scadrial' ? scadrialBiome(s.era) : body.biome;
-    return bakePlanetMap(biome, seedFromId(body.id), 1024, 512, s.realm === 'cognitive');
+    return bakePlanetMap(biome, seedFromId(body.id), 512, 256, s.realm === 'cognitive');
   };
 
   const blitLocal = (ctx: CanvasRenderingContext2D, map: CanvasImageSource & { width: number; height: number }, fu: number, fv: number) => {

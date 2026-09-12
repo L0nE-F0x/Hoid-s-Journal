@@ -6,6 +6,9 @@ interface Label {
   id: string;
   sprite: THREE.Sprite;
   kind: 'body' | 'system';
+  visibleItem: { book?: string; arc?: string };
+  radius: number;
+  system?: string;
 }
 
 /**
@@ -51,15 +54,20 @@ export class Labels {
 
   constructor() {
     for (const s of COSMERE.systems) {
-      this.labels.push(this.make(s.id, s.name, '#cdd8ea', 'system'));
+      this.labels.push(this.make(s.id, s.name, '#cdd8ea', 'system', s, 0));
     }
     for (const b of COSMERE.bodies) {
       if (b.kind === 'gas-giant') continue;
-      this.labels.push(this.make(b.id, b.name, b.color, 'body'));
+      this.labels.push(this.make(b.id, b.name, b.color, 'body', b, b.radius, b.system));
     }
   }
 
-  private make(id: string, name: string, color: string, kind: Label['kind']): Label {
+  private make(
+    id: string, name: string, color: string, kind: Label['kind'],
+    visibleItem: { book?: string; arc?: string },
+    radius: number,
+    system?: string,
+  ): Label {
     const mat = new THREE.SpriteMaterial({
       map: makeLabel(name, color, kind),
       transparent: true,
@@ -70,7 +78,7 @@ export class Labels {
     sprite.scale.set(7.2, 1.26, 1);
     sprite.userData = { kind, id };
     this.group.add(sprite);
-    return { id, sprite, kind };
+    return { id, sprite, kind, visibleItem, radius, system };
   }
 
   /**
@@ -92,28 +100,26 @@ export class Labels {
     const globe = scale === 'globe' || scale === 'surface' || scale === 'city';
     for (const l of this.labels) {
       if (l.kind === 'system') {
-        const sys = COSMERE.systems.find((s) => s.id === l.id);
         const p = orrery.systemPosition(l.id);
-        if (!sys || !p || scale !== 'cosmere') { l.sprite.visible = false; continue; }
+        if (!p || scale !== 'cosmere') { l.sprite.visible = false; continue; }
         const dist = camera.position.distanceTo(p);
-        l.sprite.visible = isVisible(sys, progress);
+        l.sprite.visible = isVisible(l.visibleItem, progress);
         l.sprite.position.copy(p);
         l.sprite.position.y += 4.2;
         const s = Math.max(10, Math.min(140, dist * 0.20));
         l.sprite.scale.set(s, s * 0.175, 1);
       } else {
-        const body = COSMERE.bodies.find((b) => b.id === l.id);
         const p = orrery.bodyPosition(l.id);
-        if (!body || !p) { l.sprite.visible = false; continue; }
+        if (!p) { l.sprite.visible = false; continue; }
         // On a surface scan the place has the name; the world's own label just
         // rides off the top of the frame.
         const inScope = globe
-          ? body.id === focusedBody && scale === 'globe'
-          : scale === 'system' && (!focusedSystem || body.system === focusedSystem);
+          ? l.id === focusedBody && scale === 'globe'
+          : scale === 'system' && (!focusedSystem || l.system === focusedSystem);
         const dist = camera.position.distanceTo(p);
-        l.sprite.visible = inScope && isVisible(body, progress) && dist < 160;
+        l.sprite.visible = inScope && isVisible(l.visibleItem, progress) && dist < 160;
         l.sprite.position.copy(p);
-        l.sprite.position.y += body.radius * 1.25 + 0.25;
+        l.sprite.position.y += l.radius * 1.25 + 0.25;
         // Constant apparent size: a fixed floor turns into a billboard the
         // size of the planet once you are close enough to read one.
         const s = Math.max(0.5, Math.min(80, dist * 0.22));

@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { COSMERE, COSMERE_EVENTS, HUBS, bodyById, canEnterCity, characterAt, eraAt, hubById, isVisible, systemExtent } from '../data/index.ts';
+import { COSMERE, COSMERE_EVENTS, HUBS, bodyById, canEnterCity, characterAt, eraAt, hubById, isVisible, systemExtent, yearToSlider } from '../data/index.ts';
 import { uvFacing, uvOnBody } from '../layout/surface.ts';
 import { hubWorld } from '../layout/cognitive.ts';
 import { CameraRig, type Waypoint } from './CameraRig.ts';
@@ -13,6 +13,7 @@ import { SPIRITUAL_RADIUS, Spiritual } from '../render/Spiritual.ts';
 import { Shadesmar } from '../render/Shadesmar.ts';
 import { Starfield } from '../render/Starfield.ts';
 import { EventFx } from '../render/EventFx.ts';
+import { planetPlates, PLATE_SMALL, seedFromId } from '../render/planetBake.ts';
 
 const FOV = 52;
 const CLICK_SLOP = 12;
@@ -68,6 +69,9 @@ export class App {
   private fpsSlow = 0;
   private fpsFast = 0;
   private lastYear = store.state.year;
+  private yearTick = Math.round(yearToSlider(store.state.year) * 1000);
+  private warmQueue: { kind: string; seed: number; cognitive: boolean }[] = [];
+  private lastWarm = 0;
 
   constructor(canvas: HTMLCanvasElement, opts: { onHoverAnchor?: (p: { x: number; y: number } | null) => void } = {}) {
     this.canvas = canvas;
@@ -154,6 +158,35 @@ export class App {
     this.rig.setInsets(store.state.insets);
     this.applyQuality();
     this.warmUp();
+    this.queuePlateWarm();
+  }
+
+  /**
+   * Small plates for every world in both Realms, baked one pair per frame
+   * after the intro so the first press of C does not hitch on a bake.
+   */
+  private queuePlateWarm(): void {
+    const seen = new Set<string>();
+    const jobs: { kind: string; seed: number; cognitive: boolean }[] = [];
+    const push = (kind: string, seed: number, cognitive: boolean) => {
+      const key = `${kind}:${seed}:${cognitive ? 'c' : 'p'}`;
+      if (seen.has(key)) return;
+      seen.add(key);
+      jobs.push({ kind, seed, cognitive });
+    };
+    for (const body of COSMERE.bodies) {
+      const seed = body.kind === 'gas-giant' ? 11 + (seedFromId(body.id) % 3) * 29 : seedFromId(body.id);
+      if (body.id === 'scadrial') {
+        push('scadrial-ash', seed, false);
+        push('scadrial-basin', seed, false);
+        push('scadrial-ash', seed, true);
+        push('scadrial-basin', seed, true);
+        continue;
+      }
+      push(body.biome, seed, false);
+      push(body.biome, seed, true);
+    }
+    this.warmQueue = jobs;
   }
 
   /**
@@ -682,9 +715,17 @@ export class App {
       const next = s.year + s.timeRate * dt * YEARS_PER_SECOND;
       const wrapped = next > 1000 ? -8000 : next;
       if (wrapped !== s.year) {
-        store.set('year', wrapped);
+        // The playhead ticks every frame. The HUD only cares when the slider
+        // would move; notifying on every float wakes the timeline 60 times a
+        // second and is a large part of the hitch.
+        store.state.year = wrapped;
         const e = eraAt(wrapped);
         if (e !== s.era) store.set('era', e);
+        const tick = Math.round(yearToSlider(wrapped) * 1000);
+        if (tick !== this.yearTick) {
+          this.yearTick = tick;
+          store.touch('year');
+        }
       }
     }
     const y = store.state.year;
@@ -718,7 +759,16 @@ export class App {
     this.trackFocus(s.scale, s.focusedBody, s.focusedLocation, s.cinematic);
 
     this.rig.update(dt);
-    store.set('viewHeading', this.rig.heading);
+    store.state.viewHeading = this.rig.heading;
+
+    if (
+      this.warmQueue.length && !s.cinematic && s.shell === 'play'
+      && dt < 0.017 && t - this.lastWarm > 0.08
+    ) {
+      this.lastWarm = t;
+      const job = this.warmQueue.pop()!;
+      planetPlates(this.renderer, job.kind, job.seed, job.cognitive, PLATE_SMALL);
+    }
 
     this.labels.update(
       this.orrery, this.camera, s.readProgress,

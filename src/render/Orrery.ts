@@ -92,8 +92,10 @@ export class Orrery {
   private viewport = new THREE.Vector2(1512, 900);
   /** The world in front of the camera, currently wearing its large plates. */
   private detailed: string | null = null;
-  private nebulaSteps = 9;
+  private nebulaSteps = 8;
   private blank: THREE.DataTexture | null = null;
+  private lastTrailYear = Number.NaN;
+  private lastTrailKey = '';
 
   constructor(renderer: THREE.WebGLRenderer) {
     this.renderer = renderer;
@@ -475,21 +477,16 @@ export class Orrery {
     this.spinLock = spin;
   }
 
-  /** Globe tessellation and shader sample counts, last on the quality ladder. */
+  /** Shader sample counts. Mesh LOD is per-body in `update`, not a global swap. */
   setQuality(band: 'high' | 'medium' | 'low'): void {
     this.band = band;
-    const geo = band === 'low' ? this.sphereLow : band === 'medium' ? this.sphereMid : this.sphereHigh;
-    if (geo !== this.sphere) {
-      this.sphere = geo;
-      for (const node of this.bodyNodes.values()) node.mesh.geometry = geo;
-    }
-    const steps = band === 'low' ? 5 : band === 'medium' ? 8 : 12;
-    const lightSteps = band === 'low' ? 3 : band === 'medium' ? 4 : 6;
+    const steps = band === 'low' ? 4 : band === 'medium' ? 6 : 8;
+    const lightSteps = band === 'low' ? 2 : band === 'medium' ? 3 : 4;
     for (const node of this.bodyNodes.values()) {
       node.atmoMat.uniforms.uSteps.value = steps;
       node.atmoMat.uniforms.uLightSteps.value = lightSteps;
     }
-    this.nebulaSteps = band === 'low' ? 5 : band === 'medium' ? 7 : 9;
+    this.nebulaSteps = band === 'low' ? 4 : band === 'medium' ? 6 : 8;
     for (const m of this.moonMats.values()) {
       m.uniforms.uDetail.value = band === 'low' ? 0 : 1;
     }
@@ -571,7 +568,7 @@ export class Orrery {
     // Surface detail is expensive and only pays off close up.
     const detail = this.band === 'low' ? 0
       : globe ? (this.band === 'high' ? 1 : 0.6)
-        : visual.scale === 'system' ? 0.25 : 0.05;
+        : visual.scale === 'system' ? 0.25 : 0;
 
     for (const node of this.bodyNodes.values()) {
       keplerOffset(node.body.orbit, year, _off);
@@ -580,29 +577,47 @@ export class Orrery {
       node.atmo.position.copy(_world);
       this.bodyWorld.get(node.body.id)!.copy(_world);
 
+      const inSystem = !visual.focusedSystem || node.body.system === visual.focusedSystem;
+      const showBody = globe
+        ? node.body.id === visual.focusedBody
+        : visual.scale === 'cosmere' || inSystem;
+      node.mesh.visible = showBody;
+      const geo = globe && node.body.id === visual.focusedBody
+        ? (this.band === 'low' ? this.sphereMid : this.sphereHigh)
+        : visual.scale === 'system' && inSystem
+          ? (this.band === 'low' ? this.sphereLow : this.sphereMid)
+          : this.sphereLow;
+      if (node.mesh.geometry !== geo) node.mesh.geometry = geo;
+
       _sun.copy(node.sunPos);
       const u = node.mat.uniforms;
       u.uSunPos.value.copy(_sun);
       u.uTime.value = time;
       u.uCognitive.value = cognitive;
-      u.uDetail.value = detail;
+      u.uDetail.value = showBody ? detail : 0;
       u.uCloudSpin.value = time * 0.012;
-      u.uHighstorm.value = node.body.id === 'roshar' && realm === 'physical' ? 1 : 0;
+      u.uHighstorm.value = node.body.id === 'roshar' && realm === 'physical' && globe ? 1 : 0;
       const invested = node.body.kind === 'shardworld' && node.body.shards.length > 0 && realm === 'physical';
       u.uEmissive.value = invested ? 0.03 + 0.02 * Math.sin(time * 0.7) : 0;
+      // Clouds are seven noise evals, twice. A Cosmere-scale marble does not pay it.
+      u.uClouds.value = (shadesmar || visual.scale === 'cosmere' || !showBody)
+        ? 0
+        : recipeFor(biomeOf(node.body, era)).clouds;
 
       const a = node.atmoMat.uniforms;
       a.uCentre.value.copy(_world);
       a.uSunPos.value.copy(_sun);
-      node.atmo.visible = visual.showAtmospheres && !shadesmar;
+      node.atmo.visible = visual.showAtmospheres && !shadesmar && (
+        (globe && node.body.id === visual.focusedBody)
+        || (visual.scale === 'system' && inSystem)
+      );
 
       if (node.ring && node.ringMat) {
         node.ring.position.copy(_world);
         node.ringMat.uniforms.uSunPos.value.copy(_sun);
         node.ringMat.uniforms.uCentre.value.copy(_world);
-        node.ring.visible = !shadesmar && visual.scale !== 'cosmere';
-        // Ring shadow only matters when you can see the planet.
-        u.uRingShadow.value = node.ring.visible ? 0.7 : 0;
+        node.ring.visible = !shadesmar && visual.scale === 'system' && inSystem;
+        u.uRingShadow.value = globe && node.body.id === visual.focusedBody && node.ring ? 0.7 : 0;
       }
 
       node.mesh.rotation.y = this.spinLockId === node.body.id ? this.spinLock : time * 0.04;
@@ -614,34 +629,39 @@ export class Orrery {
       const mesh = this.moonMeshes.get(moon.id);
       const parent = this.bodyWorld.get(moon.parent);
       if (!mesh || !parent) continue;
+      const parentNode = this.bodyNodes.get(moon.parent);
+      const inFocus = globe
+        ? moon.parent === visual.focusedBody
+        : visual.scale === 'system' && parentNode?.body.system === visual.focusedSystem;
       keplerOffset(moon.orbit, year, _off);
       mesh.position.copy(parent).add(_off);
-      // At Cosmere distance a moon is sub-pixel and only costs draw calls.
-      mesh.visible = visual.showMoons && visual.scale !== 'cosmere'
-        && (visual.scale !== 'system' || true);
+      mesh.visible = visual.showMoons && inFocus;
+      if (!mesh.visible) continue;
       mesh.rotation.y = time * 0.05 + seedFromId(moon.id);
-      const sun = this.bodyNodes.get(moon.parent)?.sunPos;
+      const sun = parentNode?.sunPos;
       const mat = this.moonMats.get(moon.id);
       if (sun && mat) mat.uniforms.uSunPos.value.copy(sun);
     }
 
-    this.updateLunagrees(time, realm, visual.scale, visual.showMoons);
+    this.updateLunagrees(time, realm, visual.scale, visual.focusedSystem, visual.focusedBody, visual.showMoons);
 
     const orbitsOn = visual.showOrbits && realm === 'physical'
       && (visual.scale === 'cosmere' || visual.scale === 'system');
     for (const [id, line] of this.orbitLines) {
       const body = this.bodyNodes.get(id)?.body;
       const own = !visual.focusedSystem || body?.system === visual.focusedSystem;
-      line.visible = orbitsOn;
+      line.visible = orbitsOn && own;
+      if (!line.visible) continue;
       const mat = line.material as LineMaterial;
-      mat.opacity = visual.scale === 'system' ? (own ? 0.42 : 0.10) : 0.28;
+      mat.opacity = visual.scale === 'system' ? 0.42 : 0.28;
     }
 
     // At globe scale the local star is a bloom bomb a few units wide and the
     // nebula washes the whole frame. The planet is the subject: the shader
     // still lights it from the real sun position.
     for (const n of this.nebulae) {
-      const on = visual.showNebula && !globe;
+      const on = visual.showNebula && !globe
+        && (visual.scale !== 'system' || n.system === visual.focusedSystem);
       n.mesh.visible = on;
       if (!on) continue;
       const r = (shadesmar ? 28 : 26) * Math.max(0.35, visual.nebula);
@@ -656,11 +676,13 @@ export class Orrery {
       // Thirteen overlapping volumes at Cosmere distance are each a few
       // hundred pixels across; they do not need the step count a close one
       // does, and together they are the most expensive thing in the frame.
-      n.mat.uniforms.uSteps.value = visual.scale === 'cosmere' ? this.nebulaSteps - 3 : this.nebulaSteps;
+      n.mat.uniforms.uSteps.value = visual.scale === 'cosmere'
+        ? Math.max(3, this.nebulaSteps - 4)
+        : this.nebulaSteps;
     }
 
     for (const [id, mesh] of this.suns) {
-      mesh.visible = !globe;
+      mesh.visible = !globe && (visual.scale !== 'system' || id === visual.focusedSystem);
       const mat = this.sunMats.get(id)!;
       mat.uniforms.uTime.value = time;
       const focused = visual.focusedSystem === id;
@@ -672,13 +694,17 @@ export class Orrery {
   }
 
   /** Stand each spore column between its moon and the sea it falls into. */
-  private updateLunagrees(time: number, realm: Realm, scale: string, showMoons: boolean): void {
+  private updateLunagrees(
+    time: number, realm: Realm, scale: string,
+    focusedSystem: string | null, focusedBody: string | null, showMoons: boolean,
+  ): void {
     const lumar = this.bodyWorld.get('lumar-world');
     const body = this.bodyNodes.get('lumar-world')?.body;
-    const close = scale === 'globe' || scale === 'surface' || scale === 'city' || scale === 'system';
+    const here = (scale === 'system' && focusedSystem === 'lumar')
+      || ((scale === 'globe' || scale === 'surface' || scale === 'city') && focusedBody === 'lumar-world');
     for (const row of this.lunagrees) {
       const moonPos = this.moonMeshes.get(row.moon)?.position;
-      const on = !!lumar && !!body && !!moonPos && close && showMoons && realm === 'physical';
+      const on = !!lumar && !!body && !!moonPos && here && showMoons && realm === 'physical';
       row.mesh.visible = on;
       if (!on || !lumar || !body || !moonPos) continue;
 
@@ -708,18 +734,28 @@ export class Orrery {
     year: number, scale: string, focusedSystem: string | null, realm: Realm,
   ): void {
     const on = realm === 'physical' && (scale === 'system' || scale === 'cosmere');
+    const key = `${scale}:${focusedSystem ?? ''}:${realm}`;
+    const yearStep = Number.isNaN(this.lastTrailYear) || Math.abs(year - this.lastTrailYear) > (scale === 'cosmere' ? 1.2 : 0.25);
+    const rebuild = key !== this.lastTrailKey || yearStep;
+    if (rebuild) {
+      this.lastTrailYear = year;
+      this.lastTrailKey = key;
+    }
+    const steps = scale === 'cosmere' ? 10 : TRAIL_STEPS;
     for (const node of this.bodyNodes.values()) {
       const mine = scale === 'system'
         ? node.body.system === focusedSystem
         : node.body.kind !== 'gas-giant';
       if (!on || !mine) { node.trail.visible = false; continue; }
+      node.trail.visible = true;
+      if (!rebuild) continue;
       const sysPos = node.sunPos;
       const span = 0.16 / Math.max(0.0001, node.body.orbit.period);
       const pts: number[] = [];
       const cols: number[] = [];
       const c = new THREE.Color(node.body.color);
-      for (let i = 0; i < TRAIL_STEPS; i++) {
-        const t = i / (TRAIL_STEPS - 1);
+      for (let i = 0; i < steps; i++) {
+        const t = i / (steps - 1);
         keplerOffset(node.body.orbit, year - span * (1 - t), _off);
         pts.push(_off.x + sysPos.x, _off.y + sysPos.y, _off.z + sysPos.z);
         const k = Math.pow(t, 2.4) * 0.9;
@@ -728,7 +764,6 @@ export class Orrery {
       node.trailGeo.setPositions(pts);
       node.trailGeo.setColors(cols);
       node.trail.computeLineDistances();
-      node.trail.visible = true;
     }
   }
 }

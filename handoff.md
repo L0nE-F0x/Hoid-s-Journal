@@ -16,19 +16,17 @@ Architecture lock: `AGENTS.md` + `DESIGN.md`. This file is the live todo.
 
 # ▶ START HERE — next session
 
-**2026-09-12 wrapped and live.** The overnight graphics pass and the UI
-polish that followed are both on `master` (`2deaae5` → `d05be1a`) and
-deployed. Last commit: *UI polish: books in the Journal, Settings that
-toggle, a playhead that starts at the Shattering*.
+**2026-09-12 wrapped, then a perf pass.** UI polish is live. A follow-up
+scanned the renderer: view-switch stutter was moons drawn in every system,
+orbit trails rebuilt every frame, atmospheres marched at Cosmere scale, and
+the HUD notified on every playhead tick. Those are cut. Plates for both
+Realms warm in the idle frames after boot so the first press of C does not
+bake. Interaction suite 46/46.
 
-The owner used the live site, listed thirteen things, and those shipped.
 Hard-refresh https://thecosmere.netlify.app after a deploy; the service
 worker otherwise keeps the old shell.
 
-**Your job is whatever they find on that deploy.** Do not restart the
-chrome hunt from scratch. If they come back with a list, work the list.
-If they come back with nothing, the leftovers below are optional depth,
-not a brief.
+**Your job is whatever they find on that deploy.**
 
 Git: `master` tracking https://github.com/L0nE-F0x/Hoid-s-Journal, **level
 with origin**. Live site: https://thecosmere.netlify.app — **it deploys on
@@ -435,3 +433,6 @@ lock flipped; this is the version that is true.
     menus renamed, Music off the top bar, galaxy chart under the top bar,
     Cognitive sites that stay, playhead at Pre-Shattering, gold ticks and a
     Shattering ring, new OG card. Pushed and live. Interaction suite 46/46.
+19. **Perf pass.** LOD by scale, no atmospheres/clouds/moons at Cosmere,
+    trails throttled, HUD year ticks throttled, bloom/SMAA stepped down from
+    HUGE/HIGH, Cognitive plates warmed after boot. 46/46 still.

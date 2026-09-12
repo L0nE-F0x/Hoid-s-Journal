@@ -40,7 +40,7 @@ function labelSprite(text: string, tint: string): THREE.Sprite {
  */
 export class Presence {
   readonly group = new THREE.Group();
-  private readonly chars: { id: string; mesh: THREE.Mesh; mat: THREE.ShaderMaterial }[] = [];
+  private readonly chars: { id: string; mesh: THREE.Mesh; mat: THREE.ShaderMaterial; ch: (typeof COSMERE.characters)[number]; i: number }[] = [];
   private readonly lines: { id: string; line: THREE.Line }[] = [];
   private readonly yolen = new THREE.Vector3();
   private readonly trail: THREE.Line;
@@ -52,7 +52,7 @@ export class Presence {
     // A person is a mote of light, not a marble. Flat discs at this size read
     // as confetti scattered over the world they are standing on.
     const quad = new THREE.PlaneGeometry(2, 2);
-    for (const ch of COSMERE.characters) {
+    COSMERE.characters.forEach((ch, i) => {
       const colour = new THREE.Color(ch.color);
       const mat = new THREE.ShaderMaterial({
         uniforms: {
@@ -75,11 +75,10 @@ export class Presence {
         blending: THREE.AdditiveBlending,
       });
       const mesh = new THREE.Mesh(quad, mat);
-      mesh.frustumCulled = false;
       mesh.userData = { kind: 'character', id: ch.id };
       this.group.add(mesh);
-      this.chars.push({ id: ch.id, mesh, mat });
-    }
+      this.chars.push({ id: ch.id, mesh, mat, ch, i });
+    });
 
     // Worldhopper trail: where one person has been, era by era.
     this.trailMat = new THREE.LineDashedMaterial({
@@ -171,18 +170,21 @@ export class Presence {
 
     // On a surface scan the pins are the subject; a swarm of people-dots at
     // the same apparent size just competes with them.
-    const motesOn = showCharacters && scale !== 'surface' && scale !== 'city';
+    const motesOn = showCharacters && scale !== 'surface' && scale !== 'city' && scale !== 'cosmere';
     for (const row of this.chars) {
-      const ch = COSMERE.characters.find((c) => c.id === row.id);
-      if (!motesOn || !ch || !isVisible(ch, progress)) { row.mesh.visible = false; continue; }
+      const ch = row.ch;
+      if (!motesOn || !isVisible(ch, progress)) { row.mesh.visible = false; continue; }
       const at = characterAt(ch, era);
       const bodyId = at?.body;
       const origin = bodyId ? orrery.bodyPosition(bodyId) : null;
       const body = bodyId ? bodyById[bodyId] : undefined;
       if (!origin || !body) { row.mesh.visible = false; continue; }
+      if (scale === 'system' && focusedSystem && body.system !== focusedSystem) {
+        row.mesh.visible = false;
+        continue;
+      }
       row.mesh.visible = true;
-      const i = COSMERE.characters.indexOf(ch);
-      const a = year * 0.9 + i * 0.7;
+      const a = year * 0.9 + row.i * 0.7;
       const r = body.radius * 1.55 + 0.25;
       _off.set(Math.cos(a) * r, Math.sin(a * 0.6) * body.radius * 0.35, Math.sin(a) * r);
       row.mesh.position.copy(origin).add(_off);

@@ -23,7 +23,7 @@ worlds existed and were named before the Shattering; **Scadrial** is the
 exception (Ruin and Preservation built it after). Lumar, Canticle, UTol and
 Komashi sit in their rings at era 0; Scadrian is gone until era 1 — star,
 orbit, label, directory, galaxy, Shadesmar disc and picking all wait with
-the planet. `systemOnTheMap` is the gate. Interaction suite **52/52**.
+the planet. `systemOnTheMap` is the gate. Interaction suite **53/53**.
 
 Hard-refresh https://thecosmere.netlify.app after a deploy; the service
 worker otherwise keeps the old shell.
@@ -43,7 +43,7 @@ npm run dev              # http://127.0.0.1:5174
 
 # Second shell. This is how you check visual work.
 npm run shot -- --focus roshar --scale globe --out /tmp/roshar.png
-npm run test:interaction # 52 checks through real mouse and keyboard
+npm run test:interaction # 53 checks through real mouse and keyboard
 npm run audit:ui         # clicks every control, reports the ones that do nothing
 npm run perf             # fps per Realm, expensive layers toggled off one at a time
 ```
@@ -59,7 +59,7 @@ the program count and any fault — ask for it first when someone reports a
 black sky.
 
 Last known green: `npx tsc --noEmit` and
-`npm run test:interaction` (**52/52**) with `npm run dev` already up.
+`npm run test:interaction` (**53/53**) with `npm run dev` already up.
 Re-run those plus `npm run build` before you push.
 
 ---
@@ -204,7 +204,7 @@ Treat this as current truth, not a wishlist.
 - Reading Companion, Codex, Arcanum (12 tables), Share, time speed, galaxy
   minimap, soundtrack, PWA.
 - Deep-link hash `#y=&realm=&scale=&system=&body=&loc=&reading=`.
-- Harnesses: `npm run shot`, `npm run test:interaction` (52 checks),
+- Harnesses: `npm run shot`, `npm run test:interaction` (53 checks),
   `npm run perf`, `npm run bench`.
 
 ### What the atlas holds
@@ -343,6 +343,11 @@ Written down so the next session does not rediscover them:
 - **Picking.** Cosmere hits use `systemExtent()` (orbit cloud). Do not
   go back to a tiny star sprite. HUD `.ceph-panel` must stay
   click-through except buttons / atlas / timeline / drawer.
+- **Presence owns `group.visible`.** Labels and pins set it every frame;
+  Presence did not. App hides the group in the Spiritual Realm, and a
+  return to Shadesmar used to keep the roads and drop Silverlight,
+  Celebrant, the Knell and the rest until a refresh. Do not hide that
+  group without turning it back on.
 - **Empty systems are not places.** `systemOnTheMap` hides the star,
   orbit, label, galaxy dot, directory row and Shadesmar disc when no
   in-era world remains. Scadrial is the one world built after the

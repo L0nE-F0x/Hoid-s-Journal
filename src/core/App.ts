@@ -825,6 +825,8 @@ export class App {
       this.labels.group.visible = false;
       this.pins.group.visible = false;
       this.presence.group.visible = false;
+    } else {
+      this.presence.group.visible = true;
     }
     this.starfield.update(
       t, this.canvas.clientHeight, FOV, s.visual.starSize, s.visual.exposure,

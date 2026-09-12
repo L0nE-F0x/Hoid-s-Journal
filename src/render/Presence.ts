@@ -164,6 +164,10 @@ export class Presence {
     showShardLines = true,
     focusedSystem: string | null = null,
   ): void {
+    // Labels and pins set group.visible every frame. This group was only
+    // ever turned off (Spiritual hides it from App) and never on again, so
+    // a visit to the Spiritual Realm left Shadesmar with roads and no cities.
+    this.group.visible = true;
     const yolenPos = orrery.bodyPosition('yolen') ?? this.yolen;
     this.updateTrail(orrery, camera, progress, scale, selected);
     this.updateHubs(orrery, camera, progress, scale, cognitive, selected, focusedSystem, era);

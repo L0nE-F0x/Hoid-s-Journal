@@ -325,6 +325,16 @@ async function run() {
     await page.keyboard.press('v');
     await settle(page);
     check('V leaves it again', (await state(page)).realm === 'physical');
+    await page.keyboard.press('c');
+    await sleep(400);
+    const sitesBack = await page.evaluate(() => ({
+      group: window.__ceph.app.presence.group.visible,
+      silver: !!window.__ceph.app.presence.hubPosition('silverlight'),
+    }));
+    check('Cognitive sites return after the Spiritual Realm',
+      sitesBack.group && sitesBack.silver, JSON.stringify(sitesBack));
+    await page.keyboard.press('c');
+    await settle(page);
 
     // Every quality band must still reach the canvas. Disabling the last
     // pass once left the composer drawing into a buffer nobody read, which

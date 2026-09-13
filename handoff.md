@@ -16,16 +16,23 @@ Architecture lock: `AGENTS.md` + `DESIGN.md`. This file is the live todo.
 
 # ▶ START HERE — next session
 
-**2026-09-12 wrapped and live.** Lore depth, empty-system chrome, Cognitive
-sites after Spiritual, and clickable moons all shipped (`5e341f1` →
-`3d5fa17`). Last commit: *Moons were scenery until you opened the planet
-they belonged to*. Interaction suite **56/56**.
+**2026-09-13 — encyclopedia pass, not pushed.** Data + Codex + cards, no
+graphics. The owner asked for lore depth so the journal replaces asking
+Grok Chat mid-reread, and for v1 features minus the Battle Sim.
+
+Codex (`K` / Search) is the answer engine: question-shaped queries
+("who is Thaidakar", "what is a metalmind"), alias hits (Wit → Hoid,
+Thaidakar → Kelsier), filter chips, See-also chips on the overlay card.
+Interaction suite **56/56**. `npx tsc --noEmit` clean.
 
 Hard-refresh https://thecosmere.netlify.app after a deploy; the service
 worker otherwise keeps the old shell.
 
-**Your job is whatever they find on that deploy.** Do not restart the lore
-or chrome hunt from scratch. If they come back with a list, work the list.
+**Do not restart the lore hunt from scratch.** Next work is whatever they
+find after using Search for a week, or a push of this pass.
+
+Git: `master` tracking https://github.com/L0nE-F0x/Hoid-s-Journal.
+This pass is **local only until they say push.** Live site deploys on push.
 
 Git: `master` tracking https://github.com/L0nE-F0x/Hoid-s-Journal, **level
 with origin**. Live site: https://thecosmere.netlify.app — **it deploys on
@@ -62,6 +69,24 @@ Re-run those plus `npm run build` before you push.
 ---
 
 ## What the last session changed
+
+**2026-09-13 encyclopedia (this session, not pushed).** Graphics left alone.
+v1 Battle Sim still out. Everything else v1 had for knowledge is here and
+deeper: Codex filters, alias search, Coppermind *links* (not portraits),
+organizations as a first-class roster.
+
+- People 90 → ~424. Places 124 → ~301. Glossary 123 → ~323. Orders ~66.
+  Magics 15 → 19 (Dakhor, ChayShan, Bloodsealing, sunhearts/Skipping).
+- Bios on the original roster (`peopleBios.ts`) and on every new person.
+- Codex is the reread companion: "who is Thaidakar", "Wit", "what is a
+  metalmind". Overlay cards gained bio, era trail, orders, See-also, wiki.
+- Directory gained Places and Orders. Lore Web / globe motes stay featured
+  only (`isFeaturedPerson`), or 400 bridgemen become a marble bowl.
+- Short search queries use word boundaries so "wit" does not hit "with".
+
+---
+
+### Graphics history (still true)
 
 - **Worlds.** Every globe is baked on the GPU — an albedo plate and an
   (elevation, water, lights, roughness) plate — and lit by a shader with
@@ -185,8 +210,8 @@ Treat this as current truth, not a wishlist.
   `Esc` walks back out. Hover is a tooltip; the card opens on **click** as
   an overlay and **must not** report camera insets.
 - One top bar (wordmark, scale crumb, tools). Directory / timeline / galaxy
-  collapse. Directory tabs: Systems, Worlds, Moons, People, Dragons, Shards,
-  Doors, Dawnshards.
+  collapse. Directory tabs: Systems, Worlds, Moons, People, Dragons, Places,
+  Orders, Shards, Doors, Dawnshards.
 - Surface atlas: Roshar (physical + Shadesmar) and Scadrial (ash / basin,
   plus starchart / endpaper layers) are Stewart plates, credited. Everything
   else uses the CPU twin of the GPU baker in `cartography/planetMap.ts`, so
@@ -198,13 +223,17 @@ Treat this as current truth, not a wishlist.
 - Lore Web (`L`): force graph with a damped auto-fit, capped repulsion and
   bounded positions. Shards, worlds and Dawnshards stay labelled; people
   label on zoom or when on the path you asked for.
-- Reading Companion, Codex, Arcanum (12 tables), Share, time speed, galaxy
-  minimap, soundtrack, PWA.
+- Reading Companion, Codex (alias + question search, filter chips), Arcanum
+  (19 systems, tables), Share, time speed, galaxy minimap, soundtrack, PWA.
+  Overlay cards show bio, era trail, orders, See-also chips, Coppermind text
+  link (no portraits — product lock).
 - Deep-link hash `#y=&realm=&scale=&system=&body=&loc=&reading=`.
 - Harnesses: `npm run shot`, `npm run test:interaction` (56 checks),
   `npm run perf`, `npm run bench`.
 
 ### What the atlas holds
+
+Counted from the data, 2026-09-13 encyclopedia pass:
 
 | | |
 | --- | --- |
@@ -212,13 +241,36 @@ Treat this as current truth, not a wishlist.
 | Worlds | 18 (plus 10 Rosharan gas giants) |
 | Moons | 22 |
 | Shards | 16 |
-| People | 90, including 7 dragons and the Sleepless |
-| Places | 124 |
+| People | ~424, including dragons, Heralds, Unmade, spren, vessels |
+| Places | ~301 |
+| Orders / groups | ~66 |
 | Cognitive sites | 15 |
 | Perpendicularities | 10 |
-| Magic systems | 15, with 12 tables |
-| Glossary | 123 terms |
+| Magic systems | 19, with tables |
+| Glossary | ~323 terms |
 | Dawnshards | 4 |
+| Lore Web edges | ~210 named, plus origin/investiture/org membership |
+
+New data files (concatenated in `src/data/index.ts`, first id wins except
+glossary which keeps the later def):
+
+```
+src/data/peopleRoshar.ts
+src/data/peopleScadrial.ts
+src/data/peopleWorlds.ts
+src/data/peopleBios.ts      overlay bios on the original 90
+src/data/placesMore.ts
+src/data/glossaryMore.ts
+src/data/organizations.ts
+src/data/orgsMore.ts
+src/data/relationsMore.ts
+src/data/search.ts          question strip + alias scoring
+```
+
+The sky and the Lore Web only draw *featured* people (named in a relation
+or an order, plus dragons / Heralds / Unmade / spren / vessels / cognitive
+travellers). Everyone else lives in Codex and Directory. Do not dump all
+424 as globe motes or Web nodes.
 
 ## Known rough edges
 

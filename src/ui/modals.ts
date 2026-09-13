@@ -1,22 +1,21 @@
 import {
   COSMERE,
-  bodyById,
   addedThisArc,
   arcNoteFor,
   characterAt,
-  characterById,
   cityById,
-  DAWNSHARDS,
-  HUBS,
   isNewThisArc,
   isVisible,
-  landmarkById,
+  loreById,
+  SEARCH_KIND_LABEL,
+  searchJournal,
   systemOnTheMap,
   publicationSafeProgress,
   seriesById,
   fullProgress,
   JOURNAL_BOOKS,
   bookArcIndex,
+  type SearchKind,
 } from '../data/index.ts';
 import { canInstall, promptInstall } from '../core/pwa.ts';
 import { store } from '../core/store.ts';
@@ -96,6 +95,8 @@ function renderArcanum(card: HTMLElement): void {
   card.append(el('span', { className: `ceph-canon ceph-canon--${mag.canon}`, text: mag.canon }));
   card.append(el('p', { className: 'ceph-fact', text: mag.desc }));
   card.append(el('p', { className: 'ceph-fact', text: mag.mechanics }));
+  if (mag.bio) card.append(el('p', { className: 'ceph-fact ceph-fact--aside', text: mag.bio }));
+  if (mag.users) card.append(el('p', { className: 'ceph-fact', text: `Users: ${mag.users}` }));
   if (mag.table) {
     const table = el('table', { className: 'ceph-table' });
     const thead = el('thead');
@@ -114,120 +115,237 @@ function renderArcanum(card: HTMLElement): void {
   }
 }
 
+const CODEX_FILTERS: { id: SearchKind | 'all'; label: string }[] = [
+  { id: 'all', label: 'All' },
+  { id: 'person', label: 'People' },
+  { id: 'place', label: 'Places' },
+  { id: 'term', label: 'Terms' },
+  { id: 'magic', label: 'Magic' },
+  { id: 'org', label: 'Orders' },
+  { id: 'shard', label: 'Shards' },
+  { id: 'world', label: 'Worlds' },
+];
+
+function flyCodexHit(id: string): void {
+  store.set('selected', id);
+  const hit = loreById(id);
+  if (!hit) return;
+  if (hit.kind === 'magic') {
+    store.set('magicId', id);
+    store.set('panel', 'arcanum');
+    return;
+  }
+  store.set('panel', 'none');
+  if (hit.kind === 'body') {
+    store.set('cameraCue', { kind: 'focus', id, scale: 'globe' });
+    return;
+  }
+  if (hit.kind === 'location') {
+    store.set('cameraCue', { kind: 'focus', id, scale: cityById[id] ? 'city' : 'surface' });
+    return;
+  }
+  if (hit.kind === 'landmark') {
+    store.set('cameraCue', { kind: 'focus', id: hit.obj.city, scale: 'city' });
+    return;
+  }
+  if (hit.kind === 'hub') {
+    store.set('realm', 'cognitive');
+    store.set('cameraCue', { kind: 'focus', id, scale: 'cosmere' });
+    return;
+  }
+  if (hit.kind === 'shard' || hit.kind === 'dawnshard') {
+    store.set('realm', 'spiritual');
+    return;
+  }
+  if (hit.kind === 'character') {
+    const where = characterAt(hit.obj, store.state.era)?.body;
+    if (where) store.set('cameraCue', { kind: 'focus', id: where, scale: 'globe' });
+    return;
+  }
+  if (hit.kind === 'system') {
+    store.set('cameraCue', { kind: 'focus', id, scale: 'system' });
+    return;
+  }
+  if (hit.kind === 'moon') {
+    store.set('cameraCue', { kind: 'focus', id, scale: 'globe' });
+    return;
+  }
+  if (hit.kind === 'perp') {
+    if (hit.obj.at) store.set('cameraCue', { kind: 'focus', id: hit.obj.at, scale: 'surface' });
+    else store.set('cameraCue', { kind: 'focus', id: hit.obj.body, scale: 'globe' });
+  }
+}
+
 function renderCodex(card: HTMLElement): void {
-  card.append(el('div', { className: 'ceph-kicker', text: 'The Codex' }), el('h2', { text: 'Search the journal' }));
-  const input = el('input', { className: 'ceph-search', attrs: { placeholder: 'Worlds, people, shards, terms…', value: store.state.searchQuery } });
-  const results = el('div', { style: { marginTop: '14px', display: 'flex', flexDirection: 'column', gap: '8px' } });
+  card.append(
+    el('div', { className: 'ceph-kicker', text: 'The Codex' }),
+    el('h2', { text: 'Ask the journal' }),
+    el('p', {
+      className: 'ceph-fact',
+      text: 'Names, aliases, orders, metals, places. “Who is Thaidakar” and “Wit” hit the same man. The sky hides what you have not read.',
+    }),
+  );
+  const input = el('input', {
+    className: 'ceph-search',
+    attrs: {
+      placeholder: 'Who is Thaidakar? What is a metalmind? Where is Urithiru?',
+      value: store.state.searchQuery,
+      type: 'search',
+    },
+  }) as HTMLInputElement;
+  const filters = el('div', { className: 'ceph-codex-filters' });
+  const results = el('div', { className: 'ceph-codex-results' });
+  let filter: SearchKind | 'all' = 'all';
+
+  const paintFilters = () => {
+    [...filters.children].forEach((c, i) => {
+      const spec = CODEX_FILTERS[i]!;
+      c.classList.toggle('is-on', spec.id === filter);
+    });
+  };
+
+  for (const f of CODEX_FILTERS) {
+    const b = el('button', { className: 'ceph-chip', text: f.label, attrs: { type: 'button' } });
+    listen(b, 'click', () => { filter = f.id; paintFilters(); run(); });
+    filters.append(b);
+  }
+
   const run = () => {
-    const q = input.value.trim().toLowerCase();
     store.set('searchQuery', input.value);
     results.replaceChildren();
+    const kinds = filter === 'all' ? undefined : [filter];
+    const q = input.value.trim();
     if (q.length < 2) {
-      results.append(el('div', { className: 'ceph-kicker', text: 'Browse systems' }));
-      for (const sys of COSMERE.systems) {
-        if (!systemOnTheMap(sys.id, store.state.readProgress, store.state.era)) continue;
-        const b = el('button', { className: 'ceph-card' }, [
-          el('div', { className: 'ceph-kicker', text: 'system' }),
-          el('div', { text: sys.name, style: { fontWeight: '600' } }),
-        ]);
-        listen(b, 'click', () => {
-          store.set('panel', 'none');
-          store.set('cameraCue', { kind: 'focus', id: sys.id, scale: 'system' });
-        });
-        results.append(b);
+      if (filter === 'all') {
+        results.append(el('div', { className: 'ceph-kicker', text: 'Browse' }));
+        const counts = el('div', { className: 'ceph-codex-counts' });
+        const rows: [string, number][] = [
+          ['people', COSMERE.characters.length],
+          ['places', COSMERE.locations.length],
+          ['terms', COSMERE.glossary.length],
+          ['orders', COSMERE.organizations.length],
+          ['magics', COSMERE.magics.length],
+        ];
+        for (const [label, n] of rows) {
+          counts.append(el('div', { className: 'ceph-title-count' }, [
+            el('b', { text: String(n) }),
+            el('span', { text: label }),
+          ]));
+        }
+        results.append(counts);
+        results.append(el('div', { className: 'ceph-kicker', text: 'Systems', style: { marginTop: '12px' } }));
+        for (const sys of COSMERE.systems) {
+          if (!systemOnTheMap(sys.id, store.state.readProgress, store.state.era)) continue;
+          const b = el('button', { className: 'ceph-card' }, [
+            el('div', { className: 'ceph-kicker', text: 'system' }),
+            el('div', { text: sys.name, style: { fontWeight: '600' } }),
+          ]);
+          listen(b, 'click', () => flyCodexHit(sys.id));
+          results.append(b);
+        }
+        return;
       }
+      results.append(el('div', { className: 'ceph-kicker', text: CODEX_FILTERS.find((f) => f.id === filter)?.label ?? '' }));
+      const vis = store.state.readProgress;
+      const cards: { id: string; label: string; kind: string; fact: string; book?: string; arc?: string }[] = [];
+      if (filter === 'person') {
+        for (const c of COSMERE.characters) {
+          if (!isVisible(c, vis)) continue;
+          cards.push({ id: c.id, label: c.name, kind: 'person', fact: c.fact, book: c.book, arc: c.arc });
+        }
+      } else if (filter === 'place') {
+        for (const l of COSMERE.locations) {
+          if (!isVisible(l, vis)) continue;
+          cards.push({ id: l.id, label: l.name, kind: 'place', fact: l.desc, book: l.book, arc: l.arc });
+        }
+      } else if (filter === 'term') {
+        for (const g of COSMERE.glossary) {
+          if (!isVisible(g, vis)) continue;
+          cards.push({ id: g.id, label: g.term, kind: 'term', fact: g.def, book: g.book, arc: g.arc });
+        }
+      } else if (filter === 'magic') {
+        for (const m of COSMERE.magics) {
+          if (!isVisible(m, vis)) continue;
+          cards.push({ id: m.id, label: m.name, kind: 'magic', fact: m.desc, book: m.book });
+        }
+      } else if (filter === 'org') {
+        for (const o of COSMERE.organizations) {
+          if (!isVisible(o, vis)) continue;
+          cards.push({ id: o.id, label: o.name, kind: 'order', fact: o.fact, book: o.book, arc: o.arc });
+        }
+      } else if (filter === 'shard') {
+        for (const s of COSMERE.shards) {
+          if (!isVisible(s, vis)) continue;
+          cards.push({ id: s.id, label: s.name, kind: 'shard', fact: s.desc, book: s.book });
+        }
+      } else if (filter === 'world') {
+        for (const b of COSMERE.bodies) {
+          if (b.kind === 'gas-giant' || !isVisible(b, vis)) continue;
+          cards.push({ id: b.id, label: b.name, kind: 'world', fact: b.fact, book: b.book });
+        }
+      }
+      for (const h of cards.slice(0, 80)) {
+        const fresh = isNewThisArc(h, store.state.readingNow);
+        const row = el('button', { className: 'ceph-card' }, [
+          el('div', { className: 'ceph-kicker', text: fresh ? `✦ ${h.kind} · new this arc` : h.kind,
+            style: fresh ? { color: 'var(--ceph-amber)' } : {} }),
+          el('div', { text: h.label, style: { fontWeight: '600' } }),
+          el('div', { text: h.fact, style: { color: 'var(--ceph-text-dim)', fontSize: '12px', marginTop: '4px' } }),
+        ]);
+        listen(row, 'click', () => flyCodexHit(h.id));
+        results.append(row);
+      }
+      results.append(el('div', {
+        className: 'ceph-kicker',
+        text: `${Math.min(cards.length, 80)} of ${cards.length}`,
+        style: { marginTop: '10px' },
+      }));
       return;
     }
-    const hits: { id: string; label: string; kind: string; fact: string; fresh: boolean }[] = [];
-    const push = (id: string, label: string, kind: string, fact: string, vis: { book?: string; arc?: string }) => {
-      if (!isVisible(vis, store.state.readProgress)) return;
-      if (!label.toLowerCase().includes(q) && !fact.toLowerCase().includes(q)) return;
-      hits.push({ id, label, kind, fact, fresh: isNewThisArc(vis, store.state.readingNow) });
-    };
-    for (const b of COSMERE.bodies) push(b.id, b.name, 'world', b.fact, b);
-    for (const c of COSMERE.characters) push(c.id, c.name, 'person', c.fact, c);
-    for (const s of COSMERE.shards) push(s.id, s.name, 'shard', s.desc, s);
-    for (const m of COSMERE.magics) push(m.id, m.name, 'magic', m.desc, m);
-    for (const g of COSMERE.glossary) push(g.id, g.term, 'term', g.def, g);
-    for (const l of COSMERE.locations) push(l.id, l.name, 'place', l.desc, l);
-    for (const m of Object.values(landmarkById)) push(m.id, m.name, 'place', m.desc, m);
-    for (const h of HUBS) push(h.id, h.name, 'place', h.fact, h);
-    for (const d of DAWNSHARDS) push(d.id, d.name, 'relic', d.fact, d);
-    hits.sort((a, b) => {
-      const score = (h: { label: string }) => {
-        const n = h.label.toLowerCase();
-        if (n === q) return 0;
-        if (n.startsWith(q)) return 1;
-        if (n.includes(q)) return 2;
-        return 3;
-      };
-      return score(a) - score(b);
-    });
-    for (const h of hits.slice(0, 40)) {
+    const hits = searchJournal(q, store.state.readProgress, kinds, 60);
+    for (const h of hits) {
+      const fresh = isNewThisArc({ book: h.book, arc: h.arc }, store.state.readingNow);
+      const kind = SEARCH_KIND_LABEL[h.kind] ?? h.kind;
       const row = el('button', { className: 'ceph-card' }, [
-        el('div', { className: 'ceph-kicker', text: h.fresh ? `✦ ${h.kind} · new this arc` : h.kind,
-          style: h.fresh ? { color: 'var(--ceph-amber)' } : {} }),
+        el('div', {
+          className: 'ceph-kicker',
+          text: fresh ? `✦ ${kind} · new this arc` : kind,
+          style: fresh ? { color: 'var(--ceph-amber)' } : {},
+        }),
         el('div', { text: h.label, style: { fontWeight: '600' } }),
+        h.aliases
+          ? el('div', { className: 'ceph-kicker', text: h.aliases, style: { marginTop: '2px' } })
+          : '',
         el('div', { text: h.fact, style: { color: 'var(--ceph-text-dim)', fontSize: '12px', marginTop: '4px' } }),
       ]);
-      listen(row, 'click', () => {
-        store.set('panel', 'none');
-        if (COSMERE.magics.some((m) => m.id === h.id)) {
-          store.set('magicId', h.id);
-          store.set('panel', 'arcanum');
-          return;
-        }
-        store.set('selected', h.id);
-        // A Codex hit should take you there, not just tick a box.
-        if (bodyById[h.id]) {
-          store.set('cameraCue', { kind: 'focus', id: h.id, scale: 'globe' });
-          return;
-        }
-        if (COSMERE.locations.some((l) => l.id === h.id)) {
-          store.set('cameraCue', {
-            kind: 'focus', id: h.id,
-            scale: cityById[h.id] ? 'city' : 'surface',
-          });
-          return;
-        }
-        const mark = landmarkById[h.id];
-        if (mark) {
-          store.set('cameraCue', { kind: 'focus', id: mark.city, scale: 'city' });
-          store.set('selected', mark.id);
-          return;
-        }
-        if (HUBS.some((x) => x.id === h.id)) {
-          store.set('cameraCue', { kind: 'focus', id: h.id, scale: 'cosmere' });
-          store.set('realm', 'cognitive');
-          return;
-        }
-        if (COSMERE.shards.some((s) => s.id === h.id) || DAWNSHARDS.some((d) => d.id === h.id)) {
-          store.set('realm', 'spiritual');
-          store.set('selected', h.id);
-          return;
-        }
-        const ch = characterById[h.id];
-        const where = ch ? characterAt(ch, store.state.era)?.body : undefined;
-        if (where) {
-          store.set('cameraCue', { kind: 'focus', id: where, scale: 'globe' });
-          store.set('selected', h.id);
-        }
-      });
+      listen(row, 'click', () => flyCodexHit(h.id));
       results.append(row);
     }
-    if (!hits.length) results.append(el('div', { text: 'Nothing in the journal matches — or it is still spoiler-gated.', style: { color: 'var(--ceph-text-dim)' } }));
+    if (!hits.length) {
+      results.append(el('div', {
+        text: 'Nothing in the journal matches — or it is still spoiler-gated.',
+        style: { color: 'var(--ceph-text-dim)' },
+      }));
+    } else {
+      results.append(el('div', {
+        className: 'ceph-kicker',
+        text: hits.length === 60 ? '60 matches · refine the question' : `${hits.length} matches`,
+        style: { marginTop: '10px' },
+      }));
+    }
   };
   listen(input, 'input', run);
-  card.append(input, results);
+  card.append(input, filters, results);
+  paintFilters();
   queueMicrotask(() => input.focus());
-  if (store.state.searchQuery.length >= 2) run();
+  run();
 }
 
 function renderHelp(card: HTMLElement): void {
   card.append(
     el('div', { className: 'ceph-kicker', text: 'How to read the sky' }),
     el('h2', { text: 'The journal is a map you fly' }),
-    el('p', { className: 'ceph-fact', text: 'Hover a world for its name. Click to open the card — the sky stays put. Click the orbit rings, not just the star, to dive in. Click a world for its globe, again for the surface, again for a city plate. Esc walks back out. ☰ hides the directory.' }),
+    el('p', { className: 'ceph-fact', text: 'Hover a world for its name. Click to open the card — the sky stays put. Click the orbit rings, not just the star, to dive in. Click a world for its globe, again for the surface, again for a city plate. Esc walks back out. ☰ hides the directory. Search (K) is the journal: aliases, orders, metals, “who is Thaidakar”.' }),
     el('p', { className: 'ceph-fact', html: '<b>Drag</b> orbit · <b>scroll</b> zoom · <b>WASD / QE</b> fly (those keys never open panels) · <b>Space</b> play time · <b>+/−</b> on the timeline for speed · click a tick for a named beat · <b>1–6</b> eras · <b>C</b> Cognitive · <b>V</b> Spiritual · <b>L</b> Lore Web · <b>M</b> galaxy chart · <b>F</b> frame Cosmere · <b>K</b> or <b>/</b> Search · <b>H</b> this help. Arcanum, Journal, Settings and Share are buttons. Soundtrack lives in Settings.' }),
     el('p', { className: 'ceph-fact', text: 'Roshar and Scadrial atlas plates are Isaac Stewart\'s cartography, credited on the map. Globes are procedural, baked from one recipe per world, so a coast on the plate is the same coast on the sphere. Journal sets where you are in the books; the sky hides what you have not reached. Default is fully read.' }),
     el('p', { className: 'ceph-fact', style: { color: 'var(--ceph-text-dim)' }, text: 'Unofficial fan project. Not affiliated with Dragonsteel or Brandon Sanderson. Cartography by Isaac Stewart.' }),

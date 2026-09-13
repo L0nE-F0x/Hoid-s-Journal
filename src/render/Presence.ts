@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { COSMERE, HUBS, bodyById, bodyByName, characterAt, hubById, isVisible, onTheMap } from '../data/index.ts';
+import { COSMERE, HUBS, bodyById, bodyByName, characterAt, hubById, isFeaturedPerson, isVisible, onTheMap } from '../data/index.ts';
 import { keplerWorld } from '../layout/kepler.ts';
 import { hubWorld } from '../layout/cognitive.ts';
 import type { Orrery } from './Orrery.ts';
@@ -177,7 +177,10 @@ export class Presence {
     const motesOn = showCharacters && scale !== 'surface' && scale !== 'city' && scale !== 'cosmere';
     for (const row of this.chars) {
       const ch = row.ch;
-      if (!motesOn || !isVisible(ch, progress)) { row.mesh.visible = false; continue; }
+      if (!motesOn || !isVisible(ch, progress) || !isFeaturedPerson(ch.id)) {
+        row.mesh.visible = false;
+        continue;
+      }
       const at = characterAt(ch, era);
       const bodyId = at?.body;
       const origin = bodyId ? orrery.bodyPosition(bodyId) : null;

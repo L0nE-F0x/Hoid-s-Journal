@@ -81,6 +81,9 @@ export interface Body extends Cited {
   species: string[];
   locations: string;
   fact: string;
+  bio?: string;
+  see?: string[];
+  wiki?: string;
   biome: BiomeKind;
   hasSurface: boolean;
   /** First playhead era this world exists as the thing we are drawing. */
@@ -97,6 +100,8 @@ export interface Moon extends Cited {
   orbit: Orbit;
   radius: number;
   fact: string;
+  bio?: string;
+  wiki?: string;
 }
 
 export interface ShardEra {
@@ -113,6 +118,10 @@ export interface Shard extends Cited {
   book: string;
   world: string;
   desc: string;
+  bio?: string;
+  intent?: string;
+  see?: string[];
+  wiki?: string;
   eras: ShardEra[];
 }
 
@@ -123,7 +132,15 @@ export interface CharacterEra {
 }
 
 /** What a person in the roster *is*. Drives the Directory's tabs. */
-export type CharacterKind = 'person' | 'dragon' | 'sleepless' | 'spren' | 'vessel';
+export type CharacterKind =
+  | 'person'
+  | 'dragon'
+  | 'sleepless'
+  | 'spren'
+  | 'vessel'
+  | 'herald'
+  | 'unmade'
+  | 'fused';
 
 export interface Character extends Cited {
   id: string;
@@ -135,6 +152,13 @@ export interface Character extends Cited {
   origin: string;
   abilities: string;
   fact: string;
+  /** Longer encyclopedia entry. The card shows this under the one-line fact. */
+  bio?: string;
+  /** Related entity ids (people, places, terms, orgs, shards). */
+  see?: string[];
+  /** Coppermind page title, not a portrait. */
+  wiki?: string;
+  titles?: string;
   /** Native to the Cognitive Realm, or a frequent traveller in it. */
   cognitive: boolean;
   eras: CharacterEra[];
@@ -154,6 +178,9 @@ export interface Magic extends Cited {
   desc: string;
   mechanics: string;
   users: string;
+  bio?: string;
+  see?: string[];
+  wiki?: string;
   table?: {
     kind: string;
     cols: string[];
@@ -162,12 +189,26 @@ export interface Magic extends Cited {
   };
 }
 
+export type GlossaryCategory =
+  | 'realmatic'
+  | 'magic'
+  | 'culture'
+  | 'history'
+  | 'creature'
+  | 'object'
+  | 'org'
+  | 'people';
+
 export interface GlossaryTerm extends Cited {
   id: string;
   term: string;
   book: string;
   arc?: string;
   def: string;
+  aliases?: string;
+  category?: GlossaryCategory;
+  see?: string[];
+  wiki?: string;
 }
 
 export interface Location extends Cited {
@@ -182,6 +223,10 @@ export interface Location extends Cited {
   color: string;
   icon: string;
   desc: string;
+  bio?: string;
+  region?: string;
+  see?: string[];
+  wiki?: string;
   realm?: 'physical' | 'cognitive';
   eraMaps?: string[];
   eraMin?: number;
@@ -253,6 +298,9 @@ export interface Hub extends Cited {
   arc?: string;
   kind: HubKind;
   fact: string;
+  bio?: string;
+  see?: string[];
+  wiki?: string;
   /** System ids; layout averages their positions. Empty for anchored sites. */
   between?: string[];
   /** Anchor system, when this stands in one subastral rather than between. */
@@ -287,6 +335,42 @@ export interface Dawnshard extends Cited {
   book: string;
   arc?: string;
   fact: string;
+  bio?: string;
+  see?: string[];
+  wiki?: string;
+}
+
+export type OrgKind =
+  | 'secret'
+  | 'order'
+  | 'nation'
+  | 'crew'
+  | 'church'
+  | 'guild'
+  | 'species'
+  | 'military'
+  | 'house';
+
+/**
+ * A named group a reread actually asks about: Ghostbloods, Bridge Four,
+ * the Diagram, a Radiant order. People still live in `characters`; this is
+ * the org they belong to.
+ */
+export interface Organization extends Cited {
+  id: string;
+  name: string;
+  color: string;
+  book: string;
+  arc?: string;
+  world?: string;
+  kind: OrgKind;
+  fact: string;
+  bio?: string;
+  members?: string[];
+  see?: string[];
+  wiki?: string;
+  eraMin?: number;
+  eraMax?: number;
 }
 
 export interface ArcNote {
@@ -307,6 +391,7 @@ export interface Cosmere {
   magics: Magic[];
   glossary: GlossaryTerm[];
   locations: Location[];
+  organizations: Organization[];
   perps: Perpendicularity[];
   worldEpochs: Record<string, WorldEpoch[]>;
   timelineNote: string;

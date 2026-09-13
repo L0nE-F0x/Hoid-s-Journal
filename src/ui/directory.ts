@@ -10,6 +10,7 @@ import {
   inEra,
   isVisible,
   onTheMap,
+  orgById,
   systemOnTheMap,
 } from '../data/index.ts';
 import { store } from '../core/store.ts';
@@ -17,7 +18,7 @@ import { atlasIsOpen } from './atlas.ts';
 import { el, listen } from './dom.ts';
 import '../styles/directory.css';
 
-type DirTab = 'systems' | 'worlds' | 'moons' | 'people' | 'dragons' | 'shards' | 'doors' | 'dawnshards';
+type DirTab = 'systems' | 'worlds' | 'moons' | 'people' | 'dragons' | 'places' | 'orders' | 'shards' | 'doors' | 'dawnshards';
 
 export function directoryIsOpen(): boolean {
   const s = store.state;
@@ -75,9 +76,15 @@ function flyTo(id: string): void {
   if (perp?.at) {
     leaveSpiritual();
     store.set('cameraCue', { kind: 'focus', id: perp.at, scale: 'surface' });
-  } else if (perp) {
+    return;
+  }
+  if (perp) {
     leaveSpiritual();
     store.set('cameraCue', { kind: 'focus', id: perp.body, scale: 'globe' });
+    return;
+  }
+  if (orgById[id]) {
+    store.set('selected', id);
   }
 }
 
@@ -116,6 +123,8 @@ export function mountDirectory(root: HTMLElement): { destroy(): void } {
     { id: 'moons', label: 'Moons' },
     { id: 'people', label: 'People' },
     { id: 'dragons', label: 'Dragons' },
+    { id: 'places', label: 'Places' },
+    { id: 'orders', label: 'Orders' },
     { id: 'shards', label: 'Shards' },
     { id: 'doors', label: 'Doors' },
     { id: 'dawnshards', label: 'Dawnshards' },
@@ -173,7 +182,8 @@ export function mountDirectory(root: HTMLElement): { destroy(): void } {
       ? (COSMERE.systems.find((x) => x.id === s.focusedSystem)?.name ?? 'System')
       : 'Directory';
 
-    const match = (name: string) => !q || name.toLowerCase().includes(q);
+    const match = (...parts: Array<string | undefined>) =>
+      !q || parts.some((p) => p && p.toLowerCase().includes(q));
     const push = (node: HTMLElement) => list.append(node);
 
     if (tab === 'systems') {
@@ -205,11 +215,23 @@ export function mountDirectory(root: HTMLElement): { destroy(): void } {
       for (const c of COSMERE.characters) {
         const otherKind = c.kind === 'dragon' || c.kind === 'sleepless';
         if (otherKind !== wantDragons) continue;
-        if (!isVisible(c, s.readProgress) || !match(c.name)) continue;
+        if (!isVisible(c, s.readProgress) || !match(c.name, c.aliases, c.fact)) continue;
         const at = characterAt(c, s.era);
         if (!at) continue;
         if (s.scale === 'system' && s.focusedSystem && bodyById[at.body ?? '']?.system !== s.focusedSystem) continue;
         push(row(c.id, c.name, wantDragons ? (c.kind === 'dragon' ? 'dragon' : 'Sleepless') : c.origin, c.color, c.fact));
+      }
+    } else if (tab === 'places') {
+      for (const l of COSMERE.locations) {
+        if (!onTheMap(l, s.readProgress, s.era) || !match(l.name, l.desc, l.region)) continue;
+        if (s.scale === 'system' && s.focusedSystem && bodyById[l.body]?.system !== s.focusedSystem) continue;
+        if (s.focusedBody && l.body !== s.focusedBody && s.scale !== 'cosmere' && s.scale !== 'system') continue;
+        push(row(l.id, l.name, bodyById[l.body]?.name ?? l.body, l.color, l.desc));
+      }
+    } else if (tab === 'orders') {
+      for (const o of COSMERE.organizations) {
+        if (!isVisible(o, s.readProgress) || !match(o.name, o.fact, o.world)) continue;
+        push(row(o.id, o.name, o.kind, o.color, o.fact));
       }
     } else if (tab === 'shards') {
       for (const sh of COSMERE.shards) {

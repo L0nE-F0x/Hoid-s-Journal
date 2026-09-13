@@ -2,16 +2,20 @@ import type { GlossaryTerm } from './types.ts';
 
 const C = 'canon' as const;
 
-function t(id: string, term: string, book: string, def: string, sources: string[], arc?: string): GlossaryTerm {
-  return { id, term, book, def, canon: C, sources, arc };
+function t(
+  id: string, term: string, book: string, def: string, sources: string[],
+  arcOrExtra?: string | Partial<GlossaryTerm>,
+): GlossaryTerm {
+  const extra = typeof arcOrExtra === 'string' ? { arc: arcOrExtra } : (arcOrExtra ?? {});
+  return { id, term, book, def, canon: C, sources, ...extra };
 }
 
 export const GLOSSARY: GlossaryTerm[] = [
-  t('adonalsium', 'Adonalsium', 'core', 'The original divine power/being that was Shattered into the sixteen Shards.', ['Arcanum Unbounded']),
-  t('shattering', 'The Shattering', 'core', 'The event in which sixteen conspirators killed Adonalsium, splitting its power into the sixteen Shards.', ['Arcanum Unbounded']),
-  t('shard', 'Shard', 'core', 'One of sixteen fragments of Adonalsium\'s power, each an aspect/intent held by a Vessel.', ['Mistborn: Secret History', 'The Stormlight Archive']),
-  t('vessel', 'Vessel', 'core', 'The person who holds a Shard. The Shard\'s intent slowly shapes and constrains them.', ['The Stormlight Archive']),
-  t('investiture', 'Investiture', 'core', 'The fundamental magical power of the Cosmere — the substance of Adonalsium, Shards, spren, and all magic.', ['Arcanum Unbounded']),
+  t('adonalsium', 'Adonalsium', 'core', 'The original divine power/being that was Shattered into the sixteen Shards.', ['Arcanum Unbounded'], { wiki: 'Adonalsium', aliases: 'God, the Almighty, the power', category: 'realmatic', see: ['shattering', 'shard', 'yolen'] }),
+  t('shattering', 'The Shattering', 'core', 'The event in which sixteen conspirators killed Adonalsium, splitting its power into the sixteen Shards.', ['Arcanum Unbounded'], { wiki: 'Shattering_of_Adonalsium', aliases: 'Shattering of Adonalsium', category: 'history', see: ['adonalsium', 'shard', 'dawnshard'] }),
+  t('shard', 'Shard', 'core', 'One of sixteen fragments of Adonalsium\'s power, each an aspect/intent held by a Vessel.', ['Mistborn: Secret History', 'The Stormlight Archive'], { wiki: 'Shard', aliases: 'Shard of Adonalsium', category: 'realmatic', see: ['vessel', 'intent', 'investiture'] }),
+  t('vessel', 'Vessel', 'core', 'The person who holds a Shard. The Shard\'s intent slowly shapes and constrains them.', ['The Stormlight Archive'], { wiki: 'Vessel', category: 'realmatic', see: ['shard', 'intent', 'sliver'] }),
+  t('investiture', 'Investiture', 'core', 'The fundamental magical power of the Cosmere — the substance of Adonalsium, Shards, spren, and all magic.', ['Arcanum Unbounded'], { wiki: 'Investiture', aliases: 'magic, power, Stormlight, Breath, the Dor', category: 'realmatic', see: ['shard', 'spiritweb', 'perpendicularity'] }),
   t('splinter', 'Splinter', 'core', 'A piece of a Shard\'s power given (or broken) into a self-aware or free-floating form — e.g. spren, seons.', ['Arcanum Unbounded']),
   t('sliver', 'Sliver', 'mistborn1', 'A being who held the full power of a Shard and then gave it up, retaining a sliver of that connection.', ['Mistborn: Secret History']),
   t('cognitive-shadow', 'Cognitive Shadow', 'mistborn1', 'An imprint of a person\'s mind sustained by Investiture after death — e.g. Kelsier, the Heralds, the Returned.', ['Mistborn: Secret History']),

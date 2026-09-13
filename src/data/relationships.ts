@@ -2,7 +2,7 @@
  * Typed edges for the Lore Web. Both ends must be spoiler-visible to draw.
  * Structural edges (origin, invested) are derived in the web, not listed here.
  */
-export type RelKind = 'character' | 'shard' | 'body' | 'dawnshard';
+export type RelKind = 'character' | 'shard' | 'body' | 'dawnshard' | 'org' | 'location';
 export type RelType = 'family' | 'romance' | 'mentor' | 'ally' | 'rival' | 'bond' | 'vessel';
 
 export interface Relation {

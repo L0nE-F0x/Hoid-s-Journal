@@ -1,27 +1,67 @@
 import { BODIES, ERAS, JOURNAL_BOOKS, MOONS, PUB_ORDER, SERIES, SYSTEMS, TIMELINE_NOTE, WORLD_EPOCHS } from './catalog.ts';
 import { COSMERE_EVENTS } from './events.ts';
-import { CHARACTERS } from './characters.ts';
+import { CHARACTERS as CHARACTERS_CORE } from './characters.ts';
 import { CITY_PLATES, cityById, landmarkById } from './cities.ts';
-import { GLOSSARY } from './glossary.ts';
+import { GLOSSARY as GLOSSARY_CORE } from './glossary.ts';
 import { ARC_NOTES, arcNoteFor } from './journal.ts';
-import { LOCATIONS, PERPS } from './locations.ts';
+import { LOCATIONS as LOCATIONS_CORE, PERPS } from './locations.ts';
 import { MAGICS } from './magics.ts';
+import { ORGANIZATIONS as ORGS_CORE } from './organizations.ts';
+import { PEOPLE_ROSHAR } from './peopleRoshar.ts';
+import { PEOPLE_SCADRIAL } from './peopleScadrial.ts';
+import { PEOPLE_WORLDS } from './peopleWorlds.ts';
+import { GLOSSARY_MORE } from './glossaryMore.ts';
+import { PLACES_MORE } from './placesMore.ts';
+import { ORGS_MORE } from './orgsMore.ts';
+import { RELATIONS_MORE } from './relationsMore.ts';
 import { DAWNSHARDS, HUBS, ROUTES, dawnshardById, hubById } from './realms.ts';
-import { RELATIONS, REL_TYPES } from './relationships.ts';
+import { RELATIONS as RELATIONS_CORE, REL_TYPES } from './relationships.ts';
 import { SHARDS } from './shards.ts';
+import {
+  haystack, matchesQuery, normalizeQuery, scoreHit, type SearchHit, type SearchKind,
+} from './search.ts';
 import type {
-  Body, Character, CharacterEra, Cosmere, Location, Moon, Perpendicularity, Series,
+  Body, Character, CharacterEra, Cosmere, Location, Moon, Organization, Perpendicularity, Series,
 } from './types.ts';
 
 export { CITY_PLATES, cityById, landmarkById };
 export { ARC_NOTES, arcNoteFor };
 export { COSMERE_EVENTS, JOURNAL_BOOKS };
 export { DAWNSHARDS, HUBS, ROUTES, dawnshardById, hubById };
-export { RELATIONS, REL_TYPES };
+export { REL_TYPES };
+export { copperUrl, normalizeQuery, SEARCH_KIND_LABEL } from './search.ts';
+export type { SearchHit, SearchKind } from './search.ts';
 export type { CosmereEvent, SkyVisual } from './events.ts';
 
 export type { Cosmere } from './types.ts';
 export * from './types.ts';
+
+/** First id wins, so extra files cannot silently replace Hoid. */
+function unique<T extends { id: string }>(rows: T[]): T[] {
+  const seen = new Set<string>();
+  const out: T[] = [];
+  for (const r of rows) {
+    if (seen.has(r.id)) continue;
+    seen.add(r.id);
+    out.push(r);
+  }
+  return out;
+}
+
+/** Last id wins. Glossary.ts restates a few terms more fully; keep the later def. */
+function uniqueLast<T extends { id: string }>(rows: T[]): T[] {
+  const map = new Map<string, T>();
+  for (const r of rows) map.set(r.id, r);
+  return [...map.values()];
+}
+
+export const CHARACTERS: Character[] = unique([
+  ...CHARACTERS_CORE, ...PEOPLE_ROSHAR, ...PEOPLE_SCADRIAL, ...PEOPLE_WORLDS,
+]);
+export const LOCATIONS: Location[] = unique([...LOCATIONS_CORE, ...PLACES_MORE]);
+export const GLOSSARY = uniqueLast([...GLOSSARY_CORE, ...GLOSSARY_MORE]);
+export const ORGANIZATIONS: Organization[] = unique([...ORGS_CORE, ...ORGS_MORE]);
+export const RELATIONS = [...RELATIONS_CORE, ...RELATIONS_MORE];
 
 export const COSMERE: Cosmere = {
   series: SERIES,
@@ -34,6 +74,7 @@ export const COSMERE: Cosmere = {
   magics: MAGICS,
   glossary: GLOSSARY,
   locations: LOCATIONS,
+  organizations: ORGANIZATIONS,
   perps: PERPS,
   worldEpochs: WORLD_EPOCHS,
   timelineNote: TIMELINE_NOTE,
@@ -44,6 +85,11 @@ export const seriesById: Record<string, Series> = Object.fromEntries(SERIES.map(
 export const bodyById: Record<string, Body> = Object.fromEntries(BODIES.map((b) => [b.id, b]));
 export const moonById: Record<string, Moon> = Object.fromEntries(MOONS.map((m) => [m.id, m]));
 export const characterById: Record<string, Character> = Object.fromEntries(CHARACTERS.map((c) => [c.id, c]));
+export const locationById: Record<string, Location> = Object.fromEntries(LOCATIONS.map((l) => [l.id, l]));
+export const orgById: Record<string, Organization> = Object.fromEntries(ORGANIZATIONS.map((o) => [o.id, o]));
+export const glossaryById = Object.fromEntries(GLOSSARY.map((g) => [g.id, g]));
+export const magicById = Object.fromEntries(MAGICS.map((m) => [m.id, m]));
+export const shardById = Object.fromEntries(SHARDS.map((s) => [s.id, s]));
 
 export function bookArcIndex(series: string, arc: string): number {
   const s = seriesById[series];
@@ -210,6 +256,7 @@ export function addedThisArc(
   for (const l of LOCATIONS) take('place', l.name, l);
   for (const g of GLOSSARY) take('term', g.term, g);
   for (const m of MAGICS) take('magic', m.name, m);
+  for (const o of ORGANIZATIONS) take('order', o.name, o);
   return rows;
 }
 
@@ -261,3 +308,175 @@ export function bodyByName(name: string): Body | undefined {
   const n = name.toLowerCase();
   return BODIES.find((b) => n.includes(b.name.toLowerCase()));
 }
+
+/**
+ * People the sky and the Lore Web can afford to draw: anyone a relation or
+ * an order names, plus dragons, Heralds, Unmade, spren, vessels, and the
+ * cognitive travellers. The rest live in the Codex.
+ */
+const FEATURED_PEOPLE = new Set<string>();
+for (const r of RELATIONS) {
+  if (r.a.kind === 'character') FEATURED_PEOPLE.add(r.a.id);
+  if (r.b.kind === 'character') FEATURED_PEOPLE.add(r.b.id);
+}
+for (const o of ORGANIZATIONS) {
+  for (const m of o.members ?? []) FEATURED_PEOPLE.add(m);
+}
+for (const c of CHARACTERS) {
+  if (c.id === 'hoid') FEATURED_PEOPLE.add(c.id);
+  if (c.kind && c.kind !== 'person') FEATURED_PEOPLE.add(c.id);
+  if (c.cognitive) FEATURED_PEOPLE.add(c.id);
+}
+
+export function isFeaturedPerson(id: string): boolean {
+  return FEATURED_PEOPLE.has(id);
+}
+
+export type LoreKind =
+  | 'body' | 'moon' | 'system' | 'character' | 'location' | 'landmark'
+  | 'hub' | 'dawnshard' | 'shard' | 'term' | 'org' | 'magic' | 'perp';
+
+export type LoreHit =
+  | { kind: 'body'; obj: Body }
+  | { kind: 'moon'; obj: Moon }
+  | { kind: 'system'; obj: (typeof SYSTEMS)[number] }
+  | { kind: 'character'; obj: Character }
+  | { kind: 'location'; obj: Location }
+  | { kind: 'landmark'; obj: (typeof landmarkById)[string] }
+  | { kind: 'hub'; obj: (typeof HUBS)[number] }
+  | { kind: 'dawnshard'; obj: (typeof DAWNSHARDS)[number] }
+  | { kind: 'shard'; obj: (typeof SHARDS)[number] }
+  | { kind: 'term'; obj: (typeof GLOSSARY)[number] }
+  | { kind: 'org'; obj: Organization }
+  | { kind: 'magic'; obj: (typeof MAGICS)[number] }
+  | { kind: 'perp'; obj: Perpendicularity };
+
+export function loreById(id: string | null | undefined): LoreHit | null {
+  if (!id) return null;
+  const body = bodyById[id];
+  if (body) return { kind: 'body', obj: body };
+  const moon = moonById[id];
+  if (moon) return { kind: 'moon', obj: moon };
+  const sys = SYSTEMS.find((s) => s.id === id);
+  if (sys) return { kind: 'system', obj: sys };
+  const ch = characterById[id];
+  if (ch) return { kind: 'character', obj: ch };
+  const loc = locationById[id];
+  if (loc) return { kind: 'location', obj: loc };
+  const mark = landmarkById[id];
+  if (mark) return { kind: 'landmark', obj: mark };
+  const hub = hubById[id];
+  if (hub) return { kind: 'hub', obj: hub };
+  const ds = dawnshardById[id];
+  if (ds) return { kind: 'dawnshard', obj: ds };
+  const sh = shardById[id];
+  if (sh) return { kind: 'shard', obj: sh };
+  const term = glossaryById[id];
+  if (term) return { kind: 'term', obj: term };
+  const org = orgById[id];
+  if (org) return { kind: 'org', obj: org };
+  const mag = magicById[id];
+  if (mag) return { kind: 'magic', obj: mag };
+  const perp = PERPS.find((p) => p.id === id);
+  if (perp) return { kind: 'perp', obj: perp };
+  return null;
+}
+
+export function loreLabel(id: string): string {
+  const hit = loreById(id);
+  if (!hit) return id;
+  switch (hit.kind) {
+    case 'body': case 'moon': case 'system': case 'character':
+    case 'location': case 'hub': case 'dawnshard': case 'shard':
+    case 'org': case 'magic': case 'perp':
+      return hit.obj.name;
+    case 'landmark': return hit.obj.name;
+    case 'term': return hit.obj.term;
+  }
+}
+
+export function relatedRefs(ids: string[] | undefined): { id: string; label: string; kind: LoreKind }[] {
+  if (!ids?.length) return [];
+  const out: { id: string; label: string; kind: LoreKind }[] = [];
+  const seen = new Set<string>();
+  for (const id of ids) {
+    if (seen.has(id)) continue;
+    const hit = loreById(id);
+    if (!hit) continue;
+    seen.add(id);
+    out.push({ id, label: loreLabel(id), kind: hit.kind });
+  }
+  return out;
+}
+
+export function orgsForCharacter(id: string): Organization[] {
+  return ORGANIZATIONS.filter((o) => o.members?.includes(id));
+}
+
+export function wikiHref(wiki: string | undefined): string | null {
+  if (!wiki) return null;
+  if (wiki.startsWith('http')) return wiki;
+  return `https://coppermind.net/wiki/${wiki.replace(/ /g, '_')}`;
+}
+
+const KIND_TO_SEARCH: Record<LoreKind, SearchKind> = {
+  body: 'world', moon: 'moon', system: 'system', character: 'person',
+  location: 'place', landmark: 'place', hub: 'place', dawnshard: 'relic',
+  shard: 'shard', term: 'term', org: 'org', magic: 'magic', perp: 'door',
+};
+
+/**
+ * Codex / Directory search. Question-shaped queries ("who is Thaidakar")
+ * are stripped to the noun; aliases are first-class hits.
+ */
+export function searchJournal(
+  raw: string,
+  progress: Record<string, number>,
+  kinds?: SearchKind[],
+  limit = 60,
+): SearchHit[] {
+  const q = normalizeQuery(raw);
+  if (q.length < 2) return [];
+  const allow = kinds?.length ? new Set(kinds) : null;
+  const hits: SearchHit[] = [];
+  const take = (
+    id: string, label: string, kind: SearchKind, fact: string,
+    vis: { book?: string; arc?: string }, aliases = '', extraHay = '',
+    canon?: SearchHit['canon'],
+  ) => {
+    if (allow && !allow.has(kind)) return;
+    if (!isVisible(vis, progress)) return;
+    const hay = haystack(label, aliases, fact, extraHay);
+    if (!matchesQuery(q, hay, label, aliases)) return;
+    hits.push({
+      id, label, kind, fact, book: vis.book, arc: vis.arc, aliases,
+      score: scoreHit(q, label, aliases, fact), canon,
+    });
+  };
+
+  for (const b of BODIES) {
+    take(b.id, b.name, 'world', b.fact, b, '', [b.bio, b.species.join(' '), b.magic.join(' '), b.locations].join(' '), b.canon);
+  }
+  for (const m of MOONS) take(m.id, m.name, 'moon', m.fact, m, '', '', m.canon);
+  for (const s of SYSTEMS) take(s.id, s.name, 'system', `${s.name} system of the Cosmere`, { book: s.book });
+  for (const c of CHARACTERS) {
+    take(c.id, c.name, 'person', c.fact, c, c.aliases,
+      [c.bio, c.abilities, c.origin, c.titles, c.biology].join(' '), c.canon);
+  }
+  for (const s of SHARDS) take(s.id, s.name, 'shard', s.desc, s, s.intent ?? '', s.bio ?? '', s.canon);
+  for (const m of MAGICS) take(m.id, m.name, 'magic', m.desc, m, '', [m.mechanics, m.users, m.bio].join(' '), m.canon);
+  for (const g of GLOSSARY) take(g.id, g.term, 'term', g.def, g, g.aliases ?? '', '', g.canon);
+  for (const l of LOCATIONS) take(l.id, l.name, 'place', l.desc, l, l.region ?? '', l.bio ?? '', l.canon);
+  for (const m of Object.values(landmarkById)) take(m.id, m.name, 'place', m.desc, m, '', '');
+  for (const h of HUBS) take(h.id, h.name, 'place', h.fact, h, '', h.bio ?? '', h.canon);
+  for (const d of DAWNSHARDS) take(d.id, d.name, 'relic', d.fact, d, d.command, d.bio ?? '', d.canon);
+  for (const o of ORGANIZATIONS) {
+    take(o.id, o.name, 'org', o.fact, o, '', [o.bio, o.world, o.kind].join(' '), o.canon);
+  }
+  for (const p of PERPS) take(p.id, p.name, 'door', p.fact, p, '', '', p.canon);
+
+  hits.sort((a, b) => a.score - b.score || a.label.localeCompare(b.label));
+  return hits.slice(0, limit);
+}
+
+export { KIND_TO_SEARCH };

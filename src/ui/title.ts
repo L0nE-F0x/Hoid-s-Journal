@@ -17,6 +17,8 @@ function index(): { n: number; label: string }[] {
     { n: COSMERE.shards.length, label: 'Shards' },
     { n: COSMERE.characters.length, label: 'people' },
     { n: COSMERE.locations.length, label: 'places' },
+    { n: COSMERE.glossary.length, label: 'terms' },
+    { n: COSMERE.organizations.length, label: 'orders' },
     { n: HUBS.length, label: 'Cognitive sites' },
     { n: COSMERE.magics.length, label: 'magics' },
     { n: DAWNSHARDS.length, label: 'Dawnshards' },

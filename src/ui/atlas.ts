@@ -6,6 +6,7 @@ import {
   canEnterCity,
   charactersOnBody,
   cityById,
+  isFeaturedPerson,
   isNewThisArc,
   isVisible,
   landmarkById,
@@ -258,10 +259,15 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
       }
     }
     const people = charactersOnBody(s.focusedBody, s.era).filter((c) => isVisible(c, s.readProgress));
-    if (people.length) {
+    const rosterPeople = [
+      ...people.filter((c) => isFeaturedPerson(c.id)),
+      ...people.filter((c) => !isFeaturedPerson(c.id)),
+    ];
+    const shown = rosterPeople.slice(0, 18);
+    if (shown.length) {
       roster.append(el('div', { className: 'ceph-kicker', text: 'Present this era', style: { width: '100%' } }));
     }
-    for (const c of people) {
+    for (const c of shown) {
       const fresh = isNewThisArc(c, s.readingNow);
       const chip = el('button', {
         className: `ceph-atlas-chip${s.selected === c.id ? ' is-on' : ''}`,
@@ -270,6 +276,13 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
       });
       listen(chip, 'click', () => store.set('selected', c.id));
       roster.append(chip);
+    }
+    if (rosterPeople.length > shown.length) {
+      roster.append(el('div', {
+        className: 'ceph-kicker',
+        text: `+${rosterPeople.length - shown.length} more in Directory`,
+        style: { width: '100%' },
+      }));
     }
   };
 

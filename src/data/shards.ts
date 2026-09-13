@@ -6,8 +6,9 @@ function line(
   id: string, name: string, color: string, book: string, world: string, desc: string,
   sources: string[],
   eras: Shard['eras'],
+  extra: Partial<Shard> = {},
 ): Shard {
-  return { id, name, color, book, world, desc, canon: C, sources, eras };
+  return { id, name, color, book, world, desc, canon: C, sources, eras, wiki: name, ...extra };
 }
 
 const whole = (era: number, vessel: string, loc: string) =>

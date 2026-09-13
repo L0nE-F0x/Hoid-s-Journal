@@ -238,8 +238,8 @@
   position: fixed;
   top: calc(var(--ceph-command-bottom, 56px) + 10px);
   right: 12px;
-  width: min(340px, calc(100% - 24px));
-  max-height: calc(100vh - 200px);
+  width: min(380px, calc(100% - 24px));
+  max-height: calc(100vh - 180px);
   overflow: auto;
   padding: 14px 16px 18px;
   z-index: 27;
@@ -309,6 +309,43 @@
   color: var(--ceph-text-dim);
   line-height: 1.55;
   margin: 10px 0 0;
+}
+.ceph-see { margin-top: 14px; }
+.ceph-see-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+.ceph-wiki {
+  display: inline-block;
+  margin-top: 12px;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ceph-text-dim);
+  text-decoration: none;
+  border-bottom: 1px solid var(--ceph-rule);
+  pointer-events: auto;
+}
+.ceph-wiki:hover { color: var(--ceph-text); }
+.ceph-codex-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+.ceph-codex-results {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.ceph-codex-counts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 18px;
+  margin: 8px 0 4px;
 }
 .ceph-meta {
   display: grid;

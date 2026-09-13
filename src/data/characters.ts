@@ -1,4 +1,5 @@
 import type { Character } from './types.ts';
+import { PEOPLE_BIOS } from './peopleBios.ts';
 
 const C = 'canon' as const;
 
@@ -12,8 +13,8 @@ function ch(
 }
 
 export const CHARACTERS: Character[] = [
-  ch('hoid', 'Hoid', '#ffffff', 'core', 'Yolen', 'Wit, Cephandrius, Dust',
-    'Yolish Lightweaving, Allomancy, Breath, Fortune',
+  ch('hoid', 'Hoid', '#ffffff', 'core', 'Yolen', 'Wit, Cephandrius, Dust, Topaz, Midius, Roamer, The Traveler',
+    'Yolish Lightweaving, Allomancy, Breath, Fortune, a Dawnshard residual',
     'The ultimate worldhopper. Present in almost every major Cosmere event.', true, [
       { era: 0, system: 'yolish', body: 'yolen' },
       { era: 1, system: 'selish', body: 'sel' },
@@ -21,7 +22,12 @@ export const CHARACTERS: Character[] = [
       { era: 3, system: 'rosharan', body: 'roshar' },
       { era: 4, system: 'scadrian', body: 'scadrial' },
       { era: 5, system: 'canticle', body: 'canticle-world' },
-    ], { fieldNotes: { origin: { canon: 'wob', note: 'Yolen is the strongest current reading, not a page-stated fact in every book.' } } }),
+    ], {
+      wiki: 'Hoid', kind: 'person', titles: 'King\'s Wit, Court jester, storyteller',
+      see: ['frost', 'design', 'sigzil', 'dawnshard', 'yolen', 'seventeenth-shard'],
+      bio: 'Born on Yolen before the Shattering; one of the people who was there when Adonalsium died and who did not take a Shard. He collects magics the way other people collect scars — Lightweaving from home, Allomancy on Scadrial, Breath on Nalthis, a spren on Roshar — and he cannot hurt people, which he treats as an inconvenience and a joke. On Roshar he is Wit. In the Cognitive Realm he is Cephandrius. He is looking for someone, and he will not say who.',
+      fieldNotes: { origin: { canon: 'wob', note: 'Yolen is the strongest current reading, not a page-stated fact in every book.' } },
+    }),
   ch('vin', 'Vin', '#77aaff', 'mistborn1', 'Scadrial', 'Valette Renoux',
     'Mistborn, Splinter of Preservation',
     'Ascended to become the vessel of Preservation.', false,
@@ -48,14 +54,18 @@ export const CHARACTERS: Character[] = [
       { era: 3, system: 'rosharan', body: 'roshar' },
       { era: 5, system: 'rosharan', body: 'roshar' },
     ]),
-  ch('kelsier', 'Kelsier', '#ef4444', 'mistborn1', 'Scadrial', 'Survivor, Thaidakar',
+  ch('kelsier', 'Kelsier', '#ef4444', 'mistborn1', 'Scadrial', 'Survivor, Thaidakar, Lord of Scars, Survivor of Hathsin',
     'Mistborn, Cognitive Shadow',
     'Founder of the Ghostbloods. Bound strictly to the Scadrian system as a Shadow.', true, [
       { era: 2, system: 'scadrian', body: 'scadrial' },
       { era: 3, system: 'scadrian', body: 'scadrial' },
       { era: 4, system: 'scadrian', body: 'scadrial' },
       { era: 5, system: 'scadrian', body: 'scadrial' },
-    ]),
+    ], {
+      wiki: 'Kelsier',
+      see: ['ghostbloods', 'vin', 'marsh', 'preservation', 'scadrial'],
+      bio: 'A half-skaa Mistborn who walked into the Pits of Hathsin and walked out a religion. He died at the Lord Ruler\'s hand and refused to finish dying; as a Cognitive Shadow he stole a spike of identity, founded the Ghostbloods, and took the name Thaidakar — which is the name Shallan is told to fear on Roshar. He cannot leave the Scadrian system. That has not stopped him running a war on three worlds.',
+    }),
   ch('khriss', 'Khriss', '#a5b4fc', 'whitesand', 'Taldain', 'Khrissalla',
     'Worldhopper scholar',
     'Author of the Ars Arcanum essays. The Cosmere\'s foremost arcanist.', false, [
@@ -303,7 +313,7 @@ export const CHARACTERS: Character[] = [
     'A spren who learned to walk off Roshar. She has opinions about hats.', true, [
       { era: 3, system: 'rosharan', body: 'roshar' },
       { era: 4, system: 'utol', body: 'komashi' },
-    ]),
+    ], { kind: 'spren', wiki: 'Design' }),
   ch('riina', 'Riina', '#a78bfa', 'tress', 'Sel', 'The Sorceress',
     'Elantrian, aether-wise',
     'An Ire-adjacent Elantrian on Lumar, cursing sailors from a midnight tower.', false, [
@@ -336,47 +346,47 @@ export const CHARACTERS: Character[] = [
     'Honorspren, Windrunner bond',
     'Kaladin\'s spren. Ancient, loyal, and still learning what a joke is.', true, [
       { era: 3, system: 'rosharan', body: 'roshar' },
-    ]),
+    ], { kind: 'spren', wiki: 'Sylphrena' }),
   ch('pattern', 'Pattern', '#c4b5fd', 'stormlight', 'Roshar', 'Pattern',
     'Cryptic, Lightweaver bond',
     'Shallan\'s spren of lies. He likes truths more than she does.', true, [
       { era: 3, system: 'rosharan', body: 'roshar' },
-    ]),
+    ], { kind: 'spren', wiki: 'Pattern' }),
   ch('ivory', 'Ivory', '#1e1b4b', 'stormlight', 'Roshar', 'Ivory',
     'Inkspren, Elsecaller bond',
     'Jasnah\'s spren. Logic first, the Physical Realm second.', true, [
       { era: 3, system: 'rosharan', body: 'roshar' },
-    ]),
+    ], { kind: 'spren', wiki: 'Ivory' }),
   ch('stormfather', 'The Stormfather', '#1e3a8a', 'stormlight', 'Roshar', 'Rider of Storms',
     'Cognitive Shadow of Honor, Bondsmith spren',
     'The highstorm given a mind. Dalinar\'s bond, and Tanavast\'s last voice.', true, [
       { era: 3, system: 'rosharan', body: 'roshar' },
-    ]),
+    ], { kind: 'spren', wiki: 'Stormfather' }),
   ch('nightwatcher', 'The Nightwatcher', '#166534', 'stormlight', 'Roshar', 'Nightwatcher',
     'Splinter of Cultivation, boon and curse',
     'She grants what you ask and takes what she will. The Valley is hers.', true, [
       { era: 3, system: 'rosharan', body: 'roshar' },
-    ]),
+    ], { kind: 'spren', wiki: 'Nightwatcher' }),
   ch('sibling', 'The Sibling', '#a7f3d0', 'stormlight', 'Roshar', 'Sibling',
     'Bondsmith spren of Urithiru',
     'Tower-spren, half Honor and half Cultivation. Navani woke them.', true, [
       { era: 3, system: 'rosharan', body: 'roshar' },
-    ], { arc: 'row' }),
+    ], { arc: 'row', kind: 'spren', wiki: 'Sibling' }),
   ch('nale', 'Nale', '#0f172a', 'stormlight', 'Roshar', 'Nin, Herald of Justice',
     'Herald of the Skybreakers',
     'The only Herald still trying to keep an oath. It is not going well.', true, [
       { era: 3, system: 'rosharan', body: 'roshar' },
-    ]),
+    ], { kind: 'herald', wiki: 'Nale' }),
   ch('taln', 'Taln', '#7f1d1d', 'stormlight', 'Roshar', 'Talenelat, Stonesinew',
     'Herald of War',
     'He held Braize alone for four thousand years. Then he broke, and did not.', true, [
       { era: 3, system: 'rosharan', body: 'roshar' },
-    ]),
+    ], { kind: 'herald', wiki: 'Talenel' }),
   ch('ishar', 'Ishar', '#ca8a04', 'stormlight', 'Roshar', 'Tukiri, Herald of Luck',
     'Herald of the Bondsmiths',
     'Mad god-priest of Tukar. The Oathpact was his idea.', true, [
       { era: 3, system: 'rosharan', body: 'roshar' },
-    ]),
+    ], { kind: 'herald', wiki: 'Ishar' }),
   ch('gavilar', 'Gavilar Kholin', '#1d4ed8', 'stormlight', 'Roshar', 'King of Alethkar',
     'King, seeker of old powers',
     'United Alethkar. Died the night the Parshendi learned what a treaty costs.', false, [
@@ -396,12 +406,12 @@ export const CHARACTERS: Character[] = [
     'Deadeye cultivationspren',
     'Adolin\'s Shardblade, who is not as dead as the Recreance promised.', true, [
       { era: 3, system: 'rosharan', body: 'roshar' },
-    ], { arc: 'oathbringer' }),
+    ], { arc: 'oathbringer', kind: 'spren', wiki: 'Mayalaran' }),
   ch('timbre', 'Timbre', '#4ade80', 'stormlight', 'Roshar', 'Timbre',
     'Lightspren, Willshaper bond',
     'Venli\'s spren, small enough to hide in a gemheart.', true, [
       { era: 3, system: 'rosharan', body: 'roshar' },
-    ], { arc: 'oathbringer' }),
+    ], { arc: 'oathbringer', kind: 'spren', wiki: 'Timbre' }),
   ch('telsin', 'Telsin Ladrian', '#e11d48', 'mistborn2', 'Scadrial', 'Sequence',
     'Twinborn, Set, avatar of Autonomy',
     'Wax\'s sister. The Set\'s Sequence. Autonomy looked at her and smiled.', false, [
@@ -539,3 +549,13 @@ CHARACTERS.push(
     ],
   },
 );
+
+for (const c of CHARACTERS) {
+  const extra = PEOPLE_BIOS[c.id];
+  if (!extra) continue;
+  if (extra.bio && !c.bio) c.bio = extra.bio;
+  if (extra.see && !c.see) c.see = extra.see;
+  if (extra.wiki && !c.wiki) c.wiki = extra.wiki;
+  if (extra.titles && !c.titles) c.titles = extra.titles;
+  if (extra.kind && !c.kind) c.kind = extra.kind;
+}

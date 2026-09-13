@@ -4,7 +4,7 @@
  * the shortest path to Hoid.
  */
 import {
-  COSMERE, DAWNSHARDS, RELATIONS, REL_TYPES, bodyByName, isVisible,
+  COSMERE, DAWNSHARDS, RELATIONS, REL_TYPES, bodyByName, isFeaturedPerson, isVisible,
 } from '../data/index.ts';
 import { store } from '../core/store.ts';
 import { el, listen } from './dom.ts';
@@ -75,8 +75,12 @@ export function mountLoreWeb(root: HTMLElement): { destroy(): void } {
       if (b.kind === 'gas-giant') continue;
       add('body', b.id, b.name, b.color, b, 12);
     }
-    for (const c of COSMERE.characters) add('character', c.id, c.name, c.color, c, 8);
+    for (const c of COSMERE.characters) {
+      if (!isFeaturedPerson(c.id)) continue;
+      add('character', c.id, c.name, c.color, c, 8);
+    }
     for (const d of DAWNSHARDS) add('dawnshard', d.id, d.name, '#e2e8f0', d, 10);
+    for (const o of COSMERE.organizations) add('org', o.id, o.name, o.color, o, 9);
     const hoid = map.get(nid('character', 'hoid'));
     if (hoid) { hoid.x = 0; hoid.y = 0; }
 
@@ -98,6 +102,12 @@ export function mountLoreWeb(root: HTMLElement): { destroy(): void } {
       if (!isVisible(r, progress)) continue;
       const col = REL_TYPES[r.type]?.color ?? '#94a3b8';
       link(r.a.kind, r.a.id, r.b.kind, r.b.id, r.type, r.label, col);
+    }
+    for (const o of COSMERE.organizations) {
+      if (!isVisible(o, progress)) continue;
+      for (const mid of o.members ?? []) {
+        link('org', o.id, 'character', mid, 'ally', o.name, o.color);
+      }
     }
     nodes = [...map.values()];
     edges = links;

@@ -16,23 +16,17 @@ Architecture lock: `AGENTS.md` + `DESIGN.md`. This file is the live todo.
 
 # ▶ START HERE — next session
 
-**2026-09-13 — encyclopedia pass, not pushed.** Data + Codex + cards, no
-graphics. The owner asked for lore depth so the journal replaces asking
-Grok Chat mid-reread, and for v1 features minus the Battle Sim.
+**2026-09-13 wrapped and live.** Encyclopedia pass shipped (`e120ebb`).
+Data + Codex + cards; graphics left alone. v1 Battle Sim still out.
+
+The owner is testing the live deploy and will report back. **That list is
+the brief.** Do not restart the lore hunt from scratch.
 
 Codex (`K` / Search) is the answer engine: question-shaped queries
 ("who is Thaidakar", "what is a metalmind"), alias hits (Wit → Hoid,
 Thaidakar → Kelsier), filter chips, See-also chips on the overlay card.
-Interaction suite **56/56**. `npx tsc --noEmit` clean.
-
-Hard-refresh https://thecosmere.netlify.app after a deploy; the service
-worker otherwise keeps the old shell.
-
-**Do not restart the lore hunt from scratch.** Next work is whatever they
-find after using Search for a week, or a push of this pass.
-
-Git: `master` tracking https://github.com/L0nE-F0x/Hoid-s-Journal.
-This pass is **local only until they say push.** Live site deploys on push.
+Hard-refresh https://thecosmere.netlify.app; the service worker otherwise
+keeps the old shell.
 
 Git: `master` tracking https://github.com/L0nE-F0x/Hoid-s-Journal, **level
 with origin**. Live site: https://thecosmere.netlify.app — **it deploys on
@@ -63,14 +57,15 @@ the program count and any fault — ask for it first when someone reports a
 black sky.
 
 Last known green: `npx tsc --noEmit` and
-`npm run test:interaction` (**56/56**) with `npm run dev` already up.
-Re-run those plus `npm run build` before you push.
+`npm run test:interaction` (**56/56**) with `npm run dev` already up,
+then `git push` of `e120ebb`. Re-run those plus `npm run build` before
+the next push.
 
 ---
 
 ## What the last session changed
 
-**2026-09-13 encyclopedia (this session, not pushed).** Graphics left alone.
+**2026-09-13 encyclopedia (`e120ebb`, pushed and live).** Graphics left alone.
 v1 Battle Sim still out. Everything else v1 had for knowledge is here and
 deeper: Codex filters, alias search, Coppermind *links* (not portraits),
 organizations as a first-class roster.
@@ -333,15 +328,16 @@ Open, leftover, not a brief:
 
 ### 1. Whatever the owner found on the live deploy
 
-That is the brief. The thirteen-item list they sent is done and pushed.
+That is the brief. They are testing Search as a reread companion and will
+come back with a list.
 
 ### 2. Optional depth, only if a reread reaches for it
 
 - Landmark UVs for the Stewart **city** rasters. The interaction test picks
   landmarks from the roster chips because those scans have no calibrated UVs.
   Do not "fix" that by guessing — measure them off the plates.
-- More relations in `data/relationships.ts`. The Lore Web is only as good as
-  its edges, and there are 61.
+- Lore Web edges live in `relationships.ts` + `relationsMore.ts` (~210 named).
+  Still only as good as the graph; add an edge when a reread reaches for it.
 - Azimir has no Stewart plate. Worlds without one use `cityMap.ts`, which is
   now a real plan generator rather than a placeholder.
 
@@ -441,6 +437,14 @@ Written down so the next session does not rediscover them:
 - No unit tests. Flow is `test:interaction`; the rest is typecheck plus
   `npm run shot` by eye.
 - `node_modules` may contain unused junk. Do not add a physics engine.
+- **Featured people only on the sky and Lore Web.** `isFeaturedPerson` in
+  `data/index.ts`. Dumping all ~424 as globe motes or Web nodes is a marble
+  bowl. Codex and Directory still list everyone.
+- **Codex search.** Question words are stripped (`who is Thaidakar`).
+  Aliases are first-class. Queries of three letters or fewer use word
+  boundaries so `wit` does not hit `with`. Overlay cards must still set
+  `selected` and close the panel — `test:interaction` asserts a glossary
+  hit opens a drawer titled Investiture.
 
 ---
 
@@ -529,3 +533,8 @@ lock flipped; this is the version that is true.
     without opening the parent globe, Dawnshards pickable, gas-giant names
     in-system, Three Sisters lore and the fallen fourth moon under the
     Shattered Plains. Pushed and live. Interaction suite 56/56.
+24. **2026-09-13 encyclopedia** (`e120ebb`). People 90 → ~424, places 124 →
+    ~301, glossary 123 → ~323, orders ~66. Codex answers aliases and
+    questions. Overlay cards gained bio / See-also / Coppermind links (no
+    portraits). Battle Sim still out. Graphics left alone. Pushed and live.
+    Interaction suite 56/56.

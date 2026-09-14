@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { COSMERE, inEra, isVisible, systemOnTheMap } from '../data/index.ts';
+import { COSMERE, inEra, isVisible, systemExtent, systemOnTheMap } from '../data/index.ts';
 import type { Orrery } from './Orrery.ts';
 
 interface Label {
@@ -49,9 +49,19 @@ function makeLabel(text: string, color: string, kind: 'body' | 'system' | 'moon'
   return tex;
 }
 
+/** A label's ink box in NDC, used to keep two names off each other. */
+interface Box { x: number; y: number; hw: number; hh: number; d: number; l: Label }
+
+const _p = new THREE.Vector3();
+const _right = new THREE.Vector3();
+const _up = new THREE.Vector3();
+const _fwd = new THREE.Vector3();
+const _edge = new THREE.Vector3();
+
 export class Labels {
   readonly group = new THREE.Group();
   private readonly labels: Label[] = [];
+  private readonly boxes: Box[] = [];
 
   constructor() {
     for (const s of COSMERE.systems) {
@@ -111,7 +121,10 @@ export class Labels {
         const dist = camera.position.distanceTo(p);
         l.sprite.visible = systemOnTheMap(l.id, progress, era);
         l.sprite.position.copy(p);
-        l.sprite.position.y += 4.2;
+        // Clear the system's own glow. A flat +4.2 put the name inside a cloud
+        // some twenty-six units across, so every system was labelled through
+        // its own light.
+        l.sprite.position.y += systemExtent(l.id) * 0.62 + 4.2;
         const s = Math.max(10, Math.min(140, dist * 0.20));
         l.sprite.scale.set(s, s * 0.175, 1);
       } else if (l.kind === 'moon') {
@@ -140,6 +153,50 @@ export class Labels {
         l.sprite.position.y += l.radius * 1.25 + 0.25;
         const s = Math.max(0.5, Math.min(80, dist * 0.22));
         l.sprite.scale.set(s, s * 0.175, 1);
+      }
+    }
+    if (scale === 'cosmere') this.declutter(camera);
+  }
+
+  /**
+   * Two systems hundreds of units apart can still project a few pixels apart,
+   * and NALTHIAN drawn through OBRODAI is not a name either of them can be
+   * read by. Project each label's ink box, walk them near-to-far, and drop the
+   * ones that would land on a name already standing. The nearest system wins,
+   * because that is the one the reader is flying toward.
+   */
+  private declutter(camera: THREE.Camera): void {
+    const boxes = this.boxes;
+    boxes.length = 0;
+    camera.matrixWorld.extractBasis(_right, _up, _fwd);
+    for (const l of this.labels) {
+      if (l.kind !== 'system' || !l.sprite.visible) continue;
+      _p.copy(l.sprite.position).project(camera);
+      if (_p.z >= 1) { l.sprite.visible = false; continue; }
+      // The word is centred in a 640-wide plate and never fills it, so the ink
+      // is a fraction of the sprite. Measure along the camera's own axes,
+      // because a sprite always faces the viewer.
+      const halfW = l.sprite.scale.x * 0.21;
+      const halfH = l.sprite.scale.y * 0.55;
+      _edge.copy(l.sprite.position).addScaledVector(_right, halfW).project(camera);
+      const hw = Math.abs(_edge.x - _p.x);
+      _edge.copy(l.sprite.position).addScaledVector(_up, halfH).project(camera);
+      const hh = Math.abs(_edge.y - _p.y);
+      boxes.push({
+        x: _p.x, y: _p.y, hw, hh, l,
+        d: camera.position.distanceToSquared(l.sprite.position),
+      });
+    }
+    boxes.sort((a, b) => a.d - b.d);
+    for (let i = 0; i < boxes.length; i++) {
+      const a = boxes[i]!;
+      for (let j = 0; j < i; j++) {
+        const b = boxes[j]!;
+        if (!b.l.sprite.visible) continue;
+        if (Math.abs(a.x - b.x) < a.hw + b.hw && Math.abs(a.y - b.y) < a.hh + b.hh) {
+          a.l.sprite.visible = false;
+          break;
+        }
       }
     }
   }

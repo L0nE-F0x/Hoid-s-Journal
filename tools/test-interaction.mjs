@@ -214,7 +214,13 @@ async function run() {
         const x = (p.x * 0.5 + 0.5) * window.innerWidth;
         const y = (-p.y * 0.5 + 0.5) * window.innerHeight;
         const d = Math.hypot(x - px, y - py);
-        if (d > 28 && (!best || d > best.d)) best = { id, x, y, d };
+        // Furthest from the disc, but it still has to be somewhere we can
+        // click: the moon that is furthest away is often the one that has
+        // projected off the edge of the window entirely, and clicking past the
+        // viewport reports whatever was selected before.
+        const onScreen = x > 8 && x < window.innerWidth - 8
+          && y > 8 && y < window.innerHeight - 8;
+        if (onScreen && d > 28 && (!best || d > best.d)) best = { id, x, y, d };
       }
       return best;
     });

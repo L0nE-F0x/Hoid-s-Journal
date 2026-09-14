@@ -16,9 +16,12 @@ Architecture lock: `AGENTS.md` + `DESIGN.md`. This file is the live todo.
 
 # ▶ START HERE — next session
 
-**2026-09-14 visual pass committed, NOT yet pushed.** Frame, globes,
-Realms, labels and cards. Five commits on `master` ahead of origin —
-`git push` is the deploy, so the live site is still showing `602b6b4`.
+**2026-09-14 visual pass wrapped and live** (`992ad2d`). Frame, globes,
+Realms, labels and cards. Lore and data untouched — the encyclopedia pass
+before it is unchanged.
+
+Hard-refresh https://thecosmere.netlify.app; the service worker otherwise
+keeps the old shell, and this pass changed how every globe looks.
 
 The owner is testing the live deploy and will report back. **That list is
 the brief.** Do not restart the lore hunt from scratch.
@@ -66,7 +69,7 @@ the next push.
 
 ## What the last session changed
 
-**2026-09-14 visual pass (`65fa8fc` → `d491f70`, committed, not pushed).**
+**2026-09-14 visual pass (`65fa8fc` → `992ad2d`, pushed and live).**
 Lore and data untouched. Five things, each its own commit:
 
 - **The frame.** The card is an overlay that reports no inset (product
@@ -608,8 +611,7 @@ lock flipped; this is the version that is true.
     card was covering the world it described), three recipe knobs that meant
     the wrong thing, Shadesmar stopped being the Physical Realm brightened,
     labels that clear their glow and each other, cards set as catalogue
-    plates. Lore and data untouched. 56/56, perf flat. **Committed, not
-    pushed.**
+    plates. Lore and data untouched. 56/56, perf flat. Pushed and live.
 24. **2026-09-13 encyclopedia** (`e120ebb`). People 90 → ~424, places 124 →
     ~301, glossary 123 → ~323, orders ~66. Codex answers aliases and
     questions. Overlay cards gained bio / See-also / Coppermind links (no

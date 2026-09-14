@@ -182,7 +182,13 @@ function fillFromHit(host: HTMLElement, hit: LoreHit): void {
   if (hit.kind === 'system') {
     const sys = hit.obj;
     const worlds = COSMERE.bodies.filter((b) => b.system === sys.id && b.kind !== 'gas-giant');
-    host.append(headOf('System · click the rings to enter', sys.name, sys.sunColor));
+    // Orbit rings are drawn in the Physical Realm only. Over in Shadesmar a
+    // world is a bead ocean and there is no ring to aim at, so the hint has to
+    // point at what is actually on the screen.
+    const enterHint = store.state.realm === 'cognitive'
+      ? 'System · click a bead ocean to enter'
+      : 'System · click the rings to enter';
+    host.append(headOf(enterHint, sys.name, sys.sunColor));
     host.append(fields([
       ['Worlds', worlds.map((b) => b.name).join(', ')],
       ['Local date', worldDate(sys.id, era)],

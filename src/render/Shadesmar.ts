@@ -81,10 +81,33 @@ export class Shadesmar {
     const seed = new Float32Array(SOULS);
     const drift = new Float32Array(SOULS);
     const list = COSMERE.systems;
+    // The light of minds is not spread evenly. Roshar and Scadrial carry
+    // hundreds of named places; Threnody is a handful of forts people are
+    // hiding in. Picking a system uniformly at random lit the deathworld as
+    // brightly as the one with ten kingdoms on it. Weight by how much of the
+    // atlas actually stands there, softened by a power so that a thinly
+    // charted system still reads as a place rather than going black, and
+    // floored for the same reason.
+    const systemOfBody = new Map(COSMERE.bodies.map((b) => [b.id, b.system]));
+    const charted = new Map<string, number>(list.map((x) => [x.id, 0]));
+    for (const loc of COSMERE.locations) {
+      const sys = systemOfBody.get(loc.body);
+      if (sys !== undefined && charted.has(sys)) charted.set(sys, charted.get(sys)! + 1);
+    }
+    const weights = list.map((x) => Math.pow(Math.max(3, charted.get(x.id) ?? 0), 0.75));
+    const total = weights.reduce((a, b) => a + b, 0);
+    const pickSystem = () => {
+      let r = Math.random() * total;
+      for (let k = 0; k < list.length; k++) {
+        r -= weights[k]!;
+        if (r <= 0) return list[k]!;
+      }
+      return list[list.length - 1]!;
+    };
     const tint = new THREE.Color();
     for (let i = 0; i < SOULS; i++) {
       const halo = i % 7 === 0;
-      const sys = list[Math.floor(Math.random() * list.length)]!;
+      const sys = pickSystem();
       const at = this.systemPos.get(sys.id)!;
       const spread = halo ? 260 : Math.max(14, systemExtent(sys.id)) * (0.5 + Math.random() * 1.5);
       const theta = Math.random() * Math.PI * 2;

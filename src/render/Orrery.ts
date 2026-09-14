@@ -747,10 +747,17 @@ export class Orrery {
       const mat = this.sunMats.get(id)!;
       mat.uniforms.uTime.value = time;
       const focused = visual.focusedSystem === id;
-      const size = visual.scale === 'system' ? (focused ? 3.6 : 2.6) : cognitive ? 3.1 : 2.35;
+      // A star seen from Shadesmar is a small, distant, unmoving thing — the
+      // Cognitive Realm is not lit by it. This used to make suns *larger* over
+      // there (3.1 against 2.35) with the nebulae brighter behind them, so the
+      // Realm read as the Physical one turned up rather than as somewhere
+      // else. What carries the light over there is minds, not stars.
+      const size = visual.scale === 'system'
+        ? (focused ? (shadesmar ? 1.5 : 3.6) : (shadesmar ? 1.1 : 2.6))
+        : shadesmar ? 0.95 : 2.35;
       mat.uniforms.uSize.value = size;
-      mat.uniforms.uCorona.value = shadesmar ? 0.35 : 1;
-      mat.uniforms.uFlare.value = visual.scale === 'cosmere' ? 0.75 : 0.4;
+      mat.uniforms.uCorona.value = shadesmar ? 0.12 : 1;
+      mat.uniforms.uFlare.value = shadesmar ? 0.05 : (visual.scale === 'cosmere' ? 0.75 : 0.4);
     }
   }
 

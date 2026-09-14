@@ -492,7 +492,16 @@ Written down so the next session does not rediscover them:
   playhead. Coppermind: Cosmere (most planets existed and were named
   before the Shattering); Scadrian system (Scadrial did not).
 - **Pin convention.** `src/layout/surface.ts` matches `THREE.SphereGeometry`.
-  Negating z mirrors every pin.
+  Negating z mirrors every pin. **Character motes use it too** (2026-09-14):
+  people stand on the surface at `radius * 1.015` riding `bodySpin()`, not on
+  a halo around the world. Where a person's See-also names a place on the
+  world they are on, that place's real UV is used; otherwise a stable hash of
+  their id scatters them, which means "on this world" and is *not* a claim
+  about where on it. `CharacterEra` has no location field — do not invent one.
+- **A mote must never outgrow its world.** Mote size is a constant *screen*
+  size (`d * 0.030`) capped at 0.62 world units, and Roshar's radius is 1.32:
+  uncapped against the body, one person was half the size of the planet. The
+  size is now also capped at `body.radius * 0.048`.
 - **Atmosphere.** Rim uses the correct facing; `+n` on back faces washed
   every globe. Bloom threshold is `0.62` — 0.34 whites out the sunward
   hemisphere.

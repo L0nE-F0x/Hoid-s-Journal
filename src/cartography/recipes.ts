@@ -34,6 +34,13 @@ export interface Recipe {
   cap?: string;
   /** 0 = no caps. Drives both the plate and the globe shader. */
   ice?: number;
+  /**
+   * Alpine snow on high ground, separately from the polar cap. These used to
+   * be one number, so any world with a cap had its whole mountain system
+   * bleached white — Roshar read as frost rather than as stone. Defaults to a
+   * third of `ice`, which is a hint of snowline rather than a dusted planet.
+   */
+  snow?: number;
   /** Night-side settlement glow, 0–1. */
   lights?: number;
   lightColor?: string;
@@ -52,6 +59,13 @@ export interface Recipe {
   tidal?: number;
   /** Vegetation mottling strength. */
   flora?: number;
+  /**
+   * What the vegetation actually is. Flora used to be a fixed multiply, which
+   * can only ever darken a hue toward olive — brown land could not grow
+   * anything green. Now it is a colour the ground is mixed toward, keeping the
+   * ground's own light and shade.
+   */
+  floraColor?: string;
 }
 
 export const RECIPES: Record<string, Recipe> = {
@@ -59,18 +73,27 @@ export const RECIPES: Record<string, Recipe> = {
   // sheltered at its western edge, the Shattered Plains east, Thaylenah and
   // the Reshi Isles offshore. Stone, not soil — crem-brown and slate.
   roshar: {
-    land: '#7d6544', land2: '#ab9067', land3: '#dcd0b6',
-    ocean: '#1d5468', oceanDeep: '#0a2a3c',
+    // Stone, not soil: crem-brown lowland, ochre upland, pale weathered rock at
+    // the peaks. Shinovar's green comes from `flora` on the sheltered west, not
+    // from the base ramp. The cap is a crown, not a third of the planet, and
+    // the snowline is a hint — this world is warm, and the white it used to
+    // wear was alpine snow borrowed from the ice number.
+    land: '#6a6b45', land2: '#9c8659', land3: '#b3a384',
+    ocean: '#1b5a72', oceanDeep: '#082b3f',
     threshold: 0.44, warp: 3.1, ridges: 0.55, rivers: 0.35, relief: 1.15,
-    clouds: 0.34, cloudTint: '#dceaf6', specular: 0.85, ice: 0.42, flora: 0.55,
+    clouds: 0.30, cloudTint: '#dceaf6', specular: 0.85,
+    ice: 0.15, snow: 0.07, flora: 0.62, floraColor: '#5c7f3a',
     cap: '#dbe8f2',
+    // Tightened so the supercontinent sits in an ocean instead of wrapping the
+    // globe. Roshar's atlas pins live on the Stewart plate, so the procedural
+    // shape is free to move; a world on the procedural atlas is not.
     shape: [
-      [0.58, 0.54, 0.34, 0.26, 1.10], [0.84, 0.50, 0.22, 0.21, 1.00],
-      [0.34, 0.60, 0.17, 0.16, 0.92], [0.24, 0.42, 0.12, 0.13, 0.86],
-      [0.95, 0.52, 0.11, 0.13, 0.82], [0.62, 0.82, 0.055, 0.050, 0.80],
-      [0.10, 0.52, 0.045, 0.055, 0.84], [0.745, 0.28, 0.075, 0.062, 0.80],
-      [0.497, 0.198, 0.035, 0.030, 0.60], [0.669, 0.533, 0.060, 0.052, 0.62],
-      [0.313, 0.187, 0.070, 0.060, 0.72], [0.419, 0.279, 0.055, 0.048, 0.64],
+      [0.58, 0.54, 0.27, 0.20, 1.10], [0.84, 0.50, 0.17, 0.16, 1.00],
+      [0.34, 0.60, 0.14, 0.13, 0.92], [0.24, 0.42, 0.10, 0.10, 0.86],
+      [0.95, 0.52, 0.09, 0.10, 0.82], [0.62, 0.82, 0.045, 0.040, 0.80],
+      [0.10, 0.52, 0.038, 0.045, 0.84], [0.745, 0.28, 0.060, 0.050, 0.80],
+      [0.497, 0.198, 0.030, 0.026, 0.60], [0.669, 0.533, 0.050, 0.043, 0.62],
+      [0.313, 0.187, 0.056, 0.048, 0.72], [0.419, 0.279, 0.045, 0.039, 0.64],
     ],
   },
   // The Final Empire: one ash-choked landmass, Terris in the far north. No
@@ -236,12 +259,20 @@ export const RECIPES: Record<string, Recipe> = {
   },
 };
 
+/** Temperate green, for any world that grows something and says no more. */
+export const DEFAULT_FLORA = '#4e7a3e';
+
 const DEFAULTS: Required<Pick<Recipe,
-  'ice' | 'lights' | 'clouds' | 'specular' | 'relief' | 'ridges' | 'rivers' | 'tidal' | 'flora'>> = {
+  'ice' | 'lights' | 'clouds' | 'specular' | 'relief' | 'ridges' | 'rivers' | 'tidal' | 'flora'
+  | 'floraColor'>> = {
   ice: 0, lights: 0, clouds: 0, specular: 0.5, relief: 1, ridges: 0.4, rivers: 0, tidal: 0, flora: 0,
+  floraColor: DEFAULT_FLORA,
 };
 
-export function recipeFor(kind: string): Recipe & typeof DEFAULTS {
+export function recipeFor(kind: string): Recipe & typeof DEFAULTS & { snow: number } {
   const r = RECIPES[kind] ?? RECIPES.barren!;
-  return { ...DEFAULTS, ...r };
+  const merged = { ...DEFAULTS, ...r };
+  // A world that never said otherwise gets a snowline a third as strong as its
+  // cap, rather than the cap's own strength smeared over every ridge.
+  return { ...merged, snow: r.snow ?? merged.ice * 0.30 };
 }

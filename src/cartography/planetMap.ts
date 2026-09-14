@@ -134,8 +134,10 @@ export function bakePlanetMap(
   const ctx = canvas.getContext('2d')!;
   const img = ctx.createImageData(W, H);
   const d = img.data;
-  const r: Recipe & { ice: number; lights: number; ridges: number; rivers: number; flora: number } =
-    recipeFor(kind);
+  const r: Recipe & {
+    ice: number; snow: number; lights: number; ridges: number; rivers: number;
+    flora: number; floraColor: string;
+  } = recipeFor(kind);
   const s = seed * 17.13;
 
   const land = rgb(r.land);
@@ -144,6 +146,7 @@ export function bakePlanetMap(
   const ocean = rgb(r.ocean);
   const oceanDeep = rgb(r.oceanDeep ?? r.ocean);
   const cap = rgb(r.cap ?? '#e2e8f0');
+  const leafColor = rgb(r.floraColor);
   const wedges = (r.wedges ?? []).map(rgb);
   const blobs = r.shape ?? [];
   const thr = blobs.length ? 0.5 : r.threshold;
@@ -232,8 +235,12 @@ export function bakePlanetMap(
         if (r.flora) {
           const veg = warped3(qx * 0.42 + 12, qy * 0.42 + 12, qz * 0.42 + 12, 4, 0.7);
           const wet = smoothstep(0.92, 0.20, polar) * smoothstep(0.70, 0.10, up);
-          ground = mix(ground, [ground[0]! * 0.62, ground[1]! * 1.26, ground[2]! * 0.68],
-            smoothstep(0.24, 0.74, veg) * r.flora * wet);
+          // Keep the ground's own light and shade, take the hue from the recipe.
+          const lum = (ground[0]! * 0.2126 + ground[1]! * 0.7152 + ground[2]! * 0.0722) / 255;
+          const g = 0.45 + 1.30 * lum;
+          const leaf: [number, number, number] =
+            [leafColor[0]! * g, leafColor[1]! * g, leafColor[2]! * g];
+          ground = mix(ground, leaf, smoothstep(0.24, 0.74, veg) * r.flora * wet);
         }
         const dry = warped3(qx * 0.42 + 91, qy * 0.42 + 91, qz * 0.42 + 91, 3, 0.5);
         const k = 0.84 + 0.30 * dry;
@@ -252,11 +259,11 @@ export function bakePlanetMap(
           const line = smoothstep(0.030, 0, Math.min(gx, gz));
           col = mix(col, u < 0.5 ? rgb('#22d3ee') : rgb('#e879f9'), line * 0.9);
         }
-        if (r.ice) {
+        if (r.ice || r.snow) {
           const edge = 0.955 - r.ice * 0.13;
           const wobble = (warped3(px * 3.6 + s, py * 3.6 + s, pz * 3.6 + s, 3, 0.5) - 0.5) * 0.11;
-          const capPolar = smoothstep(edge, edge + 0.05, polar + wobble);
-          const snow = smoothstep(0.58, 0.88, up) * isLand * smoothstep(0.18, 0.62, polar) * r.ice * 0.85;
+          const capPolar = r.ice ? smoothstep(edge, edge + 0.05, polar + wobble) : 0;
+          const snow = smoothstep(0.58, 0.88, up) * isLand * smoothstep(0.18, 0.62, polar) * r.snow * 0.85;
           col = mix(col, cap, Math.max(capPolar, snow));
         }
       }

@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { recipeFor, type Recipe } from '../cartography/recipes.ts';
+import { DEFAULT_FLORA, recipeFor, type Recipe } from '../cartography/recipes.ts';
 import bakeVert from '../shaders/planetBake.vert';
 import bakeFrag from '../shaders/planetBake.frag';
 
@@ -65,8 +65,10 @@ function ensureQuad(): THREE.ShaderMaterial {
       uRidges: { value: 0.4 },
       uRivers: { value: 0 },
       uIce: { value: 0 },
+      uSnow: { value: 0 },
       uLights: { value: 0 },
       uFlora: { value: 0 },
+      uFloraColor: { value: new THREE.Color() },
       uBands: { value: 0 },
       uSplit: { value: 0 },
       uHion: { value: 0 },
@@ -107,8 +109,10 @@ function applyRecipe(mat: THREE.ShaderMaterial, r: Recipe, seed: number, cogniti
   u.uRidges.value = r.ridges ?? 0.4;
   u.uRivers.value = r.rivers ?? 0;
   u.uIce.value = r.ice ?? 0;
+  u.uSnow.value = r.snow;
   u.uLights.value = r.lights ?? 0;
   u.uFlora.value = r.flora ?? 0;
+  u.uFloraColor.value.copy(colour(r.floraColor ?? DEFAULT_FLORA));
   u.uBands.value = r.bands ? 1 : 0;
   u.uSplit.value = r.split ? 1 : 0;
   u.uHion.value = r.hion ? 1 : 0;

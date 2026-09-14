@@ -24,8 +24,10 @@ uniform float uWarp;
 uniform float uRidges;
 uniform float uRivers;
 uniform float uIce;
+uniform float uSnow;
 uniform float uLights;
 uniform float uFlora;
+uniform vec3  uFloraColor;
 uniform int   uBands;
 uniform int   uSplit;
 uniform int   uHion;
@@ -129,11 +131,11 @@ void main() {
   float polar = abs(uv.y - 0.5) * 2.0;
   // Caps: near the poles, and on anything high enough anywhere.
   float capMask = 0.0;
-  if (uIce > 0.001) {
+  if (uIce > 0.001 || uSnow > 0.001) {
     float edge = 0.955 - uIce * 0.13;
     float wobble = (warped(p * 3.6 + uSeed, 3, 0.5)) * 0.055;
     capMask = smoothstep(edge, edge + 0.05, polar + wobble);
-    float snow = smoothstep(0.58, 0.88, up) * land * smoothstep(0.18, 0.62, polar) * uIce * 0.85;
+    float snow = smoothstep(0.58, 0.88, up) * land * smoothstep(0.18, 0.62, polar) * uSnow * 0.85;
     capMask = clamp(max(capMask, snow), 0.0, 1.0);
   }
 
@@ -205,7 +207,10 @@ void main() {
     if (uFlora > 0.001) {
       float veg = warped(p * 4.2 + uSeed * 2.0, 4, 0.7) * 0.5 + 0.5;
       float wet = smoothstep(0.92, 0.20, polar) * smoothstep(0.70, 0.10, up);
-      ground = mix(ground, ground * vec3(0.62, 1.26, 0.68), smoothstep(0.24, 0.74, veg) * uFlora * wet);
+      // Keep the ground's own light and shade, take the hue from the recipe.
+      float lum = dot(ground, vec3(0.2126, 0.7152, 0.0722));
+      vec3 leaf = uFloraColor * (0.45 + 1.30 * lum);
+      ground = mix(ground, leaf, smoothstep(0.24, 0.74, veg) * uFlora * wet);
     }
     // Sediment: a paler wash where the land has been worn flat.
     ground = mix(ground, ground * vec3(1.14, 1.07, 0.93), smoothstep(0.12, 0.0, up) * 0.7);

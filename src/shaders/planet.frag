@@ -63,15 +63,19 @@ float specGGX(vec3 n, vec3 v, vec3 l, float rough) {
  * deck, once for the shadow it throws) over a globe that fills the frame, and
  * a domain warp in here cost more than the whole atmosphere pass.
  */
-float cloudField(vec3 p, float t) {
+float cloudField(vec3 p, float t, float cover) {
   vec3 q = p * 2.4 + vec3(uSeed);
   vec3 flow = q + vec3(t * 0.05, 0.0, t * 0.01);
   float a = fbm3(flow, 4, 2.05, 0.5);
   float b = ridged(flow * 2.1 + 7.0, 3, 2.1, 0.55);
   float band = 0.55 + 0.45 * sin(p.y * 5.0 + a * 3.4);
-  float d = (a * 0.5 + 0.5) * 0.62 + b * 0.5;
-  d = smoothstep(0.42, 0.86, d * (0.55 + 0.6 * band));
-  return d;
+  float d = ((a * 0.5 + 0.5) * 0.62 + b * 0.5) * (0.55 + 0.6 * band);
+  // `cover` moves where the field is cut, so a recipe's cloud number is the
+  // fraction of sky that has weather in it. It used to scale opacity instead,
+  // which drew a half-transparent veil over the entire world at every value:
+  // no gaps, no weather systems, and no world visible underneath.
+  float lo = mix(0.86, 0.20, clamp(cover, 0.0, 1.0));
+  return smoothstep(lo, lo + 0.16, d);
 }
 
 void main() {
@@ -147,13 +151,13 @@ void main() {
     vec3 cp = vObj;
     float ca = uCloudSpin;
     cp = vec3(cp.x * cos(ca) + cp.z * sin(ca), cp.y, -cp.x * sin(ca) + cp.z * cos(ca));
-    float d = cloudField(cp, uTime);
+    float d = cloudField(cp, uTime, uClouds);
     // Shadow: read the field again a step toward the sun and darken by it.
     vec3 sunObj = normalize(cp + toSun * 0.14);
-    float sh = cloudField(sunObj, uTime);
-    lit *= 1.0 - sh * uClouds * 0.42 * shade;
+    float sh = cloudField(sunObj, uTime, uClouds);
+    lit *= 1.0 - sh * 0.42 * shade;
 
-    float cover = d * uClouds;
+    float cover = d;
     float cl = max(0.0, dot(n, toSun)) * 0.78 + 0.22;
     // Silver lining: clouds forward-scatter hard at grazing sun angles.
     float ms = pow(max(0.0, dot(view, -toSun)), 6.0) * 0.6;

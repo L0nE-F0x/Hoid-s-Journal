@@ -16,8 +16,9 @@ Architecture lock: `AGENTS.md` + `DESIGN.md`. This file is the live todo.
 
 # ▶ START HERE — next session
 
-**2026-09-13 wrapped and live.** Encyclopedia pass shipped (`e120ebb`).
-Data + Codex + cards; graphics left alone. v1 Battle Sim still out.
+**2026-09-14 visual pass committed, NOT yet pushed.** Frame, globes,
+Realms, labels and cards. Five commits on `master` ahead of origin —
+`git push` is the deploy, so the live site is still showing `602b6b4`.
 
 The owner is testing the live deploy and will report back. **That list is
 the brief.** Do not restart the lore hunt from scratch.
@@ -64,6 +65,46 @@ the next push.
 ---
 
 ## What the last session changed
+
+**2026-09-14 visual pass (`65fa8fc` → `d491f70`, committed, not pushed).**
+Lore and data untouched. Five things, each its own commit:
+
+- **The frame.** The card is an overlay that reports no inset (product
+  lock), so at globe scale the camera centred Roshar 196px — half the
+  card's width — into it. Atlas, directory and card now share one 360px
+  column on the left; the card stacks under whichever panel is open via
+  `--ceph-col-bottom`. Clear picture 612px → 1128px. The lock still holds:
+  the card calls no `setInset`, and it is the column's width, so the open
+  panel's inset is already the truth. Art-bible drift fixed too — 8px radii
+  and 999px capsules back to 2px and tracked caps; card fields reset from a
+  grid of filled boxes to a catalogue plate on hairlines.
+- **The globes.** Three recipe knobs meant something other than what they
+  said. See *Sharp edges* — `ice`/`snow`, `flora`, and especially `clouds`,
+  whose meaning changed for every world.
+- **The Realms.** Suns were *larger* in Shadesmar than in the Physical
+  Realm, against this file's own "nothing over there is lit by a star".
+  They are small and dim there now and the soul field carries the light.
+  Souls were also spread uniformly at random over thirteen systems, so
+  Threnody shone like Roshar; they are weighted by charted places now.
+- **Labels.** Names sat inside their own glow and nothing checked for
+  collisions. Both fixed in `render/Labels.ts`, Cosmere scale only.
+- **The interaction suite** had a moon check that clicked past the edge of
+  the window. Not a product bug; the assertion was unsound.
+
+Checked: `tsc --noEmit`, `npm run build`, `test:interaction` 56/56,
+`npm run perf` flat against baseline, `audit:ui` (one dead control, see
+below, pre-existing). Shots at globe/system/Cosmere in all three Realms.
+
+**Lore note.** The Shard named **Reason** in `data/shards.ts` was checked
+against a recollection of "Wisdom" and left alone — it carries a *Wind and
+Truth* ch. 115 citation, which beats a guess. The Dawnshard entries are
+honestly badged (`Change` canon, `Unite` WoB, the third "not ours to
+invent") and needed nothing.
+
+**Still open from the visual list.** Nothing on the original five. Not
+attempted: godrays, depth of field, aurora (see *Renderer ideas not taken*).
+
+## What the session before that changed
 
 **2026-09-13 encyclopedia (`e120ebb`, pushed and live).** Graphics left alone.
 v1 Battle Sim still out. Everything else v1 had for knowledge is here and
@@ -323,6 +364,12 @@ Open, leftover, not a brief:
   Catacendre / True Desolation can grow the same `EventFx` path
   (`src/render/EventFx.ts`, `src/data/events.ts`).
 - **`npm run audit:ui`** only finds controls that change nothing at all.
+  It reports one: Codex → `systemNalthian`. Pre-existing (it reported two
+  before the 2026-09-14 pass), and probably its own 200ms window rather than
+  a real dead button — `openId` on a system sets `selected` and a
+  `cameraCue` the renderer consumes, and the damped flight has not changed
+  `scale` yet when the audit samples. Worth confirming by hand before
+  chasing it.
 
 ## Do next (priority order)
 
@@ -354,6 +401,30 @@ Written down so the next session does not rediscover them:
 
 ## Sharp edges / do not re-break
 
+- **`clouds` in a recipe is coverage, not opacity** (changed 2026-09-14).
+  It used to scale the cloud field's alpha, which drew a half-transparent
+  veil over the whole world at every value. It now moves where the field is
+  cut, so the number is the fraction of sky with weather in it. Roshar and
+  Nalthis were re-tuned by eye; **the other worlds inherited the new meaning
+  untested** and a number or two may want a nudge. `gas` sets 0 and is not
+  on this path.
+- **`ice` is the polar cap; `snow` is the snowline.** They were one number,
+  so any world with a cap had every ridge above elevation 0.58 bleached
+  white — that was what made Roshar look like frost rather than stone.
+  `snow` defaults to `ice * 0.30`.
+- **`flora` mixes toward `floraColor`, it does not multiply.** A multiply can
+  only drag a hue toward olive, so brown land could never grow green.
+  `DEFAULT_FLORA` in `recipes.ts` is the one source of that default.
+- **Change a baker, change its twin.** All three of the above landed in
+  `shaders/planetBake.frag` *and* `cartography/planetMap.ts` together. The
+  cloud change is `shaders/planet.frag`, which has no CPU twin — the atlas
+  plate is unlit and has no weather.
+- **Left-edge panels share one column.** `--ceph-col` / `--ceph-gut` in
+  `base.css`. The journal card is that width and stacks under whichever
+  panel is open, reading `--ceph-col-bottom`. If you make one of them wider
+  without the others, the card will hang off the inset the camera was told
+  about. The card still must not call `setInset` — that lock is intact and
+  is why this works the way it does.
 - **Texture memory is the first thing to check when it is slow.** Plates are
   two-tier for a reason (`PLATE_SMALL` / `PLATE_LARGE` in `planetBake.ts`).
   Giving every world the large pair is 1.4 GB and the symptom is not an
@@ -533,6 +604,12 @@ lock flipped; this is the version that is true.
     without opening the parent globe, Dawnshards pickable, gas-giant names
     in-system, Three Sisters lore and the fallen fourth moon under the
     Shattered Plains. Pushed and live. Interaction suite 56/56.
+25. **2026-09-14 visual pass** (`65fa8fc` → `d491f70`). Frame reclaimed (the
+    card was covering the world it described), three recipe knobs that meant
+    the wrong thing, Shadesmar stopped being the Physical Realm brightened,
+    labels that clear their glow and each other, cards set as catalogue
+    plates. Lore and data untouched. 56/56, perf flat. **Committed, not
+    pushed.**
 24. **2026-09-13 encyclopedia** (`e120ebb`). People 90 → ~424, places 124 →
     ~301, glossary 123 → ~323, orders ~66. Codex answers aliases and
     questions. Overlay cards gained bio / See-also / Coppermind links (no

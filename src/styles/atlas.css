@@ -2,8 +2,8 @@
   position: fixed;
   /* Hangs off the command panel, which grows when a book is being tracked. */
   top: calc(var(--ceph-command-bottom, 56px) + 12px);
-  left: 16px;
-  width: min(480px, calc(100vw - 32px));
+  left: var(--ceph-gut);
+  width: min(var(--ceph-col), calc(100vw - 2 * var(--ceph-gut)));
   z-index: 24;
   padding: 12px 12px 14px;
   display: none;
@@ -41,7 +41,7 @@
   display: block;
   width: 100%;
   height: auto;
-  border-radius: 8px;
+  border-radius: 2px;
   border: 1px solid var(--ceph-border);
   cursor: crosshair;
   background: #05060d;
@@ -70,9 +70,11 @@
   border: 1px solid var(--ceph-border);
   background: rgba(255,255,255,0.04);
   color: var(--ceph-text);
-  border-radius: 999px;
+  border-radius: 2px;
   padding: 3px 8px;
-  font-size: 10.5px;
+  font-size: 10px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
   cursor: pointer;
 }
 .ceph-atlas-chip:hover { border-color: var(--ceph-cyan); }

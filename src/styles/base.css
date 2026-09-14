@@ -37,6 +37,12 @@
   --ceph-font: ui-sans-serif, Inter, 'Segoe UI', system-ui, -apple-system, sans-serif;
   --ceph-mono: ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, Consolas, monospace;
   --ceph-touch: 44px;
+
+  /* The instrument is one column down the left edge. Atlas, directory and
+     the journal card share its width so whichever is open reports the same
+     inset, and the picture owns everything to the right of it. */
+  --ceph-gut: 12px;
+  --ceph-col: 360px;
 }
 
 .ceph-root {

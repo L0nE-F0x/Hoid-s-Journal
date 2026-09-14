@@ -236,16 +236,30 @@
 
 .ceph-panel-drawer {
   position: fixed;
-  top: calc(var(--ceph-command-bottom, 56px) + 10px);
-  right: 12px;
-  width: min(380px, calc(100% - 24px));
-  max-height: calc(100vh - 180px);
+  /* The journal belongs in the instrument column, stacked under whatever is
+     already open there, so it never covers the subject it describes. It still
+     reports no inset of its own: the column's own panel measures the edge, and
+     the card is the column's width, so the camera is told the truth once. */
+  top: calc(var(--ceph-col-bottom, var(--ceph-command-bottom, 56px)) + 10px);
+  left: var(--ceph-gut);
+  width: min(var(--ceph-col), calc(100vw - 2 * var(--ceph-gut)));
+  max-height: calc(
+    100vh - var(--ceph-col-bottom, var(--ceph-command-bottom, 56px))
+    - var(--ceph-timeline-top, 160px) - 18px
+  );
   overflow: auto;
-  padding: 14px 16px 18px;
+  /* The column is bounded by the playhead, so a long entry scrolls. Fade the
+     cut rather than guillotining a field label in half; the trailing padding
+     keeps the last real line clear of the fade at full scroll. */
+  mask-image: linear-gradient(180deg, #000 calc(100% - 22px), transparent);
+  -webkit-mask-image: linear-gradient(180deg, #000 calc(100% - 22px), transparent);
+  scrollbar-width: none;
+  padding: 14px 16px 34px;
   z-index: 27;
   pointer-events: auto;
   animation: ceph-panel-in 280ms var(--ceph-ease) both;
 }
+.ceph-panel-drawer::-webkit-scrollbar { width: 0; height: 0; }
 .ceph-panel-drawer h2 {
   margin: 0 0 4px;
   font-family: var(--ceph-display);
@@ -267,29 +281,45 @@
   box-shadow: 0 0 18px -2px currentColor;
   border: 1px solid rgba(255,255,255,0.20);
 }
+/* An entry in the journal is set like a catalogue plate: the term in tracked
+   small caps down one column, the reading against it in the other, separated
+   by hairlines. It used to be a two-up grid of filled boxes, which is a
+   spreadsheet — and at the column's width each box was narrow enough that
+   "honor, cultivation, odium" wrapped onto two lines inside its own well. */
 .ceph-fields {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-top: 14px;
+  grid-template-columns: 92px 1fr;
+  /* No column gap: the two cells' rules have to meet, or every row is drawn
+     with a nick in it where the gutter was. The gutter is the label's padding
+     instead, so the hairline runs unbroken across the plate. */
+  column-gap: 0;
+  align-items: start;
+  margin-top: 16px;
+  border-top: 1px solid var(--ceph-rule);
 }
-.ceph-field {
-  background: rgba(0,0,0,0.26);
-  border: 0;
-  border-left: 1px solid var(--ceph-rule);
-  border-radius: 0;
-  padding: 6px 10px;
-}
+/* The pair dissolves so its label and value sit on one grid row and their
+   rules line up across both columns. */
+.ceph-fields .ceph-field { display: contents; }
 .ceph-field-label {
   font-size: 9px;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--ceph-text-dim);
+  color: var(--ceph-text-faint);
+}
+.ceph-fields .ceph-field-label {
+  grid-column: 1;
+  padding: 9px 14px 8px 0;
+  border-bottom: 1px solid var(--ceph-rule);
 }
 .ceph-field-val {
   font-size: 12.5px;
-  margin-top: 4px;
-  line-height: 1.35;
+  line-height: 1.45;
+}
+.ceph-fields .ceph-field-val {
+  grid-column: 2;
+  padding: 7px 0 8px;
+  border-bottom: 1px solid var(--ceph-rule);
+  color: var(--ceph-text);
 }
 .ceph-speed {
   display: flex;
@@ -540,8 +570,11 @@
   font-family: var(--ceph-display);
   font-size: 12.5px;
   font-style: italic;
-  color: var(--ceph-text-faint);
-  border-left: 1px solid var(--ceph-rule);
+  color: var(--ceph-text-dim);
+  /* One warm colour, and it means the journal. This paragraph is Hoid's own
+     voice rather than a field reading, so it is the one thing on the card that
+     carries the gold. */
+  border-left: 1px solid color-mix(in srgb, var(--ceph-gold) 42%, transparent);
   padding-left: 11px;
   margin-top: 12px;
 }

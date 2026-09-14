@@ -1,8 +1,8 @@
 .ceph-directory {
   position: fixed;
   top: calc(var(--ceph-command-bottom, 56px) + 12px);
-  left: 12px;
-  width: min(268px, calc(100vw - 24px));
+  left: var(--ceph-gut);
+  width: min(var(--ceph-col), calc(100vw - 2 * var(--ceph-gut)));
   z-index: 24;
   padding: 12px 12px 10px;
   display: none;
@@ -48,7 +48,7 @@
   text-align: left;
   padding: 7px 8px;
   border: 1px solid transparent;
-  border-radius: 8px;
+  border-radius: 2px;
   background: rgba(255,255,255,0.03);
   color: var(--ceph-text);
   cursor: pointer;

@@ -48,3 +48,26 @@ export function listen(
   target.addEventListener(type, handler, opts);
   return () => target.removeEventListener(type, handler, opts);
 }
+
+/**
+ * The left instrument column stacks: a panel, then the journal card under it.
+ * Each panel publishes its own bottom edge under its own name and the card's
+ * CSS reads the lowest one, the same way the top bar publishes
+ * `--ceph-command-bottom`. Panels do not know about each other, and the card
+ * still reports no camera inset of its own — it is the column's width, so the
+ * open panel's `setInset` already tells the camera the truth.
+ */
+const columnEdges = new Map<string, number>();
+
+export function setColumnBottom(source: string, bottom: number | null): void {
+  if (bottom === null) {
+    if (!columnEdges.delete(source)) return;
+  } else {
+    if (columnEdges.get(source) === bottom) return;
+    columnEdges.set(source, bottom);
+  }
+  const low = columnEdges.size ? Math.max(...columnEdges.values()) : null;
+  const root = document.documentElement.style;
+  if (low === null) root.removeProperty('--ceph-col-bottom');
+  else root.setProperty('--ceph-col-bottom', `${Math.round(low)}px`);
+}

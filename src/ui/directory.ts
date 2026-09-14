@@ -15,7 +15,7 @@ import {
 } from '../data/index.ts';
 import { store } from '../core/store.ts';
 import { atlasIsOpen } from './atlas.ts';
-import { el, listen } from './dom.ts';
+import { el, listen, setColumnBottom } from './dom.ts';
 import '../styles/directory.css';
 
 type DirTab = 'systems' | 'worlds' | 'moons' | 'people' | 'dragons' | 'places' | 'orders' | 'shards' | 'doors' | 'dawnshards';
@@ -138,9 +138,11 @@ export function mountDirectory(root: HTMLElement): { destroy(): void } {
   const measure = () => {
     if (!panel.classList.contains('is-on')) {
       store.setInset('directory', null);
+      setColumnBottom('directory', null);
       return;
     }
     const r = panel.getBoundingClientRect();
+    setColumnBottom('directory', r.bottom);
     if (r.width > window.innerWidth * 0.5) {
       store.setInset('directory', { bottom: Math.round(window.innerHeight - r.top + 10) });
     } else {

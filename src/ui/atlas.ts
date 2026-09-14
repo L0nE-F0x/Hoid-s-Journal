@@ -16,7 +16,7 @@ import {
   scadrialBiome,
 } from '../data/index.ts';
 import { store } from '../core/store.ts';
-import { el, listen } from './dom.ts';
+import { el, listen, setColumnBottom } from './dom.ts';
 import '../styles/atlas.css';
 
 const W = 800;
@@ -85,9 +85,11 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
   const measure = () => {
     if (!panel.classList.contains('is-on')) {
       store.setInset('atlas', null);
+      setColumnBottom('atlas', null);
       return;
     }
     const r = panel.getBoundingClientRect();
+    setColumnBottom('atlas', r.bottom);
     if (r.width > window.innerWidth * 0.5) {
       const top = r.top < window.innerHeight * 0.4;
       store.setInset('atlas', top

@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { COSMERE, HUBS, bodyById, bodyByName, characterAt, hubById, isFeaturedPerson, isVisible, onTheMap } from '../data/index.ts';
 import { keplerWorld } from '../layout/kepler.ts';
+import { uvOnBody } from '../layout/surface.ts';
 import { hubWorld } from '../layout/cognitive.ts';
 import type { Orrery } from './Orrery.ts';
 import { sunTexture } from './planetTextures.ts';
@@ -8,6 +9,24 @@ import sunVert from '../shaders/sun.vert';
 import sunFrag from '../shaders/sun.frag';
 
 const _off = new THREE.Vector3();
+
+/**
+ * A stable point on a sphere from a string. The same person lands in the same
+ * place every frame, every era, and across reloads — a mote that wandered
+ * would read as the person moving.
+ */
+function scatterUV(id: string): { u: number; v: number } {
+  let h = 2166136261 >>> 0;
+  for (let i = 0; i < id.length; i++) {
+    h ^= id.charCodeAt(i);
+    h = Math.imul(h, 16777619) >>> 0;
+  }
+  const g = Math.imul(h ^ 0x9e3779b9, 2654435761) >>> 0;
+  // Equal-area in latitude so a scatter does not bunch at the poles, then
+  // pulled inside ±58°: nobody in the roster lives on an ice cap.
+  const lat = Math.asin(((g / 4294967296) * 2 - 1) * 0.85);
+  return { u: (h >>> 8) / 16777216, v: 0.5 - lat / Math.PI };
+}
 
 /** A name that stays legible at any distance. Drawn once, scaled per frame. */
 function labelSprite(text: string, tint: string): THREE.Sprite {
@@ -41,6 +60,18 @@ function labelSprite(text: string, tint: string): THREE.Sprite {
 export class Presence {
   readonly group = new THREE.Group();
   private readonly chars: { id: string; mesh: THREE.Mesh; mat: THREE.ShaderMaterial; ch: (typeof COSMERE.characters)[number]; i: number }[] = [];
+  /**
+   * Where on a world a person stands.
+   *
+   * `CharacterEra` carries the body and nothing finer, so for most of the
+   * roster there is no canonical spot. Two sources, in that order of honesty:
+   * if a person's own See-also names a place on the world they are on, they
+   * stand at its real coordinates — Dalinar at Urithiru. Otherwise they are
+   * scattered from a hash of their id, which means "somewhere on this world"
+   * and is not a claim about where.
+   */
+  private readonly knownSpot = new Map<string, { body: string; u: number; v: number }>();
+  private readonly scatterSpot = new Map<string, { u: number; v: number }>();
   private readonly lines: { id: string; line: THREE.Line }[] = [];
   private readonly yolen = new THREE.Vector3();
   private readonly trail: THREE.Line;
@@ -52,6 +83,15 @@ export class Presence {
     // A person is a mote of light, not a marble. Flat discs at this size read
     // as confetti scattered over the world they are standing on.
     const quad = new THREE.PlaneGeometry(2, 2);
+    const placeById = new Map(COSMERE.locations.map((l) => [l.id, l]));
+    for (const ch of COSMERE.characters) {
+      this.scatterSpot.set(ch.id, scatterUV(ch.id));
+      for (const ref of ch.see ?? []) {
+        const loc = placeById.get(ref);
+        if (loc) { this.knownSpot.set(ch.id, { body: loc.body, u: loc.u, v: loc.v }); break; }
+      }
+    }
+
     COSMERE.characters.forEach((ch, i) => {
       const colour = new THREE.Color(ch.color);
       const mat = new THREE.ShaderMaterial({
@@ -191,14 +231,21 @@ export class Presence {
         continue;
       }
       row.mesh.visible = true;
-      const a = year * 0.9 + row.i * 0.7;
-      const r = body.radius * 1.55 + 0.25;
-      _off.set(Math.cos(a) * r, Math.sin(a * 0.6) * body.radius * 0.35, Math.sin(a) * r);
+      // On the world, not in a halo around it. People used to ride a ring at
+      // 1.55 radii that span with the playhead, which read as moons rather
+      // than as anyone standing anywhere. Same convention as the surface pins
+      // — `layout/surface.ts` matches SphereGeometry, and the spot rides the
+      // body's own rotation so a person does not slide as the globe turns.
+      const known = this.knownSpot.get(ch.id);
+      const spot = known && known.body === body.id ? known : this.scatterSpot.get(ch.id)!;
+      uvOnBody(spot.u, spot.v, body.radius * 1.015, orrery.bodySpin(body.id), _off);
       row.mesh.position.copy(origin).add(_off);
-      // A mote is a marker, not a world: hold it at a few pixels across, or a
-      // globe portrait turns into a bowl of marbles.
+      // A mote is a marker, not a world: hold it at a few pixels across, and
+      // never let one grow past a fraction of the body it is standing on. The
+      // screen-size term alone capped at 0.62 world units, which against
+      // Roshar's radius of 1.32 made every person half the size of the planet.
       const d = camera.position.distanceTo(row.mesh.position);
-      const s = Math.min(0.62, Math.max(0.10, d * 0.030));
+      const s = Math.min(Math.min(0.62, Math.max(0.10, d * 0.030)), body.radius * 0.048);
       // In Shadesmar the cognitive ones are the locals; bodies are shadows.
       const here = !cognitive || ch.cognitive;
       row.mat.uniforms.uSize.value = s * (ch.cognitive ? 1.35 : 1) * (here ? 1 : 0.6);

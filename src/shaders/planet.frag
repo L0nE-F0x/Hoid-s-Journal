@@ -22,7 +22,9 @@ uniform float uDetail;
 uniform float uSeed;
 uniform float uTidal;
 uniform float uRingShadow;
+/** World space, both: the ring's normal and the planet's own centre. */
 uniform vec3  uRingAxis;
+uniform vec3  uCentre;
 uniform float uRingInner;
 uniform float uRingOuter;
 /** Multiplies the plate. Lets worlds share a bake and still look unalike. */
@@ -217,13 +219,19 @@ void main() {
   // ---- ring shadow ----------------------------------------------------
   if (uRingShadow > 0.001) {
     // Project the surface point along the sun direction onto the ring plane.
+    //
+    // All of it in world space. This used to march `vObj` — object space,
+    // which turns with the planet — along `toSun`, which does not, against a
+    // hardcoded (0,1,0) axis when the ring mesh is tilted 0.16 radians off it.
+    // The shadow therefore rode the planet's own rotation instead of staying
+    // opposite the star, and sat at the wrong inclination while it did.
     vec3 axis = normalize(uRingAxis);
+    vec3 local = vWorld - uCentre;
     float denom = dot(toSun, axis);
     if (abs(denom) > 0.001) {
-      vec3 local = vWorld - (uSunPos - uSunPos); // world-local: mesh sits at origin of its own frame
-      float t = -dot(vObj, axis) / denom;
+      float t = -dot(local, axis) / denom;
       if (t > 0.0) {
-        vec3 hit = vObj + toSun * t;
+        vec3 hit = local + toSun * t;
         float r = length(hit - axis * dot(hit, axis));
         float inRing = step(uRingInner, r) * step(r, uRingOuter);
         float dens = inRing * (0.55 + 0.45 * sin(r * 60.0));

@@ -251,6 +251,7 @@ export class Orrery {
         uTidal: { value: recipe.tidal },
         uRingShadow: { value: RINGED[body.id] ? 0.7 : 0 },
         uRingAxis: { value: new THREE.Vector3(0, 1, 0) },
+        uCentre: { value: new THREE.Vector3() },
         uRingInner: { value: RINGED[body.id]?.[0] ?? 0 },
         uRingOuter: { value: RINGED[body.id]?.[1] ?? 0 },
         uTint: { value: this.plateTint(body) },
@@ -654,12 +655,23 @@ export class Orrery {
         || (visual.scale === 'system' && inSystem)
       );
 
+      u.uCentre.value.copy(_world);
       if (node.ring && node.ringMat) {
         node.ring.position.copy(_world);
         node.ringMat.uniforms.uSunPos.value.copy(_sun);
         node.ringMat.uniforms.uCentre.value.copy(_world);
-        node.ring.visible = showBody && !shadesmar && visual.scale === 'system' && inSystem;
-        u.uRingShadow.value = globe && node.body.id === visual.focusedBody && node.ring ? 0.7 : 0;
+        // The ring was drawn only in-system and its shadow cast only on a
+        // focused globe, which are mutually exclusive: you could see a ring
+        // that threw nothing, or a shadow band from a ring that was not
+        // there. Both, now, wherever the world is drawn.
+        node.ring.visible = showBody && !shadesmar
+          && (visual.scale === 'system' ? inSystem : node.body.id === visual.focusedBody);
+        u.uRingShadow.value = node.ring.visible ? 0.7 : 0;
+        // The mesh is tilted off the ecliptic, so its axis is its own +Z, in
+        // world space. The shader marches world space; see planet.frag.
+        node.ring.updateMatrixWorld();
+        (u.uRingAxis.value as THREE.Vector3)
+          .set(0, 0, 1).applyQuaternion(node.ring.quaternion).normalize();
       }
 
       node.mesh.rotation.y = this.spinLockId === node.body.id ? this.spinLock : time * 0.04;

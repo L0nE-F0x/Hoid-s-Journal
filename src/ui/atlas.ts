@@ -319,6 +319,9 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
     panel.classList.toggle('is-on', show);
     measure();
     if (!show || !s.focusedBody) return;
+    // and again at the end, once the roster has been rebuilt: the card stacks
+    // ten pixels under whatever this panel measures, and measuring before the
+    // chips exist parks it on top of them.
     const body = bodyById[s.focusedBody];
     if (!body) return;
     const loc = s.focusedLocation
@@ -356,6 +359,7 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
     composePins();
     composeRoster();
     paint();
+    measure();
   };
 
   const hitTest = (ev: MouseEvent, click: boolean) => {

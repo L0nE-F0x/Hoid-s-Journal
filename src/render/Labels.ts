@@ -57,6 +57,32 @@ const _right = new THREE.Vector3();
 const _up = new THREE.Vector3();
 const _fwd = new THREE.Vector3();
 const _edge = new THREE.Vector3();
+const _toTarget = new THREE.Vector3();
+const _toCentre = new THREE.Vector3();
+
+/**
+ * Is `target` hidden behind the sphere at `centre`, seen from `eye`?
+ *
+ * Label sprites are `depthTest: false` — they have to be, or a name is eaten
+ * by the very thing it names — so nothing else stops a moon on the far side
+ * of Roshar from writing "Salas" across the middle of the planet.
+ */
+function occluded(
+  eye: THREE.Vector3, target: THREE.Vector3, centre: THREE.Vector3, radius: number,
+): boolean {
+  _toTarget.copy(target).sub(eye);
+  const dist = _toTarget.length();
+  if (dist < 1e-6) return false;
+  _toTarget.multiplyScalar(1 / dist);
+  _toCentre.copy(centre).sub(eye);
+  const tca = _toCentre.dot(_toTarget);
+  if (tca <= 0) return false;
+  const d2 = _toCentre.lengthSq() - tca * tca;
+  const r2 = radius * radius;
+  if (d2 > r2) return false;
+  const t0 = tca - Math.sqrt(r2 - d2);
+  return t0 > 0 && t0 < dist;
+}
 
 export class Labels {
   readonly group = new THREE.Group();
@@ -131,7 +157,14 @@ export class Labels {
         const p = orrery.moonPosition(l.id);
         if (!p || !orrery.moonShown(l.id)) { l.sprite.visible = false; continue; }
         const dist = camera.position.distanceTo(p);
-        l.sprite.visible = isVisible(l.visibleItem, progress) && dist < 70;
+        let on = isVisible(l.visibleItem, progress) && dist < 70;
+        // Not if the moon is round the back of its own world.
+        if (on && l.parent) {
+          const centre = orrery.bodyPosition(l.parent);
+          const body = COSMERE.bodies.find((b) => b.id === l.parent);
+          if (centre && body && occluded(camera.position, p, centre, body.radius)) on = false;
+        }
+        l.sprite.visible = on;
         l.sprite.position.copy(p);
         l.sprite.position.y += l.radius * 1.4 + 0.18;
         const s = Math.max(0.4, Math.min(36, dist * 0.18));
@@ -155,22 +188,27 @@ export class Labels {
         l.sprite.scale.set(s, s * 0.175, 1);
       }
     }
-    if (scale === 'cosmere') this.declutter(camera);
+    // Systems at Cosmere distance, moons over a globe. Both are cases where a
+    // handful of names project into the same few pixels; the difference is
+    // that a system's neighbour is light years away and a moon's is one world
+    // over, so the same test does for both.
+    if (scale === 'cosmere') this.declutter(camera, 'system');
+    else if (globe) this.declutter(camera, 'moon');
   }
 
   /**
    * Two systems hundreds of units apart can still project a few pixels apart,
    * and NALTHIAN drawn through OBRODAI is not a name either of them can be
    * read by. Project each label's ink box, walk them near-to-far, and drop the
-   * ones that would land on a name already standing. The nearest system wins,
-   * because that is the one the reader is flying toward.
+   * ones that would land on a name already standing. The nearest wins, because
+   * that is the one the reader is flying toward.
    */
-  private declutter(camera: THREE.Camera): void {
+  private declutter(camera: THREE.Camera, kind: Label['kind']): void {
     const boxes = this.boxes;
     boxes.length = 0;
     camera.matrixWorld.extractBasis(_right, _up, _fwd);
     for (const l of this.labels) {
-      if (l.kind !== 'system' || !l.sprite.visible) continue;
+      if (l.kind !== kind || !l.sprite.visible) continue;
       _p.copy(l.sprite.position).project(camera);
       if (_p.z >= 1) { l.sprite.visible = false; continue; }
       // The word is centred in a 640-wide plate and never fills it, so the ink

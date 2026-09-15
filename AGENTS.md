@@ -25,7 +25,18 @@ Breaking either of these is how this turns into a tangle:
    on the GPU for the globe; `cartography/planetMap.ts` is its CPU twin for
    the atlas panel, which cannot import Three. Change one baker without the
    other and the plate and the globe start disagreeing about where a
-   continent is.
+   continent is. **`npm run test:cartography` is what enforces this** — it
+   bakes both and compares them, and it exists because they had already
+   drifted: different noise functions, a second ice cap painted at render
+   time, a per-world tint only one of them applied.
+
+   `planetMap.ts` is a line-for-line port of `shaders/planetBake.frag`,
+   including two things that look like bugs and are not: recipe colours are
+   linearised twice (because `new THREE.Color(hex)` already converts, and
+   `planetBake.ts` then calls `convertSRGBToLinear`), and the result is
+   sRGB-encoded on write (because the plate is an sRGB render target). Both
+   sides do both. Read the note at the top of `planetMap.ts` before touching
+   any of it.
 
    Atlas UVs (`Location.u/v`) *are* 0–1 on the plate currently shown, not on
    the globe. Roshar is calibrated to `public/maps/roshar_full.jpg`
@@ -64,7 +75,9 @@ npm run shot -- --focus roshar --scale globe --out /tmp/roshar.png
 npm run shot -- --intro --settle 8000 --out /tmp/intro.png
 npm run shot -- --eval "__ceph.store.set('realm','cognitive')" --out /tmp/c.png
 
-npm run test:interaction   # 46 checks through real mouse and keyboard
+npm run test:interaction   # 56 checks through real mouse and keyboard
+npm run test:cartography   # the globe and the atlas still draw the same world
+npm run audit:data         # every id resolves, every reference points at something
 npm run perf               # fps per Realm, expensive layers toggled off
 ```
 

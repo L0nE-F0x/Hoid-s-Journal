@@ -218,6 +218,39 @@ export function planetPlates(
   return entry;
 }
 
+/**
+ * The stored bytes of a world's albedo plate, straight out of its render
+ * target — no blit, no material, no colour-space transfer in between.
+ *
+ * `npm run test:cartography` compares these against the bytes the CPU baker
+ * writes into its canvas. That is the invariant in `AGENTS.md`: one recipe,
+ * two bakers, the same numbers. Anything that resamples on the way out (a
+ * MeshBasicMaterial, the output colour space) puts a transfer function
+ * between them and the comparison stops meaning anything.
+ */
+export function readPlateBytes(
+  renderer: THREE.WebGLRenderer,
+  kind: string, seed: number, cognitive: boolean, size = PLATE_SMALL,
+): { width: number; height: number; pixels: Uint8Array } {
+  const key = `${kind}:${seed}${cognitive ? ':c' : ''}:${size}`;
+  planetPlates(renderer, kind, seed, cognitive, size);
+  const entry = cache.get(key)!;
+  const rt = entry.targets[0]!;
+  const w = rt.width;
+  const h = rt.height;
+  const buf = new Uint8Array(w * h * 4);
+  const prev = renderer.getRenderTarget();
+  renderer.readRenderTargetPixels(rt, 0, 0, w, h, buf);
+  renderer.setRenderTarget(prev);
+  // readRenderTargetPixels hands back rows bottom-up; the plate is top-down.
+  const out = new Uint8Array(w * h * 4);
+  const stride = w * 4;
+  for (let y = 0; y < h; y++) {
+    out.set(buf.subarray((h - 1 - y) * stride, (h - y) * stride), y * stride);
+  }
+  return { width: w, height: h, pixels: out };
+}
+
 export function seedFromId(id: string): number {
   let h = 0;
   for (let i = 0; i < id.length; i++) h = (h * 33 + id.charCodeAt(i)) >>> 0;

@@ -1,6 +1,7 @@
 import { bakeCityMap } from '../cartography/cityMap.ts';
 import { cityMapFile, cityMapLayers, getOfficialMap, MAP_CREDIT, worldMapFile, worldMapLayers } from '../cartography/officialMaps.ts';
 import { bakePlanetMap, seedFromId } from '../cartography/planetMap.ts';
+import { plateTint } from '../cartography/recipes.ts';
 import {
   bodyById,
   canEnterCity,
@@ -123,7 +124,8 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
     );
     if (official) return official;
     const biome = body.id === 'scadrial' ? scadrialBiome(s.era) : body.biome;
-    return bakePlanetMap(biome, seedFromId(body.id), 512, 256, s.realm === 'cognitive');
+    return bakePlanetMap(biome, seedFromId(body.id), 512, 256, s.realm === 'cognitive',
+      plateTint(body.kind, body.color));
   };
 
   const blitLocal = (ctx: CanvasRenderingContext2D, map: CanvasImageSource & { width: number; height: number }, fu: number, fv: number) => {

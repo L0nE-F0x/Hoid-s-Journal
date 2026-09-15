@@ -5,7 +5,7 @@ import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial.js';
 import { COSMERE, inEra, scadrialBiome, type Body } from '../data/index.ts';
 import { keplerOffset } from '../layout/kepler.ts';
 import type { Realm } from '../core/store.ts';
-import { recipeFor } from '../cartography/recipes.ts';
+import { plateTint, recipeFor } from '../cartography/recipes.ts';
 import planetVert from '../shaders/planet.vert';
 import planetFrag from '../shaders/planet.frag';
 import atmoVert from '../shaders/atmosphere.vert';
@@ -195,10 +195,10 @@ export class Orrery {
   }
 
   private plateTint(body: Body): THREE.Color {
-    if (body.kind !== 'gas-giant') return new THREE.Color(0xffffff);
-    // Toward the world's own colour, but not all the way: the bands still
-    // have to read as cloud rather than as a flat wash.
-    return new THREE.Color(0xffffff).lerp(new THREE.Color(body.color), 0.88).multiplyScalar(1.15);
+    // Shared with the atlas baker, which has to apply the same multiplier or
+    // the plate and the globe are different colours. See cartography/recipes.
+    const [r, g, b] = plateTint(body.kind, body.color);
+    return new THREE.Color(r, g, b);
   }
 
   /** A neutral 1×1 stand-in, so a world can exist before its plate does. */
@@ -248,7 +248,6 @@ export class Orrery {
         uSpecular: { value: recipe.specular },
         uDetail: { value: 0.02 },
         uSeed: { value: seedFromId(body.id) * 0.41 },
-        uIce: { value: recipe.ice },
         uTidal: { value: recipe.tidal },
         uRingShadow: { value: RINGED[body.id] ? 0.7 : 0 },
         uRingAxis: { value: new THREE.Vector3(0, 1, 0) },
@@ -599,7 +598,6 @@ export class Orrery {
       node.mat.uniforms.uClouds.value = shadesmar ? 0 : recipe.clouds;
       node.mat.uniforms.uNightLights.value = shadesmar ? 0 : recipe.lights;
       node.mat.uniforms.uSpecular.value = recipe.specular;
-      node.mat.uniforms.uIce.value = shadesmar ? 0 : recipe.ice;
       node.mat.uniforms.uTidal.value = shadesmar ? 0 : recipe.tidal;
       node.mat.uniforms.uRelief.value = recipe.relief * 0.06;
       const sky = shadesmar ? SHADESMAR_SKY

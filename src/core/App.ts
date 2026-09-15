@@ -13,7 +13,7 @@ import { SPIRITUAL_RADIUS, Spiritual } from '../render/Spiritual.ts';
 import { Shadesmar } from '../render/Shadesmar.ts';
 import { Starfield } from '../render/Starfield.ts';
 import { EventFx } from '../render/EventFx.ts';
-import { planetPlates, PLATE_SMALL, seedFromId } from '../render/planetBake.ts';
+import { planetPlates, readPlateBytes, PLATE_SMALL, seedFromId } from '../render/planetBake.ts';
 
 const FOV = 52;
 const CLICK_SLOP = 12;
@@ -938,6 +938,29 @@ export class App {
       band: this.autoBand,
       fault: store.state.fault,
     };
+  }
+
+  /**
+   * The bytes of a world's GPU plate, downsampled by point-sampling so the
+   * CPU baker can be asked for exactly the same grid. `test:cartography`
+   * compares the two; see `readPlateBytes`.
+   */
+  samplePlate(kind: string, seed: number, cognitive: boolean, size = 64): {
+    width: number; height: number; pixels: number[];
+  } {
+    const full = readPlateBytes(this.renderer, kind, seed, cognitive);
+    const w = size * 2;
+    const h = size;
+    const pixels: number[] = [];
+    for (let y = 0; y < h; y++) {
+      const sy = Math.min(full.height - 1, Math.floor(((y + 0.5) / h) * full.height));
+      for (let x = 0; x < w; x++) {
+        const sx = Math.min(full.width - 1, Math.floor(((x + 0.5) / w) * full.width));
+        const i = (sy * full.width + sx) * 4;
+        pixels.push(full.pixels[i]!, full.pixels[i + 1]!, full.pixels[i + 2]!, 255);
+      }
+    }
+    return { width: w, height: h, pixels };
   }
 
   dispose(): void {

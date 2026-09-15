@@ -81,7 +81,9 @@ once at boot rather than marched per frame.
 
 ```bash
 npm run shot -- --focus roshar --scale globe --out /tmp/roshar.png
-npm run test:interaction   # 46 checks through real mouse and keyboard
+npm run test:interaction   # 56 checks through real mouse and keyboard
+npm run test:cartography   # the globe and the atlas still draw the same world
+npm run audit:data         # every id resolves, every reference points at something
 npm run audit:ui           # clicks every control, reports the ones that do nothing
 npm run perf               # fps per Realm, expensive layers toggled off one at a time
 ```

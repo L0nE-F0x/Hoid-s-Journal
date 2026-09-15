@@ -262,6 +262,24 @@ export const RECIPES: Record<string, Recipe> = {
 /** Temperate green, for any world that grows something and says no more. */
 export const DEFAULT_FLORA = '#4e7a3e';
 
+/**
+ * Ten gas giants share three bakes and are told apart afterwards by a tint.
+ * It lives here, with the recipes, because both bakers have to apply it: the
+ * globe multiplied the plate by it and the atlas did not, so Jes hung blue in
+ * the sky above a grey plate of itself.
+ *
+ * Returns linear 0–1 multipliers, so the CPU baker can scale bytes by it and
+ * the shader can hand it straight to a uniform.
+ */
+export function plateTint(kind: string, color: string): [number, number, number] {
+  if (kind !== 'gas-giant') return [1, 1, 1];
+  const n = color.replace('#', '');
+  const c = [0, 2, 4].map((i) => parseInt(n.slice(i, i + 2), 16) / 255);
+  // Toward the world's own colour, but not all the way: the bands still have
+  // to read as cloud rather than as a flat wash.
+  return c.map((v) => (1 + (v - 1) * 0.88) * 1.15) as [number, number, number];
+}
+
 const DEFAULTS: Required<Pick<Recipe,
   'ice' | 'lights' | 'clouds' | 'specular' | 'relief' | 'ridges' | 'rivers' | 'tidal' | 'flora'
   | 'floraColor'>> = {

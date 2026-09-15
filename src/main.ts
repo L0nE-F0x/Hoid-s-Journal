@@ -4,7 +4,9 @@ import { connectAudio } from './core/audio.ts';
 import { connectPwa } from './core/pwa.ts';
 import { store } from './core/store.ts';
 import { connectUrlState } from './core/urlState.ts';
-import { eraAt, fullProgress } from './data/index.ts';
+import { bakePlanetMap } from './cartography/planetMap.ts';
+import { plateTint } from './cartography/recipes.ts';
+import { bodyById, eraAt, fullProgress } from './data/index.ts';
 
 interface UIHandles {
   setHoverAnchor(p: { x: number; y: number } | null): void;
@@ -71,6 +73,8 @@ async function main(): Promise<void> {
   // Handle for the capture / interaction harnesses in tools/. Not a public API.
   (window as unknown as { __ceph: unknown }).__ceph = {
     store, app, ui, diagnose: () => app.diagnose(),
+    // `test:cartography` needs both bakers in one page to compare them.
+    bakePlanetMap, plateTint, bodyById,
   };
 
   setBoot(1, 'The Cosmere turns');

@@ -20,7 +20,6 @@ uniform float uRelief;
 uniform float uSpecular;
 uniform float uDetail;
 uniform float uSeed;
-uniform float uIce;
 uniform float uTidal;
 uniform float uRingShadow;
 uniform vec3  uRingAxis;
@@ -168,11 +167,15 @@ void main() {
   }
 
   // ---- ice caps -------------------------------------------------------
-  if (uIce > 0.001) {
-    float lat = abs(n.y);
-    float cap = smoothstep(0.78 - uIce * 0.22, 0.94, lat + fbm3(vObj * 6.0 + uSeed, 3, 2.05, 0.5) * 0.12);
-    lit = mix(lit, vec3(0.90, 0.95, 1.02) * wrap * uSunColor, cap * uIce);
-  }
+  // There are none here on purpose. Both bakers already put the cap on the
+  // plate, in the recipe's own `cap` colour, cut at `0.955 - ice * 0.13` of
+  // the way to the pole. This shader used to paint a *second* cap over the
+  // top of it — hardcoded blue-white, cut on |sin(lat)| at 0.78 - ice * 0.22,
+  // which for Sel is 44° of latitude against the plate's 87°. That is why the
+  // globe and the atlas disagreed about how much ice a world had.
+  //
+  // The baked cap is lit like every other surface, which is also the right
+  // answer: ice in shadow is dark.
 
   // ---- night side -----------------------------------------------------
   float night = 1.0 - shade;

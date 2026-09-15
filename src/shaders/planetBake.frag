@@ -86,7 +86,12 @@ float continent(vec2 uv, vec3 p) {
 /** Gas-giant zonal jets, sheared by their own turbulence. */
 float jets(vec2 uv, vec3 p) {
   float shear = fbm3(vec3(p.x * 1.4, p.y * 7.0, p.z * 1.4) + uSeed, 5, 2.1, 0.55);
-  float band = 0.5 + 0.5 * sin(uv.y * 26.0 + shear * 4.6 + uSeed);
+  // The seed sets the phase, so it has to be reduced into one turn first.
+  // `uSeed` runs to about sixteen hundred, and sin() of that at 32-bit is a
+  // number the driver is entitled to guess at: the same gas giant could band
+  // differently on different hardware, and it banded differently on the CPU.
+  float phase = mod(uSeed, 6.28318530718);
+  float band = 0.5 + 0.5 * sin(uv.y * 26.0 + shear * 4.6 + phase);
   float fine = 0.5 + 0.5 * sin(uv.y * 72.0 + shear * 8.0);
   float storm = smoothstep(0.74, 0.99, fbm3(p * 4.2 + uSeed * 3.0, 4, 2.1, 0.5) * 0.5 + 0.5);
   return clamp(band * 0.70 + fine * 0.16 + storm * 0.42, 0.0, 1.0);

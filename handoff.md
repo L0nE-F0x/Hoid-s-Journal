@@ -27,11 +27,11 @@ were verified on 2026-09-15 and the data was right every time — see *Lore
 checked*. The wet pins are measured and fixed too. Nothing from the audit is
 outstanding; *Do next* is optional work only.
 
-Two commits landed after the ten: `audit:ui` crawls by identity and restores
+Three commits landed after the ten: `audit:ui` crawls by identity and restores
 the whole scene (it had been clicking one button and printing another's name,
 which is where three sessions of "Sixth of the Dusk does nothing" came from),
-and three Roshar pins that were genuinely in the sea were measured off the
-plate and moved.
+three Roshar pins that were genuinely in the sea were measured off the plate
+and moved, and the lore checks came back clean.
 
 **The headline:** Roshar's globe is Roshar now. It was twelve gaussian blobs,
 and `Location.u/v` are 0–1 on the published plate, so the atlas put Kholinar
@@ -140,16 +140,27 @@ member and omitted Edwarn Ladrian, who founded it — and three Lore Web edges
 named `edwarn`, an id that has never existed, so Wax against his own uncle was
 missing from the web.
 
+**The two follow-ups, both closed the same day.**
+
+- **The three lore claims** flagged from memory were all checked and all three
+  were correct as written. See *Lore checked* below.
+- **The wet pins.** `audit:data` listed fourteen in open water and the first
+  pass left every one alone, on the grounds that the mask is derived and the
+  UVs are the record. Right instinct, wrong stopping point: the record is the
+  *plate*, and the plate can be read at full resolution. Three were genuinely
+  wrong and were measured and moved — Kasitor (a hundred per cent water for
+  forty-one pixels, its printed dot forty-seven away on the headland),
+  Cusicesh (sharing Kasitor's wrong coordinate; it belongs in the bay, so it
+  went into the water there) and Rit-vo-Ma (an island people live on, in open
+  sea; placed by component search, because two eyeballed guesses both landed
+  in water). The other eleven are correct and are listed as such in
+  `audit-data.mjs` so the report stays short.
+
 **Still open, and deliberately not touched:**
 
-- **Five pins in open water on Roshar** — Kasitor, Fu Abra, Rit-vo-Ma,
-  Cusicesh and Rishir. `audit:data` lists them. They have *not* been moved:
-  the mask is derived and the UVs are the record, so a human should check each
-  against `roshar_full.jpg` before anything is edited.
 - **Four organisations with no members** — the Vanrial, the stormwardens, the
   Chorus, the Kerztian clergy. No named member on the page; inventing one is
   worse than an empty field.
-- **Two Shard entries worth one Coppermind check each**, below.
 - **Scadrial's coastline.** The mechanism generalises, but `final_empire.jpg`
   is a woodcut with a decorative border and cartouches, and classifying it is
   a different problem from classifying Roshar's blue water.

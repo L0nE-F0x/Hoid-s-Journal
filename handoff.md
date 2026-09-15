@@ -22,8 +22,16 @@ visuals), then the ten best improvements, then all ten. Hard-refresh
 https://thecosmere.netlify.app — the service worker keeps the old shell,
 and Roshar's globe actually looks like Roshar now.
 
-**Do not restart the audit.** Next is *Do next*: three Coppermind checks
-(Reason vs Wisdom first), then the five wet pins on Roshar.
+**Do not restart the audit, and do not reopen the lore checks.** All three
+were verified on 2026-09-15 and the data was right every time — see *Lore
+checked*. The wet pins are measured and fixed too. Nothing from the audit is
+outstanding; *Do next* is optional work only.
+
+Two commits landed after the ten: `audit:ui` crawls by identity and restores
+the whole scene (it had been clicking one button and printing another's name,
+which is where three sessions of "Sixth of the Dusk does nothing" came from),
+and three Roshar pins that were genuinely in the sea were measured off the
+plate and moved.
 
 **The headline:** Roshar's globe is Roshar now. It was twelve gaussian blobs,
 and `Location.u/v` are 0–1 on the published plate, so the atlas put Kholinar
@@ -146,18 +154,20 @@ missing from the web.
   is a woodcut with a decorative border and cartouches, and classifying it is
   a different problem from classifying Roshar's blue water.
 
-## Lore to verify — three claims this pass could not settle
+## Lore checked — all three claims were right, do not reopen them
 
-1. **`shards.ts` calls the sixteenth Shard "Reason."** The name in *Wind and
-   Truth* is very likely **Wisdom**. The entry carries a ch. 115 citation, but
-   we wrote that citation, so it is not independent evidence. One word, very
-   visible.
-2. **Valor's vessel is given as "Medelantorius."** Does not match anything
-   findable. Same check.
-3. **`shattered-plains`' desc claims** fragments of a fourth moon under the
-   stone, "a metal greater than aluminum, that hides even from a Shard,"
-   badged `canon` with `sources: ['stormlight']`. Either cite the chapter or
-   drop the badge to `speculation`.
+The 2026-09-15 pass flagged three things from memory as needing a Coppermind
+check. All three were checked on 2026-09-15 and the data was correct in every
+case. Recorded here so nobody "fixes" any of them:
+
+1. **The sixteenth Shard is `Reason`, not Wisdom.** *Wind and Truth* revealed
+   the name and it is Reason. `shards.ts` was right and the doubt was wrong.
+2. **Valor's Vessel is `Medelantorius`**, a dragon of Yolen, a warrior before
+   the Shattering. She has her own Coppermind page. Right as written.
+3. **The Shattered Plains' fourth moon is canon.** Metallic remnants of a moon
+   that fell before Honor arrived; the metal is explicitly *not* aluminum and
+   was called greater by Honor; the fragments shroud the Plains from the eyes
+   of the Shards. The `canon` badge is correct.
 
 ## What the session before that changed
 
@@ -465,14 +475,16 @@ Open, leftover, not a brief:
 
 ## Do next (priority order)
 
-### 1. The three lore checks above
+### 1. Nothing is outstanding from the audit pass
 
-One Coppermind lookup each. "Reason" is the one that would embarrass us.
+The ten items are done and pushed; the three lore checks came back clean; the
+wet pins are measured and fixed. What follows is optional.
 
-### 2. The five wet pins on Roshar
+### 2. Four organisations still have no members
 
-`audit:data` names them. Measure each off `roshar_full.jpg` rather than
-trusting the traced mask, which is derived and blurred.
+The Vanrial, the stormwardens, the Chorus and the Kerztian clergy. Left empty
+on purpose — no named member appears on the page for any of them. Fill one
+only if a reread turns up a name; do not invent one.
 
 ### 3. Optional depth, only if a reread reaches for it
 

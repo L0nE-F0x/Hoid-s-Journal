@@ -7,6 +7,10 @@
  *
  * Assumes `npm run dev` is already up. Uses the system Chrome; falls back to
  * SwiftShader when the GPU path cannot start.
+ *
+ * With `--focus` it waits for the flight to actually land before `--settle`
+ * starts, and exits 2 if it never does. A damped camera that has not converged
+ * still renders a perfectly plausible frame of the wrong place.
  */
 import puppeteer from 'puppeteer-core';
 import { existsSync, readFileSync } from 'node:fs';
@@ -80,17 +84,36 @@ async function capture(flags, label) {
       });
     }
 
+    const script = args['eval-file']
+      ? readFileSync(args['eval-file'], 'utf8')
+      : typeof args.eval === 'string' ? args.eval : null;
+    if (script) await page.evaluate(script);
+
+    let arrival = null;
     if (args.focus) {
       const scale = typeof args.scale === 'string' ? args.scale : 'globe';
       await page.evaluate((id, sc) => {
         window.__ceph.store.set('cameraCue', { kind: 'focus', id, scale: sc });
       }, args.focus, scale);
-    }
 
-    const script = args['eval-file']
-      ? readFileSync(args['eval-file'], 'utf8')
-      : typeof args.eval === 'string' ? args.eval : null;
-    if (script) await page.evaluate(script);
+      // Wait for the flight to land rather than for a clock to run out.
+      //
+      // `--settle` used to be the whole of it, and a damped camera flight that
+      // had not converged in that time was captured anyway: the file was
+      // written, the exit code was 0, and the frame was of somewhere else.
+      // `--focus scadrial --scale globe` at the default 2600ms did exactly
+      // that, and the only sign was a line of diagnostics nobody reads when
+      // the picture looks plausible.
+      try {
+        await page.waitForFunction((id, sc) => {
+          const s = window.__ceph.store.state;
+          return s.scale === sc && (s.focusedBody === id || s.focusedLocation === id);
+        }, { timeout: Math.max(SETTLE, 15000), polling: 150 }, args.focus, scale);
+        arrival = 'arrived';
+      } catch {
+        arrival = 'NEVER ARRIVED';
+      }
+    }
 
     await new Promise((r) => setTimeout(r, SETTLE));
 
@@ -115,6 +138,14 @@ async function capture(flags, label) {
     );
     const noise = logs.filter((l) => !/vite|hmr/i.test(l));
     if (noise.length) console.error('--- console ---\n' + noise.slice(0, 30).join('\n'));
+    if (arrival === 'NEVER ARRIVED') {
+      console.error(
+        `[${label}] the camera never reached ${args.focus} at ${args.scale ?? 'globe'}. `
+        + `It is at ${info.scale}/${info.body}. The picture is of somewhere else — `
+        + 'raise --settle, or check the world exists in this era.',
+      );
+      process.exitCode = 2;
+    }
     return true;
   } finally {
     await browser.close();

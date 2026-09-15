@@ -13,6 +13,7 @@ export const ORGS_MORE: Organization[] = [
   org('ardentia', 'The Ardentia', '#c4b5fd', 'stormlight', 'church',
     'Vorin ardents: priests, scholars and Soulcasters owned by princes yet sworn to the Almighty. They burn glyphwards while Radiants rewrite their theology.',
     {
+      members: ['kadash', 'lhan', 'pai', 'rushu'],
       aliases: 'ardents, ardent',
       world: 'Roshar', wiki: 'Ardent',
       see: ['vorinism', 'vorin-church', 'soulcaster-device', 'navani'],
@@ -27,9 +28,9 @@ export const ORGS_MORE: Organization[] = [
   org('vorin-church', 'Vorin Church', '#818cf8', 'stormlight', 'church',
     'The institutional faith of Alethkar, Jah Keved and Kharbranth: Heralds, Callings, safehands and a hierarchy that outlived the truth of its own myths.',
     {
+      members: ['kadash', 'lhan', 'pai', 'rushu'],
       world: 'Roshar', wiki: 'Vorinism',
       see: ['ardentia', 'vorinism', 'heralds'],
-      members: [],
     }),
   org('house-venture', 'House Venture', '#64748b', 'mistborn1', 'house',
     'The most powerful great house of the Final Empire at its fall. Straff\'s brutality, Elend\'s books, and a keep full of secrets.',
@@ -49,12 +50,14 @@ export const ORGS_MORE: Organization[] = [
   org('house-tekniel', 'House Tekiel', '#94a3b8', 'mistborn1', 'house',
     'A Final Empire great house, later an Elendel railway name. Tekiel trains and Tekiel pride keep showing up when freight goes missing.',
     {
+      members: ['tevidian', 'vin'],
       world: 'Scadrial', wiki: 'House_Tekiel',
       see: ['noble-houses', 'wax'],
     }),
   org('southern-scadrial', 'Southern Scadrial', '#f97316', 'mistborn2', 'nation',
     'The peoples below the equator who survived ice with medallions, ettmetal and the Sovereign\'s myths. Malwish masks are the face the north meets first.',
     {
+      members: ['allik', 'jordis', 'dajer'],
       arc: 'bom', world: 'Scadrial', wiki: 'Southern_Scadrians',
       see: ['malwish', 'ettmetal', 'malwish-medallion', 'kelsier'],
       bio: 'Not a single state so much as a civilisation the Catacendre almost erased. Airships, masks and unsealed metalminds — and a religious memory of Kelsier that Elendel is not ready for.',
@@ -97,6 +100,7 @@ export const ORGS_MORE: Organization[] = [
   org('iriali', 'The Iriali', '#fde047', 'stormlight', 'nation',
     'Golden-haired people of the Long Trail — seven Lands, a religion of experience, and a habit of leaving before the ending.',
     {
+      members: ['ym'],
       world: 'Roshar', wiki: 'Iriali',
       see: ['yolish-lightweaving', 'hoid'],
       bio: 'They claim this Rosharan chapter is only one Land on a longer journey. By Wind and Truth the leaving begins again, Cosmere tickets included.',
@@ -147,12 +151,14 @@ export const ORGS_MORE: Organization[] = [
   org('beacon-people', 'Beacon', '#fdba74', 'sunlit', 'nation',
     'A Canticle hover-city fleeing the sun and the Cinder King together. Refugees with sunhearts and a plan that needs Nomad\'s worst skills.',
     {
+      members: ['rebeke', 'elegy', 'contemplation', 'confidence', 'compassion', 'zeal'],
       arc: 'sunlit', world: 'Canticle', wiki: 'Beacon',
       see: ['hover-city', 'sunheart', 'union-canticle', 'sigzil'],
     }),
   org('union-canticle', 'Union', '#7f1d1d', 'sunlit', 'nation',
     'The Cinder King\'s city-state on Canticle: Charred enforcers, Chorus threats, and a monopoly on the dawn\'s leftovers.',
     {
+      members: ['cinder-king'],
       arc: 'sunlit', world: 'Canticle', wiki: 'Union_(Canticle)',
       see: ['cinder-king', 'charred', 'chorus', 'beacon-people'],
     }),

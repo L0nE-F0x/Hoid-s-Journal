@@ -4,7 +4,8 @@
  * the shortest path to Hoid.
  */
 import {
-  COSMERE, DAWNSHARDS, RELATIONS, REL_TYPES, bodyByName, isFeaturedPerson, isVisible,
+  COSMERE, DAWNSHARDS, RELATIONS, REL_TYPES, bodyById, bodyByName, characterById,
+  isFeaturedPerson, isVisible, orgById, shardById,
 } from '../data/index.ts';
 import { store } from '../core/store.ts';
 import { el, listen } from './dom.ts';
@@ -25,6 +26,23 @@ interface Edge {
 }
 
 function nid(kind: string, id: string): string { return `${kind}:${id}`; }
+
+/**
+ * Every edge kind the web can draw, so the legend can switch each off.
+ *
+ * `RELATIONS` is hand-written and will never cover four hundred people; the
+ * four below are derived from structure the data already carries. They used
+ * to borrow `bond` and `ally`, which meant the legend called an org roster a
+ * "Rivalry" and a reader could not turn the scaffolding off to see the
+ * relationships underneath.
+ */
+const WEB_TYPES: Record<string, { label: string; color: string; soft?: boolean }> = {
+  ...REL_TYPES,
+  invested: { label: 'Invested', color: '#94a3b8' },
+  origin: { label: 'Home world', color: '#64748b' },
+  member: { label: 'Membership', color: '#0ea5e9' },
+  linked: { label: 'See also', color: '#475569', soft: true },
+};
 
 export function mountLoreWeb(root: HTMLElement): { destroy(): void } {
   const canvas = el('canvas', { className: 'ceph-web-canvas' });
@@ -75,9 +93,12 @@ export function mountLoreWeb(root: HTMLElement): { destroy(): void } {
       if (b.kind === 'gas-giant') continue;
       add('body', b.id, b.name, b.color, b, 12);
     }
+    // Everyone is a candidate; the ones nothing links to are dropped below.
+    // The old gate was a precomputed "featured" set, which held the web to a
+    // hundred and sixty-one of four hundred and thirty-one people — click
+    // anyone else in the Directory and the web had never heard of them.
     for (const c of COSMERE.characters) {
-      if (!isFeaturedPerson(c.id)) continue;
-      add('character', c.id, c.name, c.color, c, 8);
+      add('character', c.id, c.name, c.color, c, isFeaturedPerson(c.id) ? 8 : 6);
     }
     for (const d of DAWNSHARDS) add('dawnshard', d.id, d.name, '#e2e8f0', d, 10);
     for (const o of COSMERE.organizations) add('org', o.id, o.name, o.color, o, 9);
@@ -91,26 +112,61 @@ export function mountLoreWeb(root: HTMLElement): { destroy(): void } {
       if (!a || !b) return;
       links.push({ a, b, type, label, color });
     };
+    const typed = (t: string) => WEB_TYPES[t]?.color ?? '#94a3b8';
     for (const b of COSMERE.bodies) {
-      for (const sh of b.shards) link('body', b.id, 'shard', sh, 'bond', 'Invested', '#94a3b8');
+      for (const sh of b.shards) link('body', b.id, 'shard', sh, 'invested', 'Invested', typed('invested'));
     }
     for (const c of COSMERE.characters) {
       const origin = bodyByName(c.origin);
-      if (origin) link('character', c.id, 'body', origin.id, 'ally', 'Origin', '#64748b');
+      if (origin) link('character', c.id, 'body', origin.id, 'origin', 'Home world', typed('origin'));
     }
     for (const r of RELATIONS) {
       if (!isVisible(r, progress)) continue;
-      const col = REL_TYPES[r.type]?.color ?? '#94a3b8';
-      link(r.a.kind, r.a.id, r.b.kind, r.b.id, r.type, r.label, col);
+      link(r.a.kind, r.a.id, r.b.kind, r.b.id, r.type, r.label, typed(r.type));
     }
     for (const o of COSMERE.organizations) {
       if (!isVisible(o, progress)) continue;
       for (const mid of o.members ?? []) {
-        link('org', o.id, 'character', mid, 'ally', o.name, o.color);
+        link('org', o.id, 'character', mid, 'member', o.name, o.color);
       }
     }
-    nodes = [...map.values()];
-    edges = links;
+    // `see[]` is the only relatedness the encyclopedia records for most of the
+    // roster. Drawn as its own soft layer rather than folded in with the
+    // hand-written relations, so it can be switched off.
+    const seeOf = (kind: string, id: string): string[] | undefined => {
+      if (kind === 'character') return characterById[id]?.see;
+      if (kind === 'org') return orgById[id]?.see;
+      if (kind === 'shard') return shardById[id]?.see;
+      if (kind === 'body') return bodyById[id]?.see;
+      return undefined;
+    };
+    const drawn = new Set(links.map((e) => edgeKey(e.a.key, e.b.key)));
+    // A see[] target names an id, not a kind; ids are unique, so one index
+    // over every node resolves them all.
+    const byId = new Map<string, Node>();
+    for (const n of map.values()) byId.set(n.id, n);
+    for (const a of map.values()) {
+      for (const id of seeOf(a.kind, a.id) ?? []) {
+        const b = byId.get(id);
+        if (!b || b === a) continue;
+        const k = edgeKey(a.key, b.key);
+        if (drawn.has(k)) continue;
+        drawn.add(k);
+        links.push({ a, b, type: 'linked', label: 'See also', color: WEB_TYPES.linked!.color });
+      }
+    }
+
+    // Anything nothing reaches is not on a web. Dropping them here rather than
+    // gating the roster up front means a person joins the moment the lore
+    // gives them one link, wherever that link came from.
+    const degree = new Map<string, number>();
+    for (const e of links) {
+      degree.set(e.a.key, (degree.get(e.a.key) ?? 0) + 1);
+      degree.set(e.b.key, (degree.get(e.b.key) ?? 0) + 1);
+    }
+    nodes = [...map.values()].filter((n) => degree.has(n.key));
+    const live = new Set(nodes.map((n) => n.key));
+    edges = links.filter((e) => live.has(e.a.key) && live.has(e.b.key));
     adj = new Map();
     for (const n of nodes) adj.set(n.key, []);
     for (const e of edges) {
@@ -167,7 +223,7 @@ export function mountLoreWeb(root: HTMLElement): { destroy(): void } {
     const reset = el('button', { className: 'ceph-web-reset', text: 'Fit to frame', attrs: { type: 'button' } });
     listen(reset, 'click', () => { manual = false; });
     legend.append(reset);
-    for (const [type, meta] of Object.entries(REL_TYPES)) {
+    for (const [type, meta] of Object.entries(WEB_TYPES)) {
       const off = hide.has(type);
       const b = el('button', { className: `ceph-web-type${off ? ' is-off' : ''}`, attrs: { type: 'button' } }, [
         el('span', { className: 'ceph-dir-dot', style: { background: meta.color } }),
@@ -198,18 +254,40 @@ export function mountLoreWeb(root: HTMLElement): { destroy(): void } {
       e.a.vx += fx; e.a.vy += fy;
       e.b.vx -= fx; e.b.vy -= fy;
     }
-    for (let i = 0; i < nodes.length; i++) {
-      for (let j = i + 1; j < nodes.length; j++) {
-        const n1 = nodes[i]!, n2 = nodes[j]!;
-        const dx = n2.x - n1.x, dy = n2.y - n1.y;
-        const distSq = Math.max(64, dx * dx + dy * dy);
-        const dist = Math.sqrt(distSq);
-        // Capped: two nodes that land on top of each other would otherwise
-        // push each other to infinity in one frame.
-        const f = Math.min(repulsion / distSq, 40);
-        const fx = (dx / dist) * f, fy = (dy / dist) * f;
-        n1.vx -= fx; n1.vy -= fy;
-        n2.vx += fx; n2.vy += fy;
+    // Repulsion falls off as 1/d², so past a few hundred units a pair moves
+    // each other by less than a thousandth of a pixel a frame. Binning into
+    // cells of that radius and only comparing neighbours turns an all-pairs
+    // sweep into a local one: at five hundred nodes that is a hundred and
+    // forty thousand pairs a frame down to a few thousand.
+    const CELL = 260;
+    const cells = new Map<number, Node[]>();
+    const cellKey = (cx: number, cy: number) => (cx + 4096) * 8192 + (cy + 4096);
+    for (const n of nodes) {
+      const k = cellKey(Math.floor(n.x / CELL), Math.floor(n.y / CELL));
+      const bucket = cells.get(k);
+      if (bucket) bucket.push(n); else cells.set(k, [n]);
+    }
+    const push = (n1: Node, n2: Node) => {
+      const dx = n2.x - n1.x, dy = n2.y - n1.y;
+      const distSq = Math.max(64, dx * dx + dy * dy);
+      if (distSq > CELL * CELL) return;
+      const dist = Math.sqrt(distSq);
+      // Capped: two nodes that land on top of each other would otherwise
+      // push each other to infinity in one frame.
+      const f = Math.min(repulsion / distSq, 40);
+      const fx = (dx / dist) * f, fy = (dy / dist) * f;
+      n1.vx -= fx; n1.vy -= fy;
+      n2.vx += fx; n2.vy += fy;
+    };
+    for (const [key, bucket] of cells) {
+      for (let i = 0; i < bucket.length; i++) {
+        for (let j = i + 1; j < bucket.length; j++) push(bucket[i]!, bucket[j]!);
+      }
+      // Half the neighbourhood, so each pair of cells is visited once.
+      for (const [dx, dy] of [[1, -1], [1, 0], [1, 1], [0, 1]] as const) {
+        const other = cells.get(key + dx * 8192 + dy);
+        if (!other) continue;
+        for (const a of bucket) for (const b of other) push(a, b);
       }
     }
     for (const n of nodes) {
@@ -261,8 +339,9 @@ export function mountLoreWeb(root: HTMLElement): { destroy(): void } {
       ctx.beginPath();
       ctx.moveTo(e.a.x, e.a.y);
       ctx.lineTo(e.b.x, e.b.y);
-      ctx.strokeStyle = hot ? e.color : `${e.color}55`;
-      ctx.lineWidth = (hot ? 2.2 : 1) / zoom;
+      const soft = WEB_TYPES[e.type]?.soft === true;
+      ctx.strokeStyle = hot ? e.color : `${e.color}${soft ? '26' : '55'}`;
+      ctx.lineWidth = (hot ? 2.2 : soft ? 0.6 : 1) / zoom;
       ctx.stroke();
     }
     const sel = store.state.selected;
@@ -277,14 +356,17 @@ export function mountLoreWeb(root: HTMLElement): { destroy(): void } {
         ctx.lineWidth = 1.6 / zoom;
         ctx.stroke();
       }
-      // A hundred and thirty names at once is a grey smear. Shards, worlds
-      // and Dawnshards are the map; people label themselves when you zoom in,
-      // or when they are on the path you asked for.
-      const named = hot || n.kind !== 'character' || zoom > 0.78;
+      // Five hundred names at once is a grey smear. Shards, worlds and
+      // Dawnshards are the map and stay labelled; people and organisations
+      // label themselves when you zoom in, or when they are on the path you
+      // asked for. Orgs used to be always-on, which was legible at a hundred
+      // and thirty nodes and a pile-up at five hundred.
+      const quiet = n.kind === 'character' || n.kind === 'org';
+      const named = hot || !quiet || zoom > (n.kind === 'org' ? 0.62 : 0.78);
       if (!named) continue;
       ctx.fillStyle = hot ? '#eaf4ff'
-        : n.kind === 'character' ? 'rgba(214,224,242,0.58)' : 'rgba(226,236,252,0.86)';
-      ctx.font = `${hot ? 600 : 500} ${((n.kind === 'character' ? 10.5 : 12) / zoom).toFixed(2)}px Inter, ui-sans-serif, sans-serif`;
+        : quiet ? 'rgba(214,224,242,0.58)' : 'rgba(226,236,252,0.86)';
+      ctx.font = `${hot ? 600 : 500} ${((quiet ? 10.5 : 12) / zoom).toFixed(2)}px Inter, ui-sans-serif, sans-serif`;
       ctx.textAlign = 'center';
       ctx.fillText(n.name, n.x, n.y + n.r + 12 / zoom);
     }

@@ -114,6 +114,7 @@ export const ORGANIZATIONS: Organization[] = [
   org('dustbringers', 'The Dustbringers', '#f97316', 'stormlight', 'order',
     'Ashspren. Division and Abrasion. They would rather you called them Releasers.',
     {
+      members: ['malata', 'spark', 'chana'],
       arc: 'oathbringer', world: 'Roshar', wiki: 'Dustbringers',
       see: ['surgebinding'],
       bio: 'Malata is the one on the page, and she is Taravangian\'s. The order has a reputation for burning what they touch. They argue the reputation is the point of learning control.',
@@ -137,6 +138,7 @@ export const ORGANIZATIONS: Organization[] = [
   org('knights-radiant', 'The Knights Radiant', '#bae6fd', 'stormlight', 'order',
     'Ten orders bound to spren by the Nahel bond. They fell at the Recreance. They are back.',
     {
+      members: ['kaladin', 'shallan', 'jasnah', 'dalinar', 'renarin', 'navani', 'lift', 'szeth', 'teft', 'sigzil', 'venli', 'rlain', 'lopen', 'malata', 'skar', 'drehy', 'elhokar', 'ym'],
       world: 'Roshar', wiki: 'Knights_Radiant',
       see: ['surgebinding', 'recreance', 'heralds', 'urithiru'],
       bio: 'Founded in the shadow of the Heralds, headquartered at Urithiru, broken when they learned what Honor had become and what they had done to the singers. The new Radiance is not a restoration so much as a second attempt.',
@@ -153,6 +155,7 @@ export const ORGANIZATIONS: Organization[] = [
   org('fused', 'The Fused', '#ef4444', 'stormlight', 'species',
     'Ancient singers granted immortality by Odium, reborn into living bodies each Everstorm.',
     {
+      members: ['leshwi', 'raboniel', 'el-fused', 'lezian', 'hnanan', 'vatwha'],
       aliases: 'the Fused',
       arc: 'wor', world: 'Roshar', wiki: 'Fused',
       see: ['odium', 'everstorm', 'listeners', 'voidbinding'],
@@ -226,6 +229,7 @@ export const ORGANIZATIONS: Organization[] = [
   org('malwish', 'The Malwish', '#94a3b8', 'mistborn2', 'nation',
     'Southern Scadrians who survived the ice with the Lord Mistborn\'s gift, and built a civilisation out of ettmetal.',
     {
+      members: ['allik', 'jordis', 'dajer', 'aditil', 'leonore'],
       aliases: 'Southern Scadrians, south Scadrial',
       arc: 'bom', world: 'Scadrial', wiki: 'Malwish',
       see: ['southern-continent', 'harmonium', 'allik'],
@@ -249,7 +253,8 @@ export const ORGANIZATIONS: Organization[] = [
     }),
   org('pahn-kahl-plot', 'The Pahn Kahl', '#67e8f9', 'warbreaker', 'nation',
     'A people of Hallandren\'s lowlands. Bluefingers tried to start a war so they could have a country.',
-    { world: 'Nalthis', wiki: 'Pahn_Kahl', see: ['pahn-kahl', 'susebron', 'lightsong'] }),
+    {
+      members: ['bluefingers'], world: 'Nalthis', wiki: 'Pahn_Kahl', see: ['pahn-kahl', 'susebron', 'lightsong'] }),
   org('diem', 'The Diem', '#fbbf24', 'whitesand', 'order',
     'The Sand Masters of Lossand. A profession, a building, a caste, and a political problem.',
     {
@@ -312,6 +317,7 @@ export const ORGANIZATIONS: Organization[] = [
   org('unmade', 'The Unmade', '#7f1d1d', 'stormlight', 'species',
     'Nine Splinters of Odium, each a different ruin. Some were bound. Not all of them stayed bound.',
     {
+      members: ['nergaoul', 'sja-anat', 'ba-ado-mishram', 'ashertmarn', 'yelig-nar', 'moelach', 're-shephir', 'dai-gonarthis', 'chemoarish'],
       aliases: 'the Unmade',
       arc: 'wor', world: 'Roshar', wiki: 'Unmade',
       see: ['odium', 'sja-anat', 'nergaoul', 'ba-ado-mishram'],

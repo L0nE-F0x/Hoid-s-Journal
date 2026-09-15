@@ -190,11 +190,17 @@ if (noCat) note(`glossary terms with no category (the Codex chips skip them): ${
 const noMembers = C.organizations.filter((o) => !o.members?.length).length;
 if (noMembers) note(`organizations with no members: ${pct(noMembers, C.organizations.length)}`);
 
+// Counted the way the web builds it: hand-written relations, org rosters,
+// home world, and `see[]` in either direction. A person with none of those
+// is not on a web and the graph drops them.
 const degree = new Map();
-for (const r of D.RELATIONS) {
-  degree.set(r.a.id, (degree.get(r.a.id) ?? 0) + 1);
-  degree.set(r.b.id, (degree.get(r.b.id) ?? 0) + 1);
+const bump = (id) => degree.set(id, (degree.get(id) ?? 0) + 1);
+for (const r of D.RELATIONS) { bump(r.a.id); bump(r.b.id); }
+for (const o of C.organizations) for (const m of o.members ?? []) { bump(o.id); bump(m); }
+for (const [, rows] of ORDER) {
+  for (const r of rows) for (const id of r.see ?? []) { bump(r.id); bump(id); }
 }
+for (const c of C.characters) if (D.bodyByName(c.origin)) bump(c.id);
 const isolated = C.characters.filter((c) => !degree.has(c.id)).length;
 if (isolated) note(`people with no Lore Web edge: ${pct(isolated, C.characters.length)}`);
 

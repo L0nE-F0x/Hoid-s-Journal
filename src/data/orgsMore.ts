@@ -13,6 +13,7 @@ export const ORGS_MORE: Organization[] = [
   org('ardentia', 'The Ardentia', '#c4b5fd', 'stormlight', 'church',
     'Vorin ardents: priests, scholars and Soulcasters owned by princes yet sworn to the Almighty. They burn glyphwards while Radiants rewrite their theology.',
     {
+      aliases: 'ardents, ardent',
       world: 'Roshar', wiki: 'Ardent',
       see: ['vorinism', 'vorin-church', 'soulcaster-device', 'navani'],
       bio: 'Ardents take vows that remove them from caste politics on paper and place them at the centre of it in practice. Male ardents may read; female ardents Soulcast food for armies. The return of the Knights Radiant is an existential paperwork problem.',
@@ -43,7 +44,7 @@ export const ORGS_MORE: Organization[] = [
     {
       arc: 'aol', world: 'Scadrial', wiki: 'House_Ladrian',
       members: ['wax', 'telsin', 'steris'],
-      see: ['wax', 'steris', 'ghostbloods-scadrial'],
+      see: ['wax', 'steris', 'the-set'],
     }),
   org('house-tekniel', 'House Tekiel', '#94a3b8', 'mistborn1', 'house',
     'A Final Empire great house, later an Elendel railway name. Tekiel trains and Tekiel pride keep showing up when freight goes missing.',

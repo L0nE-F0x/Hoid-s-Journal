@@ -33,7 +33,7 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   khriss: {
     wiki: 'Khrissalla',
-    see: ['nazh', 'silverlight', 'whitesand', 'arcanum'],
+    see: ['nazh', 'silverlight', 'taldain', 'sand-mastery'],
     bio: 'Duchess Khrissalla of Taldain, the Cosmere\'s foremost arcanist and the voice behind the Ars Arcanum essays. She studies Investiture the way generals study maps, sends Nazh to steal the footnotes, and knows more about your planet than your priests do.',
   },
   nazh: {
@@ -148,7 +148,7 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   venli: {
     wiki: 'Venli',
-    see: ['timbre', 'eshonai', 'odal', 'willshapers'],
+    see: ['timbre', 'eshonai', 'odium', 'willshapers'],
     bio: 'Listener scholar who bargained toward stormform, lost her sister to it, and then took a different spren entirely. As a Willshaper and Voice, she tries to build a singer future that is neither slavery nor Odium\'s script.',
   },
   taravangian: {
@@ -173,7 +173,7 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   rock: {
     wiki: 'Rock_(Roshar)',
-    see: ['kaladin', 'bridge-four', 'horneater'],
+    see: ['kaladin', 'bridge-four', 'horneaters'],
     bio: 'Numuhukumakiaki\'aialunamor — Horneater cook, bridgepuller, and the man who sees spren when others cannot. He feeds Bridge Four until the war asks him to kill, then goes home carrying scars stewardship cannot wash off.',
   },
   rysn: {
@@ -373,7 +373,7 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   telsin: {
     wiki: 'Telsin_Ladrian',
-    see: ['wax', 'trell', 'ghostbloods-scadrial'],
+    see: ['wax', 'trell', 'the-set'],
     bio: 'Wax\'s sister and a high operative of the Set under Trell\'s influence. Ambition plus Autonomy\'s religion turns family into opposing command structures; their reunion is a firefight.',
   },
   blushweaver: {

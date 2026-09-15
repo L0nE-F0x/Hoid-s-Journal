@@ -677,7 +677,7 @@ export const PEOPLE_SCADRIAL: Character[] = [
       { era: 2, system: 'scadrian', body: 'scadrial' },
     ], {
       arc: 'hoa', wiki: 'Alonoe',
-      see: ['kelsier', 'leras', 'preservation', 'elantris'],
+      see: ['kelsier', 'leras', 'preservation', 'elantris-city'],
       sources: ['secrethistory', 'mistborn1'],
       bio: 'One of the Ire — Elantrians camped in Scadrial\'s subastral with a plan to stuff Preservation into a creature of their making. Alonoe underestimates a Cognitive Shadow with a grudge. Kelsier robs their preparation and their dignity in Secret History.',
     }),

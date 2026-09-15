@@ -6,6 +6,7 @@ const W = 'wob' as const;
 export const MAGICS: Magic[] = [
   {
     id: 'allomancy', name: 'Allomancy', world: 'Scadrial', book: 'mistborn1', shard: 'Preservation',
+    aliases: 'Allomantic, Misting, Mistborn',
     color: '#22d3ee', type: 'End-positive · Ingested metals',
     desc: 'Burning one of sixteen Allomantic metals in the stomach grants a power. A Mistborn can burn all metals; a Misting, only one.',
     mechanics: 'Snap → burn metal → effect. Pushing/Pulling, flaring, and Duralumin/Nicrosil enhancement. God metals sit outside the base table.',
@@ -36,6 +37,7 @@ export const MAGICS: Magic[] = [
   },
   {
     id: 'feruchemy', name: 'Feruchemy', world: 'Scadrial', book: 'mistborn1', shard: 'Preservation & Ruin',
+    aliases: 'Feruchemist, metalmind',
     color: '#a1a1aa', type: 'End-neutral · Metalminds',
     desc: 'An end-neutral art that stores attributes in metalminds, to be drawn on later. Feruchemists use all sixteen; Ferrings, one.',
     mechanics: 'Store an attribute now, tap it later at greater intensity. Compounding (Allomancy + Feruchemy) breaks the conservation.',
@@ -66,6 +68,7 @@ export const MAGICS: Magic[] = [
   },
   {
     id: 'hemalurgy', name: 'Hemalurgy', world: 'Scadrial', book: 'mistborn1', shard: 'Ruin',
+    aliases: 'Hemalurgic, spike, spikes',
     color: '#71717a', type: 'End-negative · Bind-point spikes',
     desc: 'Ruin\'s bloody art: a metal spike driven through one person, stealing an attribute, then placed in another to grant it — at a loss.',
     mechanics: 'Spike steals Allomancy, Feruchemy, attributes, or other powers depending on metal and bind point. Charges decay unspiked.',
@@ -90,6 +93,7 @@ export const MAGICS: Magic[] = [
   },
   {
     id: 'surgebinding', name: 'Surgebinding', world: 'Roshar', book: 'stormlight', shard: 'Honor & Cultivation',
+    aliases: 'Surgebinder, the Surges',
     color: '#bae6fd', type: 'Spren bond · Stormlight',
     desc: 'The power of the Knights Radiant: a bond with a spren grants access to two of the ten Surges, fuelled by Stormlight.',
     mechanics: 'Speak Ideals → deepen the Nahel bond → unlock Surges, Shardblade (the spren), and Shardplate.',
@@ -137,10 +141,12 @@ export const MAGICS: Magic[] = [
   },
   {
     id: 'old-magic', name: 'Old Magic', world: 'Roshar', book: 'stormlight', shard: 'Cultivation',
+    aliases: 'the Old Magic, Nightwatcher bargain',
     color: '#4ade80', type: 'Boon & Curse',
     desc: 'Granted by the Nightwatcher (or Cultivation herself): a petitioner receives one boon and one matching curse.',
     mechanics: 'Pilgrimage to the Valley. The Nightwatcher chooses; Cultivation occasionally intervenes.',
     users: 'Dalinar, Taravangian, Lunamor (Rock)',
+    bio: 'Cultivation\'s bargain, made at the Valley through the Nightwatcher: one boon, one curse, and no negotiating which is which. Dalinar asked to forget and got it. Lift asked to stay the same, and got that too, in the way these things are granted.',
     canon: C, sources: ['The Stormlight Archive'],
   },
   {
@@ -167,6 +173,7 @@ export const MAGICS: Magic[] = [
   },
   {
     id: 'awakening', name: 'Awakening', world: 'Nalthis', book: 'warbreaker', shard: 'Endowment',
+    aliases: 'Awakener, BioChromatic Breath',
     color: '#f472b6', type: 'BioChromatic Breath · Color',
     desc: 'Command an object using BioChromatic Breath and drained colour to bring it to a kind of life. Ten Heightenings.',
     mechanics: 'Hold/transfer Breath; speak a Command while visualizing intent; fuel with colour.',
@@ -213,6 +220,7 @@ export const MAGICS: Magic[] = [
   },
   {
     id: 'forgery', name: 'Forgery', world: 'Sel', book: 'emperorssoul', shard: 'Devotion & Dominion',
+    aliases: 'Forger, soulstamp',
     color: '#6366f1', type: 'Soulstamps · Rewritten history',
     desc: 'A carved soulstamp rewrites an object\'s — or person\'s — history into a plausible alternative.',
     mechanics: 'A stamp must match what could have been. Essence Marks rewrite a person temporarily.',
@@ -232,6 +240,7 @@ export const MAGICS: Magic[] = [
   },
   {
     id: 'sand-mastery', name: 'Sand Mastery', world: 'Taldain', book: 'whitesand', shard: 'Autonomy',
+    aliases: 'sand master, sandmastery',
     color: '#fcd34d', type: 'Hydrated sand control',
     desc: 'On the Dayside of tidally-locked Taldain, Sand Masters control white sand by spending their own water.',
     mechanics: 'Mastering sand makes it glow and respond to the wielder\'s will; overmastering can kill.',
@@ -251,6 +260,7 @@ export const MAGICS: Magic[] = [
   },
   {
     id: 'aviar', name: 'Aviar', world: 'First of the Sun', book: 'sixthofdusk', shard: 'Autonomy (Patji)',
+    aliases: 'Aviar bond',
     color: '#4ade80', type: 'Bonded birds',
     desc: 'On the Pantheon islands, certain birds (Aviar) grant a power to those they bond.',
     mechanics: 'An Aviar must visit Patji\'s Eye to gain its ability.',
@@ -268,6 +278,7 @@ export const MAGICS: Magic[] = [
   },
   {
     id: 'yolish-lightweaving', name: 'Yolish Lightweaving', world: 'Yolen', book: 'core', shard: '—',
+    aliases: 'Yolen Lightweaving',
     color: '#e9d5ff', type: 'Illusion (no Stormlight)',
     desc: 'The original Lightweaving of Yolen — illusion-craft that, unlike Rosharan Lightweaving, does not require Stormlight.',
     mechanics: 'Distinct from the Lightweavers\' Surge of Illumination; a separate, older art tied to Yolen.',
@@ -276,6 +287,7 @@ export const MAGICS: Magic[] = [
   },
   {
     id: 'aether', name: 'Aether of Night', world: 'Lumar', book: 'tress', shard: '—',
+    aliases: 'aethers, aether spores',
     color: '#6ee7b7', type: 'Symbiotic aether spores',
     desc: 'On Lumar, twelve lunagrees rain coloured aether spores that react explosively with water — and with life.',
     mechanics: 'Each spore colour has distinct behaviour (Verdant vines, Roseite crystal, Zephyr gas, Midnight mimics…).',
@@ -297,6 +309,7 @@ export const MAGICS: Magic[] = [
   },
   {
     id: 'hion', name: 'Hion & Nightmare Painting', world: 'Komashi', book: 'yumi', shard: 'Virtuosity',
+    aliases: 'hion lines',
     color: '#22d3ee', type: 'Splinter-derived arts',
     desc: 'Yoki-hijo summon spirits by stacking stones; painters banish nightmares with bamboo-and-ink illusions under glowing hion lines.',
     mechanics: 'Yoki-hijo channel ritual devotion into spirit-summoning; painters use precise strokes to dispel corrupted spirits.',
@@ -305,11 +318,12 @@ export const MAGICS: Magic[] = [
   },
   {
     id: 'dakhor', name: 'Dakhor', world: 'Sel', book: 'elantris', shard: 'Dominion',
+    aliases: 'Dakhor magic, Dakhor monks',
     color: '#ef4444', type: 'Bone-warping · The Dor',
     desc: 'Fjordell monastic Investiture. The Dor is written into a monk\'s bones until the skeleton itself is a glyph.',
     mechanics: 'Years of prayer and pain reshape the skeleton. A Dakhor monk can teleport, crush, or burn, at the cost of someone else\'s life or their own.',
     users: 'Dilaf, Dakhor Monastery',
-    see: ['dilaf', 'fjorden', 'shu-dereth', 'the-dor'],
+    see: ['dilaf', 'fjorden', 'shu-dereth', 'dor'],
     wiki: 'Dakhor',
     canon: C, sources: ['Elantris'],
     table: {
@@ -325,16 +339,18 @@ export const MAGICS: Magic[] = [
   },
   {
     id: 'chayshan', name: 'ChayShan', world: 'Sel', book: 'elantris', shard: 'Devotion & Dominion',
+    aliases: 'Chay Shan',
     color: '#fbbf24', type: 'Moving meditation · The Dor',
     desc: 'JinDo martial Investiture. The practitioner moves through forms until the Dor answers in the body.',
     mechanics: 'Slow forms, then faster, until strength and speed arrive without muscle. Geographically keyed, like every Selish art.',
     users: 'Shuden, the JinDo',
-    see: ['jindo', 'the-dor'],
+    see: ['jindo', 'dor'],
     wiki: 'ChayShan',
     canon: C, sources: ['Elantris'],
   },
   {
     id: 'bloodsealing', name: 'Bloodsealing', world: 'Sel', book: 'emperorssoul', shard: 'Dominion',
+    aliases: 'Bloodsealer, blood sealing',
     color: '#991b1b', type: 'Stamps · Blood',
     desc: 'Dzhamar\'s cousin to Forgery. A bloodstamp tracks, wards, or puppets, and it wants to be fed.',
     mechanics: 'Blood is the ink. A fresh seal can follow a person across a palace; an old one rots and takes the ward with it.',

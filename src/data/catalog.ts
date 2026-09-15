@@ -299,6 +299,8 @@ export const BODIES: Body[] = [
     orbit: { a: 11.7, e: 0.22, i: 0.15, omega: 4.8, period: 0.9 }, radius: 0.98,
     shards: [], magic: [], species: [], locations: 'Unknown', biome: 'barren', hasSurface: true,
     fact: 'A highly restricted, mysterious planet. Confirmed lore indicates its magic system involves Initiation.',
+    bio: 'Named in the Cosmere far more often than it is described — referenced in letters and by worldhoppers, never visited on the page. Treat any map that claims to place it, including this one, as speculative.',
+    aliases: 'Vax',
     canon: 'wob', sources: ['Word of Brandon'],
     fieldNotes: { magic: { canon: 'wob', note: "Vax's magic ('Initiation') is known only from Word of Brandon." } } },
 ];

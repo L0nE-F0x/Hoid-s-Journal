@@ -13,6 +13,7 @@ export const ORGANIZATIONS: Organization[] = [
   org('ghostbloods', 'The Ghostbloods', '#a3a3a3', 'stormlight', 'secret',
     'A covert worldhopper society after Investiture and the knowledge to use it. Three overlapping diamonds. Thaidakar runs it from Scadrial.',
     {
+      aliases: 'Ghostblood',
       arc: 'wor', world: 'Roshar / Scadrial', wiki: 'Ghostbloods',
       members: ['kelsier', 'mraize', 'iyatil', 'felt', 'shallan'],
       see: ['kelsier', 'mraize', 'seventeenth-shard', 'the-set'],
@@ -21,6 +22,7 @@ export const ORGANIZATIONS: Organization[] = [
   org('seventeenth-shard', 'The Seventeenth Shard', '#e0f2fe', 'stormlight', 'secret',
     'Worldhoppers who observe and do not intervene. Frost writes their letters. They hunt Hoid anyway.',
     {
+      aliases: 'the Seventeenth Shard',
       world: 'Yolen / Cosmere', wiki: 'Seventeenth_Shard',
       members: ['frost', 'galladon', 'demoux', 'baon'],
       see: ['frost', 'hoid', 'ghostbloods'],
@@ -29,6 +31,7 @@ export const ORGANIZATIONS: Organization[] = [
   org('the-ire', 'The Ire', '#a78bfa', 'secrethistory', 'secret',
     'Elantrian worldhoppers who built a fortress in Sel\'s Cognitive Realm and once tried to take up a Shard.',
     {
+      aliases: 'the Ire',
       world: 'Sel', wiki: 'Ire', members: ['riina'],
       see: ['elantris-city', 'riina', 'silverlight'],
       bio: 'They have kept themselves alive for centuries in Shadesmar, drawing on the Dor at a distance. In Secret History they try to claim Preservation as it passes. Riina, the Sorceress of Lumar, is Ire-adjacent. They are not the Seventeenth Shard, and they are not gentle.',
@@ -141,6 +144,7 @@ export const ORGANIZATIONS: Organization[] = [
   org('heralds', 'The Heralds', '#fde68a', 'stormlight', 'order',
     'Ten Cognitive Shadows who held the Oathpact. They broke. One of them did not, for four thousand years.',
     {
+      aliases: 'the Heralds, Herald',
       world: 'Roshar', wiki: 'Herald',
       members: ['nale', 'taln', 'ishar'],
       see: ['oathpact', 'honorblade', 'braize', 'taln'],
@@ -149,6 +153,7 @@ export const ORGANIZATIONS: Organization[] = [
   org('fused', 'The Fused', '#ef4444', 'stormlight', 'species',
     'Ancient singers granted immortality by Odium, reborn into living bodies each Everstorm.',
     {
+      aliases: 'the Fused',
       arc: 'wor', world: 'Roshar', wiki: 'Fused',
       see: ['odium', 'everstorm', 'listeners', 'voidbinding'],
       bio: 'Nine brands, each a Surge-like power, each a death that did not take. They remember every Desolation. Leshwi is the one who still has a conscience. Raboniel is the one who ended a war by starting a worse one. El is worse than both.',
@@ -158,7 +163,7 @@ export const ORGANIZATIONS: Organization[] = [
     {
       world: 'Roshar', wiki: 'Listener',
       members: ['eshonai', 'venli', 'rlain'],
-      see: ['narak', 'shattered-plains', 'everstorm', 'singers'],
+      see: ['narak', 'shattered-plains', 'everstorm', 'singer'],
       bio: 'They left the war and the Fused and made a people on the Shattered Plains. The Alethi found them. Venli found stormform. The Everstorm answered. What is left of them is a remnant trying not to be anyone\'s army.',
     }),
   org('worldsingers', 'The Worldsingers', '#fbbf24', 'stormlight', 'guild',
@@ -176,12 +181,12 @@ export const ORGANIZATIONS: Organization[] = [
       members: ['gavilar', 'dalinar', 'jasnah', 'adolin', 'renarin', 'navani', 'evi'],
       see: ['kholinar', 'alethkar', 'dalinar'],
     }),
-  org('ghostbloods-scadrial', 'The Set', '#e11d48', 'mistborn2', 'secret',
+  org('the-set', 'The Set', '#e11d48', 'mistborn2', 'secret',
     'A conspiracy inside Elendel society, funded by Trell, run by Wax\'s own family.',
     {
       arc: 'sos', world: 'Scadrial', wiki: 'Set',
-      members: ['telsin', 'wax'],
-      see: ['telsin', 'trell', 'autonomy', 'ghostbloods'],
+      members: ['edwarn-ladrian', 'telsin'],
+      see: ['edwarn-ladrian', 'telsin', 'wax', 'trell', 'autonomy', 'ghostbloods'],
       bio: 'Edwarn Ladrian (Suit) and Telsin (Sequence) built a political and religious machine to hand Scadrial to Autonomy. The Set kidnapped, converted, and spiked. Harmony asked Wax to stop his own uncle. He did. Telsin became an avatar anyway.',
     }),
   org('kelsiers-crew', "Kelsier's crew", '#ef4444', 'mistborn1', 'crew',
@@ -195,6 +200,7 @@ export const ORGANIZATIONS: Organization[] = [
   org('keepers', 'The Keepers', '#a3e635', 'mistborn1', 'guild',
     'Terris Feruchemists who copied every scrap of knowledge the Lord Ruler tried to burn.',
     {
+      aliases: 'Keeper, Terris Keepers',
       world: 'Scadrial', wiki: 'Keeper',
       members: ['sazed'],
       see: ['sazed', 'feruchemy', 'tathingdwen'],
@@ -220,6 +226,7 @@ export const ORGANIZATIONS: Organization[] = [
   org('malwish', 'The Malwish', '#94a3b8', 'mistborn2', 'nation',
     'Southern Scadrians who survived the ice with the Lord Mistborn\'s gift, and built a civilisation out of ettmetal.',
     {
+      aliases: 'Southern Scadrians, south Scadrial',
       arc: 'bom', world: 'Scadrial', wiki: 'Malwish',
       see: ['southern-continent', 'harmonium', 'allik'],
       bio: 'They wear masks because a face is private. Their ships fly. Their medallions lend Feruchemy to anyone. They did not ask the Basin to exist, and they are not sure they want it to keep expanding.',
@@ -227,6 +234,7 @@ export const ORGANIZATIONS: Organization[] = [
   org('kandra', 'The kandra', '#d6d3d1', 'mistborn1', 'species',
     'Mistwraiths given Blessings and a Contract. They wear the bones of the dead and keep Harmony\'s secrets.',
     {
+      aliases: 'kandra, mistwraith',
       world: 'Scadrial', wiki: 'Kandra',
       members: ['tensoon', 'melaan'],
       see: ['tensoon', 'hemalurgy', 'harmony'],
@@ -234,6 +242,7 @@ export const ORGANIZATIONS: Organization[] = [
   org('court-of-gods', 'The Court of Gods', '#e879f9', 'warbreaker', 'church',
     'The Returned of Hallandren, each a palace, each a vote, each fed a Breath a week so they do not die again.',
     {
+      aliases: 'the Court of Gods',
       world: 'Nalthis', wiki: 'Court_of_Gods',
       members: ['susebron', 'lightsong', 'blushweaver'],
       see: ['ttelir', 'returned', 'breath'],
@@ -268,6 +277,7 @@ export const ORGANIZATIONS: Organization[] = [
   org('night-brigade', 'The Night Brigade', '#111827', 'sunlit', 'military',
     'A force from a Threnodite world, hunting a Dawnshard across the space age. Sigzil ran from them.',
     {
+      aliases: 'the Night Brigade',
       arc: 'sunlit', world: 'Threnody / Canticle', wiki: 'Night_Brigade',
       members: ['sigzil'],
       see: ['sigzil', 'dawnshard', 'canticle-world'],
@@ -302,6 +312,7 @@ export const ORGANIZATIONS: Organization[] = [
   org('unmade', 'The Unmade', '#7f1d1d', 'stormlight', 'species',
     'Nine Splinters of Odium, each a different ruin. Some were bound. Not all of them stayed bound.',
     {
+      aliases: 'the Unmade',
       arc: 'wor', world: 'Roshar', wiki: 'Unmade',
       see: ['odium', 'sja-anat', 'nergaoul', 'ba-ado-mishram'],
       bio: 'Nergaoul is the Thrill. Ashertmarn is the Heart of Revel. Sja-anat Enlightens spren. Re-Shephir is the Midnight Mother. Moelach gives Death Rattles. Yelig-nar consumes. Ba-Ado-Mishram Connected the singers and was sealed, and the Recreance followed. Dai-Gonarthis and Chemoarish are the ones the books still half-name.',

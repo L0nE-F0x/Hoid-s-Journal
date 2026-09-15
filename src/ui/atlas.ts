@@ -256,7 +256,9 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
           text: m.name,
           style: { borderColor: m.color },
         });
-        listen(chip, 'click', () => store.set('selected', m.id));
+        // A mark that names a place with its own pin on the globe hands over
+        // the fuller entry; ids are unique, so the mark cannot just reuse it.
+        listen(chip, 'click', () => store.set('selected', m.entry ?? m.id));
         roster.append(chip);
       }
     }

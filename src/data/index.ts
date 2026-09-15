@@ -351,6 +351,15 @@ export type LoreHit =
   | { kind: 'magic'; obj: (typeof MAGICS)[number] }
   | { kind: 'perp'; obj: Perpendicularity };
 
+/**
+ * The only door into the encyclopedia. Ids are unique across every kind — a
+ * rule `npm run audit:data` enforces — because this returns the first claimant
+ * and an entry it cannot return is written, indexed, searchable and
+ * unreachable. Forty-four entries were in exactly that state before the rule
+ * existed: fifteen magic systems, thirteen organisations, four Cognitive
+ * sites and four perpendicularities, all shadowed by a one-line glossary term
+ * of the same name.
+ */
 export function loreById(id: string | null | undefined): LoreHit | null {
   if (!id) return null;
   const body = bodyById[id];
@@ -439,15 +448,21 @@ export function searchJournal(
   if (q.length < 2) return [];
   const allow = kinds?.length ? new Set(kinds) : null;
   const hits: SearchHit[] = [];
+  // Ids are unique across every kind, so one concept is one row. The guard is
+  // belt and braces: a duplicate would otherwise show twice and the second
+  // copy would open the first one's card.
+  const taken = new Set<string>();
   const take = (
     id: string, label: string, kind: SearchKind, fact: string,
     vis: { book?: string; arc?: string }, aliases = '', extraHay = '',
     canon?: SearchHit['canon'],
   ) => {
     if (allow && !allow.has(kind)) return;
+    if (taken.has(id)) return;
     if (!isVisible(vis, progress)) return;
     const hay = haystack(label, aliases, fact, extraHay);
     if (!matchesQuery(q, hay, label, aliases)) return;
+    taken.add(id);
     hits.push({
       id, label, kind, fact, book: vis.book, arc: vis.arc, aliases,
       score: scoreHit(q, label, aliases, fact), canon,
@@ -455,7 +470,8 @@ export function searchJournal(
   };
 
   for (const b of BODIES) {
-    take(b.id, b.name, 'world', b.fact, b, '', [b.bio, b.species.join(' '), b.magic.join(' '), b.locations].join(' '), b.canon);
+    take(b.id, b.name, 'world', b.fact, b, b.aliases ?? '',
+      [b.bio, b.species.join(' '), b.magic.join(' '), b.locations].join(' '), b.canon);
   }
   for (const m of MOONS) take(m.id, m.name, 'moon', m.fact, m, '', '', m.canon);
   for (const s of SYSTEMS) take(s.id, s.name, 'system', `${s.name} system of the Cosmere`, { book: s.book });
@@ -463,17 +479,23 @@ export function searchJournal(
     take(c.id, c.name, 'person', c.fact, c, c.aliases,
       [c.bio, c.abilities, c.origin, c.titles, c.biology].join(' '), c.canon);
   }
-  for (const s of SHARDS) take(s.id, s.name, 'shard', s.desc, s, s.intent ?? '', s.bio ?? '', s.canon);
-  for (const m of MAGICS) take(m.id, m.name, 'magic', m.desc, m, '', [m.mechanics, m.users, m.bio].join(' '), m.canon);
+  for (const s of SHARDS) {
+    take(s.id, s.name, 'shard', s.desc, s, [s.intent, s.aliases].filter(Boolean).join(', '), s.bio ?? '', s.canon);
+  }
+  for (const m of MAGICS) {
+    take(m.id, m.name, 'magic', m.desc, m, m.aliases ?? '', [m.mechanics, m.users, m.bio].join(' '), m.canon);
+  }
   for (const g of GLOSSARY) take(g.id, g.term, 'term', g.def, g, g.aliases ?? '', '', g.canon);
-  for (const l of LOCATIONS) take(l.id, l.name, 'place', l.desc, l, l.region ?? '', l.bio ?? '', l.canon);
+  for (const l of LOCATIONS) {
+    take(l.id, l.name, 'place', l.desc, l, [l.region, l.aliases].filter(Boolean).join(', '), l.bio ?? '', l.canon);
+  }
   for (const m of Object.values(landmarkById)) take(m.id, m.name, 'place', m.desc, m, '', '');
-  for (const h of HUBS) take(h.id, h.name, 'place', h.fact, h, '', h.bio ?? '', h.canon);
+  for (const h of HUBS) take(h.id, h.name, 'place', h.fact, h, h.aliases ?? '', h.bio ?? '', h.canon);
   for (const d of DAWNSHARDS) take(d.id, d.name, 'relic', d.fact, d, d.command, d.bio ?? '', d.canon);
   for (const o of ORGANIZATIONS) {
-    take(o.id, o.name, 'org', o.fact, o, '', [o.bio, o.world, o.kind].join(' '), o.canon);
+    take(o.id, o.name, 'org', o.fact, o, o.aliases ?? '', [o.bio, o.world, o.kind].join(' '), o.canon);
   }
-  for (const p of PERPS) take(p.id, p.name, 'door', p.fact, p, '', '', p.canon);
+  for (const p of PERPS) take(p.id, p.name, 'door', p.fact, p, p.aliases ?? '', '', p.canon);
 
   hits.sort((a, b) => a.score - b.score || a.label.localeCompare(b.label));
   return hits.slice(0, limit);

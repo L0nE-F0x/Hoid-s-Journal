@@ -103,9 +103,9 @@ export const RELATIONS_MORE: Relation[] = [
 
   // --- Scadrial Era 2 ---------------------------------------------------
   { a: { kind: 'character', id: 'wax' }, b: { kind: 'character', id: 'telsin' }, type: 'family', label: 'Siblings', book: 'mistborn2', canon: C },
-  { a: { kind: 'character', id: 'wax' }, b: { kind: 'character', id: 'edwarn' }, type: 'family', label: 'Uncle & nephew', book: 'mistborn2', canon: C },
-  { a: { kind: 'character', id: 'telsin' }, b: { kind: 'character', id: 'edwarn' }, type: 'ally', label: 'The Set', book: 'mistborn2', canon: C },
-  { a: { kind: 'character', id: 'wax' }, b: { kind: 'character', id: 'edwarn' }, type: 'rival', label: 'Lawman & Suit', book: 'mistborn2', canon: C },
+  { a: { kind: 'character', id: 'wax' }, b: { kind: 'character', id: 'edwarn-ladrian' }, type: 'family', label: 'Uncle & nephew', book: 'mistborn2', canon: C },
+  { a: { kind: 'character', id: 'telsin' }, b: { kind: 'character', id: 'edwarn-ladrian' }, type: 'ally', label: 'The Set', book: 'mistborn2', canon: C },
+  { a: { kind: 'character', id: 'wax' }, b: { kind: 'character', id: 'edwarn-ladrian' }, type: 'rival', label: 'Lawman & Suit', book: 'mistborn2', canon: C },
   { a: { kind: 'character', id: 'steris' }, b: { kind: 'character', id: 'marasi' }, type: 'family', label: 'Half-sisters', book: 'mistborn2', canon: C },
   { a: { kind: 'character', id: 'wayne' }, b: { kind: 'character', id: 'marasi' }, type: 'romance', label: 'Unrequited / deep care', book: 'mistborn2', canon: C },
   { a: { kind: 'character', id: 'wayne' }, b: { kind: 'character', id: 'melaan' }, type: 'romance', label: 'On-and-off', book: 'mistborn2', canon: C },
@@ -165,7 +165,7 @@ export const RELATIONS_MORE: Relation[] = [
   { a: { kind: 'character', id: 'mraize' }, b: { kind: 'org', id: 'ghostbloods' }, type: 'bond', label: 'Roshar cell', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'frost' }, b: { kind: 'org', id: 'seventeenth-shard' }, type: 'bond', label: 'Leads / speaks for', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'gavilar' }, b: { kind: 'org', id: 'sons-of-honor' }, type: 'bond', label: 'Secret society', book: 'stormlight', canon: C },
-  { a: { kind: 'character', id: 'telsin' }, b: { kind: 'org', id: 'ghostbloods-scadrial' }, type: 'bond', label: 'Set leadership', book: 'mistborn2', canon: C },
+  { a: { kind: 'character', id: 'telsin' }, b: { kind: 'org', id: 'the-set' }, type: 'bond', label: 'Set leadership', book: 'mistborn2', canon: C },
   { a: { kind: 'character', id: 'sazed' }, b: { kind: 'org', id: 'keepers' }, type: 'bond', label: 'Terris Keeper', book: 'mistborn1', canon: C },
   { a: { kind: 'character', id: 'kenton' }, b: { kind: 'org', id: 'diem' }, type: 'bond', label: 'Lord Mastrell', book: 'whitesand', canon: C },
   { a: { kind: 'character', id: 'hrathen' }, b: { kind: 'org', id: 'shu-dereth' }, type: 'bond', label: 'Gyorn', book: 'elantris', canon: C },

@@ -82,6 +82,8 @@ export interface Body extends Cited {
   locations: string;
   fact: string;
   bio?: string;
+  /** Other names a reader might search for. Space-thin, comma separated. */
+  aliases?: string;
   see?: string[];
   wiki?: string;
   biome: BiomeKind;
@@ -120,6 +122,7 @@ export interface Shard extends Cited {
   desc: string;
   bio?: string;
   intent?: string;
+  aliases?: string;
   see?: string[];
   wiki?: string;
   eras: ShardEra[];
@@ -179,6 +182,7 @@ export interface Magic extends Cited {
   mechanics: string;
   users: string;
   bio?: string;
+  aliases?: string;
   see?: string[];
   wiki?: string;
   table?: {
@@ -225,6 +229,7 @@ export interface Location extends Cited {
   desc: string;
   bio?: string;
   region?: string;
+  aliases?: string;
   see?: string[];
   wiki?: string;
   realm?: 'physical' | 'cognitive';
@@ -238,6 +243,12 @@ export interface CityLandmark {
   id: string;
   city: string;
   name: string;
+  /**
+   * The encyclopedia entry this mark *is*, when the place also has a pin on
+   * the globe. Ids are unique across every kind, so a mark cannot simply reuse
+   * the location's; this is how the plate hands the reader the fuller card.
+   */
+  entry?: string;
   u: number;
   v: number;
   color: string;
@@ -271,6 +282,7 @@ export interface Perpendicularity extends Cited {
   body: string;
   book: string;
   fact: string;
+  aliases?: string;
   /** Location id it sits at, when the geography is known. */
   at?: string;
   eraMin?: number;
@@ -299,6 +311,7 @@ export interface Hub extends Cited {
   kind: HubKind;
   fact: string;
   bio?: string;
+  aliases?: string;
   see?: string[];
   wiki?: string;
   /** System ids; layout averages their positions. Empty for anchored sites. */
@@ -366,6 +379,7 @@ export interface Organization extends Cited {
   kind: OrgKind;
   fact: string;
   bio?: string;
+  aliases?: string;
   members?: string[];
   see?: string[];
   wiki?: string;

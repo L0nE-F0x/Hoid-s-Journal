@@ -16,6 +16,7 @@
  * `npm run test:cartography` holds the two together now. Change one, change
  * the other, and run it.
  */
+import { coastCoverage } from './coastlines.ts';
 import { plateTint, recipeFor, type Blob, type Recipe } from './recipes.ts';
 
 // ---------------------------------------------------------------------------
@@ -296,7 +297,9 @@ export function bakePlanetMap(
   const cFlora = lin(r.floraColor);
   const wedges = (r.wedges ?? []).map(lin);
   const blobs = r.shape ?? [];
-  const thr = blobs.length ? 0.5 : r.threshold;
+  // A shaped world — blobs or a traced coastline — always cuts at a half; the
+  // shape carries the geography and `threshold` has nothing left to say.
+  const thr = (blobs.length || r.coast) ? 0.5 : r.threshold;
 
   for (let y = 0; y < H; y++) {
     // Texel centres, because that is where a fragment shader samples. Sampling
@@ -327,10 +330,16 @@ export function bakePlanetMap(
         const storm = smoothstep(0.74, 0.99,
           fbm3(px * 4.2 + uSeed * 3, py * 4.2 + uSeed * 3, pz * 4.2 + uSeed * 3, 4, 2.1, 0.5) * 0.5 + 0.5);
         c = clamp(band * 0.70 + fine * 0.16 + storm * 0.42, 0, 1);
-      } else if (blobs.length) {
+      } else if (r.coast || blobs.length) {
         const bays = warped(qx * 0.5, qy * 0.5, qz * 0.5, 3, 0.42);
         const shore = fbm3(qx * 1.8, qy * 1.8, qz * 1.8, 3, 2.05, 0.5);
-        c = clamp(Math.min(1.32, shapeAt(blobs, u, v)) * 0.80 + bays * 0.19 + shore * 0.075, 0, 1.4);
+        // A traced mask is a coverage field: a half at the coast, so the same
+        // 0.80 that carried the blobs carries it to the same threshold, and
+        // the same two bands of noise ruffle the shoreline either way.
+        const shaped = r.coast
+          ? 0.625 + (coastCoverage(r.coast, u, v) - 0.5)
+          : Math.min(1.32, shapeAt(blobs, u, v));
+        c = clamp(shaped * 0.80 + bays * 0.19 + shore * 0.075, 0, 1.4);
       } else {
         c = clamp(warped(qx * 1.25, qy * 1.25, qz * 1.25, 4, 0.5) * 0.5 + 0.5, 0, 1);
       }

@@ -18,6 +18,16 @@ store wall, title over a live scene.
    Roshar surface, Scadrial surface (Catacendre map-swap), Codex, Lore Web.
 5. **Art.** Globe textures stay procedural. Atlas world and city plates may
    use Isaac Stewart's cartography, always credited. No Coppermind portraits.
+
+   One thing crosses that line on purpose, and narrowly: Roshar's *coastline*
+   is traced off the published plate into a 512×256 one-bit land mask
+   (`npm run trace:coast`). Nothing of the artwork is reproduced — not a
+   colour, not a line, not a label — only where the water stops, which is
+   geography rather than art and is the same geography `Location.u/v` are
+   already measured against. Everything the globe actually draws on top of it
+   is still procedural. Without it the atlas showed Kholinar on Alethkar and
+   the globe showed the same pin in open ocean, in one frame, six inches
+   apart.
 6. **Name.** Cephandrius — Hoid's Journal.
 
 ## Why v1 still matters

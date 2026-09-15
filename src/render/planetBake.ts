@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { coastBytes, COAST_H, COAST_W } from '../cartography/coastlines.ts';
 import { DEFAULT_FLORA, recipeFor, type Recipe } from '../cartography/recipes.ts';
 import bakeVert from '../shaders/planetBake.vert';
 import bakeFrag from '../shaders/planetBake.frag';
@@ -47,6 +48,35 @@ function colour(hex: string): THREE.Color {
   return new THREE.Color(hex).convertSRGBToLinear();
 }
 
+/**
+ * The traced land mask as a texture. One per world, built once: it is 128KB of
+ * blurred coverage and rebuilding it on every bake would be the most expensive
+ * thing in the pipeline.
+ */
+const masks = new Map<string, THREE.DataTexture | null>();
+
+function maskTexture(id: string | undefined): THREE.DataTexture | null {
+  if (!id) return null;
+  const hit = masks.get(id);
+  if (hit !== undefined) return hit;
+  const bytes = coastBytes(id);
+  let tex: THREE.DataTexture | null = null;
+  if (bytes) {
+    tex = new THREE.DataTexture(bytes, COAST_W, COAST_H, THREE.RedFormat, THREE.UnsignedByteType);
+    // Longitude wraps, latitude does not; linear, because the CPU twin reads
+    // the same field bilinearly and the two have to land on the same coast.
+    tex.wrapS = THREE.RepeatWrapping;
+    tex.wrapT = THREE.ClampToEdgeWrapping;
+    tex.minFilter = THREE.LinearFilter;
+    tex.magFilter = THREE.LinearFilter;
+    tex.generateMipmaps = false;
+    tex.colorSpace = THREE.NoColorSpace;
+    tex.needsUpdate = true;
+  }
+  masks.set(id, tex);
+  return tex;
+}
+
 function ensureQuad(): THREE.ShaderMaterial {
   if (material) return material;
   material = new THREE.ShaderMaterial({
@@ -80,6 +110,8 @@ function ensureQuad(): THREE.ShaderMaterial {
       uBlobW: { value: new Array<number>(MAX_BLOBS).fill(0) },
       uWedgeCount: { value: 0 },
       uWedges: { value: Array.from({ length: MAX_WEDGES }, () => new THREE.Color()) },
+      uHasMask: { value: 0 },
+      uMask: { value: null },
     },
     vertexShader: bakeVert,
     fragmentShader: bakeFrag,
@@ -127,6 +159,10 @@ function applyRecipe(mat: THREE.ShaderMaterial, r: Recipe, seed: number, cogniti
     (u.uBlobs.value as THREE.Vector4[])[i]!.set(b?.[0] ?? 0, b?.[1] ?? 0, b?.[2] ?? 1, b?.[3] ?? 1);
     (u.uBlobW.value as number[])[i] = b?.[4] ?? 0;
   }
+  const mask = maskTexture(r.coast);
+  u.uHasMask.value = mask ? 1 : 0;
+  u.uMask.value = mask;
+
   const wedges = r.wedges ?? [];
   u.uWedgeCount.value = Math.min(MAX_WEDGES, wedges.length);
   for (let i = 0; i < MAX_WEDGES; i++) {

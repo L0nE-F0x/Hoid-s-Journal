@@ -24,6 +24,12 @@ export interface Recipe {
   /** Domain-warp strength of the continental noise. */
   warp: number;
   shape?: Blob[];
+  /**
+   * Key into `coastlines.ts`: a land mask traced off this world's published
+   * plate by `npm run trace:coast`. Where a world has one it replaces `shape`
+   * entirely — the blobs are an invention and the plate is the book's.
+   */
+  coast?: string;
   bands?: boolean;
   split?: boolean;
   wedges?: string[];
@@ -84,17 +90,11 @@ export const RECIPES: Record<string, Recipe> = {
     clouds: 0.30, cloudTint: '#dceaf6', specular: 0.85,
     ice: 0.15, snow: 0.07, flora: 0.62, floraColor: '#5c7f3a',
     cap: '#dbe8f2',
-    // Tightened so the supercontinent sits in an ocean instead of wrapping the
-    // globe. Roshar's atlas pins live on the Stewart plate, so the procedural
-    // shape is free to move; a world on the procedural atlas is not.
-    shape: [
-      [0.58, 0.54, 0.27, 0.20, 1.10], [0.84, 0.50, 0.17, 0.16, 1.00],
-      [0.34, 0.60, 0.14, 0.13, 0.92], [0.24, 0.42, 0.10, 0.10, 0.86],
-      [0.95, 0.52, 0.09, 0.10, 0.82], [0.62, 0.82, 0.045, 0.040, 0.80],
-      [0.10, 0.52, 0.038, 0.045, 0.84], [0.745, 0.28, 0.060, 0.050, 0.80],
-      [0.497, 0.198, 0.030, 0.026, 0.60], [0.669, 0.533, 0.050, 0.043, 0.62],
-      [0.313, 0.187, 0.056, 0.048, 0.72], [0.419, 0.279, 0.045, 0.039, 0.64],
-    ],
+    // The real one, traced off `public/maps/roshar_full.jpg`. It used to be
+    // twelve hand-tuned gaussian blobs, and `Location.u/v` are 0–1 on that
+    // same plate — so the atlas put Kholinar on Alethkar and the globe put
+    // the very same pin in open ocean, side by side in one frame.
+    coast: 'roshar',
   },
   // The Final Empire: one ash-choked landmass, Terris in the far north. No
   // white at the poles — the ash got there first.

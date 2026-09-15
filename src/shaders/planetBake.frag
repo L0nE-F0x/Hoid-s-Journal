@@ -39,6 +39,9 @@ uniform vec4  uBlobs[14];
 uniform float uBlobW[14];
 uniform int   uWedgeCount;
 uniform vec3  uWedges[12];
+/** A coastline traced off the world's own published plate, when it has one. */
+uniform int       uHasMask;
+uniform sampler2D uMask;
 
 varying vec2 vUv;
 
@@ -74,10 +77,16 @@ float shapeAt(vec2 uv) {
  */
 float continent(vec2 uv, vec3 p) {
   vec3 q = p * uWarp + vec3(uSeed * 1.7);
-  if (uBlobCount > 0) {
+  if (uHasMask == 1 || uBlobCount > 0) {
     float bays = warped(q * 0.50, 3, 0.42);
     float shore = fbm3(q * 1.8, 3, 2.05, 0.5);
-    return clamp(min(1.32, shapeAt(uv)) * 0.80 + bays * 0.19 + shore * 0.075, 0.0, 1.4);
+    // The traced mask is a coverage field, a half at the coast, so it rides
+    // the same 0.80 to the same threshold the blobs did and takes the same two
+    // bands of noise on the shoreline.
+    float shaped = uHasMask == 1
+      ? 0.625 + (texture2D(uMask, uv).r - 0.5)
+      : min(1.32, shapeAt(uv));
+    return clamp(shaped * 0.80 + bays * 0.19 + shore * 0.075, 0.0, 1.4);
   }
   float n = warped(q * 1.25, 4, 0.5) * 0.5 + 0.5;
   return clamp(n, 0.0, 1.0);
@@ -107,7 +116,7 @@ float riverMask(vec3 p) {
 void main() {
   vec2 uv = vUv;
   vec3 p = sphereAt(uv);
-  float thr = uBlobCount > 0 ? 0.50 : uThreshold;
+  float thr = (uHasMask == 1 || uBlobCount > 0) ? 0.50 : uThreshold;
 
   float c = uBands == 1 ? jets(uv, p) : continent(uv, p);
   float coast = uBands == 1 ? 0.10 : 0.008;

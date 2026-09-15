@@ -156,6 +156,41 @@ for (const b of C.bodies) {
   if (!(b.biome in RECIPES)) fail(`body:${b.id} biome -> ${b.biome} (no recipe)`);
 }
 
+// --- pins land on the ground they name ---------------------------------------
+// Where a world's coastline is traced off its published plate, `Location.u/v`
+// and the mask are in the same 0–1, so a pin in the sea is a pin in the wrong
+// place — or a place that really is at sea, which is why this reports rather
+// than fails.
+//
+// The bar is well under a half. The mask is blurred before it is sampled, and
+// a blur eats capes and isthmuses, which is exactly where a port sits: a
+// coastal city reading 0.3 is on the coast, not in the water.
+const { coastCoverage, hasCoast } = await (async () => {
+  const dir = mkdtempSync(join(tmpdir(), 'ceph-coast-'));
+  const outfile = join(dir, 'coast.mjs');
+  await build({
+    entryPoints: [join(ROOT, 'src/cartography/coastlines.ts')],
+    bundle: true, format: 'esm', platform: 'node', outfile, logLevel: 'error',
+  });
+  const mod = await import(pathToFileURL(outfile).href);
+  rmSync(dir, { recursive: true, force: true });
+  return mod;
+})();
+// `atob` is global in node 16+, which is what coastlines.ts uses.
+const wet = [];
+for (const l of C.locations) {
+  const body = D.bodyById[l.body];
+  const coast = body && RECIPES[body.biome]?.coast;
+  if (!coast || !hasCoast(coast)) continue;
+  if (l.realm === 'cognitive') continue;
+  const cov = coastCoverage(coast, l.u, l.v);
+  if (cov < 0.18) wet.push(`${l.id} (${cov.toFixed(2)}) — ${l.name}`);
+}
+if (wet.length) {
+  note(`pins in open water — fine for a sea, check anything else: ${wet.length}`);
+  for (const w of wet) note(`    ${w}`);
+}
+
 // --- spoiler gating ----------------------------------------------------------
 for (const [kind, rows] of ORDER) {
   for (const r of rows) {

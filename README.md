@@ -34,7 +34,7 @@ Netlify: connect this GitHub repo, branch `master`. The build is
 | --- | --- |
 | Cosmere | Flyable 3D orrery of thirteen systems, with marched nebulae and a painted galaxy behind them |
 | System | Kepler orbits, twenty-two moons, ringed gas giants, perpendicularities |
-| Globe | A planet you can read: terrain, a cloud deck that casts shadows, night-side cities, ice, a marched atmosphere, and Roshar's highstorm crossing it |
+| Globe | A planet you can read: terrain, a cloud deck that casts shadows, night-side cities, ice, ringed gas giants that shadow themselves, a marched atmosphere, and Roshar's highstorm crossing it. Roshar's coastline is traced from the published map, so a pin sits on the ground it names |
 | Surface | Continent and city atlas. Roshar and Scadrial use Isaac Stewart plates, credited. Other worlds are baked from the same recipes as their globes. |
 | Time | Era-weighted playhead; per-world calendars stay honest |
 | Realms | Physical, Cognitive and Spiritual, each with its own renderer and its own grade |
@@ -43,10 +43,11 @@ Netlify: connect this GitHub repo, branch `master`. The build is
 ### What is in it
 
 Thirteen systems · eighteen worlds and ten Rosharan gas giants · twenty-two
-moons · sixteen Shards · ninety people, seven of them dragons · a hundred
-and twenty-four places · fifteen Cognitive sites · ten perpendicularities ·
-fifteen magic systems with twelve tables · a hundred and twenty-three
-glossary terms · four Dawnshards.
+moons · sixteen Shards · four hundred and thirty-one people, seven of them
+dragons · three hundred places, every one with a biography · thirty-nine
+city-plate landmarks · fifteen Cognitive sites · ten perpendicularities ·
+sixty-six organisations · nineteen magic systems with thirteen tables · two
+hundred and eighty-five glossary terms · four Dawnshards.
 
 ### The three Realms
 
@@ -76,8 +77,9 @@ See `handoff.md` (live todo), `AGENTS.md` (invariants), and `DESIGN.md` (locks).
 
 Worlds are baked on the GPU from one recipe table that both the renderer and
 the atlas panel read, so a continent sits in the same place on the plate and
-on the globe. The sky, the Spiritual field and Shadesmar's glass are baked
-once at boot rather than marched per frame.
+on the globe — `npm run test:cartography` is what keeps that true. The sky,
+the Spiritual field and Shadesmar's glass are baked once at boot rather than
+marched per frame.
 
 ```bash
 npm run shot -- --focus roshar --scale globe --out /tmp/roshar.png

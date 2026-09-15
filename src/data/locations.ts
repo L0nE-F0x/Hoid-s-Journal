@@ -394,7 +394,7 @@ export const LOCATIONS: Location[] = [
     'Where the Nightwatcher gives a boon and takes something you will miss more.', {
       region: 'The Valley',
       bio: 'The place at the far end of Shinovar\'s mountains where the Nightwatcher gives a boon and takes a curse to match, and does not negotiate either. Dalinar came asking to forget Evi and was granted it in the cruellest possible reading. Cultivation intervenes when it suits her; the Nightwatcher does not know why.', arc: 'oathbringer' }),
-  loc('kasitor', 'Kasitor', 'roshar', 'stormlight', 0.352, 0.230, '#c4b5fd', 'city',
+  loc('kasitor', 'Kasitor', 'roshar', 'stormlight', 0.257, 0.274, '#c4b5fd', 'city',
     'An Iriali city on the northern coast. Rysn traded here.', {
       region: 'Iri',
       bio: 'An Iriali port on the northern coast, where Cusicesh rises out of the bay every dawn and turns through a thousand faces while the city gets on with the morning. Rysn traded here and found the spectacle less remarkable than the locals\' indifference to it.', arc: 'wor' }),

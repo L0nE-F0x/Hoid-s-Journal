@@ -176,18 +176,33 @@ const { coastCoverage, hasCoast } = await (async () => {
   rmSync(dir, { recursive: true, force: true });
   return mod;
 })();
-// `atob` is global in node 16+, which is what coastlines.ts uses.
+/**
+ * Checked against `roshar_full.jpg` at full resolution and correct as they are,
+ * so the report can stay short enough to read. Seas and oceans are named as
+ * seas; Fu Abra and the Purelake temple stand *in* the Purelake; Aimia and the
+ * Reshi Isles are region pins among islands; Rishir's centre is land on the
+ * plate and only reads wet because the mask is blurred, which eats capes.
+ *
+ * Do not add to this list to silence a pin. Measure it off the plate first —
+ * Kasitor, Cusicesh and Rit-vo-Ma were all genuinely in the wrong place, and
+ * they were found because this report was short.
+ */
+const AT_SEA_ON_PURPOSE = new Set([
+  'the-origin', 'reshi-isles', 'aimia', 'aimian-scouring', 'fu-abra', 'rishir',
+  'tarat-sea', 'steamwater-ocean', 'reshi-sea', 'southern-depths', 'purelake-temple',
+]);
+
 const wet = [];
 for (const l of C.locations) {
   const body = D.bodyById[l.body];
   const coast = body && RECIPES[body.biome]?.coast;
   if (!coast || !hasCoast(coast)) continue;
-  if (l.realm === 'cognitive') continue;
+  if (l.realm === 'cognitive' || AT_SEA_ON_PURPOSE.has(l.id)) continue;
   const cov = coastCoverage(coast, l.u, l.v);
   if (cov < 0.18) wet.push(`${l.id} (${cov.toFixed(2)}) — ${l.name}`);
 }
 if (wet.length) {
-  note(`pins in open water — fine for a sea, check anything else: ${wet.length}`);
+  note(`pins in open water, not already checked off — measure each off the plate: ${wet.length}`);
   for (const w of wet) note(`    ${w}`);
 }
 

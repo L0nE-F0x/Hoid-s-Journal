@@ -49,10 +49,10 @@ export const PLACES_MORE: Location[] = [
   loc('fu-abra', 'Fu Abra', 'roshar', 'stormlight', 0.425, 0.505, '#22d3ee', 'village',
     'Purelake settlement Ishikk worked out of while fishing for a man who was not there.', {
       bio: 'One of the Purelake settlements Ishikk worked out of, fishing in the mornings and asking after a foreigner in the afternoons. The three men paying him were Ghostbloods and the man they wanted was not in the lake, but the money was good and the lake is patient.', arc: 'twok', region: 'Purelake', see: ['purelake'], wiki: 'Fu_Abra' }),
-  loc('rit-vo-ma', 'Rit-vo-Ma', 'roshar', 'stormlight', 0.5, 0.18, '#4ade80', 'island',
+  loc('rit-vo-ma', 'Rit-vo-Ma', 'roshar', 'stormlight', 0.5575, 0.1661, '#4ade80', 'island',
     'A Reshi island-greatshell. People live on its back and argue with its moods.', {
       bio: 'One of the Reshi greatshells, with a town on its back and a king who reigns by the isle\'s consent rather than the other way round. When it decides to move, the town moves; when it decides to sulk, the town waits.', arc: 'wor', region: 'Reshi Isles', see: ['reshi-isles'], wiki: 'Rit-vo-Ma' }),
-  loc('cusicesh-site', 'Cusicesh the Protector', 'roshar', 'stormlight', 0.354, 0.228, '#c4b5fd', 'lake',
+  loc('cusicesh-site', 'Cusicesh the Protector', 'roshar', 'stormlight', 0.2525, 0.2675, '#c4b5fd', 'lake',
     'A spren the size of a district that rises each day in Kasitor\'s bay and wears a thousand faces.', {
       bio: 'Every dawn something the size of a city district rises out of Kasitor\'s bay, turns through a thousand faces — some human, some not, all wrong — and sinks again. The Iriali have built a viewing platform. Jasnah wanted to know what it is; nobody has told her.', arc: 'wor', region: 'Iri', see: ['kasitor', 'iri'], wiki: 'Cusicesh' }),
   loc('thaylen-field', 'Thaylen Field', 'roshar', 'stormlight', 0.605, 0.85, '#4ade80', 'grass',

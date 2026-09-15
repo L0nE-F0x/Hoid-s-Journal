@@ -16,6 +16,42 @@ Architecture lock: `AGENTS.md` + `DESIGN.md`. This file is the live todo.
 
 # ▶ START HERE — next session
 
+## ☐ Tomorrow's job: give Scadrial a real coastline
+
+Everything else is done and live. This is the one thing left, and it is the
+last world that needs it — Roshar and Scadrial are the only two with published
+plates, and Roshar's is done.
+
+Scadrial has **69 pins placed on published plates and a globe still drawn from
+blobs**, which is exactly the bug Roshar had: the atlas shows Elendel in the
+Basin and the globe shows the same pin wherever the noise put it.
+
+**Do not start by tuning the classifier.** It was tried on 2026-09-15 and the
+plates cannot be auto-traced — `final_empire.jpg` comes out 0% water because
+its slate never satisfies `b > max(r, g)`, and `elendel_basin.png` is greyscale
+line-art where a brightness threshold finds the lettering and the roads and
+misses the seas. Full numbers under *Still open*.
+
+The work is:
+
+1. **Decide what the plates cover.** Both are *regional* — the Final Empire,
+   and the Basin with the Northern Roughs. Roshar's plate is a supercontinent
+   with ocean all round it, which is the only reason reading it as
+   equirectangular works. Scadrial needs an answer to "what is the rest of the
+   globe" before any tracing means anything.
+2. **Hand-trace the two coastlines.** An hour of careful clicking, or generate
+   a first pass and correct it.
+3. **The machinery is already built and needs no changes.** Drop the mask into
+   `coastlines.ts`, add `coast: '…'` to the recipe, and both bakers pick it up.
+   `npm run test:cartography` will tell you if they disagree, and
+   `npm run audit:data` will tell you which pins ended up in the sea.
+
+Era matters here in a way it did not for Roshar: Scadrial swaps plate at the
+Catacendre (`scadrial-ash` before, `scadrial-basin` after), so it needs two
+masks, one per recipe.
+
+---
+
 **2026-09-15 audit pass is live.** Ten findings, ten fixed, pushed. The
 owner asked for a deep audit (lore depth, lore accuracy, debugging,
 visuals), then the ten best improvements, then all ten. Hard-refresh

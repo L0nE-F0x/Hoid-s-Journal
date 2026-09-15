@@ -16,21 +16,19 @@ Architecture lock: `AGENTS.md` + `DESIGN.md`. This file is the live todo.
 
 # ▶ START HERE — next session
 
-**2026-09-14 visual pass wrapped and live** (`992ad2d`). Frame, globes,
-Realms, labels and cards. Lore and data untouched — the encyclopedia pass
-before it is unchanged.
+**2026-09-15 audit pass is live.** Ten findings, ten fixed, pushed. The
+owner asked for a deep audit (lore depth, lore accuracy, debugging,
+visuals), then the ten best improvements, then all ten. Hard-refresh
+https://thecosmere.netlify.app — the service worker keeps the old shell,
+and Roshar's globe actually looks like Roshar now.
 
-Hard-refresh https://thecosmere.netlify.app; the service worker otherwise
-keeps the old shell, and this pass changed how every globe looks.
+**Do not restart the audit.** Next is *Do next*: three Coppermind checks
+(Reason vs Wisdom first), then the five wet pins on Roshar.
 
-The owner is testing the live deploy and will report back. **That list is
-the brief.** Do not restart the lore hunt from scratch.
-
-Codex (`K` / Search) is the answer engine: question-shaped queries
-("who is Thaidakar", "what is a metalmind"), alias hits (Wit → Hoid,
-Thaidakar → Kelsier), filter chips, See-also chips on the overlay card.
-Hard-refresh https://thecosmere.netlify.app; the service worker otherwise
-keeps the old shell.
+**The headline:** Roshar's globe is Roshar now. It was twelve gaussian blobs,
+and `Location.u/v` are 0–1 on the published plate, so the atlas put Kholinar
+on Alethkar and the globe put the same pin in open ocean, side by side in one
+frame. The coastline is traced off the plate; see *Sharp edges*.
 
 Git: `master` tracking https://github.com/L0nE-F0x/Hoid-s-Journal, **level
 with origin**. Live site: https://thecosmere.netlify.app — **it deploys on
@@ -39,13 +37,14 @@ push, so `git push` is the deploy.**
 
 ```bash
 cd /home/lonefox/Projects/Cephandrius
-git pull
 npm install
 npm run dev              # http://127.0.0.1:5174
 
-# Second shell. This is how you check visual work.
+# Second shell. This is how you check anything.
 npm run shot -- --focus roshar --scale globe --out /tmp/roshar.png
 npm run test:interaction # 56 checks through real mouse and keyboard
+npm run test:cartography # 17 checks that both bakers draw the same world
+npm run audit:data       # referential integrity over src/data
 npm run audit:ui         # clicks every control, reports the ones that do nothing
 npm run perf             # fps per Realm, expensive layers toggled off one at a time
 ```
@@ -53,21 +52,114 @@ npm run perf             # fps per Realm, expensive layers toggled off one at a 
 **Do not verify visuals in a Chrome tab you are not looking at.** A
 background tab throttles `requestAnimationFrame`, so damped camera flights
 never converge and every screenshot lies. `tools/screenshot.mjs` drives
-headless Chrome at 60fps and prints `fps`, `scale`, `body` and `insets`.
+headless Chrome at 60fps, waits for the flight to land, and **exits 2 if it
+never does** — it used to write a plausible picture of the wrong place and
+exit 0.
 
-`window.__ceph = { store, app, ui, diagnose }` is the harness handle only.
-`__ceph.diagnose()` prints the driver, the drawing buffer, the pixel ratio,
-the program count and any fault — ask for it first when someone reports a
-black sky.
+`window.__ceph = { store, app, ui, diagnose, bakePlanetMap, plateTint,
+bodyById }` is the harness handle only. `__ceph.diagnose()` prints the driver,
+the drawing buffer, the pixel ratio, the program count and any fault — ask for
+it first when someone reports a black sky.
 
-Last known green: `npx tsc --noEmit` and
-`npm run test:interaction` (**56/56**) with `npm run dev` already up,
-then `git push` of `e120ebb`. Re-run those plus `npm run build` before
-the next push.
+Last known green, all with `npm run dev` up: `npx tsc --noEmit`,
+`npm run build`, `test:interaction` **56/56**, `test:cartography` **17/17**,
+`audit:data` clean, `audit:ui` **0 fatal / 0 dead**, `perf` flat against a
+same-session baseline.
 
 ---
 
 ## What the last session changed
+
+**2026-09-15 audit pass (`2cd584c` → this handoff, pushed).**
+
+Ten items, each its own commit, in dependency order:
+
+1. **Forty-four entries could be searched but never opened.** `loreById` is
+   the only door into the encyclopedia and returns the first kind that claims
+   an id, and ids were not unique across kinds. Fifteen of nineteen magic
+   systems were shadowed by a one-line glossary term of the same name, so
+   clicking "Allomancy" gave a sentence instead of the metals table and
+   `openId`'s `magic` branch was dead code. Thirteen organisations went the
+   same way, plus four Cognitive sites and four perpendicularities. The rule
+   is now one id, one entry, enforced by `audit:data`.
+2. **`audit:data`** — referential integrity over `src/data/`, no browser.
+   Fails on anything unreachable or dangling; reports depth.
+3. **The globe and the atlas were drawing different planets.** Different noise
+   functions, a second ice cap painted at render time forty degrees wider than
+   the baked one, a per-world tint only one baker applied, two colour spaces.
+   `planetMap.ts` is a line-for-line port of the shader now, and
+   `test:cartography` holds them together.
+4. **Every world card read "SHARDS honor, cultivation, odium".** Named,
+   clickable chips.
+5. **The Lore Web had never heard of 270 people.** The roster gate was a
+   precomputed "featured" set; it is now "has an edge", `see[]` is drawn as
+   its own soft layer, structural edges stopped borrowing other types' names,
+   and twelve empty org rosters were filled. 265 nodes → ~535, with gridded
+   repulsion so it still runs.
+6. **A ring you could never see cast a shadow you could never see.** Rings
+   drew at system scale, shadows at globe scale, mutually exclusive. Both are
+   on together, and the shadow is in world space instead of half in each.
+7. **Salas was labelled across the middle of the planet it was behind.**
+   Ray-sphere occlusion, and declutter now runs on moons too.
+8. **"City scale" was the same orbit with a different word in the breadcrumb.**
+   0.74 of the frame against 0.86 — a five per cent dolly. City frames a cap
+   now, at about 1.8 radii instead of 2.8.
+9. **Kholinar was on Alethkar in the panel and in open ocean on the globe.**
+   Roshar's coastline is traced off the plate. See *Sharp edges*.
+10. **Places were a one-line roster.** All 300 have a bio and a region; all
+    285 glossary terms have a category.
+
+Also: the capture harness stopped lying (above); the card stopped parking on
+the roster it was meant to sit under; `audit:ui` stopped reporting working
+controls as dead — it indexed controls by position and re-rendered the panel
+between clicks, so it was clicking one button and printing another's name.
+That is where "Sixth of the Dusk does nothing" came from, three sessions
+running. The rewrite crawls by identity instead, but the first crawl still
+leaked: restore only re-ran `setup`, so clicking Lore left `view=web` and
+every later click was a legend chip reported under "sky · city". Romance
+(already `is-off` from an earlier scene) was named as taking the app down.
+A targeted click of every legend chip at city scale does not; the original
+run was also regenerating `coastlines.ts` under Vite at the same time.
+Restore now closes overlays the scene did not ask for, skips the title
+plate and the fault Reload, and waits out a HMR reload before calling
+`__ceph` vanishing a crash.
+
+**Lore fixes that fell out of it.** Silverlight had a pin on Yolen and stands
+on no world. The Ire Fortress was anchored to Selish by the hub and Scadrial
+by the location; the Ire are Elantrians, the fortress is in Scadrial's
+subastral. The Set was carrying the id `ghostbloods-scadrial`, listed Wax as a
+member and omitted Edwarn Ladrian, who founded it — and three Lore Web edges
+named `edwarn`, an id that has never existed, so Wax against his own uncle was
+missing from the web.
+
+**Still open, and deliberately not touched:**
+
+- **Five pins in open water on Roshar** — Kasitor, Fu Abra, Rit-vo-Ma,
+  Cusicesh and Rishir. `audit:data` lists them. They have *not* been moved:
+  the mask is derived and the UVs are the record, so a human should check each
+  against `roshar_full.jpg` before anything is edited.
+- **Four organisations with no members** — the Vanrial, the stormwardens, the
+  Chorus, the Kerztian clergy. No named member on the page; inventing one is
+  worse than an empty field.
+- **Two Shard entries worth one Coppermind check each**, below.
+- **Scadrial's coastline.** The mechanism generalises, but `final_empire.jpg`
+  is a woodcut with a decorative border and cartouches, and classifying it is
+  a different problem from classifying Roshar's blue water.
+
+## Lore to verify — three claims this pass could not settle
+
+1. **`shards.ts` calls the sixteenth Shard "Reason."** The name in *Wind and
+   Truth* is very likely **Wisdom**. The entry carries a ch. 115 citation, but
+   we wrote that citation, so it is not independent evidence. One word, very
+   visible.
+2. **Valor's vessel is given as "Medelantorius."** Does not match anything
+   findable. Same check.
+3. **`shattered-plains`' desc claims** fragments of a fourth moon under the
+   stone, "a metal greater than aluminum, that hides even from a Shard,"
+   badged `canon` with `sources: ['stormlight']`. Either cite the chapter or
+   drop the badge to `speculation`.
+
+## What the session before that changed
 
 **2026-09-14 visual pass (`65fa8fc` → `992ad2d`, pushed and live).**
 Lore and data untouched. Five things, each its own commit:
@@ -107,7 +199,7 @@ invent") and needed nothing.
 **Still open from the visual list.** Nothing on the original five. Not
 attempted: godrays, depth of field, aurora (see *Renderer ideas not taken*).
 
-## What the session before that changed
+## And the one before that
 
 **2026-09-13 encyclopedia (`e120ebb`, pushed and live).** Graphics left alone.
 v1 Battle Sim still out. Everything else v1 had for knowledge is here and
@@ -366,22 +458,23 @@ Open, leftover, not a brief:
 - **More sky beats.** The Shattering ring is the first Cosmere-wide event;
   Catacendre / True Desolation can grow the same `EventFx` path
   (`src/render/EventFx.ts`, `src/data/events.ts`).
-- **`npm run audit:ui`** only finds controls that change nothing at all.
-  It reports one: Codex → `systemNalthian`. Pre-existing (it reported two
-  before the 2026-09-14 pass), and probably its own 200ms window rather than
-  a real dead button — `openId` on a system sets `selected` and a
-  `cameraCue` the renderer consumes, and the damped flight has not changed
-  `scale` yet when the audit samples. Worth confirming by hand before
-  chasing it.
+- **`npm run audit:ui`** crawls by identity and restores the scene's
+  `view` / `panel` / `realm`, not just `setup`. Last run: 0 fatal, 0 dead.
+  An earlier crawl named the Lore Web's Romance chip as taking the app
+  down; that was the sweep leaking into the graph, not the chip.
 
 ## Do next (priority order)
 
-### 1. Whatever the owner found on the live deploy
+### 1. The three lore checks above
 
-That is the brief. They are testing Search as a reread companion and will
-come back with a list.
+One Coppermind lookup each. "Reason" is the one that would embarrass us.
 
-### 2. Optional depth, only if a reread reaches for it
+### 2. The five wet pins on Roshar
+
+`audit:data` names them. Measure each off `roshar_full.jpg` rather than
+trusting the traced mask, which is derived and blurred.
+
+### 3. Optional depth, only if a reread reaches for it
 
 - Landmark UVs for the Stewart **city** rasters. The interaction test picks
   landmarks from the roster chips because those scans have no calibrated UVs.
@@ -391,7 +484,7 @@ come back with a list.
 - Azimir has no Stewart plate. Worlds without one use `cityMap.ts`, which is
   now a real plan generator rather than a placeholder.
 
-### 3. Renderer ideas not taken
+### 4. Renderer ideas not taken
 
 Written down so the next session does not rediscover them:
 
@@ -403,6 +496,37 @@ Written down so the next session does not rediscover them:
   a canon check per world before it goes in.
 
 ## Sharp edges / do not re-break
+
+- **One id, one entry, across every kind.** `loreById` returns the first kind
+  that claims an id, so a second claimant is written, indexed, searchable and
+  unopenable. `audit:data` fails on it. When two things genuinely need the
+  same name, suffix the second the way the files already do: `-perp` for a
+  perpendicularity, `-cog` for a Cognitive twin, `-mark` for a city-plate
+  mark. A mark that names a place with its own globe pin carries `entry`.
+- **The plate pipeline has two conversions that look like bugs and are not.**
+  `planetBake.ts` builds uniforms with `new THREE.Color(hex)
+  .convertSRGBToLinear()`, and the constructor *already* converts — so every
+  recipe colour is linearised twice. The albedo target is sRGB, so Three
+  encodes on write. Both bakers do both; `planetMap.ts` says so at the top.
+  Change either and `test:cartography` will tell you.
+- **Do not put a large seed inside `sin()` or `fract()` in a shader.** `uSeed`
+  runs to about sixteen hundred and 32-bit `sin()` of that is a number the
+  driver may guess at: the same gas giant banded differently on different
+  hardware and differently again on the CPU. Reduce into one turn first.
+- **Roshar's coastline comes off the published plate**, not from `shape`
+  blobs — `cartography/coastlines.ts`, regenerated by `npm run trace:coast`.
+  It is a 512×256 one-bit land mask and nothing else of Stewart's artwork; see
+  the note in `DESIGN.md` before widening that. The nine text rectangles in
+  the tracer paint out lettering that sits on open water and will need
+  revisiting only if the plate file changes, which it will not.
+- **`audit:ui` finds controls by identity, not by index.** Clicking anything
+  re-renders its panel and restoring the scene rebuilds it, and some rebuilds
+  change how many controls are visible — the Journal's "Show everything" is
+  disabled until a book is picked. Indexing by position meant clicking one
+  button and printing another's name, for three sessions. Restore has to
+  put `view` / `panel` / `realm` back to what the scene asked for, not just
+  re-run `setup`, or a Lore click turns every later sky scene into a web
+  sweep.
 
 - **`clouds` in a recipe is coverage, not opacity** (changed 2026-09-14).
   It used to scale the cloud field's alpha, which drew a half-transparent

@@ -10,7 +10,8 @@
  *
  * With `--focus` it waits for the flight to actually land before `--settle`
  * starts, and exits 2 if it never does. A damped camera that has not converged
- * still renders a perfectly plausible frame of the wrong place.
+ * still renders a perfectly plausible frame of the wrong place. `--eval` runs
+ * after the cue, because focusing a world sets the playhead.
  */
 import puppeteer from 'puppeteer-core';
 import { existsSync, readFileSync } from 'node:fs';
@@ -84,11 +85,6 @@ async function capture(flags, label) {
       });
     }
 
-    const script = args['eval-file']
-      ? readFileSync(args['eval-file'], 'utf8')
-      : typeof args.eval === 'string' ? args.eval : null;
-    if (script) await page.evaluate(script);
-
     let arrival = null;
     if (args.focus) {
       const scale = typeof args.scale === 'string' ? args.scale : 'globe';
@@ -114,6 +110,13 @@ async function capture(flags, label) {
         arrival = 'NEVER ARRIVED';
       }
     }
+
+    // After the cue, not before: focusing a world sets the playhead, so an
+    // --eval that moves the era has to run second or the flight undoes it.
+    const script = args['eval-file']
+      ? readFileSync(args['eval-file'], 'utf8')
+      : typeof args.eval === 'string' ? args.eval : null;
+    if (script) await page.evaluate(script);
 
     await new Promise((r) => setTimeout(r, SETTLE));
 

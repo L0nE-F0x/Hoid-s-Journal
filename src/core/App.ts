@@ -29,6 +29,13 @@ const PICK_SLOP = 28;
 
 type PickKind = 'system' | 'body' | 'location' | 'character' | 'shard' | 'hub' | 'moon' | 'dawnshard';
 /** How far off the sun axis the camera stands. Bigger = more terminator. */
+/**
+ * Angular radius of the patch a city view frames, in radians. Seventeen
+ * degrees of arc: low enough that the limb curves away at the corners of the
+ * frame, high enough that the plate still has pixels to spend — descend much
+ * further and a 2048-wide bake is a wash of brown with no horizon in it.
+ */
+const CITY_CAP = 0.30;
 const GLOBE_SUN_OFFSET = 0.7;
 const SURFACE_SUN_OFFSET = 0.95;
 
@@ -64,7 +71,7 @@ export class App {
   private hoverAnchor: ((p: { x: number; y: number } | null) => void) | undefined;
   private follow: { id: string; pos: THREE.Vector3; heading: number } | null = null;
   /** What the last framing asked for, so panels opening later can re-fit. */
-  private framing: { radius: number; fill: number; commanded: number } | null = null;
+  private framing: { radius: number; fill: number; commanded: number; lift?: number } | null = null;
   private autoBand: 'high' | 'medium' | 'low' = 'high';
   private fpsSlow = 0;
   private fpsFast = 0;
@@ -636,7 +643,7 @@ export class App {
       this.framing = null;
       return;
     }
-    const want = this.rig.framingDistance(f.radius, f.fill);
+    const want = this.rig.framingDistance(f.radius, f.fill, 'min', f.lift ?? 0);
     if (Math.abs(want - f.commanded) < 0.02) return;
     f.commanded = want;
     this.rig.setDistance(want);
@@ -666,9 +673,20 @@ export class App {
     this.orrery.setSpinLock(bodyId, theta - face.theta);
     // Soften a polar stare a little; a globe reads better near the equator.
     this.rig.setAngles(theta, Math.PI / 2 + (face.phi - Math.PI / 2) * 0.85);
-    const fill = scale === 'city' ? 0.86 : 0.74;
-    const dist = this.rig.framingDistance(body.radius, fill);
-    this.framing = { radius: body.radius, fill, commanded: dist };
+    // Surface frames the world; city descends to the place.
+    //
+    // Both used to frame the whole planet — 0.74 of the frame against 0.86 —
+    // which is a dolly of about five per cent, not an arrival. You reached
+    // "city scale" and were still in the same orbit, looking at the same
+    // hemisphere, with the plate in the panel doing all the work. City now
+    // frames a cap a tenth of a radius across, measured from the ground: low
+    // enough that the horizon curves and the place you asked for is under you.
+    const city = scale === 'city';
+    const fill = city ? 0.86 : 0.74;
+    const radius = city ? body.radius * Math.sin(CITY_CAP) : body.radius;
+    const lift = city ? body.radius : 0;
+    const dist = this.rig.framingDistance(radius, fill, 'min', lift);
+    this.framing = { radius, fill, commanded: dist, lift };
     this.rig.flyTo(p, dist, 2.0);
   }
 

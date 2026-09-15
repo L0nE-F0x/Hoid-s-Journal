@@ -285,14 +285,22 @@ export class CameraRig {
    * `axis` picks which side to fit: 'min' for a round subject, 'width' for a
    * wide flat one like the plane of the Cosmere.
    */
-  framingDistance(radius: number, fill = 0.52, axis: 'min' | 'width' = 'min'): number {
+  /**
+   * How far to stand so a sphere of `radius` fills `fill` of the free frame.
+   *
+   * `lift` is added before the clamps, for framing something that sits *on* a
+   * body rather than being one: a city is a patch a tenth of a radius across,
+   * and the distance that frames it has to be measured from the ground it
+   * stands on, not from the planet's core.
+   */
+  framingDistance(radius: number, fill = 0.52, axis: 'min' | 'width' = 'min', lift = 0): number {
     const f = this.freeRect();
     const px = axis === 'width'
       ? Math.max(1, f.x1 - f.x0)
       : Math.max(1, Math.min(f.x1 - f.x0, f.y1 - f.y0));
     const tan = Math.tan((this.camera.fov * Math.PI) / 360);
     const d = (radius * this.viewHeight) / Math.max(0.05, fill * px * tan);
-    return clamp(Math.max(d, radius * 2.2), this.minRadius, this.maxRadius);
+    return clamp(lift + Math.max(d, radius * 2.2), this.minRadius, this.maxRadius);
   }
 
   /**

@@ -161,9 +161,32 @@ missing from the web.
 - **Four organisations with no members** — the Vanrial, the stormwardens, the
   Chorus, the Kerztian clergy. No named member on the page; inventing one is
   worse than an empty field.
-- **Scadrial's coastline.** The mechanism generalises, but `final_empire.jpg`
-  is a woodcut with a decorative border and cartouches, and classifying it is
-  a different problem from classifying Roshar's blue water.
+- **Scadrial's coastline**, and it is the only world where the question even
+  arises. Roshar and Scadrial are the only two with published plates
+  (`officialMaps.ts`); every other world's atlas plate *is* the procedural
+  bake, so its globe and its plate already agree by construction and there is
+  no drawn coastline to trace. Moons are a separate pipeline again —
+  `moon.frag`, craters and maria, no recipe and no pins.
+
+  Scadrial has 69 pins on published plates and a blob globe, so it has exactly
+  the bug Roshar had. It was tried on 2026-09-15 and auto-tracing does not
+  work on either plate:
+
+  - `final_empire.jpg` classifies **0%** as water under blue-dominance. Its
+    water is a desaturated slate that never satisfies `b > max(r, g)`.
+  - `elendel_basin.png` is greyscale line-art. Thresholding on brightness
+    picks up the lettering, the roads, the mountains and the border, and
+    misses the seas entirely.
+
+  Worse than the classifier: both are *regional* maps — the Final Empire, and
+  the Basin with the Northern Roughs — not whole worlds. Roshar's plate is a
+  supercontinent with ocean all round it, which is why reading it as
+  equirectangular works. Reading a portrait survey of the Basin the same way
+  would wrap one valley round the planet.
+
+  So it needs a hand-traced coastline and a decision about what the rest of
+  Scadrial's globe is, not a better threshold. Do not start by tuning the
+  classifier.
 
 ## Lore checked — all three claims were right, do not reopen them
 

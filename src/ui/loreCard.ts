@@ -30,6 +30,27 @@ function field(label: string, value: string | undefined | null): HTMLElement | n
   ]);
 }
 
+/**
+ * A field whose value is a list of ids. `shards` and `magic` on a world are
+ * stored as ids, and the card printed them raw — every world in the app read
+ * "SHARDS honor, cultivation, odium". They are names now, and each one opens
+ * the Shard or the Arcanum page it stands for.
+ */
+function refField(label: string, ids: string[] | undefined): HTMLElement | null {
+  const refs = relatedRefs(ids);
+  if (!refs.length) return null;
+  const chips = el('div', { className: 'ceph-see-chips' });
+  for (const r of refs) {
+    const b = el('button', { className: 'ceph-atlas-chip', text: r.label, attrs: { type: 'button' } });
+    listen(b, 'click', () => openId(r.id));
+    chips.append(b);
+  }
+  return el('div', { className: 'ceph-field' }, [
+    el('div', { className: 'ceph-field-label', text: label }),
+    chips,
+  ]);
+}
+
 function fields(pairs: [string, string | undefined | null][]): HTMLElement {
   const grid = el('div', { className: 'ceph-fields' });
   for (const [k, v] of pairs) {
@@ -124,15 +145,20 @@ function fillFromHit(host: HTMLElement, hit: LoreHit): void {
     host.append(headOf(b.kind.replace('-', ' '), b.name, b.color, b.canon));
     host.append(factBlock(b.fact)!);
     host.append(factBlock(b.bio, true) ?? '');
-    host.append(fields([
+    const grid = fields([
       ['System', COSMERE.systems.find((s) => s.id === b.system)?.name],
-      ['Shards', b.shards.join(', ')],
-      ['Magic', b.magic.join(', ')],
+    ]);
+    grid.append(refField('Shards', b.shards) ?? '');
+    grid.append(refField('Magic', b.magic) ?? '');
+    for (const [k, v] of [
       ['Species', b.species.join(', ')],
       ['Places', b.locations],
       ['Sources', b.sources.join(' · ')],
       ['Local date', worldDate(b.system, era)],
-    ]));
+    ] as [string, string | undefined | null][]) {
+      grid.append(field(k, v) ?? '');
+    }
+    host.append(grid);
     host.append(seeRow(b.see) ?? '');
     host.append(wikiLink(b.wiki) ?? '');
     if (b.hasSurface && store.state.scale === 'globe') {

@@ -321,6 +321,20 @@
   border-bottom: 1px solid var(--ceph-rule);
   color: var(--ceph-text);
 }
+/* A field whose reading is a set of links rather than a sentence — the Shards
+   Invested in a world, the magics that grew there. Sits in the value column
+   and keeps the row's hairline, so the plate reads the same either way. */
+.ceph-fields .ceph-see-chips {
+  grid-column: 2;
+  padding: 5px 0 6px;
+  border-bottom: 1px solid var(--ceph-rule);
+  gap: 4px;
+}
+.ceph-fields .ceph-see-chips .ceph-atlas-chip {
+  font-size: 11px;
+  padding: 2px 7px;
+}
+
 .ceph-speed {
   display: flex;
   align-items: center;

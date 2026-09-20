@@ -52,6 +52,13 @@ masks, one per recipe.
 
 ---
 
+**2026-09-20 visual pass is live.** The Shattering is a set-piece instead of
+a growing circle, it no longer re-detonates on every era click, orbits have a
+near side and a far side, the star has a disc, and the roads carry traffic.
+Four commits, pushed. Hard-refresh https://thecosmere.netlify.app — the
+service worker keeps the old shell. Full detail under *What the last session
+changed*; two findings that want an owner decision are under *Do next 4*.
+
 **2026-09-15 audit pass is live.** Ten findings, ten fixed, pushed. The
 owner asked for a deep audit (lore depth, lore accuracy, debugging,
 visuals), then the ten best improvements, then all ten. Hard-refresh
@@ -86,7 +93,7 @@ npm run dev              # http://127.0.0.1:5174
 
 # Second shell. This is how you check anything.
 npm run shot -- --focus roshar --scale globe --out /tmp/roshar.png
-npm run test:interaction # 56 checks through real mouse and keyboard
+npm run test:interaction # 58 checks through real mouse and keyboard
 npm run test:cartography # 17 checks that both bakers draw the same world
 npm run audit:data       # referential integrity over src/data
 npm run audit:ui         # clicks every control, reports the ones that do nothing
@@ -113,6 +120,57 @@ same-session baseline.
 ---
 
 ## What the last session changed
+
+**2026-09-20 visual pass (`474725f` → `923fd77`, pushed and live).**
+Lore and data untouched. Four commits:
+
+1. **The WebGL2 probe took the canvas the renderer was about to ask for.**
+   `getContext('webgl2')` on `#stage` fixes that canvas's attributes forever,
+   so everything Three asked for was silently discarded — measured, the
+   renderer was running at `powerPreference: "default"` instead of
+   `"high-performance"`, and with `antialias: true` against its own post
+   chain, paying for an MSAA backbuffer nothing reads. The probe is on a
+   throwaway canvas now. The boot error also distinguishes "only WebGL1" from
+   "no WebGL at all" and names `chrome://gpu`.
+2. **The Shattering was a flat ring and a square.** An untextured annulus in
+   the XZ plane plus a `SpriteMaterial` with no map, which renders as an
+   additive box. Now four layers: a flash with an anamorphic streak, sixteen
+   comets leaving Yolen in the sixteen Shard colours from `SHARDS`, a
+   shockwave drawn as a sphere seen only at its limb so it is a ring from any
+   angle, and an ember. See *Sharp edges* for the two tuning traps.
+3. **…and it happened on every era click.** The chips set
+   `year = era.start + 1`, so Pre is -7999 and Post is -6999, and every Pre →
+   Post crossed -7000 and re-killed Adonalsium. Passive crossings play once
+   per session; clicking the beat in the HUD always replays. Both pinned by
+   tests — the suite is 58 now.
+4. **Orbits had no near side and no far side.** The half behind its own star
+   fades, via a varying injected into `LineMaterial` (it only publishes a
+   world position under `WORLD_UNITS`, which would make orbit guides thicken
+   as you approach — backwards). At Cosmere scale the rings also step back to
+   a common cool tone; twenty-eight saturated ellipses at a range where you
+   trace none of them was a spirograph.
+5. **A star was a dot with a flare on it.** `sun.frag` already limb-darkens
+   and granulates; `uCoreRadius` was 0.15 at every scale, so the disc was a
+   twelfth of the billboard and none of it showed. 0.34 focused at system
+   scale, 0.24 not, 0.15 from the Cosmere where a star should be a point.
+6. **The roads between worlds dimmed all at once.** A global opacity sine on
+   the whole line reads as a lamp, not as traffic. Routes send packets down
+   their length now. `LineMaterial` only exposes `vLineDistance` under
+   `USE_DASH`, so the material is dashed for the varying and given a dash
+   longer than any route with zero gap, making the dashing a no-op.
+
+**Two things were looked at and deliberately left alone**, so they do not get
+rediscovered: `atmosphere.frag` is a marched single-scattering model with
+wavelength-dependent Rayleigh, a Mie term at g=0.76, analytic ground clipping
+and a softened terminator, on a 12%-radius shell — it is working, and at 1:1
+it plainly is. And the sun's granulation still will not read because the disc
+saturates under `NoToneMapping`; making it read means re-grading every shot
+in the app.
+
+Build clean, 58/58 interaction, 17/17 cartography, `audit:data` clean, perf
+60fps on every layer (cosmere 53, unchanged).
+
+## What the session before that changed
 
 **2026-09-15 audit pass (`2cd584c` → this handoff, pushed).**
 
@@ -239,7 +297,7 @@ case. Recorded here so nobody "fixes" any of them:
    was called greater by Honor; the fragments shroud the Plains from the eyes
    of the Shards. The `canon` badge is correct.
 
-## What the session before that changed
+## And the one before that
 
 **2026-09-14 visual pass (`65fa8fc` → `992ad2d`, pushed and live).**
 Lore and data untouched. Five things, each its own commit:
@@ -279,7 +337,7 @@ invent") and needed nothing.
 **Still open from the visual list.** Nothing on the original five. Not
 attempted: godrays, depth of field, aurora (see *Renderer ideas not taken*).
 
-## And the one before that
+## And before that — the encyclopedia
 
 **2026-09-13 encyclopedia (`e120ebb`, pushed and live).** Graphics left alone.
 v1 Battle Sim still out. Everything else v1 had for knowledge is here and
@@ -439,7 +497,7 @@ Treat this as current truth, not a wishlist.
   Overlay cards show bio, era trail, orders, See-also chips, Coppermind text
   link (no portraits — product lock).
 - Deep-link hash `#y=&realm=&scale=&system=&body=&loc=&reading=`.
-- Harnesses: `npm run shot`, `npm run test:interaction` (56 checks),
+- Harnesses: `npm run shot`, `npm run test:interaction` (58 checks),
   `npm run perf`, `npm run bench`.
 
 ### What the atlas holds
@@ -566,7 +624,22 @@ only if a reread turns up a name; do not invent one.
 - Azimir has no Stewart plate. Worlds without one use `cityMap.ts`, which is
   now a real plan generator rather than a placeholder.
 
-### 4. Renderer ideas not taken
+### 4. Visual findings from 2026-09-20, not taken
+
+Both want a decision before a change, not a patch.
+
+- **Location pins read as flat confetti.** At 1:1 on a globe they are solid
+  coloured discs — no depth, no falloff, no occlusion by the limb. It is the
+  loudest remaining "cheap" tell at the zoom a reader actually inspects a
+  world at. It is UI as much as art, which is why it was left.
+- **The default year is -8000.** `store.ts` opens a first visit in
+  Pre-Shattering, where Scadrial does not exist: no Mistborn, no Elendel, no
+  Silverlight. It may well be deliberate — start at the beginning, scrub
+  forward, watch the Shattering happen — and it is why the replay bug was
+  noticed at all. But "rereaders first" argues for landing in a Cosmere that
+  has already happened. One line either way; the owner has not called it.
+
+### 5. Renderer ideas not taken
 
 Written down so the next session does not rediscover them:
 
@@ -579,6 +652,20 @@ Written down so the next session does not rediscover them:
 
 ## Sharp edges / do not re-break
 
+- **`EventFx`'s `TRAIL` is a sampling rate, not a look.** Sixteen points
+  stretched along a fast head read as a dotted line. The streak only closes
+  up when the spacing drops below the point size, so `TRAIL` and `uLagSpan`
+  are tuned against each other — do not lower one without checking the other.
+- **Point sizes need the projection-correct scale.** `uSize` in
+  `shardfall.vert` is a *world radius*, turned into pixels by
+  `(height * 0.5) / tan(fov/2)` the way the starfield does it. Hardcoding a
+  constant there gives heads two pixels wide at Cosmere scale, which is how
+  the shards came out invisible the first time.
+- **A patched `LineMaterial` needs its own `customProgramCacheKey`.** Orbits
+  and routes both inject shader code via `onBeforeCompile`. Without a
+  distinct cache key a patched and an unpatched material hash to the same
+  program and whichever compiles first wins for both — including for lines
+  that were never meant to be patched at all.
 - **One id, one entry, across every kind.** `loreById` returns the first kind
   that claims an id, so a second claimant is written, indexed, searchable and
   unopenable. `audit:data` fails on it. When two things genuinely need the

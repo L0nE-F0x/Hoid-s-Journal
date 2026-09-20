@@ -24,6 +24,46 @@ const ROUTE_STEPS = 48;
 
 const _v = new THREE.Vector3();
 
+/**
+ * Make a route carry traffic.
+ *
+ * A road between two worlds was a flat violet scratch brightened by a global
+ * sine — the whole line pulsing at once, which reads as a light being dimmed
+ * rather than as anything moving along it. This sends packets down it instead.
+ *
+ * `LineMaterial` only publishes distance-along-the-line as `vLineDistance`,
+ * and only when `USE_DASH` is defined, so the line is switched to dashed for
+ * the varying and then given a dash longer than any route with no gap, which
+ * makes the dashing itself a no-op. The define also drops the round endcaps,
+ * which a road between two points does not need.
+ */
+function flowAlong(mat: LineMaterial, time: { value: number }): void {
+  mat.dashed = true;
+  mat.dashSize = 1e6;
+  mat.gapSize = 0;
+  mat.dashScale = 1;
+  mat.onBeforeCompile = (shader) => {
+    shader.uniforms.uFlowTime = time;
+    shader.uniforms.uFlowFreq = { value: 0.045 };
+    shader.uniforms.uFlowGain = { value: 2.6 };
+    shader.fragmentShader = [
+      'uniform float uFlowTime;',
+      'uniform float uFlowFreq;',
+      'uniform float uFlowGain;',
+      shader.fragmentShader,
+    ].join('\n').replace(
+      'gl_FragColor = vec4( diffuseColor.rgb, alpha );',
+      `float flowS = fract( vLineDistance * uFlowFreq - uFlowTime );
+        // Bright at the head, trailing off behind it rather than ahead.
+        float packet = exp( -( 1.0 - flowS ) * 7.0 );
+        gl_FragColor = vec4(
+          diffuseColor.rgb * ( 1.0 + packet * uFlowGain ),
+          clamp( alpha * ( 1.0 + packet * 1.8 ), 0.0, 1.0 ) );`,
+    );
+  };
+  mat.customProgramCacheKey = () => 'ceph-route-flow';
+}
+
 export class Shadesmar {
   readonly group = new THREE.Group();
 
@@ -31,6 +71,8 @@ export class Shadesmar {
   readonly souls: THREE.Points;
   private readonly soulMat: THREE.ShaderMaterial;
   readonly routes: { line: Line2; id: string }[] = [];
+  /** Shared by every route shader; advancing it moves the traffic. */
+  private readonly flowTime = { value: 0 };
   private readonly systemPos = new Map<string, THREE.Vector3>();
 
   constructor(renderer: THREE.WebGLRenderer) {
@@ -188,13 +230,14 @@ export class Shadesmar {
       geo.setPositions(pts);
       geo.setColors(cols);
       const mat = new LineMaterial({
-        linewidth: 1.6,
+        linewidth: 2.1,
         vertexColors: true,
         transparent: true,
-        opacity: 0.55,
+        opacity: 0.5,
         depthWrite: false,
         blending: THREE.AdditiveBlending,
       });
+      flowAlong(mat, this.flowTime);
       mat.resolution.set(window.innerWidth, window.innerHeight);
       const line = new Line2(geo, mat);
       line.computeLineDistances();
@@ -235,6 +278,7 @@ export class Shadesmar {
       island.mat.uniforms.uPxScale.value = (height * 0.5) / Math.tan((fov * Math.PI) / 360);
     }
 
+    this.flowTime.value = time * 0.09;
     this.soulMat.uniforms.uTime.value = time;
     this.soulMat.uniforms.uSizeScale.value = (height * 0.5) / Math.tan((fov * Math.PI) / 360);
     this.soulMat.uniforms.uScale.value = wide ? 1 : 0.45;
@@ -244,8 +288,9 @@ export class Shadesmar {
       const seen = route ? onTheMap(route, progress, era) : false;
       row.line.visible = wide && seen;
       const mat = row.line.material as LineMaterial;
-      // Traffic: the road brightens in pulses, so it reads as used.
-      mat.opacity = 0.34 + 0.26 * (0.5 + 0.5 * Math.sin(time * 0.7 + row.id.length));
+      // The packets carry the sense of use now; the line under them only has
+      // to breathe, not flash.
+      mat.opacity = 0.40 + 0.10 * (0.5 + 0.5 * Math.sin(time * 0.7 + row.id.length));
     }
   }
 }

@@ -76,6 +76,8 @@ export class App {
   private fpsSlow = 0;
   private fpsFast = 0;
   private lastYear = store.state.year;
+  /** Sky beats already seen this session; see `playSkyEvent`. */
+  private readonly playedEvents = new Set<string>();
   private yearTick = Math.round(yearToSlider(store.state.year) * 1000);
   private warmQueue: { kind: string; seed: number; cognitive: boolean }[] = [];
   private lastWarm = 0;
@@ -133,7 +135,7 @@ export class App {
       if (cue) this.consumeCue(cue);
     }));
     this.disposers.push(store.on('skyEvent', (id) => {
-      if (id) this.playSkyEvent(id);
+      if (id) this.playSkyEvent(id, false);
     }));
     this.disposers.push(store.on('shell', (shell) => {
       this.rig.setInputEnabled(shell === 'play');
@@ -253,9 +255,16 @@ export class App {
     });
   }
 
-  private playSkyEvent(id: string): void {
+  private playSkyEvent(id: string, passive: boolean): void {
     const ev = COSMERE_EVENTS.find((e) => e.id === id);
     if (!ev) return;
+    // These beats happened once. The era chips jump the playhead to
+    // `era.start + 1`, so stepping Pre-Shattering -> Post-Shattering crosses
+    // -7000 every single time, and Adonalsium was dying again on every click.
+    // A crossing the reader did not ask for plays the first time only;
+    // clicking the event in the HUD is a deliberate replay and always plays.
+    if (passive && this.playedEvents.has(id)) return;
+    this.playedEvents.add(id);
     if (store.state.skyEvent) store.set('skyEvent', null);
     this.lastYear = ev.year;
     const origin = this.orrery.bodyPosition('yolen')
@@ -817,11 +826,11 @@ export class App {
     }
     if (!s.cinematic) {
       for (const ev of COSMERE_EVENTS) {
-        if (ev.visual && this.lastYear < ev.year && y >= ev.year) this.playSkyEvent(ev.id);
+        if (ev.visual && this.lastYear < ev.year && y >= ev.year) this.playSkyEvent(ev.id, true);
       }
     }
     this.lastYear = y;
-    this.eventFx.update(dt);
+    this.eventFx.update(dt, this.camera, this.canvas.clientHeight, FOV);
 
     // The opening pull-out crosses three scales. Derive the scale from how far
     // out the camera actually is, or the sky stays dressed for a close-up.
@@ -985,6 +994,7 @@ export class App {
     this.running = false;
     cancelAnimationFrame(this.raf);
     for (const d of this.disposers) d();
+    this.eventFx.dispose();
     this.rig.dispose();
     this.post.dispose();
     this.renderer.dispose();

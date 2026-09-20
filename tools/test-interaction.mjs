@@ -345,6 +345,48 @@ async function run() {
       preSky.lumar && preSky.lumarOrbit && preSky.canticle && preSky.utol
         && preSky.komashi && preSky.yolen && preSky.roshar,
       JSON.stringify(preSky));
+
+    // The Shattering happens once. The era chips jump the playhead to
+    // `era.start + 1`, so stepping Pre-Shattering -> Post-Shattering crosses
+    // -7000 on every single click, and Adonalsium used to die again each time.
+    // Whether or not this is the first crossing of the run, going back and
+    // coming forward again must not restart the beat: either nothing is
+    // playing, or what is playing has kept counting rather than reset to zero.
+    await page.evaluate(() => {
+      window.__ceph.store.set('year', -6999);
+      window.__ceph.store.set('era', 1);
+    });
+    await sleep(320);
+    const fxBefore = await page.evaluate(() => ({
+      playing: window.__ceph.app.eventFx.playing, t: window.__ceph.app.eventFx.t,
+    }));
+    await page.evaluate(() => {
+      window.__ceph.store.set('year', -7999);
+      window.__ceph.store.set('era', 0);
+    });
+    await sleep(220);
+    await page.evaluate(() => {
+      window.__ceph.store.set('year', -6999);
+      window.__ceph.store.set('era', 1);
+    });
+    await sleep(220);
+    const fxAfter = await page.evaluate(() => ({
+      playing: window.__ceph.app.eventFx.playing, t: window.__ceph.app.eventFx.t,
+    }));
+    check('re-crossing the Shattering does not re-detonate it',
+      !fxAfter.playing || fxAfter.t > fxBefore.t,
+      JSON.stringify({ before: fxBefore, after: fxAfter }));
+
+    // Clicking the beat in the HUD is a deliberate replay and always plays.
+    await page.evaluate(() => window.__ceph.store.set('skyEvent', 'shattering'));
+    await sleep(260);
+    const fxClick = await page.evaluate(() => ({
+      playing: window.__ceph.app.eventFx.playing,
+      t: window.__ceph.app.eventFx.t,
+      reduced: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+    }));
+    check('clicking the Shattering in the HUD replays it',
+      fxClick.playing && fxClick.t < 0.8, JSON.stringify(fxClick));
     await page.evaluate(() => {
       window.__ceph.store.set('realm', 'cognitive');
       window.__ceph.store.set('year', 1);

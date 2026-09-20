@@ -16,32 +16,26 @@ Architecture lock: `AGENTS.md` + `DESIGN.md`. This file is the live todo.
 
 # ▶ START HERE — next session
 
-## Scadrial's Basin coastline is done (2026-09-20)
-
-Both of Scadrial's eras now have a traced coastline, the way Roshar does.
-
-- **Ash / Final Empire** (`scadrial-ash`): classified off `final_empire.jpg`
-  on warmth (`r - b < 14`), not blue. 50.5% land, bakers at mean 4.6, **29/29
-  mistborn1 pins on land**. The sea is a neutral slate; the 2026-09-15 note
-  that the plate "comes out 0% water" was the right symptom and the wrong
-  axis. `rule` in the tracer selects **water**, not land.
-- **Basin** (`scadrial-basin`): polygons off `scadrial_full.png` (the Elendel
-  Cartographic Collective world map). That plate cannot be auto-traced — the
-  inland seas are printed on the same white as the land, local maxima saturate
-  on both, and an ink-flood is partitioned by the lat/long grid — so the
-  rings in `tools/trace-coast.mjs` are the record. 46.3% land on the 2:1
-  grid, bakers at mean 16.3, **31 mistborn2 pins re-measured onto that plate,
-  zero in open water** (Hammondar Bay is a named sea and is listed as such).
-  Atlas tabs are World (`scadrial_full.png`) / Basin survey / Starchart.
-  Pins are calibrated to the first tab, as the Endpaper and Starchart already
-  were.
+**Nothing is outstanding.** The 2026-09-20 coastline / pin / playhead work is
+pushed and live. Optional only: *Do next 5* (godrays, DoF, aurora — each
+needs a decision), empty orgs (do not invent members), more sky beats.
 
 Do not reopen a fourth classifier on `scadrial_full.png`. Edit the polygons.
+Do not restart the audit or the lore checks.
 
-**2026-09-20 pins and playhead are live.** Globe pins are beads that fade at
-the limb, not flat discs. First visit lands at Stormlight (year 0), a Cosmere
-that has already happened — scrub back for the Shattering. Hard-refresh
-https://thecosmere.netlify.app.
+**Laptop WebGL (this machine, not the app).** A title screen that says
+"this browser is providing no WebGL at all" is Chrome's GPU process running
+`--use-gl=disabled`. Hybrid Intel + NVIDIA 4050: the flags file pins Chrome
+to Intel (`pci-0000:00:02.0-render` = `renderD128` this boot). If Chrome
+starts on NVIDIA (`renderD129`), ANGLE `gl-egl` fails and Chrome disables GL
+for the whole process — every tab, including the PWA. Fix: fully **Exit**
+Chrome (not the tab), reopen via the "Google Chrome" launcher
+(`google-chrome-intel`). The Cephandrius PWA desktop must go through that
+wrapper; `/opt/google/chrome/google-chrome --app-id=…` skips
+`~/.config/chrome-flags.conf`. Verified 2026-09-20 after a full quit.
+
+Hard-refresh https://thecosmere.netlify.app — the service worker keeps the
+old shell.
 
 ---
 
@@ -111,17 +105,26 @@ Last known green, all with `npm run dev` up: `npx tsc --noEmit`,
 
 ## What the last session changed
 
-**2026-09-20 pins and playhead.** Globe pins were camera-facing discs of solid
-colour — confetti, full-bright at the limb, a few centimetres of radius
-enough to peek around the far side. They are lit beads now, faded by the
-planet's n·v. First visit is year 0 / era 3 (Stormlight): rereaders first,
-and the title cinematic is a highstorm. Pre-Shattering is still on the chips.
+**2026-09-20 wrap (`b061e11` → `c914f62`, pushed and live).** Three product
+commits plus the laptop WebGL diagnosis:
 
-**2026-09-20 Scadrial coastlines.** Ash era classified off `final_empire.jpg`
-on warmth (the sea is grey, not blue). Basin era digitised as polygons off
-`scadrial_full.png`, which is now the leading atlas tab; 31 mistborn2 pins
-re-measured onto it. `audit:data` reports zero Scadrial pins in open water.
-See *START HERE*.
+1. **Ash-era Scadrial coastline.** The Final Empire plate's sea is a neutral
+   slate, not blue. Tracer rule is warmth (`r - b < 14`). 29/29 mistborn1
+   pins on land. `b061e11`.
+2. **Basin-era coastline.** `scadrial_full.png` cannot be classified (inland
+   seas are the same white as land). Polygons in `tools/trace-coast.mjs`;
+   World / Basin / Starchart atlas tabs; 31 mistborn2 pins remasured onto
+   that plate. Zero in open water. `0cbcbc7`.
+3. **Pins and playhead.** Globe pins are lit beads faded by the planet's
+   n·v (`src/shaders/pin.frag`). First visit is year 0 / era 3 (Stormlight).
+   `c914f62`. Interaction **59/59**.
+4. **Chrome on this laptop had WebGL off** from 18:52 until a full Exit.
+   GPU process: `--use-gl=disabled --render-node-override=renderD129`
+   (NVIDIA). Flags on disk already named Intel; Chrome had never reread
+   them. The PWA desktop now goes through `google-chrome-intel`. Not an
+   app bug — see *START HERE*.
+
+**2026-09-20 visual pass (`474725f` → `923fd77`, pushed and live).**
 
 **2026-09-20 visual pass (`474725f` → `923fd77`, pushed and live).**
 Lore and data untouched. Four commits:
@@ -636,6 +639,13 @@ Written down so the next session does not rediscover them:
   stretched along a fast head read as a dotted line. The streak only closes
   up when the spacing drops below the point size, so `TRAIL` and `uLagSpan`
   are tuned against each other — do not lower one without checking the other.
+- **A title screen that says "no WebGL at all" on this laptop is Chrome,
+  not the app.** Hybrid Intel + NVIDIA. Flags pin Chrome to Intel via
+  `pci-0000:00:02.0-render`. A process that started on NVIDIA (`renderD129`
+  this boot) falls back to `--use-gl=disabled` for every window. Fully Exit
+  Chrome and reopen via `google-chrome-intel`. The PWA Exec must use that
+  wrapper; `/opt/google/chrome/google-chrome` skips `chrome-flags.conf`.
+  `renderD*` numbers flip across boots — never pin by minor number.
 - **Globe pins fade by the planet's n·v, not the billboard's.** A
   camera-facing disc at 1.015 radii sticks out of the limb; `uFacing` is the
   surface normal dotted with the view, and a pin with n·v < 0.04 is hidden.

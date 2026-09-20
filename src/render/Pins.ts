@@ -2,8 +2,18 @@ import * as THREE from 'three';
 import { COSMERE, bodyById, onTheMap, perpAt } from '../data/index.ts';
 import { uvOnBody } from '../layout/surface.ts';
 import type { Orrery } from './Orrery.ts';
+import sunVert from '../shaders/sun.vert';
+import pinFrag from '../shaders/pin.frag';
 
 const _off = new THREE.Vector3();
+const _n = new THREE.Vector3();
+const _view = new THREE.Vector3();
+const _quad = new THREE.PlaneGeometry(2, 2);
+
+function smoothstep(e0: number, e1: number, x: number): number {
+  const t = Math.min(1, Math.max(0, (x - e0) / (e1 - e0)));
+  return t * t * (3 - 2 * t);
+}
 
 /** A perpendicularity: a bright ring, because it is a door, not a place. */
 function perpTexture(): THREE.CanvasTexture {
@@ -31,28 +41,6 @@ function perpTexture(): THREE.CanvasTexture {
   return tex;
 }
 
-/** A map marker: bright core, dark ring, so it reads on any terrain. */
-function markerTexture(): THREE.CanvasTexture {
-  const c = document.createElement('canvas');
-  c.width = 64;
-  c.height = 64;
-  const ctx = c.getContext('2d')!;
-  ctx.beginPath();
-  ctx.arc(32, 32, 22, 0, Math.PI * 2);
-  ctx.fillStyle = 'rgba(5,6,13,0.55)';
-  ctx.fill();
-  ctx.lineWidth = 5;
-  ctx.strokeStyle = 'rgba(5,6,13,0.9)';
-  ctx.stroke();
-  ctx.beginPath();
-  ctx.arc(32, 32, 13, 0, Math.PI * 2);
-  ctx.fillStyle = '#ffffff';
-  ctx.fill();
-  const tex = new THREE.CanvasTexture(c);
-  tex.needsUpdate = true;
-  return tex;
-}
-
 function labelTexture(text: string): THREE.CanvasTexture {
   const canvas = document.createElement('canvas');
   canvas.width = 512;
@@ -71,29 +59,48 @@ function labelTexture(text: string): THREE.CanvasTexture {
   return tex;
 }
 
+function pinMaterial(color: string): THREE.ShaderMaterial {
+  return new THREE.ShaderMaterial({
+    uniforms: {
+      uSize: { value: 0.2 },
+      uColor: { value: new THREE.Color(color) },
+      uFacing: { value: 1 },
+      uOpacity: { value: 1 },
+      uHot: { value: 0 },
+    },
+    vertexShader: sunVert,
+    fragmentShader: pinFrag,
+    transparent: true,
+    depthTest: true,
+    depthWrite: false,
+  });
+}
+
 /**
  * Location markers on the focused globe. They are the same rows the atlas
  * panel draws, so a pin on the map and a pin on the world are one place.
+ *
+ * They used to be camera-facing discs of solid colour — confetti stuck on
+ * the planet, full-bright at the limb, and a few centimetres of radius
+ * enough to peek around the far side. They are beads now: a lit hemisphere
+ * on a billboard, faded by the planet's own n·v so the globe occludes them
+ * and they never stick out into space.
  */
 export class Pins {
   readonly group = new THREE.Group();
-  private readonly markers: THREE.Sprite[] = [];
+  private readonly markers: THREE.Mesh[] = [];
 
   private readonly label: THREE.Sprite;
   private labelId: string | null = null;
   private readonly perps: { at: string; sprite: THREE.Sprite }[] = [];
 
   constructor() {
-    const map = markerTexture();
     for (const loc of COSMERE.locations) {
-      const sprite = new THREE.Sprite(new THREE.SpriteMaterial({
-        map,
-        color: new THREE.Color(loc.color),
-        transparent: true,
-      }));
-      sprite.userData = { kind: 'location', id: loc.id, body: loc.body };
-      this.group.add(sprite);
-      this.markers.push(sprite);
+      const mesh = new THREE.Mesh(_quad, pinMaterial(loc.color));
+      mesh.userData = { kind: 'location', id: loc.id, body: loc.body };
+      mesh.renderOrder = 2;
+      this.group.add(mesh);
+      this.markers.push(mesh);
     }
 
     const perpMap = perpTexture();
@@ -101,8 +108,10 @@ export class Pins {
       if (!p.at) continue;
       const sprite = new THREE.Sprite(new THREE.SpriteMaterial({
         map: perpMap, transparent: true, opacity: 0.95,
+        depthTest: true, depthWrite: false,
       }));
       sprite.visible = false;
+      sprite.renderOrder = 2;
       this.group.add(sprite);
       this.perps.push({ at: p.at, sprite });
     }
@@ -118,8 +127,8 @@ export class Pins {
 
   /** Where a marker ended up this frame. Used by the interaction test. */
   markerPosition(id: string): THREE.Vector3 | undefined {
-    const sprite = this.markers.find((m) => m.userData.id === id);
-    return sprite?.visible ? sprite.position : undefined;
+    const mesh = this.markers.find((m) => m.userData.id === id);
+    return mesh?.visible ? mesh.position : undefined;
   }
 
   update(
@@ -141,9 +150,9 @@ export class Pins {
     let hotName: string | null = null;
     for (const p of this.perps) p.sprite.visible = false;
 
-    for (const sprite of this.markers) {
-      const loc = COSMERE.locations.find((l) => l.id === sprite.userData.id);
-      if (!loc) { sprite.visible = false; continue; }
+    for (const mesh of this.markers) {
+      const loc = COSMERE.locations.find((l) => l.id === mesh.userData.id);
+      if (!loc) { mesh.visible = false; continue; }
       const body = bodyById[loc.body];
       const origin = orrery.bodyPosition(loc.body);
       const door = perpAt(loc.id);
@@ -152,28 +161,44 @@ export class Pins {
         : loc.realm !== 'cognitive';
       const vis = !!body && !!origin && onTheMap(loc, progress, era) && side &&
         (!focusedBody || focusedBody === loc.body);
-      sprite.visible = vis;
-      if (!vis || !body || !origin) continue;
+      if (!vis || !body || !origin) { mesh.visible = false; continue; }
+
       uvOnBody(loc.u, loc.v, body.radius * 1.015, orrery.bodySpin(loc.body), _off);
-      sprite.position.copy(origin).add(_off);
-      // Constant apparent size, so a pin stays a pin at every distance.
-      const d = camera.position.distanceTo(sprite.position);
+      mesh.position.copy(origin).add(_off);
+
+      // Planet-space facing, not billboard facing. A pin on the far side
+      // has n·v < 0; one on the limb is near 0 and would stick out of the
+      // silhouette if we drew it at full size.
+      _n.copy(_off).normalize();
+      _view.copy(camera.position).sub(mesh.position).normalize();
+      const facing = _n.dot(_view);
+      if (facing < 0.04) { mesh.visible = false; continue; }
+      mesh.visible = true;
+
+      const fade = smoothstep(0.04, 0.38, facing);
+      const d = camera.position.distanceTo(mesh.position);
       const isHot = loc.id === hot;
-      const size = Math.min(1.2, Math.max(0.03, d * 0.017));
+      const size = Math.min(
+        Math.min(1.2, Math.max(0.03, d * 0.017)),
+        body.radius * 0.055,
+      );
       const dim = scale === 'city' && !!hot && loc.id !== hot;
-      sprite.scale.setScalar(size * (isHot ? 1.7 : 1));
-      (sprite.material as THREE.SpriteMaterial).opacity = dim ? 0.28 : 1;
+      const mat = mesh.material as THREE.ShaderMaterial;
+      mat.uniforms.uSize.value = size * (isHot ? 1.7 : 1) * (0.78 + 0.22 * fade);
+      mat.uniforms.uFacing.value = fade;
+      mat.uniforms.uOpacity.value = dim ? 0.28 : 1;
+      mat.uniforms.uHot.value = isHot ? 1 : 0;
       if (isHot) {
-        hotPos = sprite.position;
+        hotPos = mesh.position;
         hotName = loc.name;
       }
-      // A perpendicularity rides its place: same spot, bigger ring.
       const perp = this.perps.find((p) => p.at === loc.id);
       const perpRow = door;
       if (perp && showPerps && perpRow && onTheMap(perpRow, progress, era)) {
         perp.sprite.visible = true;
-        perp.sprite.position.copy(sprite.position);
-        perp.sprite.scale.setScalar(size * 3.4);
+        perp.sprite.position.copy(mesh.position);
+        perp.sprite.scale.setScalar(size * 3.4 * (0.78 + 0.22 * fade));
+        (perp.sprite.material as THREE.SpriteMaterial).opacity = 0.95 * fade;
       }
     }
 

@@ -152,10 +152,14 @@ class Store {
     focusedLocation: null,
     hovered: null,
     selected: null,
-    year: -8000,
+    // Stormlight, not Pre-Shattering: a first visit lands in a Cosmere that
+    // has already happened. Rereaders first. The title cinematic is a
+    // highstorm on Roshar; year 0 is when that storm is the story. Scrub
+    // back to watch the Shattering — it still plays.
+    year: 0,
     isPlaying: true,
     timeRate: 1,
-    era: 0,
+    era: 3,
     readProgress: {},
     readingNow: null,
     visual: defaultVisual(),

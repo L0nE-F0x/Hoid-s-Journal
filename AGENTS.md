@@ -80,7 +80,7 @@ npm run shot -- --focus roshar --scale globe --out /tmp/roshar.png
 npm run shot -- --intro --settle 8000 --out /tmp/intro.png
 npm run shot -- --eval "__ceph.store.set('realm','cognitive')" --out /tmp/c.png
 
-npm run test:interaction   # 58 checks through real mouse and keyboard
+npm run test:interaction   # 59 checks through real mouse and keyboard
 npm run test:cartography   # the globe and the atlas still draw the same world
 npm run audit:data         # every id resolves, every reference points at something
 npm run perf               # fps per Realm, expensive layers toggled off

@@ -129,8 +129,14 @@ async function run() {
     let s = await state(page);
     check('title: shell is play', s.shell === 'play', s.shell);
     check('cinematic ends at Cosmere', s.scale === 'cosmere', s.scale);
-    // Nested dives below are a Stormlight-era reading. The playhead defaults
-    // to Pre-Shattering, when Urithiru and the Radiants do not exist yet.
+    check(
+      'first visit lands after the Shattering',
+      s.era >= 3 && s.year >= 0,
+      `era=${s.era} year=${s.year}`,
+    );
+    // Nested dives below are a Stormlight-era reading. First visit now lands
+    // there (year 0 / era 3); set it anyway so a stale tab cannot poison the
+    // rest of the suite.
     await page.evaluate(() => {
       window.__ceph.store.set('year', 1);
       window.__ceph.store.set('era', 3);

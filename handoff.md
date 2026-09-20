@@ -38,17 +38,18 @@ Both of Scadrial's eras now have a traced coastline, the way Roshar does.
 
 Do not reopen a fourth classifier on `scadrial_full.png`. Edit the polygons.
 
-**Nothing else is outstanding from the coastline work.** Optional next is
-*Do next 4* (pin look, default year) — both want an owner decision.
+**2026-09-20 pins and playhead are live.** Globe pins are beads that fade at
+the limb, not flat discs. First visit lands at Stormlight (year 0), a Cosmere
+that has already happened — scrub back for the Shattering. Hard-refresh
+https://thecosmere.netlify.app.
 
 ---
 
 **2026-09-20 visual pass is live.** The Shattering is a set-piece instead of
 a growing circle, it no longer re-detonates on every era click, orbits have a
 near side and a far side, the star has a disc, and the roads carry traffic.
-Four commits, pushed. Hard-refresh https://thecosmere.netlify.app — the
-service worker keeps the old shell. Full detail under *What the last session
-changed*; two findings that want an owner decision are under *Do next 4*.
+Pins are beads, not confetti; first visit is Stormlight. Hard-refresh
+https://thecosmere.netlify.app — the service worker keeps the old shell.
 
 **2026-09-15 audit pass is live.** Ten findings, ten fixed, pushed. The
 owner asked for a deep audit (lore depth, lore accuracy, debugging,
@@ -84,7 +85,7 @@ npm run dev              # http://127.0.0.1:5174
 
 # Second shell. This is how you check anything.
 npm run shot -- --focus roshar --scale globe --out /tmp/roshar.png
-npm run test:interaction # 58 checks through real mouse and keyboard
+npm run test:interaction # 59 checks through real mouse and keyboard
 npm run test:cartography # 17 checks that both bakers draw the same world
 npm run audit:data       # referential integrity over src/data
 npm run audit:ui         # clicks every control, reports the ones that do nothing
@@ -104,13 +105,17 @@ the drawing buffer, the pixel ratio, the program count and any fault — ask for
 it first when someone reports a black sky.
 
 Last known green, all with `npm run dev` up: `npx tsc --noEmit`,
-`test:cartography` **17/17**, `audit:data` clean. Interaction / perf / `audit:ui`
-were last green on the 2026-09-20 visual pass (58/58, 0 fatal) and were not
-re-run for the coastline; nothing in that path reads the new mask.
+`test:interaction` **59/59**, `test:cartography` **17/17**, `audit:data` clean.
 
 ---
 
 ## What the last session changed
+
+**2026-09-20 pins and playhead.** Globe pins were camera-facing discs of solid
+colour — confetti, full-bright at the limb, a few centimetres of radius
+enough to peek around the far side. They are lit beads now, faded by the
+planet's n·v. First visit is year 0 / era 3 (Stormlight): rereaders first,
+and the title cinematic is a highstorm. Pre-Shattering is still on the chips.
 
 **2026-09-20 Scadrial coastlines.** Ash era classified off `final_empire.jpg`
 on warmth (the sea is grey, not blue). Basin era digitised as polygons off
@@ -477,7 +482,7 @@ Treat this as current truth, not a wishlist.
   Overlay cards show bio, era trail, orders, See-also chips, Coppermind text
   link (no portraits — product lock).
 - Deep-link hash `#y=&realm=&scale=&system=&body=&loc=&reading=`.
-- Harnesses: `npm run shot`, `npm run test:interaction` (58 checks),
+- Harnesses: `npm run shot`, `npm run test:interaction` (59 checks),
   `npm run perf`, `npm run bench`.
 
 ### What the atlas holds
@@ -604,20 +609,15 @@ only if a reread turns up a name; do not invent one.
 - Azimir has no Stewart plate. Worlds without one use `cityMap.ts`, which is
   now a real plan generator rather than a placeholder.
 
-### 4. Visual findings from 2026-09-20, not taken
+### 4. Visual findings from 2026-09-20 — both taken
 
-Both want a decision before a change, not a patch.
-
-- **Location pins read as flat confetti.** At 1:1 on a globe they are solid
-  coloured discs — no depth, no falloff, no occlusion by the limb. It is the
-  loudest remaining "cheap" tell at the zoom a reader actually inspects a
-  world at. It is UI as much as art, which is why it was left.
-- **The default year is -8000.** `store.ts` opens a first visit in
-  Pre-Shattering, where Scadrial does not exist: no Mistborn, no Elendel, no
-  Silverlight. It may well be deliberate — start at the beginning, scrub
-  forward, watch the Shattering happen — and it is why the replay bug was
-  noticed at all. But "rereaders first" argues for landing in a Cosmere that
-  has already happened. One line either way; the owner has not called it.
+- **Location pins.** Beads with hemisphere lighting, faded by the planet's
+  n·v so they die at the limb and never stick out of the silhouette. Far-side
+  pins are hidden (picking already skipped them). `src/shaders/pin.frag`.
+- **Default year is 0 / era 3 (Stormlight).** Rereaders first: a first visit
+  lands in a Cosmere that has already happened. The title cinematic is a
+  highstorm; year 0 is when that storm is the story. Pre-Shattering is still
+  on the playhead — scrub back, or click Pre. The Shattering still plays.
 
 ### 5. Renderer ideas not taken
 
@@ -636,6 +636,10 @@ Written down so the next session does not rediscover them:
   stretched along a fast head read as a dotted line. The streak only closes
   up when the spacing drops below the point size, so `TRAIL` and `uLagSpan`
   are tuned against each other — do not lower one without checking the other.
+- **Globe pins fade by the planet's n·v, not the billboard's.** A
+  camera-facing disc at 1.015 radii sticks out of the limb; `uFacing` is the
+  surface normal dotted with the view, and a pin with n·v < 0.04 is hidden.
+  Picking already used the same test. Do not drop it to draw the far side.
 - **Point sizes need the projection-correct scale.** `uSize` in
   `shardfall.vert` is a *world radius*, turned into pixels by
   `(height * 0.5) / tan(fov/2)` the way the starfield does it. Hardcoding a
@@ -829,7 +833,7 @@ Help · `F` frame Cosmere · `Esc` pop scale / close panel / leave the Web /
 close a card at Cosmere. Hover names a world; click opens the card.
 Title: Enter the Cosmere · Hide what I have not read · Skip the flight.
 Arcanum, Journal, Settings and Share are buttons. Soundtrack lives in
-Settings. WASD/QE never open panels. Default playhead is Pre-Shattering.
+Settings. WASD/QE never open panels. Default playhead is Stormlight (year 0). Pre-Shattering is still on the chips.
 In the Lore Web: scroll zooms, dragging the background pans, dragging a node
 moves it, and "Fit to frame" returns to auto-fit.
 

@@ -61,19 +61,19 @@ export const PLACES_MORE: Location[] = [
   loc('klna', 'Klna', 'roshar', 'stormlight', 0.595, 0.87, '#86efac', 'port',
     'Thaylen shipyards. Where the Wandersail was refitted before Rysn sailed west.', {
       bio: 'The Thaylen shipyards, where a merchant fleet is built to survive a coast that is trying to kill it. The Wandersail was refitted here before Rysn took it west, which is the last time anyone sailed for Aimia on purpose and came back.', arc: 'dawnshard', region: 'Thaylenah', see: ['thaylenah', 'akinah'], wiki: 'Klna' }),
-  loc('steinel', 'Steinel', 'scadrial', 'mistborn2', 0.48, 0.62, '#94a3b8', 'city',
+  loc('steinel', 'Steinel', 'scadrial', 'mistborn2', 0.575, 0.332, '#94a3b8', 'city',
     'Basin city due east of Elendel along the Irongate River.', {
       region: 'Elendel Basin',
       bio: 'A Basin city east of Elendel on the Irongate, where the river traffic stops before the capital\'s tariffs start. Prosperous, dull, and quietly furious about octant politics.', eraMaps: ['basin'], see: ['elendel', 'irongate-river'], wiki: 'Steinel' }),
-  loc('mycondwel', 'Mycondwel', 'scadrial', 'mistborn2', 0.35, 0.55, '#e8b86d', 'city',
+  loc('mycondwel', 'Mycondwel', 'scadrial', 'mistborn2', 0.480, 0.270, '#e8b86d', 'city',
     'Basin city on the western spokes — far enough from Elendel to have its own gossip.', {
       region: 'Elendel Basin',
       bio: 'A Basin city on the western spokes, far enough out that its gossip is its own and its loyalty to Elendel is a matter of freight rates.', eraMaps: ['basin'], see: ['elendel-basin'], wiki: 'Mycondwel' }),
-  loc('field-of-rebirth', 'Field of Rebirth', 'scadrial', 'mistborn2', 0.388, 0.615, '#86efac', 'grass',
+  loc('field-of-rebirth', 'Field of Rebirth', 'scadrial', 'mistborn2', 0.518, 0.325, '#86efac', 'grass',
     'Where the survivors of the Catacendre woke to a green world. Elendel grew around the memory.', {
       region: 'Elendel Basin',
       bio: 'Where the survivors of the Catacendre came out of the caverns into a world with a blue sky, green ground and no ash falling. Sazed left the Bands of Mourning there as a marker. Elendel grew up around the memory and the memory became a park.', eraMaps: ['basin'], see: ['elendel'], wiki: 'Field_of_Rebirth' }),
-  loc('hammondar-bay', 'Hammondar Bay', 'scadrial', 'mistborn2', 0.36, 0.62, '#38bdf8', 'sea',
+  loc('hammondar-bay', 'Hammondar Bay', 'scadrial', 'mistborn2', 0.450, 0.335, '#38bdf8', 'sea',
     'Bay west of Elendel where the Irongate meets the Sea of Yomend. Named for a man who preferred dens to thrones.', {
       region: 'Elendel Basin',
       bio: 'The bay west of Elendel where the Irongate meets the Sea of Yomend. Named for Hammond — Ham, of Kelsier\'s crew — who preferred a dockside den and a philosophical argument to anything a statue could commemorate.', eraMaps: ['basin'], see: ['elendel', 'irongate-river'], wiki: 'Hammondar_Bay' }),
@@ -311,52 +311,52 @@ export const PLACES_MORE: Location[] = [
     'Capital of the Southern Dominance, where the Channerel meets the western canals.', {
       region: 'Southern Dominance',
       bio: 'Capital of the Southern Dominance, where the Channerel meets the western canals and the empire\'s grain went north. A bureaucratic town with a river\'s worth of leverage over a dominance that grew the food.', eraMaps: ['ash'], see: ['southern-dominance', 'river-channerel'], wiki: 'Austrex' }),
-  loc('elendel-basin', 'Elendel Basin', 'scadrial', 'mistborn2', 0.42, 0.6, '#86efac', 'land',
+  loc('elendel-basin', 'Elendel Basin', 'scadrial', 'mistborn2', 0.555, 0.312, '#86efac', 'land',
     'Harmony\'s garden: fertile ring around Elendel where the ash finally stopped winning.', {
       region: 'Elendel Basin',
       bio: 'The fertile ring Sazed made when he set the world right: mountains around it, rivers through it, and soil that grows things without being argued with. Four hundred years of Basin prosperity have made it complacent, and the Roughs and the south both know it.', eraMaps: ['basin'], see: ['elendel'], wiki: 'Elendel_Basin' }),
-  loc('irongate-river', 'Irongate River', 'scadrial', 'mistborn2', 0.42, 0.62, '#64748b', 'canal',
+  loc('irongate-river', 'Irongate River', 'scadrial', 'mistborn2', 0.600, 0.325, '#64748b', 'canal',
     'Main river of the Elendel Basin — runs through the capital into Hammondar Bay, and roughly splits the Roughs north from south.', {
       region: 'Elendel Basin',
       bio: 'The Basin\'s main river, running through Elendel and out to Hammondar Bay, and the rough line that divides the northern Roughs from the southern. Half the Basin\'s freight moves on it and most of its politics argue about the tolls.', eraMaps: ['basin'], see: ['elendel', 'elendel-basin'], wiki: 'Irongate_River' }),
-  loc('rashekin', 'Rashekin', 'scadrial', 'mistborn2', 0.52, 0.65, '#e8b86d', 'city',
+  loc('rashekin', 'Rashekin', 'scadrial', 'mistborn2', 0.590, 0.318, '#e8b86d', 'city',
     'Basin city whose name remembers Rashek whether anyone wants it to or not.', {
       region: 'Elendel Basin',
       bio: 'A Basin city whose name remembers Rashek — the Lord Ruler, before he was the Lord Ruler — whether the Church of the Survivor wants it to or not. Scadrial\'s history is not tidy and its place names are less so.', eraMaps: ['basin'], see: ['elendel-basin'], wiki: 'Rashekin' }),
-  loc('dulsing', 'Dulsing', 'scadrial', 'mistborn2', 0.48, 0.88, '#94a3b8', 'village',
+  loc('dulsing', 'Dulsing', 'scadrial', 'mistborn2', 0.490, 0.820, '#94a3b8', 'village',
     'Remote southern settlement where a crashed ship and a hunt for the Bands collided.', {
       region: 'Southern Scadrial',
       bio: 'A remote southern settlement where a Malwish airship came down and a hunt for the Bands of Mourning caught up with it. Wax found the Bands there, and something else: proof that the south had been getting on with things while the Basin admired itself.', arc: 'bom', eraMaps: ['basin'], see: ['southern-continent', 'new-seran'], wiki: 'Dulsing' }),
-  loc('elendel-university', 'Elendel University', 'scadrial', 'mistborn2', 0.39, 0.61, '#d6a44c', 'scroll',
+  loc('elendel-university', 'Elendel University', 'scadrial', 'mistborn2', 0.522, 0.322, '#d6a44c', 'scroll',
     'Where Basin science pretends the old magic is a solved problem. Marasi took notes anyway.', {
       bio: 'Where Basin science treats Allomancy as a solved problem and Feruchemy as a historical curiosity, and teaches both badly. Marasi took notes anyway, and the notes are why she is the one who understands what the Set is doing when nobody else does.', eraMaps: ['basin'], region: 'Elendel', see: ['elendel'], wiki: 'Elendel' }),
-  loc('the-community', 'The Community', 'scadrial', 'mistborn2', 0.375, 0.625, '#9333ea', 'keep',
+  loc('the-community', 'The Community', 'scadrial', 'mistborn2', 0.508, 0.330, '#9333ea', 'keep',
     'Cavern society beneath Elendel, cut off and cultivated by Autonomy\'s agents.', {
       region: 'Terris Dominance', arc: 'tlm', eraMaps: ['basin'], see: ['elendel'], wiki: 'Community', bio: 'Wax found a city that thought the surface was a story. Telsin had gotten there first.' }),
-  loc('seran-mountains', 'Seran Range', 'scadrial', 'mistborn2', 0.78, 0.85, '#a8a29e', 'peak',
+  loc('seran-mountains', 'Seran Range', 'scadrial', 'mistborn2', 0.680, 0.400, '#a8a29e', 'peak',
     'Mountains above New Seran. Temples, tunnels, and things the Set preferred buried.', {
       region: 'Elendel Basin',
       bio: 'The range above New Seran: old temples, older tunnels, and a set of facilities the Set would rather stayed buried. What the Basin calls archaeology, Autonomy\'s people call storage.', arc: 'bom', eraMaps: ['basin'], see: ['new-seran', 'conventical-of-seran'], wiki: 'New_Seran' }),
-  loc('northern-roughs', 'Northern Roughs', 'scadrial', 'mistborn2', 0.7, 0.28, '#a8a29e', 'land',
+  loc('northern-roughs', 'Northern Roughs', 'scadrial', 'mistborn2', 0.540, 0.245, '#a8a29e', 'land',
     'Lawless north beyond the Basin rim. Wax\'s old patrol country.', {
       region: 'The Roughs',
       bio: 'The lawless country north of the Basin rim, and Wax\'s old patrol. Far Dorest is the nearest thing to a city; everything else is a siding, a mine or a grave.', arc: 'aol', eraMaps: ['basin'], see: ['the-roughs', 'weathering'], wiki: 'Roughs' }),
-  loc('southern-roughs', 'Southern Roughs', 'scadrial', 'mistborn2', 0.75, 0.5, '#78716c', 'land',
+  loc('southern-roughs', 'Southern Roughs', 'scadrial', 'mistborn2', 0.620, 0.355, '#78716c', 'land',
     'Southern frontier beyond Basin law. Same dust, different outlaws.', {
       region: 'The Roughs',
       bio: 'The southern frontier past Basin law — the same dust as the north, different outlaws, and the same week-long wait for anyone official to arrive.', eraMaps: ['basin'], see: ['the-roughs', 'ironstand'], wiki: 'Roughs' }),
-  loc('far-dorest', 'Far Dorest', 'scadrial', 'mistborn2', 0.68, 0.25, '#e8b86d', 'city',
+  loc('far-dorest', 'Far Dorest', 'scadrial', 'mistborn2', 0.700, 0.215, '#e8b86d', 'city',
     'Northern Roughs city. Jon Deadfinger kept the law here; Wayne nearly hung for it.', {
       region: 'The Roughs',
       bio: 'The largest town of the northern Roughs, with a lawman named Jon Deadfinger and a gallows that Wayne came within a day of using. Wax got him out; Wayne has been paying that off in his own way ever since.', arc: 'aol', eraMaps: ['basin'], see: ['northern-roughs', 'the-roughs'], wiki: 'Far_Dorest' }),
-  loc('sovereign-temple', 'The Sovereign\'s Temple', 'scadrial', 'mistborn2', 0.5, 0.92, '#fbbf24', 'keep',
+  loc('sovereign-temple', 'The Sovereign\'s Temple', 'scadrial', 'mistborn2', 0.510, 0.900, '#fbbf24', 'keep',
     'Southern temple where the Lord Ruler-as-Sovereign left the Bands of Mourning.', {
       region: 'Southern Scadrial', arc: 'bom', eraMaps: ['basin'], see: ['southern-continent', 'dulsing'], wiki: 'Bands_of_Mourning', bio: 'Ice, traps, and a spear that was never just a spear. The Malwish got there with better coats.' }),
-  loc('malwish-nations', 'Malwish Nations', 'scadrial', 'mistborn2', 0.54, 0.86, '#64748b', 'land',
+  loc('malwish-nations', 'Malwish Nations', 'scadrial', 'mistborn2', 0.545, 0.700, '#64748b', 'land',
     'Southern Scadrian peoples under the Masked Ones\' banners. Airships, medallions, and old grudges.', {
       region: 'Southern Scadrial',
       bio: 'The southern peoples under the Masked Ones\' banners: airships, unsealed metalminds, ettmetal, and four centuries of getting on with it while the north assumed it was alone. The Malwish arrived in the Basin as traders, allies and eventually an occupying force, in that order.', arc: 'bom', eraMaps: ['basin'], see: ['southern-continent'], wiki: 'Southern_Scadrians' }),
-  loc('ladrian-mansion', 'Ladrian Mansion', 'scadrial', 'mistborn2', 0.382, 0.612, '#d6a44c', 'home',
+  loc('ladrian-mansion', 'Ladrian Mansion', 'scadrial', 'mistborn2', 0.510, 0.324, '#d6a44c', 'home',
     'House Ladrian\'s city seat in Elendel. Wax came home to ledgers and left for bullets.', {
       bio: 'House Ladrian\'s seat in Elendel, and the ledgers Wax inherited along with a bankrupt house and a title he had spent twenty years avoiding. He married Steris for the accounts and got rather more than that.', arc: 'aol', eraMaps: ['basin'], region: 'Elendel', see: ['elendel'], wiki: 'Ladrian_mansion' }),
   loc('teoin', 'Teoin', 'sel', 'elantris', 0.21, 0.27, '#818cf8', 'crown',
@@ -655,19 +655,19 @@ export const PLACES_MORE: Location[] = [
     'One of the Lord Ruler\'s hidden supply caches beneath the Central Dominance.', {
       region: 'Central Dominance',
       bio: 'One of the Lord Ruler\'s hidden caches under the Central Dominance, stocked against a disaster he expected and did not name. Each one held food, water and a plate of inscribed metal, and the plates were the point.', arc: 'hoa', eraMaps: ['ash'], see: ['luthadel', 'conventical-of-seran'], wiki: 'Storage_cavern' }),
-  loc('eltania-pits', 'Pits of Eltania', 'scadrial', 'mistborn2', 0.8, 0.42, '#a8a29e', 'crystal',
+  loc('eltania-pits', 'Pits of Eltania', 'scadrial', 'mistborn2', 0.640, 0.270, '#a8a29e', 'crystal',
     'Roughs diggings made famous by Allomancer Jak\'s entirely reliable broadsheets.', {
       region: 'The Roughs',
       bio: 'Roughs diggings made famous by Allomancer Jak\'s broadsheets, which are entirely reliable if you read Handerwym\'s footnotes and nothing else on the page.', arc: 'jak', eraMaps: ['basin'], see: ['the-roughs'], wiki: 'Allomancer_Jak' }),
-  loc('bilming-shipyards', 'Bilming Shipyards', 'scadrial', 'mistborn2', 0.195, 0.67, '#64748b', 'ship',
+  loc('bilming-shipyards', 'Bilming Shipyards', 'scadrial', 'mistborn2', 0.430, 0.350, '#64748b', 'ship',
     'Industrial docks of Bilming — warships, civic pride, and Set fingerprints in the weld marks.', {
       region: 'Elendel Basin',
       bio: 'Bilming\'s industrial docks: warships the Basin has no declared use for, civic pride out of all proportion, and Set fingerprints in the weld marks. By The Lost Metal the yards are building for a war Elendel does not know is coming.', arc: 'tlm', eraMaps: ['basin'], see: ['bilming'] }),
-  loc('elendel-field', 'Elendel Field', 'scadrial', 'mistborn2', 0.4, 0.63, '#86efac', 'grass',
+  loc('elendel-field', 'Elendel Field', 'scadrial', 'mistborn2', 0.530, 0.318, '#86efac', 'grass',
     'Open ground at the city\'s edge where Basin politics sometimes remembered it had armies.', {
       region: 'Elendel Basin',
       bio: 'Open ground at the city\'s edge where the Basin occasionally remembers it is supposed to have an army, and where its constabulary drill because the constitution says somebody ought to.', eraMaps: ['basin'], see: ['elendel'] }),
-  loc('outer-estates', 'Outer Estates', 'scadrial', 'mistborn2', 0.48, 0.58, '#e8b86d', 'land',
+  loc('outer-estates', 'Outer Estates', 'scadrial', 'mistborn2', 0.545, 0.298, '#e8b86d', 'land',
     'Manor country ringing Elendel. House names on gates; Roughs dust on the far fences.', {
       region: 'Elendel Basin',
       bio: 'The manor country ringing Elendel: house names on the gates, lawns on the near side and Roughs dust on the far fences. Where Basin money goes when it stops wanting to be near Basin politics.', eraMaps: ['basin'], see: ['elendel-basin', 'ladrian-mansion'] }),

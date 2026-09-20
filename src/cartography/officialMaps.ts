@@ -89,6 +89,7 @@ export function worldMapLayers(bodyId: string, era: number, cognitive: boolean):
   if (bodyId === 'scadrial' && !cognitive) {
     return era >= 3
       ? [
+          { name: 'World', file: 'scadrial_full.png' },
           { name: 'Basin', file: 'elendel_basin.png' },
           { name: 'Starchart', file: 'scadrial_starchart.jpg' },
         ]

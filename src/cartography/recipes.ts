@@ -123,11 +123,11 @@ export const RECIPES: Record<string, Recipe> = {
     threshold: 0.48, warp: 2.0, ridges: 0.48, rivers: 0.55, relief: 1.0,
     clouds: 0.40, cloudTint: '#e8f0fa', specular: 0.9, ice: 0.34, flora: 0.55,
     lights: 0.95, lightColor: '#ffd79a',
-    shape: [
-      [0.50, 0.47, 0.18, 0.15, 1.05], [0.76, 0.33, 0.15, 0.13, 0.95],
-      [0.60, 0.69, 0.09, 0.08, 0.80], [0.52, 0.82, 0.14, 0.09, 0.90],
-      [0.201, 0.667, 0.050, 0.042, 0.62],
-    ],
+    // Digitised off `public/maps/scadrial_full.png`, the same plate the
+    // mistborn2 pins are measured on. The plate cannot be auto-traced —
+    // inland seas are printed on the same white as the land — so the mask
+    // is polygons in `tools/trace-coast.mjs`, not a colour rule.
+    coast: 'scadrial-basin',
   },
   // Hallandren on the coast, Idris in the highlands north of it. The colour
   // is the point.

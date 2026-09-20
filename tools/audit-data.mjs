@@ -190,6 +190,7 @@ const { coastCoverage, hasCoast } = await (async () => {
 const AT_SEA_ON_PURPOSE = new Set([
   'the-origin', 'reshi-isles', 'aimia', 'aimian-scouring', 'fu-abra', 'rishir',
   'tarat-sea', 'steamwater-ocean', 'reshi-sea', 'southern-depths', 'purelake-temple',
+  'hammondar-bay',
 ]);
 
 const wet = [];
@@ -197,7 +198,7 @@ for (const l of C.locations) {
   const body = D.bodyById[l.body];
   // Scadrial is two worlds under one entry. `body.biome` is the static
   // `scadrial-ash`, but the mistborn1 pins are measured on `final_empire.jpg`
-  // and the mistborn2 pins on the Basin plate, so each has to be judged
+  // and the mistborn2 pins on `scadrial_full.png`, so each has to be judged
   // against its own era's coastline — otherwise the Southern Continent is
   // reported as drowning in the Final Empire's Southern Sea, which is a fact
   // about two different maps rather than about the pin.

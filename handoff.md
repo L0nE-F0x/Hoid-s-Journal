@@ -16,69 +16,30 @@ Architecture lock: `AGENTS.md` + `DESIGN.md`. This file is the live todo.
 
 # ▶ START HERE — next session
 
-## ☐ Next job: Scadrial's Basin coastline (the ash half is done)
+## Scadrial's Basin coastline is done (2026-09-20)
 
-**Half of this is finished and live.** `scadrial-ash` now has a real traced
-coastline and **every one of its 29 pins is on land** — `audit:data` reports
-zero in open water, and `test:cartography` puts the two bakers at mean 4.6 on
-it. The five gaussian blobs it replaced had been hand-placed under individual
-pins to stop them drowning, which worked for those five and nothing else.
+Both of Scadrial's eras now have a traced coastline, the way Roshar does.
 
-What unlocked it: **the Final Empire plate classifies on warmth, not blue.**
-The 2026-09-15 note that it "comes out 0% water" was right about the symptom
-and wrong about the cause. Measured off the plate, open water is
-rgb(106,108,106) and rgb(116,118,115) — a *neutral slate*, so `b > max(r, g)`
-genuinely finds nothing. Land is parchment at rgb(148,135,113). The separation
-is ~35 levels of red-over-blue and the rule is now `r - b < 14`. Note also
-that `rule` in the tracer selects **water**, not land.
+- **Ash / Final Empire** (`scadrial-ash`): classified off `final_empire.jpg`
+  on warmth (`r - b < 14`), not blue. 50.5% land, bakers at mean 4.6, **29/29
+  mistborn1 pins on land**. The sea is a neutral slate; the 2026-09-15 note
+  that the plate "comes out 0% water" was the right symptom and the wrong
+  axis. `rule` in the tracer selects **water**, not land.
+- **Basin** (`scadrial-basin`): polygons off `scadrial_full.png` (the Elendel
+  Cartographic Collective world map). That plate cannot be auto-traced — the
+  inland seas are printed on the same white as the land, local maxima saturate
+  on both, and an ink-flood is partitioned by the lat/long grid — so the
+  rings in `tools/trace-coast.mjs` are the record. 46.3% land on the 2:1
+  grid, bakers at mean 16.3, **31 mistborn2 pins re-measured onto that plate,
+  zero in open water** (Hammondar Bay is a named sea and is listed as such).
+  Atlas tabs are World (`scadrial_full.png`) / Basin survey / Starchart.
+  Pins are calibrated to the first tab, as the Endpaper and Starchart already
+  were.
 
-### What is left: the Basin era
+Do not reopen a fourth classifier on `scadrial_full.png`. Edit the polygons.
 
-The owner chose (2026-09-20): **promote `scadrial_full.png` to the basin
-plate** — it is the Elendel Cartographic Collective's map of the Basin *and*
-the Southern Continent, it was sitting unused in `public/maps/`, and it is far
-closer to a world map than the Basin survey is — then re-measure the ~40
-`mistborn2` pins onto it, so plate = globe exactly as Roshar does it.
-
-**That plan is still right. What blocks it is that `scadrial_full.png` cannot
-be auto-traced either, and here is the evidence so nobody spends the hour
-again:**
-
-- **Tone cannot separate it.** The enclosed seas are drawn in the *same white
-  paper as the land* and only the outer ocean carries a grey hatch. Measured:
-  Sea of Yomend **253**, Sea of Lennes **248**, against Southern Continent
-  south **200** and Kalling **202**. Every threshold puts an inland sea on the
-  land side or a continent on the water side. Hard downscaling first does not
-  fix it — the overlap is in the source, not in the sampling.
-- **Local maxima cannot either.** Land tops out at 255 everywhere, but so do
-  the inner seas.
-- **Flooding the ocean from the margin and letting the coast ink stop it
-  fails too.** Two reasons, both structural: the map's **grid lines partition
-  the open ocean into cells**, so a flood seeded in one cell never reaches the
-  next; and at any ink threshold loose enough to let the sea hatch through,
-  the coastlines leak and the flood swallows both continents. Swept ink
-  thresholds 120/140/155/170/185 give land fractions 15.8 / 20.8 / 32.5 / 49.0
-  / 59.1 % — the number moves smoothly and none of the pictures is a coastline.
-
-So the Basin needs the coastline **digitised by hand**, not classified. The
-honest shape of that job:
-
-1. Digitise the northern landmass, the Shrouded Isles, the Southern Islands
-   and the Southern Continent off `scadrial_full.png` as polygons.
-2. Rasterise them into the same 512x256 mask `coastlines.ts` already ships,
-   under the key `scadrial-basin`.
-3. Re-measure the ~40 `mistborn2` pin UVs onto `scadrial_full.png`. Measure
-   them against the *same* reading of the map used in step 1, so the pins and
-   the coast agree by construction.
-4. Swap the basin atlas tab order in `officialMaps.ts` so `scadrial_full.png`
-   leads and `elendel_basin.png` becomes the detail tab.
-5. `coast: 'scadrial-basin'` in the recipe, drop its `shape`.
-
-`audit:data` is already era-aware for this and will grade step 3 for free:
-Scadrial is two worlds under one entry, so `mistborn1` pins are judged against
-`scadrial-ash` and `mistborn2` against `scadrial-basin`. Until step 2 lands
-there is no basin mask, so those pins are skipped rather than measured against
-the wrong era's sea.
+**Nothing else is outstanding from the coastline work.** Optional next is
+*Do next 4* (pin look, default year) — both want an owner decision.
 
 ---
 
@@ -143,13 +104,19 @@ the drawing buffer, the pixel ratio, the program count and any fault — ask for
 it first when someone reports a black sky.
 
 Last known green, all with `npm run dev` up: `npx tsc --noEmit`,
-`npm run build`, `test:interaction` **56/56**, `test:cartography` **17/17**,
-`audit:data` clean, `audit:ui` **0 fatal / 0 dead**, `perf` flat against a
-same-session baseline.
+`test:cartography` **17/17**, `audit:data` clean. Interaction / perf / `audit:ui`
+were last green on the 2026-09-20 visual pass (58/58, 0 fatal) and were not
+re-run for the coastline; nothing in that path reads the new mask.
 
 ---
 
 ## What the last session changed
+
+**2026-09-20 Scadrial coastlines.** Ash era classified off `final_empire.jpg`
+on warmth (the sea is grey, not blue). Basin era digitised as polygons off
+`scadrial_full.png`, which is now the leading atlas tab; 31 mistborn2 pins
+re-measured onto it. `audit:data` reports zero Scadrial pins in open water.
+See *START HERE*.
 
 **2026-09-20 visual pass (`474725f` → `923fd77`, pushed and live).**
 Lore and data untouched. Four commits:
@@ -285,12 +252,9 @@ missing from the web.
 - **Four organisations with no members** — the Vanrial, the stormwardens, the
   Chorus, the Kerztian clergy. No named member on the page; inventing one is
   worse than an empty field.
-- **Scadrial's Basin coastline.** The ash half is done and live (traced off
-  `final_empire.jpg` on warmth, 29 pins dry). The Basin half is blocked on the
-  fact that no published Scadrial plate can be auto-traced: `elendel_basin.png`
-  is line-art, and `scadrial_full.png` draws its inland seas in the same white
-  as its land. Measurements and the three algorithms already ruled out are in
-  *START HERE* — read that before trying a fourth. It wants hand-digitising.
+- **Scadrial's Basin coastline.** Done 2026-09-20. Both eras now have a
+  traced mask; see *START HERE*. Do not reopen a classifier on
+  `scadrial_full.png`.
 
   Worth keeping in mind generally: Roshar and Scadrial are the only two worlds
   with published plates (`officialMaps.ts`); every other world's atlas plate
@@ -848,7 +812,7 @@ Written down so the next session does not rediscover them:
    in this Realm, is derived in `src/layout/`. Atlas UVs (`Location.u/v`)
    *are* 0–1 on the plate currently shown: Roshar → `roshar_full.jpg`
    3096×1800; Scadrial ash → `final_empire.jpg` 2048×1555; basin →
-   `elendel_basin.png` 795×1200. Other worlds sit on our procedural atlas.
+   `scadrial_full.png` 640×997. Other worlds sit on our procedural atlas.
 3. Do not edit `/home/lonefox/Projects/ApexForge/cosmere-interactive-map`.
 
 ---

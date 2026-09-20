@@ -12,8 +12,9 @@
  * a correct projection of Roshar is a question the plate already answered;
  * this only makes the globe agree with it.
  *
- * Classification is blue-dominance, then a sweep that drops land too small to
- * be an island and water too small to be a lake. Text is the only thing that
+ * `rule` selects WATER, not land — Roshar's reads "is this blue" — and land is
+ * whatever is left. Then a sweep drops land too small to be an island and
+ * water too small to be a lake. Text is the only thing that
  * fools it — gold lettering over water is not blue — so the labels large
  * enough to survive the sweep are listed below as rectangles and painted out
  * first. They are stable: the plate is a file in this repo and will not move.
@@ -59,6 +60,20 @@ const ROSHAR_TEXT = [
   [0.120, 0.455, 0.156, 0.650],   // "Aimian Sea", vertical
 ];
 
+/**
+ * Everything outside the oval on the Final Empire plate is frame: an ornate
+ * border, a title medallion, a compass rose. All of it is warm parchment, so
+ * all of it classifies as land unless it is painted out first.
+ */
+const FINAL_EMPIRE_FRAME = [
+  [0.000, 0.000, 0.235, 0.270],   // "THE FINAL EMPIRE 1021" medallion
+  [0.000, 0.690, 0.245, 1.000],   // compass rose, bottom left
+  [0.000, 0.000, 0.060, 1.000],   // left ornament strip
+  [0.935, 0.000, 1.000, 1.000],   // right ornament strip
+  [0.000, 0.000, 1.000, 0.045],   // top band
+  [0.000, 0.955, 1.000, 1.000],   // bottom band
+];
+
 const PLATES = [
   {
     id: 'roshar',
@@ -71,6 +86,22 @@ const PLATES = [
     // ink; below the second, a sea is a pinhole inside one.
     minIsland: 26,
     minLake: 14,
+  },
+  {
+    id: 'scadrial-ash',
+    file: 'maps/final_empire.jpg',
+    erase: FINAL_EMPIRE_FRAME,
+    // Everything outside the map's oval is frame; paint it ocean.
+    vignette: [0.505, 0.500, 0.452, 0.487],
+    // NOT blue-dominance. This sea is a neutral slate — measured, open water
+    // is rgb(106,108,106) and rgb(116,118,115), so `b > max(r, g)` finds
+    // nothing and a previous pass concluded the plate was 0% water. What
+    // actually separates them is warmth: the parchment land runs
+    // rgb(148,135,113), about 35 levels of red over blue, and the water sits
+    // at zero. Red lettering is warmer still and lands on the right side.
+    rule: 'r - b < 14',
+    minIsland: 30,
+    minLake: 18,
   },
 ];
 
@@ -98,10 +129,29 @@ try {
       // and what the globe reads as longitude and latitude.
       ctx.drawImage(img, 0, 0, W, H);
 
-      // Paint the lettering out before anything looks at colour.
-      ctx.fillStyle = '#0a3a66';
-      for (const [u0, v0, u1, v1] of plate.erase) {
+      // Paint the lettering out before anything looks at colour. The fill is
+      // any colour the plate's own rule will call water.
+      const WET = plate.wet ?? '#0a3a66';
+      ctx.fillStyle = WET;
+      for (const [u0, v0, u1, v1] of plate.erase ?? []) {
         ctx.fillRect(u0 * W, v0 * H, (u1 - u0) * W, (v1 - v0) * H);
+      }
+
+      // Everything outside the printed map is frame, not geography.
+      if (plate.frame) {
+        const [fu0, fv0, fu1, fv1] = plate.frame;
+        ctx.fillRect(0, 0, W, fv0 * H);
+        ctx.fillRect(0, fv1 * H, W, H - fv1 * H);
+        ctx.fillRect(0, 0, fu0 * W, H);
+        ctx.fillRect(fu1 * W, 0, W - fu1 * W, H);
+      }
+      if (plate.vignette) {
+        const [cu, cv, ru, rv] = plate.vignette;
+        // Even-odd: fill the whole plate except the ellipse.
+        ctx.beginPath();
+        ctx.rect(0, 0, W, H);
+        ctx.ellipse(cu * W, cv * H, ru * W, rv * H, 0, 0, Math.PI * 2);
+        ctx.fill('evenodd');
       }
 
       const px = ctx.getImageData(0, 0, W, H).data;
@@ -212,7 +262,8 @@ try {
   await browser.close();
 }
 
-const body = out.map((o) => `  ${o.id}: '${o.b64}',`).join('\n');
+// Quoted: recipe ids are hyphenated, and `scadrial-ash:` is not an identifier.
+const body = out.map((o) => `  '${o.id}': '${o.b64}',`).join('\n');
 writeFileSync('src/cartography/coastlines.ts', `/**
  * Land masks traced off the published plates by \`npm run trace:coast\`.
  * Generated — edit the tracer, not this file.

@@ -195,7 +195,16 @@ const AT_SEA_ON_PURPOSE = new Set([
 const wet = [];
 for (const l of C.locations) {
   const body = D.bodyById[l.body];
-  const coast = body && RECIPES[body.biome]?.coast;
+  // Scadrial is two worlds under one entry. `body.biome` is the static
+  // `scadrial-ash`, but the mistborn1 pins are measured on `final_empire.jpg`
+  // and the mistborn2 pins on the Basin plate, so each has to be judged
+  // against its own era's coastline — otherwise the Southern Continent is
+  // reported as drowning in the Final Empire's Southern Sea, which is a fact
+  // about two different maps rather than about the pin.
+  const biome = l.body === 'scadrial'
+    ? (l.book === 'mistborn2' ? 'scadrial-basin' : 'scadrial-ash')
+    : body?.biome;
+  const coast = biome && RECIPES[biome]?.coast;
   if (!coast || !hasCoast(coast)) continue;
   if (l.realm === 'cognitive' || AT_SEA_ON_PURPOSE.has(l.id)) continue;
   const cov = coastCoverage(coast, l.u, l.v);

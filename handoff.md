@@ -16,39 +16,69 @@ Architecture lock: `AGENTS.md` + `DESIGN.md`. This file is the live todo.
 
 # ▶ START HERE — next session
 
-## ☐ Tomorrow's job: give Scadrial a real coastline
+## ☐ Next job: Scadrial's Basin coastline (the ash half is done)
 
-Everything else is done and live. This is the one thing left, and it is the
-last world that needs it — Roshar and Scadrial are the only two with published
-plates, and Roshar's is done.
+**Half of this is finished and live.** `scadrial-ash` now has a real traced
+coastline and **every one of its 29 pins is on land** — `audit:data` reports
+zero in open water, and `test:cartography` puts the two bakers at mean 4.6 on
+it. The five gaussian blobs it replaced had been hand-placed under individual
+pins to stop them drowning, which worked for those five and nothing else.
 
-Scadrial has **69 pins placed on published plates and a globe still drawn from
-blobs**, which is exactly the bug Roshar had: the atlas shows Elendel in the
-Basin and the globe shows the same pin wherever the noise put it.
+What unlocked it: **the Final Empire plate classifies on warmth, not blue.**
+The 2026-09-15 note that it "comes out 0% water" was right about the symptom
+and wrong about the cause. Measured off the plate, open water is
+rgb(106,108,106) and rgb(116,118,115) — a *neutral slate*, so `b > max(r, g)`
+genuinely finds nothing. Land is parchment at rgb(148,135,113). The separation
+is ~35 levels of red-over-blue and the rule is now `r - b < 14`. Note also
+that `rule` in the tracer selects **water**, not land.
 
-**Do not start by tuning the classifier.** It was tried on 2026-09-15 and the
-plates cannot be auto-traced — `final_empire.jpg` comes out 0% water because
-its slate never satisfies `b > max(r, g)`, and `elendel_basin.png` is greyscale
-line-art where a brightness threshold finds the lettering and the roads and
-misses the seas. Full numbers under *Still open*.
+### What is left: the Basin era
 
-The work is:
+The owner chose (2026-09-20): **promote `scadrial_full.png` to the basin
+plate** — it is the Elendel Cartographic Collective's map of the Basin *and*
+the Southern Continent, it was sitting unused in `public/maps/`, and it is far
+closer to a world map than the Basin survey is — then re-measure the ~40
+`mistborn2` pins onto it, so plate = globe exactly as Roshar does it.
 
-1. **Decide what the plates cover.** Both are *regional* — the Final Empire,
-   and the Basin with the Northern Roughs. Roshar's plate is a supercontinent
-   with ocean all round it, which is the only reason reading it as
-   equirectangular works. Scadrial needs an answer to "what is the rest of the
-   globe" before any tracing means anything.
-2. **Hand-trace the two coastlines.** An hour of careful clicking, or generate
-   a first pass and correct it.
-3. **The machinery is already built and needs no changes.** Drop the mask into
-   `coastlines.ts`, add `coast: '…'` to the recipe, and both bakers pick it up.
-   `npm run test:cartography` will tell you if they disagree, and
-   `npm run audit:data` will tell you which pins ended up in the sea.
+**That plan is still right. What blocks it is that `scadrial_full.png` cannot
+be auto-traced either, and here is the evidence so nobody spends the hour
+again:**
 
-Era matters here in a way it did not for Roshar: Scadrial swaps plate at the
-Catacendre (`scadrial-ash` before, `scadrial-basin` after), so it needs two
-masks, one per recipe.
+- **Tone cannot separate it.** The enclosed seas are drawn in the *same white
+  paper as the land* and only the outer ocean carries a grey hatch. Measured:
+  Sea of Yomend **253**, Sea of Lennes **248**, against Southern Continent
+  south **200** and Kalling **202**. Every threshold puts an inland sea on the
+  land side or a continent on the water side. Hard downscaling first does not
+  fix it — the overlap is in the source, not in the sampling.
+- **Local maxima cannot either.** Land tops out at 255 everywhere, but so do
+  the inner seas.
+- **Flooding the ocean from the margin and letting the coast ink stop it
+  fails too.** Two reasons, both structural: the map's **grid lines partition
+  the open ocean into cells**, so a flood seeded in one cell never reaches the
+  next; and at any ink threshold loose enough to let the sea hatch through,
+  the coastlines leak and the flood swallows both continents. Swept ink
+  thresholds 120/140/155/170/185 give land fractions 15.8 / 20.8 / 32.5 / 49.0
+  / 59.1 % — the number moves smoothly and none of the pictures is a coastline.
+
+So the Basin needs the coastline **digitised by hand**, not classified. The
+honest shape of that job:
+
+1. Digitise the northern landmass, the Shrouded Isles, the Southern Islands
+   and the Southern Continent off `scadrial_full.png` as polygons.
+2. Rasterise them into the same 512x256 mask `coastlines.ts` already ships,
+   under the key `scadrial-basin`.
+3. Re-measure the ~40 `mistborn2` pin UVs onto `scadrial_full.png`. Measure
+   them against the *same* reading of the map used in step 1, so the pins and
+   the coast agree by construction.
+4. Swap the basin atlas tab order in `officialMaps.ts` so `scadrial_full.png`
+   leads and `elendel_basin.png` becomes the detail tab.
+5. `coast: 'scadrial-basin'` in the recipe, drop its `shape`.
+
+`audit:data` is already era-aware for this and will grade step 3 for free:
+Scadrial is two worlds under one entry, so `mistborn1` pins are judged against
+`scadrial-ash` and `mistborn2` against `scadrial-basin`. Until step 2 lands
+there is no basin mask, so those pins are skipped rather than measured against
+the wrong era's sea.
 
 ---
 
@@ -255,32 +285,18 @@ missing from the web.
 - **Four organisations with no members** — the Vanrial, the stormwardens, the
   Chorus, the Kerztian clergy. No named member on the page; inventing one is
   worse than an empty field.
-- **Scadrial's coastline**, and it is the only world where the question even
-  arises. Roshar and Scadrial are the only two with published plates
-  (`officialMaps.ts`); every other world's atlas plate *is* the procedural
-  bake, so its globe and its plate already agree by construction and there is
-  no drawn coastline to trace. Moons are a separate pipeline again —
-  `moon.frag`, craters and maria, no recipe and no pins.
+- **Scadrial's Basin coastline.** The ash half is done and live (traced off
+  `final_empire.jpg` on warmth, 29 pins dry). The Basin half is blocked on the
+  fact that no published Scadrial plate can be auto-traced: `elendel_basin.png`
+  is line-art, and `scadrial_full.png` draws its inland seas in the same white
+  as its land. Measurements and the three algorithms already ruled out are in
+  *START HERE* — read that before trying a fourth. It wants hand-digitising.
 
-  Scadrial has 69 pins on published plates and a blob globe, so it has exactly
-  the bug Roshar had. It was tried on 2026-09-15 and auto-tracing does not
-  work on either plate:
-
-  - `final_empire.jpg` classifies **0%** as water under blue-dominance. Its
-    water is a desaturated slate that never satisfies `b > max(r, g)`.
-  - `elendel_basin.png` is greyscale line-art. Thresholding on brightness
-    picks up the lettering, the roads, the mountains and the border, and
-    misses the seas entirely.
-
-  Worse than the classifier: both are *regional* maps — the Final Empire, and
-  the Basin with the Northern Roughs — not whole worlds. Roshar's plate is a
-  supercontinent with ocean all round it, which is why reading it as
-  equirectangular works. Reading a portrait survey of the Basin the same way
-  would wrap one valley round the planet.
-
-  So it needs a hand-traced coastline and a decision about what the rest of
-  Scadrial's globe is, not a better threshold. Do not start by tuning the
-  classifier.
+  Worth keeping in mind generally: Roshar and Scadrial are the only two worlds
+  with published plates (`officialMaps.ts`); every other world's atlas plate
+  *is* the procedural bake, so its globe and its plate agree by construction
+  and there is no drawn coastline to trace. Moons are a separate pipeline
+  again — `moon.frag`, craters and maria, no recipe and no pins.
 
 ## Lore checked — all three claims were right, do not reopen them
 

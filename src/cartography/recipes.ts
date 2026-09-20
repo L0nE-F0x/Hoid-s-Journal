@@ -104,11 +104,16 @@ export const RECIPES: Record<string, Recipe> = {
     threshold: 0.62, warp: 1.8, ridges: 0.62, rivers: 0.18, relief: 1.0,
     clouds: 0.62, cloudTint: '#9c9086', specular: 0.16, ice: 0.0, flora: 0.05,
     cap: '#6e6459', lights: 0.35, lightColor: '#ffb066',
-    shape: [
-      [0.47, 0.46, 0.20, 0.16, 1.05], [0.60, 0.29, 0.10, 0.09, 0.80],
-      [0.44, 0.62, 0.09, 0.08, 0.75], [0.488, 0.096, 0.055, 0.042, 0.66],
-      [0.273, 0.302, 0.048, 0.042, 0.60],
-    ],
+    // Traced off `public/maps/final_empire.jpg`, which is the plate the
+    // mistborn1 pins are measured on, so the globe and the atlas now agree
+    // about where the Southern Sea is. The five gaussian blobs this replaces
+    // had been hand-placed under individual pins — Tathingdwen, Fadrex — to
+    // stop them drowning, which worked for those five and for nothing else.
+    //
+    // The trace keys on warmth, not blue: this sea is a neutral slate at
+    // rgb(106,108,106) against parchment land at rgb(148,135,113), so the
+    // blue-dominance rule Roshar uses finds no water here at all.
+    coast: 'scadrial-ash',
   },
   // After the Catacendre: the Basin, the Roughs beyond it, and the Southern
   // Continent the Malwish came from. Harmony gave it back its green.

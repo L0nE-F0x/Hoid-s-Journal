@@ -66,6 +66,51 @@ const RINGED: Record<string, [number, number, string, string]> = {
   tanat: [1.66, 2.48, '#ffd2ac', '#a8663a'],
 };
 
+/**
+ * Fade the half of an orbit that is behind its own star.
+ *
+ * A closed curve drawn at one brightness has no depth in it: from outside the
+ * orbital plane a ring reads as a decal laid over the sky rather than as a
+ * path the camera is standing inside. Dimming the far half restores the read,
+ * and costs one dot product.
+ *
+ * `LineMaterial` only publishes a world position under `WORLD_UNITS`, which
+ * these lines deliberately do not use — world units would make orbit guides
+ * thicken as you fly toward them, which is backwards. So the varying is
+ * injected instead of switched on.
+ *
+ * `centre` is held by reference: planet orbits bake the system position into
+ * their geometry and pass that fixed point, while a moon orbit is a ring at
+ * the origin that gets moved onto its planet every frame, so it passes its own
+ * `position` and stays correct for free.
+ */
+function fadeFarSide(mat: LineMaterial, centre: THREE.Vector3, floor: number): void {
+  mat.onBeforeCompile = (shader) => {
+    shader.uniforms.uOrbitCentre = { value: centre };
+    shader.uniforms.uFarFade = { value: floor };
+    shader.vertexShader = `varying vec3 vOrbitWorld;\n${shader.vertexShader}`.replace(
+      'void main() {',
+      `void main() {
+        vOrbitWorld = ( modelMatrix * vec4( position.y < 0.5 ? instanceStart : instanceEnd, 1.0 ) ).xyz;`,
+    );
+    shader.fragmentShader = [
+      'uniform vec3 uOrbitCentre;',
+      'uniform float uFarFade;',
+      'varying vec3 vOrbitWorld;',
+      shader.fragmentShader,
+    ].join('\n').replace(
+      'gl_FragColor = vec4( diffuseColor.rgb, alpha );',
+      `vec3 toCam = normalize( cameraPosition - vOrbitWorld );
+        vec3 outward = normalize( vOrbitWorld - uOrbitCentre );
+        float nearness = dot( outward, toCam ) * 0.5 + 0.5;
+        gl_FragColor = vec4( diffuseColor.rgb, alpha * mix( uFarFade, 1.0, nearness ) );`,
+    );
+  };
+  // Without this the patched and unpatched LineMaterials hash to the same
+  // program and whichever compiles first wins for both.
+  mat.customProgramCacheKey = () => 'ceph-orbit-farfade';
+}
+
 export class Orrery {
   readonly group = new THREE.Group();
 
@@ -385,7 +430,16 @@ export class Orrery {
         blending: THREE.AdditiveBlending,
       });
       mat.resolution.copy(this.viewport);
+      fadeFarSide(mat, sysPos, 0.16);
       const line = new Line2(geo, mat);
+      // Two tints per orbit. Up close, at system scale, the colour says which
+      // world this ring belongs to and is worth reading. Pulled back to the
+      // whole Cosmere there are twenty-eight of them over thirteen systems and
+      // no one is tracing any single ellipse — at that range full saturation
+      // is a spirograph laid over the sky, so the rings step back toward a
+      // common cool tone and let the star clouds carry the frame.
+      line.userData.base = new THREE.Color(body.color);
+      line.userData.calm = new THREE.Color(body.color).lerp(new THREE.Color(0x93a8c6), 0.66);
       line.computeLineDistances();
       line.frustumCulled = false;
       line.renderOrder = -1;
@@ -435,6 +489,9 @@ export class Orrery {
       });
       lineMat.resolution.copy(this.viewport);
       const line = new Line2(geo, lineMat);
+      // The ring lives at the origin and is moved onto its planet each frame,
+      // so its own position is the centre to fade around.
+      fadeFarSide(lineMat, line.position, 0.24);
       line.computeLineDistances();
       line.frustumCulled = false;
       line.renderOrder = -1;
@@ -717,7 +774,10 @@ export class Orrery {
       line.visible = orbitsOn && own && live;
       if (!line.visible) continue;
       const mat = line.material as LineMaterial;
-      mat.opacity = visual.scale === 'system' ? 0.42 : 0.28;
+      const close = visual.scale === 'system';
+      mat.opacity = close ? 0.42 : 0.17;
+      const tint = close ? line.userData.base : line.userData.calm;
+      if (tint) mat.color.copy(tint as THREE.Color);
     }
 
     const lit = new Set<string>();
@@ -768,6 +828,17 @@ export class Orrery {
       mat.uniforms.uSize.value = size;
       mat.uniforms.uCorona.value = shadesmar ? 0.12 : 1;
       mat.uniforms.uFlare.value = shadesmar ? 0.05 : (visual.scale === 'cosmere' ? 0.75 : 0.4);
+      // How much of the billboard is photosphere rather than corona.
+      //
+      // `sun.frag` limb-darkens the disc and crawls convection cells across
+      // it, and at 0.15 none of that was ever visible: the disc was a twelfth
+      // of the quad and the star read as a white dot with a flare on it. From
+      // the Cosmere a star *should* be a point, but standing inside a system
+      // it is the thing everything else orbits, so the disc opens up and the
+      // granulation finally has somewhere to live.
+      mat.uniforms.uCoreRadius.value = visual.scale === 'system'
+        ? (focused ? 0.34 : 0.24)
+        : 0.15;
     }
   }
 

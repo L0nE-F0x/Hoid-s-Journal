@@ -34,12 +34,58 @@ function bootError(message: string): void {
   boot.fill.style.background = '#ff8f7a';
 }
 
+/**
+ * Ask a scratch canvas, never `#stage`.
+ *
+ * `getContext` fixes a canvas's context attributes on the *first* call and
+ * silently ignores the ones passed to every call after it. Probing the real
+ * stage therefore handed Three a context it never asked for: `alpha: false`
+ * and `powerPreference: 'high-performance'` were dropped on the floor, which
+ * on a hybrid laptop is the difference between the discrete GPU and the
+ * integrated one. Probe something disposable and let `App` open the only
+ * context that matters.
+ */
+function webgl2Support(): { ok: true } | { ok: false; message: string } {
+  const probe = document.createElement('canvas');
+  // A document may only hold so many live contexts; hand each one back as
+  // soon as it has answered the question.
+  const release = (gl: WebGLRenderingContext | WebGL2RenderingContext): void => {
+    gl.getExtension('WEBGL_lose_context')?.loseContext();
+  };
+
+  const gl2 = probe.getContext('webgl2');
+  if (gl2) {
+    release(gl2);
+    return { ok: true };
+  }
+
+  const gl1 = probe.getContext('webgl');
+  if (gl1) {
+    release(gl1);
+    return {
+      ok: false,
+      message:
+        'This needs WebGL2, and this browser offers only WebGL1 — usually a ' +
+        'driver too old for it, or a software fallback standing in for the GPU.',
+    };
+  }
+
+  return {
+    ok: false,
+    message:
+      'This needs WebGL2, and this browser is providing no WebGL at all. ' +
+      'Hardware acceleration is switched off, or the GPU process is not ' +
+      'running. In Chrome, chrome://gpu will say which.',
+  };
+}
+
 async function main(): Promise<void> {
   const canvas = document.getElementById('stage') as HTMLCanvasElement;
   const uiRoot = document.getElementById('ui-root')!;
 
-  if (!canvas.getContext('webgl2')) {
-    bootError('This needs WebGL2, which this browser or GPU does not provide.');
+  const support = webgl2Support();
+  if (!support.ok) {
+    bootError(support.message);
     return;
   }
 
@@ -65,9 +111,23 @@ async function main(): Promise<void> {
   connectAudio();
 
   setBoot(0.7, 'Lighting the systems');
-  const app = new App(canvas, {
-    onHoverAnchor: (p) => ui?.setHoverAnchor(p),
-  });
+  // The probe above proves the browser *can* make a context, not that it can
+  // make this one. Under GPU memory pressure the real request is where it
+  // gives out, and a bare Three exception is not a thing to show a reader.
+  let app: App;
+  try {
+    app = new App(canvas, {
+      onHoverAnchor: (p) => ui?.setHoverAnchor(p),
+    });
+  } catch (err) {
+    console.error('[cephandrius] the renderer could not take the canvas:', err);
+    bootError(
+      'The GPU offered a test context and then refused the real one — usually ' +
+      'memory pressure, or a driver that has fallen over. Reloading, or ' +
+      'restarting the browser, normally clears it.'
+    );
+    return;
+  }
   app.start();
 
   // Handle for the capture / interaction harnesses in tools/. Not a public API.

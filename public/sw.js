@@ -1,12 +1,14 @@
 /**
- * Cephandrius offline shell.
+ * Hoid's Journal offline shell.
  *
  * Built assets are content-hashed, so they are safe to keep forever and are
  * served cache-first. The HTML shell is network-first, so a deploy is picked
  * up as soon as the reader is online again.
  */
-const CACHE = 'ceph-v1';
-const SHELL = ['./', './index.html', './manifest.webmanifest', './mark.svg', './icon-192.png', './icon-512.png'];
+/* Bumped when the shell's own files change — the rename and the new mark
+   would otherwise be served from an install made before them. */
+const CACHE = 'ceph-v2';
+const SHELL = ['./', './index.html', './manifest.webmanifest', './mark.svg', './logo.jpg', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', (event) => {
   event.waitUntil((async () => {

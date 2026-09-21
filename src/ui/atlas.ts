@@ -57,7 +57,12 @@ function layer(): HTMLCanvasElement {
 }
 
 export function mountAtlas(root: HTMLElement): { destroy(): void } {
-  const canvas = el('canvas', { className: 'ceph-atlas-canvas', attrs: { width: String(W), height: String(H) } });
+  // A plate is a picture, and a screen reader is handed a bare <canvas>
+  // otherwise. The label tracks the heading, which already says what is drawn.
+  const canvas = el('canvas', {
+    className: 'ceph-atlas-canvas',
+    attrs: { width: String(W), height: String(H), role: 'img', 'aria-label': 'Surface scan' },
+  });
   const title = el('div', { className: 'ceph-atlas-title', text: 'Surface scan' });
   const kicker = el('div', { className: 'ceph-kicker', text: 'Cartography' });
   const roster = el('div', { className: 'ceph-atlas-roster' });
@@ -354,6 +359,7 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
       kicker.textContent = official ? 'Cartography' : 'Cartography';
       title.textContent = s.realm === 'cognitive' ? `${body.name} · Shadesmar` : body.name;
     }
+    canvas.setAttribute('aria-label', `${kicker.textContent}: ${title.textContent}`);
     credit.textContent = official ? MAP_CREDIT : '';
     composeMap();
     composePins();

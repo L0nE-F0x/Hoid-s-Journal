@@ -1,8 +1,8 @@
-# Cephandrius — working notes
+# Hoid’s Journal — working notes
 
 **Live todo is `handoff.md`.** Read that first on a new session.
 
-Unofficial Cosmere atlas. The original Hoid's Journal lives at
+Unofficial Cosmere atlas. The original v1 of this app lives at
 `/home/lonefox/Projects/ApexForge/cosmere-interactive-map` and must not be
 edited from this project.
 
@@ -72,7 +72,10 @@ Breaking either of these is how this turns into a tangle:
 - Every published world is in scope, nested (globe + surface + city).
 - Globe textures stay procedural. Atlas plates may use Isaac Stewart
   cartography, credited. No Coppermind portraits.
-- Public name: **Cephandrius — Hoid's Journal**.
+- Public name: **Hoid’s Journal**, at **https://the-cosmere.com**. The
+  working directory is still called `Cephandrius` and so are the internal
+  `ceph-` CSS prefix and the `window.__ceph` test handle; none of those are
+  user-visible and renaming them buys nothing.
 - Unofficial fan project. Dragonsteel disclaimer on the title screen.
 
 ## Commands

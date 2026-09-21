@@ -51,7 +51,7 @@ export function mountTitle(root: HTMLElement): { enter(): void; open(): void; de
       el('header', { className: 'ceph-title-head' }, [
         el('img', {
           className: 'ceph-title-mark',
-          attrs: { src: `${import.meta.env.BASE_URL}logo.png`, alt: '', width: '84', height: '84' },
+          attrs: { src: `${import.meta.env.BASE_URL}logo.jpg`, alt: '', width: '84', height: '84' },
         }),
         el('hr', { className: 'ceph-rule ceph-title-rule' }),
         el('h1', { className: 'ceph-title-wordmark', text: BRAND_WORDMARK }),

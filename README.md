@@ -1,4 +1,4 @@
-# Cephandrius — Hoid's Journal
+# Hoid’s Journal
 
 An unofficial, spoiler-aware atlas of Brandon Sanderson's Cosmere.
 
@@ -8,8 +8,10 @@ mists, Nalthis' colour, the dark of Threnody — hanging in the same sky. Time
 is an instrument. The three Realms are places. Magic is a set of tables you
 can actually use while you reread.
 
-This is the successor to the original Hoid's Journal, rebuilt from first
-principles. The original is preserved untouched.
+Live at **[the-cosmere.com](https://the-cosmere.com)**.
+
+This is the successor to the original interactive Cosmere map, rebuilt from
+first principles. The original is preserved untouched.
 
 Source: [L0nE-F0x/Hoid-s-Journal](https://github.com/L0nE-F0x/Hoid-s-Journal).
 

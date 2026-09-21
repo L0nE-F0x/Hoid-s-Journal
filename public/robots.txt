@@ -1,0 +1,9 @@
+# Hoid's Journal — https://the-cosmere.com
+User-agent: *
+Allow: /
+
+# Plates and audio are large and are no use to a crawler on their own.
+Disallow: /maps/
+Disallow: /audio/
+
+Sitemap: https://the-cosmere.com/sitemap.xml

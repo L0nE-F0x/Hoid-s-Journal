@@ -3,33 +3,34 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
-    <title>Cephandrius — Hoid's Journal</title>
-    <meta name="description" content="Cephandrius: an unofficial, spoiler-aware, nested atlas of Brandon Sanderson's Cosmere. Fly the systems, walk the Realms, and keep a journal that will not spoil you." />
+    <title>Hoid’s Journal</title>
+    <meta name="description" content="Hoid’s Journal: an unofficial, spoiler-aware, nested atlas of Brandon Sanderson’s Cosmere. Fly the systems, walk the Realms, and keep a journal that will not spoil you." />
     <meta name="theme-color" content="#05060c" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="apple-mobile-web-app-title" content="Cephandrius" />
+    <meta name="apple-mobile-web-app-title" content="Hoid’s Journal" />
     <link rel="icon" type="image/svg+xml" href="./mark.svg" />
-    <link rel="apple-touch-icon" href="./logo.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png" />
+    <link rel="apple-touch-icon" href="./icon-192.png" />
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="canonical" href="%SITE_URL%/" />
 
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Cephandrius" />
+    <meta property="og:site_name" content="Hoid’s Journal" />
     <meta property="og:url" content="%SITE_URL%/" />
-    <meta property="og:title" content="Cephandrius — Hoid's Journal" />
+    <meta property="og:title" content="Hoid’s Journal" />
     <meta property="og:description" content="An unofficial nested atlas of the Cosmere. Fly the systems. Walk the Realms. Keep a journal that will not spoil you." />
     <meta property="og:image" content="%SITE_URL%/og.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Cephandrius — Hoid's Journal. An unofficial nested atlas of the Cosmere." />
+    <meta property="og:image:alt" content="Hoid’s Journal. An unofficial nested atlas of the Cosmere." />
 
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Cephandrius — Hoid's Journal" />
+    <meta name="twitter:title" content="Hoid’s Journal" />
     <meta name="twitter:description" content="An unofficial nested atlas of the Cosmere." />
     <meta name="twitter:image" content="%SITE_URL%/og.jpg" />
-    <meta name="twitter:image:alt" content="Cephandrius — Hoid's Journal over a live Roshar." />
+    <meta name="twitter:image:alt" content="Hoid’s Journal over a live Roshar." />
     <style>
       :root { color-scheme: dark; }
       * { box-sizing: border-box; }
@@ -52,22 +53,29 @@
           transparent 1px, transparent 3px
         );
       }
+      /* The mark is a square plate on near-black, like the title screen's.
+         A radial mask takes the corners off so the slow turn reads as a seal
+         rotating rather than a photograph being spun. */
       #boot-mark {
         width: 84px; height: 84px;
+        -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 46%, rgba(0,0,0,0.55) 60%, transparent 72%);
+        mask-image: radial-gradient(circle at 50% 50%, #000 46%, rgba(0,0,0,0.55) 60%, transparent 72%);
         filter: drop-shadow(0 0 18px rgba(150, 200, 255, 0.24));
         animation: boot-spin 120s linear infinite;
       }
       #boot-title {
         font-family: ui-serif, 'Iowan Old Style', 'Palatino Linotype', Palatino,
           Georgia, 'Liberation Serif', 'Times New Roman', serif;
-        font-size: clamp(22px, 4.6vw, 42px); font-weight: 400;
-        letter-spacing: 0.36em; text-indent: 0.36em; text-transform: uppercase;
-        color: #f2ece0;
+        font-size: clamp(19px, 4.1vw, 38px); font-weight: 400;
+        letter-spacing: 0.28em; text-indent: 0.28em; text-transform: uppercase;
+        color: #f2ece0; text-align: center;
+        max-width: calc(100% - 32px); line-height: 1.16;
         text-shadow: 0 2px 26px rgba(0,0,0,0.8), 0 0 52px rgba(150,190,255,0.14);
       }
       #boot-sub {
-        font-size: 10px; letter-spacing: 0.46em; text-indent: 0.46em;
+        font-size: 10px; letter-spacing: 0.32em; text-indent: 0.32em;
         text-transform: uppercase; color: #d9b25f; opacity: 0.85; margin-top: -2px;
+        text-align: center; max-width: min(92vw, 420px); line-height: 1.7;
       }
       #boot-pips { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; max-width: 220px; }
       #boot-pips span { width: 6px; height: 6px; border-radius: 50%; box-shadow: 0 0 6px currentColor; }
@@ -95,13 +103,13 @@
     </style>
   </head>
   <body>
-    <canvas id="stage"></canvas>
+    <canvas id="stage" role="img" aria-label="A live map of the Cosmere: the orrery, its worlds and their surfaces. The controls and the text of the journal are in the panels around it."></canvas>
     <div id="ui-root"></div>
     <div id="boot">
       <div id="boot-scan"></div>
-      <img id="boot-mark" src="./mark.svg" alt="" width="96" height="96" />
-      <div id="boot-title">Cephandrius</div>
-      <div id="boot-sub">Hoid's Journal</div>
+      <img id="boot-mark" src="./logo.jpg" alt="" width="96" height="96" />
+      <div id="boot-title">Hoid’s Journal</div>
+      <div id="boot-sub">Kept by a man with too many names</div>
       <div id="boot-pips" aria-hidden="true">
         <span style="background:#38bdf8;color:#38bdf8"></span>
         <span style="background:#4ade80;color:#4ade80"></span>

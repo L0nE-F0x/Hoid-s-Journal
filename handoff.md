@@ -1,4 +1,4 @@
-# Cephandrius — handoff
+# Hoid’s Journal — handoff
 
 **Read this first.** Live top-of-todo across sessions.
 
@@ -7,7 +7,7 @@ Remote: https://github.com/L0nE-F0x/Hoid-s-Journal (`master`)
 Original v1 (museum, **do not edit**): `/home/lonefox/Projects/ApexForge/cosmere-interactive-map`
 Visual/architecture parent: `/home/lonefox/Projects/Aetherfield`
 
-Product name: **Cephandrius — Hoid's Journal**
+Product name: **Hoid’s Journal** · live at **https://the-cosmere.com**
 Unofficial fan project. Dragonsteel disclaimer stays on the title screen.
 
 Architecture lock: `AGENTS.md` + `DESIGN.md`. This file is the live todo.
@@ -16,10 +16,30 @@ Architecture lock: `AGENTS.md` + `DESIGN.md`. This file is the live todo.
 
 # ▶ START HERE — next session
 
-**Nothing is outstanding.** The 2026-09-21 star-chart pass is pushed and
-live (`63403c1` → `92d85c1`). Optional only: *Do next 5* (godrays, DoF,
-aurora — each needs a decision), empty orgs (do not invent members), more
-sky beats.
+**Nothing is outstanding.** The 2026-09-21 rename and share pass is pushed
+and live. Optional only: *Do next 5* (godrays, DoF, aurora — each needs a
+decision), empty orgs (do not invent members), more sky beats.
+
+**The app is called Hoid’s Journal and lives at https://the-cosmere.com.**
+Do not reintroduce "Cephandrius" as branding — it is Hoid’s own name, so the
+old title said the same thing twice. It survives on purpose in exactly two
+places: the lore (`characters.ts`, `glossaryMore.ts` — he really is called
+that) and the epigraph signature, *"Cephandrius, in his own hand"*, which is
+the joke. The working directory, the `ceph-` CSS prefix and `window.__ceph`
+are all still called Cephandrius and that is deliberate: none of them are
+user-visible and renaming them buys nothing but risk.
+
+**The mark is the old app's icon**, inherited on purpose so the two apps read
+as one thing: `public/logo.jpg` is the plate (it was a JPEG named `.png` for
+seven months), `icon-192/512.png` are scaled from it by `npm run icons`, and
+`public/mark.svg` is a hand-drawn reduction — hexagon, ring, four-point rose —
+for the 16px tab, where the starfield turns to grey mush. The two are not
+expected to match pixel for pixel.
+
+**The SPA catch-all is gone from `netlify.toml` on purpose.** Routing is all
+fragment (`/#body=roshar`), so `/*  ->  /index.html  200` never routed
+anything; it only turned typos and missing plates into a 200 HTML page.
+Unmatched paths now reach `404.html`.
 
 Do not reopen a fourth classifier on `scadrial_full.png`. Edit the polygons.
 Do not restart the audit or the lore checks.
@@ -44,11 +64,11 @@ to Intel (`pci-0000:00:02.0-render` = `renderD128` this boot). If Chrome
 starts on NVIDIA (`renderD129`), ANGLE `gl-egl` fails and Chrome disables GL
 for the whole process — every tab, including the PWA. Fix: fully **Exit**
 Chrome (not the tab), reopen via the "Google Chrome" launcher
-(`google-chrome-intel`). The Cephandrius PWA desktop must go through that
+(`google-chrome-intel`). The journal’s PWA desktop must go through that
 wrapper; `/opt/google/chrome/google-chrome --app-id=…` skips
 `~/.config/chrome-flags.conf`. Verified 2026-09-20 after a full quit.
 
-Hard-refresh https://thecosmere.netlify.app — the service worker keeps the
+Hard-refresh https://the-cosmere.com — the service worker keeps the
 old shell.
 
 ---
@@ -57,12 +77,12 @@ old shell.
 a growing circle, it no longer re-detonates on every era click, orbits have a
 near side and a far side, the star has a disc, and the roads carry traffic.
 Pins are beads, not confetti; first visit is Stormlight. Hard-refresh
-https://thecosmere.netlify.app — the service worker keeps the old shell.
+https://the-cosmere.com — the service worker keeps the old shell.
 
 **2026-09-15 audit pass is live.** Ten findings, ten fixed, pushed. The
 owner asked for a deep audit (lore depth, lore accuracy, debugging,
 visuals), then the ten best improvements, then all ten. Hard-refresh
-https://thecosmere.netlify.app — the service worker keeps the old shell,
+https://the-cosmere.com — the service worker keeps the old shell,
 and Roshar's globe actually looks like Roshar now.
 
 **Do not restart the audit, and do not reopen the lore checks.** All three
@@ -82,7 +102,7 @@ on Alethkar and the globe put the same pin in open ocean, side by side in one
 frame. The coastline is traced off the plate; see *Sharp edges*.
 
 Git: `master` tracking https://github.com/L0nE-F0x/Hoid-s-Journal, **level
-with origin**. Live site: https://thecosmere.netlify.app — **it deploys on
+with origin**. Live site: https://the-cosmere.com — **it deploys on
 push, so `git push` is the deploy.**
 **Do not edit the v1 repo** at `ApexForge/cosmere-interactive-map`.
 
@@ -121,6 +141,40 @@ now, and the cost is the Investiture clouds).
 ---
 
 ## What the last session changed
+
+**2026-09-21 rename, mark and share pass (pushed and live).** The owner was
+consolidating two apps into one brand: the v1 map gives up its Netlify URL
+and its icon, and the new atlas takes both. Renamed **Cephandrius — Hoid’s
+Journal → Hoid’s Journal**, because Cephandrius *is* Hoid and the old name
+said it twice.
+
+- **Brand.** `src/ui/brand.ts` is still the single source: wordmark, the new
+  gold sub-line *"Kept by a man with too many names"* (the old sub-line was
+  the name and had nowhere to go), disclaimer. `<title>`, the manifest, the
+  OG/Twitter block and the boot screen all follow it. Typographic apostrophe
+  in display copy — a straight one reads as a tick at 48px.
+- **Mark.** The v1 icon is now this app's icon everywhere. `logo.png` was a
+  JPEG named `.png`, so it is `logo.jpg` now; `icon-192/512.png` are scaled
+  from it by a rewritten `npm run icons` (ImageMagick, quantised: the 512
+  went 340KB → 83KB). **The manifest no longer lists `mark.svg` first** —
+  that entry, `sizes: any` and transparent, is why Android was drawing the
+  journal on a white plate while v1 sat next to it full-bleed and dark.
+- **Domain.** `the-cosmere.com`. A production build now always claims the
+  canonical domain rather than `env.URL`, so the card does not name a
+  `*.netlify.app`; previews still name themselves.
+- **Share polish.** `og.jpg` re-rendered — settle 2400 → 9000, because 2400
+  caught the camera mid-flight with the type washed out over a lit globe.
+  Added `robots.txt`, `sitemap.xml`, a styled `404.html`, cache headers and
+  `nosniff`/`Referrer-Policy`/`Permissions-Policy`.
+- **Weight.** `roshar_full.jpg` was a **12MB PNG** wearing a `.jpg`
+  extension. Re-encoded to real JPEG q88 at the *same* 3096×1800, so the
+  `Location.u/v` calibration and the traced coastline are untouched.
+  `public/maps` 26MB → 15MB. `Shadesmar_full.jpg` was the same trick, 1.2MB
+  → 220KB.
+- **Accessibility.** The scene canvas and the atlas plate canvas had no
+  accessible name; both are `role="img"` now, the plate's label tracking its
+  own heading.
+
 
 **2026-09-21 star charts (`63403c1` → `92d85c1`, pushed and live).** The owner was
 reading *Arcanum Unbounded*, got to the Selish system chart, and found one
@@ -474,7 +528,7 @@ Owner answered these. They are the spec.
 | Scope | **Every published world, nested** (globe + surface + city). Not a slice. |
 | Pillars | Orrery + time, spoiler companion, Arcanum, three Realms, Roshar surface, Scadrial Catacendre map-swap, Codex, Lore Web |
 | Art | **Globe textures stay procedural.** Atlas world and city plates may use Isaac Stewart cartography, **always credited** (`MAP_CREDIT` = "Cartography by Isaac Stewart"). No Coppermind portraits. |
-| Name | Cephandrius — Hoid's Journal |
+| Name | Hoid’s Journal (renamed 2026-09-21; Cephandrius *is* Hoid, so the old name said it twice) |
 | Usage | Owner rereads with it for: where is everyone, planet-while-reading, magic tables, connections, vibe |
 
 v1 ideas to keep: spoiler-as-product, era-weighted time, Realms as places,

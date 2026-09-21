@@ -555,7 +555,7 @@ function renderSettings(card: HTMLElement): void {
     listen(install, 'click', () => { void promptInstall(); });
     card.append(
       el('div', { className: 'ceph-kicker', text: 'Offline', style: { marginTop: '20px' } }),
-      el('p', { className: 'ceph-fact', text: 'Keep Cephandrius on the device and open it without a connection.' }),
+      el('p', { className: 'ceph-fact', text: 'Keep the journal on the device and open it without a connection.' }),
       install,
     );
   }

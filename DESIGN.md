@@ -1,6 +1,6 @@
-# Cephandrius — design lock
+# Hoid’s Journal — design lock
 
-Successor to Hoid's Journal (`ApexForge/cosmere-interactive-map`). That
+Successor to the v1 of the same name (`ApexForge/cosmere-interactive-map`). That
 directory is a museum piece. This one is the 100x.
 
 Visual parent: **Aetherfield** — WebGL2, HDR post, glass instrument HUD,
@@ -31,7 +31,9 @@ store wall, title over a live scene.
    still procedural. Without it the atlas showed Kholinar on Alethkar and
    the globe showed the same pin in open ocean, in one frame, six inches
    apart.
-6. **Name.** Cephandrius — Hoid's Journal.
+6. **Name.** Hoid’s Journal. Cephandrius is Hoid, so the old double-barrelled
+   name said the same thing twice; it survives only as the epigraph's
+   signature, which is the joke.
 
 ## Why v1 still matters
 

@@ -5,7 +5,47 @@
 [build.environment]
   NODE_VERSION = "22"
 
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+# No SPA catch-all. Every route in this atlas lives in the fragment
+# (`/#body=roshar&...`), so the old `/*  ->  /index.html  200` rule bought
+# nothing and cost a great deal: a mistyped path, or a plate that failed to
+# deploy, came back as the app shell with a 200, which is invisible in the
+# network tab and tells a crawler the page exists. Unmatched paths now fall
+# through to Netlify's 404 handling, which serves 404.html.
+
+# Hashed build output never changes under its own name.
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Plates and the soundtrack are stable but not content-hashed, so they get a
+# week rather than a year — long enough to matter, short enough to replace.
+[[headers]]
+  for = "/maps/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/audio/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+# The worker decides what everything else is allowed to cache, so it must not
+# be cached itself — that is how an install gets stuck on an old shell.
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/manifest.webmanifest"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "SAMEORIGIN"
+    Permissions-Policy = "geolocation=(), camera=(), microphone=(), interest-cohort=()"

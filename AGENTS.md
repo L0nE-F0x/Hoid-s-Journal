@@ -20,6 +20,13 @@ Breaking either of these is how this turns into a tangle:
    is derived in `src/layout/` and consumed by `src/render/`. Baking orrery
    coordinates into lore is how the v1 surface maps rotted.
 
+   What a system *contains* is lore and lives in `catalog.ts`: planets,
+   moons, `BELTS`, `Body.rings`, `System.companions`, `Body.orbitAround` for
+   a double planet. How far apart they are drawn is layout and is ours —
+   canon gives order and relative size, not semi-major axes. `npm run
+   audit:data` holds the seam: a belt that swallows a planet's orbit, or a
+   double planet orbiting another double planet, fails the build.
+
 3. **One recipe table, two bakers.** `src/cartography/recipes.ts` is the only
    description of what a world looks like. `render/planetBake.ts` renders it
    on the GPU for the globe; `cartography/planetMap.ts` is its CPU twin for

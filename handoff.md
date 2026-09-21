@@ -16,12 +16,26 @@ Architecture lock: `AGENTS.md` + `DESIGN.md`. This file is the live todo.
 
 # ▶ START HERE — next session
 
-**Nothing is outstanding.** The 2026-09-20 coastline / pin / playhead work is
-pushed and live. Optional only: *Do next 5* (godrays, DoF, aurora — each
-needs a decision), empty orgs (do not invent members), more sky beats.
+**Nothing is outstanding.** The 2026-09-21 star-chart pass is built, tested
+and **not yet pushed** — `git push` is the deploy, so it needs the owner's
+word. Optional only: *Do next 5* (godrays, DoF, aurora — each needs a
+decision), empty orgs (do not invent members), more sky beats.
 
 Do not reopen a fourth classifier on `scadrial_full.png`. Edit the polygons.
 Do not restart the audit or the lore checks.
+
+**The star charts are done. Do not re-derive them.** Every system in
+Arcanum Unbounded is now drawn entire — planets, moons, belts, dwarf
+planets, second stars — and every count is sourced in the data. What canon
+leaves unnamed (dwarf planets, the moons of Ky, Ralen, the two Aagals,
+Farkeeper and the outer Drominad giants) is numbered, and each of those
+cards carries a field note saying the numeral is ours. What canon does not
+place at all (Dhatri, the Grand Apparatus, Mythos, Rellam, Bjendal) sits at
+a star of our invention and says so on its own card. **Three things were
+left out on purpose:** Miral (*The Fires of December*, 6 October 2026 — not
+published, and the product lock is published worlds only), the kite planet
+(canon gives it no name), and Zidorna (canon says it may not be a planet at
+all).
 
 **Laptop WebGL (this machine, not the app).** A title screen that says
 "this browser is providing no WebGL at all" is Chrome's GPU process running
@@ -79,7 +93,7 @@ npm run dev              # http://127.0.0.1:5174
 
 # Second shell. This is how you check anything.
 npm run shot -- --focus roshar --scale globe --out /tmp/roshar.png
-npm run test:interaction # 59 checks through real mouse and keyboard
+npm run test:interaction # 67 checks through real mouse and keyboard
 npm run test:cartography # 17 checks that both bakers draw the same world
 npm run audit:data       # referential integrity over src/data
 npm run audit:ui         # clicks every control, reports the ones that do nothing
@@ -99,11 +113,89 @@ the drawing buffer, the pixel ratio, the program count and any fault — ask for
 it first when someone reports a black sky.
 
 Last known green, all with `npm run dev` up: `npx tsc --noEmit`,
-`test:interaction` **59/59**, `test:cartography` **17/17**, `audit:data` clean.
+`test:interaction` **67/67**, `test:cartography` **17/17**, `audit:data`
+clean, `audit:ui` 0 dead controls, `perf` 60fps everywhere except the
+Cosmere frame, which is 51 (it was 53 over thirteen systems; it is eighteen
+now, and the cost is the Investiture clouds).
 
 ---
 
 ## What the last session changed
+
+**2026-09-21 star charts (built, tested, _not pushed_).** The owner was
+reading *Arcanum Unbounded*, got to the Selish system chart, and found one
+planet in our Selish system where canon draws four, two belts, five moons
+around Ralen alone and a dwarf world past the comet belt. The whole atlas
+had the same hole. This pass fills it.
+
+**Data.**
+
+1. **Selish.** Donne/Doo inside Sel, an asteroid belt, Ky/Kii (four moons),
+   Ralen/Raa (five moons, rings, largest), a comet belt, and the unnamed
+   dwarf planet past it. The star is **Mashe**, which holds the Aon Ashe —
+   light.
+2. **Scadrian.** Aagal Nod, the Near Eye (blue, six moons, largest) and
+   Aagal Uch, the Far Eye (red, rings, five moons), named by the Nelazan
+   before the ashfalls; a comet belt and two unnamed dwarf planets past it.
+   Scadrial was built after the Shattering — the rest of that system was
+   Adonalsium's, so the Scadrian star now stands in era 0 and Scadrial does
+   not. *That changed a test; see below.*
+3. **Rosharan.** The asteroid belt that divides the three terrestrial worlds
+   from the ten gas giants. **The gas giants lost their rings** — canon says
+   none of the ten has a known moon or ring, and we had painted rings on
+   five.
+4. **Nalthian.** Farkeeper the Bright (red, six moons, largest) and
+   Nightstar the Hidden (small, violet, far out), both titled like Returned
+   because canon names them that way; a comet belt past Nightstar; and the
+   cognitive anomaly that shares Nalthis's orbit, as a Shadesmar site.
+5. **Threnodite.** Monody, Elegy (and **Coronach**, the system's only moon)
+   and Purity, which is much larger and much further out than the other
+   three. Three of the four are named for songs of mourning. The planet id
+   is `elegy-planet`: a Charred on Canticle already owns `elegy`, and that
+   is not a coincidence — Canticle was settled from Threnody.
+6. **Drominad.** Fourth of the Sun (rings), the asteroid belt, and Fifth,
+   Sixth and Seventh — three gas giants with three, four and four moons.
+   Second and Third are water worlds with human societies, not the barren
+   rocks we had. First of the Sun's moon has a canon name now: **First of
+   the First**.
+7. **Taldain.** A binary, at last: **AisDa** the blue-white supergiant at
+   the centre and **the Eye of Ridos**, a white dwarf inside its Particulate
+   Ring, twice as far out as the planet and on the same bearing forever —
+   which puts Taldain exactly on the line between its two suns, where White
+   Sand says it sits.
+8. **UTol.** UTol and Komashi are a double planet now (`Body.orbitAround`),
+   swinging around each other while the pair goes round a red-orange sun. So
+   each hangs in the other's sky, which is what the daystar is. Their two
+   invented moons are gone, and so is Braize's — the Rosharan system has
+   exactly three moons in canon.
+9. **Five worlds canon names and never places:** Dhatri (the aethers'
+   homeworld), the Grand Apparatus, Mythos, Rellam and Bjendal. Each gets a
+   star of our own with a thin Investiture cloud and a field note saying so.
+   Rellam comes from *Elsecaller*, which is now in the Journal's book list.
+10. **Lumar's aethers were swapped.** The Crimson Moon was described as
+    roseite; crimson grows spikes (coral), roseite is the pink crystal over
+    the Rose Sea. Each of the six named moons now names its sea.
+11. **Stars have colour from canon** where canon gives it: Roshar's is
+    white, Threnody's red, UTol's red-orange, and the Nalthian, Scadrian and
+    Selish suns are yellow and much alike. The Investiture cloud is still
+    the art device that tells systems apart at Cosmere distance.
+
+**Renderer.**
+
+- `Belt` is a new kind: a `Points` cloud per belt, scattered through an
+  annulus and drifting *differentially* in the vertex shader (the inside of
+  a belt goes round faster than the outside; a belt turning as one rigid
+  disc reads as a decal). Drawn inside its own system only.
+- Rings are data (`Body.rings`) instead of a hard-coded table in the
+  renderer, which is why Canticle finally has the blue-and-gold rings that
+  light its night side.
+- `System.companions` puts second stars in the sky; `systemExtent` counts
+  belts and companions, so a system frames its whole disc.
+- Moon orbit rings wait for the camera now. Six concentric ellipses around
+  a planet three pixels wide read as a target painted on the sky.
+- **Taln's Scar** is in the starfield: a bowed swath of nine hundred deep
+  red stars, laid over the field rather than added to it. It and Reya's Tear
+  are both glossary entries.
 
 **2026-09-20 wrap (`b061e11` → `c914f62`, pushed and live).** Three product
 commits plus the laptop WebGL diagnosis:
@@ -490,21 +582,22 @@ Treat this as current truth, not a wishlist.
 
 ### What the atlas holds
 
-Counted from the data, 2026-09-13 encyclopedia pass:
+Counted from the data, 2026-09-21 (the title screen counts the same rows):
 
 | | |
 | --- | --- |
-| Systems | 13 |
-| Worlds | 18 (plus 10 Rosharan gas giants) |
-| Moons | 22 |
+| Systems | 18 (13 canon, 5 for worlds canon names without placing) |
+| Worlds | 32, plus 18 gas giants |
+| Moons | 57 |
+| Belts | 6 — three asteroid, three comet |
 | Shards | 16 |
-| People | ~424, including dragons, Heralds, Unmade, spren, vessels |
-| Places | ~301 |
-| Orders / groups | ~66 |
-| Cognitive sites | 15 |
+| People | 431, including dragons, Heralds, Unmade, spren, vessels |
+| Places | 300, plus 39 city landmarks |
+| Orders / groups | 66 |
+| Cognitive sites | 16 |
 | Perpendicularities | 10 |
 | Magic systems | 19, with tables |
-| Glossary | ~323 terms |
+| Glossary | 287 terms |
 | Dawnshards | 4 |
 | Lore Web edges | ~210 named, plus origin/investiture/org membership |
 
@@ -596,6 +689,21 @@ Open, leftover, not a brief:
 The ten items are done and pushed; the three lore checks came back clean; the
 wet pins are measured and fixed. What follows is optional.
 
+### 1b. The star charts are complete; three worlds wait on publication
+
+*The Fires of December* (6 October 2026) puts Hoid on **Miral**, a world
+where rivers of blood run from a dead Eidolith and the magic is called
+witchcraft, and Valor held it once. When it is published, Miral needs a
+series entry, a body and a star of its own — the same treatment Dhatri and
+the Grand Apparatus got. The **kite planet** and **Zidorna** stay out until
+canon gives one a name and the other a decision about whether it is a planet
+at all.
+
+Two more that are drawn but thin: **Ashyn** and **Braize** have surfaces and
+no pins on them, and Ashyn at least has canon geography — floating cities,
+a surface left volcanic by unguarded Surgebinding. Pins there would be
+guesses about *where*, so they are not there yet.
+
 ### 2. Four organisations still have no members
 
 The Vanrial, the stormwardens, the Chorus and the Kerztian clergy. Left empty
@@ -635,6 +743,28 @@ Written down so the next session does not rediscover them:
 
 ## Sharp edges / do not re-break
 
+- **A belt's specks are sized in world units, not pixels.** `belt.vert`
+  turns `aSize` into pixels with `0.5 * uViewHeight * projectionMatrix[1][1]`
+  — the same projection-correct scale the starfield uses. The first cut used
+  sizes ten times too small: every rock clamped to the 1px floor, the
+  brightness fell with it, and both Selish belts were mathematically present
+  and completely invisible. If a belt disappears, check `aSize` first.
+- **Belt density is per unit of circumference.** A comet belt at 45 units has
+  twice the ring to fill that an asteroid belt at 24 does. A flat count per
+  belt makes the outer ones look like a rumour.
+- **Two rules keep the star charts honest, and `audit:data` enforces both.**
+  A belt may not swallow a planet's orbit (`inner < a < outer` fails), and a
+  double planet may not orbit another double planet — the orrery resolves
+  exactly one level of `orbitAround`, recomputing the partner's own offset
+  rather than reading last frame's position, so the two are order-independent.
+- **Moon orbit rings are gated on the camera, not on the scale.** Ky has four
+  moons and Aagal Nod six; six concentric ellipses around a three-pixel
+  planet read as a target painted on the sky. The moons themselves stay at
+  system scale — dots are what the charts draw.
+- **The Scar is written over the last 900 stars of the field, not appended.**
+  A red streak has to sit at the same distances as the sky it belongs to, or
+  it parallaxes off it. `SCAR_COUNT` comes out of `COUNT`; it does not add
+  to it.
 - **`EventFx`'s `TRAIL` is a sampling rate, not a look.** Sixteen points
   stretched along a fast head read as a dotted line. The streak only closes
   up when the spacing drops below the point size, so `TRAIL` and `uLagSpan`

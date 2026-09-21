@@ -16,10 +16,10 @@ Architecture lock: `AGENTS.md` + `DESIGN.md`. This file is the live todo.
 
 # ▶ START HERE — next session
 
-**Nothing is outstanding.** The 2026-09-21 star-chart pass is built, tested
-and **not yet pushed** — `git push` is the deploy, so it needs the owner's
-word. Optional only: *Do next 5* (godrays, DoF, aurora — each needs a
-decision), empty orgs (do not invent members), more sky beats.
+**Nothing is outstanding.** The 2026-09-21 star-chart pass is pushed and
+live (`63403c1` → `92d85c1`). Optional only: *Do next 5* (godrays, DoF,
+aurora — each needs a decision), empty orgs (do not invent members), more
+sky beats.
 
 Do not reopen a fourth classifier on `scadrial_full.png`. Edit the polygons.
 Do not restart the audit or the lore checks.
@@ -122,7 +122,7 @@ now, and the cost is the Investiture clouds).
 
 ## What the last session changed
 
-**2026-09-21 star charts (built, tested, _not pushed_).** The owner was
+**2026-09-21 star charts (`63403c1` → `92d85c1`, pushed and live).** The owner was
 reading *Arcanum Unbounded*, got to the Selish system chart, and found one
 planet in our Selish system where canon draws four, two belts, five moons
 around Ralen alone and a dwarf world past the comet belt. The whole atlas

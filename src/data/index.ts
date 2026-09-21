@@ -1,4 +1,4 @@
-import { BODIES, ERAS, JOURNAL_BOOKS, MOONS, PUB_ORDER, SERIES, SYSTEMS, TIMELINE_NOTE, WORLD_EPOCHS } from './catalog.ts';
+import { BELTS, BODIES, ERAS, JOURNAL_BOOKS, MOONS, PUB_ORDER, SERIES, SYSTEMS, TIMELINE_NOTE, WORLD_EPOCHS } from './catalog.ts';
 import { COSMERE_EVENTS } from './events.ts';
 import { CHARACTERS as CHARACTERS_CORE } from './characters.ts';
 import { CITY_PLATES, cityById, landmarkById } from './cities.ts';
@@ -21,7 +21,8 @@ import {
   haystack, matchesQuery, normalizeQuery, scoreHit, type SearchHit, type SearchKind,
 } from './search.ts';
 import type {
-  Body, Character, CharacterEra, Cosmere, Location, Moon, Organization, Perpendicularity, Series,
+  Belt, Body, Character, CharacterEra, Cosmere, Location, Moon, Organization, Perpendicularity,
+  Series,
 } from './types.ts';
 
 export { CITY_PLATES, cityById, landmarkById };
@@ -69,6 +70,7 @@ export const COSMERE: Cosmere = {
   systems: SYSTEMS,
   bodies: BODIES,
   moons: MOONS,
+  belts: BELTS,
   shards: SHARDS,
   characters: CHARACTERS,
   magics: MAGICS,
@@ -84,6 +86,7 @@ export const COSMERE: Cosmere = {
 export const seriesById: Record<string, Series> = Object.fromEntries(SERIES.map((s) => [s.id, s]));
 export const bodyById: Record<string, Body> = Object.fromEntries(BODIES.map((b) => [b.id, b]));
 export const moonById: Record<string, Moon> = Object.fromEntries(MOONS.map((m) => [m.id, m]));
+export const beltById: Record<string, Belt> = Object.fromEntries(BELTS.map((b) => [b.id, b]));
 export const characterById: Record<string, Character> = Object.fromEntries(CHARACTERS.map((c) => [c.id, c]));
 export const locationById: Record<string, Location> = Object.fromEntries(LOCATIONS.map((l) => [l.id, l]));
 export const orgById: Record<string, Organization> = Object.fromEntries(ORGANIZATIONS.map((o) => [o.id, o]));
@@ -299,9 +302,24 @@ export function charactersOnBody(bodyId: string, era: number): Character[] {
   return CHARACTERS.filter((c) => characterAt(c, era)?.body === bodyId);
 }
 
-/** Outer orbit of a system, for framing and for clicking the rings you can see. */
+/**
+ * Outer edge of a system, for framing and for clicking the rings you can see.
+ *
+ * Not just the planets: the far lip of a comet belt and a second star are
+ * both out past the last world, and a frame that cuts them off is a frame
+ * that says they are not there. A double planet is measured on its partner's
+ * orbit, not its own — Komashi's `a` is the width of its swing around UTol.
+ */
 export function systemExtent(systemId: string): number {
-  return BODIES.filter((b) => b.system === systemId).reduce((m, b) => Math.max(m, b.orbit.a), 4);
+  const worlds = BODIES
+    .filter((b) => b.system === systemId && !b.orbitAround)
+    .reduce((m, b) => Math.max(m, b.orbit.a), 4);
+  const belts = BELTS
+    .filter((b) => b.system === systemId)
+    .reduce((m, b) => Math.max(m, b.outer), 0);
+  const stars = (SYSTEMS.find((s) => s.id === systemId)?.companions ?? [])
+    .reduce((m, c) => Math.max(m, c.orbit.a), 0);
+  return Math.max(worlds, belts, stars);
 }
 
 export function bodyByName(name: string): Body | undefined {
@@ -333,12 +351,13 @@ export function isFeaturedPerson(id: string): boolean {
 }
 
 export type LoreKind =
-  | 'body' | 'moon' | 'system' | 'character' | 'location' | 'landmark'
+  | 'body' | 'moon' | 'belt' | 'system' | 'character' | 'location' | 'landmark'
   | 'hub' | 'dawnshard' | 'shard' | 'term' | 'org' | 'magic' | 'perp';
 
 export type LoreHit =
   | { kind: 'body'; obj: Body }
   | { kind: 'moon'; obj: Moon }
+  | { kind: 'belt'; obj: Belt }
   | { kind: 'system'; obj: (typeof SYSTEMS)[number] }
   | { kind: 'character'; obj: Character }
   | { kind: 'location'; obj: Location }
@@ -366,6 +385,8 @@ export function loreById(id: string | null | undefined): LoreHit | null {
   if (body) return { kind: 'body', obj: body };
   const moon = moonById[id];
   if (moon) return { kind: 'moon', obj: moon };
+  const belt = beltById[id];
+  if (belt) return { kind: 'belt', obj: belt };
   const sys = SYSTEMS.find((s) => s.id === id);
   if (sys) return { kind: 'system', obj: sys };
   const ch = characterById[id];
@@ -395,7 +416,7 @@ export function loreLabel(id: string): string {
   const hit = loreById(id);
   if (!hit) return id;
   switch (hit.kind) {
-    case 'body': case 'moon': case 'system': case 'character':
+    case 'body': case 'moon': case 'belt': case 'system': case 'character':
     case 'location': case 'hub': case 'dawnshard': case 'shard':
     case 'org': case 'magic': case 'perp':
       return hit.obj.name;
@@ -429,7 +450,7 @@ export function wikiHref(wiki: string | undefined): string | null {
 }
 
 const KIND_TO_SEARCH: Record<LoreKind, SearchKind> = {
-  body: 'world', moon: 'moon', system: 'system', character: 'person',
+  body: 'world', moon: 'moon', belt: 'belt', system: 'system', character: 'person',
   location: 'place', landmark: 'place', hub: 'place', dawnshard: 'relic',
   shard: 'shard', term: 'term', org: 'org', magic: 'magic', perp: 'door',
 };
@@ -474,7 +495,12 @@ export function searchJournal(
       [b.bio, b.species.join(' '), b.magic.join(' '), b.locations].join(' '), b.canon);
   }
   for (const m of MOONS) take(m.id, m.name, 'moon', m.fact, m, '', '', m.canon);
-  for (const s of SYSTEMS) take(s.id, s.name, 'system', `${s.name} system of the Cosmere`, { book: s.book });
+  for (const b of BELTS) take(b.id, b.name, 'belt', b.fact, b, b.aliases ?? '', b.bio ?? '', b.canon);
+  for (const s of SYSTEMS) {
+    const star = [s.starName, s.starDesc, s.fact, s.aliases].filter(Boolean).join(' · ');
+    take(s.id, s.name, 'system', s.fact ?? `${s.name} system of the Cosmere`, { book: s.book },
+      [s.starName, s.aliases].filter(Boolean).join(', '), star);
+  }
   for (const c of CHARACTERS) {
     take(c.id, c.name, 'person', c.fact, c, c.aliases,
       [c.bio, c.abilities, c.origin, c.titles, c.biology].join(' '), c.canon);

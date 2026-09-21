@@ -170,6 +170,10 @@ function flyCodexHit(id: string): void {
     store.set('cameraCue', { kind: 'focus', id, scale: 'globe' });
     return;
   }
+  if (hit.kind === 'belt') {
+    store.set('cameraCue', { kind: 'focus', id: hit.obj.system, scale: 'system' });
+    return;
+  }
   if (hit.kind === 'perp') {
     if (hit.obj.at) store.set('cameraCue', { kind: 'focus', id: hit.obj.at, scale: 'surface' });
     else store.set('cameraCue', { kind: 'focus', id: hit.obj.body, scale: 'globe' });
@@ -359,7 +363,7 @@ function renderRealms(card: HTMLElement): void {
   );
   const grid = el('div', { className: 'ceph-grid' });
   const rows: { id: 'physical' | 'cognitive' | 'spiritual'; title: string; fact: string }[] = [
-    { id: 'physical', title: 'Physical', fact: 'The orrery. Thirteen systems, their worlds and moons, and the sky you reread in.' },
+    { id: 'physical', title: 'Physical', fact: 'The orrery. Every star canon names, their worlds, moons and belts, and the sky you reread in.' },
     { id: 'cognitive', title: 'Cognitive · Shadesmar', fact: 'Bead oceans where land was, and the light of every mind over them. Silverlight, Celebrant, Lasting Integrity, the Grand Knell, the Expanses, and the roads between. C toggles.' },
     { id: 'spiritual', title: 'Spiritual', fact: 'Not a map. One light Shattered into sixteen, still Connected, with the broken ones shown as the fragments they are. Click a Shard to see where it sits. V toggles.' },
   ];

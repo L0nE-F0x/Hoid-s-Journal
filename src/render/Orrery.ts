@@ -2,7 +2,9 @@ import * as THREE from 'three';
 import { Line2 } from 'three/examples/jsm/lines/Line2.js';
 import { LineGeometry } from 'three/examples/jsm/lines/LineGeometry.js';
 import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial.js';
-import { COSMERE, inEra, scadrialBiome, type Body } from '../data/index.ts';
+import {
+  COSMERE, inEra, scadrialBiome, type Belt, type Body, type CompanionStar,
+} from '../data/index.ts';
 import { keplerOffset } from '../layout/kepler.ts';
 import type { Realm } from '../core/store.ts';
 import { plateTint, recipeFor } from '../cartography/recipes.ts';
@@ -19,9 +21,12 @@ import ringVert from '../shaders/ring.vert';
 import ringFrag from '../shaders/ring.frag';
 import sporeVert from '../shaders/spore.vert';
 import sporeFrag from '../shaders/spore.frag';
+import beltVert from '../shaders/belt.vert';
+import beltFrag from '../shaders/belt.frag';
 import { PLATE_LARGE, PLATE_SMALL, planetPlates, seedFromId } from './planetBake.ts';
 
 const _off = new THREE.Vector3();
+const _partner = new THREE.Vector3();
 const _sun = new THREE.Vector3();
 /** Camera this close to a parent world is close enough to see its moons. */
 const MOON_NEAR = 48;
@@ -56,15 +61,6 @@ interface BodyNode {
 
 const SHADESMAR_SKY = '#8b6bd6';
 const TRAIL_STEPS = 26;
-
-/** Gas giants that wear rings, and how wide. */
-const RINGED: Record<string, [number, number, string, string]> = {
-  jes: [1.62, 2.55, '#cfe0ff', '#6f8ebd'],
-  vev: [1.55, 2.30, '#ffe3b0', '#b08a4e'],
-  palah: [1.70, 2.72, '#e5ccff', '#8a6bb5'],
-  betab: [1.58, 2.34, '#c5f2ff', '#5d97ad'],
-  tanat: [1.66, 2.48, '#ffd2ac', '#a8663a'],
-};
 
 /**
  * Fade the half of an orbit that is behind its own star.
@@ -119,13 +115,19 @@ export class Orrery {
   private readonly bodyNodes = new Map<string, BodyNode>();
   private readonly suns = new Map<string, THREE.Mesh>();
   private readonly sunMats = new Map<string, THREE.ShaderMaterial>();
-  private readonly nebulae: { mesh: THREE.Mesh; mat: THREE.ShaderMaterial; system: string }[] = [];
+  private readonly companions: {
+    system: string; star: CompanionStar; mesh: THREE.Mesh; mat: THREE.ShaderMaterial;
+  }[] = [];
+  private readonly nebulae: {
+    mesh: THREE.Mesh; mat: THREE.ShaderMaterial; system: string; scale: number;
+  }[] = [];
   private readonly orbitLines = new Map<string, Line2>();
   private readonly moonMeshes = new Map<string, THREE.Mesh>();
   private readonly moonMats = new Map<string, THREE.ShaderMaterial>();
   private readonly moonWorld = new Map<string, THREE.Vector3>();
   private readonly moonOrbits = new Map<string, Line2>();
   private readonly lunagrees: { moon: string; mesh: THREE.Mesh; mat: THREE.ShaderMaterial }[] = [];
+  private readonly belts: { belt: Belt; points: THREE.Points; mat: THREE.ShaderMaterial }[] = [];
   private readonly bodyWorld = new Map<string, THREE.Vector3>();
   private readonly sphereHigh = new THREE.SphereGeometry(1, 128, 72);
   private readonly sphereMid = new THREE.SphereGeometry(1, 64, 40);
@@ -157,30 +159,111 @@ export class Orrery {
     this.buildOrbits();
     this.buildMoons();
     this.buildLunagrees();
+    this.buildBelts();
   }
 
-  private buildSuns(): void {
-    for (const s of COSMERE.systems) {
-      const colour = new THREE.Color(s.sunColor);
-      const hot = colour.clone().lerp(new THREE.Color(0xffffff), 0.78);
+  /**
+   * The bands of rubble and ice the star charts draw.
+   *
+   * One `Points` cloud per belt, scattered through an annulus and drifting
+   * differentially in the vertex shader — the inside of a belt goes round
+   * faster than the outside, and a belt turning as one rigid disc reads as a
+   * decal. They are drawn inside their own system only: from the Cosmere the
+   * whole system is a few pixels across and a thousand specks per star is
+   * noise over the thing you are actually looking at.
+   */
+  private buildBelts(): void {
+    for (const belt of COSMERE.belts) {
+      const centre = this.systemPos.get(belt.system);
+      if (!centre) continue;
+      const comet = belt.kind === 'comet';
+      // Per unit of circumference, not per belt: a comet belt out at 45 units
+      // has twice the ring to fill that an asteroid belt at 24 does, and a
+      // flat thousand specks each made the outer one look like a rumour.
+      const mid = (belt.inner + belt.outer) * 0.5;
+      const count = Math.round(mid * (comet ? 36 : 64));
+      const radius = new Float32Array(count);
+      const angle = new Float32Array(count);
+      const height = new Float32Array(count);
+      const size = new Float32Array(count);
+      const seed = new Float32Array(count);
+      const pos = new Float32Array(count * 3);
+      const span = belt.outer - belt.inner;
+      for (let i = 0; i < count; i++) {
+        // Two uniforms averaged: denser through the middle of the band than
+        // at either lip, which is how both charts draw them.
+        const t = (Math.random() + Math.random()) * 0.5;
+        radius[i] = belt.inner + span * t;
+        angle[i] = Math.random() * Math.PI * 2;
+        // Ice sits in a fat, untidy shell; rubble sits in a plane.
+        const spread = comet ? span * 0.38 : span * 0.1;
+        height[i] = (Math.random() + Math.random() + Math.random() - 1.5) * spread;
+        // Sized so a typical speck lands at one or two pixels from the
+        // distance a system is framed at, and a few of them at five. Ten
+        // times smaller and the band is mathematically there and invisible.
+        size[i] = (comet ? 0.17 : 0.21) * (0.45 + Math.pow(Math.random(), 2.4) * 2.1);
+        seed[i] = Math.random();
+        // Bounding sphere only: the vertex shader places every point itself.
+        pos[i * 3] = centre.x;
+        pos[i * 3 + 1] = centre.y;
+        pos[i * 3 + 2] = centre.z;
+      }
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+      geo.setAttribute('aRadius', new THREE.BufferAttribute(radius, 1));
+      geo.setAttribute('aAngle', new THREE.BufferAttribute(angle, 1));
+      geo.setAttribute('aHeight', new THREE.BufferAttribute(height, 1));
+      geo.setAttribute('aSize', new THREE.BufferAttribute(size, 1));
+      geo.setAttribute('aSeed', new THREE.BufferAttribute(seed, 1));
+
       const mat = new THREE.ShaderMaterial({
         uniforms: {
-          uSize: { value: 2.4 },
-          uColor: { value: colour },
-          uHot: { value: hot },
           uTime: { value: 0 },
-          uSeed: { value: seedFromId(s.id) * 0.37 },
-          uCoreRadius: { value: 0.15 },
-          uFlare: { value: 0.55 },
-          uCorona: { value: 1 },
-          uGain: { value: 1 },
+          uSpin: { value: 0 },
+          uViewHeight: { value: this.viewport.y },
+          uPointSize: { value: 1 },
+          uCentre: { value: centre.clone() },
+          uColor: { value: new THREE.Color(belt.color) },
+          uOpacity: { value: 1 },
         },
-        vertexShader: sunVert,
-        fragmentShader: sunFrag,
+        vertexShader: beltVert,
+        fragmentShader: beltFrag,
         transparent: true,
         depthWrite: false,
         blending: THREE.AdditiveBlending,
       });
+      const points = new THREE.Points(geo, mat);
+      points.frustumCulled = false;
+      points.renderOrder = -2;
+      points.visible = false;
+      points.userData = { kind: 'belt', id: belt.id };
+      this.group.add(points);
+      this.belts.push({ belt, points, mat });
+    }
+  }
+
+  private buildSuns(): void {
+    const star = (id: string, colour: THREE.Color, hot: THREE.Color) => new THREE.ShaderMaterial({
+      uniforms: {
+        uSize: { value: 2.4 },
+        uColor: { value: colour },
+        uHot: { value: hot },
+        uTime: { value: 0 },
+        uSeed: { value: seedFromId(id) * 0.37 },
+        uCoreRadius: { value: 0.15 },
+        uFlare: { value: 0.55 },
+        uCorona: { value: 1 },
+        uGain: { value: 1 },
+      },
+      vertexShader: sunVert,
+      fragmentShader: sunFrag,
+      transparent: true,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+    });
+    for (const s of COSMERE.systems) {
+      const colour = new THREE.Color(s.sunColor);
+      const mat = star(s.id, colour, colour.clone().lerp(new THREE.Color(0xffffff), 0.78));
       const mesh = new THREE.Mesh(this.quad, mat);
       mesh.position.copy(this.systemPos.get(s.id)!);
       mesh.frustumCulled = false;
@@ -189,6 +272,23 @@ export class Orrery {
       this.group.add(mesh);
       this.suns.set(s.id, mesh);
       this.sunMats.set(s.id, mat);
+
+      // Second stars. Taldain has the only pair canon gives us: a blue-white
+      // supergiant at the centre and, twice as far out as the planet and on
+      // the same bearing forever, a white dwarf inside a cloud of dust. The
+      // dust is why the companion's disc is the grey and its core the white —
+      // the Eye of Ridos is a faint thing seen through a veil.
+      for (const c of s.companions ?? []) {
+        const face = new THREE.Color(c.shroud ?? c.color);
+        const cMat = star(c.id, face, new THREE.Color(c.color));
+        cMat.uniforms.uFlare.value = 0.22;
+        const cMesh = new THREE.Mesh(this.quad, cMat);
+        cMesh.frustumCulled = false;
+        cMesh.renderOrder = 6;
+        cMesh.userData = { kind: 'system', id: s.id };
+        this.group.add(cMesh);
+        this.companions.push({ system: s.id, star: c, mesh: cMesh, mat: cMat });
+      }
     }
   }
 
@@ -224,7 +324,7 @@ export class Orrery {
       mesh.scale.setScalar(26);
       mesh.renderOrder = -5;
       this.group.add(mesh);
-      this.nebulae.push({ mesh, mat, system: s.id });
+      this.nebulae.push({ mesh, mat, system: s.id, scale: s.nebulaScale ?? 1 });
     }
   }
 
@@ -294,11 +394,11 @@ export class Orrery {
         uDetail: { value: 0.02 },
         uSeed: { value: seedFromId(body.id) * 0.41 },
         uTidal: { value: recipe.tidal },
-        uRingShadow: { value: RINGED[body.id] ? 0.7 : 0 },
+        uRingShadow: { value: body.rings ? 0.7 : 0 },
         uRingAxis: { value: new THREE.Vector3(0, 1, 0) },
         uCentre: { value: new THREE.Vector3() },
-        uRingInner: { value: RINGED[body.id]?.[0] ?? 0 },
-        uRingOuter: { value: RINGED[body.id]?.[1] ?? 0 },
+        uRingInner: { value: body.rings?.inner ?? 0 },
+        uRingOuter: { value: body.rings?.outer ?? 0 },
         uTint: { value: this.plateTint(body) },
       },
       vertexShader: planetVert,
@@ -348,15 +448,19 @@ export class Orrery {
       atmo.renderOrder = 3;
       atmo.userData = { kind: 'body', id: body.id };
 
+      // Which worlds wear rings is canon, and it lives in the data with the
+      // rest of the lore: the ten Rosharan gas giants have none, and Ralen,
+      // Aagal Uch, three of the Drominad worlds and Canticle do. Canticle's
+      // are the load-bearing ones — they light its night side.
       let ring: THREE.Mesh | null = null;
       let ringMat: THREE.ShaderMaterial | null = null;
-      const spec = RINGED[body.id];
+      const spec = body.rings;
       if (spec) {
-        const [inner, outer, c1, c2] = spec;
+        const { inner, outer } = spec;
         ringMat = new THREE.ShaderMaterial({
           uniforms: {
-            uColor: { value: new THREE.Color(c1) },
-            uColor2: { value: new THREE.Color(c2) },
+            uColor: { value: new THREE.Color(spec.color) },
+            uColor2: { value: new THREE.Color(spec.color2) },
             uSunPos: { value: new THREE.Vector3() },
             uCentre: { value: new THREE.Vector3() },
             uPlanetRadius: { value: body.radius },
@@ -376,7 +480,7 @@ export class Orrery {
           new THREE.RingGeometry(inner * body.radius, outer * body.radius, 128, 1),
           ringMat,
         );
-        ring.rotation.x = -Math.PI / 2 + 0.16;
+        ring.rotation.x = -Math.PI / 2 + (spec.tilt ?? 0.16);
         ring.renderOrder = 2;
         this.group.add(ring);
       }
@@ -414,10 +518,17 @@ export class Orrery {
       const steps = 256;
       const pts: number[] = [];
       const sysPos = this.systemPos.get(body.system)!;
+      // A double planet's ring is baked at the origin and carried onto its
+      // partner every frame, the way a moon's is. Baking the star's position
+      // into it would draw Komashi's loop around UTol's sun instead.
+      const anchored = !!body.orbitAround;
+      const ox = anchored ? 0 : sysPos.x;
+      const oy = anchored ? 0 : sysPos.y;
+      const oz = anchored ? 0 : sysPos.z;
       for (let i = 0; i <= steps; i++) {
         const year = (i / steps) / Math.max(0.0001, body.orbit.period);
         keplerOffset(body.orbit, year, _off);
-        pts.push(_off.x + sysPos.x, _off.y + sysPos.y, _off.z + sysPos.z);
+        pts.push(_off.x + ox, _off.y + oy, _off.z + oz);
       }
       const geo = new LineGeometry();
       geo.setPositions(pts);
@@ -430,8 +541,8 @@ export class Orrery {
         blending: THREE.AdditiveBlending,
       });
       mat.resolution.copy(this.viewport);
-      fadeFarSide(mat, sysPos, 0.16);
       const line = new Line2(geo, mat);
+      fadeFarSide(mat, anchored ? line.position : sysPos, 0.16);
       // Two tints per orbit. Up close, at system scale, the colour says which
       // world this ring belongs to and is worth reading. Pulled back to the
       // whole Cosmere there are twenty-eight of them over thirteen systems and
@@ -500,6 +611,17 @@ export class Orrery {
       this.group.add(line);
       this.moonOrbits.set(moon.id, line);
     }
+  }
+
+  /** Whether a belt's specks are currently drawn, so its name can follow. */
+  beltShown(id: string): boolean {
+    return this.belts.find((b) => b.belt.id === id)?.points.visible ?? false;
+  }
+
+  /** Where a second star has got to, for the name that rides it. */
+  companionPosition(id: string): THREE.Vector3 | undefined {
+    const c = this.companions.find((x) => x.star.id === id);
+    return c?.mesh.visible ? c.mesh.position : undefined;
   }
 
   setViewport(w: number, h: number): void {
@@ -671,8 +793,17 @@ export class Orrery {
         : visual.scale === 'system' ? 0.25 : 0;
 
     for (const node of this.bodyNodes.values()) {
+      // A double planet rides its partner. The partner's own offset is
+      // recomputed here rather than read out of `bodyWorld`, so this does not
+      // depend on which of the two the loop reaches first. Canon has one such
+      // pair — UTol and Komashi — and no chains of them.
+      const partner = node.body.orbitAround ? this.bodyNodes.get(node.body.orbitAround) : null;
       keplerOffset(node.body.orbit, year, _off);
       _world.copy(node.sunPos).add(_off);
+      if (partner) {
+        keplerOffset(partner.body.orbit, year, _partner);
+        _world.add(_partner);
+      }
       node.mesh.position.copy(_world);
       node.atmo.position.copy(_world);
       this.bodyWorld.get(node.body.id)!.copy(_world);
@@ -754,7 +885,12 @@ export class Orrery {
       const ring = this.moonOrbits.get(moon.id);
       if (ring) {
         ring.position.copy(parent);
-        ring.visible = on && visual.showOrbits && realm === 'physical';
+        // The rings wait for the camera. Ky has four moons and Aagal Nod six,
+        // and six concentric ellipses around a planet three pixels wide reads
+        // as a target painted on the sky rather than as a moon system. The
+        // moons themselves stay — they are dots, which is what the star
+        // charts draw.
+        ring.visible = on && (onGlobe || near) && visual.showOrbits && realm === 'physical';
       }
       if (!on) continue;
       mesh.rotation.y = time * 0.05 + seedFromId(moon.id);
@@ -765,6 +901,20 @@ export class Orrery {
 
     this.updateLunagrees(time, realm, visual.scale, visual.focusedSystem, visual.focusedBody, visual.showMoons, era);
 
+    for (const b of this.belts) {
+      const on = realm === 'physical' && visual.scale === 'system'
+        && visual.focusedSystem === b.belt.system && inEra(b.belt, era);
+      b.points.visible = on;
+      if (!on) continue;
+      const u = b.mat.uniforms;
+      u.uTime.value = time;
+      // Same playhead the planets run on, so the belt drifts with them.
+      u.uSpin.value = year * 5.2;
+      u.uViewHeight.value = this.viewport.y;
+      u.uPointSize.value = this.band === 'low' ? 0.85 : 1;
+      u.uOpacity.value = this.band === 'low' ? 0.78 : 1;
+    }
+
     const orbitsOn = visual.showOrbits && realm === 'physical'
       && (visual.scale === 'cosmere' || visual.scale === 'system');
     for (const [id, line] of this.orbitLines) {
@@ -773,6 +923,12 @@ export class Orrery {
       const own = !visual.focusedSystem || body?.system === visual.focusedSystem;
       line.visible = orbitsOn && own && live;
       if (!line.visible) continue;
+      // A double planet's ring is drawn around its partner, wherever the two
+      // of them have got to this year.
+      if (body?.orbitAround) {
+        const at = this.bodyWorld.get(body.orbitAround);
+        if (at) line.position.copy(at);
+      }
       const mat = line.material as LineMaterial;
       const close = visual.scale === 'system';
       mat.opacity = close ? 0.42 : 0.17;
@@ -794,7 +950,7 @@ export class Orrery {
         && (visual.scale !== 'system' || n.system === visual.focusedSystem);
       n.mesh.visible = on;
       if (!on) continue;
-      const r = (shadesmar ? 28 : 26) * Math.max(0.35, visual.nebula);
+      const r = (shadesmar ? 28 : 26) * Math.max(0.35, visual.nebula) * n.scale;
       n.mesh.scale.setScalar(r);
       n.mat.uniforms.uRadius.value = r;
       n.mat.uniforms.uTime.value = time;
@@ -839,6 +995,25 @@ export class Orrery {
       mat.uniforms.uCoreRadius.value = visual.scale === 'system'
         ? (focused ? 0.34 : 0.24)
         : 0.15;
+    }
+
+    for (const c of this.companions) {
+      const primary = this.suns.get(c.system);
+      const centre = this.systemPos.get(c.system);
+      if (!primary || !centre) continue;
+      c.mesh.visible = primary.visible;
+      if (!c.mesh.visible) continue;
+      keplerOffset(c.star.orbit, year, _off);
+      c.mesh.position.copy(centre).add(_off);
+      const pMat = this.sunMats.get(c.system)!;
+      const u = c.mat.uniforms;
+      u.uTime.value = time;
+      u.uSize.value = (pMat.uniforms.uSize.value as number) * c.star.size;
+      u.uCorona.value = (pMat.uniforms.uCorona.value as number) * 0.7;
+      u.uFlare.value = (pMat.uniforms.uFlare.value as number) * 0.4;
+      u.uCoreRadius.value = pMat.uniforms.uCoreRadius.value;
+      // A white dwarf behind a dust ring is not a second sun in the frame.
+      u.uGain.value = shadesmar ? 0.5 : 0.62;
     }
   }
 

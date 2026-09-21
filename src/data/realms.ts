@@ -182,6 +182,28 @@ export const HUBS: Hub[] = [
     sources: ['Words of Radiance', 'Oathbringer'],
   },
   {
+    // The Nalthian star chart marks this the way it marks a planet: a
+    // cognitive anomaly, in the Physical Realm, sharing Nalthis's orbit. It
+    // is drawn here in Shadesmar because that is where this atlas keeps
+    // Cognitive sites, and because nobody has said which Realm it is more
+    // in than the other.
+    id: 'nalthian-anomaly',
+    name: 'The Nalthian anomaly',
+    color: '#f0abfc',
+    book: 'warbreaker',
+    kind: 'anomaly',
+    system: 'nalthian',
+    offset: 17.5,
+    bearing: 2.35,
+    rise: 3.2,
+    fact: 'A cognitive anomaly that shares Nalthis\'s orbit. Whether the planet passes through it once a year or it travels with her, the chart does not say.',
+    bio: 'Endowment\'s world is the most popular address in the cosmere for worldhoppers — busy enough that there is a customs check near the perpendicularity — and this is the other thing on its chart that is not a planet. It is marked, named as a kind, and left at that.',
+    aliases: 'Nalthian cognitive anomaly',
+    wiki: 'Nalthian system',
+    canon: C,
+    sources: ['Arcanum Unbounded — Nalthian system'],
+  },
+  {
     id: 'expanse-vapours',
     name: 'The Expanse of Vapours',
     color: '#93c5fd',

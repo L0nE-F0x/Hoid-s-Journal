@@ -5,11 +5,13 @@ import type { Orrery } from './Orrery.ts';
 interface Label {
   id: string;
   sprite: THREE.Sprite;
-  kind: 'body' | 'system' | 'moon';
+  kind: 'body' | 'system' | 'moon' | 'belt' | 'star';
   visibleItem: { book?: string; arc?: string };
   radius: number;
   system?: string;
   parent?: string;
+  /** Belts only: the middle of the band, in system-local units. */
+  band?: number;
 }
 
 /**
@@ -17,7 +19,7 @@ interface Label {
  * bright background — these get an ink outline as well, and systems are set
  * in the same tracked caps the chrome uses.
  */
-function makeLabel(text: string, color: string, kind: 'body' | 'system' | 'moon'): THREE.CanvasTexture {
+function makeLabel(text: string, color: string, kind: Label['kind']): THREE.CanvasTexture {
   const W = 640;
   const H = 112;
   const canvas = document.createElement('canvas');
@@ -26,11 +28,14 @@ function makeLabel(text: string, color: string, kind: 'body' | 'system' | 'moon'
   const ctx = canvas.getContext('2d')!;
   ctx.clearRect(0, 0, W, H);
 
-  const label = kind === 'system' ? text.toUpperCase() : text;
-  ctx.font = kind === 'system'
+  // Systems and the stars inside them share the chrome's tracked caps; the
+  // worlds, moons and belts that orbit them are set like names.
+  const caps = kind === 'system' || kind === 'star';
+  const label = caps ? text.toUpperCase() : text;
+  ctx.font = caps
     ? '500 32px Inter, ui-sans-serif, system-ui, sans-serif'
     : '600 38px Inter, ui-sans-serif, system-ui, sans-serif';
-  ctx.letterSpacing = kind === 'system' ? '5px' : '0.5px';
+  ctx.letterSpacing = caps ? '5px' : '0.5px';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
 
@@ -100,6 +105,23 @@ export class Labels {
       const parent = COSMERE.bodies.find((b) => b.id === m.parent);
       this.labels.push(this.make(m.id, m.name, m.color, 'moon', m, m.radius, parent?.system, m.parent));
     }
+    for (const b of COSMERE.belts) {
+      const label = this.make(b.id, b.name, b.color, 'belt', b, 0, b.system);
+      label.band = (b.inner + b.outer) * 0.5;
+      this.labels.push(label);
+    }
+    // Canon names three stars: Mashe over Sel, and Taldain's AisDa and the
+    // Eye of Ridos. Inside a system the star is the thing everything else is
+    // going round, and it was the one body in the frame with no name on it.
+    for (const s of COSMERE.systems) {
+      if (s.starName) {
+        this.labels.push(this.make(`star:${s.id}`, s.starName, s.sunColor, 'star',
+          { book: s.book }, 0, s.id));
+      }
+      for (const c of s.companions ?? []) {
+        this.labels.push(this.make(c.id, c.name, c.color, 'star', { book: s.book }, 0, s.id));
+      }
+    }
   }
 
   private make(
@@ -152,6 +174,35 @@ export class Labels {
         // its own light.
         l.sprite.position.y += systemExtent(l.id) * 0.62 + 4.2;
         const s = Math.max(10, Math.min(140, dist * 0.20));
+        l.sprite.scale.set(s, s * 0.175, 1);
+      } else if (l.kind === 'star') {
+        const primary = l.id.startsWith('star:');
+        const p = primary
+          ? (l.system ? orrery.systemPosition(l.system) : undefined)
+          : orrery.companionPosition(l.id);
+        const on = !!p && scale === 'system' && focusedSystem === l.system
+          && isVisible(l.visibleItem, progress);
+        l.sprite.visible = on;
+        if (!on || !p) continue;
+        const dist = camera.position.distanceTo(p);
+        l.sprite.position.copy(p);
+        // Under the star, clear of the corona rather than inside it.
+        l.sprite.position.y -= dist * (primary ? 0.085 : 0.045);
+        const s = Math.max(1.4, Math.min(30, dist * 0.14));
+        l.sprite.scale.set(s, s * 0.175, 1);
+      } else if (l.kind === 'belt') {
+        // A band has no one place to be named, so the name rides the lip of
+        // it nearest the camera and stays legible from any angle.
+        const centre = l.system ? orrery.systemPosition(l.system) : undefined;
+        if (!centre || !orrery.beltShown(l.id)) { l.sprite.visible = false; continue; }
+        _edge.copy(camera.position).sub(centre);
+        _edge.y = 0;
+        if (_edge.lengthSq() < 1e-6) _edge.set(1, 0, 0);
+        _edge.normalize().multiplyScalar(l.band ?? 1);
+        l.sprite.position.copy(centre).add(_edge);
+        const dist = camera.position.distanceTo(l.sprite.position);
+        l.sprite.visible = isVisible(l.visibleItem, progress);
+        const s = Math.max(1.2, Math.min(28, dist * 0.13));
         l.sprite.scale.set(s, s * 0.175, 1);
       } else if (l.kind === 'moon') {
         const p = orrery.moonPosition(l.id);

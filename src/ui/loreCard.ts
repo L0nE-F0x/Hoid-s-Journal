@@ -90,6 +90,8 @@ function openId(id: string): void {
     store.set('cameraCue', { kind: 'focus', id, scale: 'globe' });
   } else if (hit.kind === 'system') {
     store.set('cameraCue', { kind: 'focus', id, scale: 'system' });
+  } else if (hit.kind === 'belt') {
+    store.set('cameraCue', { kind: 'focus', id: hit.obj.system, scale: 'system' });
   } else if (hit.kind === 'perp') {
     const at = hit.obj.at;
     if (at) store.set('cameraCue', { kind: 'focus', id: at, scale: 'surface' });
@@ -208,6 +210,8 @@ function fillFromHit(host: HTMLElement, hit: LoreHit): void {
   if (hit.kind === 'system') {
     const sys = hit.obj;
     const worlds = COSMERE.bodies.filter((b) => b.system === sys.id && b.kind !== 'gas-giant');
+    const giants = COSMERE.bodies.filter((b) => b.system === sys.id && b.kind === 'gas-giant');
+    const belts = COSMERE.belts.filter((b) => b.system === sys.id);
     // Orbit rings are drawn in the Physical Realm only. Over in Shadesmar a
     // world is a bead ocean and there is no ring to aim at, so the hint has to
     // point at what is actually on the screen.
@@ -215,11 +219,30 @@ function fillFromHit(host: HTMLElement, hit: LoreHit): void {
       ? 'System · click a bead ocean to enter'
       : 'System · click the rings to enter';
     host.append(headOf(enterHint, sys.name, sys.sunColor));
+    host.append(factBlock(sys.fact) ?? '');
+    // The star first: it is the thing everything here orbits, and three of
+    // them have names on the page.
+    host.append(factBlock(
+      sys.starName ? `${sys.starName} — ${sys.starDesc ?? ''}`.trim() : sys.starDesc,
+      true,
+    ) ?? '');
+    for (const c of sys.companions ?? []) {
+      host.append(factBlock(`${c.name} — ${c.fact}`, true)!);
+    }
     host.append(fields([
+      ['Star', sys.starName ?? 'unnamed'],
       ['Worlds', worlds.map((b) => b.name).join(', ')],
+      ['Gas giants', giants.map((b) => b.name).join(', ') || null],
+      ['Belts', belts.map((b) => b.name).join(', ') || null],
       ['Local date', worldDate(sys.id, era)],
+      ['Sources', sys.sources?.join(' · ') ?? null],
     ]));
-    host.append(seeRow(undefined, worlds.map((b) => ({ id: b.id, label: b.name }))) ?? '');
+    host.append(seeRow(undefined, [
+      ...worlds.map((b) => ({ id: b.id, label: b.name })),
+      ...giants.map((b) => ({ id: b.id, label: b.name })),
+      ...belts.map((b) => ({ id: b.id, label: b.name })),
+    ]) ?? '');
+    host.append(wikiLink(sys.wiki) ?? '');
     if (store.state.scale === 'cosmere' || store.state.focusedSystem !== sys.id) {
       const go = el('button', { className: 'ceph-btn ceph-btn--primary', text: 'Enter this system', style: { marginTop: '14px' } });
       listen(go, 'click', () => store.set('cameraCue', { kind: 'focus', id: sys.id, scale: 'system' }));
@@ -302,6 +325,29 @@ function fillFromHit(host: HTMLElement, hit: LoreHit): void {
     const go = el('button', { className: 'ceph-btn ceph-btn--primary', text: 'Open in the Arcanum', style: { marginTop: '14px' } });
     listen(go, 'click', () => { store.set('magicId', mag.id); store.set('panel', 'arcanum'); });
     host.append(go);
+    return;
+  }
+  if (hit.kind === 'belt') {
+    const b = hit.obj;
+    const sys = COSMERE.systems.find((s) => s.id === b.system);
+    host.append(headOf(
+      `${sys?.name ?? b.system} · ${b.kind === 'comet' ? 'comet belt' : 'asteroid belt'}`,
+      b.name, b.color, b.canon,
+    ));
+    host.append(factBlock(b.fact)!);
+    host.append(factBlock(b.bio, true) ?? '');
+    host.append(fields([
+      ['System', sys?.name],
+      ['Orbits', `${b.inner}–${b.outer} system units from the star`],
+      ['Sources', b.sources.join(' · ')],
+    ]));
+    host.append(seeRow(b.see) ?? '');
+    host.append(wikiLink(b.wiki) ?? '');
+    if (sys && (store.state.scale !== 'system' || store.state.focusedSystem !== sys.id)) {
+      const go = el('button', { className: 'ceph-btn ceph-btn--primary', text: `Enter the ${sys.name} system`, style: { marginTop: '14px' } });
+      listen(go, 'click', () => store.set('cameraCue', { kind: 'focus', id: sys.id, scale: 'system' }));
+      host.append(go);
+    }
     return;
   }
   if (hit.kind === 'perp') {

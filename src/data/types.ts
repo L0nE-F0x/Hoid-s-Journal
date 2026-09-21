@@ -6,7 +6,8 @@ export interface Cited {
   fieldNotes?: Record<string, { canon: CanonLevel; note: string }>;
 }
 
-export type BodyKind = 'shardworld' | 'minor-shardworld' | 'planet' | 'gas-giant';
+export type BodyKind =
+  | 'shardworld' | 'minor-shardworld' | 'planet' | 'gas-giant' | 'dwarf-planet';
 
 export type BiomeKind =
   | 'roshar'
@@ -45,6 +46,26 @@ export interface Era {
   sources: string[];
 }
 
+/**
+ * A second star in the same system. Its orbit is measured from the system
+ * centre, exactly like a planet's, so a companion that shares a planet's
+ * `omega` and `period` stays on the same bearing forever — which is how
+ * Taldain keeps one face to each of its two suns.
+ */
+export interface CompanionStar {
+  id: string;
+  name: string;
+  color: string;
+  /** Billboard size against the primary's. */
+  size: number;
+  orbit: Orbit;
+  fact: string;
+  /** A disc of dust around the star itself, as the Eye of Ridos wears. */
+  shroud?: string;
+  canon: CanonLevel;
+  sources: string[];
+}
+
 export interface System {
   id: string;
   name: string;
@@ -53,6 +74,23 @@ export interface System {
   position: [number, number, number];
   book: string;
   nebula: string;
+  /** What canon calls the star, where canon names it at all. */
+  starName?: string;
+  /** What the star *is*: 'a large white star', 'a faint white dwarf'. */
+  starDesc?: string;
+  /** Second and further stars. The primary sits at `position`. */
+  companions?: CompanionStar[];
+  /**
+   * Size of the Investiture cloud, against the standard 26 units. A system
+   * canon names without describing has no Investiture we can claim for it,
+   * and a full-sized cloud over a placeholder star says more than we know.
+   */
+  nebulaScale?: number;
+  aliases?: string;
+  /** One line for the system card, above the roster of worlds. */
+  fact?: string;
+  wiki?: string;
+  sources?: string[];
 }
 
 export interface Orbit {
@@ -88,7 +126,47 @@ export interface Body extends Cited {
   wiki?: string;
   biome: BiomeKind;
   hasSurface: boolean;
+  /**
+   * A ring system, where canon gives the world one. Radii are multiples of
+   * the body's own radius; the two colours are the bright inner band and the
+   * dusty outer one.
+   */
+  rings?: { inner: number; outer: number; color: string; color2: string; tilt?: number };
+  /**
+   * Double planets. Two worlds close enough to swing around each other rather
+   * than round the star separately — UTol and Komashi are the pair canon has.
+   * The orbit is then measured from that partner, not from the sun.
+   */
+  orbitAround?: string;
   /** First playhead era this world exists as the thing we are drawing. */
+  eraMin?: number;
+  eraMax?: number;
+}
+
+export type BeltKind = 'asteroid' | 'comet';
+
+/**
+ * A belt of rubble or ice around a star. Not a body: it has no globe, no
+ * surface and no card in the atlas — it is drawn as the band of specks the
+ * Arcanum star charts show, and it exists because a system with a gap where
+ * its asteroid belt should be is a system drawn wrong.
+ */
+export interface Belt extends Cited {
+  id: string;
+  name: string;
+  system: string;
+  book: string;
+  arc?: string;
+  kind: BeltKind;
+  /** Inner and outer radius, system-local units — the same scale as `Orbit.a`. */
+  inner: number;
+  outer: number;
+  color: string;
+  fact: string;
+  bio?: string;
+  aliases?: string;
+  see?: string[];
+  wiki?: string;
   eraMin?: number;
   eraMax?: number;
 }
@@ -400,6 +478,7 @@ export interface Cosmere {
   systems: System[];
   bodies: Body[];
   moons: Moon[];
+  belts: Belt[];
   shards: Shard[];
   characters: Character[];
   magics: Magic[];

@@ -10,10 +10,13 @@ import '../styles/title.css';
 /** What the atlas actually holds, counted rather than claimed. */
 function index(): { n: number; label: string }[] {
   const worlds = COSMERE.bodies.filter((b) => b.kind !== 'gas-giant').length;
+  const giants = COSMERE.bodies.length - worlds;
   return [
     { n: COSMERE.systems.length, label: 'systems' },
     { n: worlds, label: 'worlds' },
+    { n: giants, label: 'gas giants' },
     { n: COSMERE.moons.length, label: 'moons' },
+    { n: COSMERE.belts.length, label: 'belts' },
     { n: COSMERE.shards.length, label: 'Shards' },
     { n: COSMERE.characters.length, label: 'people' },
     { n: COSMERE.locations.length, label: 'places' },

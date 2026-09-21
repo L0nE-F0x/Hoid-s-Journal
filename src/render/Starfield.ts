@@ -9,6 +9,24 @@ const COUNT = 24000;
 /** Stars cluster toward the galactic plane, so the band has grain in it. */
 const BAND_POLE = new THREE.Vector3(0.34, 0.86, -0.38).normalize();
 
+/**
+ * Taln's Scar. The Starbelt. The Red Rip.
+ *
+ * A swath of unusually bright red stars that half the cosmere has a name for
+ * and reads its own meaning into — Kaladin's sky, Silence's forests, Wax's
+ * mists, and the first thing Sigzil looks for on a planet he has not been to.
+ * The colour is canon and it is significant; what it signifies is not known.
+ *
+ * It is one direction in one sky here, because every world in this atlas
+ * shares a starfield. In canon its apparent shape changes with where you
+ * stand, and on some worlds it does not rise at all.
+ */
+const SCAR_COUNT = 900;
+const SCAR_DIR = new THREE.Vector3(-0.58, 0.22, 0.78).normalize();
+/** Long one way, thin the other: a rip, not a smudge. */
+const SCAR_LONG = 0.30;
+const SCAR_SHORT = 0.055;
+
 /** Planck locus, sampled. Real stars are mostly dim and orange. */
 const CLASSES: { tint: [number, number, number]; weight: number; lum: number }[] = [
   { tint: [0.62, 0.74, 1.00], weight: 0.04, lum: 1.35 }, // O / B
@@ -71,6 +89,31 @@ export class Starfield {
       const u = Math.random();
       size[i] = 0.35 + Math.pow(u, 3.2) * 5.6;
       bright[i] = (0.16 + Math.pow(Math.random(), 2.1) * 1.05) * cls.lum;
+      seed[i] = Math.random();
+    }
+
+    // The Scar, laid over the last of those stars rather than added to them:
+    // a red streak has to be *in* the field, at the same distances, or it
+    // parallaxes off the sky it belongs to.
+    const long = new THREE.Vector3(0, 1, 0).cross(SCAR_DIR).normalize();
+    const short = SCAR_DIR.clone().cross(long).normalize();
+    for (let n = 0; n < SCAR_COUNT; n++) {
+      const i = COUNT - 1 - n;
+      const r = 900 + Math.random() * 400;
+      const a = (Math.random() + Math.random() + Math.random() - 1.5) * SCAR_LONG;
+      // Bowed, not ruled: a straight band of dots reads as a printed strip.
+      const bow = (a * a) / SCAR_LONG * 0.55;
+      const b = (Math.random() + Math.random() + Math.random() - 1.5) * SCAR_SHORT + bow;
+      v.copy(SCAR_DIR).addScaledVector(long, a).addScaledVector(short, b).normalize();
+      pos[i * 3] = v.x * r;
+      pos[i * 3 + 1] = v.y * r;
+      pos[i * 3 + 2] = v.z * r;
+      // Deep red, and brighter than the field around it. Both are the point.
+      color[i * 3] = 0.86 + Math.random() * 0.14;
+      color[i * 3 + 1] = 0.11 + Math.random() * 0.1;
+      color[i * 3 + 2] = 0.06 + Math.random() * 0.08;
+      size[i] = 0.7 + Math.pow(Math.random(), 3.0) * 6.4;
+      bright[i] = 0.4 + Math.pow(Math.random(), 1.9) * 1.4;
       seed[i] = Math.random();
     }
 

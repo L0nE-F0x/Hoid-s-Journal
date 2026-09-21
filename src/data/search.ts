@@ -14,6 +14,7 @@ const STOP = new Set([
 export type SearchKind =
   | 'world'
   | 'moon'
+  | 'belt'
   | 'system'
   | 'person'
   | 'shard'
@@ -88,6 +89,7 @@ export function matchesQuery(q: string, hay: string, label: string, aliases = ''
 export const SEARCH_KIND_LABEL: Record<SearchKind, string> = {
   world: 'world',
   moon: 'moon',
+  belt: 'belt',
   system: 'system',
   person: 'person',
   shard: 'shard',

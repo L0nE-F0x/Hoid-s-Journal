@@ -54,6 +54,12 @@ function flyTo(id: string): void {
     store.set('cameraCue', { kind: 'focus', id: moon.id, scale: 'globe' });
     return;
   }
+  const belt = COSMERE.belts.find((b) => b.id === id);
+  if (belt) {
+    leaveSpiritual();
+    store.set('cameraCue', { kind: 'focus', id: belt.system, scale: 'system' });
+    return;
+  }
   const ch = COSMERE.characters.find((c) => c.id === id);
   const at = ch ? characterAt(ch, store.state.era) : null;
   if (at?.body) {
@@ -197,10 +203,21 @@ export function mountDirectory(root: HTMLElement): { destroy(): void } {
         push(row(sys.id, sys.name, n === 1 ? '1 world' : `${n} worlds`, sys.sunColor, `Enter the ${sys.name} system`));
       }
     } else if (tab === 'worlds') {
+      // Standing inside a system, the roster is that system entire — gas
+      // giants, dwarf planets and belts included, because they are what is
+      // on the screen. From outside, the giants would be two thirds of a
+      // list nobody is reading for Palah.
+      const inside = s.scale === 'system' && s.focusedSystem;
       for (const b of COSMERE.bodies) {
-        if (b.kind === 'gas-giant' || !onTheMap(b, s.readProgress, s.era) || !match(b.name)) continue;
-        if (s.scale === 'system' && s.focusedSystem && b.system !== s.focusedSystem) continue;
+        if (!onTheMap(b, s.readProgress, s.era) || !match(b.name, b.aliases)) continue;
+        if (inside && b.system !== s.focusedSystem) continue;
+        if (b.kind === 'gas-giant' && !inside) continue;
         push(row(b.id, b.name, b.kind.replace('-', ' '), b.color, b.fact));
+      }
+      for (const belt of COSMERE.belts) {
+        if (!inside || belt.system !== s.focusedSystem) continue;
+        if (!onTheMap(belt, s.readProgress, s.era) || !match(belt.name)) continue;
+        push(row(belt.id, belt.name, `${belt.kind} belt`, belt.color, belt.fact));
       }
     } else if (tab === 'moons') {
       for (const m of COSMERE.moons) {

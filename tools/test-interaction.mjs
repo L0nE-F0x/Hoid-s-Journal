@@ -335,6 +335,7 @@ async function run() {
         scadrianSun: drawn('system', 'scadrian'),
         scadrianOrbit: drawn('orbit', 'scadrial'),
         scadrianName: named('system', 'scadrian'),
+        aagalNod: drawn('body', 'aagal-nod'),
         lumar: drawn('body', 'lumar-world'),
         lumarOrbit: drawn('orbit', 'lumar-world'),
         canticle: drawn('body', 'canticle-world'),
@@ -344,9 +345,16 @@ async function run() {
         roshar: drawn('body', 'roshar'),
       };
     });
-    check('Pre-Shattering hides Scadrial, star, orbit and name',
-      !preSky.scadrial && !preSky.scadrianSun && !preSky.scadrianOrbit && !preSky.scadrianName,
-      JSON.stringify(preSky));
+    // Scadrial is the one world built after the Shattering, so it and its
+    // orbit are not there yet. The *star* is: Adonalsium made the rest of
+    // that system, and the Nelazan had names for the two gas giants long
+    // before anyone stood on the third planet. Until those two were drawn,
+    // the Scadrian sun had nothing in-era to orbit it and the whole system
+    // waited on Scadrial — which was a fact about our table, not about canon.
+    check('Pre-Shattering hides Scadrial and its orbit',
+      !preSky.scadrial && !preSky.scadrianOrbit, JSON.stringify(preSky));
+    check('Pre-Shattering keeps the Scadrian star, name and Adonalsium\'s gas giants',
+      preSky.scadrianSun && preSky.scadrianName && preSky.aagalNod, JSON.stringify(preSky));
     check('Pre-Shattering keeps Adonalsium-era worlds',
       preSky.lumar && preSky.lumarOrbit && preSky.canticle && preSky.utol
         && preSky.komashi && preSky.yolen && preSky.roshar,
@@ -557,6 +565,74 @@ async function run() {
       window.__ceph.store.set('selected', null);
       window.__ceph.store.set('panel', 'none');
     });
+
+    // The rest of the star charts: belts, second stars, double planets.
+    await page.setViewport({ width: 1512, height: 900, deviceScaleFactor: 1 });
+    await page.evaluate(() => window.dispatchEvent(new Event('resize')));
+    await page.evaluate(() => window.__ceph.store.set('cameraCue', { kind: 'focus', id: 'selish', scale: 'system' }));
+    await settle(page);
+    const selish = await page.evaluate(() => {
+      const a = window.__ceph.app;
+      const drawn = (kind, id) => a.orrery.group.children.some(
+        (c) => c.visible && c.userData?.kind === kind && c.userData?.id === id,
+      );
+      return {
+        donne: !!a.orrery.bodyPosition('donne') && drawn('body', 'donne'),
+        ky: drawn('body', 'ky'),
+        ralen: drawn('body', 'ralen'),
+        dwarf: drawn('body', 'selish-dwarf'),
+        rocks: a.orrery.beltShown('selish-asteroid-belt'),
+        ice: a.orrery.beltShown('selish-comet-belt'),
+        kyMoons: ['ky-i', 'ky-ii', 'ky-iii', 'ky-iv'].filter((m) => a.orrery.moonShown(m)).length,
+      };
+    });
+    check('the Selish chart is all four planets and the dwarf',
+      selish.donne && selish.ky && selish.ralen && selish.dwarf, JSON.stringify(selish));
+    check('both Selish belts are drawn', selish.rocks && selish.ice, JSON.stringify(selish));
+    check('Ky keeps its four moons', selish.kyMoons === 4, `${selish.kyMoons}`);
+
+    // A belt is only its own system's. Fly one system over and it goes out.
+    await page.evaluate(() => window.__ceph.store.set('cameraCue', { kind: 'focus', id: 'taldainian', scale: 'system' }));
+    await settle(page);
+    const taldain = await page.evaluate(() => {
+      const a = window.__ceph.app;
+      const ridos = a.orrery.companionPosition('eye-of-ridos');
+      const planet = a.orrery.bodyPosition('taldain');
+      const sun = a.orrery.systemPosition('taldainian');
+      if (!ridos || !planet || !sun) return null;
+      // AisDa, Taldain and the Eye of Ridos on one line, in that order: the
+      // companion shares the planet's omega and period at twice the radius,
+      // which is the Lagrange point White Sand puts the world at.
+      const toPlanet = planet.clone().sub(sun);
+      const toRidos = ridos.clone().sub(sun);
+      const cos = toPlanet.clone().normalize().dot(toRidos.clone().normalize());
+      return {
+        cos, ratio: toRidos.length() / toPlanet.length(),
+        elsewhere: a.orrery.beltShown('selish-asteroid-belt'),
+        named: window.__ceph.app.labels.group.children.some(
+          (c) => c.visible && c.userData?.kind === 'star' && c.userData?.id === 'eye-of-ridos',
+        ),
+      };
+    });
+    check('Taldain rides the line between its two suns',
+      !!taldain && taldain.cos > 0.999 && Math.abs(taldain.ratio - 2) < 0.01,
+      JSON.stringify(taldain));
+    check('the Eye of Ridos is named in the frame', !!taldain?.named, JSON.stringify(taldain));
+    check('a belt belongs to one system only', taldain?.elsewhere === false, JSON.stringify(taldain));
+
+    // UTol and Komashi go round each other, not round the star separately.
+    await page.evaluate(() => window.__ceph.store.set('cameraCue', { kind: 'focus', id: 'utol', scale: 'system' }));
+    await settle(page);
+    const pair = await page.evaluate(() => {
+      const a = window.__ceph.app;
+      const u = a.orrery.bodyPosition('utol-world');
+      const k = a.orrery.bodyPosition('komashi');
+      const sun = a.orrery.systemPosition('utol');
+      if (!u || !k || !sun) return null;
+      return { apart: u.distanceTo(k), out: u.distanceTo(sun) };
+    });
+    check('UTol and Komashi are a double planet',
+      !!pair && pair.apart < 6 && pair.out > 12, JSON.stringify(pair));
 
     // A phone still leaves the world a band to live in.
     await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 1 });

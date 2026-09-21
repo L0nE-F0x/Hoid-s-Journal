@@ -55,6 +55,7 @@ const note = (s) => warn.push(s);
 const ORDER = [
   ['body', C.bodies],
   ['moon', C.moons],
+  ['belt', C.belts],
   ['system', C.systems],
   ['character', C.characters],
   ['location', C.locations],
@@ -124,6 +125,30 @@ for (const b of C.bodies) {
   for (const m of b.magic) if (!D.magicById[m]) fail(`body:${b.id} magic -> ${m}`);
 }
 for (const m of C.moons) if (!D.bodyById[m.parent]) fail(`moon:${m.id} parent -> ${m.parent}`);
+for (const b of C.bodies) {
+  if (b.orbitAround && !D.bodyById[b.orbitAround]) fail(`body:${b.id} orbitAround -> ${b.orbitAround}`);
+  // A double planet riding a double planet is not a thing canon has, and the
+  // orrery resolves exactly one level of it.
+  if (b.orbitAround && D.bodyById[b.orbitAround]?.orbitAround) {
+    fail(`body:${b.id} orbitAround -> ${b.orbitAround}, which itself orbits a partner`);
+  }
+}
+for (const b of C.belts) {
+  if (!systemIds.has(b.system)) fail(`belt:${b.id} system -> ${b.system}`);
+  if (!(b.inner > 0 && b.outer > b.inner)) fail(`belt:${b.id} radii ${b.inner}..${b.outer}`);
+  // A belt drawn over a planet's orbit is a belt in the wrong place.
+  for (const body of C.bodies) {
+    if (body.system !== b.system || body.orbitAround) continue;
+    if (body.orbit.a > b.inner && body.orbit.a < b.outer) {
+      fail(`belt:${b.id} (${b.inner}..${b.outer}) swallows body:${body.id} at a=${body.orbit.a}`);
+    }
+  }
+}
+for (const s of C.systems) {
+  for (const c of s.companions ?? []) {
+    if (D.loreById(c.id)) fail(`system:${s.id} companion ${c.id} collides with an entry id`);
+  }
+}
 for (const l of C.locations) {
   if (!D.bodyById[l.body]) fail(`location:${l.id} body -> ${l.body}`);
   if (!(l.u >= 0 && l.u <= 1 && l.v >= 0 && l.v <= 1)) fail(`location:${l.id} uv ${l.u},${l.v}`);

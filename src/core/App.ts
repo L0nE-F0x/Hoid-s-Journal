@@ -405,10 +405,9 @@ export class App {
       const p = this.orrery.systemPosition(id);
       if (!p) return;
       // Frame the whole disc, not a fixed distance: the Rosharan system runs
-      // out to ten gas giants, the Scadrian one does not.
-      const outer = COSMERE.bodies
-        .filter((b) => b.system === id)
-        .reduce((m, b) => Math.max(m, b.orbit.a), 8);
+      // out to ten gas giants and Taldain's second sun is twice as far out as
+      // its only planet.
+      const outer = Math.max(8, systemExtent(id));
       this.framing = null;
       this.rig.flyTo(p, this.rig.framingDistance(outer * 0.95, 0.92), 2.1);
       store.set('focusedSystem', id);

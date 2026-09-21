@@ -859,4 +859,14 @@ export const GLOSSARY_MORE: GlossaryTerm[] = [
     'The stone that marks a Truthless\'s obedience. Whoever holds it gives the orders; Szeth murders his way across Roshar under that rule.',
     ['The Way of Kings'],
     { aliases: 'Oathstones', category: 'object', wiki: 'Oathstone', see: ['truthless', 'szeth'], arc: 'twok' }),
+  // The two things in the sky that half the cosmere has its own name for.
+  t('scar', 'Taln\'s Scar', 'core',
+    'A swath of unusually bright red stars, visible from many worlds and called something different on each: Taln\'s Scar on Roshar, the Starbelt on Threnody, the Red Rip on Scadrial. Its apparent shape changes with where you stand, and on some worlds it does not rise at all. The colour means something. Nobody has said what.',
+    ['The Way of Kings', 'Shadows for Silence', 'The Bands of Mourning', 'Arcanum Unbounded'],
+    { aliases: 'the Scar, Starbelt, Red Rip, the Dragon', category: 'realmatic', wiki: 'Scar',
+      see: ['roshar', 'threnody', 'scadrial'] }),
+  t('reyas-tear', 'Reya\'s Tear', 'stormlight',
+    'A particularly bright star in Roshar\'s sky, named for the single tear Reya shed. In early Ishi it sits just above the horizon at sunset over the Shattered Plains. It is not part of Taln\'s Scar.',
+    ['Words of Radiance'],
+    { aliases: 'the Tear', category: 'culture', wiki: 'Tear', see: ['scar', 'roshar'], arc: 'wor' }),
 ];

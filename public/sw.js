@@ -7,7 +7,7 @@
  */
 /* Bumped when the shell's own files change — the rename and the new mark
    would otherwise be served from an install made before them. */
-const CACHE = 'ceph-v2';
+const CACHE = 'ceph-v3';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './mark.svg', './logo.jpg', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', (event) => {
@@ -35,7 +35,7 @@ self.addEventListener('fetch', (event) => {
   if (req.mode === 'navigate') {
     event.respondWith((async () => {
       try {
-        const fresh = await fetch(req);
+        const fresh = await fetch(req, { cache: 'no-cache' });
         const cache = await caches.open(CACHE);
         cache.put('./index.html', fresh.clone());
         return fresh;
@@ -46,7 +46,25 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+  const path = new URL(req.url).pathname;
+  // Plates and the soundtrack are not content-hashed. Cache-first kept a
+  // replaced map until the cache name changed, which is how a deploy lied.
+  // Network first, and the week-long HTTP header still does the caching.
+  const freshFirst = path.includes('/maps/') || path.includes('/audio/');
+
   event.respondWith((async () => {
+    if (freshFirst) {
+      try {
+        const res = await fetch(req, { cache: 'no-cache' });
+        if (res.ok && res.type === 'basic') {
+          const cache = await caches.open(CACHE);
+          cache.put(req, res.clone());
+        }
+        return res;
+      } catch {
+        return (await caches.match(req)) ?? Response.error();
+      }
+    }
     const hit = await caches.match(req);
     if (hit) return hit;
     const res = await fetch(req);

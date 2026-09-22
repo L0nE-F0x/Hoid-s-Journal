@@ -210,6 +210,17 @@ export interface CharacterEra {
   era: number;
   system: string;
   body?: string;
+  /**
+   * A place on `body`, when a book names where they are. Absent means
+   * "on this world" and the sky scatters them — it is not a coordinate.
+   */
+  at?: string;
+  /**
+   * This row applies once the reader has reached `arc`. `book` overrides the
+   * person's own series when the move happens in a later publication.
+   */
+  arc?: string;
+  book?: string;
 }
 
 /** What a person in the roster *is*. Drives the Directory's tabs. */
@@ -268,6 +279,11 @@ export interface Magic extends Cited {
     cols: string[];
     rows: string[][];
     details?: string[];
+    /**
+     * Parallel to `rows`. A row with an arc stays off the table until the
+     * reader has reached it on this magic's own book. Reread sees every row.
+     */
+    rowArc?: (string | undefined)[];
   };
 }
 
@@ -333,6 +349,12 @@ export interface CityLandmark {
   desc: string;
   book?: string;
   arc?: string;
+  /**
+   * Coordinates measured on a Stewart file. `u`/`v` belong to the procedural
+   * plate; a published raster does not share them. One entry per file, because
+   * Luthadel's survey and the Kredik Shaw close-up are not the same picture.
+   */
+  on?: { file: string; u: number; v: number }[];
 }
 
 export type CityKind =

@@ -30,7 +30,7 @@ import { existsSync } from 'node:fs';
 import process from 'node:process';
 
 const BROWSERS = ['/usr/bin/chromium', '/usr/bin/google-chrome-stable', '/usr/bin/google-chrome'];
-const executablePath = BROWSERS.find(existsSync);
+const executablePath = process.env.CHROME_PATH || BROWSERS.find(existsSync);
 if (!executablePath) throw new Error('No chromium/chrome binary found');
 const URL = process.argv[2] ?? 'http://127.0.0.1:5174/';
 

@@ -4,6 +4,7 @@
 uniform vec3  uColor;
 uniform float uOpacity;
 uniform float uSpike;
+uniform float uShape;
 
 varying vec2 vUv;
 
@@ -23,11 +24,14 @@ void main() {
   // reaches that clip ends in a straight razor edge across the sky. Window it
   // out well inside the boundary so the flare ends because it ran out, not
   // because it hit the geometry.
-  float spikes = (h + v * 0.42) * uSpike * smoothstep(1.0, 0.45, d);
+  float spikeW = (uShape > 1.5 && uShape < 2.5) ? 1.7 : 1.0;
+  float spikes = (h * spikeW + v * 0.42) * uSpike * smoothstep(1.0, 0.45, d);
+  // Ash has no white-hot core. Dawn keeps one, and lets it stay.
+  float hot = (uShape > 0.5 && uShape < 1.5) ? 0.12 : 1.0;
 
   float i = (core + halo + spikes) * uOpacity;
   vec3 col = uColor * i;
-  col += vec3(1.0) * core * core * uOpacity * 0.85;
+  col += vec3(1.0) * core * core * uOpacity * 0.85 * hot;
 
   gl_FragColor = vec4(col, 1.0);
 }

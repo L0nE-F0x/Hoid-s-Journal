@@ -25,6 +25,16 @@ export function connectPwa(onChange?: () => void): void {
   });
 
   if (!import.meta.env.PROD || !('serviceWorker' in navigator)) return;
+  // Reload when a new worker takes a tab that already had one. The first
+  // install has no controller yet, and reloading then would loop boot.
+  if (navigator.serviceWorker.controller) {
+    let reloading = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (reloading) return;
+      reloading = true;
+      window.location.reload();
+    });
+  }
   const register = () => {
     navigator.serviceWorker.register(`${import.meta.env.BASE_URL}sw.js`, {
       scope: import.meta.env.BASE_URL,

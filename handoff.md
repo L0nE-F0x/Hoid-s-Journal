@@ -16,9 +16,48 @@ Architecture lock: `AGENTS.md` + `DESIGN.md`. This file is the live todo.
 
 # ▶ START HERE — next session
 
-**Nothing is outstanding.** The 2026-09-21 rename and share pass is pushed
-and live. Optional only: *Do next 5* (godrays, DoF, aurora — each needs a
-decision), empty orgs (do not invent members), more sky beats.
+**2026-09-22 pass is in the tree, not necessarily pushed.** Ten items from
+the fresh audit:
+
+1. City plates no longer paint world-map pins onto Stewart city art. Marks
+   with `on: [{ file, u, v }]` were measured off the plate they name
+   (Luthadel, Elendel's survey, Kholinar's palace, Kharbranth's view,
+   Urithiru's section and oathgate ring). A layer with no measurement
+   (Kredik Shaw close-up, the Elendel Lost Metal sheet, Thaylen, Fadrex,
+   Urteau, New Seran, the Shattered Plains) shows the art and no dots.
+2. `CharacterEra.at` places people a book actually locates. Opening them
+   flies to that place and keeps their card. Everyone else still scatters.
+3. Ash, storm, dawn and the contest are different skies, centred on the
+   world they happen to. The Catacendre tick (year −1, still era 2) swaps
+   Scadrial to the basin plate. Heraldic, Recreance, Alloy and the space age
+   stay ticks: two dates are speculation, and the other two are not a detonation.
+4. Sel, Lumar's rocks, Canticle's corridor, Ashyn and Braize follow the
+   places already charted. Cloud coverage was re-read as coverage: Threnody
+   mist, Komashi shroud, Ashyn ash, Canticle almost clear, water worlds less
+   overcast. Roshar and Nalthis were left as previously tuned.
+5. Relation sentences show on the card and on the Lore Web path. The ones
+   that are later books (`relationArcs.ts`) stay hidden until that arc.
+   `readingFace.ts` is the early card for the cast whose published bio
+   already knows the ending. Fully read is the published text.
+6. Old Magic, Yolish Lightweaving, Hion, ChayShan, Bloodsealing and
+   Sunhearts have tables. Old Magic rows that spoil later Stormlight books
+   wait for those books. Forgery no longer redefines Bloodsealing.
+7. `[` and `]` move to the previous and next thing at the current scale.
+   The atlas treats a drag as not a tap, a hold opens the card, and a coarse
+   pointer gets a larger hit target. Pinch on the sky was already there.
+8. Nebula march steps follow how large the cloud is on screen.
+9. `.github/workflows/ci.yml` runs the typecheck, `audit:data`, and — with
+   Chrome — cartography and interaction. `sw.js` is `ceph-v3` and fetches
+   plates network-first. An open tab reloads when a new worker claims it.
+10. The README counts match the data. **Miral is not in the journal.**
+    *The Fires of December* publishes 6 October 2026. When it is out, and
+    only then: a series entry, a body, a star marked as ours if the book
+    never places it, and witchcraft as a magic. Do not write it from
+    previews. The kite planet and Zidorna stay out. The Vanrial, the
+    stormwardens, the Chorus and the Kerztian clergy stay empty.
+
+Godrays, depth of field and aurora still need a decision each. Do not invent
+members for the empty orders.
 
 **The app is called Hoid’s Journal and lives at https://the-cosmere.com.**
 Do not reintroduce "Cephandrius" as branding — it is Hoid’s own name, so the

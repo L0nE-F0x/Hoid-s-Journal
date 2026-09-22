@@ -22,7 +22,7 @@ const args = Object.fromEntries(
 );
 const URL = args.url ?? 'http://127.0.0.1:5174/';
 const BROWSERS = ['/usr/bin/chromium', '/usr/bin/google-chrome-stable', '/usr/bin/google-chrome'];
-const executablePath = BROWSERS.find(existsSync);
+const executablePath = process.env.CHROME_PATH || BROWSERS.find(existsSync);
 if (!executablePath) throw new Error('No chromium/chrome binary found');
 
 const results = [];

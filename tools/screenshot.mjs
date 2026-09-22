@@ -31,7 +31,7 @@ const HEIGHT = Number(args.height ?? 900);
 const SETTLE = Number(args.settle ?? 2600);
 
 const BROWSERS = ['/usr/bin/chromium', '/usr/bin/google-chrome-stable', '/usr/bin/google-chrome'];
-const executablePath = BROWSERS.find(existsSync);
+const executablePath = process.env.CHROME_PATH || BROWSERS.find(existsSync);
 if (!executablePath) throw new Error('No chromium/chrome binary found');
 
 const GPU_FLAGS = [

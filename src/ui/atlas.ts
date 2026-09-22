@@ -15,6 +15,7 @@ import {
   onTheMap,
   perpAt,
   scadrialBiome,
+  CATACENDRE_YEAR,
 } from '../data/index.ts';
 import { store } from '../core/store.ts';
 import { el, listen, setColumnBottom } from './dom.ts';
@@ -77,6 +78,9 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
   ]);
   let plateLayer = 0;
   let plateKey = '';
+  let basinPhase = '';
+  /** What composeMap actually drew, so the pins use the same coordinate space. */
+  let plateMode: 'official' | 'plan' | 'crop' | 'world' = 'world';
   root.append(panel);
 
   // The map and the pins are each composed once per change and blitted every
@@ -109,7 +113,7 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
   const visibleLocations = () => {
     const s = store.state;
     if (!s.focusedBody) return [];
-    return locationsOn(s.focusedBody, s.era).filter((l) => {
+    return locationsOn(s.focusedBody, s.era, s.year).filter((l) => {
       if (!isVisible(l, s.readProgress)) return false;
       if (s.realm === 'cognitive') {
         const door = perpAt(l.id);
@@ -124,11 +128,11 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
     const body = s.focusedBody ? bodyById[s.focusedBody] : undefined;
     if (!body) return null;
     const official = getOfficialMap(
-      worldMapFile(body.id, s.era, s.realm === 'cognitive', plateLayer),
+      worldMapFile(body.id, s.era, s.realm === 'cognitive', plateLayer, s.year),
       () => { composeMap(); composePins(); paint(); },
     );
     if (official) return official;
-    const biome = body.id === 'scadrial' ? scadrialBiome(s.era) : body.biome;
+    const biome = body.id === 'scadrial' ? scadrialBiome(s.era, s.year) : body.biome;
     return bakePlanetMap(biome, seedFromId(body.id), 512, 256, s.realm === 'cognitive',
       plateTint(body.kind, body.color));
   };
@@ -156,32 +160,51 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
     if (!ctx) return;
     ctx.clearRect(0, 0, W, H);
     if (s.scale === 'city' && s.focusedLocation) {
-      const raster = getOfficialMap(cityMapFile(s.focusedLocation, plateLayer), () => { composeMap(); paint(); });
+      const raster = getOfficialMap(cityMapFile(s.focusedLocation, plateLayer), () => { composeMap(); composePins(); paint(); });
       if (raster) {
+        plateMode = 'official';
         ctx.drawImage(raster, 0, 0, W, H);
         return;
       }
       const plate = bakeCityMap(s.focusedLocation, W, H);
       if (plate) {
+        plateMode = 'plan';
         ctx.drawImage(plate, 0, 0, W, H);
         return;
       }
-      const loc = locationsOn(s.focusedBody ?? '', s.era).find((l) => l.id === s.focusedLocation);
+      plateMode = 'crop';
+      const loc = locationsOn(s.focusedBody ?? '', s.era, s.year).find((l) => l.id === s.focusedLocation);
       const map = worldMap();
       if (loc && map) { blitLocal(ctx, map, loc.u, loc.v); return; }
     }
+    plateMode = 'world';
     const map = worldMap();
     if (map) ctx.drawImage(map, 0, 0, W, H);
   };
 
   const pinRows = (): { id: string; name: string; u: number; v: number; color: string }[] => {
     const s = store.state;
-    if (s.scale === 'city' && s.focusedLocation && cityById[s.focusedLocation] && !cityMapFile(s.focusedLocation)) {
+    if (s.scale === 'city' && s.focusedLocation && plateMode === 'official') {
+      const file = cityMapFile(s.focusedLocation, plateLayer);
+      const plate = cityById[s.focusedLocation];
+      if (!file || !plate) return [];
+      // World-map coordinates painted on a city drawing were a lie: Alethkar
+      // sat on the palace plan. Only marks measured on this file are drawn.
+      const rows = [];
+      for (const m of plate.landmarks) {
+        if (!isVisible(m, s.readProgress)) continue;
+        const hit = m.on?.find((o) => o.file === file);
+        if (!hit) continue;
+        rows.push({ id: m.id, name: m.name, u: hit.u, v: hit.v, color: m.color });
+      }
+      return rows;
+    }
+    if (s.scale === 'city' && s.focusedLocation && plateMode === 'plan' && cityById[s.focusedLocation]) {
       return cityById[s.focusedLocation]!.landmarks
         .filter((m) => isVisible(m, s.readProgress))
         .map((m) => ({ id: m.id, name: m.name, u: m.u, v: m.v, color: m.color }));
     }
-    if (s.scale === 'city' && s.focusedLocation) {
+    if (s.scale === 'city' && s.focusedLocation && plateMode === 'crop') {
       const focus = visibleLocations().find((l) => l.id === s.focusedLocation);
       if (!focus) return [];
       const rows = [];
@@ -269,7 +292,7 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
         roster.append(chip);
       }
     }
-    const people = charactersOnBody(s.focusedBody, s.era).filter((c) => isVisible(c, s.readProgress));
+    const people = charactersOnBody(s.focusedBody, s.era, s.readProgress).filter((c) => isVisible(c, s.readProgress));
     const rosterPeople = [
       ...people.filter((c) => isFeaturedPerson(c.id)),
       ...people.filter((c) => !isFeaturedPerson(c.id)),
@@ -332,11 +355,14 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
     const loc = s.focusedLocation
       ? visibleLocations().find((l) => l.id === s.focusedLocation)
       : undefined;
-    const key = s.scale === 'city' ? `c:${s.focusedLocation}` : `w:${s.focusedBody}:${s.era}:${s.realm}`;
+    const basin = s.year >= CATACENDRE_YEAR ? 'basin' : 'ash';
+    const key = s.scale === 'city'
+      ? `c:${s.focusedLocation}:${plateLayer}`
+      : `w:${s.focusedBody}:${s.era}:${basin}:${s.realm}`;
     if (key !== plateKey) { plateKey = key; plateLayer = 0; }
     const layerRows = s.scale === 'city' && loc
       ? cityMapLayers(loc.id)
-      : worldMapLayers(body.id, s.era, s.realm === 'cognitive');
+      : worldMapLayers(body.id, s.era, s.realm === 'cognitive', s.year);
     layersEl.replaceChildren();
     if (layerRows.length > 1) {
       layerRows.forEach((row, i) => {
@@ -368,14 +394,16 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
     measure();
   };
 
-  const hitTest = (ev: MouseEvent, click: boolean) => {
+  const hitTest = (ev: { clientX: number; clientY: number }, click: boolean) => {
     const rect = canvas.getBoundingClientRect();
     const u = (ev.clientX - rect.left) / rect.width;
     const v = (ev.clientY - rect.top) / rect.height;
+    const coarse = window.matchMedia('(pointer: coarse)').matches || rect.width < 520;
+    const limit = coarse ? 0.09 : 0.045;
     let best: { id: string; d: number } | null = null;
     for (const row of pinRows()) {
       const d = Math.hypot(row.u - u, row.v - v);
-      if (d < 0.045 && (!best || d < best.d)) best = { id: row.id, d };
+      if (d < limit && (!best || d < best.d)) best = { id: row.id, d };
     }
     if (!best) {
       if (!click && store.state.hovered) store.set('hovered', null);
@@ -392,18 +420,63 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
     if (!loc) return;
     const dive = s.focusedLocation === loc.id
       && (s.scale === 'surface' || s.scale === 'city')
-      && canEnterCity(loc, s.era, s.realm);
+      && canEnterCity(loc, s.era, s.realm, s.year);
     store.set('cameraCue', { kind: 'focus', id: loc.id, scale: dive ? 'city' : 'surface' });
   };
 
+  let pointer: { x: number; y: number; id: number } | null = null;
+  let hold = 0;
+  let held = false;
   const offs = [
-    listen(canvas, 'click', (e) => hitTest(e as MouseEvent, true)),
-    listen(canvas, 'mousemove', (e) => hitTest(e as MouseEvent, false)),
-    listen(canvas, 'mouseleave', () => { if (store.state.hovered) store.set('hovered', null); }),
+    listen(canvas, 'pointerdown', (e) => {
+      const ev = e as PointerEvent;
+      if (ev.pointerType === 'mouse' && ev.button !== 0) return;
+      pointer = { x: ev.clientX, y: ev.clientY, id: ev.pointerId };
+      held = false;
+      window.clearTimeout(hold);
+      hold = window.setTimeout(() => {
+        held = true;
+        if (!pointer) return;
+        hitTest({ clientX: pointer.x, clientY: pointer.y }, false);
+        const id = store.state.hovered;
+        if (id) store.set('selected', id);
+      }, 480);
+    }),
+    listen(canvas, 'pointerup', (e) => {
+      const ev = e as PointerEvent;
+      window.clearTimeout(hold);
+      if (!pointer || ev.pointerId !== pointer.id) return;
+      const moved = Math.hypot(ev.clientX - pointer.x, ev.clientY - pointer.y);
+      const wasHeld = held;
+      pointer = null;
+      held = false;
+      if (wasHeld || moved > 12) return;
+      hitTest(ev, true);
+    }),
+    listen(canvas, 'pointermove', (e) => {
+      const ev = e as PointerEvent;
+      if (pointer && ev.pointerId === pointer.id && Math.hypot(ev.clientX - pointer.x, ev.clientY - pointer.y) > 12) {
+        window.clearTimeout(hold);
+        return;
+      }
+      if (!pointer) hitTest(ev, false);
+    }),
+    listen(canvas, 'pointerleave', () => {
+      window.clearTimeout(hold);
+      pointer = null;
+      if (store.state.hovered) store.set('hovered', null);
+    }),
     listen(window, 'resize', () => measure()),
     store.on('focusedBody', refresh),
     store.on('scale', refresh),
     store.on('era', refresh),
+    store.on('year', () => {
+      const s = store.state;
+      const phase = `${s.focusedBody}:${s.era}:${s.year >= CATACENDRE_YEAR ? 'basin' : 'ash'}`;
+      if (phase === basinPhase) return;
+      basinPhase = phase;
+      refresh();
+    }),
     store.on('realm', refresh),
     store.on('shell', refresh),
     store.on('view', refresh),

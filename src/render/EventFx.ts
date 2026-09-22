@@ -14,8 +14,10 @@
  * The sixteen directions are fixed, not random: a Fibonacci sphere, so the
  * shards spread evenly and the same beat plays the same way every time.
  *
- * The other beats — ash, storm, dawn — are smaller and reuse the flash and
- * the shell without the shards. They are weather, not cosmology.
+ * The other beats are weather, and they are not the Shattering with a tint:
+ * ash is a pall over Scadrial, the storm is a band around Roshar, dawn holds
+ * a sun in the shell, and the contest is a short shock on the same world.
+ * Each is centred on the body named by the event, not on Yolen.
  */
 import * as THREE from 'three';
 import { COSMERE } from '../data/index.ts';
@@ -38,13 +40,16 @@ interface Beat {
   duration: number;
   /** Only the Shattering throws Shards. */
   shards: boolean;
+  /** Passed to the shell and the flash. See shockwave.frag. */
+  shape: number;
 }
 
 const BEATS: Record<SkyVisual, Beat> = {
-  shatter: { core: 0xffe2a4, edge: 0xfff8ec, reach: 212, duration: 5.6, shards: true },
-  ash: { core: 0x94a3b8, edge: 0xd9e0ea, reach: 72, duration: 4.0, shards: false },
-  storm: { core: 0x7dd3fc, edge: 0xe6f7ff, reach: 94, duration: 4.2, shards: false },
-  dawn: { core: 0xfde68a, edge: 0xfffdf2, reach: 74, duration: 4.4, shards: false },
+  shatter: { core: 0xffe2a4, edge: 0xfff8ec, reach: 212, duration: 5.6, shards: true, shape: 0 },
+  ash: { core: 0x9aa3ad, edge: 0xd5cdc4, reach: 18, duration: 6.4, shards: false, shape: 1 },
+  storm: { core: 0x7dd3fc, edge: 0xe6f7ff, reach: 28, duration: 5.2, shards: false, shape: 2 },
+  dawn: { core: 0xfde68a, edge: 0xfff7d6, reach: 22, duration: 6.0, shards: false, shape: 3 },
+  duel: { core: 0xf8fafc, edge: 0xfca5a5, reach: 9, duration: 2.4, shards: false, shape: 4 },
 };
 
 /**
@@ -102,6 +107,7 @@ export class EventFx {
         uSharp: { value: 4 },
         uTear: { value: 0.2 },
         uSeed: { value: 0 },
+        uShape: { value: 0 },
       },
       transparent: true,
       depthWrite: false,
@@ -123,6 +129,7 @@ export class EventFx {
         uColor: { value: new THREE.Color(BEATS.shatter.core) },
         uOpacity: { value: 0 },
         uSpike: { value: 0.5 },
+        uShape: { value: 0 },
       },
       transparent: true,
       depthWrite: false,
@@ -206,6 +213,8 @@ export class EventFx {
     (this.shellMat.uniforms.uEdge!.value as THREE.Color).copy(edge);
     (this.flashMat.uniforms.uColor!.value as THREE.Color).copy(core);
     this.shellMat.uniforms.uSeed!.value = Math.random();
+    this.shellMat.uniforms.uShape!.value = this.beat.shape;
+    this.flashMat.uniforms.uShape!.value = this.beat.shape;
     this.shardMat.uniforms.uReach!.value = this.beat.reach * 1.06;
 
     this.shell.visible = true;
@@ -233,7 +242,13 @@ export class EventFx {
     this.shellMat.uniforms.uSharp!.value = 7.0 + u * 17.0;
     this.shellMat.uniforms.uTear!.value = 0.12 + u * 0.82;
     // Holds, then goes. A linear fade on an expanding shell looks like a leak.
-    this.shellMat.uniforms.uOpacity!.value = 1.05 * Math.pow(1 - u, 2.2);
+    // Dawn keeps its light. Ash thins slowly. A duel is over before a breath.
+    const fade = this.beat.shape === 3
+      ? 0.55 + 0.45 * Math.pow(1 - u, 1.2)
+      : this.beat.shape === 1
+        ? Math.pow(1 - u, 1.15)
+        : 1.05 * Math.pow(1 - u, 2.2);
+    this.shellMat.uniforms.uOpacity!.value = fade;
 
     // The detonation is measured in real seconds, not in fractions of the
     // beat: a flash that scales with duration stops being a flash.

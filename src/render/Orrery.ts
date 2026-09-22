@@ -34,8 +34,8 @@ const _world = new THREE.Vector3();
 const _up = new THREE.Vector3(0, 1, 0);
 
 /** Which recipe a world wears at this point in its history. */
-function biomeOf(body: Body, era: number) {
-  return body.id === 'scadrial' ? scadrialBiome(era) : body.biome;
+function biomeOf(body: Body, era: number, year?: number) {
+  return body.id === 'scadrial' ? scadrialBiome(era, year) : body.biome;
 }
 
 export interface PickHit {
@@ -750,7 +750,7 @@ export class Orrery {
     // Era and Realm both repaint worlds: the Catacendre is a map swap with a
     // sky to match, and Shadesmar is the same landmass read the other way.
     // Rebinding every albedo in one frame stalls, so spend a small budget.
-    const biome = scadrialBiome(era);
+    const biome = scadrialBiome(era, year);
     const flipped = biome !== this.lastBiome || shadesmar !== this.lastCognitive;
     this.lastBiome = biome;
     this.lastCognitive = shadesmar;
@@ -762,7 +762,7 @@ export class Orrery {
       return ax - bx;
     });
     for (const node of queue) {
-      const kind = biomeOf(node.body, era);
+      const kind = biomeOf(node.body, era, year);
       const want = node.body.id === this.detailed ? PLATE_LARGE : PLATE_SMALL;
       const skin = `${kind}:${shadesmar}:${want}`;
       if (node.skin === skin) continue;
@@ -833,7 +833,7 @@ export class Orrery {
       // Clouds are seven noise evals, twice. A Cosmere-scale marble does not pay it.
       u.uClouds.value = (shadesmar || visual.scale === 'cosmere' || !showBody)
         ? 0
-        : recipeFor(biomeOf(node.body, era)).clouds;
+        : recipeFor(biomeOf(node.body, era, year)).clouds;
 
       const a = node.atmoMat.uniforms;
       a.uCentre.value.copy(_world);
@@ -962,9 +962,16 @@ export class Orrery {
       // Thirteen overlapping volumes at Cosmere distance are each a few
       // hundred pixels across; they do not need the step count a close one
       // does, and together they are the most expensive thing in the frame.
-      n.mat.uniforms.uSteps.value = visual.scale === 'cosmere'
-        ? Math.max(3, this.nebulaSteps - 4)
-        : this.nebulaSteps;
+      // Step count follows how large the cloud is on screen. Eighteen volumes
+      // at Cosmere distance are each a small puff; the march that is right
+      // when you are inside a system is wasted on a cloud forty pixels across.
+      const dist = Math.max(8, visual.cameraPos.distanceTo(n.mesh.position));
+      const px = (r / dist) * (this.viewport.y * 0.5) / Math.tan((52 * Math.PI) / 360);
+      let steps = this.nebulaSteps;
+      if (px < 80) steps = 2;
+      else if (px < 160) steps = Math.min(steps, 3);
+      else if (px < 320) steps = Math.min(steps, Math.max(4, steps - 2));
+      n.mat.uniforms.uSteps.value = steps;
     }
 
     for (const [id, mesh] of this.suns) {

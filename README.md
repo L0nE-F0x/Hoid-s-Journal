@@ -10,6 +10,9 @@ can actually use while you reread.
 
 Live at **[the-cosmere.com](https://the-cosmere.com)**.
 
+*The Fires of December* is not in the journal until it is published. Miral
+gets a world then, and not from a preview.
+
 This is the successor to the original interactive Cosmere map, rebuilt from
 first principles. The original is preserved untouched.
 
@@ -34,8 +37,8 @@ Netlify: connect this GitHub repo, branch `master`. The build is
 
 | Layer | What you get |
 | --- | --- |
-| Cosmere | Flyable 3D orrery of thirteen systems, with marched nebulae and a painted galaxy behind them |
-| System | Kepler orbits, twenty-two moons, ringed gas giants, perpendicularities |
+| Cosmere | Flyable 3D orrery of eighteen systems, with marched nebulae and a painted galaxy behind them |
+| System | Kepler orbits, fifty-seven moons, belts, ringed worlds, perpendicularities |
 | Globe | A planet you can read: terrain, a cloud deck that casts shadows, night-side cities, ice, ringed gas giants that shadow themselves, a marched atmosphere, and Roshar's highstorm crossing it. Roshar's coastline is traced from the published map, so a pin sits on the ground it names |
 | Surface | Continent and city atlas. Roshar and Scadrial use Isaac Stewart plates, credited. Other worlds are baked from the same recipes as their globes. |
 | Time | Era-weighted playhead; per-world calendars stay honest |
@@ -44,12 +47,13 @@ Netlify: connect this GitHub repo, branch `master`. The build is
 
 ### What is in it
 
-Thirteen systems · eighteen worlds and ten Rosharan gas giants · twenty-two
-moons · sixteen Shards · four hundred and thirty-one people, seven of them
-dragons · three hundred places, every one with a biography · thirty-nine
-city-plate landmarks · fifteen Cognitive sites · ten perpendicularities ·
-sixty-six organisations · nineteen magic systems with thirteen tables · two
-hundred and eighty-five glossary terms · four Dawnshards.
+Eighteen systems · thirty-two worlds and eighteen gas giants · fifty-seven
+moons · six belts · sixteen Shards · four hundred and thirty-one people, seven
+of them dragons · three hundred places, every one with a biography · city-plate
+landmarks measured onto the Stewart plates that have them · sixteen Cognitive
+sites · ten perpendicularities · sixty-six organisations · nineteen magic
+systems, each with a table · two hundred and eighty-seven glossary terms · four
+Dawnshards.
 
 ### The three Realms
 
@@ -85,7 +89,7 @@ marched per frame.
 
 ```bash
 npm run shot -- --focus roshar --scale globe --out /tmp/roshar.png
-npm run test:interaction   # 59 checks through real mouse and keyboard
+npm run test:interaction   # checks through real mouse and keyboard
 npm run test:cartography   # the globe and the atlas still draw the same world
 npm run audit:data         # every id resolves, every reference points at something
 npm run audit:ui           # clicks every control, reports the ones that do nothing

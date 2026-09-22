@@ -70,6 +70,7 @@ export class Presence {
    * scattered from a hash of their id, which means "somewhere on this world"
    * and is not a claim about where.
    */
+  private readonly placeById = new Map(COSMERE.locations.map((l) => [l.id, l]));
   private readonly knownSpot = new Map<string, { body: string; u: number; v: number }>();
   private readonly scatterSpot = new Map<string, { u: number; v: number }>();
   private readonly lines: { id: string; line: THREE.Line }[] = [];
@@ -83,11 +84,10 @@ export class Presence {
     // A person is a mote of light, not a marble. Flat discs at this size read
     // as confetti scattered over the world they are standing on.
     const quad = new THREE.PlaneGeometry(2, 2);
-    const placeById = new Map(COSMERE.locations.map((l) => [l.id, l]));
     for (const ch of COSMERE.characters) {
       this.scatterSpot.set(ch.id, scatterUV(ch.id));
       for (const ref of ch.see ?? []) {
-        const loc = placeById.get(ref);
+        const loc = this.placeById.get(ref);
         if (loc) { this.knownSpot.set(ch.id, { body: loc.body, u: loc.u, v: loc.v }); break; }
       }
     }
@@ -191,6 +191,13 @@ export class Presence {
     }
   }
 
+  /** World position of a visible person, for picking the light itself. */
+  positionOf(id: string): THREE.Vector3 | null {
+    const row = this.chars.find((c) => c.id === id);
+    if (!row?.mesh.visible) return null;
+    return row.mesh.position;
+  }
+
   update(
     orrery: Orrery,
     camera: THREE.Camera,
@@ -221,7 +228,7 @@ export class Presence {
         row.mesh.visible = false;
         continue;
       }
-      const at = characterAt(ch, era);
+      const at = characterAt(ch, era, progress);
       const bodyId = at?.body;
       const origin = bodyId ? orrery.bodyPosition(bodyId) : null;
       const body = bodyId ? bodyById[bodyId] : undefined;
@@ -236,8 +243,13 @@ export class Presence {
       // than as anyone standing anywhere. Same convention as the surface pins
       // — `layout/surface.ts` matches SphereGeometry, and the spot rides the
       // body's own rotation so a person does not slide as the globe turns.
+      const placed = at?.at ? this.placeById.get(at.at) : undefined;
       const known = this.knownSpot.get(ch.id);
-      const spot = known && known.body === body.id ? known : this.scatterSpot.get(ch.id)!;
+      const spot = placed && placed.body === body.id
+        ? placed
+        : known && known.body === body.id
+          ? known
+          : this.scatterSpot.get(ch.id)!;
       uvOnBody(spot.u, spot.v, body.radius * 1.015, orrery.bodySpin(body.id), _off);
       row.mesh.position.copy(origin).add(_off);
       // A mote is a marker, not a world: hold it at a few pixels across, and

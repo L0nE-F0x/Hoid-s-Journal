@@ -156,12 +156,16 @@ export const RECIPES: Record<string, Recipe> = {
     land: '#5a5077', land2: '#9086b8', land3: '#e2d8f2',
     ocean: '#264080', oceanDeep: '#0e1c44',
     threshold: 0.47, warp: 2.2, ridges: 0.52, rivers: 0.45, relief: 1.0,
-    clouds: 0.38, cloudTint: '#eceaf4', specular: 0.9, ice: 0.36, flora: 0.40,
+    clouds: 0.36, cloudTint: '#eceaf4', specular: 0.9, ice: 0.36, flora: 0.40,
     lights: 0.5, lightColor: '#c9b6ff',
+    // Blobs follow the places already charted: Arelon in the west, Fjorden
+    // east of it, JinDo south, the Rose Empire across a strait, Teod offshore.
     shape: [
-      [0.52, 0.47, 0.20, 0.14, 1.05], [0.72, 0.41, 0.14, 0.12, 0.95],
-      [0.60, 0.62, 0.09, 0.08, 0.75], [0.22, 0.28, 0.07, 0.07, 0.90],
-      [0.54, 0.52, 0.060, 0.048, 0.60],
+      [0.46, 0.44, 0.12, 0.11, 1.05],
+      [0.68, 0.42, 0.09, 0.09, 1.00],
+      [0.63, 0.63, 0.07, 0.06, 0.90],
+      [0.81, 0.62, 0.07, 0.06, 0.95],
+      [0.215, 0.275, 0.04, 0.035, 1.05],
     ],
   },
   // The Homeland and the Forests, one continent with a long coast. Everything
@@ -170,7 +174,8 @@ export const RECIPES: Record<string, Recipe> = {
     land: '#1f3122', land2: '#334532', land3: '#5d6a55',
     ocean: '#16223a', oceanDeep: '#080d18',
     threshold: 0.52, warp: 3.0, ridges: 0.40, rivers: 0.30, relief: 1.0,
-    clouds: 0.30, cloudTint: '#8e9aa8', specular: 0.45, ice: 0.22, flora: 0.62,
+    // The Forests of Hell are a mist, not a clear sky. Coverage, not a veil.
+    clouds: 0.64, cloudTint: '#9aa8a4', specular: 0.45, ice: 0.22, flora: 0.62,
     lights: 0.10, lightColor: '#9df5b5',
     shape: [[0.47, 0.50, 0.19, 0.17, 1.05], [0.41, 0.59, 0.09, 0.08, 0.7]],
   },
@@ -180,7 +185,14 @@ export const RECIPES: Record<string, Recipe> = {
     land: '#4a4036', land2: '#6b5c4a', land3: '#9c8d78',
     ocean: '#0d4a38', oceanDeep: '#052b20',
     threshold: 0.80, warp: 1.4, ridges: 0.35, relief: 0.7, specular: 0.5,
-    clouds: 0.22, cloudTint: '#dff5e6', ice: 0, lights: 0.25, lightColor: '#a7f3d0',
+    clouds: 0.16, cloudTint: '#dff5e6', ice: 0, lights: 0.25, lightColor: '#a7f3d0',
+    // The seas are the wedges. These three rocks are the places people stand:
+    // Diggen's Point, the Rock, the Sorceress's island.
+    shape: [
+      [0.18, 0.48, 0.035, 0.04, 1.15],
+      [0.24, 0.44, 0.03, 0.035, 1.1],
+      [0.83, 0.55, 0.04, 0.045, 1.2],
+    ],
     wedges: [
       '#2fbd7e', '#e0466a', '#25c4dd', '#9a4df0', '#f0b92a', '#f06a86',
       '#5f6b82', '#24c9b4', '#f07a2a', '#7c8cf5', '#d9c22a', '#ef77b4',
@@ -191,7 +203,13 @@ export const RECIPES: Record<string, Recipe> = {
     land: '#1c1917', land2: '#7c2d12', land3: '#fbbf24',
     ocean: '#0c0a09', oceanDeep: '#050403',
     threshold: 0.55, warp: 1.8, ridges: 0.7, relief: 1.2, terminator: true,
-    clouds: 0.18, cloudTint: '#f8b184', specular: 0.05, ice: 0,
+    clouds: 0.08, cloudTint: '#f8b184', specular: 0.05, ice: 0,
+    // The corridor the cities run. A chain of ground, not a supercontinent.
+    shape: [
+      [0.32, 0.51, 0.06, 0.045, 1.1],
+      [0.45, 0.52, 0.07, 0.045, 1.0],
+      [0.56, 0.50, 0.055, 0.05, 1.05],
+    ],
     lights: 0.3, lightColor: '#ff8c3a', tidal: 1.0,
   },
   // A world under a shroud, lit only by magenta and cyan hion lines.
@@ -199,7 +217,8 @@ export const RECIPES: Record<string, Recipe> = {
     land: '#0d1424', land2: '#18213a', land3: '#2c3557',
     ocean: '#020617', oceanDeep: '#01030c',
     threshold: 0.6, warp: 1.6, ridges: 0.5, relief: 0.95, hion: true,
-    clouds: 0.72, cloudTint: '#2a3350', specular: 0.25, ice: 0.1,
+    // The shroud is the sky. Coverage this high is the point of the world.
+    clouds: 0.9, cloudTint: '#2a3350', specular: 0.25, ice: 0.1,
     lights: 1.0, lightColor: '#5de7ff',
     shape: [[0.50, 0.50, 0.24, 0.18, 1.05], [0.63, 0.48, 0.10, 0.09, 0.6]],
   },
@@ -217,21 +236,24 @@ export const RECIPES: Record<string, Recipe> = {
     land: '#7c2d12', land2: '#fbbf24', land3: '#fde68a',
     ocean: '#1c1917', oceanDeep: '#0a0806',
     threshold: 0.5, warp: 2.8, ridges: 0.65, relief: 1.1,
-    clouds: 0.55, cloudTint: '#f3c58a', specular: 0.12, ice: 0.05, flora: 0.05,
+    // Ash from the broken surface, not weather. The floating cities sit over land.
+    clouds: 0.76, cloudTint: '#e7b07a', specular: 0.12, ice: 0.05, flora: 0.05,
+    shape: [[0.51, 0.50, 0.08, 0.07, 1.1]],
   },
   // Braize. Cold, dark, and a prison.
   braize: {
     land: '#3b1414', land2: '#190909', land3: '#5a2323',
     ocean: '#0c0a09', oceanDeep: '#040303',
     threshold: 0.7, warp: 2.0, ridges: 0.75, relief: 1.25,
-    clouds: 0.12, cloudTint: '#6b4040', specular: 0.02, ice: 0.28, cap: '#6b5a5a',
+    clouds: 0.16, cloudTint: '#6b4040', specular: 0.02, ice: 0.28, cap: '#6b5a5a',
+    shape: [[0.50, 0.51, 0.14, 0.11, 1.05]],
   },
   // The Pantheon: an archipelago, and nothing else for a long way.
   'first-sun': {
     land: '#1e7440', land2: '#8a6a24', land3: '#e0d7ab',
     ocean: '#106a86', oceanDeep: '#063648',
     threshold: 0.58, warp: 3.4, ridges: 0.45, rivers: 0.2, relief: 0.9,
-    clouds: 0.52, cloudTint: '#eaf7ff', specular: 1.0, ice: 0.05, flora: 0.85,
+    clouds: 0.46, cloudTint: '#eaf7ff', specular: 1.0, ice: 0.05, flora: 0.85,
     lights: 0.12, lightColor: '#86efac',
     shape: [
       [0.52, 0.50, 0.045, 0.05, 1.0], [0.58, 0.44, 0.035, 0.04, 0.95],
@@ -259,7 +281,7 @@ export const RECIPES: Record<string, Recipe> = {
     land: '#1a5c33', land2: '#4f7a2c', land3: '#b9c49c',
     ocean: '#12697f', oceanDeep: '#073246',
     threshold: 0.66, warp: 2.6, ridges: 0.4, rivers: 0.4, relief: 0.95,
-    clouds: 0.58, cloudTint: '#eef7ff', specular: 1.0, ice: 0.40, flora: 0.75,
+    clouds: 0.34, cloudTint: '#eef7ff', specular: 1.0, ice: 0.40, flora: 0.75,
     lights: 0.2, lightColor: '#a7f3d0',
   },
 };

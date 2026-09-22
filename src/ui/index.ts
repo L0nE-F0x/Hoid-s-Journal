@@ -2,7 +2,7 @@
  * UI layer. The only channel to the renderer is src/core/store.ts.
  */
 import '../styles/base.css';
-import { COSMERE } from '../data/index.ts';
+import { COSMERE, locationsOn, onTheMap, systemOnTheMap } from '../data/index.ts';
 import { store } from '../core/store.ts';
 import { listen } from './dom.ts';
 import { mountAtlas } from './atlas.ts';
@@ -18,6 +18,40 @@ export interface UIHandles {
   enter(): void;
   openTitle(): void;
   destroy(): void;
+}
+
+function cycleSky(dir: 1 | -1): void {
+  const s = store.state;
+  if (s.shell !== 'play' || s.view === 'web') return;
+  const wrap = (ids: string[], cur: string | null) => {
+    if (!ids.length) return null;
+    const idx = ids.indexOf(cur ?? '');
+    const j = idx < 0 ? (dir > 0 ? 0 : ids.length - 1) : (idx + dir + ids.length) % ids.length;
+    return ids[j] ?? null;
+  };
+  if (s.scale === 'cosmere' || !s.focusedSystem) {
+    const ids = COSMERE.systems
+      .filter((sys) => systemOnTheMap(sys.id, s.readProgress, s.era))
+      .map((sys) => sys.id);
+    const id = wrap(ids, s.focusedSystem);
+    if (id) store.set('cameraCue', { kind: 'focus', id, scale: 'system' });
+    return;
+  }
+  if (s.scale === 'system' || s.scale === 'globe') {
+    const ids = COSMERE.bodies
+      .filter((b) => b.system === s.focusedSystem && b.kind !== 'gas-giant' && onTheMap(b, s.readProgress, s.era))
+      .map((b) => b.id);
+    const id = wrap(ids, s.focusedBody);
+    if (id) store.set('cameraCue', { kind: 'focus', id, scale: 'globe' });
+    return;
+  }
+  if (s.focusedBody) {
+    const ids = locationsOn(s.focusedBody, s.era, s.year)
+      .filter((l) => onTheMap(l, s.readProgress, s.era) && l.realm !== 'cognitive')
+      .map((l) => l.id);
+    const id = wrap(ids, s.focusedLocation);
+    if (id) store.set('cameraCue', { kind: 'focus', id, scale: s.scale === 'city' ? 'city' : 'surface' });
+  }
 }
 
 export function mountUI(root: HTMLElement): UIHandles {
@@ -78,6 +112,10 @@ export function mountUI(root: HTMLElement): UIHandles {
       store.set('panel', 'codex');
     }
     if (k === 'f') store.set('cameraCue', { kind: 'frame' });
+    if (e.key === '[' || e.key === ']') {
+      e.preventDefault();
+      cycleSky(e.key === ']' ? 1 : -1);
+    }
     const eraNum = Number(k) - 1;
     if (k >= '1' && k <= '6') {
       const row = COSMERE.eras[eraNum];

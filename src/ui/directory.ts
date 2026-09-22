@@ -8,6 +8,7 @@ import {
   bodyById,
   characterAt,
   inEra,
+  shownFace,
   isVisible,
   onTheMap,
   orgById,
@@ -61,11 +62,13 @@ function flyTo(id: string): void {
     return;
   }
   const ch = COSMERE.characters.find((c) => c.id === id);
-  const at = ch ? characterAt(ch, store.state.era) : null;
-  if (at?.body) {
+  const at = ch ? characterAt(ch, store.state.era, store.state.readProgress) : null;
+  if (at?.at || at?.body) {
     leaveSpiritual();
-    store.set('cameraCue', { kind: 'focus', id: at.body, scale: 'globe' });
     store.set('selected', id);
+    store.set('cameraCue', at.at
+      ? { kind: 'focus', id: at.at, scale: 'surface', keepSelected: true }
+      : { kind: 'focus', id: at.body!, scale: 'globe', keepSelected: true });
     return;
   }
   if (COSMERE.shards.some((s) => s.id === id)) {
@@ -234,11 +237,12 @@ export function mountDirectory(root: HTMLElement): { destroy(): void } {
       for (const c of COSMERE.characters) {
         const otherKind = c.kind === 'dragon' || c.kind === 'sleepless';
         if (otherKind !== wantDragons) continue;
-        if (!isVisible(c, s.readProgress) || !match(c.name, c.aliases, c.fact)) continue;
-        const at = characterAt(c, s.era);
+        const face = shownFace(c, s.readProgress);
+        if (!isVisible(c, s.readProgress) || !match(c.name, face.aliases, face.fact)) continue;
+        const at = characterAt(c, s.era, s.readProgress);
         if (!at) continue;
         if (s.scale === 'system' && s.focusedSystem && bodyById[at.body ?? '']?.system !== s.focusedSystem) continue;
-        push(row(c.id, c.name, wantDragons ? (c.kind === 'dragon' ? 'dragon' : 'Sleepless') : c.origin, c.color, c.fact));
+        push(row(c.id, c.name, wantDragons ? (c.kind === 'dragon' ? 'dragon' : 'Sleepless') : c.origin, c.color, face.fact));
       }
     } else if (tab === 'places') {
       for (const l of COSMERE.locations) {

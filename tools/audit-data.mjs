@@ -315,6 +315,27 @@ if (warn.length) {
   console.log('');
 }
 
+// The Catacendre tick is year -1, still inside era 2. The basin plate
+// starts there. Era alone used to wait until year 0.
+if (D.scadrialBiome(2, -100) !== 'scadrial-ash') fail('Final Empire year still on the ash plate');
+if (D.scadrialBiome(2, -1) !== 'scadrial-basin') fail('Catacendre tick should swap to the basin plate');
+if (D.scadrialBiome(3, 0) !== 'scadrial-basin') fail('Stormlight-era Scadrial is the basin');
+
+const kal = D.COSMERE.characters.find((c) => c.id === 'kaladin');
+const kalAt = kal && D.characterAt(kal, 3, D.fullProgress());
+if (kalAt?.at !== 'urithiru') fail(`Kaladin at full read should stand at Urithiru, got ${kalAt?.at}`);
+const early = D.publicationSafeProgress({ series: 'stormlight', arc: 0 });
+const kalEarly = kal && D.characterAt(kal, 3, early);
+if (kalEarly?.at !== 'warcamps') fail(`Kaladin on The Way of Kings should stand at the warcamps, got ${kalEarly?.at}`);
+const face = kal && D.shownFace(kal, early);
+if (face && /Wind and Truth|Fourth Ideal/.test(face.bio ?? '')) fail('Kaladin\'s Way of Kings card still tells the ending');
+
+const took = D.RELATIONS.find((r) =>
+  (r.a.id === 'taravangian' && r.b.id === 'honor') || (r.b.id === 'taravangian' && r.a.id === 'honor'));
+if (!took) fail('missing Taravangian–Honor relation');
+else if (took.arc !== 'wat') fail(`Taravangian took Honor is a Wind and Truth sentence, arc=${took.arc}`);
+if (took && D.isVisible(took, early)) fail('Took Honor is visible during The Way of Kings');
+
 if (fatal.length) {
   console.log(`${fatal.length} broken reference(s):`);
   for (const f of fatal) console.log(`  ${f}`);

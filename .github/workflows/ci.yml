@@ -1,0 +1,33 @@
+name: check
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx tsc --noEmit
+      - run: npm run audit:data
+      - uses: browser-actions/setup-chrome@v1
+        id: chrome
+      - name: Boot and test
+        env:
+          CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
+        run: |
+          npm run dev &
+          for i in $(seq 1 60); do
+            curl -sf http://127.0.0.1:5174/ >/dev/null && break
+            sleep 1
+          done
+          npm run test:cartography
+          npm run test:interaction

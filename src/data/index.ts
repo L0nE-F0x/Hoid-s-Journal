@@ -15,6 +15,9 @@ import { PLACES_MORE } from './placesMore.ts';
 import { ORGS_MORE } from './orgsMore.ts';
 import { RELATIONS_MORE } from './relationsMore.ts';
 import { DAWNSHARDS, HUBS, ROUTES, dawnshardById, hubById } from './realms.ts';
+import { PRESENCE_AT } from './presenceAt.ts';
+import { READING_FACES, type FaceText } from './readingFace.ts';
+import { RELATION_ARCS } from './relationArcs.ts';
 import { RELATIONS as RELATIONS_CORE, REL_TYPES } from './relationships.ts';
 import { SHARDS } from './shards.ts';
 import {
@@ -60,9 +63,39 @@ export const CHARACTERS: Character[] = unique([
   ...CHARACTERS_CORE, ...PEOPLE_ROSHAR, ...PEOPLE_SCADRIAL, ...PEOPLE_WORLDS,
 ]);
 export const LOCATIONS: Location[] = unique([...LOCATIONS_CORE, ...PLACES_MORE]);
+
+const placeById = new Map(LOCATIONS.map((l) => [l.id, l]));
+for (const ch of CHARACTERS) {
+  const beats = PRESENCE_AT[ch.id];
+  if (!beats) continue;
+  for (const beat of beats) {
+    const loc = placeById.get(beat.at);
+    if (!loc) continue;
+    const base = [...ch.eras].reverse().find((row) => row.era <= beat.era && row.body === loc.body);
+    if (!base) continue;
+    const existing = ch.eras.find((row) => row.era === beat.era && row.arc === beat.arc && row.book === beat.book && row.body === loc.body);
+    if (existing) {
+      existing.at = beat.at;
+      continue;
+    }
+    ch.eras.push({
+      era: beat.era,
+      system: base.system,
+      body: loc.body,
+      at: beat.at,
+      arc: beat.arc,
+      book: beat.book,
+    });
+  }
+  ch.eras.sort((a, b) => a.era - b.era);
+}
 export const GLOSSARY = uniqueLast([...GLOSSARY_CORE, ...GLOSSARY_MORE]);
 export const ORGANIZATIONS: Organization[] = unique([...ORGS_CORE, ...ORGS_MORE]);
-export const RELATIONS = [...RELATIONS_CORE, ...RELATIONS_MORE];
+export const RELATIONS = [...RELATIONS_CORE, ...RELATIONS_MORE].map((r) => {
+  const hit = RELATION_ARCS.find((x) =>
+    (x.a === r.a.id && x.b === r.b.id) || (x.a === r.b.id && x.b === r.a.id));
+  return hit ? { ...r, arc: hit.arc } : r;
+});
 
 export const COSMERE: Cosmere = {
   series: SERIES,
@@ -225,15 +258,29 @@ export function systemOnTheMap(
   return BODIES.some((b) => b.system === systemId && onTheMap(b, progress, era));
 }
 
-export function locationsOn(bodyId: string, era?: number): Location[] {
+/**
+ * The Catacendre tick is year −1, still inside Mistborn Era 1 (era 3 starts
+ * at year 0). The ash map holds until that tick, and the basin map from it.
+ * Callers that only know the era keep the old boundary: era 3 and after.
+ */
+export const CATACENDRE_YEAR = -1;
+
+export function scadrialIsBasin(era: number, year?: number): boolean {
+  if (era < 2) return true;
+  if (year === undefined) return era >= 3;
+  return year >= CATACENDRE_YEAR;
+}
+
+export function locationsOn(bodyId: string, era?: number, year?: number): Location[] {
   return LOCATIONS.filter((l) => {
     if (l.body !== bodyId) return false;
     if (era !== undefined && !inEra(l, era)) return false;
     if (!l.eraMaps || era === undefined) return true;
     if (bodyId === 'scadrial') {
-      if (era >= 3) return l.eraMaps.includes('basin');
-      if (era >= 2) return l.eraMaps.includes('ash');
-      return false;
+      if (era < 2) return false;
+      return scadrialIsBasin(era, year)
+        ? l.eraMaps.includes('basin')
+        : l.eraMaps.includes('ash');
     }
     return true;
   });
@@ -268,10 +315,10 @@ export function addedThisArc(
  * a crop of the same world map the globe is using.
  */
 export function canEnterCity(
-  loc: Location, era?: number, realm?: string,
+  loc: Location, era?: number, realm?: string, year?: number,
 ): boolean {
   if (loc.realm === 'cognitive' || realm === 'cognitive' || realm === 'spiritual') return false;
-  if (era !== undefined && loc.eraMaps && !locationsOn(loc.body, era).some((l) => l.id === loc.id)) {
+  if (era !== undefined && loc.eraMaps && !locationsOn(loc.body, era, year).some((l) => l.id === loc.id)) {
     return false;
   }
   if (cityById[loc.id]) return true;
@@ -283,23 +330,79 @@ export function perpAt(locationId: string): Perpendicularity | undefined {
   return PERPS.find((p) => p.at === locationId);
 }
 
-export function scadrialBiome(era: number): 'scadrial-ash' | 'scadrial-basin' {
-  if (era >= 3) return 'scadrial-basin';
-  if (era >= 2) return 'scadrial-ash';
-  // Classical Scadrial, before the ashmounts. We do not have a third plate.
-  return 'scadrial-basin';
+export function scadrialBiome(era: number, year?: number): 'scadrial-ash' | 'scadrial-basin' {
+  if (era < 2) return 'scadrial-basin';
+  return scadrialIsBasin(era, year) ? 'scadrial-basin' : 'scadrial-ash';
 }
 
-export function characterAt(ch: Character, era: number): CharacterEra | null {
+function rowVisible(ch: Character, row: CharacterEra, progress: Record<string, number>): boolean {
+  if (!row.arc) return true;
+  return isVisible({ book: row.book ?? ch.book, arc: row.arc }, progress);
+}
+
+function rowScore(ch: Character, row: CharacterEra): number {
+  const arc = row.arc ? requiredArcIndex({ book: row.book ?? ch.book, arc: row.arc }) : -1;
+  return row.era * 100 + (arc + 1) * 2 + (row.at ? 1 : 0);
+}
+
+export function characterAt(
+  ch: Character,
+  era: number,
+  progress: Record<string, number> = fullProgress(),
+): CharacterEra | null {
   let best: CharacterEra | null = null;
+  let bestScore = -Infinity;
   for (const row of ch.eras) {
-    if (row.era <= era) best = row;
+    if (row.era > era || !rowVisible(ch, row, progress)) continue;
+    const score = rowScore(ch, row);
+    if (score >= bestScore) { best = row; bestScore = score; }
   }
-  return best;
+  if (!best) return null;
+  if (best.at || !best.body) return best;
+  // A later row in the same era can name the world without naming the street.
+  // Keep the latest place the books have already given on that world.
+  let spot: string | undefined;
+  let spotScore = -Infinity;
+  for (const row of ch.eras) {
+    if (row.era !== best.era || row.body !== best.body || !row.at) continue;
+    if (!rowVisible(ch, row, progress)) continue;
+    const score = rowScore(ch, row);
+    if (score >= spotScore) { spot = row.at; spotScore = score; }
+  }
+  return spot ? { ...best, at: spot } : best;
 }
 
-export function charactersOnBody(bodyId: string, era: number): Character[] {
-  return CHARACTERS.filter((c) => characterAt(c, era)?.body === bodyId);
+export function charactersOnBody(
+  bodyId: string,
+  era: number,
+  progress: Record<string, number> = fullProgress(),
+): Character[] {
+  return CHARACTERS.filter((c) => characterAt(c, era, progress)?.body === bodyId);
+}
+
+/** The card text a reader is allowed to see. Fully read returns the published entry. */
+export function shownFace(ch: Character, progress: Record<string, number>): Required<Pick<Character, 'fact' | 'aliases' | 'abilities'>> & { bio?: string } {
+  const full: FaceText = {
+    fact: ch.fact, bio: ch.bio, aliases: ch.aliases, abilities: ch.abilities,
+  };
+  const spec = READING_FACES[ch.id];
+  if (!spec) return { fact: ch.fact, bio: ch.bio, aliases: ch.aliases, abilities: ch.abilities };
+  let face: FaceText = { ...full, ...spec.early };
+  for (const step of spec.steps) {
+    if (!isVisible({ book: step.book, arc: step.arc }, progress)) continue;
+    face = step.published ? full : { ...full, ...step };
+  }
+  return {
+    fact: face.fact ?? ch.fact,
+    bio: face.bio,
+    aliases: face.aliases ?? ch.aliases,
+    abilities: face.abilities ?? ch.abilities,
+  };
+}
+
+export function relationsFor(id: string, progress: Record<string, number>) {
+  return RELATIONS.filter((r) =>
+    (r.a.id === id || r.b.id === id) && isVisible(r, progress));
 }
 
 /**
@@ -439,8 +542,17 @@ export function relatedRefs(ids: string[] | undefined): { id: string; label: str
   return out;
 }
 
-export function orgsForCharacter(id: string): Organization[] {
-  return ORGANIZATIONS.filter((o) => o.members?.includes(id));
+export function orgsForCharacter(id: string, progress?: Record<string, number>): Organization[] {
+  return ORGANIZATIONS.filter((o) => {
+    if (!o.members?.includes(id)) return false;
+    if (!progress) return true;
+    if (!isVisible(o, progress)) return false;
+    // A membership sentence with an arc waits for that book. The order can
+    // exist in the lore before this person has joined it.
+    const edge = RELATIONS.find((r) =>
+      (r.a.id === id && r.b.id === o.id) || (r.b.id === id && r.a.id === o.id));
+    return !edge || isVisible(edge, progress);
+  });
 }
 
 export function wikiHref(wiki: string | undefined): string | null {
@@ -502,8 +614,9 @@ export function searchJournal(
       [s.starName, s.aliases].filter(Boolean).join(', '), star);
   }
   for (const c of CHARACTERS) {
-    take(c.id, c.name, 'person', c.fact, c, c.aliases,
-      [c.bio, c.abilities, c.origin, c.titles, c.biology].join(' '), c.canon);
+    const face = shownFace(c, progress);
+    take(c.id, c.name, 'person', face.fact, c, face.aliases,
+      [face.bio, face.abilities, c.origin, c.titles, c.biology].join(' '), c.canon);
   }
   for (const s of SHARDS) {
     take(s.id, s.name, 'shard', s.desc, s, [s.intent, s.aliases].filter(Boolean).join(', '), s.bio ?? '', s.canon);

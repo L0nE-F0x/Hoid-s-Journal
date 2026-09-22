@@ -55,7 +55,7 @@ export interface Stats {
 
 /** UI → camera: the renderer consumes this and clears it. */
 export type CameraCue =
-  | { kind: 'focus'; id: string; scale: Scale }
+  | { kind: 'focus'; id: string; scale: Scale; keepSelected?: boolean }
   | { kind: 'cinematic' }
   | { kind: 'skip-cinematic' }
   | { kind: 'frame' }

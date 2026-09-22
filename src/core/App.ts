@@ -267,7 +267,9 @@ export class App {
     this.playedEvents.add(id);
     if (store.state.skyEvent) store.set('skyEvent', null);
     this.lastYear = ev.year;
-    const origin = this.orrery.bodyPosition('yolen')
+    const focused = ev.focus ? this.orrery.bodyPosition(ev.focus) : undefined;
+    const origin = focused
+      ?? this.orrery.bodyPosition('yolen')
       ?? this.orrery.systemPosition('yolish')
       ?? new THREE.Vector3();
     this.eventFx.play(ev, origin);
@@ -288,7 +290,7 @@ export class App {
       this.popScale();
       return;
     }
-    if (cue.kind === 'focus') this.focusId(cue.id, cue.scale);
+    if (cue.kind === 'focus') this.focusId(cue.id, cue.scale, cue.keepSelected);
   }
 
   private popScale(): void {
@@ -362,9 +364,9 @@ export class App {
     this.rig.flyTo(p, dist, 2.0);
   }
 
-  private focusId(id: string, scale: Scale): void {
+  private focusId(id: string, scale: Scale, keepSelected = false): void {
     const loc = COSMERE.locations.find((l) => l.id === id);
-    if (loc) { this.focusLocation(loc.id, loc.body, scale === 'city' ? 'city' : 'surface'); return; }
+    if (loc) { this.focusLocation(loc.id, loc.body, scale === 'city' ? 'city' : 'surface', keepSelected); return; }
     if (hubById[id]) { this.focusHub(id); return; }
     if (moonById[id]) { this.focusMoon(id); return; }
     const body = bodyById[id];
@@ -379,7 +381,7 @@ export class App {
       // the framing distance below is measured.
       store.set('focusedBody', id);
       store.set('focusedSystem', body.system);
-      store.set('selected', id);
+      if (!keepSelected) store.set('selected', id);
       store.set('scale', next);
       // A world is a place to read, not a fairground ride: hold the playhead.
       if (globe) store.set('isPlaying', false);
@@ -584,12 +586,12 @@ export class App {
     if (s.scale === 'system' || s.scale === 'globe') {
       for (const ch of COSMERE.characters) {
         if (!isVisible(ch, s.readProgress)) continue;
-        const at = characterAt(ch, s.era);
+        const at = characterAt(ch, s.era, s.readProgress);
         if (!at?.body) continue;
         if (globe && at.body !== s.focusedBody) continue;
-        const origin = this.orrery.bodyPosition(at.body);
-        if (!origin) continue;
-        consider(ch.id, 'character', origin, 0);
+        const spot = this.presence.positionOf(ch.id);
+        if (!spot) continue;
+        consider(ch.id, 'character', spot, 0.35);
       }
     }
 
@@ -613,7 +615,7 @@ export class App {
       if (!loc) return;
       const dive = s.focusedLocation === loc.id
         && (s.scale === 'surface' || s.scale === 'city')
-        && canEnterCity(loc, s.era, s.realm);
+        && canEnterCity(loc, s.era, s.realm, s.year);
       this.focusLocation(loc.id, loc.body, dive ? 'city' : 'surface');
       return;
     }
@@ -662,7 +664,7 @@ export class App {
    * still standing sunward so the place is lit. The camera solves the
    * latitude, the body's spin solves the longitude.
    */
-  private focusLocation(id: string, bodyId: string, scale: Scale): void {
+  private focusLocation(id: string, bodyId: string, scale: Scale, keepSelected = false): void {
     const loc = COSMERE.locations.find((l) => l.id === id);
     const body = bodyById[bodyId];
     const p = this.orrery.bodyPosition(bodyId);
@@ -670,7 +672,7 @@ export class App {
     store.set('focusedBody', bodyId);
     store.set('focusedSystem', body.system);
     store.set('focusedLocation', id);
-    store.set('selected', id);
+    if (!keepSelected) store.set('selected', id);
     store.set('scale', scale);
     store.set('isPlaying', false);
 

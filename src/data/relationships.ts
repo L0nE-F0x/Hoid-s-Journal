@@ -11,6 +11,11 @@ export interface Relation {
   type: RelType;
   label: string;
   book: string;
+  /**
+   * The arc in which this sentence becomes true. Absent means the start of
+   * `book`. A Wind and Truth bond must not be on the web during The Way of Kings.
+   */
+  arc?: string;
   canon?: 'canon' | 'wob';
 }
 

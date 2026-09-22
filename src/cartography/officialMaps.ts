@@ -2,6 +2,8 @@
  * Isaac Stewart cartography, shown in the atlas with credit.
  * Globe textures stay procedural — these plates are not equirectangular.
  */
+import { scadrialIsBasin } from '../data/index.ts';
+
 const BASE = `${import.meta.env.BASE_URL}maps/`;
 
 const cache = new Map<string, HTMLImageElement | 'loading' | 'fail'>();
@@ -34,8 +36,8 @@ function load(file: string, onReady: () => void): HTMLImageElement | null {
   return null;
 }
 
-export function worldMapFile(bodyId: string, era: number, cognitive: boolean, layer = 0): string | null {
-  const layers = worldMapLayers(bodyId, era, cognitive);
+export function worldMapFile(bodyId: string, era: number, cognitive: boolean, layer = 0, year?: number): string | null {
+  const layers = worldMapLayers(bodyId, era, cognitive, year);
   if (!layers.length) return null;
   return layers[Math.min(layer, layers.length - 1)]!.file;
 }
@@ -80,14 +82,14 @@ export function cityMapFile(locationId: string, layer = 0): string | null {
   return layers[Math.min(layer, layers.length - 1)]!.file;
 }
 
-export function worldMapLayers(bodyId: string, era: number, cognitive: boolean): MapLayer[] {
+export function worldMapLayers(bodyId: string, era: number, cognitive: boolean, year?: number): MapLayer[] {
   if (bodyId === 'roshar') {
     return cognitive
       ? [{ name: 'Shadesmar', file: 'Shadesmar_full.jpg' }]
       : [{ name: 'Roshar', file: 'roshar_full.jpg' }];
   }
   if (bodyId === 'scadrial' && !cognitive) {
-    return era >= 3
+    return scadrialIsBasin(era, year)
       ? [
           { name: 'World', file: 'scadrial_full.png' },
           { name: 'Basin', file: 'elendel_basin.png' },

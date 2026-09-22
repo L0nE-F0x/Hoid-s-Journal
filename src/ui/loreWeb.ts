@@ -210,8 +210,16 @@ export function mountLoreWeb(root: HTMLElement): { destroy(): void } {
       cur = prevKey;
     }
     order.reverse();
-    const names = order.map((k) => nodes.find((n) => n.key === k)?.name ?? k);
-    pathEl.textContent = names.join(' → ');
+    const parts: string[] = [];
+    for (let i = 0; i < order.length; i++) {
+      const node = nodes.find((n) => n.key === order[i]);
+      parts.push(node?.name ?? order[i]!);
+      const next = order[i + 1];
+      if (!next) continue;
+      const edge = edges.find((e) => edgeKey(e.a.key, e.b.key) === edgeKey(order[i]!, next) && e.type !== 'linked');
+      if (edge?.label && edge.label !== 'See also') parts.push(`(${edge.label})`);
+    }
+    pathEl.textContent = parts.join(' → ');
   };
 
   const paintLegend = () => {

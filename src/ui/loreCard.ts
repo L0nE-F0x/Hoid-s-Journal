@@ -8,7 +8,10 @@ import {
   canEnterCity,
   characterAt,
   cityById,
+  relationsFor,
+  shownFace,
   isNewThisArc,
+  isVisible,
   loreById,
   loreLabel,
   orgsForCharacter,
@@ -64,6 +67,15 @@ function swatch(color: string): HTMLElement {
   return el('div', { className: 'ceph-swatch', style: { background: color } });
 }
 
+function characterCue(ch: { id: string; eras: Parameters<typeof characterAt>[0]['eras']; book: string }): void {
+  const at = characterAt(ch as Parameters<typeof characterAt>[0], store.state.era, store.state.readProgress);
+  if (at?.at) {
+    store.set('cameraCue', { kind: 'focus', id: at.at, scale: 'surface', keepSelected: true });
+  } else if (at?.body) {
+    store.set('cameraCue', { kind: 'focus', id: at.body, scale: 'globe', keepSelected: true });
+  }
+}
+
 function openId(id: string): void {
   store.set('selected', id);
   const hit = loreById(id);
@@ -81,8 +93,7 @@ function openId(id: string): void {
   } else if (hit.kind === 'shard' || hit.kind === 'dawnshard') {
     store.set('realm', 'spiritual');
   } else if (hit.kind === 'character') {
-    const at = characterAt(hit.obj, store.state.era);
-    if (at?.body) store.set('cameraCue', { kind: 'focus', id: at.body, scale: 'globe' });
+    characterCue(hit.obj);
   } else if (hit.kind === 'magic') {
     store.set('magicId', id);
     store.set('panel', 'arcanum');
@@ -268,7 +279,7 @@ function fillFromHit(host: HTMLElement, hit: LoreHit): void {
     if (perp) host.append(factBlock(perp.fact) ?? '');
     host.append(seeRow(l.see) ?? '');
     host.append(wikiLink(l.wiki) ?? '');
-    if (canEnterCity(l, era, store.state.realm) && store.state.scale !== 'city') {
+    if (canEnterCity(l, era, store.state.realm, store.state.year) && store.state.scale !== 'city') {
       const go = el('button', {
         className: 'ceph-btn ceph-btn--primary',
         text: cityById[l.id] ? 'Open the city plate' : 'Look closer',
@@ -359,8 +370,11 @@ function fillFromHit(host: HTMLElement, hit: LoreHit): void {
   }
   if (hit.kind === 'character') {
     const c = hit.obj;
-    const at = characterAt(c, era);
-    const here = at?.body ? bodyById[at.body]?.name : null;
+    const face = shownFace(c, store.state.readProgress);
+    const at = characterAt(c, era, store.state.readProgress);
+    const here = at?.at
+      ? (COSMERE.locations.find((l) => l.id === at.at)?.name ?? bodyById[at.body ?? '']?.name)
+      : at?.body ? bodyById[at.body]?.name : null;
     const kicker = c.kind === 'dragon' ? `Dragon of Yolen · ${c.origin}`
       : c.kind === 'sleepless' ? `Dysian Aimian · ${c.origin}`
         : c.kind === 'herald' ? `Herald · ${c.origin}`
@@ -369,33 +383,63 @@ function fillFromHit(host: HTMLElement, hit: LoreHit): void {
               : c.kind === 'vessel' ? `Vessel · ${c.origin}`
                 : c.origin;
     host.append(headOf(kicker, c.name, c.color, c.canon));
-    host.append(factBlock(c.fact)!);
-    host.append(factBlock(c.bio, true) ?? '');
+    host.append(factBlock(face.fact)!);
+    host.append(factBlock(face.bio, true) ?? '');
     if (c.biology) host.append(factBlock(c.biology, true)!);
-    const trail = c.eras
-      .map((row) => {
-        const world = row.body ? bodyById[row.body]?.name : COSMERE.systems.find((s) => s.id === row.system)?.name;
-        const eraName = COSMERE.eras.find((e) => e.id === row.era)?.name;
-        return world && eraName ? `${eraName}: ${world}` : null;
-      })
-      .filter(Boolean)
-      .join(' → ');
-    const orgs = orgsForCharacter(c.id);
+    const progress = store.state.readProgress;
+    const trail = [...new Set(c.eras.map((row) => row.era))].sort((a, b) => a - b).map((eraId) => {
+      const rows = c.eras.filter((row) => row.era === eraId && (!row.arc || isVisible({ book: row.book ?? c.book, arc: row.arc }, progress)));
+      if (!rows.length) return null;
+      const eraName = COSMERE.eras.find((e) => e.id === eraId)?.name;
+      const places: string[] = [];
+      for (const row of rows) {
+        if (!row.at) continue;
+        const name = COSMERE.locations.find((l) => l.id === row.at)?.name;
+        if (name && !places.includes(name)) places.push(name);
+      }
+      const world = rows.map((row) => row.body ? bodyById[row.body]?.name : COSMERE.systems.find((s) => s.id === row.system)?.name).find(Boolean);
+      if (!eraName || !world) return null;
+      return places.length ? `${eraName}: ${places.join(', ')}` : `${eraName}: ${world}`;
+    }).filter(Boolean).join(' → ');
+    const orgs = orgsForCharacter(c.id, store.state.readProgress);
     host.append(fields([
-      ['Aliases', c.aliases],
+      ['Aliases', face.aliases],
       ['Titles', c.titles],
-      ['Abilities', c.abilities],
+      ['Abilities', face.abilities],
       ['This era', here],
       ['Where they have been', trail || null],
       ['Orders', orgs.map((o) => o.name).join(', ') || null],
     ]));
     host.append(seeRow(c.see, orgs.map((o) => ({ id: o.id, label: o.name }))) ?? '');
     host.append(wikiLink(c.wiki) ?? '');
+    const rels = relationsFor(c.id, store.state.readProgress);
+    if (rels.length) {
+      const wrap = el('div', { className: 'ceph-see' });
+      wrap.append(el('div', { className: 'ceph-field-label', text: 'Connections' }));
+      const chips = el('div', { className: 'ceph-see-chips' });
+      for (const r of rels) {
+        const other = r.a.id === c.id ? r.b : r.a;
+        const b = el('button', {
+          className: 'ceph-atlas-chip',
+          text: `${r.label} — ${loreLabel(other.id)}`,
+          attrs: { type: 'button' },
+        });
+        listen(b, 'click', () => openId(other.id));
+        chips.append(b);
+      }
+      wrap.append(chips);
+      host.append(wrap);
+    }
     if (at?.body) {
-      const go = el('button', { className: 'ceph-btn ceph-btn--primary', text: `Go to ${here}`, style: { marginTop: '14px' } });
+      const place = at.at ? COSMERE.locations.find((l) => l.id === at.at)?.name : null;
+      const go = el('button', {
+        className: 'ceph-btn ceph-btn--primary',
+        text: place ? `Go to ${place}` : `Go to ${here}`,
+        style: { marginTop: '14px' },
+      });
       listen(go, 'click', () => {
         store.set('selected', c.id);
-        store.set('cameraCue', { kind: 'focus', id: at.body!, scale: 'globe' });
+        characterCue(c);
       });
       host.append(go);
     }

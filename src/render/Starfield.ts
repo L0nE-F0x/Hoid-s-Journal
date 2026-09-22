@@ -22,7 +22,8 @@ const BAND_POLE = new THREE.Vector3(0.34, 0.86, -0.38).normalize();
  * stand, and on some worlds it does not rise at all.
  */
 const SCAR_COUNT = 900;
-const SCAR_DIR = new THREE.Vector3(-0.58, 0.22, 0.78).normalize();
+/** One direction for the rip and for the name that sits beside it. */
+export const SCAR_DIR = new THREE.Vector3(-0.58, 0.22, 0.78).normalize();
 /** Long one way, thin the other: a rip, not a smudge. */
 const SCAR_LONG = 0.30;
 const SCAR_SHORT = 0.055;
@@ -135,7 +136,9 @@ export class Starfield {
       fragmentShader: starFrag,
       transparent: true,
       depthWrite: false,
-      depthTest: false,
+      // These are additive, so they draw after every opaque world. Without a
+      // depth test the points land on the disc and a planet reads as glass.
+      depthTest: true,
       blending: THREE.AdditiveBlending,
     });
 

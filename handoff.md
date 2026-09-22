@@ -16,8 +16,25 @@ Architecture lock: `AGENTS.md` + `DESIGN.md`. This file is the live todo.
 
 # ▶ START HERE — next session
 
-**2026-09-22 pass is in the tree, not necessarily pushed.** Ten items from
-the fresh audit:
+**2026-09-22 is pushed and live** (`7fd59bb`, then the follow-up on top).
+The audit's ten items went out first. The same afternoon, after a look at
+the live sky:
+
+- **Stars no longer show through worlds.** The starfield is additive, so it
+  draws after the opaque planets. `depthTest` has to stay on or every disc
+  is a window. `depthWrite` stays off.
+- **The galaxy chart is a survey plate** (`src/ui/minimap.ts`): each system
+  wears its nebula colour, names dodge each other, and the one you are in
+  gets the cyan ring and "You are here."
+- **Card type was sliced by its own fade.** `.ceph-panel-drawer`'s mask
+  repeated down the plate. `mask-repeat: no-repeat` and `mask-size: 100%
+  100%` are load-bearing.
+- **Taln's Scar has a caption.** Small tracked caps and a short rule, just
+  off the rip, Cosmere scale only. It yields if a system's name already
+  owns that patch of sky. `SCAR_DIR` in `Starfield.ts` is the one direction
+  both the stars and the caption use.
+
+The ten items from the audit:
 
 1. City plates no longer paint world-map pins onto Stewart city art. Marks
    with `on: [{ file, u, v }]` were measured off the plate they name
@@ -180,6 +197,10 @@ now, and the cost is the Investiture clouds).
 ---
 
 ## What the last session changed
+
+**2026-09-22 follow-up (pushed).** Starfield depth test, galaxy plate,
+card mask, Taln's Scar caption. Detail is in *START HERE*. The audit's
+ten items are the commit under it (`7fd59bb`).
 
 **2026-09-21 rename, mark and share pass (pushed and live).** The owner was
 consolidating two apps into one brand: the v1 map gives up its Netlify URL
@@ -792,10 +813,9 @@ the Grand Apparatus got. The **kite planet** and **Zidorna** stay out until
 canon gives one a name and the other a decision about whether it is a planet
 at all.
 
-Two more that are drawn but thin: **Ashyn** and **Braize** have surfaces and
-no pins on them, and Ashyn at least has canon geography — floating cities,
-a surface left volcanic by unguarded Surgebinding. Pins there would be
-guesses about *where*, so they are not there yet.
+**Ashyn** and **Braize** have a landmass under the few pins already charted.
+Those pins sit near the middle of the disc because there is no plate to
+measure. Do not add more by guessing.
 
 ### 2. Four organisations still have no members
 
@@ -857,7 +877,16 @@ Written down so the next session does not rediscover them:
 - **The Scar is written over the last 900 stars of the field, not appended.**
   A red streak has to sit at the same distances as the sky it belongs to, or
   it parallaxes off it. `SCAR_COUNT` comes out of `COUNT`; it does not add
-  to it.
+  to it. The caption uses the same `SCAR_DIR`. It is a small sprite, Cosmere
+  scale only, offset just off the ribbon toward the top or bottom of the
+  frame so it stays on screen. Do not give it the system-name treatment.
+- **Starfield points depth-test.** They are additive, so they draw after
+  every opaque world. `depthTest: false` paints them onto the discs. Leave
+  `depthWrite` false so a star does not occlude the atmosphere drawn later.
+- **The journal card's fade mask must not repeat.** A gradient mask tiles
+  unless `mask-repeat` is `no-repeat` and `mask-size` is `100% 100%`. Tiled,
+  each copy cuts a line of type in half. Both declarations are on
+  `.ceph-panel-drawer`.
 - **`EventFx`'s `TRAIL` is a sampling rate, not a look.** Sixteen points
   stretched along a fast head read as a dotted line. The streak only closes
   up when the spacing drops below the point size, so `TRAIL` and `uLagSpan`

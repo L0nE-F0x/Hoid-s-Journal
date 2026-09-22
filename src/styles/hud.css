@@ -251,8 +251,14 @@
   /* The column is bounded by the playhead, so a long entry scrolls. Fade the
      cut rather than guillotining a field label in half; the trailing padding
      keeps the last real line clear of the fade at full scroll. */
+  /* A gradient mask tiles by default. Repeated down the card, each copy's
+     edge cuts through a line of type, so the letters look broken in half. */
   mask-image: linear-gradient(180deg, #000 calc(100% - 22px), transparent);
   -webkit-mask-image: linear-gradient(180deg, #000 calc(100% - 22px), transparent);
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+  mask-size: 100% 100%;
+  -webkit-mask-size: 100% 100%;
   scrollbar-width: none;
   padding: 14px 16px 34px;
   z-index: 27;

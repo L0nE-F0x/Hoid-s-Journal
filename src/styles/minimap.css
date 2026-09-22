@@ -30,12 +30,34 @@
 .ceph-mm-restore.is-on { display: inline-flex; }
 .ceph-mm-canvas {
   display: block;
-  width: 200px;
-  height: 156px;
-  border-radius: 2px;
-  background: rgba(5, 6, 13, 0.55);
+  width: 280px;
+  height: 214px;
   cursor: pointer;
-  border: 1px solid var(--ceph-border);
+  background: transparent;
+}
+.ceph-mm-foot {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 6px 4px 0;
+  min-height: 18px;
+}
+.ceph-mm-foot-name {
+  font-family: var(--ceph-display);
+  font-size: 14px;
+  letter-spacing: 0.02em;
+  color: var(--ceph-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ceph-mm-foot-meta {
+  flex: none;
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ceph-cyan);
 }
 
 @media (max-width: 900px) {

@@ -1,11 +1,12 @@
 import * as THREE from 'three';
 import { COSMERE, inEra, isVisible, systemExtent, systemOnTheMap } from '../data/index.ts';
 import type { Orrery } from './Orrery.ts';
+import { SCAR_DIR } from './Starfield.ts';
 
 interface Label {
   id: string;
   sprite: THREE.Sprite;
-  kind: 'body' | 'system' | 'moon' | 'belt' | 'star';
+  kind: 'body' | 'system' | 'moon' | 'belt' | 'star' | 'scar';
   visibleItem: { book?: string; arc?: string };
   radius: number;
   system?: string;
@@ -54,6 +55,40 @@ function makeLabel(text: string, color: string, kind: Label['kind']): THREE.Canv
   return tex;
 }
 
+/**
+ * A margin note, not a system name. Tracked caps, a short rule, no outline
+ * heavy enough to compete with the worlds.
+ */
+function makeScarLabel(): THREE.CanvasTexture {
+  const W = 640;
+  const H = 96;
+  const canvas = document.createElement('canvas');
+  canvas.width = W;
+  canvas.height = H;
+  const ctx = canvas.getContext('2d')!;
+  ctx.clearRect(0, 0, W, H);
+  const label = "TALN'S SCAR";
+  ctx.font = '500 30px Inter, ui-sans-serif, system-ui, sans-serif';
+  ctx.letterSpacing = '7px';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.shadowColor = 'rgba(2,3,8,0.8)';
+  ctx.shadowBlur = 10;
+  ctx.fillStyle = 'rgba(232, 210, 204, 0.94)';
+  ctx.fillText(label, W / 2, H / 2 - 6);
+  ctx.shadowBlur = 0;
+  const ink = ctx.measureText(label).width;
+  ctx.strokeStyle = 'rgba(196, 140, 128, 0.55)';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(W / 2 - ink * 0.22, H / 2 + 18);
+  ctx.lineTo(W / 2 + ink * 0.22, H / 2 + 18);
+  ctx.stroke();
+  const tex = new THREE.CanvasTexture(canvas);
+  tex.needsUpdate = true;
+  return tex;
+}
+
 /** A label's ink box in NDC, used to keep two names off each other. */
 interface Box { x: number; y: number; hw: number; hh: number; d: number; l: Label }
 
@@ -93,6 +128,7 @@ export class Labels {
   readonly group = new THREE.Group();
   private readonly labels: Label[] = [];
   private readonly boxes: Box[] = [];
+  private readonly scar: Label;
 
   constructor() {
     for (const s of COSMERE.systems) {
@@ -122,6 +158,20 @@ export class Labels {
         this.labels.push(this.make(c.id, c.name, c.color, 'star', { book: s.book }, 0, s.id));
       }
     }
+    const scarMat = new THREE.SpriteMaterial({
+      map: makeScarLabel(),
+      transparent: true,
+      depthTest: false,
+      depthWrite: false,
+    });
+    const scarSprite = new THREE.Sprite(scarMat);
+    scarSprite.visible = false;
+    scarSprite.userData = { kind: 'scar', id: 'talns-scar' };
+    this.group.add(scarSprite);
+    this.scar = {
+      id: 'talns-scar', sprite: scarSprite, kind: 'scar',
+      visibleItem: { book: 'core' }, radius: 0,
+    };
   }
 
   private make(
@@ -245,6 +295,56 @@ export class Labels {
     // over, so the same test does for both.
     if (scale === 'cosmere') this.declutter(camera, 'system');
     else if (globe) this.declutter(camera, 'moon');
+    this.placeScar(camera, scale);
+  }
+
+  /**
+   * The name sits just above the rip, in screen space, and yields if a
+   * system's own name already occupies that patch of sky.
+   */
+  private placeScar(camera: THREE.Camera, scale: string): void {
+    const l = this.scar;
+    if (scale !== 'cosmere') { l.sprite.visible = false; return; }
+    camera.matrixWorld.extractBasis(_right, _up, _fwd);
+    _p.copy(SCAR_DIR).multiplyScalar(1080);
+    _edge.copy(_p).project(camera);
+    // Off the frame, or behind the camera: the rip is not in this view.
+    if (_edge.z >= 1 || Math.abs(_edge.x) > 1.05 || Math.abs(_edge.y) > 1.05) {
+      l.sprite.visible = false;
+      return;
+    }
+    // Just under the ribbon, unless that would leave the frame, in which
+    // case it sits just over it. The rip is only a few degrees wide.
+    const under = _edge.y - 0.07 > -0.86;
+    l.sprite.position.copy(_p).addScaledVector(_up, 1080 * (under ? -0.075 : 0.075));
+    _edge.copy(l.sprite.position).project(camera);
+    const dist = camera.position.distanceTo(l.sprite.position);
+    // The rip is out with the starfield, far past the systems, so a scale
+    // that suits a nearby world would make this name a speck. Hold it at a
+    // small constant size on the screen.
+    const s = dist * 0.11;
+    l.sprite.scale.set(s, s * (96 / 640), 1);
+    l.sprite.visible = true;
+    const halfW = l.sprite.scale.x * 0.28;
+    const halfH = l.sprite.scale.y * 0.55;
+    _toTarget.copy(l.sprite.position).addScaledVector(_right, halfW).project(camera);
+    const hw = Math.abs(_toTarget.x - _edge.x);
+    _toTarget.copy(l.sprite.position).addScaledVector(_up, halfH).project(camera);
+    const hh = Math.abs(_toTarget.y - _edge.y);
+    for (const other of this.labels) {
+      if (other.kind !== 'system' || !other.sprite.visible) continue;
+      _toCentre.copy(other.sprite.position).project(camera);
+      const ohw = other.sprite.scale.x * 0.21;
+      const ohh = other.sprite.scale.y * 0.55;
+      _p.copy(other.sprite.position).addScaledVector(_right, ohw).project(camera);
+      const ow = Math.abs(_p.x - _toCentre.x);
+      _p.copy(other.sprite.position).addScaledVector(_up, ohh).project(camera);
+      const oh = Math.abs(_p.y - _toCentre.y);
+      if (Math.abs(_edge.x - _toCentre.x) < hw + ow && Math.abs(_edge.y - _toCentre.y) < hh + oh) {
+        l.sprite.visible = false;
+        return;
+      }
+    }
   }
 
   /**

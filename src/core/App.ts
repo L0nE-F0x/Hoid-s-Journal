@@ -66,6 +66,13 @@ export class App {
   private frames = 0;
   /** Monotonic frame counter. The test harness waits on this. */
   frameCount = 0;
+  /**
+   * The longest step one frame may take. A hitch or a background tab must not
+   * jump the camera, so it is short. The test harness raises it on a software
+   * renderer: at four frames a second a twentieth-second cap runs the whole
+   * simulation at a fifth of real time, and no flight lands inside a test.
+   */
+  maxDt = 0.05;
   private fpsAccum = 0;
   private disposers: (() => void)[] = [];
   private hoverAnchor: ((p: { x: number; y: number } | null) => void) | undefined;
@@ -478,7 +485,12 @@ export class App {
    * candidates the current scale actually offers and take the nearest.
    *
    * A pointer inside a subject's own disc always beats a near miss, and among
-   * those the nearest to the camera wins.
+   * those the nearest to the camera wins — except that away from the globe a
+   * person never beats a world. People are scattered around the world they
+   * stand on, a radius or so in front of it, so whenever one drifted across
+   * the planet's centre the planet could not be clicked at all: "click Roshar"
+   * opened Dai-Gonarthis. Their markers still win wherever they are clear of
+   * a disc, and on a globe they are the thing being picked.
    */
   private pickAt(cx: number, cy: number, click: boolean): void {
     const rect = this.canvas.getBoundingClientRect();
@@ -488,6 +500,7 @@ export class App {
     const halfH = rect.height / 2;
     const tan = Math.tan((FOV * Math.PI) / 360);
 
+    const globe = isGlobeScale(s.scale);
     let best: { id: string; kind: PickKind; inside: boolean; d: number; far: number } | null = null;
     const consider = (id: string, kind: PickKind, pos: THREE.Vector3, radius: number) => {
       _pick.copy(pos).project(this.camera);
@@ -501,6 +514,10 @@ export class App {
       if (!inside && d > Math.max(PICK_SLOP, rPx + PICK_SLOP)) return;
       if (!best) { best = { id, kind, inside, d, far }; return; }
       if (inside !== best.inside) { if (inside) best = { id, kind, inside, d, far }; return; }
+      if (inside && !globe && (kind === 'character') !== (best.kind === 'character')) {
+        if (best.kind === 'character') best = { id, kind, inside, d, far };
+        return;
+      }
       const better = inside ? far < best.far : d < best.d;
       if (better) best = { id, kind, inside, d, far };
     };
@@ -532,7 +549,6 @@ export class App {
       return;
     }
 
-    const globe = isGlobeScale(s.scale);
     if (!globe) {
       for (const sys of COSMERE.systems) {
         if (!systemOnTheMap(sys.id, s.readProgress, s.era)) continue;
@@ -786,7 +802,7 @@ export class App {
   }
 
   private frame(): void {
-    const dt = Math.min(0.05, this.clock.getDelta());
+    const dt = Math.min(this.maxDt, this.clock.getDelta());
     // Same origin the atlas panel uses, so Roshar's storm front sits at the
     // same longitude on the map as on the globe.
     const t = performance.now() / 1000;

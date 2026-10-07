@@ -41,7 +41,11 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
  * during a long first frame — a shader compile, say — and every check after it
  * reads the state the app was in before the thing it is testing happened.
  */
-async function settle(page, timeout = 12000) {
+/** Raised by `adaptToRenderer` when the browser has no GPU to give us. */
+let settleMs = 12000;
+let slowRenderer = false;
+
+async function settle(page, timeout = settleMs) {
   const started = Date.now();
   let previous = null;
   let frames = -1;
@@ -101,6 +105,44 @@ async function clickLabel(page, re) {
   }, re);
 }
 
+/**
+ * CI has no GPU. SwiftShader draws this app at about one frame a second, and
+ * two things then make every damped flight outlast `settle`: the frosted
+ * panels (`backdrop-filter` over a live WebGL canvas is re-blurred in software
+ * every frame, three quarters of the frame on its own) and the app's per-frame
+ * step cap, which at that rate runs the simulation at a fraction of real time.
+ * The click lands mid-flight and picks whoever is passing the planet.
+ *
+ * So ask which renderer this is first. On a software one, drop the blur — it is decoration and
+ * nothing here tests it — let the simulation keep wall-clock time, and wait
+ * longer. The playhead is held once the title lets go of it: at a frame a
+ * second an orbiting planet moves twenty pixels between reading where it is
+ * and the click arriving. On a real GPU none of this applies and the suite
+ * runs as written.
+ */
+async function adaptToRenderer(page) {
+  slowRenderer = false;
+  // The renderer's own name, not a frame count: the title screen alone can
+  // drop a laptop GPU under any threshold that would also catch SwiftShader.
+  const gl = await page.evaluate(() => {
+    const ctx = document.createElement('canvas').getContext('webgl2');
+    const ext = ctx?.getExtension('WEBGL_debug_renderer_info');
+    return ext ? String(ctx.getParameter(ext.UNMASKED_RENDERER_WEBGL)) : 'unknown';
+  });
+  const software = /swiftshader|llvmpipe|softpipe|software/i.test(gl);
+  if (!software && !process.env.CEPH_SLOW_RENDERER) {
+    console.log(`  renderer: ${gl} — testing as is`);
+    return;
+  }
+  await page.addStyleTag({
+    content: '*, *::before, *::after { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }',
+  });
+  await page.evaluate(() => { window.__ceph.app.maxDt = 0.5; });
+  settleMs = 45000;
+  slowRenderer = true;
+  console.log(`  renderer: ${gl} — software; no backdrop blur, held playhead, wall-clock steps, ${settleMs / 1000}s settle`);
+}
+
 async function run() {
   const browser = await puppeteer.launch({
     executablePath,
@@ -121,10 +163,12 @@ async function run() {
     await page.goto(URL, { waitUntil: 'domcontentloaded', timeout: 30000 });
     await page.waitForFunction('window.__ceph !== undefined', { timeout: 60000, polling: 200 });
     check('boots', true);
+    await adaptToRenderer(page);
 
     // Title → play, and skip the opening flight.
     check('title: enter', await clickLabel(page, 'enter the cosmere'));
     await page.evaluate(() => window.__ceph.store.set('cameraCue', { kind: 'skip-cinematic' }));
+    if (slowRenderer) await page.evaluate(() => window.__ceph.store.set('isPlaying', false));
     await settle(page);
     let s = await state(page);
     check('title: shell is play', s.shell === 'play', s.shell);

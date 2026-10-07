@@ -16,6 +16,28 @@ Architecture lock: `AGENTS.md` + `DESIGN.md`. This file is the live todo.
 
 # ▶ START HERE — next session
 
+**2026-10-07, later: CI is green again — why it was red.** `test:interaction`
+had failed the same ten checks on CI since 22 September (planet click, moon
+click, globe framing, atlas pin, city plate, Esc chain). It was never
+`dee3f46`: the commit before it fails identically under SwiftShader, and its
+green run was luck. Two causes, both only visible at a frame a second:
+
+- **A real picking bug.** People are scattered a radius or so in front of the
+  world they stand on, and `pickAt` gave "inside two discs" to the nearer one,
+  so whenever a marker drifted over Roshar's centre the click opened
+  Dai-Gonarthis or Cusicesh. Off the globe a world now beats a person whose
+  marker overlaps it (`App.ts`, `pickAt`). On a globe people still win.
+- **The harness on a software renderer.** CI has no GPU. The frosted panels'
+  `backdrop-filter` costs about three quarters of a SwiftShader frame, the
+  0.05 s step cap ran the camera at a fraction of real time, and the running
+  playhead moved Roshar twenty pixels between reading its position and the
+  click landing. `adaptToRenderer()` in `test-interaction.mjs` asks the
+  WebGL renderer's name; on SwiftShader/llvmpipe it drops the blur, raises
+  `app.maxDt` (new, default 0.05, the cap that used to be a literal), holds
+  the playhead after the title, and settles for 45 s. On a real GPU it does
+  nothing. `CEPH_SLOW_RENDERER=1` forces it, to reproduce CI locally along
+  with `--use-angle=swiftshader --disable-gpu`.
+
 **2026-10-07: *The Fires of December* is in the data, not pushed.** The book
 is out (backer edition 15 September, ebook and audio 6 October, Tor
 hardcover 8 December). It went in from Coppermind's cited wikitext

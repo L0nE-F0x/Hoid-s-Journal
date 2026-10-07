@@ -262,6 +262,20 @@ export const RECIPES: Record<string, Recipe> = {
       [0.38, 0.49, 0.02, 0.024, 0.8], [0.28, 0.62, 0.030, 0.030, 0.7],
     ],
   },
+  // Miral: Mountaincrest is one mountain too broad to see the slope of —
+  // scrub low, pine high, Kingseat at the top — and south of it the plains,
+  // which the book calls a flat forest. The rivers are blood and glow at
+  // night; the lights carry that, since neither baker paints a river's hue.
+  miral: {
+    land: '#7d7448', land2: '#55663a', land3: '#415c38',
+    ocean: '#1d4b5c', oceanDeep: '#0c2633',
+    threshold: 0.5, warp: 2.2, ridges: 0.3, rivers: 0.15, relief: 0.8,
+    // Cold months, not glaciers: a polar cap and no snowline, or the plains
+    // the book calls a forest come out frosted.
+    clouds: 0.3, cloudTint: '#eef2f7', specular: 0.6, ice: 0.32, snow: 0, flora: 0.55, floraColor: '#3f6a3a',
+    lights: 0.35, lightColor: '#c084fc',
+    shape: [[0.50, 0.42, 0.17, 0.18, 1.05], [0.53, 0.66, 0.21, 0.12, 0.95]],
+  },
   // Neutral on purpose. Ten gas giants share three bakes and are told apart
   // by a per-world tint in the planet shader; a blue plate multiplied by a
   // green tint is murk, not a green world.

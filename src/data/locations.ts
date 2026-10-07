@@ -8,7 +8,7 @@ function eraMinFromBook(book: string): number {
   if (book === 'core') return 0;
   if (book === 'mistborn1' || book === 'secrethistory') return 2;
   if (book === 'mistborn2') return 3;
-  if (book === 'tress' || book === 'yumi') return 4;
+  if (book === 'tress' || book === 'yumi' || book === 'fod') return 4;
   if (book === 'sunlit' || book === 'sixthofdusk' || book === 'emberdark') return 5;
   return 1;
 }
@@ -498,6 +498,43 @@ export const LOCATIONS: Location[] = [
   loc('lumar-rocks', 'The Rock', 'lumar-world', 'tress', 0.24, 0.44, '#9c8d78', 'rock',
     'One of the few outcrops above the spore seas, and therefore a whole society.',
     { region: 'Lumar', bio: 'One of the few outcrops standing above the spore seas, and therefore an entire society — everything Lumar\'s people have, they have because a rock happened to be there. The seas are not land and cannot be farmed; the rocks are all there is.' }),
+
+  // Miral — our continent, the book's order. Kingseat at the summit, then
+  // downriver on the Violet: Smallport three days below it, First Dukeseat the
+  // last city, Rivershore among the towns past it, the monastery at the
+  // terminus where the river gives out on the plains.
+  loc('mountaincrest', 'Mountaincrest', 'miral', 'fod', 0.455, 0.430, '#a78bfa', 'land',
+    'A kingdom on one enormous mountain, its slope too gradual to see from the ground. Scrub low down, pine up high.', {
+      region: 'Mountaincrest', wiki: 'Miral', see: ['kingseat', 'megalith', 'southern-plains'],
+      bio: 'The whole kingdom is one mountain, so broad and so slow that you only know you are climbing because it gets colder. Three rivers of the Megalith\'s blood come down it from Kingseat and they are how anything gets anywhere: barges sail down to the plains and are hauled back up by oxen on the bank. People here fear witches, make the sign of the ever-slaying sword at demons, and have not seen one in the villages for centuries — they just do not recognise the small ones.' }),
+  loc('kingseat', 'Kingseat', 'miral', 'fod', 0.500, 0.330, '#f472b6', 'city',
+    'The capital at the summit, grown up around the Megalith\'s corpse. The rivers start at its heart.', {
+      region: 'Mountaincrest', wiki: 'Kingseat', see: ['megalith', 'ever-slaying-sword', 'hexers', 'mountaincrest'],
+      bio: 'The Megalith has lain against the mountain for eight hundred years and the city grew up around it; the body is as large as the city. Hexers live in a village inside its chest cavity and chisel demonstone out of it for the king. Clothes made from its blood are the fashion Dukeseat cannot match, and Valor\'s temple here is the one that set Hoid on fire — twice.' }),
+  loc('smallport', 'Smallport', 'miral', 'fod', 0.510, 0.405, '#a78bfa', 'city',
+    'Three days below Kingseat on the Violet, and the last midsized town before the capital\'s suburbs. Not small.', {
+      region: 'Mountaincrest', wiki: 'Smallport', see: ['kingseat', 'abrim-flint'],
+      bio: 'Smaller than Kingseat and First Dukeseat, which is the entire reason for the name, and people have argued for decades about changing it to Smallerport. It has at least one theatre. A man in black boarded the Northern Eclipse here and put a knife to December\'s throat, and she talked him out of it. The city never found him.' }),
+  loc('first-dukeseat', 'First Dukeseat', 'miral', 'fod', 0.520, 0.480, '#c084fc', 'city',
+    'Seat of the Violet Duke, the last city down the Violet. Painted houses, a fashion district, and an accent that makes it Duck Seat.', {
+      region: 'Mountaincrest', aliases: 'Dukeseat, Duck Seat', wiki: 'First Dukeseat', see: ['tamantha', 'smallport'],
+      bio: 'Smaller than Kingseat and louder about it: painted buildings, vibrant clothes, a fashion district that tries to outdress the capital and cannot, because the capital dresses in demon blood. It has a port, the Violet Duke\'s library, timepieces for sale, and cafés, which are a new idea — food without rooms. December made herself famous here, quickly, by making a show of buying a wardrobe.' }),
+  loc('rivershore', 'Rivershore', 'miral', 'fod', 0.530, 0.550, '#e9d5ff', 'village',
+    'December\'s town on the Violet, below Dukeseat. Hoid spent a night at its inn, and that night her first vision began.', {
+      region: 'Mountaincrest', wiki: 'December', see: ['december', 'hoid', 'winters-cache'],
+      bio: 'A small town on the riverbank, with a reeve, a tavern that turns rowdy men away, and the grave December\'s mother lies in. Hoid stopped at its inn on his way to Kingseat and did something to the Spiritual Realm without noticing, and December lived a whole lifetime in one night. She woke knowing the plague was coming — and where Tap had died.' }),
+  loc('winters-cache', "Winter's Cache", 'miral', 'fod', 0.545, 0.540, '#d1d5db', 'crystal',
+    'A silver vein near Rivershore. Tap found it; Bark killed him for it and then could not find it again.', {
+      region: 'Mountaincrest', wiki: "Winter's_Cache", see: ['rivershore', 'december'],
+      bio: 'Bark buried Tap under rocks to make it look like a landslide and then lost the way back. In December\'s vision he hunted for the vein for a decade and found it three years after she left him; when she woke, she told the reeve about the murder, showed him the vein, and claimed the reward herself.' }),
+  loc('monastery-final-word', 'Monastery of the Final Word', 'miral', 'fod', 0.540, 0.620, '#fbbf24', 'bell',
+    'At the terminus, where the Violet runs out onto the plains. Eight hundred years of arguing about what the Prophet meant by \'don\'t be a dick\'.', {
+      region: 'Southern plains', wiki: 'Monastery_of_the_Final_Word', see: ['mandata', 'prophet', 'amaal', 'order-of-three-mandata'],
+      bio: 'Founded when the Prophet came, and devoted to his final words ever since — whether dickishness is chosen or born, who decides what counts, and why Valor made dicks at all. Its writers noticed that the people who own the means of production tend to be the worst of them. It also holds an extensive library on demonology and witchcraft, which is where December spent nearly a decade in her second vision. The priests carry sword-staffs and are never taught to use them.' }),
+  loc('southern-plains', 'The southern plains', 'miral', 'fod', 0.520, 0.700, '#86efac', 'grass',
+    'A great flat forest south of the mountain, where nomad clans live beside demons twenty feet tall.', {
+      region: 'Southern plains', aliases: 'the plains, the terminus', wiki: 'Southern_plains', see: ['witchcraft', 'mirali-demons', 'mountaincrest'],
+      bio: 'Humanity\'s first home on Miral, until the Megalith came and drove people north. The clans trade textiles up the river, keep camels or something like them, keep slaves, and worship and bind the many-armed walkers that roam their land — songs reward them, silver dust hurts them. Every clan has its Inspirers, and nobody cares where an Inspirer was born as long as the demons listen. The Violet ends out here and simply evaporates.' }),
 ];
 
 export const PERPS: Perpendicularity[] = [
@@ -531,4 +568,8 @@ export const PERPS: Perpendicularity[] = [
   { id: 'silverlight-nexus', name: 'The Silverlight Nexus', body: 'yolen', book: 'arcanum',
     fact: 'The crossing that made a city possible where no world is. Khriss came through it and stayed.',
     eraMin: 1, canon: W, sources: ['Arcanum Unbounded', 'Word of Brandon'] },
+  { id: 'miral-perp', name: "Miral's Perpendicularity", body: 'miral', book: 'fod',
+    fact: 'A natural perpendicularity, unusually irregular and attuned to no Shard. It is why so few people come to Miral, and why it is hard when they do.',
+    aliases: 'the Mirali perpendicularity',
+    eraMin: 1, canon: C, sources: ['The Fires of December'] },
 ];

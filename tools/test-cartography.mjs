@@ -53,7 +53,7 @@ const BAND_TOLERANCE = 55;
 const POLAR_TOLERANCE = 12;
 
 /** Worlds with a polar cap, and how wide the recipe says it is. */
-const ICY = new Set(['roshar', 'scadrial-basin', 'sel', 'nalthis', 'threnody', 'yolen', 'barren', 'komashi']);
+const ICY = new Set(['roshar', 'scadrial-basin', 'sel', 'nalthis', 'threnody', 'yolen', 'barren', 'komashi', 'miral']);
 
 const WORLDS = [
   ['roshar', 'roshar', false],
@@ -67,6 +67,7 @@ const WORLDS = [
   ['lumar', 'lumar-world', false],
   ['yolen', 'yolen', false],
   ['first-sun', 'first-of-the-sun', false],
+  ['miral', 'miral', false],
   ['gas', 'jes', false],
   ['gas', 'vev', false],
   ['barren', 'braize', false],

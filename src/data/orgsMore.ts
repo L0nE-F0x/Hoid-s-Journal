@@ -176,4 +176,22 @@ export const ORGS_MORE: Organization[] = [
       members: ['yumi'],
       see: ['yumi', 'father-machine', 'virtuosity-splinter'],
     }),
+  org('order-of-three-mandata', 'Order of the Three Mandata', '#fbbf24', 'fod', 'order',
+    'Mountaincrest religious who have spent centuries on the Prophet\'s three mandata, and concluded: the world is hard, that is no reason to give up, so help each other.',
+    {
+      world: 'Miral', wiki: 'Order_of_the_Three_Mandata',
+      members: ['amaal'],
+      see: ['mandata', 'prophet', 'monastery-final-word', 'amaal'],
+      bio: 'Pain, the Order teaches, is not a sign of Valor\'s disfavour, just how things go; and if things are going to suck sometimes, people should really be more understanding of each other. Some of the priests of the Monastery of the Final Word belong to it.',
+      sources: ['The Fires of December'],
+    }),
+  org('hexers', 'The hexers', '#57534e', 'fod', 'guild',
+    'Captured witches who serve the king of Mountaincrest instead of hanging. Their demons are under contract; they wear black and mine demonstone out of the Megalith\'s chest.',
+    {
+      world: 'Miral', wiki: 'Witchcraft#Hexers_and_Contracts',
+      aliases: 'hexer, the king\'s covenant with witches',
+      see: ['witchcraft', 'megalith', 'kingseat', 'mirali-demons'],
+      bio: 'The king\'s covenant with witches lets a captured witch work instead of die, provided they contract their demon — a spoken Command that shrinks it to a dim, silent marble and keeps it from eating them. Kingseat depends on them for wards, carrier demons and demonstone, and pays them almost nothing: slaves in all but name, living in a village inside the Megalith itself. When the Megalith got out there were nineteen of them — thirteen women, five men, and one who preferred to be called neither.',
+      sources: ['The Fires of December'],
+    }),
 ];

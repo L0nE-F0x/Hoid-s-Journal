@@ -16,6 +16,52 @@ Architecture lock: `AGENTS.md` + `DESIGN.md`. This file is the live todo.
 
 # ▶ START HERE — next session
 
+**2026-10-07: *The Fires of December* is in the data, not pushed.** The book
+is out (backer edition 15 September, ebook and audio 6 October, Tor
+hardcover 8 December). It went in from Coppermind's cited wikitext
+(`curl` + browser UA, as the memory note says), not from a copy of the book,
+and not from previews. What landed:
+
+- **Series `fod`**, last in `PUB_ORDER`, its own journal note.
+- **Star `miralan`** in the empty south-west corner of the chart,
+  `nebulaScale: 0.55`, badged as ours. Canon places Miral only as "away from
+  the common routes".
+- **Body `miral`**, `shards: ['valor']` with a field note (she was here; the
+  book does not say she still is), `biome: 'miral'`, `hasSurface: true`.
+- **Recipe `miral`** — one big continent (Mountaincrest) over plains. No
+  snowline (`snow: 0`), or the plains read frosted. `ice: 0.32` rather than
+  less: at 0.22 the cap edge sat inside the 6% strip `test:cartography`
+  measures, broke up, and missed the polar bar by 0.0 on texel jitter. Miral
+  is in that test's `WORLDS` and `ICY`.
+- **Eight pins**, in the book's order down the River Violet: Kingseat at the
+  summit, Smallport, First Dukeseat, Rivershore, Winter's Cache, the
+  Monastery of the Final Word at the terminus, the southern plains; plus a
+  Mountaincrest region pin. The continent is ours, so the pins are
+  approximate. `audit:data`'s wet-pin check only reads traced coasts; these
+  were checked by baking the plate and sampling it (all on land).
+- **Witchcraft** (magic, with a table), **Miral's perpendicularity**,
+  glossary (`megalith`, `mirali-demons`, `zuhel-bond`, `ever-slaying-sword`,
+  `mandata`, `prophet`), orgs (`order-of-three-mandata`, `hexers`), seven
+  people (December, Amaal, Tamantha, Beautiful, Abrim Flint, Geoffrim Satin,
+  Dmitrovik), twelve relations, and a Hoid row: era 4, Kingseat, gated on
+  `fod`. That row wins over his Scadrial row at era 4 when FoD is read, which
+  is also the default.
+- **The Prophet is Vasher.** Coppermind cites it to the book (and WoB 17224).
+  It lives only in `fod`-gated entries — the `prophet` term and two
+  relations — so Vasher's own card says nothing until FoD is read.
+
+Left out on purpose: **Petva** (Coppermind names her a witch and nothing
+more), **Godsflame** as a term (Wind and Truth's word; the FoD half would
+leak), and Valor's own card (book `stormlight`; a Miral line there would
+spoil FoD for Stormlight readers). Most cast pages on Coppermind were still
+empty on 7 October. Revisit when they fill in: Petva, Weonim, Irinek, Brother
+Grund, the Violet Duke.
+
+Checks: `tsc` clean, `audit:data` clean, `test:cartography` 18/18,
+`test:interaction` 67/67.
+
+---
+
 **2026-09-22 is pushed and live** (`7fd59bb`, then the follow-up on top).
 The audit's ten items went out first. The same afternoon, after a look at
 the live sky:
@@ -66,11 +112,8 @@ The ten items from the audit:
 9. `.github/workflows/ci.yml` runs the typecheck, `audit:data`, and — with
    Chrome — cartography and interaction. `sw.js` is `ceph-v3` and fetches
    plates network-first. An open tab reloads when a new worker claims it.
-10. The README counts match the data. **Miral is not in the journal.**
-    *The Fires of December* publishes 6 October 2026. When it is out, and
-    only then: a series entry, a body, a star marked as ours if the book
-    never places it, and witchcraft as a magic. Do not write it from
-    previews. The kite planet and Zidorna stay out. The Vanrial, the
+10. The README counts match the data. *(Miral has since gone in — see the
+    2026-10-07 entry above.)* The kite planet and Zidorna stay out. The Vanrial, the
     stormwardens, the Chorus and the Kerztian clergy stay empty.
 
 Godrays, depth of field and aurora still need a decision each. Do not invent
@@ -107,11 +150,10 @@ leaves unnamed (dwarf planets, the moons of Ky, Ralen, the two Aagals,
 Farkeeper and the outer Drominad giants) is numbered, and each of those
 cards carries a field note saying the numeral is ours. What canon does not
 place at all (Dhatri, the Grand Apparatus, Mythos, Rellam, Bjendal) sits at
-a star of our invention and says so on its own card. **Three things were
-left out on purpose:** Miral (*The Fires of December*, 6 October 2026 — not
-published, and the product lock is published worlds only), the kite planet
-(canon gives it no name), and Zidorna (canon says it may not be a planet at
-all).
+a star of our invention and says so on its own card. **Two things are
+left out on purpose:** the kite planet (canon gives it no name) and Zidorna
+(canon says it may not be a planet at all). Miral, the third, went in on
+2026-10-07 once the book was out.
 
 **Laptop WebGL (this machine, not the app).** A title screen that says
 "this browser is providing no WebGL at all" is Chrome's GPU process running
@@ -803,13 +845,9 @@ Open, leftover, not a brief:
 The ten items are done and pushed; the three lore checks came back clean; the
 wet pins are measured and fixed. What follows is optional.
 
-### 1b. The star charts are complete; three worlds wait on publication
+### 1b. The star charts are complete; two worlds wait on canon
 
-*The Fires of December* (6 October 2026) puts Hoid on **Miral**, a world
-where rivers of blood run from a dead Eidolith and the magic is called
-witchcraft, and Valor held it once. When it is published, Miral needs a
-series entry, a body and a star of its own — the same treatment Dhatri and
-the Grand Apparatus got. The **kite planet** and **Zidorna** stay out until
+Miral is in (2026-10-07). The **kite planet** and **Zidorna** stay out until
 canon gives one a name and the other a decision about whether it is a planet
 at all.
 
@@ -817,9 +855,11 @@ at all.
 Those pins sit near the middle of the disc because there is no plate to
 measure. Do not add more by guessing.
 
-### 2. Four organisations still have no members
+### 2. Five organisations still have no members
 
-The Vanrial, the stormwardens, the Chorus and the Kerztian clergy. Left empty
+The Vanrial, the stormwardens, the Chorus, the Kerztian clergy and the
+hexers. The hexers are new with *The Fires of December*; Coppermind lists
+Petva and Weonim as witches without yet saying either was a hexer. Left empty
 on purpose — no named member appears on the page for any of them. Fill one
 only if a reread turns up a name; do not invent one.
 

@@ -24,6 +24,7 @@ export type BiomeKind =
   | 'ashyn'
   | 'braize'
   | 'first-sun'
+  | 'miral'
   | 'gas'
   | 'barren'
   | 'oceanic';

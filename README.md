@@ -10,8 +10,9 @@ can actually use while you reread.
 
 Live at **[the-cosmere.com](https://the-cosmere.com)**.
 
-*The Fires of December* is not in the journal until it is published. Miral
-gets a world then, and not from a preview.
+*The Fires of December* is in: Miral, its blood rivers, witchcraft and the
+people who went up the Violet. It was written from the published book's
+cited canon, not from a preview, and the star it sits at is ours.
 
 This is the successor to the original interactive Cosmere map, rebuilt from
 first principles. The original is preserved untouched.
@@ -37,7 +38,7 @@ Netlify: connect this GitHub repo, branch `master`. The build is
 
 | Layer | What you get |
 | --- | --- |
-| Cosmere | Flyable 3D orrery of eighteen systems, with marched nebulae and a painted galaxy behind them |
+| Cosmere | Flyable 3D orrery of nineteen systems, with marched nebulae and a painted galaxy behind them |
 | System | Kepler orbits, fifty-seven moons, belts, ringed worlds, perpendicularities |
 | Globe | A planet you can read: terrain, a cloud deck that casts shadows, night-side cities, ice, ringed gas giants that shadow themselves, a marched atmosphere, and Roshar's highstorm crossing it. Roshar's coastline is traced from the published map, so a pin sits on the ground it names |
 | Surface | Continent and city atlas. Roshar and Scadrial use Isaac Stewart plates, credited. Other worlds are baked from the same recipes as their globes. |
@@ -47,13 +48,13 @@ Netlify: connect this GitHub repo, branch `master`. The build is
 
 ### What is in it
 
-Eighteen systems · thirty-two worlds and eighteen gas giants · fifty-seven
-moons · six belts · sixteen Shards · four hundred and thirty-one people, seven
-of them dragons · three hundred places, every one with a biography · city-plate
-landmarks measured onto the Stewart plates that have them · sixteen Cognitive
-sites · ten perpendicularities · sixty-six organisations · nineteen magic
-systems, each with a table · two hundred and eighty-seven glossary terms · four
-Dawnshards.
+Nineteen systems · thirty-three worlds and eighteen gas giants · fifty-seven
+moons · six belts · sixteen Shards · four hundred and thirty-eight people, seven
+of them dragons · three hundred and eight places, every one with a biography ·
+city-plate landmarks measured onto the Stewart plates that have them · sixteen
+Cognitive sites · eleven perpendicularities · sixty-eight organisations · twenty
+magic systems, each with a table · two hundred and ninety-three glossary terms ·
+four Dawnshards.
 
 ### The three Realms
 

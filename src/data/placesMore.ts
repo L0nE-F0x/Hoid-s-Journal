@@ -6,7 +6,7 @@ function eraMinFromBook(book: string): number {
   if (book === 'core') return 0;
   if (book === 'mistborn1' || book === 'secrethistory') return 2;
   if (book === 'mistborn2') return 3;
-  if (book === 'tress' || book === 'yumi') return 4;
+  if (book === 'tress' || book === 'yumi' || book === 'fod') return 4;
   if (book === 'sunlit' || book === 'sixthofdusk' || book === 'emberdark') return 5;
   return 1;
 }

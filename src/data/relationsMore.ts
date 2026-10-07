@@ -184,4 +184,17 @@ export const RELATIONS_MORE: Relation[] = [
   { a: { kind: 'character', id: 'raoden' }, b: { kind: 'body', id: 'sel' }, type: 'ally', label: 'Arelon', book: 'elantris', canon: C },
   { a: { kind: 'character', id: 'vasher' }, b: { kind: 'body', id: 'nalthis' }, type: 'ally', label: 'Origin world', book: 'warbreaker', canon: C },
   { a: { kind: 'character', id: 'hoid' }, b: { kind: 'dawnshard', id: 'dawnshard-change' }, type: 'bond', label: 'Held a Dawnshard once', book: 'core', canon: W },
+  // --- Miral --------------------------------------------------------------
+  { a: { kind: 'character', id: 'december' }, b: { kind: 'character', id: 'beautiful' }, type: 'bond', label: 'Zuhel bond', book: 'fod', canon: C },
+  { a: { kind: 'character', id: 'december' }, b: { kind: 'character', id: 'abrim-flint' }, type: 'romance', label: 'Married', book: 'fod', canon: C },
+  { a: { kind: 'character', id: 'december' }, b: { kind: 'character', id: 'amaal' }, type: 'ally', label: 'Upriver together', book: 'fod', canon: C },
+  { a: { kind: 'character', id: 'december' }, b: { kind: 'character', id: 'tamantha' }, type: 'ally', label: 'Lady & lady\'s maid', book: 'fod', canon: C },
+  { a: { kind: 'character', id: 'december' }, b: { kind: 'character', id: 'dmitrovik' }, type: 'ally', label: 'Her head butler', book: 'fod', canon: C },
+  { a: { kind: 'character', id: 'december' }, b: { kind: 'character', id: 'geoffrim-satin' }, type: 'rival', label: 'He freed the Megalith', book: 'fod', canon: C },
+  { a: { kind: 'character', id: 'december' }, b: { kind: 'character', id: 'hoid' }, type: 'mentor', label: 'Two visions', book: 'fod', canon: C },
+  { a: { kind: 'character', id: 'december' }, b: { kind: 'character', id: 'vasher' }, type: 'ally', label: 'A plea across worlds', book: 'fod', canon: C },
+  { a: { kind: 'character', id: 'december' }, b: { kind: 'body', id: 'miral' }, type: 'ally', label: 'Rivershore to Kingseat', book: 'fod', canon: C },
+  { a: { kind: 'character', id: 'vasher' }, b: { kind: 'body', id: 'miral' }, type: 'ally', label: 'The Prophet', book: 'fod', canon: C },
+  { a: { kind: 'character', id: 'hoid' }, b: { kind: 'shard', id: 'valor' }, type: 'rival', label: 'Her trap in Kingseat', book: 'fod', canon: C },
+  { a: { kind: 'character', id: 'amaal' }, b: { kind: 'org', id: 'order-of-three-mandata' }, type: 'ally', label: 'Member', book: 'fod', canon: C },
 ];

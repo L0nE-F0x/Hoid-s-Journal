@@ -47,6 +47,7 @@ export const SERIES: Series[] = [
   { id: 'yumi', title: 'Yumi and the Nightmare Painter', single: true, arcs: [{ id: 'yumi', label: 'Yumi and the Nightmare Painter' }] },
   { id: 'sunlit', title: 'The Sunlit Man', single: true, arcs: [{ id: 'sunlit', label: 'The Sunlit Man' }] },
   { id: 'emberdark', title: 'Isles of the Emberdark', single: true, arcs: [{ id: 'emberdark', label: 'Isles of the Emberdark' }] },
+  { id: 'fod', title: 'The Fires of December', single: true, arcs: [{ id: 'fod', label: 'The Fires of December' }] },
 ];
 
 /** Every published Cosmere work, in the order the Journal lists them. */
@@ -83,12 +84,14 @@ export const JOURNAL_BOOKS: { series: string; arc: string; title: string }[] = [
   { series: 'yumi', arc: 'yumi', title: 'Yumi and the Nightmare Painter' },
   { series: 'sunlit', arc: 'sunlit', title: 'The Sunlit Man' },
   { series: 'emberdark', arc: 'emberdark', title: 'Isles of the Emberdark' },
+  { series: 'fod', arc: 'fod', title: 'The Fires of December' },
 ];
 
 export const PUB_ORDER = [
   'elantris', 'mistborn1', 'warbreaker', 'stormlight', 'mistborn2',
   'eleventhmetal', 'emperorssoul', 'shadowsforsilence', 'sixthofdusk', 'whitesand',
   'secrethistory', 'arcanum', 'tress', 'yumi', 'sunlit', 'elsecaller', 'emberdark',
+  'fod',
 ];
 
 export const ERAS: Era[] = [
@@ -243,6 +246,12 @@ export const SYSTEMS: System[] = [
     starDesc: 'Unnamed. The Ghostbloods count Bjendal one of their primary systems, which tells you they can reach it and not what it looks like.',
     fact: 'In 348 PC the Cognitive road to Bjendal closed, and the Ghostbloods do not know why either.',
     wiki: 'Physical Realm', sources: ['The Lost Metal'] },
+  // Miral is placed by the book only as far off the common roads, with a
+  // perpendicularity nobody's Shard tuned. The corner of the chart is ours.
+  { id: 'miralan', nebulaScale: 0.55, name: 'Miral', sunColor: '#fed7aa', position: sys(-1040, -1010, -60), book: 'fod', nebula: '#ea580c',
+    starDesc: 'Unnamed. The Fires of December gives Miral cold months and a winter to name a child after, and no word about its sun.',
+    fact: 'Off the common worldhopping roads. Its subastral is crowded with things that eat Investiture, and its perpendicularity answers to no Shard.',
+    wiki: 'Miral', sources: ['The Fires of December'] },
 ];
 
 const cited = (book: string, sources: string[], canon: 'canon' | 'wob' | 'speculation' = C) =>
@@ -564,6 +573,23 @@ export const BODIES: Body[] = [
     wiki: 'Grand Apparatus', see: ['sleepless-hordes', 'invention'],
     canon: C, sources: ['Isles of the Emberdark'],
     fieldNotes: { system: { canon: S, note: 'Canon gives the Apparatus no star and no sky worth the name. The placement is ours.' } } },
+  // Miral has a map's worth of places and no astronomy. The ground follows the
+  // book — one great slow mountain, the river running south off it, the plains
+  // below — and the continent under it is ours.
+  { id: 'miral', name: 'Miral', system: 'miralan', book: 'fod', kind: 'planet', color: '#c084fc',
+    orbit: { a: 12.6, e: 0.06, i: 0.03, omega: 5.3, period: 0.9 }, radius: 1.1,
+    shards: ['valor'], magic: ['witchcraft'], species: ['Humans', 'Demons'],
+    locations: 'Mountaincrest, Kingseat, the southern plains',
+    biome: 'miral', hasSurface: true,
+    fact: 'Three rivers of demon blood run down one enormous mountain from the Megalith\'s heart, and a kingdom lives along them.',
+    bio: 'Mountaincrest sits on a mountain so wide and so gentle that you cannot see the slope from the ground; its capital, Kingseat, is at the top, built up around the corpse of the Megalith, and the rivers of its blood are the kingdom\'s roads. South of it the plains are a flat forest where nomad clans live beside twenty-foot demons and call their witches Inspirers. Valor was here once, long enough to found a religion and leave a trap in one of her temples. Eight hundred years ago a worldhopper the Mirali call the Prophet pinned the Megalith down and left them three mandata.',
+    aliases: 'Mountaincrest',
+    wiki: 'Miral', see: ['witchcraft', 'megalith', 'mirali-demons', 'valor', 'december', 'kingseat'],
+    canon: C, sources: ['The Fires of December'],
+    fieldNotes: {
+      system: { canon: S, note: 'The book places Miral away from the common routes and nowhere more exactly. The star and its corner of the chart are ours.' },
+      shards: { canon: C, note: 'Valor founded the faith and built the temples. Whether she is still here, the book does not say; Hoid finds only her trap.' },
+    } },
   { id: 'mythos-world', name: 'Mythos', system: 'mythos', book: 'mistborn2', arc: 'tlm', kind: 'planet', color: '#a78bfa',
     orbit: { a: 13.8, e: 0.1, i: 0.04, omega: 2.6, period: 0.98 }, radius: 1.05,
     shards: [], magic: [], species: [], locations: 'Unknown', biome: 'barren', hasSurface: false,
@@ -835,6 +861,7 @@ export const WORLD_EPOCHS: Record<string, WorldEpoch[]> = {
   vaxian: [],
   dhatrian: [{ era: 4, date: 'After the dark aether — Dhatri closed to the Aetherbound', canon: S }],
   apparatus: [{ era: 5, date: 'Isles of the Emberdark — the space age', canon: S }],
+  miralan: [{ era: 4, date: 'The Fires of December — eight hundred years after the Prophet', canon: S }],
   mythos: [],
   rellamite: [],
   bjendal: [{ era: 4, date: '348 PC — the Cognitive road to Bjendal closes', canon: C }],

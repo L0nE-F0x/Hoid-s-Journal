@@ -21,6 +21,8 @@ export const CHARACTERS: Character[] = [
       { era: 2, system: 'scadrian', body: 'scadrial' },
       { era: 3, system: 'rosharan', body: 'roshar' },
       { era: 4, system: 'scadrian', body: 'scadrial' },
+      // After Scadrial, looking for Valor. Her temple in Kingseat burns him.
+      { era: 4, system: 'miralan', body: 'miral', at: 'kingseat', book: 'fod', arc: 'fod' },
       { era: 5, system: 'canticle', body: 'canticle-world' },
     ], {
       wiki: 'Hoid', kind: 'person', titles: 'King\'s Wit, Court jester, storyteller',

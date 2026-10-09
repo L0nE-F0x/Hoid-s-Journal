@@ -236,7 +236,17 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
     fillLoreCard(drawer, id);
   };
 
+  // Which edges of the tool strip have more behind them (phone only; on a
+  // desktop the strip never overflows and both classes stay off).
+  const edges = () => {
+    const more = tools.scrollWidth - tools.clientWidth;
+    tools.classList.toggle('can-left', more > 1 && tools.scrollLeft > 2);
+    tools.classList.toggle('can-right', more > 1 && tools.scrollLeft < more - 2);
+  };
+
   const offs = [
+    listen(tools, 'scroll', edges, { passive: true }),
+    listen(window, 'resize', edges),
     listen(word, 'click', () => host.onHome()),
     listen(play, 'click', () => store.set('isPlaying', !store.state.isPlaying)),
     listen(slower, 'click', () => {
@@ -313,6 +323,7 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
   refreshScale();
   refreshReading();
   measure();
+  requestAnimationFrame(edges);
 
   return { destroy() { offs.forEach((o) => o()); hud.remove(); } };
 }

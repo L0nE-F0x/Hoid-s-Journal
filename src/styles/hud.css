@@ -582,6 +582,31 @@
   .ceph-topbar-left { flex-wrap: nowrap; }
   .ceph-command-sub { max-width: 42vw; }
   .ceph-book-list { max-height: 42vh; }
+  /* The name is one line or it is two words stacked like a sign. With the
+     back button showing, the breadcrumb is what gives way. */
+  .ceph-wordmark {
+    flex: 0 0 auto;
+    white-space: nowrap;
+    font-size: 13px;
+    letter-spacing: 0.22em;
+    text-indent: 0.22em;
+  }
+  .ceph-command-sub { flex: 1 1 auto; min-width: 0; }
+  /* Eight tools do not fit across a phone, and a strip that scrolls with no
+     sign that it scrolls hides Lore, Help and Share. Fade whichever edge has
+     more behind it (hud.ts sets the classes). */
+  .ceph-tools.can-right {
+    -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 34px), transparent);
+    mask-image: linear-gradient(90deg, #000 calc(100% - 34px), transparent);
+  }
+  .ceph-tools.can-left {
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 34px);
+    mask-image: linear-gradient(90deg, transparent, #000 34px);
+  }
+  .ceph-tools.can-left.can-right {
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 34px, #000 calc(100% - 34px), transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 34px, #000 calc(100% - 34px), transparent);
+  }
 }
 
 /* A second paragraph on a card — what a thing physically is, under what it

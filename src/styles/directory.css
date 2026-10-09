@@ -91,3 +91,11 @@
     bottom: calc(var(--ceph-timeline-top, 160px) + 8px);
   }
 }
+
+/* A query that lives on another tab: where it is, one click away. */
+.ceph-dir-elsewhere {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 2px 0 6px;
+}

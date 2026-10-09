@@ -193,19 +193,54 @@ export function mountDirectory(root: HTMLElement): { destroy(): void } {
       ? (COSMERE.systems.find((x) => x.id === s.focusedSystem)?.name ?? 'System')
       : 'Directory';
 
+    const found = entries(tab, q);
+    for (const e of found) list.append(row(e.id, e.name, e.kind, e.color, e.hint));
+    if (!found.length) {
+      // The box says "Find a world, person, shard…", so a name that lives on
+      // another tab is not "nothing": say where it is, one click away.
+      const elsewhere = q
+        ? TAB.filter((x) => x.id !== tab)
+          .map((x) => ({ ...x, n: entries(x.id, q).length }))
+          .filter((x) => x.n > 0)
+        : [];
+      const here = TAB.find((x) => x.id === tab)?.label.toLowerCase() ?? 'entries';
+      list.append(el('div', {
+        className: 'ceph-dir-empty',
+        text: elsewhere.length
+          ? `No ${here} match “${search.value.trim()}”. Found in:`
+          : 'Nothing matches — or it is still spoiler-gated.',
+      }));
+      if (elsewhere.length) {
+        const jump = el('div', { className: 'ceph-dir-elsewhere' });
+        for (const x of elsewhere) {
+          const b = el('button', { className: 'ceph-chip', text: `${x.label} · ${x.n}`, attrs: { type: 'button' } });
+          listen(b, 'click', () => { tab = x.id; paint(); });
+          jump.append(b);
+        }
+        list.append(jump);
+      }
+    }
+  };
+
+  type Entry = { id: string; name: string; kind: string; color: string; hint: string };
+  /** What a tab lists for a query. Rows are built from this; so are the counts on other tabs. */
+  const entries = (t: DirTab, q: string): Entry[] => {
+    const s = store.state;
+    const out: Entry[] = [];
+    const entry = (id: string, name: string, kind: string, color: string, hint: string) => {
+      out.push({ id, name, kind, color, hint });
+    };
     const match = (...parts: Array<string | undefined>) =>
       !q || parts.some((p) => p && p.toLowerCase().includes(q));
-    const push = (node: HTMLElement) => list.append(node);
-
-    if (tab === 'systems') {
+    if (t === 'systems') {
       for (const sys of COSMERE.systems) {
         if (!systemOnTheMap(sys.id, s.readProgress, s.era) || !match(sys.name)) continue;
         const n = COSMERE.bodies.filter((b) => b.system === sys.id && b.kind !== 'gas-giant'
           && onTheMap(b, s.readProgress, s.era)).length;
         if (!n) continue;
-        push(row(sys.id, sys.name, n === 1 ? '1 world' : `${n} worlds`, sys.sunColor, `Enter the ${sys.name} system`));
+        entry(sys.id, sys.name, n === 1 ? '1 world' : `${n} worlds`, sys.sunColor, `Enter the ${sys.name} system`);
       }
-    } else if (tab === 'worlds') {
+    } else if (t === 'worlds') {
       // Standing inside a system, the roster is that system entire — gas
       // giants, dwarf planets and belts included, because they are what is
       // on the screen. From outside, the giants would be two thirds of a
@@ -215,25 +250,25 @@ export function mountDirectory(root: HTMLElement): { destroy(): void } {
         if (!onTheMap(b, s.readProgress, s.era) || !match(b.name, b.aliases)) continue;
         if (inside && b.system !== s.focusedSystem) continue;
         if (b.kind === 'gas-giant' && !inside) continue;
-        push(row(b.id, b.name, b.kind.replace('-', ' '), b.color, b.fact));
+        entry(b.id, b.name, b.kind.replace('-', ' '), b.color, b.fact);
       }
       for (const belt of COSMERE.belts) {
         if (!inside || belt.system !== s.focusedSystem) continue;
         if (!onTheMap(belt, s.readProgress, s.era) || !match(belt.name)) continue;
-        push(row(belt.id, belt.name, `${belt.kind} belt`, belt.color, belt.fact));
+        entry(belt.id, belt.name, `${belt.kind} belt`, belt.color, belt.fact);
       }
-    } else if (tab === 'moons') {
+    } else if (t === 'moons') {
       for (const m of COSMERE.moons) {
         if (!isVisible(m, s.readProgress) || !match(m.name)) continue;
         const parent = bodyById[m.parent];
         if (parent && !inEra(parent, s.era)) continue;
         if (s.scale === 'system' && s.focusedSystem && parent?.system !== s.focusedSystem) continue;
-        push(row(m.id, m.name, parent?.name ?? m.parent, m.color, m.fact));
+        entry(m.id, m.name, parent?.name ?? m.parent, m.color, m.fact);
       }
-    } else if (tab === 'people' || tab === 'dragons') {
+    } else if (t === 'people' || t === 'dragons') {
       // Dragons and the Sleepless are people too; they just get their own
       // tab so a reread can find the seven of them without scrolling ninety.
-      const wantDragons = tab === 'dragons';
+      const wantDragons = t === 'dragons';
       for (const c of COSMERE.characters) {
         const otherKind = c.kind === 'dragon' || c.kind === 'sleepless';
         if (otherKind !== wantDragons) continue;
@@ -242,42 +277,40 @@ export function mountDirectory(root: HTMLElement): { destroy(): void } {
         const at = characterAt(c, s.era, s.readProgress);
         if (!at) continue;
         if (s.scale === 'system' && s.focusedSystem && bodyById[at.body ?? '']?.system !== s.focusedSystem) continue;
-        push(row(c.id, c.name, wantDragons ? (c.kind === 'dragon' ? 'dragon' : 'Sleepless') : c.origin, c.color, face.fact));
+        entry(c.id, c.name, wantDragons ? (c.kind === 'dragon' ? 'dragon' : 'Sleepless') : c.origin, c.color, face.fact);
       }
-    } else if (tab === 'places') {
+    } else if (t === 'places') {
       for (const l of COSMERE.locations) {
         if (!onTheMap(l, s.readProgress, s.era) || !match(l.name, l.desc, l.region)) continue;
         if (s.scale === 'system' && s.focusedSystem && bodyById[l.body]?.system !== s.focusedSystem) continue;
         if (s.focusedBody && l.body !== s.focusedBody && s.scale !== 'cosmere' && s.scale !== 'system') continue;
-        push(row(l.id, l.name, bodyById[l.body]?.name ?? l.body, l.color, l.desc));
+        entry(l.id, l.name, bodyById[l.body]?.name ?? l.body, l.color, l.desc);
       }
-    } else if (tab === 'orders') {
+    } else if (t === 'orders') {
       for (const o of COSMERE.organizations) {
         if (!isVisible(o, s.readProgress) || !match(o.name, o.fact, o.world)) continue;
-        push(row(o.id, o.name, o.kind, o.color, o.fact));
+        entry(o.id, o.name, o.kind, o.color, o.fact);
       }
-    } else if (tab === 'shards') {
+    } else if (t === 'shards') {
       for (const sh of COSMERE.shards) {
         if (s.era <= 0) continue;
         if (!isVisible(sh, s.readProgress) || !match(sh.name)) continue;
         const era = sh.eras.find((e) => e.era === s.era) ?? sh.eras[sh.eras.length - 1];
-        push(row(sh.id, sh.name, era?.status ?? 'shard', sh.color, sh.desc));
+        entry(sh.id, sh.name, era?.status ?? 'shard', sh.color, sh.desc);
       }
-    } else if (tab === 'doors') {
+    } else if (t === 'doors') {
       for (const p of COSMERE.perps) {
         if (!onTheMap(p, s.readProgress, s.era) || !match(p.name)) continue;
         const body = bodyById[p.body];
-        push(row(p.id, p.name, body?.name ?? p.body, '#c4b5fd', p.fact));
+        entry(p.id, p.name, body?.name ?? p.body, '#c4b5fd', p.fact);
       }
     } else {
       for (const d of DAWNSHARDS) {
         if (!isVisible(d, s.readProgress) || !match(d.name)) continue;
-        push(row(d.id, d.name, d.command, '#fde68a', d.fact));
+        entry(d.id, d.name, d.command, '#fde68a', d.fact);
       }
     }
-    if (!list.childElementCount) {
-      list.append(el('div', { className: 'ceph-dir-empty', text: 'Nothing matches — or it is still spoiler-gated.' }));
-    }
+    return out;
   };
 
   // The card under this panel hangs off its bottom edge, and that edge moves

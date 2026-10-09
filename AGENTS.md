@@ -94,6 +94,7 @@ npm run test:interaction   # 59 checks through real mouse and keyboard
 npm run test:cartography   # the globe and the atlas still draw the same world
 npm run audit:data         # every id resolves, every reference points at something
 npm run perf               # fps per Realm, expensive layers toggled off
+node tools/film.mjs --script tools/trailer.mjs --out ~/Videos/hoids-journal  # 60 fps trailer clips (--stills for PNGs)
 ```
 
 Do visual work through `npm run shot`, not by eyeballing a browser tab: a

@@ -16,6 +16,27 @@ Architecture lock: `AGENTS.md` + `DESIGN.md`. This file is the live todo.
 
 # ▶ START HERE — next session
 
+**2026-10-09: a trailer, and a bug it found.** `tools/film.mjs` records the
+app frame-exactly: a virtual clock is installed before the app boots
+(`performance.now`, `Date.now`, rAF, timers, CSS animations), stepped 1/60 s,
+screenshotted and piped to ffmpeg, so a GPU drawing 20 fps still gives a
+smooth 60. `tools/trailer.mjs` is the shot list (Roshar pull-back, eight
+worlds, three Realms, Lore Web, Arcanum, the Reading Companion hiding later
+books, end card) plus six stills. The rendered files are outside the repo,
+in `~/Videos/hoids-journal/`. Two things for whoever runs it next:
+
+- Roughly one frame in 2,600 comes back with an unpainted dark tile even
+  after waiting two real compositor frames. Scan each clip for a frame that
+  disagrees with both neighbours while they agree with each other, and
+  replace it with their mean.
+- **Bug, not fixed:** pressing V on a globe leaves the Shards in a corner.
+  The realm listener flies to the Spiritual map, but `trackFocus`
+  (`App.ts`) still calls `rig.lockTarget` on the focused body every frame,
+  because nothing there checks the Realm. Entering Spiritual from the Cosmere
+  view frames it correctly. Likely fix: return early from `trackFocus` when
+  `realm === 'spiritual'`, and add a `test:interaction` check that the
+  Spiritual frame is centred after V from a globe.
+
 **2026-10-07, later: CI is green again — why it was red.** `test:interaction`
 had failed the same ten checks on CI since 22 September (planet click, moon
 click, globe framing, atlas pin, city plate, Esc chain). It was never

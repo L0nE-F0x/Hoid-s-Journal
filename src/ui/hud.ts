@@ -132,8 +132,16 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
       '--ceph-command-bottom', `${Math.round(bar.bottom)}px`,
     );
     const tl = timeline.getBoundingClientRect();
+    const tlTop = Math.round(Math.max(0, window.innerHeight - tl.top + 8));
+    document.documentElement.style.setProperty('--ceph-timeline-top', `${tlTop}px`);
+    // The instrument column only has to stop above the playhead where the two
+    // actually share x. On a wide screen the timeline is centred clear of the
+    // column, and reserving its height anyway left a selected system's card
+    // about fifty pixels: a title and nothing under it.
+    const col = drawer.getBoundingClientRect();
+    const colRight = col.width ? col.right : 12 + Math.min(360, window.innerWidth - 24);
     document.documentElement.style.setProperty(
-      '--ceph-timeline-top', `${Math.round(Math.max(0, window.innerHeight - tl.top + 8))}px`,
+      '--ceph-col-floor', `${tl.left < colRight ? tlTop : 14}px`,
     );
     document.documentElement.style.setProperty('--ceph-tools-top', '0px');
     store.setInset('drawer', null);
@@ -211,7 +219,10 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
     // names the world the drawer would be describing.
     const crowded = window.innerWidth <= 900 && atlasIsOpen() &&
       id === store.state.focusedBody;
-    if (!hit || crowded) { drawer.style.display = 'none'; measure(); return; }
+    const shown = !!hit && !crowded;
+    // The directory gives up half the column while a card is open.
+    document.documentElement.classList.toggle('ceph-card-open', shown);
+    if (!shown) { drawer.style.display = 'none'; measure(); return; }
     drawer.style.display = '';
     drawer.replaceChildren();
     const close = el('button', {

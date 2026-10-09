@@ -280,7 +280,13 @@ export function mountDirectory(root: HTMLElement): { destroy(): void } {
     }
   };
 
+  // The card under this panel hangs off its bottom edge, and that edge moves
+  // without a resize: a tab with fewer rows, a search, a card opening.
+  const sized = new ResizeObserver(() => measure());
+  sized.observe(panel);
+
   const offs = [
+    () => sized.disconnect(),
     listen(search, 'input', () => { paint(); }),
     listen(collapse, 'click', () => store.patchChrome({ directory: false })),
     listen(restore, 'click', () => store.patchChrome({ directory: true })),

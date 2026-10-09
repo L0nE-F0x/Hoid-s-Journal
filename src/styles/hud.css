@@ -245,7 +245,7 @@
   width: min(var(--ceph-col), calc(100vw - 2 * var(--ceph-gut)));
   max-height: calc(
     100vh - var(--ceph-col-bottom, var(--ceph-command-bottom, 56px))
-    - var(--ceph-timeline-top, 160px) - 18px
+    - var(--ceph-col-floor, var(--ceph-timeline-top, 160px)) - 18px
   );
   overflow: auto;
   /* The column is bounded by the playhead, so a long entry scrolls. Fade the

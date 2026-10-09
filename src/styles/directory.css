@@ -21,6 +21,11 @@
 }
 .ceph-dir-restore.is-on { display: inline-flex; }
 .ceph-directory.is-on { display: flex; flex-direction: column; }
+/* A selected system's card stacks under the directory. Nineteen rows would
+   otherwise take the whole column and leave the card its title bar. */
+@media (min-width: 901px) {
+  .ceph-card-open .ceph-directory { max-height: min(calc(100vh - 180px), 44vh); }
+}
 .ceph-directory .ceph-atlas-head .ceph-icon-btn { margin-left: auto; }
 .ceph-dir-tabs {
   display: flex;

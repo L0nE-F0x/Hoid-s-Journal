@@ -16,7 +16,7 @@ Architecture lock: `AGENTS.md` + `DESIGN.md`. This file is the live todo.
 
 # ▶ START HERE — next session
 
-**2026-10-09, later: a design pass, ten commits, nothing pushed.** The owner
+**2026-10-09, later: a design pass, ten commits, pushed and live.** The owner
 asked for the app to be "more sleek and well-designed", then the marketing
 re-shot from it. An audit captured ~22 states at 1512×900 and 390×844 and
 turned up these, all fixed:

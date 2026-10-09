@@ -2,12 +2,13 @@ import * as THREE from 'three';
 import { COSMERE, bodyById, onTheMap, perpAt } from '../data/index.ts';
 import { uvOnBody } from '../layout/surface.ts';
 import type { Orrery } from './Orrery.ts';
-import sunVert from '../shaders/sun.vert';
+import pinVert from '../shaders/pin.vert';
 import pinFrag from '../shaders/pin.frag';
 
 const _off = new THREE.Vector3();
 const _n = new THREE.Vector3();
 const _view = new THREE.Vector3();
+const _z = new THREE.Vector3(0, 0, 1);
 const _quad = new THREE.PlaneGeometry(2, 2);
 
 function smoothstep(e0: number, e1: number, x: number): number {
@@ -68,7 +69,7 @@ function pinMaterial(color: string): THREE.ShaderMaterial {
       uOpacity: { value: 1 },
       uHot: { value: 0 },
     },
-    vertexShader: sunVert,
+    vertexShader: pinVert,
     fragmentShader: pinFrag,
     transparent: true,
     depthTest: true,
@@ -80,11 +81,12 @@ function pinMaterial(color: string): THREE.ShaderMaterial {
  * Location markers on the focused globe. They are the same rows the atlas
  * panel draws, so a pin on the map and a pin on the world are one place.
  *
- * They used to be camera-facing discs of solid colour — confetti stuck on
- * the planet, full-bright at the limb, and a few centimetres of radius
- * enough to peek around the far side. They are beads now: a lit hemisphere
- * on a billboard, faded by the planet's own n·v so the globe occludes them
- * and they never stick out into space.
+ * They began as camera-facing discs of solid colour — confetti stuck on the
+ * planet, full-bright at the limb, and a few centimetres of radius enough to
+ * peek around the far side. Then they were lit beads, which fixed the limb
+ * but read as sweets. Now they are surveyor's marks lying on the surface
+ * (see pin.frag), still faded by the planet's own n·v so the globe occludes
+ * them and they never stick out into space.
  */
 export class Pins {
   readonly group = new THREE.Group();
@@ -174,17 +176,20 @@ export class Pins {
       const facing = _n.dot(_view);
       if (facing < 0.04) { mesh.visible = false; continue; }
       mesh.visible = true;
+      // Flat on the ground, not facing the camera: see pin.vert.
+      mesh.quaternion.setFromUnitVectors(_z, _n);
 
       const fade = smoothstep(0.04, 0.38, facing);
       const d = camera.position.distanceTo(mesh.position);
       const isHot = loc.id === hot;
+      // A mark, not a landmark: about sixty per cent of the old bead.
       const size = Math.min(
-        Math.min(1.2, Math.max(0.03, d * 0.017)),
-        body.radius * 0.055,
+        Math.min(0.8, Math.max(0.02, d * 0.0115)),
+        body.radius * 0.038,
       );
       const dim = scale === 'city' && !!hot && loc.id !== hot;
       const mat = mesh.material as THREE.ShaderMaterial;
-      mat.uniforms.uSize.value = size * (isHot ? 1.7 : 1) * (0.78 + 0.22 * fade);
+      mat.uniforms.uSize.value = size * (isHot ? 1.5 : 1) * (0.78 + 0.22 * fade);
       mat.uniforms.uFacing.value = fade;
       mat.uniforms.uOpacity.value = dim ? 0.28 : 1;
       mat.uniforms.uHot.value = isHot ? 1 : 0;

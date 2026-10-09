@@ -1,12 +1,16 @@
 /**
- * A place-marker on a globe: a small bead sitting on the surface, not a
- * camera-facing sticker. The quad is a billboard (see sun.vert); the sphere
- * is implied by treating the disc as a hemisphere and lighting it.
+ * A place-marker: a surveyor's mark, not a bead. A bright core and a thin
+ * ring in the place's colour, set on an ink disc so a pale mark still reads on
+ * a pale continent. The lit hemispheres this replaced were glossy, saturated
+ * and fifty pixels across, and a few dozen of them on Alethkar looked like a
+ * spilled jar of sweets rather than an atlas.
  *
- * `uFacing` is n·v of the *planet* at this pin, not of the billboard. It
- * fades the marker out as it reaches the limb so a sprite cannot stick out
- * into space, and it is 0 on the far side so the globe occludes it even
- * when depth-test is a few centimetres off because of the 1.015 radius.
+ * `uFacing` is n·v of the *planet* at this pin. It fades the mark toward the
+ * limb and is 0 on the far side, so the globe occludes it even where the
+ * depth test is a hair off because of the 1.015 radius.
+ *
+ * Edges are antialiased on fwidth: the ring is two or three pixels wide at
+ * globe scale, and a fixed smoothstep width either blurs it or aliases it.
  */
 
 uniform vec3  uColor;
@@ -16,28 +20,30 @@ uniform float uHot;
 
 varying vec2 vUv;
 
+float band(float d, float r0, float r1, float aa) {
+  return smoothstep(r0 - aa, r0 + aa, d) * (1.0 - smoothstep(r1 - aa, r1 + aa, d));
+}
+
 void main() {
-  vec2 uv = vUv;
-  float d = length(uv);
+  float d = length(vUv);
   if (d > 1.0) discard;
+  float aa = max(fwidth(d), 1e-4);
 
-  // Hemisphere normal in billboard space: the pin is a bead, not a disc.
-  float z = sqrt(max(0.0, 1.0 - d * d));
-  vec3 n = normalize(vec3(uv, z));
-  vec3 L = normalize(vec3(-0.32, 0.52, 0.78));
-  float ndl = max(0.0, dot(n, L));
-  float wrap = 0.28 + 0.72 * ndl;
-  vec3 H = normalize(L + vec3(0.0, 0.0, 1.0));
-  float spec = pow(max(0.0, dot(n, H)), 28.0);
+  // Pulled a little toward the journal's paper so twenty hues sit together.
+  vec3 tint = mix(uColor, vec3(0.94, 0.92, 0.86), 0.2);
+  vec3 ink = vec3(0.025, 0.03, 0.055);
 
-  vec3 col = uColor * wrap;
-  col += uColor * 0.12;
-  col += vec3(1.0) * spec * (0.35 + 0.40 * uHot);
-  // A hotter pin is the one you asked for: lift the core, not the whole disc.
-  col += uColor * (1.0 - d) * 0.22 * uHot;
+  // The one you asked for opens its ring and lifts its core.
+  float coreR = 0.30 + 0.07 * uHot;
+  float core = 1.0 - smoothstep(coreR - aa, coreR + aa, d);
+  float ring = band(d, 0.58, 0.74 + 0.08 * uHot, aa);
+  float backing = 1.0 - smoothstep(0.92 - aa, 0.92 + aa, d);
 
-  // Soft coverage, not a cookie-cutter. Alpha is coverage.
-  float a = smoothstep(1.0, 0.70, d);
+  float mark = max(core, ring);
+  vec3 col = mix(ink, tint, mark);
+  col += tint * core * 0.3 * uHot;
+
+  float a = max(backing * 0.6, mark);
   a *= uFacing * uOpacity;
   if (a < 0.02) discard;
 

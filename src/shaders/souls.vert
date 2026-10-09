@@ -26,8 +26,7 @@ void main() {
   // five million blended fragments a frame, and they read as fog rather than
   // as the lights of individual minds.
   gl_PointSize = min(clamped, 9.0);
-  // A flame flickers; a slow breath read as a lamp being dimmed.
-  float pulse = 0.70 + 0.18 * sin(uTime * 6.3 + aSeed * 40.0) + 0.12 * sin(uTime * 11.7 + aSeed * 13.0);
+  float pulse = 0.62 + 0.38 * sin(uTime * 1.1 + aSeed * 40.0);
   vBright = clamp(wanted / clamped, 0.05, 1.0) * pulse;
   vColor = aColor;
 }

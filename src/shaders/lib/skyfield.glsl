@@ -47,37 +47,11 @@ vec3 skyField(vec3 d, vec3 bandTint, vec3 dustTint, vec3 glowTint, float cogniti
   col += vec3(0.0035, 0.0048, 0.0105) * (0.7 + 0.5 * fine);
 
   if (cognitive > 0.001) {
-    // Shadesmar's sky, as the books have it: pitch black, no moon, no stars,
-    // and on the horizon a small, frail white sun that never moves. Long,
-    // straight, flat clouds run directly toward it, so it sits at the end of
-    // a tunnel. (Coppermind, "Rosharan subastral": Oathbringer, Rhythm of War.)
-    //
-    // This used to be a flat violet wash at about 0.026 linear, which put the
-    // Cognitive sky brighter than the Physical one's floor by seven times: the
-    // Realm read as lavender fog, not as somewhere black.
-    vec3 sunDir = normalize(vec3(0.62, 0.05, -0.78));
-    float toSun = dot(d, sunDir);
-    float theta = acos(clamp(toSun, -1.0, 1.0));
-    // Angle around the sun, so streaks are great circles that meet in it.
-    vec3 ax = normalize(cross(sunDir, vec3(0.0, 1.0, 0.0)));
-    vec3 ay = cross(ax, sunDir);
-    float psi = atan(dot(d, ay), dot(d, ax));
-    // Flat clouds lie near the horizon plane, not across the whole dome.
-    float horizon = exp(-pow(d.y / 0.30, 2.0));
-    // Thin lanes in psi (many, narrow) broken into lengths along theta.
-    float lanes = fbm3(vec3(cos(psi) * 22.0, sin(psi) * 22.0, 3.0), 3, 2.1, 0.5) * 0.5 + 0.5;
-    float lengthwise = fbm3(vec3(theta * 1.6, psi * 3.0, 11.0), 3, 2.0, 0.5) * 0.5 + 0.5;
-    float clouds = smoothstep(0.56, 0.80, lanes) * smoothstep(0.38, 0.66, lengthwise);
-    clouds *= horizon * smoothstep(0.04, 0.30, theta) * (1.0 - smoothstep(1.8, 2.8, theta));
-    // Lit only by that sun, and dimly: it lights the land, not the sky. The
-    // clouds are the one thing up there it catches.
-    vec3 cog = vec3(0.0016, 0.0016, 0.0024);
-    cog += vec3(0.075, 0.075, 0.092) * clouds * (0.30 + 0.70 * exp(-theta * 1.1));
-    // The sun: small and frail. A hard disc and a tight glow; the plate is
-    // eight-bit, so anything wider than that blooms into a lamp.
-    float disc = smoothstep(0.99993, 0.99997, toSun);
-    float glow = pow(max(toSun, 0.0), 2600.0) * 0.30 + pow(max(toSun, 0.0), 260.0) * 0.010;
-    cog += vec3(0.96, 0.97, 1.0) * (disc + glow);
+    // Shadesmar's sky: a dark dome with a small hard sun and no stars worth
+    // the name. Drain the band, keep a cold violet wash.
+    float lum = dot(col, vec3(0.3, 0.6, 0.1));
+    vec3 cog = mix(vec3(lum * 0.30), vec3(0.026, 0.018, 0.058), 0.80);
+    cog += vec3(0.09, 0.06, 0.20) * pow(max(0.0, 1.0 - abs(lat)), 3.0) * 0.12;
     col = mix(col, cog, cognitive);
   }
 

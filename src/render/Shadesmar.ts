@@ -158,9 +158,7 @@ export class Shadesmar {
       pos[i * 3] = at.x + r * Math.sin(phi) * Math.cos(theta);
       pos[i * 3 + 1] = at.y + r * Math.cos(phi) * 0.34;
       pos[i * 3 + 2] = at.z + r * Math.sin(phi) * Math.sin(theta);
-      // Living souls show as small flames in Shadesmar. They were lavender,
-      // tinted by each system's nebula, and read as more violet haze.
-      tint.set(0xffb766).lerp(new THREE.Color(0xfff1d6), Math.random() * 0.6).lerp(new THREE.Color(sys.nebula), 0.12);
+      tint.set(sys.nebula).lerp(new THREE.Color(0xd8cfff), 0.35 + Math.random() * 0.5);
       col[i * 3] = tint.r;
       col[i * 3 + 1] = tint.g;
       col[i * 3 + 2] = tint.b;

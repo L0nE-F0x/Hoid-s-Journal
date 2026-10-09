@@ -58,29 +58,6 @@ float specGGX(vec3 n, vec3 v, vec3 l, float rough) {
 }
 
 /**
- * The nearest bead to `q` in a jittered lattice: squared distance, and the
- * bead's cell for a stable per-bead hash. Points sit near their cell
- * centres, so the beads pack like beads rather than scatter like gravel.
- */
-float beadCell(vec3 q, out vec3 id) {
-  vec3 i = floor(q);
-  vec3 f = fract(q);
-  float best = 8.0;
-  id = i;
-  for (int z = -1; z <= 1; z++)
-  for (int y = -1; y <= 1; y++)
-  for (int x = -1; x <= 1; x++) {
-    vec3 g = vec3(float(x), float(y), float(z));
-    vec3 c = i + g;
-    vec3 o = vec3(hash13(c), hash13(c + 17.31), hash13(c + 41.7)) * 0.5 + 0.25;
-    vec3 r = g + o - f;
-    float d = dot(r, r);
-    if (d < best) { best = d; id = c; }
-  }
-  return best;
-}
-
-/**
  * Cloud density over the sphere. Two advecting layers, ridged for filaments.
  *
  * Seven noise evaluations, not twenty: this runs twice per pixel (once for the
@@ -270,70 +247,30 @@ void main() {
 
   // ---- Shadesmar ------------------------------------------------------
   if (uCognitive > 0.001) {
-    // The subastral as the books describe it. Where the Physical Realm has
-    // land there is an ocean of small, translucent, dark glass beads,
-    // churning in waves and tides; where it has sea there is black obsidian.
-    // The only light is a small white sun low on the horizon that never
-    // moves, and the souls of the living show as small flames.
-    //
-    // The beads used to be fbm noise at a frequency far finer than a pixel,
-    // so at globe distance they averaged to a violet tint and the world read
-    // as a glass ball. They are cells now, sized to resolve (four or five
-    // pixels at globe framing), and each one can catch the sun.
+    // No sun over there — a small cold light that never moves, and a realm
+    // that reads by its own glow. Land is a bead ocean; sea is black glass.
     vec3 cold = normalize(vec3(0.42, 0.78, 0.46));
-    float land = 1.0 - water;
-    float ndl = max(0.0, dot(nSurf, cold));
+    float key = max(0.0, dot(nSurf, cold)) * 0.58 + 0.34;
+    vec3 flat_ = albedo * key;
 
-    // Obsidian: black, smooth, one hard cold highlight and fine crazing.
-    float craze = smoothstep(0.86, 0.98, ridged(vObj * 34.0 + uSeed, 3, 2.1, 0.55));
-    vec3 obsidian = vec3(0.010, 0.012, 0.020) + albedo * 0.10 + vec3(0.030, 0.034, 0.050) * craze * ndl;
-    obsidian += vec3(0.80, 0.86, 1.0) * min(specGGX(nSurf, view, cold, 0.16), 8.0) * 0.045;
+    // Beads: obsidian spheres, a few of them catching the light at a time.
+    float beadField = fbm3(vObj * 150.0 + uSeed, 3, 2.07, 0.5) * 0.5 + 0.5;
+    float bead = smoothstep(0.58, 0.92, beadField) * (1.0 - water);
+    flat_ += vec3(0.44, 0.33, 0.78) * bead * 0.30;
+    flat_ *= 1.0 - (1.0 - water) * 0.18;
 
-    // Beads. Swell and tide move the glints, not the beads.
-    vec3 bq = vObj * 64.0 + uSeed * 3.1;
-    vec3 bid;
-    float bd = sqrt(beadCell(bq, bid));
-    float bpx = length(fwidth(bq));
-    float resolve = 1.0 - smoothstep(0.30, 0.85, bpx);
-    float baa = max(fwidth(bd), 0.02);
-    float body = 1.0 - smoothstep(0.40 - baa, 0.40 + baa, bd);
-    float h = hash13(bid);
-    vec3 glassBead = mix(vec3(0.010, 0.009, 0.020), vec3(0.040, 0.034, 0.078), h);
-    // A few beads hold colour; they are the souls of objects, after all.
-    glassBead = mix(glassBead, vec3(0.10, 0.07, 0.16), step(0.94, h));
-    float swell = fbm3(vObj * 5.0 + vec3(uTime * 0.035, 0.0, uTime * 0.022), 3, 2.0, 0.5) * 0.5 + 0.5;
-    // Where the sun's reflection falls, every other bead flashes: a glitter
-    // path, the way light lies on a choppy sea.
-    float path = min(specGGX(nSurf, view, cold, 0.55), 3.0) / 3.0;
-    float chance = clamp(0.02 + path * 0.45 + swell * swell * 0.12, 0.0, 0.7);
-    float phase = fract(hash13(bid + 3.1) + uTime * 0.11);
-    float catching = step(1.0 - chance, phase);
-    float core = 1.0 - smoothstep(0.0, 0.13 + baa, bd);
-    vec3 beads = mix(vec3(0.004, 0.004, 0.009), glassBead * (0.55 + 0.45 * ndl), body);
-    beads += glassBead * 1.6 * path * body;
-    // Every bead carries a small highlight, so the sea has the fine regular
-    // grain of beads rather than a scatter of stars; some flash brighter as
-    // the swell rolls them. Kept under the bloom's reach: a sea of HDR glints
-    // bloomed into a grey veil over the whole world.
-    float spark = 0.10 + 0.22 * ndl + 0.30 * path;
-    beads += vec3(0.80, 0.85, 1.0) * core * spark * (0.55 + 0.45 * h);
-    beads += vec3(0.86, 0.90, 1.0) * core * catching * (0.40 + 0.40 * path);
-    // Unresolved, a bead sea is its average: dark glass and a sparkle haze.
-    vec3 beadAvg = vec3(0.020, 0.018, 0.038) * (0.55 + 0.45 * ndl) + vec3(0.86, 0.90, 1.0) * chance * 0.015;
-    beads = mix(beadAvg, beads, resolve);
+    // Glass plains. Clamped hard: an unbounded highlight here put a blown
+    // white crater in the middle of every world in the Realm.
+    float glass = min(specGGX(nSurf, view, cold, 0.30), 2.0) * water;
+    flat_ += vec3(0.42, 0.52, 0.82) * glass * 0.16;
 
-    // Flames where people are: the night-lights mask is where they live.
-    float flame = step(0.86, hash13(bid + 9.7)) * smoothstep(0.12, 0.45, lights) * land;
-    float flicker = 0.75 + 0.25 * sin(uTime * 7.3 + h * 40.0);
-    beads += vec3(1.0, 0.72, 0.40) * flame * flicker * (core * 2.4 * resolve + 0.06);
+    // Souls: the lights of everything that thinks, seen through the surface.
+    float souls = smoothstep(0.80, 0.99, fbm3(vObj * 26.0 + uSeed * 3.0, 3, 2.05, 0.5) * 0.5 + 0.5);
+    flat_ += vec3(0.82, 0.74, 1.0) * souls * (1.0 - water) * 0.30
+      * (0.7 + 0.3 * sin(uTime * 1.6 + hash13(vObj * 12.0) * 30.0));
 
-    // Where beads wash against the glass.
-    float shore = smoothstep(0.30, 0.50, water) * (1.0 - smoothstep(0.50, 0.70, water));
-    vec3 shade_ = mix(obsidian, beads, land) + vec3(0.06, 0.06, 0.09) * shore * ndl;
-
-    // A cold rim against a black sky; no violet glow.
-    shade_ += vec3(0.07, 0.08, 0.12) * fres * (0.4 + 0.6 * ndl);
-    lit = mix(lit, shade_, uCognitive);
+    flat_ += vec3(0.30, 0.22, 0.58) * fres * 0.55;
+    lit = mix(lit, flat_, uCognitive);
   }
 
   lit += uEmissiveColor * uEmissive * (fres * 2.2 + 0.10) * shade;

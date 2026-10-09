@@ -57,6 +57,9 @@ export function mountLoreWeb(root: HTMLElement): { destroy(): void } {
   let hide = new Set<string>();
   let drag: Node | null = null;
   let pathN = new Set<string>();
+  /** The selected node and everyone one edge from it. Empty when nothing is selected. */
+  let nearN = new Set<string>();
+  let nearE = new Set<string>();
   let pathE = new Set<string>();
   let raf = 0;
   let w = 1, h = 1;
@@ -179,10 +182,22 @@ export function mountLoreWeb(root: HTMLElement): { destroy(): void } {
 
   const trace = () => {
     pathN = new Set(); pathE = new Set();
+    nearN = new Set(); nearE = new Set();
     const sel = store.state.selected;
     const start = sel ? nodes.find((n) => n.id === sel)?.key : undefined;
     const goal = nid('character', 'hoid');
-    if (!start || !adj.has(start) || !adj.has(goal)) {
+    if (!start || !adj.has(start)) {
+      pathEl.textContent = '';
+      return;
+    }
+    // Who they are to everyone else, before how they get to Hoid: the
+    // neighbourhood lights even when there is no path.
+    nearN.add(start);
+    for (const nx of adj.get(start) ?? []) {
+      nearN.add(nx);
+      nearE.add(edgeKey(start, nx));
+    }
+    if (!adj.has(goal)) {
       pathEl.textContent = '';
       return;
     }
@@ -341,20 +356,29 @@ export function mountLoreWeb(root: HTMLElement): { destroy(): void } {
     ctx.translate(w / 2, h / 2);
     ctx.scale(zoom, zoom);
     ctx.translate(panX, panY);
+    // With someone selected, the rest of the web steps back. At five hundred
+    // nodes a highlighted path in full-brightness confetti was there to be
+    // found, not seen.
+    const focus = nearN.size > 0;
     for (const e of edges) {
       if (hide.has(e.type)) continue;
-      const hot = pathE.has(edgeKey(e.a.key, e.b.key));
+      const k = edgeKey(e.a.key, e.b.key);
+      const hot = pathE.has(k);
+      const near = nearE.has(k);
       ctx.beginPath();
       ctx.moveTo(e.a.x, e.a.y);
       ctx.lineTo(e.b.x, e.b.y);
       const soft = WEB_TYPES[e.type]?.soft === true;
-      ctx.strokeStyle = hot ? e.color : `${e.color}${soft ? '26' : '55'}`;
-      ctx.lineWidth = (hot ? 2.2 : soft ? 0.6 : 1) / zoom;
+      const alpha = hot ? '' : near ? 'aa' : focus ? (soft ? '0a' : '12') : (soft ? '26' : '55');
+      ctx.strokeStyle = `${e.color}${alpha}`;
+      ctx.lineWidth = (hot ? 2.2 : near ? 1.3 : soft ? 0.6 : 1) / zoom;
       ctx.stroke();
     }
     const sel = store.state.selected;
     for (const n of nodes) {
       const hot = pathN.has(n.key) || n.id === sel;
+      const near = nearN.has(n.key);
+      ctx.globalAlpha = focus && !hot && !near ? 0.18 : 1;
       ctx.beginPath();
       ctx.arc(n.x, n.y, n.r * (hot ? 1.25 : 1), 0, Math.PI * 2);
       ctx.fillStyle = n.color;
@@ -370,14 +394,16 @@ export function mountLoreWeb(root: HTMLElement): { destroy(): void } {
       // asked for. Orgs used to be always-on, which was legible at a hundred
       // and thirty nodes and a pile-up at five hundred.
       const quiet = n.kind === 'character' || n.kind === 'org';
-      const named = hot || !quiet || zoom > (n.kind === 'org' ? 0.62 : 0.78);
+      const named = hot || near || !quiet || zoom > (n.kind === 'org' ? 0.62 : 0.78);
       if (!named) continue;
       ctx.fillStyle = hot ? '#eaf4ff'
-        : quiet ? 'rgba(214,224,242,0.58)' : 'rgba(226,236,252,0.86)';
+        : near ? 'rgba(226,236,252,0.9)'
+          : quiet ? 'rgba(214,224,242,0.58)' : 'rgba(226,236,252,0.86)';
       ctx.font = `${hot ? 600 : 500} ${((quiet ? 10.5 : 12) / zoom).toFixed(2)}px Inter, ui-sans-serif, sans-serif`;
       ctx.textAlign = 'center';
       ctx.fillText(n.name, n.x, n.y + n.r + 12 / zoom);
     }
+    ctx.globalAlpha = 1;
     ctx.restore();
   };
 

@@ -3,11 +3,14 @@
  *
  *   node tools/film.mjs     --script tools/trailer.mjs --out /tmp/clips
  *   node tools/film-cut.mjs --script tools/trailer.mjs --clips /tmp/clips --out ~/Videos/hoids-journal
- *   node tools/film-cut.mjs ... --soundtrack public/audio/soundtrack.mp3   # adds *-with-soundtrack.mp4
+ *   node tools/film-cut.mjs ... --soundtrack public/audio/soundtrack.mp3
  *
- * The script module's `cuts` export names each output and its sections:
- * clips inside a section are hard cuts, and sections meet in a short
- * dissolve.
+ * The script module's `cuts` export names each output: either a list of
+ * sections, or `{ sections, dissolve }`. Clips inside a section are hard
+ * cuts; sections meet in a dissolve (`--dissolve`, default 0.3 s, unless the
+ * cut sets its own). With --soundtrack every output carries the track,
+ * looped with crossfades for as long as the cut runs and faded out under
+ * the end card. Without it, outputs are silent.
  *
  * Repair first. Now and then a frame comes back from headless Chrome with
  * an unpainted tile, even after waiting for two real compositor frames. It
@@ -88,7 +91,9 @@ function repair(file, frames) {
   }
 }
 
-const used = [...new Set(Object.values(cuts).flatMap((c) => c.flat()))];
+const plan = Object.fromEntries(Object.entries(cuts).map(([name, c]) => [name,
+  Array.isArray(c) ? { sections: c, dissolve: FADE } : { dissolve: FADE, ...c }]));
+const used = [...new Set(Object.values(plan).flatMap((c) => c.sections.flat()))];
 const present = new Set(readdirSync(CLIPS));
 const missing = used.filter((c) => !present.has(`${c}.mp4`));
 if (missing.length) throw new Error(`missing clips in ${CLIPS}: ${missing.join(', ')}`);
@@ -102,7 +107,7 @@ for (const clip of used) {
   }
 }
 
-function cut(name, sections, audio) {
+function cut(name, { sections, dissolve }, audio) {
   const files = sections.flat().map((c) => join(CLIPS, `${c}.mp4`));
   const argv = ['-hide_banner', '-loglevel', 'error', '-y'];
   for (const f of files) argv.push('-i', f);
@@ -118,21 +123,30 @@ function cut(name, sections, audio) {
   let cur = 's0';
   let total = lens[0];
   for (let si = 1; si < sections.length; si++) {
-    graph.push(`[${cur}][s${si}]xfade=transition=fade:duration=${FADE}:offset=${(total - FADE).toFixed(4)}[x${si}]`);
+    graph.push(`[${cur}][s${si}]xfade=transition=fade:duration=${dissolve}:offset=${(total - dissolve).toFixed(4)}[x${si}]`);
     cur = `x${si}`;
-    total += lens[si] - FADE;
+    total += lens[si] - dissolve;
   }
   graph.push(`[${cur}]scale=in_color_matrix=bt601:out_color_matrix=bt709:in_range=tv:out_range=tv,format=yuv420p[v]`);
   if (audio) {
-    // Two copies crossfaded, so a short track covers a longer cut without a
-    // hard seam, then faded out under the end card.
+    // As many copies as the cut needs, each crossfaded into the next so a
+    // short track covers a long cut without a seam, then faded out under
+    // the end card.
+    const X = 1.5;
+    const track = duration(audio);
+    const copies = Math.max(1, Math.ceil((total - X) / (track - X)));
     const a = files.length;
-    argv.push('-i', audio, '-i', audio);
-    graph.push(`[${a}:a][${a + 1}:a]acrossfade=d=1.5:c1=tri:c2=tri,atrim=0:${total.toFixed(3)},`
-      + `afade=t=in:d=0.6,afade=t=out:st=${(total - 2.4).toFixed(3)}:d=2.4,`
+    for (let i = 0; i < copies; i++) argv.push('-i', audio);
+    let chain = `[${a}:a]`;
+    for (let i = 1; i < copies; i++) {
+      graph.push(`${chain}[${a + i}:a]acrossfade=d=${X}:c1=tri:c2=tri[m${i}]`);
+      chain = `[m${i}]`;
+    }
+    graph.push(`${chain}atrim=0:${total.toFixed(3)},`
+      + `afade=t=in:d=0.6,afade=t=out:st=${(total - 3.0).toFixed(3)}:d=3.0,`
       + 'loudnorm=I=-16:TP=-1.5:LRA=11,aresample=48000[a]');
   }
-  const out = join(OUT, `${name}${audio ? '-with-soundtrack' : ''}.mp4`);
+  const out = join(OUT, `${name}.mp4`);
   argv.push('-filter_complex', graph.join(';'), '-map', '[v]');
   if (audio) argv.push('-map', '[a]', '-c:a', 'aac', '-b:a', '192k');
   argv.push('-c:v', 'libx264', '-preset', 'slow', '-crf', String(CRF), '-profile:v', 'high', '-level', '4.2',
@@ -142,9 +156,5 @@ function cut(name, sections, audio) {
   console.error(`[cut] ${out}  ${total.toFixed(2)}s`);
 }
 
-for (const [name, sections] of Object.entries(cuts)) {
-  cut(name, sections, null);
-  if (typeof args.soundtrack === 'string' && name === (args['soundtrack-cut'] ?? Object.keys(cuts)[0])) {
-    cut(name, sections, resolve(args.soundtrack));
-  }
-}
+const soundtrack = typeof args.soundtrack === 'string' ? resolve(args.soundtrack) : null;
+for (const [name, c] of Object.entries(plan)) cut(name, c, soundtrack);

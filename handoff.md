@@ -16,6 +16,28 @@ Architecture lock: `AGENTS.md` + `DESIGN.md`. This file is the live todo.
 
 # ▶ START HERE — next session
 
+**2026-10-09, evening: Shadesmar redone, trailer re-conceived.** The owner
+said the Cognitive Realm did not read as Shadesmar ("you can't see the
+black beads") and that the trailer's planet close-ups were cut too fast.
+
+- Shadesmar now follows the books (Coppermind, "Rosharan subastral"): a
+  pitch-black sky with no stars, a small white sun on the horizon with flat
+  clouds running into it, bead seas where the Physical Realm has land
+  (cellular beads with per-bead highlights and a glitter path), obsidian
+  where it has sea, and souls as warm flames. All of it is render-time
+  shading; the Cognitive plates are unchanged.
+- **Not fixed:** at a near-ground angle over a system in Shadesmar (phi
+  around 1.5), a large blocky green shape fills part of the frame, probably
+  a landmark's glow sprite seen from too close. At the default angles it
+  does not appear.
+- The trailer is now medium and long shots with one-second dissolves: the
+  Rosharan system pulling out to the Cosmere, the chart, four systems
+  turning (Scadrian, Selish, Taldain, Lumar inside its moons), Shadesmar,
+  the Spiritual Realm, the Lore Web, the spoiler gate, and the end card.
+  Every output carries the soundtrack (`film-cut.mjs --soundtrack`). The
+  owner's taste is recorded in memory: no tight close-ups, breathing room,
+  audio on everything.
+
 **2026-10-09, later: a design pass, ten commits, pushed and live.** The owner
 asked for the app to be "more sleek and well-designed", then the marketing
 re-shot from it. An audit captured ~22 states at 1512×900 and 390×844 and

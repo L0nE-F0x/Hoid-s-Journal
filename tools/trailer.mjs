@@ -94,6 +94,17 @@ html.film-ui #stage, html.film-ui #ui-root {
 }
 
 .film-line { bottom: 9%; font-size: 64px; line-height: 1.22; }
+
+/* A system's name, set lower and calmer than the old world cards. */
+.film-sys { bottom: 8%; }
+.film-sys b {
+  display: block; font-weight: 400; font-size: 66px; letter-spacing: 0.22em; text-indent: 0.22em;
+  text-transform: uppercase;
+}
+.film-sys span {
+  display: block; margin-top: 12px; font-family: var(--ceph-display); font-style: italic;
+  font-size: 36px; color: #ddd8cc;
+}
 .film-line small {
   display: block; margin-top: 20px; font-family: var(--ceph-font); font-size: 26px;
   letter-spacing: 0.36em; text-indent: 0.36em; text-transform: uppercase; color: var(--ceph-gold);
@@ -180,38 +191,139 @@ function boot() {
     clean(true);
   };
 
+  const easeS = (u) => 0.5 - 0.5 * Math.cos(Math.PI * Math.min(1, Math.max(0, u)));
+  const settledAt = (r, goal) => Math.abs(r - goal) < goal * 0.004;
+
   window.__t = {
     hidePins: true,
     clean,
     pose,
     beauty,
-    /** Powers of ten: Roshar's storm, out through its system, to every star. */
+    beat: {},
+    /** Once, the first frame at or after `at`. */
+    once(key, t, at, fn) {
+      if (t >= at && !this.beat[key]) { this.beat[key] = true; fn(); }
+    },
+    /** Ken Burns on the interface: scale from s0 to s1 about an origin. */
+    kb(t, d, s0, s1, origin) {
+      const html = document.documentElement;
+      html.style.setProperty('--kb', String(lerp(s0, s1, t / d)));
+      html.style.setProperty('--kb-o', origin);
+    },
+
+    /**
+     * Ask the app to frame something, then remember how it framed it: the
+     * app's own composition is the starting point, and a shot drifts from
+     * there. `check` says the flight is the one we asked for.
+     */
+    cue(c, check, drift) {
+      st.set('cameraCue', c);
+      this.cuedAt = app.frameCount;
+      this.check = check;
+      this.driftOpts = drift;
+      this.m = null;
+      this.beat = {};
+    },
+    ready() {
+      if (this.m) return true;
+      if (app.frameCount < this.cuedAt + 4 || !this.check()) return false;
+      if (!settledAt(rig.radius, rig.goalRadius)) return false;
+      this.m = { r: rig.goalRadius, c: rig.goalTarget.clone(), theta: rig.heading, phi: rig.elevation };
+      st.set('selected', null);
+      if (this.driftOpts) this.drift(0, 1, this.driftOpts);
+      return true;
+    },
+    /**
+     * A slow move from the app's framing: radius k0→k1 times its distance,
+     * turning dTheta, tilting phi0→phi1. `follow` keeps a moving world in
+     * the middle of the frame.
+     */
+    drift(t, d, o) {
+      const e = easeS(t / d);
+      const m = this.m;
+      const c = o.follow ? app.orrery.bodyPosition(o.follow).clone() : m.c;
+      pose(c, m.r * lerp(o.k0, o.k1, e), (o.theta0 ?? m.theta) + o.dTheta * e,
+        lerp(o.phi0 ?? m.phi, o.phi1 ?? m.phi, e));
+    },
+
+    /** A whole system with its orbits turning. */
+    system(id, drift, { realm = 'physical', rate = 4, labels = false } = {}) {
+      beauty();
+      rig.autoRotate = false;
+      // The app's own names for what is orbiting: an atlas, not a screensaver.
+      if (labels) st.patchVisual({ showLabels: true });
+      if (realm !== 'physical') st.set('realm', realm);
+      st.set('timeRate', rate);
+      st.set('isPlaying', rate > 0);
+      this.cue({ kind: 'focus', id, scale: 'system' },
+        () => st.state.scale === 'system' && st.state.focusedSystem === id, drift);
+    },
+    /** One world, from far enough out that its moons and their orbits are in shot. */
+    world(id, drift) {
+      beauty();
+      rig.autoRotate = false;
+      this.cue({ kind: 'focus', id, scale: 'globe' },
+        () => st.state.scale === 'globe' && st.state.focusedBody === id, { follow: id, ...drift });
+    },
+    /** The Cosmere, as the app frames it. */
+    chart(drift, rate = 4) {
+      beauty();
+      rig.autoRotate = false;
+      st.set('timeRate', rate);
+      st.set('isPlaying', true);
+      this.cue({ kind: 'frame' }, () => st.state.scale === 'cosmere', drift);
+    },
+
+    /**
+     * The opening: the Rosharan system with its worlds turning, then out to
+     * every star. Both framings are measured first (the chart, then the
+     * system), so the move runs between two compositions the app would
+     * choose itself.
+     */
     intro: {
-      MOVE: 10.6,
+      HOLD: 2.2,
+      MOVE: 8.8,
       begin() {
-        beauty();
-        st.set('cinematic', true);
-        st.set('scale', 'globe');
-        st.set('focusedBody', 'roshar');
-        st.set('focusedSystem', 'rosharan');
-        this.to = V(0, 0, 0);
+        const T = window.__t;
+        T.chart(null);
+        this.stage = 0;
         this.done = false;
-        this.frame(0);
+      },
+      ready() {
+        const T = window.__t;
+        if (this.stage === 0) {
+          if (!T.ready()) return false;
+          this.cos = T.m;
+          this.stage = 1;
+          st.set('isPlaying', true);
+          T.cue({ kind: 'focus', id: 'rosharan', scale: 'system' },
+            () => st.state.scale === 'system' && st.state.focusedSystem === 'rosharan');
+          return false;
+        }
+        if (this.stage === 1) {
+          if (!T.ready()) return false;
+          this.sys = T.m;
+          this.stage = 2;
+          // The app holds the playhead during a cinematic; this one keeps
+          // the worlds moving by hand.
+          st.set('cinematic', true);
+          this.y0 = st.state.year;
+          this.frame(0);
+        }
+        return true;
       },
       frame(t) {
-        const u = Math.min(1, t / this.MOVE);
+        st.state.year = this.y0 + t * 0.32;
+        const u = Math.min(1, Math.max(0, (t - this.HOLD) / this.MOVE));
         const e = ease(u);
-        const r0 = 2.75;
-        const r1 = 262;
+        // Under 110 units the app dresses the sky as a system, so start inside it.
+        const r0 = Math.min(this.sys.r * 0.92, 104);
+        const r1 = this.cos.r;
         const radius = Math.exp(lerp(Math.log(r0), Math.log(r1), e));
-        // Linear in radius, not in its log: Roshar is 80 units from the
-        // middle, so the aim may only leave it as fast as the frame widens.
-        const w = Math.pow((radius - r0) / (r1 - r0), 1.15);
-        // Roshar is read every frame: entering the app moves the playhead,
-        // and the planets ease to their new places over the first seconds.
-        const target = app.orrery.bodyPosition('roshar').clone().lerp(this.to, w);
-        const theta = 0.15 + 1.9 * e + 0.035 * t;
-        const phi = lerp(1.06, 0.96, e);
+        const w = (radius - r0) / (r1 - r0);
+        const target = this.sys.c.clone().lerp(this.cos.c, w);
+        const theta = this.sys.theta + 0.05 * t + 0.85 * e;
+        const phi = lerp(1.02, this.cos.phi, e);
         pose(target, radius, theta, phi);
         // App.frame re-dresses the sky at 110 units out, and every nebula in
         // the Cosmere switches on in one frame. Dim the clouds into the
@@ -222,62 +334,16 @@ function boot() {
           : 0.04 + 0.96 * s01(111, 175, radius);
         if (u >= 1 && !this.done) {
           this.done = true;
+          st.state.visual.nebula = 1;
           st.set('cinematic', false);
           st.set('scale', 'cosmere');
           st.set('focusedBody', null);
           st.set('focusedSystem', null);
+          st.set('isPlaying', true);
         }
       },
     },
-    /** A world, framed closer than the app frames it, turning. */
-    world(id, push = 0.78, phi = null) {
-      beauty();
-      st.set('cameraCue', { kind: 'focus', id, scale: 'globe' });
-      this.push = push;
-      this.phi = phi;
-      this.pushed = false;
-    },
-    arrived(id) {
-      const s = st.state;
-      if (s.scale !== 'globe' || s.focusedBody !== id) return false;
-      if (!this.pushed) {
-        this.pushed = true;
-        rig.setDistance(rig.goalDistance * this.push, 2.2);
-        if (this.phi) rig.setAngles(rig.goalTheta, this.phi);
-        // The app only turns the sky by itself on the title screen.
-        rig.autoRotate = true;
-        rig.autoRotateSpeed = 0.2;
-      }
-      return Math.abs(rig.radius - rig.goalRadius) < rig.goalRadius * 0.004
-        && Math.abs(rig.phi - rig.goalPhi) < 0.004;
-    },
-    realm(name) {
-      if (st.state.realm !== name) st.set('realm', name);
-    },
-    /**
-     * Crossed into from the Cosmere, not from a globe: with a body focused,
-     * App.trackFocus keeps locking the target to it in every Realm, and the
-     * Shards end up in a corner of the frame.
-     */
-    spiritual() {
-      beauty();
-      st.set('realm', 'spiritual');
-    },
-    spiritualSettled() {
-      rig.autoRotate = true;
-      rig.autoRotateSpeed = 0.12;
-      return Math.abs(rig.radius - rig.goalRadius) < rig.goalRadius * 0.004;
-    },
-    /** The cosmere, framed by the app, turning slowly. */
-    chart() {
-      beauty();
-      st.set('cameraCue', { kind: 'frame' });
-      rig.autoRotate = true;
-      rig.autoRotateSpeed = 0.035;
-    },
-    chartSettled() {
-      return st.state.scale === 'cosmere' && Math.abs(rig.radius - rig.goalRadius) < rig.goalRadius * 0.003;
-    },
+
     /** The real HUD, enlarged, with the sky behind it. */
     ui({ panel = 'none', view = 'sky', zoom = 1.3 } = {}) {
       beauty();
@@ -291,76 +357,84 @@ function boot() {
       st.set('cameraCue', { kind: 'frame' });
       st.set('view', view);
       st.set('panel', panel);
+      // The directory remembers its tab; after the Spiritual shot it was
+      // still on Shards.
+      document.querySelector('.ceph-dir-tabs button')?.click();
       rig.autoRotate = true;
-      rig.autoRotateSpeed = 0.035;
+      rig.autoRotateSpeed = 0.03;
       this.beat = {};
     },
-    /** Ken Burns on the interface: scale from s0 to s1 about an origin. */
-    kb(t, d, s0, s1, origin) {
-      const html = document.documentElement;
-      html.style.setProperty('--kb', String(lerp(s0, s1, t / d)));
-      html.style.setProperty('--kb-o', origin);
-    },
-    /** Once, the first frame at or after `at`. */
-    once(key, t, at, fn) {
-      if (t >= at && !this.beat[key]) { this.beat[key] = true; fn(); }
-    },
     spoilers(t, d) {
-      this.kb(t, d, 1.0, 1.05, '50% 40%');
+      this.kb(t, d, 1.0, 1.04, '50% 40%');
       // Through the real reading companion: click the book, close the panel.
-      this.once('click', t, 1.3, () => {
+      this.once('click', t, 1.7, () => {
         const row = [...document.querySelectorAll('.ceph-book')]
           .find((b) => b.textContent.includes('The Final Empire'));
         row?.click();
       });
-      this.once('close', t, 2.5, () => st.set('panel', 'none'));
-      this.once('frame', t, 2.6, () => st.set('cameraCue', { kind: 'frame' }));
+      this.once('close', t, 3.3, () => st.set('panel', 'none'));
+      this.once('frame', t, 3.4, () => st.set('cameraCue', { kind: 'frame' }));
+    },
+    /** Crossed into from the Cosmere, not from a globe (see App.trackFocus). */
+    spiritual() {
+      beauty();
+      st.set('realm', 'spiritual');
+    },
+    spiritualSettled() {
+      rig.autoRotate = true;
+      rig.autoRotateSpeed = 0.07;
+      return settledAt(rig.radius, rig.goalRadius);
     },
   };
 }
 
-const world = (name, id, title, book, opts = {}) => {
-  const duration = opts.duration ?? 1.4;
-  return {
-    name,
-    setup: (wid, push) => window.__t.world(wid, push),
-    args: [id, opts.push ?? 0.78],
-    preroll: 1,
-    until: new Function(`return window.__t.arrived(${JSON.stringify(id)})`),
-    after: 1.6,
-    duration,
-    cards: [
-      { html: '', cls: 'film-scrim', from: 0, fade: 0 },
-      {
-        html: `<b>${title}</b><span>${book}${opts.badge ? `<em>${opts.badge}</em>` : ''}</span>`,
-        cls: 'film-world', from: 0.06, to: duration - 0.05, fadeIn: 0.24, fadeOut: 0.14, rise: 10,
-      },
-      { html: 'Every published world', cls: 'film-kicker', from: 0, fadeIn: opts.first ? 0.3 : 0, fadeOut: opts.last ? 0.3 : 0 },
-    ],
-  };
-};
+/** A name and where it is from, low in the frame, unhurried. */
+const label = (name, sub, d, extra = '') => ({
+  html: `<b>${name}</b><span>${sub}${extra}</span>`,
+  cls: 'film-sys', from: 0.9, to: d - 0.85, fadeIn: 0.7, fadeOut: 0.6, rise: 8,
+});
+const scrim = { html: '', cls: 'film-scrim', from: 0, fade: 0 };
+
+/** A system or world shot: framed by the app, then a slow drift. */
+const sysShot = (name, kind, id, drift, opts, caption, duration = 5.5) => ({
+  name,
+  setup: kind === 'system'
+    ? (sid, dr, o) => window.__t.system(sid, dr, o)
+    : (wid, dr) => window.__t.world(wid, dr),
+  args: kind === 'system' ? [id, drift, opts ?? {}] : [id, drift],
+  preroll: 0.5,
+  until: () => window.__t.ready(),
+  wait: 25,
+  after: 0.4,
+  duration,
+  frame: new Function('t', 'd', `window.__t.drift(t, d, ${JSON.stringify(drift)})`),
+  cards: [scrim, label(caption[0], caption[1], duration, caption[2] ?? '')],
+});
 
 const BUG = '<div>Hoid’s Journal</div><small>the-cosmere.com</small>';
 const MARK = (extra = '') => '<img src="./logo.jpg" alt=""><h1>HOID’S JOURNAL</h1><div class="rule"></div>'
   + `<p>A living atlas of the Cosmere</p>${extra}`;
 
+/** Medium shots: the whole system in frame, pushed a little closer, turning. */
+const MEDIUM = { k0: 0.82, k1: 0.68, dTheta: 0.30, phi0: 1.10, phi1: 1.00 };
+
 /**
- * How tools/film-cut.mjs assembles the clips. Each output is a list of
- * sections: hard cuts inside a section, a 0.3 s dissolve between them.
+ * How tools/film-cut.mjs assembles the clips. Every shot is its own
+ * section, so every join is a one-second dissolve: the owner asked for
+ * breathing room, not a montage.
  */
 export const cuts = {
-  'hoids-journal-trailer': [
-    ['01-intro'],
-    ['02-lumar', '03-canticle', '04-taldain', '05-komashi', '06-scadrial', '07-nalthis', '08-sel', '09-miral'],
-    ['10-realms', '11-spiritual'],
-    ['12-web', '13-arcanum', '14-spoilers'],
-    ['15-end'],
-  ],
-  'hoids-journal-teaser-15s': [
-    ['02-lumar', '03-canticle', '05-komashi', '09-miral'],
-    ['10-realms'],
-    ['15-end'],
-  ],
+  'hoids-journal-trailer': {
+    dissolve: 1.0,
+    sections: [
+      ['01-intro'], ['02-cosmere'], ['03-scadrian'], ['04-selish'], ['05-taldain'], ['06-lumar'],
+      ['07-shadesmar'], ['08-spiritual'], ['09-web'], ['10-spoilers'], ['11-end'],
+    ],
+  },
+  'hoids-journal-teaser': {
+    dissolve: 1.0,
+    sections: [['02-cosmere'], ['07-shadesmar'], ['11-end']],
+  },
 };
 
 export default {
@@ -371,107 +445,90 @@ export default {
       name: '01-intro',
       setup: () => window.__t.intro.begin(),
       preroll: 0.5,
-      duration: 12.6,
+      until: () => window.__t.intro.ready(),
+      wait: 30,
+      duration: 13.5,
       frame: (t) => window.__t.intro.frame(t),
-      dip: [0.9, 0],
+      dip: [1.2, 0],
       cards: [
-        { html: '', cls: 'film-scrim', from: 0, to: 9.0, fade: 0.8 },
-        { html: 'I have walked more worlds<br>than you have had days.', cls: 'film-quote', from: 0.7, to: 4.4, fade: 0.55 },
-        { html: 'And written down almost none of it.<small>Cephandrius, in his own hand</small>', cls: 'film-quote', from: 4.8, to: 8.7, fade: 0.55 },
-        { html: '', cls: 'film-vignette', from: 9.0, to: 12.6, fadeIn: 1.0, fadeOut: 0 },
-        { html: MARK(), cls: 'film-mark', from: 9.3, to: 12.6, fadeIn: 0.9, fadeOut: 0.3, rise: 0 },
-      ],
-    },
-    world('02-lumar', 'lumar-world', 'Lumar', 'Tress of the Emerald Sea', { first: true }),
-    world('03-canticle', 'canticle-world', 'Canticle', 'The Sunlit Man'),
-    world('04-taldain', 'taldain', 'Taldain', 'White Sand'),
-    world('05-komashi', 'komashi', 'Komashi', 'Yumi and the Nightmare Painter'),
-    world('06-scadrial', 'scadrial', 'Scadrial', 'Mistborn'),
-    world('07-nalthis', 'nalthis', 'Nalthis', 'Warbreaker'),
-    world('08-sel', 'sel', 'Sel', 'Elantris'),
-    world('09-miral', 'miral', 'Miral', 'The Fires of December', { badge: 'New', duration: 2.0, last: true }),
-    {
-      name: '10-realms',
-      // The survey marks are worth showing here: Roshar's places, then the
-      // Cognitive sites that replace them when the Realm turns over.
-      setup: () => { window.__t.world('roshar', 0.95); window.__t.hidePins = false; },
-      preroll: 1,
-      until: () => window.__t.arrived('roshar'),
-      after: 1.6,
-      duration: 3.4,
-      frame: (t) => window.__t.realm(t < 1.4 ? 'physical' : 'cognitive'),
-      cards: [
-        { html: '', cls: 'film-scrim', from: 0, fade: 0 },
-        { html: 'Three Realms', cls: 'film-kicker', from: 0, fadeIn: 0.3, fadeOut: 0 },
-        { html: '<b>Physical</b><span>Roshar, as the Alethi see it</span>', cls: 'film-world', from: 0.08, to: 1.4, fadeIn: 0.24, fadeOut: 0.14, rise: 10 },
-        { html: '<b>Cognitive</b><span>Shadesmar, the sea of beads</span>', cls: 'film-world', from: 1.45, to: 3.35, fadeIn: 0.24, fadeOut: 0.14, rise: 10 },
+        { html: '', cls: 'film-scrim', from: 0, to: 9.8, fade: 0.9 },
+        { html: 'I have walked more worlds<br>than you have had days.', cls: 'film-quote', from: 1.2, to: 5.4, fade: 0.8 },
+        { html: 'And written down almost none of it.<small>Cephandrius, in his own hand</small>', cls: 'film-quote', from: 5.9, to: 9.6, fade: 0.8 },
+        { html: '', cls: 'film-vignette', from: 9.6, to: 13.5, fadeIn: 1.2, fadeOut: 0 },
+        { html: MARK(), cls: 'film-mark', from: 10.0, to: 13.5, fadeIn: 1.1, fadeOut: 0, rise: 0 },
       ],
     },
     {
-      name: '11-spiritual',
+      name: '02-cosmere',
+      setup: () => window.__t.chart({ k0: 0.96, k1: 0.86, dTheta: 0.22, phi0: 1.16, phi1: 1.08 }),
+      preroll: 0.5,
+      until: () => window.__t.ready(),
+      after: 0.4,
+      duration: 6.0,
+      frame: (t, d) => window.__t.drift(t, d, { k0: 0.96, k1: 0.86, dTheta: 0.22, phi0: 1.16, phi1: 1.08 }),
+      cards: [
+        scrim,
+        { html: 'Every published world<small>19 systems · 33 worlds · 57 moons</small>', cls: 'film-line', from: 0.9, to: 5.15, fadeIn: 0.7, fadeOut: 0.6, rise: 8 },
+      ],
+    },
+    sysShot('03-scadrian', 'system', 'scadrian', MEDIUM, { labels: true }, ['The Scadrian system', 'Mistborn']),
+    sysShot('04-selish', 'system', 'selish', { ...MEDIUM, dTheta: -0.30 }, { labels: true }, ['The Selish system', 'Elantris · The Emperor’s Soul']),
+    sysShot('05-taldain', 'system', 'taldainian', { k0: 0.95, k1: 0.80, dTheta: 0.26, phi0: 1.12, phi1: 1.02 }, { labels: true }, ['Taldain', 'White Sand · held between two suns']),
+    sysShot('06-lumar', 'world', 'lumar-world', { k0: 2.05, k1: 1.72, dTheta: 0.28, phi0: 1.12, phi1: 1.05 }, null, ['Lumar', 'Tress of the Emerald Sea · twelve moons']),
+    sysShot('07-shadesmar', 'system', 'rosharan',
+      { k0: 0.66, k1: 0.54, theta0: -0.98, dTheta: 0.36, phi0: 1.30, phi1: 1.34 },
+      { realm: 'cognitive', rate: 1 },
+      ['Shadesmar', 'Where the land is a sea of beads'], 6.5),
+    {
+      name: '08-spiritual',
       setup: () => window.__t.spiritual(),
       preroll: 0.5,
       until: () => window.__t.spiritualSettled(),
-      after: 1.0,
-      duration: 2.4,
-      cards: [
-        { html: '', cls: 'film-scrim', from: 0, fade: 0 },
-        { html: 'Three Realms', cls: 'film-kicker', from: 0, fadeIn: 0, fadeOut: 0.3 },
-        { html: '<b>Spiritual</b><span>Sixteen Shards of Adonalsium</span>', cls: 'film-world', from: 0.05, to: 2.35, fadeIn: 0.24, fadeOut: 0.2, rise: 10 },
-      ],
+      after: 1.2,
+      duration: 5.5,
+      cards: [scrim, label('The Spiritual Realm', 'Sixteen Shards of Adonalsium', 5.5)],
     },
     {
-      name: '12-web',
+      name: '09-web',
       setup: () => window.__t.ui({ view: 'web' }),
-      preroll: 1.2,
-      duration: 3.2,
+      preroll: 1.4,
+      duration: 5.5,
       // Kaladin is picked on camera: the web steps back and his ties light.
       frame: (t, d) => {
-        // Anchored left: the card that opens there must not be cropped.
-        window.__t.kb(t, d, 1.0, 1.05, '0% 42%');
-        window.__t.once('pick', t, 1.0, () => window.__ceph.store.set('selected', 'kaladin'));
+        window.__t.kb(t, d, 1.0, 1.04, '0% 42%');
+        window.__t.once('pick', t, 1.6, () => window.__ceph.store.set('selected', 'kaladin'));
       },
       cards: [
         { html: '', cls: 'film-band', from: 0, fade: 0 },
-        { html: '438 people.<small>And how they’re connected</small>', cls: 'film-line', from: 0.08, to: 3.15, fadeIn: 0.28, fadeOut: 0.14 },
+        { html: '438 people.<small>And how they’re connected</small>', cls: 'film-line', from: 0.9, to: 4.65, fadeIn: 0.7, fadeOut: 0.6 },
       ],
     },
     {
-      name: '13-arcanum',
-      setup: () => window.__t.ui({ panel: 'arcanum', zoom: 1.2 }),
-      preroll: 1.2,
-      duration: 2.2,
-      frame: (t, d) => window.__t.kb(t, d, 1.0, 1.06, '50% 30%'),
-      cards: [
-        { html: '', cls: 'film-band', from: 0, fade: 0 },
-        { html: 'Twenty magic systems.<small>And how each one works</small>', cls: 'film-line', from: 0.08, to: 2.15, fadeIn: 0.28, fadeOut: 0.14 },
-      ],
-    },
-    {
-      name: '14-spoilers',
+      name: '10-spoilers',
       setup: () => window.__t.ui({ panel: 'journal', zoom: 1.2 }),
       preroll: 1.4,
-      duration: 4.8,
+      duration: 6.5,
       frame: (t, d) => window.__t.spoilers(t, d),
       cards: [
         { html: '', cls: 'film-band', from: 0, fade: 0 },
-        { html: 'Tell it where you are in the books.<small>First read? Pick your place</small>', cls: 'film-line', from: 0.08, to: 2.45, fadeIn: 0.28, fadeOut: 0.18 },
-        { html: 'It hides what you haven’t read.<small>Names, places, people, lore</small>', cls: 'film-line', from: 2.6, to: 4.75, fadeIn: 0.28, fadeOut: 0.18 },
+        { html: 'Tell it where you are in the books.<small>First read? Pick your place</small>', cls: 'film-line', from: 0.9, to: 3.2, fadeIn: 0.7, fadeOut: 0.5 },
+        { html: 'It hides what you haven’t read.<small>Names, places, people, lore</small>', cls: 'film-line', from: 3.6, to: 5.65, fadeIn: 0.6, fadeOut: 0.6 },
       ],
     },
     {
-      name: '15-end',
-      setup: () => window.__t.chart(),
-      preroll: 1,
-      until: () => window.__t.chartSettled(),
-      after: 2,
-      duration: 5.0,
-      dip: [0, 0.9],
+      name: '11-end',
+      setup: () => window.__t.chart({ k0: 1.0, k1: 0.95, dTheta: 0.10, phi0: 1.04, phi1: 1.0 }),
+      preroll: 0.5,
+      until: () => window.__t.ready(),
+      after: 0.4,
+      duration: 7.0,
+      frame: (t, d) => window.__t.drift(t, d, { k0: 1.0, k1: 0.95, dTheta: 0.10, phi0: 1.04, phi1: 1.0 }),
+      dip: [0, 1.5],
       cards: [
-        { html: '', cls: 'film-vignette', from: 0, fadeIn: 0.5, fadeOut: 0 },
+        { html: '', cls: 'film-vignette', from: 0, fadeIn: 0.8, fadeOut: 0 },
         {
           html: MARK('<div class="url">the-cosmere.com</div><div class="fine">Free, in your browser · Unofficial fan project, not affiliated with Dragonsteel</div>'),
-          cls: 'film-mark', from: 0.1, fadeIn: 0.7, fadeOut: 0, rise: 0,
+          cls: 'film-mark', from: 0.6, fadeIn: 1.0, fadeOut: 0, rise: 0,
         },
       ],
     },
@@ -479,27 +536,28 @@ export default {
     // Stills. `--stills` renders only these, one PNG each.
     {
       name: 'still-1-hero', still: true,
-      setup: () => window.__t.chart(), preroll: 1, until: () => window.__t.chartSettled(), after: 2,
+      setup: () => window.__t.chart(null), preroll: 0.5, until: () => window.__t.ready(), after: 1.5,
       cards: [
         { html: '', cls: 'film-vignette', from: 0, fade: 0 },
         { html: MARK('<div class="url">the-cosmere.com</div>'), cls: 'film-mark', from: 0, fade: 0, rise: 0 },
       ],
     },
     {
-      name: 'still-2-roshar', still: true,
-      setup: () => { window.__t.intro.begin(); window.__t.intro.frame(1.6); }, preroll: 0.3,
+      name: 'still-2-rosharan', still: true,
+      setup: () => window.__t.system('rosharan', { k0: 0.78, k1: 0.78, dTheta: 0, phi0: 1.04, phi1: 1.04 }, { rate: 0 }),
+      preroll: 0.5, until: () => window.__t.ready(), wait: 25, after: 0.6,
       cards: [
-        { html: '', cls: 'film-scrim', from: 0, fade: 0 },
+        scrim,
         { html: 'I have walked more worlds<br>than you have had days.<small>Cephandrius, in his own hand</small>', cls: 'film-quote', from: 0, fade: 0, rise: 0 },
       ],
     },
     {
       name: 'still-3-lumar', still: true,
-      setup: () => window.__t.world('lumar-world', 0.78), preroll: 1,
-      until: () => window.__t.arrived('lumar-world'), after: 3.2,
+      setup: () => window.__t.world('lumar-world', { k0: 1.8, k1: 1.8, dTheta: 0, phi0: 1.1, phi1: 1.1 }),
+      preroll: 0.5, until: () => window.__t.ready(), wait: 25, after: 1.0,
       cards: [
-        { html: '', cls: 'film-scrim', from: 0, fade: 0 },
-        { html: '<b>Lumar</b><span>Tress of the Emerald Sea</span>', cls: 'film-world', from: 0, fade: 0, rise: 0 },
+        scrim,
+        { html: '<b>Lumar</b><span>Tress of the Emerald Sea · twelve moons</span>', cls: 'film-sys', from: 0, fade: 0, rise: 0 },
         { html: BUG, cls: 'film-bug', from: 0, fade: 0, rise: 0 },
       ],
     },
@@ -513,21 +571,21 @@ export default {
     },
     {
       name: 'still-5-shadesmar', still: true,
-      setup: () => { window.__t.world('roshar', 0.95); }, preroll: 1,
-      until: () => { const ok = window.__t.arrived('roshar'); if (ok) window.__t.realm('cognitive'); return ok; }, after: 2.5,
+      setup: () => window.__t.system('rosharan', { k0: 0.6, k1: 0.6, theta0: -0.80, dTheta: 0, phi0: 1.32, phi1: 1.32 }, { realm: 'cognitive', rate: 0 }),
+      preroll: 0.5, until: () => window.__t.ready(), wait: 25, after: 1.0,
       cards: [
-        { html: '', cls: 'film-scrim', from: 0, fade: 0 },
-        { html: '<b>Cognitive</b><span>Shadesmar, the sea of beads</span>', cls: 'film-world', from: 0, fade: 0, rise: 0 },
+        scrim,
+        { html: '<b>Shadesmar</b><span>Where the land is a sea of beads</span>', cls: 'film-sys', from: 0, fade: 0, rise: 0 },
         { html: BUG, cls: 'film-bug', from: 0, fade: 0, rise: 0 },
       ],
     },
     {
-      name: 'still-6-miral', still: true,
-      setup: () => window.__t.world('miral', 0.8, 1.5), preroll: 1,
-      until: () => window.__t.arrived('miral'), after: 3.2,
+      name: 'still-6-taldain', still: true,
+      setup: () => window.__t.system('taldainian', { k0: 0.86, k1: 0.86, dTheta: 0, phi0: 1.06, phi1: 1.06 }, { rate: 0, labels: true }),
+      preroll: 0.5, until: () => window.__t.ready(), wait: 25, after: 0.6,
       cards: [
-        { html: '', cls: 'film-scrim', from: 0, fade: 0 },
-        { html: '<b>Miral</b><span>The Fires of December<em>New</em></span>', cls: 'film-world', from: 0, fade: 0, rise: 0 },
+        scrim,
+        { html: '<b>Taldain</b><span>White Sand · held between two suns</span>', cls: 'film-sys', from: 0, fade: 0, rise: 0 },
         { html: BUG, cls: 'film-bug', from: 0, fade: 0, rise: 0 },
       ],
     },

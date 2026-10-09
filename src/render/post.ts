@@ -174,9 +174,13 @@ export function createPostChain(
   // cooler, flatter and further into the violet; the Spiritual Realm is all
   // highlight and no shadow.
   const GRADES = {
-    physical: { sat: 0.30, con: 0.22, shadow: [0.80, 0.89, 1.16], high: [1.07, 1.00, 0.92], vig: 0.66, bloom: 1.15 },
-    cognitive: { sat: 0.14, con: 0.30, shadow: [0.74, 0.70, 1.22], high: [0.96, 0.94, 1.10], vig: 0.86, bloom: 1.45 },
-    spiritual: { sat: 0.38, con: 0.20, shadow: [0.92, 0.94, 1.10], high: [1.14, 1.07, 0.96], vig: 0.62, bloom: 1.35 },
+    physical: { sat: 0.30, con: 0.22, shadow: [0.80, 0.89, 1.16], high: [1.07, 1.00, 0.92], vig: 0.66, bloom: 1.15, lift: [0.010, 0.013, 0.028] },
+    // Shadesmar's shadows are black, not violet: the sky is pitch dark and
+    // the light is a small white sun and the flames of the living.
+    // The ink lift every other Realm gets put a navy floor under a sky the
+    // books call pitch black, so Shadesmar keeps only a trace of it.
+    cognitive: { sat: 0.22, con: 0.34, shadow: [0.86, 0.86, 1.02], high: [1.00, 0.98, 1.02], vig: 0.80, bloom: 1.2, lift: [0.0025, 0.0025, 0.0045] },
+    spiritual: { sat: 0.38, con: 0.20, shadow: [0.92, 0.94, 1.10], high: [1.14, 1.07, 0.96], vig: 0.62, bloom: 1.35, lift: [0.010, 0.013, 0.028] },
   } as const;
   let realm: keyof typeof GRADES = 'physical';
   let bloomScale = 1;
@@ -193,6 +197,7 @@ export function createPostChain(
       (grade.uniforms.get('uContrast')!).value = g.con;
       (grade.uniforms.get('uShadow')!.value as THREE.Color).setRGB(...g.shadow as [number, number, number]);
       (grade.uniforms.get('uHighlight')!.value as THREE.Color).setRGB(...g.high as [number, number, number]);
+      (grade.uniforms.get('uLift')!.value as THREE.Color).setRGB(...g.lift as [number, number, number]);
       vignette.darkness = g.vig;
       bloom.intensity = bloomScale * g.bloom;
     },

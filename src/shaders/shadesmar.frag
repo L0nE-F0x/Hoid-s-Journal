@@ -65,10 +65,22 @@ void main() {
     float detail = smoothstep(0.85, 0.30, px);
     vec2 f = fract(cell) - 0.5;
     float sphere = (1.0 - smoothstep(0.24, 0.46, length(f))) * detail;
+    float core = (1.0 - smoothstep(0.0, 0.16, length(f))) * detail;
     float lit = fract(sin(dot(floor(cell), vec2(127.1, 311.7))) * 43758.5453);
-    float roll = (0.5 + 0.5 * sin(uTime * 0.5 + lit * 30.0)) * (0.55 + 0.75 * swell);
-    vec3 beads = uBead * (0.34 + 0.46 * lit);
-    beads += vec3(0.58, 0.48, 0.94) * sphere * (0.14 + 0.55 * lit * roll);
+    // The small white sun sits on the horizon (see skyfield.glsl), and a flat
+    // sea of glass beads throws it back as a glitter path running toward it.
+    vec3 sunDir = normalize(vec3(0.62, 0.05, -0.78));
+    vec3 refl = reflect(-rd, vec3(0.0, 1.0, 0.0));
+    float glitter = pow(max(dot(refl, sunDir), 0.0), 24.0);
+    float tide = smoothstep(0.35, 0.85, swell);
+    float roll = 0.5 + 0.5 * sin(uTime * 0.6 + lit * 30.0);
+    vec3 beads = uBead * (0.30 + 0.40 * lit);
+    // Every bead a little lit, so the field reads as beads at any angle;
+    // the path and the swell decide which ones flash.
+    beads += vec3(0.70, 0.66, 0.95) * core * (0.10 + 0.20 * tide);
+    beads += vec3(0.92, 0.94, 1.0) * sphere * glitter * (0.6 + 0.9 * lit * roll);
+    // Unresolved, the path is still there as a sheen on the sea.
+    beads += vec3(0.80, 0.82, 0.95) * glitter * (1.0 - detail) * 0.22;
     col = mix(col, beads, bead * 0.92);
   }
 

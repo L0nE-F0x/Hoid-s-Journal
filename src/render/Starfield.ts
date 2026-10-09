@@ -177,5 +177,7 @@ export class Starfield {
     const s = this.skyMaterial.uniforms;
     s.uIntensity.value = exposure;
     s.uCognitive.value = cognitive;
+    // Shadesmar's sky has no stars in it.
+    this.points.visible = cognitive < 0.5;
   }
 }

@@ -29,13 +29,9 @@ in `~/Videos/hoids-journal/`. Two things for whoever runs it next:
   after waiting two real compositor frames. Scan each clip for a frame that
   disagrees with both neighbours while they agree with each other, and
   replace it with their mean.
-- **Bug, not fixed:** pressing V on a globe leaves the Shards in a corner.
-  The realm listener flies to the Spiritual map, but `trackFocus`
-  (`App.ts`) still calls `rig.lockTarget` on the focused body every frame,
-  because nothing there checks the Realm. Entering Spiritual from the Cosmere
-  view frames it correctly. Likely fix: return early from `trackFocus` when
-  `realm === 'spiritual'`, and add a `test:interaction` check that the
-  Spiritual frame is centred after V from a globe.
+- Pressing V on a globe used to leave the Shards in a corner: `trackFocus`
+  kept locking the target to the focused world in every Realm. Fixed in
+  the design pass below; `test:interaction` now checks the aim.
 
 **2026-10-07, later: CI is green again — why it was red.** `test:interaction`
 had failed the same ten checks on CI since 22 September (planet click, moon

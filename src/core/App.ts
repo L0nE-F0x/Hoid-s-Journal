@@ -753,7 +753,11 @@ export class App {
     focusedLocation: string | null,
     cinematic: boolean,
   ): void {
-    if (!focusedBody || cinematic || !isGlobeScale(scale)) {
+    // The Spiritual Realm is not a place on the planet. Pressing V on a globe
+    // flies to the Shard map at the origin, and locking the target to the
+    // focused world every frame dragged it back: the Shards sat in a corner
+    // of the frame with the camera aimed at an empty patch of sky.
+    if (!focusedBody || cinematic || !isGlobeScale(scale) || store.state.realm === 'spiritual') {
       this.follow = null;
       this.orrery.setSpinLock(null);
       return;

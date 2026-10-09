@@ -462,14 +462,26 @@ async function run() {
     check('Silverlight stands in Shadesmar after the Shattering', silver);
     check('Yolen exists before the Shattering', yolenOn);
     check('Scadrial stands after the Shattering', scadrialAfter);
+    // From a globe, so a focused world is there to pull the camera back.
+    const wasAt = (await state(page)).scale;
+    await page.evaluate(() => window.__ceph.store.set('cameraCue', { kind: 'focus', id: 'roshar', scale: 'globe' }));
+    await settle(page);
     await page.keyboard.press('v');
     await settle(page);
     s = await state(page);
     const spiritual = await page.evaluate(() => window.__ceph.app.spiritual.group.visible);
     check('V enters the Spiritual Realm', s.realm === 'spiritual' && spiritual, s.realm);
+    const aim = await page.evaluate(() => window.__ceph.app.rig.target.length());
+    check('the Shard map is framed, not the world V was pressed on', aim < 4, aim.toFixed(1));
     await page.keyboard.press('v');
     await settle(page);
     check('V leaves it again', (await state(page)).realm === 'physical');
+    // Put the camera back where it was: on a globe the atlas takes the
+    // column, and the directory checks further down need the directory.
+    if (wasAt === 'cosmere') {
+      await page.evaluate(() => window.__ceph.store.set('cameraCue', { kind: 'frame' }));
+      await settle(page);
+    }
     await page.keyboard.press('c');
     await sleep(400);
     const sitesBack = await page.evaluate(() => ({

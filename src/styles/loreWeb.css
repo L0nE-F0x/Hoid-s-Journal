@@ -59,13 +59,43 @@
   text-shadow: 0 0 12px rgba(5,6,13,0.9);
 }
 
+/* The head is a plain kicker on a desktop, where the legend is always open. */
+.ceph-web-legend-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: default;
+  pointer-events: none;
+}
+.ceph-web-legend-more { display: none; }
+
 @media (max-width: 900px) {
   .ceph-web-legend {
     top: auto;
     bottom: calc(var(--ceph-timeline-top, 160px) + 8px);
+    width: auto;
     max-height: 28vh;
     overflow: auto;
+    padding: 8px 12px;
   }
+  /* Closed, it is one line and the graph keeps the screen. */
+  .ceph-web-legend:not(.is-open) > :not(.ceph-web-legend-head) { display: none; }
+  .ceph-web-legend-head { pointer-events: auto; cursor: pointer; min-height: 28px; }
+  .ceph-web-legend-more {
+    display: inline;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ceph-text-dim);
+  }
+  .ceph-web-legend-more::after { content: ' ▾'; }
+  .ceph-web-legend.is-open .ceph-web-legend-more::after { content: ' ▴'; }
 }
 
 /* Hands auto-fit back after a reader has zoomed or panned. */

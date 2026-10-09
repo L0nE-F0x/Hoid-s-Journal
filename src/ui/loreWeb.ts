@@ -238,7 +238,20 @@ export function mountLoreWeb(root: HTMLElement): { destroy(): void } {
   };
 
   const paintLegend = () => {
-    legend.replaceChildren(el('div', { className: 'ceph-kicker', text: 'Lore Web' }));
+    // On a phone the legend is one line until asked: open, it covered the
+    // lower third of the graph it explains (see loreWeb.css).
+    const head = el('button', {
+      className: 'ceph-web-legend-head',
+      attrs: { type: 'button', 'aria-expanded': String(legend.classList.contains('is-open')) },
+    }, [
+      el('span', { className: 'ceph-kicker', text: 'Lore Web' }),
+      el('span', { className: 'ceph-web-legend-more', text: 'Legend' }),
+    ]);
+    listen(head, 'click', () => {
+      legend.classList.toggle('is-open');
+      head.setAttribute('aria-expanded', String(legend.classList.contains('is-open')));
+    });
+    legend.replaceChildren(head);
     legend.append(el('div', {
       className: 'ceph-web-hint',
       text: 'Click a node for its path to Hoid. Drag a node to move it, drag the background to pan, scroll or pinch to zoom. Names appear as you go in.',

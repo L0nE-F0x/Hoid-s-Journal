@@ -242,7 +242,7 @@ function boot() {
       const e = easeS(t / d);
       const m = this.m;
       const c = o.follow ? app.orrery.bodyPosition(o.follow).clone() : m.c;
-      pose(c, m.r * lerp(o.k0, o.k1, e), (o.theta0 ?? m.theta) + o.dTheta * e,
+      pose(c, m.r * lerp(o.k0, o.k1, e), (o.theta0 ?? m.theta + (o.turn ?? 0)) + o.dTheta * e,
         lerp(o.phi0 ?? m.phi, o.phi1 ?? m.phi, e));
     },
 
@@ -475,10 +475,12 @@ export default {
     sysShot('04-selish', 'system', 'selish', { ...MEDIUM, dTheta: -0.30 }, { labels: true }, ['The Selish system', 'Elantris · The Emperor’s Soul']),
     sysShot('05-taldain', 'system', 'taldainian', { k0: 0.95, k1: 0.80, dTheta: 0.26, phi0: 1.12, phi1: 1.02 }, { labels: true }, ['Taldain', 'White Sand · held between two suns']),
     sysShot('06-lumar', 'world', 'lumar-world', { k0: 2.05, k1: 1.72, dTheta: 0.28, phi0: 1.12, phi1: 1.05 }, null, ['Lumar', 'Tress of the Emerald Sea · twelve moons']),
+    // Framed like the other systems, wide enough to see the Realm: the
+    // owner's note was that tight shots hid it, not that it needed redrawing.
     sysShot('07-shadesmar', 'system', 'rosharan',
-      { k0: 0.66, k1: 0.54, theta0: -0.98, dTheta: 0.36, phi0: 1.30, phi1: 1.34 },
-      { realm: 'cognitive', rate: 1 },
-      ['Shadesmar', 'Where the land is a sea of beads'], 6.5),
+      { k0: 0.92, k1: 0.76, turn: 0.9, dTheta: 0.32, phi0: 1.06, phi1: 0.98 },
+      { realm: 'cognitive', rate: 1, labels: true },
+      ['Shadesmar', 'The Cognitive Realm'], 6.5),
     {
       name: '08-spiritual',
       setup: () => window.__t.spiritual(),
@@ -571,11 +573,11 @@ export default {
     },
     {
       name: 'still-5-shadesmar', still: true,
-      setup: () => window.__t.system('rosharan', { k0: 0.6, k1: 0.6, theta0: -0.80, dTheta: 0, phi0: 1.32, phi1: 1.32 }, { realm: 'cognitive', rate: 0 }),
+      setup: () => window.__t.system('rosharan', { k0: 0.84, k1: 0.84, turn: 1.05, dTheta: 0, phi0: 1.02, phi1: 1.02 }, { realm: 'cognitive', rate: 0, labels: true }),
       preroll: 0.5, until: () => window.__t.ready(), wait: 25, after: 1.0,
       cards: [
         scrim,
-        { html: '<b>Shadesmar</b><span>Where the land is a sea of beads</span>', cls: 'film-sys', from: 0, fade: 0, rise: 0 },
+        { html: '<b>Shadesmar</b><span>The Cognitive Realm</span>', cls: 'film-sys', from: 0, fade: 0, rise: 0 },
         { html: BUG, cls: 'film-bug', from: 0, fade: 0, rise: 0 },
       ],
     },

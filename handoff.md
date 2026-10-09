@@ -16,24 +16,19 @@ Architecture lock: `AGENTS.md` + `DESIGN.md`. This file is the live todo.
 
 # ▶ START HERE — next session
 
-**2026-10-09, evening: Shadesmar redone, trailer re-conceived.** The owner
+**2026-10-09, evening: trailer re-conceived (and a Shadesmar redraw, reverted).** The owner
 said the Cognitive Realm did not read as Shadesmar ("you can't see the
 black beads") and that the trailer's planet close-ups were cut too fast.
 
-- Shadesmar now follows the books (Coppermind, "Rosharan subastral"): a
-  pitch-black sky with no stars, a small white sun on the horizon with flat
-  clouds running into it, bead seas where the Physical Realm has land
-  (cellular beads with per-bead highlights and a glitter path), obsidian
-  where it has sea, and souls as warm flames. All of it is render-time
-  shading; the Cognitive plates are unchanged.
-- **Not fixed:** at a near-ground angle over a system in Shadesmar (phi
-  around 1.5), a large blocky green shape fills part of the frame, probably
-  a landmark's glow sprite seen from too close. At the default angles it
-  does not appear.
+- Shadesmar was rebuilt from the books (black sky, horizon sun, cellular
+  beads, flame souls), pushed, and **reverted at the owner's request**
+  (52f2d25 reverts 562c2c2): they much preferred the original. Their note
+  had been about the trailer's tight framing, not the Realm. Don't redraw
+  the Cognitive Realm without being asked.
 - The trailer is now medium and long shots with one-second dissolves: the
   Rosharan system pulling out to the Cosmere, the chart, four systems
-  turning (Scadrian, Selish, Taldain, Lumar inside its moons), Shadesmar,
-  the Spiritual Realm, the Lore Web, the spoiler gate, and the end card.
+  turning (Scadrian, Selish, Taldain, Lumar inside its moons), Shadesmar
+  (the original look, at system distance), the Spiritual Realm, the Lore Web, the spoiler gate, and the end card.
   Every output carries the soundtrack (`film-cut.mjs --soundtrack`). The
   owner's taste is recorded in memory: no tight close-ups, breathing room,
   audio on everything.

@@ -114,3 +114,10 @@
   cursor: pointer;
 }
 .ceph-web-reset:hover { color: var(--ceph-text); border-color: var(--ceph-border-strong); }
+
+/* On a desktop the card opens in the column the legend occupies, and sat
+   on top of it with the legend's heading peeking out above. The card is
+   what was asked for; the legend steps aside until it closes. */
+@media (min-width: 901px) {
+  .ceph-card-open .ceph-web-legend { display: none; }
+}

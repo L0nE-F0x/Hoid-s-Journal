@@ -1,6 +1,7 @@
 /**
  * Shot list for the Hoid's Journal trailer and its stills. Read by
- * `tools/film.mjs`; see the note there for how the clock works.
+ * `tools/film.mjs` (renders each shot; see the note there for how the clock
+ * works) and `tools/film-cut.mjs` (repairs and assembles them by `cuts`).
  *
  * Functions here are serialised into the page, so they cannot see anything
  * in this file. Shared helpers live on `window.__t`, installed by `boot`.
@@ -343,6 +344,25 @@ const BUG = '<div>Hoid’s Journal</div><small>the-cosmere.com</small>';
 const MARK = (extra = '') => '<img src="./logo.jpg" alt=""><h1>HOID’S JOURNAL</h1><div class="rule"></div>'
   + `<p>A living atlas of the Cosmere</p>${extra}`;
 
+/**
+ * How tools/film-cut.mjs assembles the clips. Each output is a list of
+ * sections: hard cuts inside a section, a 0.3 s dissolve between them.
+ */
+export const cuts = {
+  'hoids-journal-trailer': [
+    ['01-intro'],
+    ['02-lumar', '03-canticle', '04-taldain', '05-komashi', '06-scadrial', '07-nalthis', '08-sel', '09-miral'],
+    ['10-realms', '11-spiritual'],
+    ['12-web', '13-arcanum', '14-spoilers'],
+    ['15-end'],
+  ],
+  'hoids-journal-teaser-15s': [
+    ['02-lumar', '03-canticle', '05-komashi', '09-miral'],
+    ['10-realms'],
+    ['15-end'],
+  ],
+};
+
 export default {
   css: CSS,
   boot,
@@ -372,7 +392,9 @@ export default {
     world('09-miral', 'miral', 'Miral', 'The Fires of December', { badge: 'New', duration: 2.0, last: true }),
     {
       name: '10-realms',
-      setup: () => window.__t.world('roshar', 0.95),
+      // The survey marks are worth showing here: Roshar's places, then the
+      // Cognitive sites that replace them when the Realm turns over.
+      setup: () => { window.__t.world('roshar', 0.95); window.__t.hidePins = false; },
       preroll: 1,
       until: () => window.__t.arrived('roshar'),
       after: 1.6,
@@ -402,11 +424,16 @@ export default {
       name: '12-web',
       setup: () => window.__t.ui({ view: 'web' }),
       preroll: 1.2,
-      duration: 2.4,
-      frame: (t, d) => window.__t.kb(t, d, 1.0, 1.06, '62% 42%'),
+      duration: 3.2,
+      // Kaladin is picked on camera: the web steps back and his ties light.
+      frame: (t, d) => {
+        // Anchored left: the card that opens there must not be cropped.
+        window.__t.kb(t, d, 1.0, 1.05, '0% 42%');
+        window.__t.once('pick', t, 1.0, () => window.__ceph.store.set('selected', 'kaladin'));
+      },
       cards: [
         { html: '', cls: 'film-band', from: 0, fade: 0 },
-        { html: '438 people.<small>And how they’re connected</small>', cls: 'film-line', from: 0.08, to: 2.35, fadeIn: 0.28, fadeOut: 0.14 },
+        { html: '438 people.<small>And how they’re connected</small>', cls: 'film-line', from: 0.08, to: 3.15, fadeIn: 0.28, fadeOut: 0.14 },
       ],
     },
     {
@@ -478,7 +505,7 @@ export default {
     },
     {
       name: 'still-4-web', still: true,
-      setup: () => window.__t.ui({ view: 'web' }), preroll: 2.4,
+      setup: () => { window.__t.ui({ view: 'web' }); window.__ceph.store.set('selected', 'kaladin'); }, preroll: 2.4,
       cards: [
         { html: '', cls: 'film-band', from: 0, fade: 0 },
         { html: '438 people.<small>And how they’re connected</small>', cls: 'film-line', from: 0, fade: 0, rise: 0 },

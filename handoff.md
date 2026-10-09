@@ -16,6 +16,33 @@ Architecture lock: `AGENTS.md` + `DESIGN.md`. This file is the live todo.
 
 # ▶ START HERE — next session
 
+**2026-10-09, later: a design pass, ten commits, nothing pushed.** The owner
+asked for the app to be "more sleek and well-designed", then the marketing
+re-shot from it. An audit captured ~22 states at 1512×900 and 390×844 and
+turned up these, all fixed:
+
+- Selected system's card squashed to a title bar under the directory
+  (`--ceph-col-floor`; directory yields to 44vh while a card is open).
+- System view edge-on after a city plate (tilt clamped 0.6–1.2 on the way
+  in), and a stale place left in the breadcrumb.
+- V on a globe left the Shards in a corner (`trackFocus` stands down in
+  Spiritual; `test:interaction` checks the aim).
+- **Pins are surveyor's marks now**, not lit beads: ring + core on an ink
+  disc, lying flat on the surface (`pin.vert`/`pin.frag`), ~60% the size.
+  This is the biggest visual change. If a pin looks wrong, start there.
+- Directory search names the other tabs that match ("Found in: People · 17").
+- Lore Web selection lights the node's neighbourhood and dims the rest.
+- Phone: wordmark on one line, tool strip fades the edge with more behind
+  it, Lore Web legend collapses to one line, cards open as a peek with More.
+- Desktop: the Lore Web legend steps aside while a card is open.
+
+The trailer pipeline is now two commands (see AGENTS.md): `film.mjs`
+renders clips, and `film-cut.mjs` repairs the occasional unpainted frame
+and assembles the cuts listed in `trailer.mjs`. The unpainted frame is
+deterministic: frame 64 of the Lumar shot on every render so far, cause
+unknown. Outputs go to
+`~/Videos/hoids-journal/`, outside the repo.
+
 **2026-10-09: a trailer, and a bug it found.** `tools/film.mjs` records the
 app frame-exactly: a virtual clock is installed before the app boots
 (`performance.now`, `Date.now`, rAF, timers, CSS animations), stepped 1/60 s,
@@ -25,10 +52,10 @@ worlds, three Realms, Lore Web, Arcanum, the Reading Companion hiding later
 books, end card) plus six stills. The rendered files are outside the repo,
 in `~/Videos/hoids-journal/`. Two things for whoever runs it next:
 
-- Roughly one frame in 2,600 comes back with an unpainted dark tile even
-  after waiting two real compositor frames. Scan each clip for a frame that
-  disagrees with both neighbours while they agree with each other, and
-  replace it with their mean.
+- A rare frame comes back with an unpainted dark tile even after waiting
+  two real compositor frames (the same frame each render; see below).
+  `film-cut.mjs` finds it, since it disagrees with both neighbours while
+  they agree with each other, and replaces it with their mean.
 - Pressing V on a globe used to leave the Shards in a corner: `trackFocus`
   kept locking the target to the focused world in every Realm. Fixed in
   the design pass below; `test:interaction` now checks the aim.

@@ -162,8 +162,10 @@ function installClock() {
     },
     /**
      * Resolves after two real compositor frames. Without it the screenshot
-     * can race the canvas being presented and catch a tile of the previous
-     * frame, or of nothing: one frame in forty had a dark rectangle in it.
+     * raced the canvas being presented, and one frame in forty had a dark,
+     * unpainted rectangle in it. With it, a rare one still slips through
+     * (always the same frame of the same shot); tools/film-cut.mjs repairs
+     * those.
      */
     presented() {
       return new Promise((ok) => realRAF(() => realRAF(() => ok())));

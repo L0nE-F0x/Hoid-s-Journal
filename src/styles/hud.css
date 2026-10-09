@@ -538,6 +538,9 @@
 }
 .ceph-tooltip.is-on { opacity: 1; }
 
+/* The peek-and-More card is a phone pattern; a desktop card is always whole. */
+.ceph-drawer-more { display: none; }
+
 /* Phones: one top band, one bottom bar, everything else between them. */
 @media (max-width: 900px) {
   .ceph-topbar {
@@ -579,6 +582,26 @@
     padding: 12px 14px 14px;
   }
   .ceph-modal-card { padding: 18px 16px 22px; }
+  /* A card on a phone is a peek: the head and two lines of gist, then More.
+     Open in full it covered the globe it was describing. */
+  .ceph-panel-drawer:not(.is-open) > :not(.ceph-drawer-head):not(.ceph-fact):not(.ceph-btn),
+  .ceph-panel-drawer:not(.is-open) > .ceph-fact--aside,
+  .ceph-panel-drawer:not(.is-open) > .ceph-btn--primary { display: none; }
+  .ceph-panel-drawer:not(.is-open) > .ceph-fact:not(.ceph-fact--aside) {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
+    margin-bottom: 0;
+  }
+  .ceph-panel-drawer:not(.is-open) {
+    padding-bottom: 12px;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .ceph-panel-drawer.is-open { max-height: 56vh; }
+  .ceph-drawer-more { display: inline-flex; margin-top: 8px; padding: 4px 10px; font-size: 10px; }
   .ceph-topbar-left { flex-wrap: nowrap; }
   .ceph-command-sub { max-width: 42vw; }
   .ceph-book-list { max-height: 42vh; }

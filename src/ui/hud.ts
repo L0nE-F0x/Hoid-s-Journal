@@ -234,6 +234,16 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
     listen(close, 'click', () => { store.set('selected', null); store.set('hovered', null); });
     drawer.append(close);
     fillLoreCard(drawer, id);
+    // A phone shows the head and the gist first (hud.css), so the world the
+    // card is about is still on screen. Every new card starts that way.
+    drawer.classList.remove('is-open');
+    const more = el('button', { className: 'ceph-btn ceph-drawer-more', text: 'More', attrs: { type: 'button' } });
+    listen(more, 'click', () => {
+      const open = drawer.classList.toggle('is-open');
+      more.textContent = open ? 'Less' : 'More';
+    });
+    const gist = drawer.querySelector(':scope > .ceph-fact:not(.ceph-fact--aside)');
+    if (gist) gist.after(more); else drawer.append(more);
   };
 
   // Which edges of the tool strip have more behind them (phone only; on a

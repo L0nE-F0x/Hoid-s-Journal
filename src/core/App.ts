@@ -386,6 +386,9 @@ export class App {
       const globe = isGlobeScale(next);
       // Panels react to these synchronously, so insets are current by the time
       // the framing distance below is measured.
+      // A world is not a place on it: leaving Kholinar for Roshar's globe (or
+      // anywhere else) must not leave Kholinar in the breadcrumb.
+      store.set('focusedLocation', null);
       store.set('focusedBody', id);
       store.set('focusedSystem', body.system);
       if (!keepSelected) store.set('selected', id);
@@ -419,6 +422,13 @@ export class App {
       const outer = Math.max(8, systemExtent(id));
       this.framing = null;
       this.rig.flyTo(p, this.rig.framingDistance(outer * 0.95, 0.92), 2.1);
+      // A system is read from above, at a slant. Coming up from a city plate
+      // the camera is nearly level with the ground, and keeping that angle
+      // laid the whole disc edge-on: thirteen orbits as one bright line.
+      // Clamp rather than set, so a tilt the reader chose here survives.
+      const tilt = Math.min(1.2, Math.max(0.6, this.rig.elevation));
+      if (tilt !== this.rig.elevation) this.rig.setAngles(this.rig.heading, tilt);
+      store.set('focusedLocation', null);
       store.set('focusedSystem', id);
       store.set('focusedBody', null);
       store.set('selected', id);

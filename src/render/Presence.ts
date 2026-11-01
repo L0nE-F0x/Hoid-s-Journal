@@ -5,6 +5,7 @@ import { uvOnBody } from '../layout/surface.ts';
 import { hubWorld } from '../layout/cognitive.ts';
 import type { Orrery } from './Orrery.ts';
 import { sunTexture } from './planetTextures.ts';
+import { rewriteLineDistances } from './lines.ts';
 import sunVert from '../shaders/sun.vert';
 import sunFrag from '../shaders/sun.frag';
 
@@ -282,7 +283,7 @@ export class Presence {
       pos.setXYZ(0, yolenPos.x, yolenPos.y, yolenPos.z);
       pos.setXYZ(1, destPos.x, destPos.y, destPos.z);
       pos.needsUpdate = true;
-      row.line.computeLineDistances();
+      rewriteLineDistances(row.line);
       const mat = row.line.material as THREE.LineDashedMaterial;
       mat.opacity = hot ? 0.95 : linesOn ? 0.55 : 0;
       mat.dashSize = hot ? 0.4 : 0.8;
@@ -389,7 +390,7 @@ export class Presence {
     this.trail.geometry.setDrawRange(0, n);
     pos.needsUpdate = true;
     this.trail.geometry.computeBoundingSphere();
-    this.trail.computeLineDistances();
+    rewriteLineDistances(this.trail, n);
     this.trailMat.color.set(ch.color);
   }
 }

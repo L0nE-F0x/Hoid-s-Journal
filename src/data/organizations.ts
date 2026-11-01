@@ -268,10 +268,11 @@ export const ORGANIZATIONS: Organization[] = [
     'Southern Scadrians who survived the Ice Death on the Sovereign\'s medallions, and fly on ettmetal.',
     {
       members: ['allik', 'jordis', 'admiral-daal'],
-      aliases: 'Southern Scadrians, south Scadrial, Malwish Consortium',
+      aliases: 'Southern Scadrians, south Scadrial',
       arc: 'bom', world: 'Scadrial', wiki: 'Malwish',
       see: ['southern-continent', 'harmonium', 'malwish-medallion', 'allik'],
-      bio: 'Every Malwish wears a mask, at all times, though the mask may change. Their airships run on ettmetal and their medallions lend Feruchemy to anyone who touches them, and they were raised to revere the metalborn the north takes for granted. By The Lost Metal five southern nations sit under the Malwish banner as a Consortium, unified mostly by one faction that sees the north as chaotic and dangerous.',
+      bio: 'Every Malwish wears a mask, at all times, though the mask may change. Their airships run on ettmetal and their medallions lend Feruchemy to anyone who touches them, and they were raised to revere the metalborn the north takes for granted.',
+      // The Consortium (The Lost Metal) is the 'malwish-nations' place card.
     }),
   org('kandra', 'The kandra', '#d6d3d1', 'mistborn1', 'species',
     'Shapeshifters who digest a body and wear its bones, hired out by Contract.',

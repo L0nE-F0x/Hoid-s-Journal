@@ -57,7 +57,10 @@ export const LOCATIONS: Location[] = [
   loc('akinah', 'Akinah', 'roshar', 'stormlight', 0.093, 0.567, '#a1a1aa', 'gem',
     'Ruined Aimian capital, guardian of a Dawnshard.', {
       region: 'Aimia',
-      bio: 'The Aimian capital, ruined and guarded, under weather no ship approaches willingly. On the Wandersail\'s voyage Nikli poisoned a crewman to frighten them into turning back; Rysn went on, found the Dawnshard waiting inside, and talked the Sleepless into sparing her crew.', arc: 'oathbringer' }),
+      bio: 'The Aimian capital, ruined and guarded, under weather no ship approaches willingly. On the Wandersail\'s voyage Nikli poisoned a crewman to frighten them into turning back; Rysn went on, found the Dawnshard waiting inside, and talked the Sleepless into sparing her crew.',
+      // Named in Oathbringer, but every line of the card is the Dawnshard
+      // novella: the guardians, the voyage, what was waiting inside.
+      arc: 'dawnshard' }),
   loc('horneater-peaks', 'Horneater Peaks', 'roshar', 'stormlight', 0.669, 0.533, '#fdba74', 'peak',
     'Volcanic mountains hiding Cultivation\'s Perpendicularity.', {
       region: 'Horneater Peaks',
@@ -584,7 +587,8 @@ export const PERPS: Perpendicularity[] = [
   { id: 'patjis-eye-perp', name: "Patji's Eye", body: 'first-of-the-sun', book: 'arcanum',
     fact: 'A perpendicularity on the island Patji, where Aviar gain their talents.', at: 'patji',
     eraMin: 1, canon: C, sources: ['Arcanum Unbounded — Drominad', 'Isles of the Emberdark'] },
-  { id: 'pits-of-hathsin-perp', name: 'The Pits of Hathsin', body: 'scadrial', book: 'mistborn1',
+  // Ruin's power in the Pits is the end of The Hero of Ages.
+  { id: 'pits-of-hathsin-perp', name: 'The Pits of Hathsin', body: 'scadrial', book: 'mistborn1', arc: 'hoa',
     fact: 'Where Ruin\'s power crystallised into atium. Not a doorway so much as a wound that produced metal.',
     at: 'pits-of-hathsin', eraMin: 2, eraMax: 2, canon: C, sources: ['Mistborn Era 1'] },
   { id: 'dominion-pool', name: 'Sel\'s second perpendicularity', body: 'sel', book: 'elantris',

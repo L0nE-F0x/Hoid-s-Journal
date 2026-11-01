@@ -369,8 +369,12 @@ export class Presence {
     const pos = this.trail.geometry.getAttribute('position') as THREE.BufferAttribute;
     let n = 0;
     for (const era of COSMERE.eras) {
-      const row = ch.eras.find((e) => e.era === era.id);
-      if (!row) continue;
+      // The row the reader is allowed to see for this era, chosen the way the
+      // mote is placed. `eras.find` took the first row whatever its gate, so
+      // the trail drew stops a later book reveals — Kelsier off Scadrial, a
+      // Herald's post-Wind and Truth whereabouts — for a Way of Kings reader.
+      const row = characterAt(ch, era.id, progress);
+      if (!row || row.era !== era.id) continue;
       const body = row.body ? bodyById[row.body] : undefined;
       const sys = orrery.systemPosition(row.system);
       if (!sys) continue;

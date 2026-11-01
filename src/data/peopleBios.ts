@@ -4,8 +4,8 @@ import type { Character } from './types.ts';
 export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   vin: {
     wiki: 'Vin',
-    see: ['elend', 'kelsier', 'preservation', 'lord-ruler', 'sazed'],
-    bio: 'A half-skaa Mistborn raised by the crewleader Reen to trust no one, then taught by Kelsier to trust a crew. She kills the Lord Ruler, loves Elend, and briefly holds Preservation before giving her life so Ruin can die. The mists chose her; she still had to choose what to do with them.',
+    see: ['elend', 'kelsier', 'reen', 'lord-ruler', 'sazed'],
+    bio: 'A half-skaa thief raised by her half-brother Reen to trust no one, then taught by Kelsier to trust a crew. She kills the Lord Ruler, loves Elend, and briefly holds Preservation before giving her life so Ruin can die. The mists chose her; she still had to choose what to do with them.',
   },
   kaladin: {
     wiki: 'Kaladin',
@@ -19,8 +19,8 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   wax: {
     wiki: 'Waxillium_Ladrian',
-    see: ['wayne', 'steris', 'marasi', 'telsin', 'harmony'],
-    bio: 'Twinborn lawman of the Roughs dragged back to Elendel as Lord Ladrian. Steelpushes and ironpulls define his fights; Steris and Wayne define his life. He spends Era 2 learning that Harmony\'s quiet is not the same as Harmony\'s help, and that family can be the Set.',
+    see: ['wayne', 'steris', 'marasi', 'telsin', 'harmony', 'house-ladrian', 'weathering'],
+    bio: 'A Coinshot and a Skimmer who spent twenty years as a lawman in the Roughs, came home to Elendel when his uncle died, and found his uncle was Mister Suit. Harmony speaks to him through an earring MeLaan gave him; Lessie turned out to be a kandra; his sister shot him at the Sovereign\'s temple. By The Lost Metal he is a senator, a husband and a father, and Harmony\'s Sword — and he climbs the Shaw in Bilming to cut Telsin off from Autonomy, while Wayne goes out to sea with the bomb.',
   },
   jasnah: {
     wiki: 'Jasnah_Kholin',
@@ -33,7 +33,7 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   khriss: {
     wiki: 'Khrissalla',
-    see: ['nazh', 'silverlight', 'taldain', 'sand-mastery'],
+    see: ['baon', 'gevalden', 'kenton', 'taldain', 'sand-mastery', 'nazh'],
     bio: 'Duchess Khrissalla of Taldain, the Cosmere\'s foremost arcanist and the voice behind the Ars Arcanum essays. She studies Investiture the way generals study maps, sends Nazh to steal the footnotes, and knows more about your planet than your priests do.',
   },
   nazh: {
@@ -43,8 +43,8 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   galladon: {
     wiki: 'Galladon',
-    see: ['raoden', 'elantris-city', 'seventeenth-shard'],
-    bio: 'A Dula Elantrian who taught Raoden how to live in a broken city, then later walks Roshar under another name for the Seventeenth Shard. Dry humour, citrus obsession, and more Cosmere mileage than he admits.',
+    see: ['raoden', 'karata', 'elantris-city', 'seventeenth-shard'],
+    bio: 'A Dula Elantrian who taught Raoden how to live in a broken city, then left Sel with the Seventeenth Shard. On Roshar, with Baon and Demoux, he hunts for Hoid; a Purelake fisherman knows him as Grump. Pessimistic, practical, and better travelled than he admits.',
   },
   sigzil: {
     wiki: 'Sigzil',
@@ -59,12 +59,12 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   azure: {
     wiki: 'Vivenna',
     see: ['vasher', 'siri', 'nightblood'],
-    bio: 'Vivenna of Idris, who lost her betrothal, her hair dye, and her certainties, then gained Breath, a Shardblade that is not a spren, and the name Azure. She hunts Vasher across worlds with a soldier\'s pragmatism and a princess\'s unfinished business.',
+    bio: 'Vivenna of Idris, who lost her betrothal, her hair, and her certainties, then gained Breath, a Shardblade that is not a spren, and the name Azure. She hunts Vasher across worlds with a soldier\'s pragmatism and a princess\'s unfinished business.',
   },
   demoux: {
     wiki: 'Demoux',
     see: ['kelsier', 'seventeenth-shard', 'sazed'],
-    bio: 'An officer of Kelsier\'s rebellion who survives into Harmony\'s age and eventually into the Seventeenth Shard\'s quiet war. On Roshar he is one of the three who ask after Hoid; the Survivor\'s faith never entirely left him.',
+    bio: 'A captain of Kelsier\'s army who preached the Survivor at night in Luthadel, rose to general under Elend, and was struck down by the mists — which Snapped him into a Seer. Long after, he is one of the three who ask after Hoid on Roshar for the Seventeenth Shard.',
   },
   lift: {
     wiki: 'Lift',
@@ -78,53 +78,53 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   sazed: {
     wiki: 'Sazed',
-    see: ['harmony', 'vin', 'kelsier', 'keepers', 'tensoon'],
-    bio: 'A Terris Keeper who catalogued dead religions, lost faith when Tindwyl died, and then remade Scadrial as Harmony. Two Shards in one Vessel leave him vast and often paralysed — the Hero of Ages who can rarely act without undoing himself.',
+    see: ['vin', 'kelsier', 'keepers', 'tindwyl', 'tensoon'],
+    bio: 'A Terris Keeper who catalogued dead religions, lost his faith when Tindwyl died, and then remade Scadrial as Harmony.',
   },
   elend: {
     wiki: 'Elend_Venture',
     see: ['vin', 'sazed', 'house-venture'],
-    bio: 'A scholarly heir who becomes emperor because someone has to read the books on how not to be his father. Mistborn by lerasium, idealist by temperament, he dies beside Vin holding a Koloss army and a philosophy that almost worked.',
+    bio: 'A scholarly heir who becomes king and then emperor because someone has to read the books on how not to be his father. He marries Vin, becomes Mistborn at the Well, and dies at the Battle of Hathsin, beheaded by Marsh, holding a koloss army and a philosophy that almost worked.',
   },
   marsh: {
     wiki: 'Marsh',
-    see: ['kelsier', 'ruin', 'inquisitor', 'harmony'],
-    bio: 'Kelsier\'s brother, turned Inquisitor against his will, then Ruin\'s favourite puppet. He murders a god on command and spends the next era as Ironeyes — Harmony\'s grim reminder that Hemalurgy does not easily let go.',
+    see: ['kelsier', 'inquisitor', 'steel-ministry', 'vin'],
+    bio: 'Kelsier\'s brother, made an Inquisitor by the Ministry he went in to spy on, then Ruin\'s favourite puppet. He beheads Elend at Hathsin and, with what is left of himself, tears out the earring that kept Vin from Preservation. Centuries later the Basin calls him Ironeyes, the death in its folk tales, and he still runs Harmony\'s errands.',
   },
   'lord-ruler': {
     wiki: 'Rashek',
-    see: ['well', 'preservation', 'vin', 'final-empire'],
-    bio: 'Rashek the Traveller, who murdered Alendi, took the Well, became the Lord Ruler, and crushed a planet into a thousand years of ash. Compounding made him unkillable until Vin found the flaw; history still walks in his footprints.',
+    see: ['alendi', 'kwaan', 'vin', 'final-empire', 'kredik-shaw'],
+    bio: 'Rashek, a Terris packman who killed Alendi at the Well of Ascension, took its power, and ruled Scadrial as the Lord Ruler for a thousand years of ash. Allomancy and Feruchemy together made him all but unkillable, until Vin took his metalminds from him.',
   },
   tensoon: {
     wiki: 'TenSoon',
-    see: ['vin', 'kandra', 'harmony', 'sazed'],
-    bio: 'A Third Generation kandra of Potency who wears OreSeur\'s bones, a dog\'s body, and eventually the trust of gods. He breaks the First Contract for Vin and becomes Harmony\'s messenger when the world needs a spy who can be anyone.',
+    see: ['vin', 'oreseur', 'kandra', 'sazed', 'melaan'],
+    bio: 'A Third Generation kandra, born with the Blessing of Presence, who took OreSeur\'s Blessing of Potency when he killed him and spent the siege of Luthadel in a wolfhound\'s bones as Vin\'s "OreSeur". He broke his Contract for her, stood trial in the Homeland, and pulled his own spikes when Ruin seized his body. Three centuries on he is Harmony\'s agent among the kandra, still partial to the wolfhound.',
   },
   spook: {
     wiki: 'Spook',
-    see: ['kelsier', 'sazed', 'vin'],
-    bio: 'The crew\'s half-skaa Tineye who becomes Lord Mistborn after the Catacendre — pewter-burning, city-building, and briefly Ruin\'s whisper-toy. Elendel remembers him as founder; the crew remembered him as the boy who wanted to be useful.',
+    see: ['clubs', 'kelsier', 'vin', 'beldre', 'quellion'],
+    bio: 'Clubs\'s nephew and the crew\'s youngest Tineye, who goes north to Urteau, takes a Hemalurgic spike that Ruin speaks through in Kelsier\'s voice, and tears it out to save the city. After the Catacendre Sazed makes him Mistborn, and he rules the survivors as the Lord Mistborn. The crew remembered him as the boy who wanted to be useful.',
   },
   wayne: {
     wiki: 'Wayne',
     see: ['wax', 'marasi', 'harmonium'],
-    bio: 'A Slider with a hat for every accent and a guilt for every grave. He speed-bubbles through Wax\'s disasters, loves Marasi without winning her, and dies buying Scadrial time with a bomb only he could place.',
+    bio: 'A Slider and a Bloodmaker with a hat for every accent, who shot a man named Durkel in a robbery at sixteen and has paid his daughter every month since. He rode with Wax in the Roughs, followed him to Elendel, joined the constabulary and partnered Marasi for six years. In The Lost Metal he pushes Wax off the Bilming warship, wraps the bomb in a speed bubble with duralumin and bendalloy burning together, and dies in the biggest explosion anyone has ever made. Harmony told him so.',
   },
   marasi: {
     wiki: 'Marasi_Colms',
     see: ['wax', 'wayne', 'steris', 'malwish'],
-    bio: 'Steris\'s illegitimate sister, constable, Pulser, and the scholar who actually finishes the political work Wax starts with bullets. She grows from admiring the Roughs into shaping Elendel\'s future — including a trip into the god-metal underbelly of the Cosmere.',
+    bio: 'Lord Harms\'s illegitimate daughter and Steris\'s half-sister, raised in the Outer Estates, who came to the city to study legal justice and criminal behaviour and had read every report about Wax and Wayne before she met them. Aradel hired her as a constable; at the Sovereign\'s temple she took up the Bands of Mourning and turned the fight. In The Lost Metal the Ghostbloods recruit her and she turns them down because she could not share what she learned. Two years later she is leaving for the Malwish Consortium as an ambassador, and planning to run for governor.',
   },
   steris: {
     wiki: 'Steris_Harms',
     see: ['wax', 'marasi', 'house-ladrian'],
-    bio: 'A woman who weaponises notebooks. Marriage to Wax begins as ledger-alliance and becomes the partnership that keeps House Ladrian solvent and alive; her contingency plans save as many lives as his Pushing.',
+    bio: 'A woman who weaponises notebooks: she memorises social rules because they do not come to her, and keeps a contingency for every occasion. Her marriage to Wax began as a contract and became the partnership that keeps House Ladrian solvent and alive. When the bomb came for Elendel she ran the evacuation of the docks herself, and the governor made her the city\'s Disaster Preparations Officer.',
   },
   melaan: {
     wiki: 'MeLaan',
     see: ['tensoon', 'wax', 'kandra', 'wayne'],
-    bio: 'A Sixth Generation kandra comfortable in any body and few boundaries. She spies for Harmony, flirts with disaster, and gives Wayne a goodbye that is pure MeLaan — honest, theatrical, and kind.',
+    bio: 'A Seventh Generation kandra raised by TenSoon, who backed him at his trial in the Homeland and freed the First Generation when KanPaar turned on them. Three centuries later she is Harmony\'s hands in Elendel, introduces herself to Wax at a party as "Milan", and wears Governor Innate\'s bones in front of a riot. After six years with Wayne she asked Harmony for a mission off-world — the first kandra to go — and left him for Shadesmar.',
   },
   dalinar: {
     wiki: 'Dalinar_Kholin',
@@ -243,13 +243,13 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   shai: {
     wiki: 'Wan_ShaiLu',
-    see: ['forgery', 'rose-empire', 'essence-mark'],
-    bio: 'A Forger who rewrites objects — and herself — with stamps and research. Imprisoned to restore an emperor\'s soul, she walks out having forged a life the court cannot quite revoke.',
+    see: ['gaotona', 'ashravan', 'frava', 'han-shuxen', 'forgery', 'ghostbloods'],
+    bio: 'A MaiPon Forger, among the best alive, caught in the Rose Palace after the Imperial Fool swapped her fake Moon Scepter for the real one and gave her up. Facing execution, she is offered a deal: Forge a new soul for the comatose Emperor Ashravan within his hundred days of mourning. She carries five Essence Marks that took eight years to make, writes him a soul with no backdoors in it, and walks out. Long afterwards, unable to go home to Sel, she is a Ghostblood on Scadrial called Moonlight; under Bilming she stamps her own past to become an Elantrian and holds a wall so Marasi can get through — and no longer remembers who Marasi is.',
   },
   silence: {
     wiki: 'Silence_Montane',
     see: ['william-ann', 'shade', 'simple-rules'],
-    bio: 'A Forests innkeeper who harvests shades with silver and silence. She keeps her daughter alive through debt, lies, and the Simple Rules — a horror story told from the hunter\'s side of the counter.',
+    bio: 'Proprietor of a waystop in the Forests of Hell and, secretly, the White Fox, the bounty hunter every storyteller in the Forests has a tale about. She takes Chesterton Divide\'s bounty to keep the waystop out of Theopolis\'s hands; it costs William Ann a hand and very nearly both their lives. Her grandmother\'s shade, locked in the shrine, settles Theopolis.',
   },
   dusk: {
     wiki: 'Sixth_of_the_Dusk',
@@ -268,8 +268,8 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   felt: {
     wiki: 'Felt',
-    see: ['ghostbloods', 'elend', 'scadrial'],
-    bio: 'A worldhopper who spied for Elend Venture and later turns up in Ghostblood circles. Longevity, bland competence, and a reminder that Scadrial\'s agents got off-world somehow.',
+    see: ['elend', 'kelsier', 'ghostbloods'],
+    bio: 'A House Venture spy who tailed Kelsier\'s crew for Elend, and who turns up, by Word of Brandon, as a scout on Roshar\'s Shattered Plains — and in Ghostblood company. Bland competence, and a reminder that Scadrial\'s agents got off-world somehow.',
   },
   design: {
     wiki: 'Design',
@@ -287,8 +287,8 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
     bio: 'A Sleepless guardian who wears a human role beside Rysn until the Dawnshard secret forces honesty. Hordelings, guilt, and an ancient mandate to keep Change from becoming a weapon.',
   },
   nightblood: {
-    wiki: 'Nightblood_(Roshar)',
-    see: ['vasher', 'szeth', 'type-iv', 'command'],
+    wiki: 'Nightblood',
+    see: ['vasher', 'shashara', 'type-iv', 'command'],
     bio: 'A Type IV BioChromatic entity in sword form, Commanded to destroy evil and permanently confused about the definition. It vaporizes what it judges, chatters like a child, and has changed hands from Vasher to Szeth without getting any better at philosophy.',
   },
   lopen: {
@@ -298,7 +298,7 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   baon: {
     wiki: 'Baon',
-    see: ['kenton', 'khriss', 'seventeenth-shard'],
+    see: ['kenton', 'khriss', 'cynder', 'acron', 'seventeenth-shard'],
     bio: 'A Darksider warrior who guards scholars across Taldain and later across the Cosmere. One of the three Seventeenth Shard agents asking after Hoid on Roshar — loyalty as a profession.',
   },
   syl: {
@@ -374,7 +374,7 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   telsin: {
     wiki: 'Telsin_Ladrian',
     see: ['wax', 'trell', 'the-set'],
-    bio: 'Wax\'s sister and a high operative of the Set under Trell\'s influence. Ambition plus Autonomy\'s religion turns family into opposing command structures; their reunion is a firefight.',
+    bio: 'Wax\'s sister, who stayed in the Village when he left, joined the Set as a young woman and brought their uncle in for his money. She faked her death with Edwarn and played the Set\'s captive to control her brother; at the Sovereign\'s temple she shot him three times and took MeLaan\'s spikes. As the Key she persuaded Autonomy to let her prove Scadrial could be conquered, and built Bilming to do it. When Harmony cut her Connection on the roof of the Shaw, Autonomy left her, and she died with "You have proven yourselves. For now." scratched into her own arm.',
   },
   blushweaver: {
     wiki: 'Blushweaver',
@@ -384,12 +384,12 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   denth: {
     wiki: 'Denth',
     see: ['vasher', 'azure', 'nightblood'],
-    bio: 'A Returned mercenary who smiles while steering Vivenna into catastrophe. Old comrade to Vasher, on the other side of the Manywar\'s leftovers — until the smile cracks.',
+    bio: 'A Returned mercenary, and one of the Five Scholars, who smiles while steering Vivenna into the war Bluefingers is paying for. He took Vasher\'s side in the Manywar and has hated him since Vasher killed his sister Shashara with Nightblood. He is the better swordsman; Vasher wins their last duel with a trick.',
   },
   dilaf: {
     wiki: 'Dilaf',
     see: ['hrathen', 'dakhor', 'shu-dereth'],
-    bio: 'A Dakhor gragdet wearing the mask of an Arelene priest. Hatred of Elantris outruns even Wyrn\'s strategy; Hrathen dies stopping him.',
+    bio: 'Hrathen\'s zealous arteth in Kae — in truth the gragdet of Dakhor, his body remade to pass as Arelene. He hates Elantris because the woman he loved died despite Elantrian help. He leads the massacres in Kae and Teoras; Hrathen kills him, and dies of it.',
   },
   breeze: {
     wiki: 'Breeze',
@@ -399,7 +399,7 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   ham: {
     wiki: 'Hammond',
     see: ['kelsier', 'breeze', 'pewterarm'],
-    bio: 'A Thug who philosophises between pewter burns. Muscle for the crew, conscience in plate armour, happier in a debate than a massacre.',
+    bio: 'A Thug who philosophises between pewter burns. Muscle for the crew, its conscience, and happier in a debate than a massacre.',
   },
   frost: {
     wiki: 'Frost',

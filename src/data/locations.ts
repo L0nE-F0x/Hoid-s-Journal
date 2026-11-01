@@ -115,39 +115,47 @@ export const LOCATIONS: Location[] = [
   loc('luthadel', 'Luthadel', 'scadrial', 'mistborn1', 0.621, 0.517, '#d6a44c', 'city',
     'Capital of the Final Empire and seat of the Lord Ruler. Kredik Shaw at its heart.', {
       region: 'Central Dominance',
-      bio: 'The Lord Ruler\'s capital: a thousand spires of Kredik Shaw at the centre, eleven Great House keeps around it, and the skaa slums breathing ash underneath. Kelsier\'s crew took it down from inside in a year, and what they got was a city with no government, no food, and four armies on the way. Elend spent Era 1 trying to govern it and Vin spent Era 1 keeping it alive.', eraMaps: ['ash'] }),
+      bio: 'The Lord Ruler\'s capital: the spires of Kredik Shaw at the centre, the keeps of the ten Great Houses around it, and skaa slums breathing ash underneath. It is the only city he allows a wall. Kelsier\'s crew mean to take it down from the inside.', eraMaps: ['ash'] }),
   loc('pits-of-hathsin', 'The Pits of Hathsin', 'scadrial', 'mistborn1', 0.583, 0.430, '#a8a29e', 'crystal',
     'The Lord Ruler\'s secret atium farm.', {
       region: 'Central Dominance',
-      bio: 'Crystal caverns where atium grew, worked by skaa who did not last a year and guarded well enough that the empire\'s whole economy rested on the secret. Kelsier was sent here to die, Snapped here instead, and came out a Mistborn with a grudge and a plan. Vin destroyed the pits in the end, which is why atium is a rumour by Era 2.', eraMaps: ['ash'] }),
+      bio: 'Crystal caverns where atium grows, worked by skaa prisoners who must find a geode a week or be beaten to death, and guarded so that the empire\'s economy can rest on the secret. Kelsier was sent here to die and Snapped instead. Days before the Lord Ruler fell he came back, freed the prisoners and shattered the crystals.', eraMaps: ['ash'] }),
   loc('fadrex', 'Fadrex City', 'scadrial', 'mistborn1', 0.429, 0.483, '#f59e0b', 'keep',
-    'Western Dominance stronghold of Lord Cett.', {
+    'A city among rock shelves in the Western Dominance: Cett\'s capital, then Yomen\'s.', {
       region: 'Western Dominance',
-      bio: 'A city built into a bowl of rock spires in the Western Dominance, easy to defend and impossible to starve out quickly. Cett held it when Luthadel fell, and Elend besieged it because the Lord Ruler\'s last storage cache was underneath — the one that turned out to hold not food but the truth about the Deepness.', arc: 'hoa', eraMaps: ['ash'] }),
+      bio: 'A trade city built into red rock shelves, easier to defend than Tremredare. Cett made it his capital after the Collapse and lost it to the obligator Aradan Yomen while he was away at Luthadel. Elend besieged it for the Lord Ruler\'s last storage cache, and the siege ended in an alliance.', arc: 'hoa', eraMaps: ['ash'] }),
   loc('urteau', 'Urteau', 'scadrial', 'mistborn1', 0.736, 0.406, '#60a5fa', 'canal',
-    'Northern Dominance capital; a city of drained canals.', {
+    'Northern Dominance capital; a city of dry canals.', {
       region: 'Northern Dominance',
-      bio: 'Capital of the Northern Dominance, built on canals that its own rebels drained rather than let a nobleman\'s water flow. Spook came here after the Collapse and found a city run by a demagogue, a nest of Ministry holdouts, and a hidden storage cavern under a burning street.', arc: 'hoa', eraMaps: ['ash'] }),
-  loc('elendel', 'Elendel', 'scadrial', 'mistborn2', 0.515, 0.328, '#d6a44c', 'city',
+      bio: 'Capital of the Northern Dominance and House Venture\'s home city, crossed by canals that have been dry for a century — the Lord Ruler drained them into a hidden lake in his storage cache. Spook came here after the Collapse and found the Citizen burning noblemen.', arc: 'hoa', eraMaps: ['ash'] }),
+  // Basin pins are on `scadrial_full.png`, which marks no towns. They are
+  // measured on the Basin survey (`elendel_basin.png`) and carried across:
+  // Elendel is the hub the rail lines radiate from on both plates, and one
+  // world-plate pixel is about 9.4 survey pixels (checked against the Tyrian
+  // Sea's south shore, the Bilming peninsula and the Faleast spur).
+  loc('elendel', 'Elendel', 'scadrial', 'mistborn2', 0.556, 0.293, '#d6a44c', 'city',
     'Harmony\'s great city in the Basin, built where the old empire died.', {
       region: 'Elendel Basin',
-      bio: 'Harmony\'s city, laid out by Sazed himself on ground where the old world ended, with eight octants and a canal ring and a constitution nobody has read recently. Four hundred years on it is rich, complacent, and quietly run by the houses; Wax came back to it for a funeral and stayed for the trouble.', eraMaps: ['basin'] }),
-  loc('bilming', 'Bilming', 'scadrial', 'mistborn2', 0.438, 0.348, '#64748b', 'port',
-    'Industrial port of the western Basin.', {
+      bio: 'The largest city in the Basin and, Brandon has said, in the Cosmere — named by Spook for Elend, and built at the mouth of the Irongate where it runs into Hammondar Bay. Its octants, canals and senate are run, quietly, by the great houses. Wax estimates millions live here; he came back to it when his uncle died and stayed for the trouble.', eraMaps: ['basin'], wiki: 'Elendel' }),
+  loc('bilming', 'Bilming', 'scadrial', 'mistborn2', 0.533, 0.299, '#64748b', 'port',
+    'The other great city of the Basin, across the water from Elendel.', {
       region: 'Elendel Basin',
-      bio: 'The Basin\'s industrial port on the western coast, all shipyards and smokestacks and civic resentment of Elendel. By The Lost Metal it is the Set\'s own city in everything but name, with a bomb in it and Autonomy\'s avatar in the harbour.', arc: 'tlm', eraMaps: ['basin'] }),
-  loc('new-seran', 'New Seran', 'scadrial', 'mistborn2', 0.655, 0.392, '#e8b86d', 'city',
-    'Southern city of canals and conspiracy.', {
+      bio: 'One of the Outer Cities, and with New Seran one of the two that count, on a hooked peninsula across the bay from Elendel. Since the south was found it has grown skyscrapers and suburbs and a grievance. By The Lost Metal its mayor is the Set\'s ally, its tallest tower is the Set\'s headquarters, and under its streets the Set is building a bomb.', arc: 'tlm', eraMaps: ['basin'], wiki: 'Bilming' }),
+  // New Seran is off the bottom of the Basin survey: "the very southern edge of
+  // the basin, on the rail line through the Seran Range". The pin is where that
+  // line leaves the survey, which is as close as the plates allow.
+  loc('new-seran', 'New Seran', 'scadrial', 'mistborn2', 0.607, 0.336, '#e8b86d', 'city',
+    'A terraced Outer City on the Basin\'s southern edge.', {
       region: 'Elendel Basin',
-      bio: 'A southern Basin city of stepped canals and old money, far enough from Elendel to keep its own secrets and close enough to sell them. Wax and Steris came for a wedding and found a Set operation running out of the hills above it.', arc: 'bom', eraMaps: ['basin'] }),
-  loc('doxonar', 'Doxonar', 'scadrial', 'mistborn2', 0.505, 0.350, '#94a3b8', 'home',
-    'A Basin town on the southern rail lines beyond Elendel.', {
+      bio: 'Built across a dozen enormous flat stone terraces with streams dropping from one to the next and gondolas strung a hundred feet up, at the southern edge of the Basin where the line runs through the Seran Range. It is one of the two Outer Cities with real political weight. Wax, Steris, Wayne, Marasi and MeLaan came here on ReLuur\'s trail and found Lady Kelesina and the Set waiting.', arc: 'bom', eraMaps: ['basin'], wiki: 'New_Seran' }),
+  loc('doxonar', 'Doxonar', 'scadrial', 'mistborn2', 0.556, 0.304, '#94a3b8', 'home',
+    'A Basin city just south of Elendel, named for Dockson.', {
       region: 'Elendel Basin',
-      bio: 'A Basin town on the southern rail lines, named for a man who died holding a gate in a city that no longer exists. Most Basin towns are named for somebody from the Final Empire; most of them have forgotten which somebody.', arc: 'bom', eraMaps: ['basin'] }),
-  loc('dryport', 'Dryport', 'scadrial', 'mistborn2', 0.575, 0.312, '#38bdf8', 'port',
-    'On the route between Elendel and the northern Roughs.', {
+      bio: 'A city of the Basin just south of Elendel on the rail lines, and one of the places named for the crew: this one for Dockson. House Tekiel shipped freight toward it in the Vanishers\' year.', arc: 'aol', eraMaps: ['basin'], wiki: 'Doxonar' }),
+  loc('dryport', 'Dryport', 'scadrial', 'mistborn2', 0.561, 0.291, '#38bdf8', 'port',
+    'A town on Elendel\'s doorstep with its own branch line.', {
       region: 'Elendel Basin',
-      bio: 'A stop on the route between Elendel and the northern Roughs, where the rails end and the dust begins. Everyone passing between Basin law and no law at all goes through somewhere like it.', eraMaps: ['basin'] }),
+      bio: 'A town just east of Elendel on the Irongate, with a dedicated branch of the Basin railway. Wax boarded a train here at the end of the Vanishers case, having read his uncle\'s whereabouts out of Miles\'s coded notes. Not to be confused with Drypost, up the line toward the Roughs.', arc: 'aol', eraMaps: ['basin'], wiki: 'Dryport' }),
 
   // Other worlds — first-pass original pins
   loc('elantris-city', 'Elantris', 'sel', 'elantris', 0.46, 0.42, '#a78bfa', 'city',
@@ -158,7 +166,7 @@ export const LOCATIONS: Location[] = [
     { region: 'Arelon', bio: 'The Arelish capital, built in Elantris\'s shadow when the real city failed — a court of new nobility pretending the grey walls next door are an eyesore rather than an indictment. Sarene arrived here to marry a prince who was officially dead, and started fixing the country out of sheer irritation.' }),
   loc('teod', 'Teod', 'sel', 'elantris', 0.22, 0.28, '#818cf8', 'port',
     'Northern maritime kingdom, Sarene\'s home.',
-    { region: 'Teod', bio: 'A maritime kingdom on a northern peninsula, small, rich, and the last place on Sel that Shu-Dereth has not converted. Teod\'s fleet is its argument and Sarene is its ambassador; the Fjordell fleet came for it anyway and did not get it.' }),
+    { region: 'Teod', bio: 'A maritime kingdom on a northern peninsula, small, rich, and one of the last two Aonic kingdoms, with Arelon, that Fjorden has not converted. Teod\'s fleet is its argument and Sarene is its ambassador; the Fjordell fleet came for it anyway and did not get it.' }),
   loc('fjorden', 'Fjorden', 'sel', 'elantris', 0.68, 0.38, '#ef4444', 'keep',
     'Seat of Shu-Dereth and the gyorns.',
     { region: 'Fjorden', bio: 'The seat of Shu-Dereth and the engine that has been converting Sel one country at a time for generations. Wyrn rules it, the gyorns argue it, and the Dakhor monks are what happens when the arguing stops. Its conquests are theological first and military only when necessary.' }),
@@ -169,15 +177,15 @@ export const LOCATIONS: Location[] = [
     'Highland kingdom of austere Austrism.',
     { region: 'Idris', bio: 'The highland kingdom in the mountains above Hallandren, austere by conviction: grey clothes, no Awakening, and a royal line that considers itself the rightful one. Vivenna was raised to marry the God King and Siri was sent instead, which is the joke Idris did not intend to make.' }),
   loc('kezare', 'Kezare', 'taldain', 'whitesand', 0.42, 0.48, '#fbbf24', 'city',
-    'Dayside capital on the lossand, home of the Diem.',
+    'Capital of Lossand, on an island in the Ry\'DoAli. Home of the Diem and the Taishin.',
     { region: 'Lossand', bio: 'The Dayside capital, on the lossand, where the Taishin govern by trade and the Diem stands over it all — until the massacre. Kenton spends White Sand trying to keep a guild alive in a city that has decided it can afford not to.' }),
   loc('patji', 'Patji', 'first-of-the-sun', 'sixthofdusk', 0.52, 0.50, '#4ade80', 'island',
-    'The Father island of the Pantheon. Patji\'s Eye is a perpendicularity.', {
+    'The Father island of the Pantheon, and the most lethal of them.', {
       region: 'The Pantheon',
-      bio: 'The Father island: the largest and most lethal of the Pantheon, where every plant, animal and rock is trying something. Patji\'s Eye is a perpendicularity at its heart, and Patji itself is — by Word of Brandon and by the way the island behaves — rather more than an island.', eraMin: 1 }),
+      bio: 'The Father island: the largest and most lethal of the Pantheon, where every plant, animal and rock is trying something. Juvenile Aviar from every island come to the lake near its peak, and the trappers who work it rarely live long.', eraMin: 1 }),
   loc('forests-of-hell', 'Forests of Hell', 'threnody', 'shadowsforsilence', 0.50, 0.52, '#78716c', 'forest',
     'Where the Simple Rules are the only law that matters.',
-    { region: 'The Forests', bio: 'Woodland where breaking one of three Simple Rules — kindle no flame, shed no blood, run at night from nothing — calls a shade out of the dark to take you. The rules are not superstition and they are not negotiable, and Threnody\'s settlers have organised an entire economy of silver, salt and caution around them.' }),
+    { region: 'The Forests', bio: 'Forest over nearly all of the smaller continent, full of shades. Three Simple Rules — kindle no flame, shed no blood, do not run at night — are the only protection anyone has, along with silver, which is why silver is money here. The refugees from the Homeland named it for Hell; their grandchildren live in it.' }),
   loc('diggens-point', "Diggen's Point", 'lumar-world', 'tress', 0.18, 0.48, '#6ee7b7', 'rock',
     'The rock Tress left. The Emerald Sea begins here.',
     { region: 'Emerald Sea', bio: 'The rock Tress grew up on and was not supposed to leave: a small island society with a duke, a window-washer\'s daughter and a rule that people stay where they were born. She left anyway, on the least seaworthy reasoning in the Cosmere.' }),
@@ -196,11 +204,11 @@ export const LOCATIONS: Location[] = [
   loc('tathingdwen', 'Tathingdwen', 'scadrial', 'mistborn1', 0.658, 0.130, '#a3e635', 'city',
     'Terris homeland in the far north of the Final Empire.', {
       region: 'Terris Dominance',
-      bio: 'The Terris capital in the far north, and the administrative centre of a people the Lord Ruler had spent a thousand years breeding into stewards. The Synod met here in secret; so did the Keepers, with a thousand years of copperminds between them and the fire.', eraMaps: ['ash'] }),
-  loc('the-roughs', 'The Roughs', 'scadrial', 'mistborn2', 0.585, 0.275, '#a8a29e', 'land',
+      bio: 'The Terris capital in the far north, and the administrative centre of a people the Lord Ruler spent a thousand years breeding into stewards.', eraMaps: ['ash'] }),
+  loc('the-roughs', 'The Roughs', 'scadrial', 'mistborn2', 0.600, 0.240, '#a8a29e', 'land',
     'Lawless frontier beyond the Elendel Basin. Wax\'s old hunting ground.', {
       region: 'The Roughs',
-      bio: 'The frontier outside the Basin: mining camps, cattle, rail spurs and no law that arrives faster than a week. Wax spent twenty years out here as a lawman because it was honest work and because Elendel had a house and a title waiting that he did not want.', eraMaps: ['basin'] }),
+      bio: 'The frontier outside the Basin, north and south: mining camps, ghost towns, one railway into the north and no law that arrives faster than a week. Wax spent twenty years out here as a lawman, most of them in Weathering; Miles kept the law in True Madil, and Jon Deadfinger in Far Dorest.', eraMaps: ['basin'], wiki: 'Roughs' }),
   loc('hallandren', 'Hallandren', 'nalthis', 'warbreaker', 0.50, 0.545, '#f472b6', 'land',
     'The colour-drenched kingdom of the Returned and the God King.',
     { region: 'Hallandren', bio: 'The kingdom of the Returned, the God King and the BioChromatic economy, sitting on the coast that Idris thinks it stole. Its priests are bureaucrats, its gods are a week from dying at all times, and its army is a standing threat nobody in it actually wants to use.' }),
@@ -214,20 +222,20 @@ export const LOCATIONS: Location[] = [
     'Midnight Essence. The Sorceress\'s domain.',
     { region: 'Midnight Sea', bio: 'Midnight Essence: spores that grow into shapeless black creatures that mimic and obey. It is the Sorceress\'s sea because she is the only one who wants it, and she wants it because of what she can make out of it.' }),
   loc('arelon', 'Arelon', 'sel', 'elantris', 0.40, 0.50, '#a78bfa', 'land',
-    'The kingdom whose capital is Elantris, reshaped by the Shaod.',
+    'The kingdom Elantris once ruled from, now run from Kae.',
     { region: 'Arelon', bio: 'The kingdom Elantris used to run and now merely haunts. After the Reod its nobility invented itself out of merchants in a decade, and its politics are a study in how quickly people rebuild a hierarchy when the gods stop answering.' }),
   loc('dayside', 'Dayside', 'taldain', 'whitesand', 0.32, 0.50, '#fde68a', 'land',
     'The sun-locked half of Taldain. White sand, Lossand, the Diem.',
-    { region: 'Dayside', bio: 'The sun-locked half of Taldain, under a white dwarf that never sets: white sand that turns black as it gives up its water, sand masters who pay in their own body to move it, and a civilisation built on the difference.' }),
+    { region: 'Dayside', bio: 'The sun-locked half of Taldain, under a sun that never sets. White sand glows when mastered and turns black once spent, the sand master pays in their own water, and the sun makes it white again. A civilisation is built on the difference.' }),
   loc('darkside', 'Darkside', 'taldain', 'whitesand', 0.72, 0.50, '#1e1b4b', 'land',
     'The night-locked half. Cities of electric light under a dark sky.',
-    { region: 'Darkside', bio: 'The half that never sees the sun, lit by a blue-white supergiant too distant to warm it and by a great deal of electric light. Darksiders have technology Dayside calls blasphemy and a matter-of-fact attitude to a sky that never changes. Khriss is from here.' }),
+    { region: 'Darkside', bio: 'The half that never sees the sun; its star is dim and hidden behind a ring of dust. The Dynasty rules most of it, speaks Dynastic, and has guns and explosives that Dayside does not. Khriss is from here.' }),
   loc('union', 'Union', 'canticle-world', 'sunlit', 0.55, 0.48, '#fb923c', 'city',
     'The Cinder King\'s moving city, harvesting sunhearts ahead of the dawn.',
     { region: 'The Corridor', bio: 'The Cinder King\'s city, larger and faster than Beacon and fed by prospector camps that harvest sunhearts out of ground the dawn is about to take. Union works because someone else is being spent, which is the Cinder King\'s entire economic model.' }),
   loc('lastport', 'Lastport', 'threnody', 'shadowsforsilence', 0.42, 0.58, '#a8a29e', 'port',
-    'A Homeland town on the edge of the Forests.',
-    { region: 'The Homeland', bio: 'A Homeland town on the Forests\' edge, where the trade from inside the trees comes out and the people who go in are outfitted. Everyone here knows the Rules; not everyone here has kept them.' }),
+    'The strongest of the Fortress Towns. It put a fortune on Chesterton Divide.',
+    { region: 'The Forests', bio: 'A fortified town by the Forests and the most powerful city on the continent. Theopolis takes the White Fox\'s corpses here to be paid; Chesterton Divide murdered its governor, which is why his bounty could supply a waystop for a year.' }),
 
   // Second pass: regions a reread actually reaches for. Names are canon, the
   // UVs are ours — placement is relative, not an Isaac Stewart tracing.
@@ -258,19 +266,19 @@ export const LOCATIONS: Location[] = [
     { region: 'Babatharnam', bio: 'A kingdom of the west, with Panatham for its capital and an Oathgate there. Its trees lie down flat, trunk and all, when a highstorm comes. Anyone may become the Most Ancient, in theory; in practice the Monavakah dynasty exiles or executes anyone old enough to challenge them. Sigzil was jailed there three times.' }),
 
   loc('conventical-of-seran', 'Conventical of Seran', 'scadrial', 'mistborn1', 0.802, 0.876, '#9333ea', 'keep',
-    'A Steel Ministry fortress of the Inquisitors, and a cache of the Lord Ruler.', {
+    'A Canton of Inquisition fortress in the Eastern Dominance, where Inquisitors were made.', {
       region: 'Eastern Dominance',
-      bio: 'A Steel Ministry fortress in the eastern mountains where the Inquisitors were made and the Lord Ruler kept a cache. Kelsier\'s crew broke into it for the logbook and left with a plate of inscribed metal, a dead Inquisitor, and the beginning of the knowledge that something else was writing the Lord Ruler\'s story.', arc: 'hoa', eraMaps: ['ash'] }),
+      bio: 'A windowless, steel-plated fortress in a hidden crater far south of Luthadel, where the Lord Ruler made his Inquisitors. Marsh led Sazed in after the Inquisition had gone; in a cave beneath it Sazed found Kwaan\'s confession carved in steel.', arc: 'woa', eraMaps: ['ash'] }),
   loc('vetitan', 'Vetitan', 'scadrial', 'mistborn1', 0.567, 0.673, '#a8a29e', 'city',
-    'A southern skaa town, emptied and led out in the last days of the ash.',
+    'A Southern Dominance town that Fatren held together, and then marched out with Elend.',
     {
       region: 'Southern Dominance',
-      bio: 'A southern skaa town Vin and Elend emptied in the last year of the ash, walking its people north ahead of the mists and the falling sky. It is the small human end of a world ending: a town that packed up and left.', arc: 'hoa', eraMaps: ['ash'] }),
-  loc('weathering', 'Weathering', 'scadrial', 'mistborn2', 0.455, 0.205, '#e8b86d', 'home',
+      bio: 'A farming and mining town in the Southern Dominance that Fatren held together after the lords fled. Elend arrived ahead of ten thousand koloss, Vin killed the Inquisitor driving them, and a storage cache turned up under the Ministry building. The town marched out with Elend\'s army.', arc: 'hoa', eraMaps: ['ash'] }),
+  loc('weathering', 'Weathering', 'scadrial', 'mistborn2', 0.549, 0.234, '#e8b86d', 'home',
     'A Roughs township. Wax kept the peace here before the city called him back.',
     {
       region: 'The Roughs',
-      bio: 'A Roughs township where Waxillium Ladrian kept the peace, buried Lessie, and decided he was finished. Elendel called him home three weeks later.', arc: 'aol', eraMaps: ['basin'] }),
+      bio: 'A town of about fifteen hundred on a grass plain in the Northern Roughs, at the western end of the only railway into the north. When Wax and Wayne first rode in, half of it belonged to the outlaw Granite Joe; once Joe was dead, Wax made himself its lawman, and it took six years for anyone to give him the papers.', arc: 'aol', eraMaps: ['basin'], wiki: 'Weathering' }),
   loc('southern-continent', 'Southern Continent', 'scadrial', 'mistborn2', 0.530, 0.680, '#94a3b8', 'land',
     'The Malwish south: its own civilisation, and its own technology.',
     {
@@ -279,7 +287,7 @@ export const LOCATIONS: Location[] = [
 
   loc('duladel', 'Duladel', 'sel', 'elantris', 0.54, 0.52, '#f472b6', 'land',
     'The Duladen Republic, fallen to revolution before the story opens.',
-    { region: 'Duladel', bio: 'The Duladen Republic, gone before the story begins: a mixed-blood society with an elected government that collapsed into a massacre, and a collapse Fjorden had been patiently arranging. Galladon is from here, which is most of why he is not.' }),
+    { region: 'Duladel', bio: 'The Duladen Republic, gone before the story begins: a mixed-blood society with an elected government that collapsed into a massacre, and a collapse Fjorden had been patiently arranging. Galladon is from here, and the news of its fall shakes him.' }),
   loc('jindo', 'JinDo', 'sel', 'elantris', 0.60, 0.62, '#fbbf24', 'land',
     'Eastern land of the Jindoeese and the ChayShan.',
     { region: 'JinDo', bio: 'The eastern land of the Jindoeese, home of Shu-Keseg\'s older and gentler reading and of ChayShan — a martial art that draws the Dor through movement rather than drawn Aons. Shuden is Jindoeese, and spends most of Elantris being the only person in the room not shouting.' }),
@@ -298,11 +306,11 @@ export const LOCATIONS: Location[] = [
 
   loc('lossand', 'Lossand', 'taldain', 'whitesand', 0.38, 0.52, '#fde68a', 'land',
     'The Dayside nation of the sand and the Taishin, held together by trade.',
-    { region: 'Lossand', bio: 'The Dayside nation of the sand, governed by the Taishin — a council of trade interests that holds together because none of them can afford the alternative. The Diem was one of the seats, which is why its destruction was a constitutional crisis as well as a massacre.' }),
+    { region: 'Lossand', bio: 'The Dayside nation of the sand, governed by the Taishin — a council of the eight Professions that holds together because none of them can afford the alternative. The Diem was one of the seats, which is why its destruction was a constitutional crisis as well as a massacre.' }),
 
   loc('the-homeland', 'The Homeland', 'threnody', 'shadowsforsilence', 0.44, 0.46, '#a8a29e', 'land',
-    'Settled Threnody, safely outside the Forests. It does not feel safe.',
-    { region: 'The Homeland', bio: 'Settled Threnody, outside the Forests, where the shades are supposed to be someone else\'s problem. It does not feel safe because it is not: the Forests are a boundary the shades observe out of habit rather than law.' }),
+    'Where Threnody\'s people came from, across the ocean on the Fallen World. The Evil took it.',
+    { region: 'Fallen World', bio: 'The land the first Forescouts left to explore the Forests. Then the Evil came and killed almost everyone; the survivors fled across the sea to the forests they had named for Hell. Nobody who saw it is left to describe it, and Silence\'s grandmother swore the Forescouts would go back and defeat the Evil.' }),
 
   loc('sapphire-sea', 'Sapphire Sea', 'lumar-world', 'tress', 0.28, 0.55, '#38bdf8', 'sea',
     'Zephyr spores. They make air, and they make it violently.',
@@ -333,12 +341,12 @@ export const LOCATIONS: Location[] = [
     'The sun-scoured path the hover-cities race. Dawn on one side, night on the other.',
     { region: 'The Corridor', bio: 'The strip of survivable ground between the dawn that melts the crust and the night that freezes it. Every city on Canticle lives in it and every city on Canticle is moving, permanently, at the speed of its own sunrise.' }),
 
-  loc('the-crossroads', 'The Crossroads', 'threnody', 'shadowsforsilence', 0.48, 0.56, '#a8a29e', 'home',
-    'Silence Montane\'s waystop. Fire, blood, and running are all against the Rules.',
-    { region: 'The Forests', bio: 'Silence Montane\'s waystop, deep enough into the Forests that every guest is a risk and every night is a negotiation with the Rules. Silence runs it, keeps silver in the doorframes, and hunts bounties on the side because a waystop does not pay for two children.' }),
-  loc('the-fort', 'The Fort', 'threnody', 'shadowsforsilence', 0.40, 0.44, '#78716c', 'keep',
-    'A Homeland fort on the Forests\' edge. Safer than the trees. Not safe.',
-    { region: 'The Homeland', bio: 'A Homeland fort on the Forests\' edge: walls, silver, and a garrison whose job is less to fight than to be somewhere the shades will not bother coming. Safer than the trees. Not safe.' }),
+  loc('the-crossroads', 'Silence\'s waystop', 'threnody', 'shadowsforsilence', 0.48, 0.56, '#a8a29e', 'home',
+    'Silence Montane\'s inn in the Forests. Three rings of silver, pigs, and a shrine nobody opens.',
+    { region: 'The Forests', bio: 'Neutral ground on the Forest roads, rumoured to be guarded by the shade of Silence\'s husband. Silence runs it with William Ann, Sebruki and old Dob, rings it with three circles of silver, and pays for the silver by hunting the criminals who stop for venison. Her grandmother\'s shade is locked in the shrine to the God Beyond.' }),
+  loc('the-fort', 'The forts', 'threnody', 'shadowsforsilence', 0.40, 0.44, '#78716c', 'keep',
+    'The Fortress Towns: safe from the Forests, and home to the fortfolk who tax the roads.',
+    { region: 'The Homeland', bio: 'Where the fortfolk live: towns safe enough that their people dress well, look away from the trees and get careless with the Simple Rules. They claim the roads, tax whoever lives beside them, promise to maintain them and do not, and post the bounties hunters bring in. Lastport and Bastion Hill are two of them.' }),
 
   loc('homeisles', 'The Homeisles', 'first-of-the-sun', 'sixthofdusk', 0.28, 0.62, '#86efac', 'island',
     'The Eelakin islands, away from the Pantheon. Traps are for Patji; this is home.',
@@ -413,34 +421,32 @@ export const LOCATIONS: Location[] = [
     'The far north, and the Keepers who copied everything the Lord Ruler tried to burn.',
     {
       region: 'Terris Dominance',
-      bio: 'The far north: mountains, cold, and a people the Lord Ruler enslaved into stewardship precisely because they were the ones who remembered. The Keepers stored the world in copperminds here and died for it almost to a person; Sazed was the one who lived.', eraMaps: ['ash'] }),
+      bio: 'The far north: mountains, cold, and a people the Lord Ruler bred into stewards and servants. The Keepers among them copy every religion and history the Lord Ruler tried to erase into copperminds; Sazed is one.', eraMaps: ['ash'] }),
   loc('kredik-shaw', 'Kredik Shaw', 'scadrial', 'mistborn1', 0.622, 0.514, '#cbd5e1', 'keep',
-    'The Hill of a Thousand Spires, and the Well underneath it.', {
+    'The Hill of a Thousand Spires: the Lord Ruler\'s palace at the heart of Luthadel.', {
       region: 'Luthadel',
-      bio: 'The Hill of a Thousand Spires: the Lord Ruler\'s palace, black and needled and built over the Well of Ascension. Vin fought the Lord Ruler here and learned what a Sliver is; a thousand years earlier Rashek had taken the Well\'s power in the same spot and remade the world with it.', eraMaps: ['ash'] }),
-  loc('statlin', 'Statlin City', 'scadrial', 'mistborn2', 0.540, 0.300, '#e8b86d', 'city',
-    'A Basin city on the rail lines, far enough out to have its own opinions.',
+      bio: 'The Lord Ruler\'s palace, black and needled, with no wall of its own; stand near it and you feel his Soothing. Kelsier and Vin broke in for a logbook and barely got out. After Kelsier died, Vin went back in and killed the Lord Ruler there.', eraMaps: ['ash'] }),
+  // Ironstand is on the line from Elendel to New Seran, which runs south-east
+  // past Doriel on the Basin survey; the survey does not mark the town, so the
+  // pin sits on that line rather than at a measured dot.
+  loc('ironstand', 'Ironstand', 'scadrial', 'mistborn2', 0.582, 0.316, '#a8a29e', 'home',
+    'A Basin town on the line to New Seran, where the train stopped after the Nightstreet Gang.',
     {
       region: 'Elendel Basin',
-      bio: 'A Basin city out along the rail lines, far enough from Elendel to have opinions about Elendel and near enough to be ignored for having them. The Basin\'s political problem in miniature.', arc: 'bom', eraMaps: ['basin'] }),
-  loc('ironstand', 'Ironstand', 'scadrial', 'mistborn2', 0.620, 0.255, '#a8a29e', 'home',
-    'A Roughs town. There are a dozen like it and Wax has been shot at in most.',
-    {
-      region: 'The Roughs',
-      bio: 'A Roughs town of a few hundred people, a rail siding and a saloon. There are a dozen like it and Wax has been shot at in most of them, which he would tell you is the job and not a complaint.', arc: 'aol', eraMaps: ['basin'] }),
+      bio: 'A town on the rail line between Elendel and New Seran. The Nightstreet Gang boarded Wax\'s train just before it, on Kelesina Shores\' orders, to keep him away from Telsin\'s trail; afterwards the train stopped here, the town doctor dug out what needed digging, and Ironstand\'s constables took the bandits.', arc: 'bom', eraMaps: ['basin'], wiki: 'Ironstand' }),
 
   // --- Sel ---------------------------------------------------------------
   loc('svorden', 'Svorden', 'sel', 'elantris', 0.720, 0.500, '#ef4444', 'city',
-    'Fjordell city of the southern provinces, and a Derethi seat.',
-    { region: 'Fjorden', bio: 'A Fjordell city of the southern provinces and a Derethi seat, where the gyorns train the arguments they will use on countries that have not been converted yet.' }),
+    'The East\'s cultural capital, annexed by Fjorden. Arelon\'s new nobility copy its manners.',
+    { region: 'Opelon', bio: 'A nation on Sycla\'s north-eastern peninsula, capital Seraven, and the cultural epicentre of the East — which is why Arelon\'s insecure new nobility try so hard to look Svordish. Fjorden occupies and annexes it. Lukel\'s wife Jalla is Svordish, and Lukel studied at its university.' }),
   loc('hrovell', 'Hrovell', 'sel', 'elantris', 0.600, 0.430, '#94a3b8', 'land',
-    'Poor, pious and thoroughly converted. Fjorden got there first.',
-    { region: 'Opelon', bio: 'Poor, pious, and thoroughly Derethi — Fjorden reached it early and had very little to argue against. It is the model conversion Wyrn\'s gyorns cite when explaining what is about to happen to somewhere else.' }),
+    'Officially Derethi. Too remote for anyone to check.',
+    { region: 'Opelon', bio: 'A Fjordell-ruled nation so isolated that some villages see a Derethi priest once in months, and the old religions — the Jeskeri Mysteries among them — survive in secret. Its standing army is at Wyrn\'s disposal, and its people live in fear.' }),
   loc('maipon', 'MaiPon', 'sel', 'emperorssoul', 0.660, 0.660, '#fbbf24', 'land',
-    'Where Wan ShaiLu learned Forgery, and where they would execute her for it.',
-    { region: 'MaiPon', bio: 'Where Wan ShaiLu learned Forgery and where they would execute her for practising it. MaiPon treats a soulstamp as a lie carved in stone, which it is; Shai treats it as the only honest way she knows to argue with the world.' }),
+    'Homeland of Forgery. Every soulstamp carries its outline on the back.',
+    { region: 'MaiPon', bio: 'Shai\'s homeland and the home of Forgery: a Forgery weakens the farther it gets from MaiPon. Its people share an ancestry with the JinDo and are often mistaken for them.' }),
   loc('rose-empire', 'The Rose Empire', 'sel', 'emperorssoul', 0.780, 0.620, '#f472b6', 'crown',
-    'Eastern Sel, and an emperor who spent eighty days being someone else\'s essay.',
+    'Eastern Sel, and an emperor with a hundred days to come back from the dead.',
     {
       region: 'Rose Empire', aliases: 'the Rose Empire',
       bio: 'Factions, Grands, and a bureaucracy that would rather rewrite a soul than admit a vulnerability. Shai is hired to forge the Emperor\'s because the alternative is saying out loud that he is gone.' }),
@@ -472,18 +478,14 @@ export const LOCATIONS: Location[] = [
       region: 'UTol',
       bio: 'UTol is a principal Sho Del world — four-armed, Invested, and originally of Yolen, where they fought humans in a war nobody now living saw. What any of that looks like from the ground has not been put on the page.', canon: 'wob', sources: ['Word of Brandon'] }),
   loc('obrodai-claim', "Autonomy's claim", 'obrodai-world', 'mistborn2', 0.500, 0.500, '#db2777', 'land',
-    'A world Autonomy took and put an avatar on. The avatar took a name of her own.',
+    'A world Autonomy has claimed, where a new avatar of her is beginning to manifest.',
     {
       region: 'Obrodai',
-      bio: 'A world Autonomy took and put an avatar on, the way she has taken others. The avatar chose a name of her own, which is the part of the arrangement Autonomy keeps discovering she did not fully think through.', arc: 'tlm', sources: ['The Lost Metal'] }),
-  loc('suluko', 'Suluko', 'first-of-the-sun', 'sixthofdusk', 0.470, 0.520, '#a3e635', 'island',
-    'A Pantheon island. Less lethal than Patji, which is not the same as safe.', {
-      region: 'The Pantheon',
-      bio: 'A Pantheon island less lethal than Patji, which is the local way of saying a trapper might get a season out of it. The aviar are the reason anyone bothers.', eraMin: 1 }),
+      bio: 'In a letter, Patji — another of Autonomy\'s avatars — warns Hoid not to come back to Obrodai: Autonomy has claimed the world, a new avatar is manifesting there, and as a precaution it has been taught to dislike him. Nothing else about Obrodai is known, including where on it anything is; this pin means only "the world".', arc: 'tlm', canon: 'wob', sources: ['Word of Brandon (Patji\'s letter to Hoid)'] }),
   loc('vathi-camp', 'The company camp', 'first-of-the-sun', 'sixthofdusk', 0.560, 0.520, '#fbbf24', 'home',
-    'Off-worlders came to survey the Pantheon. The islands surveyed them back.', {
+    'The Northern Interests Trading Company\'s fortress on Patji: soldiers, scientists, two ironhulls.', {
       region: 'The Pantheon',
-      bio: 'The company camp: off-worlders and mainlanders who came to survey the Pantheon for development and found that the Pantheon surveys back. Vathi wanted to modernise the islands; Dusk wanted them left alone; the machines they brought wanted something else entirely.', arc: 'sixthofdusk' }),
+      bio: 'The company\'s foothold on Patji: a fortress on the far side of the island with soldiers, scientists, merchants and two ironhulls against the deepwalkers, and a machine from the Ones Above that was only ever opened. The smaller scouting camp on the near shore did not survive its deepwalker.', arc: 'sixthofdusk' }),
   loc('longroad', 'The Long Road', 'canticle-world', 'sunlit', 0.500, 0.560, '#fb923c', 'land',
     'The track every hover-city runs, always west, always just ahead of the sun.',
     { region: 'The Corridor', bio: 'The track the hover-cities run: west, always west, at a pace set by the planet\'s rotation and not negotiable. Stop for a day and the day catches you.' }),
@@ -492,9 +494,6 @@ export const LOCATIONS: Location[] = [
     {
       region: 'Komashi',
       bio: 'A Komashi city strung on the hion lines, lit by the machine and kept awake by what the machine\'s leftovers turn into after dark. Kilahito is not unique; it is simply the one with the painters.', canon: 'wob', sources: ['Yumi and the Nightmare Painter'] }),
-  loc('threnody-forests-deep', 'The Deep Forest', 'threnody', 'shadowsforsilence', 0.560, 0.480, '#0f1a10', 'forest',
-    'Past where the Homeland pretends the Forests end. Nobody has drawn what is in here.',
-    { region: 'The Forests', bio: 'Past the depth the Homeland has agreed to call the edge. Nobody has mapped it, the people who have gone in did not come out to argue about it, and the shades in there are older than the settlement.' }),
   loc('lumar-rocks', 'The Rock', 'lumar-world', 'tress', 0.24, 0.44, '#9c8d78', 'rock',
     'One of the few outcrops above the spore seas, and therefore a whole society.',
     { region: 'Lumar', bio: 'One of the few outcrops standing above the spore seas, and therefore an entire society — everything Lumar\'s people have, they have because a rock happened to be there. The seas are not land and cannot be farmed; the rocks are all there is.' }),
@@ -542,10 +541,12 @@ export const PERPS: Perpendicularity[] = [
     fact: 'Preservation\'s pool beneath Kredik Shaw. Used, then collapsed.', at: 'luthadel',
     eraMin: 2, eraMax: 2, canon: C, sources: ['Mistborn Era 1'] },
   { id: 'harmony-pool', name: "Harmony's Perpendicularity", body: 'scadrial', book: 'mistborn2',
-    fact: 'The surviving Scadrian pool after the Catacendre.', at: 'elendel',
-    eraMin: 3, canon: C, sources: ['Mistborn Era 2'] },
+    // Not in Elendel. The Lost Metal puts it somewhere in the south, watched
+    // closely by the Malwish; nothing places it closer than that, so no `at`.
+    fact: 'Harmony\'s own pool, somewhere in the far south of Scadrial.',
+    eraMin: 3, canon: C, sources: ['The Lost Metal'] },
   { id: 'elantris-pool-perp', name: 'The Pool of Elantris', body: 'sel', book: 'elantris',
-    fact: 'Devotion\'s perpendicularity in the mountains above Elantris.', at: 'elantris-city',
+    fact: 'The pool in the Atad Mountains above Elantris. An Elantrian who walks in can choose to dissolve.', at: 'elantris-city',
     eraMin: 1, canon: C, sources: ['Elantris'] },
   // Gone when Cultivation left Roshar at the end of Wind and Truth, so the
   // door closes with era 3 rather than standing open in the Mistborn years.
@@ -565,15 +566,15 @@ export const PERPS: Perpendicularity[] = [
   { id: 'tears-of-edgli-perp', name: 'Tears of Edgli', body: 'nalthis', book: 'warbreaker',
     fact: 'Flowers whose dye is Endowment\'s Investiture made pigment.', at: 'tears-of-edgli',
     eraMin: 1, canon: C, sources: ['Warbreaker'] },
-  { id: 'patjis-eye-perp', name: "Patji's Eye", body: 'first-of-the-sun', book: 'sixthofdusk',
-    fact: 'A perpendicularity on the island Patji, source of Aviar powers.', at: 'patji',
-    eraMin: 1, canon: C, sources: ['Sixth of the Dusk'] },
+  { id: 'patjis-eye-perp', name: "Patji's Eye", body: 'first-of-the-sun', book: 'arcanum',
+    fact: 'A perpendicularity on the island Patji, where Aviar gain their talents.', at: 'patji',
+    eraMin: 1, canon: C, sources: ['Arcanum Unbounded — Drominad', 'Isles of the Emberdark'] },
   { id: 'pits-of-hathsin-perp', name: 'The Pits of Hathsin', body: 'scadrial', book: 'mistborn1',
     fact: 'Where Ruin\'s power crystallised into atium. Not a doorway so much as a wound that produced metal.',
     at: 'pits-of-hathsin', eraMin: 2, eraMax: 2, canon: C, sources: ['Mistborn Era 1'] },
-  { id: 'dominion-pool', name: "Dominion's Pool", body: 'sel', book: 'elantris',
-    fact: 'The second Selish perpendicularity. Dominion was Splintered with Devotion, and both pools remain.',
-    at: 'fjorden', eraMin: 1, canon: C, sources: ['Arcanum Unbounded — Sel essay'] },
+  { id: 'dominion-pool', name: 'Sel\'s second perpendicularity', body: 'sel', book: 'elantris',
+    fact: 'Brandon has said Sel has a second perpendicularity. Where it is, and whose, the books have not said.',
+    eraMin: 1, canon: W, sources: ['Word of Brandon'] },
   { id: 'silverlight-nexus', name: 'The Silverlight Nexus', body: 'yolen', book: 'arcanum',
     fact: 'The crossing that made a city possible where no world is. Khriss came through it and stayed.',
     eraMin: 1, canon: W, sources: ['Arcanum Unbounded', 'Word of Brandon'] },

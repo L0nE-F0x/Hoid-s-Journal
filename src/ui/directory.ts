@@ -13,6 +13,7 @@ import {
   onTheMap,
   orgById,
   systemOnTheMap,
+  shardEraAt,
 } from '../data/index.ts';
 import { store } from '../core/store.ts';
 import { atlasIsOpen } from './atlas.ts';
@@ -322,7 +323,7 @@ export function mountDirectory(root: HTMLElement): { destroy(): void } {
       for (const sh of COSMERE.shards) {
         if (s.era <= 0) continue;
         if (!isVisible(sh, s.readProgress) || !match(sh.name)) continue;
-        const era = sh.eras.find((e) => e.era === s.era) ?? sh.eras[sh.eras.length - 1];
+        const era = shardEraAt(sh, s.era, s.readProgress);
         entry(sh.id, sh.name, era?.status ?? 'shard', sh.color, sh.desc);
       }
     } else if (t === 'doors') {

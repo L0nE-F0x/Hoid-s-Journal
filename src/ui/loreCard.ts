@@ -21,6 +21,7 @@ import {
   wikiHref,
   worldDate,
   type LoreHit,
+  shardEraAt,
 } from '../data/index.ts';
 import { store } from '../core/store.ts';
 import { el, listen } from './dom.ts';
@@ -509,7 +510,7 @@ function fillFromHit(host: HTMLElement, hit: LoreHit): void {
     return;
   }
   const sh = hit.obj;
-  const row = sh.eras.find((e) => e.era === era) ?? sh.eras[0];
+  const row = shardEraAt(sh, era, store.state.readProgress);
   host.append(headOf('Shard of Adonalsium', sh.name, sh.color, sh.canon));
   host.append(factBlock(sh.desc)!);
   host.append(factBlock(sh.bio, true) ?? '');

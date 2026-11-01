@@ -17,6 +17,8 @@ const splintered = (era: number, loc: string, vessel = 'None (Splintered)') =>
   ({ era, status: 'splintered' as const, vessel, loc });
 const merged = (era: number, vessel: string, loc: string) =>
   ({ era, status: 'merged' as const, vessel, loc });
+/** The same row, true only once the reader reaches `arc` of the Stormlight Archive. */
+const from = <T extends object>(arc: string, row: T) => ({ ...row, book: 'stormlight', arc });
 
 export const SHARDS: Shard[] = [
   // The Vessel's name is an Oathbringer epigraph; that she held Ambition was
@@ -58,14 +60,18 @@ export const SHARDS: Shard[] = [
   line('cultivation', 'Cultivation', '#4ade80', 'stormlight', 'Roshar',
     'The Shard of growth and change, Honor\'s counterpart on Roshar.',
     ['The Stormlight Archive', 'Rhythm of War', 'Wind and Truth'], [
-      // No arc on a Shard or its rows yet: everything before era 4 is
-      // written so a Way of Kings reader can read it. Her name is Rhythm of
-      // War's; that she left Roshar is Wind and Truth's.
+      // Her name is Rhythm of War's; that she left Roshar is Wind and
+      // Truth's. Each era past 3 carries all three rows, gated.
       whole(0, '—', 'Yolen (pre-Shattering)'),
       whole(1, 'Unnamed', 'Roshar'), whole(2, 'Unnamed', 'Roshar'),
       whole(3, 'Unnamed', 'Roshar'),
-      whole(4, 'Koravellium Avast', 'Gone from Roshar'),
-      whole(5, 'Koravellium Avast', 'Gone from Roshar'),
+      // Rows for one era are read in order; the last one the reader may see wins.
+      whole(4, 'Unnamed', 'Roshar'),
+      from('row', whole(4, 'Koravellium Avast', 'Roshar')),
+      from('wat', whole(4, 'Koravellium Avast', 'Gone from Roshar')),
+      whole(5, 'Unnamed', 'Roshar'),
+      from('row', whole(5, 'Koravellium Avast', 'Roshar')),
+      from('wat', whole(5, 'Koravellium Avast', 'Gone from Roshar')),
     ]),
   // Odium's hand is a Way of Kings letter and the Sel essay; it is a relation.
   line('devotion', 'Devotion', '#a78bfa', 'elantris', 'Sel',
@@ -122,8 +128,10 @@ export const SHARDS: Shard[] = [
       whole(0, '—', 'Yolen (pre-Shattering)'),
       whole(1, 'The Almighty', 'Roshar'), whole(2, 'The Almighty', 'Roshar'),
       splintered(3, 'Roshar', 'None: the Almighty is dead'),
-      merged(4, 'Taravangian (Retribution)', 'Roshar'),
-      merged(5, 'Taravangian (Retribution)', 'Roshar'),
+      splintered(4, 'Roshar', 'None: the Almighty is dead'),
+      from('wat', merged(4, 'Taravangian (Retribution)', 'Roshar')),
+      splintered(5, 'Roshar', 'None: the Almighty is dead'),
+      from('wat', merged(5, 'Taravangian (Retribution)', 'Roshar')),
     ]),
   // Named in Harmony's Rhythm of War letter, but the Vessel is in every era row
   // and that is Wind and Truth ch. 115, so the card waits for that book.
@@ -149,8 +157,12 @@ export const SHARDS: Shard[] = [
       whole(0, '—', 'Yolen (pre-Shattering)'),
       whole(1, 'Odium', 'Braize'), whole(2, 'Odium', 'Braize'),
       whole(3, 'Odium', 'Braize / Roshar'),
-      merged(4, 'Taravangian (Retribution)', 'Roshar'),
-      merged(5, 'Taravangian (Retribution)', 'Roshar'),
+      whole(4, 'Odium', 'Braize / Roshar'),
+      from('row', whole(4, 'Taravangian', 'Braize / Roshar')),
+      from('wat', merged(4, 'Taravangian (Retribution)', 'Roshar')),
+      whole(5, 'Odium', 'Braize / Roshar'),
+      from('row', whole(5, 'Taravangian', 'Braize / Roshar')),
+      from('wat', merged(5, 'Taravangian (Retribution)', 'Roshar')),
     ]),
   // Vin and Sazed as Vessels are The Hero of Ages, and so are the names. Kelsier's
   // turn holding it is Secret History, and reaches the Shard by relation.

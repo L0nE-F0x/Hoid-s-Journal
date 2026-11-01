@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { Line2 } from 'three/examples/jsm/lines/Line2.js';
 import { LineGeometry } from 'three/examples/jsm/lines/LineGeometry.js';
 import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial.js';
-import { COSMERE, DAWNSHARDS, isVisible } from '../data/index.ts';
+import { COSMERE, DAWNSHARDS, isVisible, shardEraAt } from '../data/index.ts';
 import sunVert from '../shaders/sun.vert';
 import sunFrag from '../shaders/sun.frag';
 import skyVert from '../shaders/sky.vert';
@@ -297,7 +297,7 @@ export class Spiritual {
       const a = spin + (i / this.motes.length) * Math.PI * 2;
       m.pos.set(Math.cos(a) * RING, Math.sin(a * 2 + time * 0.1) * 2.4, Math.sin(a) * RING);
 
-      const row = sh.eras.find((e) => e.era === era) ?? sh.eras[sh.eras.length - 1];
+      const row = shardEraAt(sh, era, progress);
       const status = row?.status ?? 'whole';
       const broken = status === 'splintered';
       const hot = selected === sh.id;
@@ -405,7 +405,7 @@ export class Spiritual {
     const picked = selected ? this.motes.find((m) => m.id === selected) : undefined;
     const sh = picked ? COSMERE.shards.find((s) => s.id === picked.id) : undefined;
     if (!whole && picked && sh && (picked.mesh.visible || picked.shards[0]?.mesh.visible)) {
-      const row = sh.eras.find((e) => e.era === era) ?? sh.eras[sh.eras.length - 1];
+      const row = shardEraAt(sh, era, progress);
       const where = row?.loc ?? sh.world;
       this.worldChip.visible = true;
       const key = `${sh.id}:${where}`;

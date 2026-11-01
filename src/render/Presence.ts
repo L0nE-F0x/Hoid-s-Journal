@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { COSMERE, HUBS, bodyById, bodyByName, characterAt, hubById, isFeaturedPerson, isVisible, onTheMap } from '../data/index.ts';
+import { COSMERE, HUBS, bodyById, bodyByName, characterAt, hubById, isFeaturedPerson, isVisible, onTheMap, shardEraAt } from '../data/index.ts';
 import { keplerWorld } from '../layout/kepler.ts';
 import { uvOnBody } from '../layout/surface.ts';
 import { hubWorld } from '../layout/cognitive.ts';
@@ -272,7 +272,7 @@ export class Presence {
       const sh = COSMERE.shards.find((s) => s.id === row.id);
       if (!sh) { row.line.visible = false; continue; }
       if (!isVisible(sh, progress) || era <= 0) { row.line.visible = false; continue; }
-      const eraRow = sh.eras.find((e) => e.era === era) ?? sh.eras[sh.eras.length - 1];
+      const eraRow = shardEraAt(sh, era, progress);
       const dest = eraRow ? bodyByName(eraRow.loc) ?? bodyByName(sh.world) : bodyByName(sh.world);
       const destPos = dest ? orrery.bodyPosition(dest.id) : null;
       if (!destPos) { row.line.visible = false; continue; }

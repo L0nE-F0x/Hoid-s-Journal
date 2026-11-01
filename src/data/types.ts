@@ -190,6 +190,13 @@ export interface ShardEra {
   status: 'whole' | 'splintered' | 'merged' | 'unknown';
   vessel: string;
   loc: string;
+  /**
+   * This row is true once the reader reaches `arc` (of `book`, else the
+   * Shard's own series). An era can carry several rows; the last one the
+   * reader may see is the one shown — see `shardEraAt`.
+   */
+  book?: string;
+  arc?: string;
 }
 
 export interface Shard extends Cited {

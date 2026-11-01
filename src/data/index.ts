@@ -25,7 +25,7 @@ import {
 } from './search.ts';
 import type {
   Belt, Body, Character, CharacterEra, Cosmere, Location, Moon, Organization, Perpendicularity,
-  Series,
+  Series, Shard, ShardEra,
 } from './types.ts';
 
 export { CITY_PLATES, cityById, landmarkById };
@@ -213,6 +213,18 @@ export function fullProgress(): Record<string, number> {
   const p: Record<string, number> = {};
   for (const s of SERIES) p[s.id] = s.arcs.length - 1;
   return p;
+}
+
+/**
+ * What a Shard is in `era` as far as this reader knows: the last row for that
+ * era they may see, else the last row they may see at all. Without progress
+ * (fully read) it is the last row written for the era.
+ */
+export function shardEraAt(sh: Shard, era: number, progress?: Record<string, number>): ShardEra | undefined {
+  const seen = sh.eras.filter((r) => !r.arc || !progress
+    || isVisible({ book: r.book ?? sh.book, arc: r.arc }, progress));
+  const here = seen.filter((r) => r.era === era);
+  return here[here.length - 1] ?? seen[seen.length - 1];
 }
 
 export function eraAt(year: number): number {

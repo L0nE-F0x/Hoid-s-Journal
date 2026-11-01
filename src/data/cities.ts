@@ -73,7 +73,7 @@ export const CITY_PLATES: CityPlate[] = [
     landmarks: [
       mark('luthadel-kredik', 'luthadel', 'Kredik Shaw', 0.50, 0.36, '#111010',
         'The Lord Ruler\'s spiked palace. The Hill of a Thousand Spires.',
-        { book: 'mistborn1', on: [{ file: 'luthadel.jpg', u: 0.659, v: 0.495 }, { file: 'luthadel_endpaper.png', u: 0.615, v: 0.537 }] }),
+        { book: 'mistborn1', on: [{ file: 'luthadel.jpg', u: 0.659, v: 0.495 }, { file: 'luthadel_endpaper.png', u: 0.615, v: 0.537 }, { file: 'kredik_shaw.jpg', u: 0.698, v: 0.326 }] }),
       mark('luthadel-venture', 'luthadel', 'Keep Venture', 0.68, 0.42, '#d6a44c',
         'The most powerful of the great houses, a fortress inside the wall.',
         { book: 'mistborn1', on: [{ file: 'luthadel.jpg', u: 0.692, v: 0.317 }, { file: 'luthadel_endpaper.png', u: 0.631, v: 0.373 }] }),

@@ -144,6 +144,12 @@ export function mountDirectory(root: HTMLElement): { destroy(): void } {
     tabs.append(b);
   }
 
+  const tabEdge = () => {
+    const more = tabs.scrollWidth - tabs.clientWidth;
+    tabs.classList.toggle('is-end', more > 1 && tabs.scrollLeft >= more - 2);
+  };
+  listen(tabs, 'scroll', tabEdge, { passive: true });
+
   const measure = () => {
     if (!panel.classList.contains('is-on')) {
       store.setInset('directory', null);
@@ -195,6 +201,16 @@ export function mountDirectory(root: HTMLElement): { destroy(): void } {
       c.classList.toggle('is-on', TAB[i]!.id === tab);
       c.setAttribute('aria-pressed', String(TAB[i]!.id === tab));
     });
+    // On a phone the tabs are one scrolling row: keep the chosen one in it
+    // (the Spiritual Realm opens on Shards, eight tabs along).
+    const on = tabs.querySelector<HTMLElement>('.is-on');
+    if (on && tabs.scrollWidth > tabs.clientWidth) {
+      const left = on.offsetLeft - tabs.offsetLeft;
+      if (left < tabs.scrollLeft || left + on.offsetWidth > tabs.scrollLeft + tabs.clientWidth) {
+        tabs.scrollLeft = left - 12;
+      }
+    }
+    tabEdge();
     title.textContent = TAB.find((t) => t.id === tab)?.label ?? 'Directory';
     kicker.textContent = s.scale === 'system' && s.focusedSystem
       ? (COSMERE.systems.find((x) => x.id === s.focusedSystem)?.name ?? 'System')

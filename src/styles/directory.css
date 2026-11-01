@@ -90,6 +90,34 @@
     top: auto;
     bottom: calc(var(--ceph-timeline-top, 160px) + 8px);
   }
+  /* Ten tabs wrapped to three rows and left the list two and a half rows
+     of a 34vh sheet; at 200% zoom, none. One row that scrolls sideways,
+     faded at the edge that has more, like the tool strip above. */
+  .ceph-dir-tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x;
+    flex: 0 0 auto;
+    -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 28px), transparent);
+    mask-image: linear-gradient(90deg, #000 calc(100% - 28px), transparent);
+  }
+  .ceph-dir-tabs::-webkit-scrollbar { display: none; }
+  .ceph-dir-tabs .ceph-chip { flex: 0 0 auto; }
+  .ceph-dir-tabs.is-end {
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 28px);
+    mask-image: linear-gradient(90deg, transparent, #000 28px);
+  }
+}
+
+/* A short screen (a phone on its side, a laptop at 200%) cannot give the
+   sheet more height, so it gives the list the room the head was using. */
+@media (max-height: 560px) {
+  .ceph-directory { max-height: 46vh; padding-top: 8px; }
+  .ceph-directory .ceph-atlas-head { margin-bottom: 2px; }
+  .ceph-dir-tabs { margin: 4px 0; }
+  .ceph-dir-search { margin-bottom: 6px; padding: 6px 8px; }
 }
 
 /* A query that lives on another tab: where it is, one click away. */

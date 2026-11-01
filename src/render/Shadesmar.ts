@@ -312,7 +312,7 @@ function bakeGlassSwatch(renderer: THREE.WebGLRenderer): THREE.Texture {
   rt.texture.anisotropy = 4;
   const bake = (r: THREE.WebGLRenderer): void => {
     const mat = new THREE.ShaderMaterial({
-      uniforms: {},
+      uniforms: { uOctaveZero: { value: 0 } },
       vertexShader: bakeVert,
       fragmentShader: seaBakeFrag,
       depthTest: false,

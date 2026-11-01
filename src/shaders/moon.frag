@@ -1,3 +1,6 @@
+// Three surface() calls of sixteen simplex bodies each, unrolled, were 0.8 s
+// of link time at boot; a moon is a few pixels and does not miss the unroll.
+#define NOISE_ROLLED_OCTAVES
 #include "./lib/noise.glsl"
 
 uniform vec3  uColor;

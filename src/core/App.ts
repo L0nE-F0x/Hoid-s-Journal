@@ -989,7 +989,14 @@ export class App {
     }
     if (!s.cinematic) {
       for (const ev of COSMERE_EVENTS) {
-        if (ev.visual && this.lastYear < ev.year && y >= ev.year) this.playSkyEvent(ev.id, true);
+        if (!ev.visual || !(this.lastYear < ev.year && y >= ev.year)) continue;
+        // A beat the reader has not reached is not on the timeline (hud.ts
+        // hides its mark and its name), so the sky must not act it out
+        // either when the playhead runs across it. Read defensively: an
+        // event with no `book` is common knowledge.
+        const gate = ev as unknown as { book?: string; arc?: string };
+        if (gate.book && !isVisible(gate, s.readProgress)) continue;
+        this.playSkyEvent(ev.id, true);
       }
     }
     this.lastYear = y;

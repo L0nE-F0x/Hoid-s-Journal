@@ -1008,8 +1008,16 @@ export class App {
       s.realm === 'cognitive' ? 1 : 0,
     );
 
-    this.post.setRealm(s.realm);
-    this.post.composer.render();
+    // The Lore Web is an opaque page over the canvas. Drawing the whole sky
+    // and its post chain underneath it every frame was a full frame of GPU
+    // work nobody could see, competing with the graph the reader was
+    // actually looking at. Everything above still runs, so the sky is where
+    // it should be the moment the Web closes; only the draw waits.
+    const covered = s.view === 'web';
+    if (!covered) {
+      this.post.setRealm(s.realm);
+      this.post.composer.render();
+    }
 
     this.frames++;
     this.frameCount++;
@@ -1018,7 +1026,8 @@ export class App {
       store.state.stats.fps = this.frames / this.fpsAccum;
       store.state.stats.ms = (this.fpsAccum / this.frames) * 1000;
       store.touch('stats');
-      this.stepQuality(store.state.stats.fps);
+      // A frame that drew nothing says nothing about how fast the sky draws.
+      if (!covered) this.stepQuality(store.state.stats.fps);
       this.frames = 0;
       this.fpsAccum = 0;
     }

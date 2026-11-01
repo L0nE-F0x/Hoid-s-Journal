@@ -162,6 +162,33 @@ export const CITY_PLATES: CityPlate[] = [
         { book: 'mistborn1', on: [{ file: 'luthadel.jpg', u: 0.503, v: 0.504 }, { file: 'luthadel_endpaper.png', u: 0.504, v: 0.508 }] }),
     ],
   },
+  // The 2007 survey's numbered key, measured on the file. Every name on it
+  // is The Hero of Ages. The wells are the plate's own detail and stay so.
+  {
+    id: 'fadrex',
+    kind: 'fadrex',
+    kicker: 'Western Dominance',
+    // Keep Orielle first: the atlas names pins in this order and skips a name
+    // that would collide with one already placed, and Slowswift's name, if it
+    // is placed, runs straight over Keep Orielle's dot.
+    landmarks: [
+      mark('fadrex-keep-orielle', 'fadrex', 'Keep Orielle', 0.365, 0.532, '#e2e8f0',
+        'White marble, stained glass and a low ceiling. Vin and Elend flew to the doors of Yomen\'s ball here on the siege\'s first night, and Elend let the nobility see he was Mistborn.',
+        { book: 'mistborn1', arc: 'hoa', on: [{ file: 'fadrex.jpg', u: 0.365, v: 0.532 }] }),
+      mark('fadrex-canton-resource', 'fadrex', 'Canton of Resource', 0.465, 0.589, '#f59e0b',
+        'Blocky, one storey, and the largest Ministry building in the city. Yomen governed from it, and the last of the Lord Ruler\'s storage caverns lies beneath it.',
+        { book: 'mistborn1', arc: 'hoa', on: [{ file: 'fadrex.jpg', u: 0.465, v: 0.589 }] }),
+      mark('fadrex-slowswift', 'fadrex', 'Slowswift\'s House', 0.243, 0.515, '#a8a29e',
+        'Home of the old storyteller Slowswift, who traded writing with Cett for a decade. Vin came here to buy what he knew about Yomen.',
+        { book: 'mistborn1', arc: 'hoa', on: [{ file: 'fadrex.jpg', u: 0.243, v: 0.515 }] }),
+      mark('fadrex-infirmary', 'fadrex', 'Infirmary', 0.685, 0.382, '#fca5a5',
+        'Another Ministry building, which Yomen turned into an infirmary.',
+        { book: 'mistborn1', arc: 'hoa', on: [{ file: 'fadrex.jpg', u: 0.685, v: 0.382 }] }),
+      mark('fadrex-gates', 'fadrex', 'City Gates', 0.754, 0.206, '#78716c',
+        'Fadrex\'s rock shelves are its walls, and this is the way through them. When Ruin took the koloss, Yomen opened the gates to Elend\'s army.',
+        { book: 'mistborn1', arc: 'hoa', on: [{ file: 'fadrex.jpg', u: 0.754, v: 0.206 }] }),
+    ],
+  },
   {
     id: 'elendel',
     kind: 'elendel',

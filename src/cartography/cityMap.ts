@@ -524,6 +524,8 @@ const PLANS: Record<CityKind, Plan> = {
   // Chasms radiating from a ruined tower, no wall, plateaus all round.
   narak: { pal: VORIN, radial: { rings: 5, spokes: 8, wall: false, gates: 0 }, citadel: 'tower', water: 'none', outskirts: 30 },
   luthadel: { pal: SCADRIAL, radial: { rings: 3, spokes: 12, wall: true, gates: 8 }, citadel: 'keep', water: 'river', outskirts: 30 },
+  // Ring roads inside rock shelves, one way in.
+  fadrex: { pal: SCADRIAL, radial: { rings: 3, spokes: 7, wall: true, gates: 1 }, citadel: 'keep', water: 'none', outskirts: 10 },
   elendel: { pal: SCADRIAL, grid: { cols: 12, rows: 8, tilt: 0.06 }, citadel: 'tower', water: 'canals', outskirts: 22 },
   elantris: { pal: SELISH, radial: { rings: 5, spokes: 4, wall: true, gates: 4 }, citadel: 'tower', water: 'none', outskirts: 34 },
   ttelir: { pal: NALTHIS, grid: { cols: 9, rows: 6, tilt: -0.05 }, citadel: 'keep', water: 'bay', outskirts: 18 },

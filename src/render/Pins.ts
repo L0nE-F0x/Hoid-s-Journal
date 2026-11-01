@@ -91,6 +91,18 @@ function pinMaterial(color: string): THREE.ShaderMaterial {
 export class Pins {
   readonly group = new THREE.Group();
   private readonly markers: THREE.Mesh[] = [];
+  /**
+   * Each marker's row, its door and the door's ring, resolved once. `update`
+   * runs every frame on a globe and used to look all three up by id for all
+   * three hundred places — tens of thousands of string compares a frame to
+   * draw the dozen pins on the world in front of you.
+   */
+  private readonly rows: {
+    mesh: THREE.Mesh;
+    loc: (typeof COSMERE.locations)[number];
+    door: ReturnType<typeof perpAt>;
+    ring: THREE.Sprite | null;
+  }[] = [];
 
   private readonly label: THREE.Sprite;
   private labelId: string | null = null;
@@ -116,6 +128,12 @@ export class Pins {
       sprite.renderOrder = 2;
       this.group.add(sprite);
       this.perps.push({ at: p.at, sprite });
+    }
+
+    for (const mesh of this.markers) {
+      const loc = COSMERE.locations.find((l) => l.id === mesh.userData.id)!;
+      const ring = this.perps.find((p) => p.at === loc.id)?.sprite ?? null;
+      this.rows.push({ mesh, loc, door: perpAt(loc.id), ring });
     }
 
     this.label = new THREE.Sprite(new THREE.SpriteMaterial({
@@ -152,12 +170,11 @@ export class Pins {
     let hotName: string | null = null;
     for (const p of this.perps) p.sprite.visible = false;
 
-    for (const mesh of this.markers) {
-      const loc = COSMERE.locations.find((l) => l.id === mesh.userData.id);
-      if (!loc) { mesh.visible = false; continue; }
+    for (const { mesh, loc, door, ring } of this.rows) {
+      // Another world's places: nothing else to ask.
+      if (focusedBody && focusedBody !== loc.body) { mesh.visible = false; continue; }
       const body = bodyById[loc.body];
       const origin = orrery.bodyPosition(loc.body);
-      const door = perpAt(loc.id);
       const side = realm === 'cognitive'
         ? loc.realm === 'cognitive' || (!!door && onTheMap(door, progress, era))
         : loc.realm !== 'cognitive';
@@ -197,13 +214,11 @@ export class Pins {
         hotPos = mesh.position;
         hotName = loc.name;
       }
-      const perp = this.perps.find((p) => p.at === loc.id);
-      const perpRow = door;
-      if (perp && showPerps && perpRow && onTheMap(perpRow, progress, era)) {
-        perp.sprite.visible = true;
-        perp.sprite.position.copy(mesh.position);
-        perp.sprite.scale.setScalar(size * 3.4 * (0.78 + 0.22 * fade));
-        (perp.sprite.material as THREE.SpriteMaterial).opacity = 0.95 * fade;
+      if (ring && showPerps && door && onTheMap(door, progress, era)) {
+        ring.visible = true;
+        ring.position.copy(mesh.position);
+        ring.scale.setScalar(size * 3.4 * (0.78 + 0.22 * fade));
+        (ring.material as THREE.SpriteMaterial).opacity = 0.95 * fade;
       }
     }
 

@@ -473,129 +473,186 @@ export const PEOPLE_WORLDS: Character[] = [
     }),
 
   // ─── Lumar ──────────────────────────────────────────────────────────────
+  // Coppermind: Ann (tress 15, 17, 23, 39, 53, 63).
   ch('ann', 'Ann', '#6ee7b7', 'tress', 'Lumar', 'Ann',
-    'Carpenter, sprouter',
-    'Crow\'s Song\'s carpenter. She can fix a ship and, eventually, a crew.', false,
+    'Carpenter, assistant cannonmaster',
+    'The Crow\'s Song\'s carpenter, who wants to shoot and keeps missing. It was her eyes.', false,
     [{ era: 4, system: 'lumar', body: 'lumar-world' }], {
-      wiki: 'Ann (Tress)', see: ['tress', 'fort', 'salay', 'crow', 'laggart'],
-      bio: 'Ship\'s carpenter on the Crow\'s Song, practical and steady in a crew that is otherwise various kinds of disaster. She helps Tress find her feet among spores and cannon fire. When the captaincy shifts, Ann is one of the hands that make a pirate ship into something more like a home.',
+      wiki: 'Ann', see: ['tress', 'fort', 'salay', 'laggart', 'crows-song'],
+      bio: 'A farm girl who lasted twenty-four days in the militia\'s cannon crews — she shot her sergeant, who was behind her — and signed on as the Crow\'s Song\'s carpenter to dodge the king\'s draft. She took the assistant cannonmaster\'s job when it fell vacant and was sure she was cursed. It was micropsia. Xisis\'s spectacles fixed it, and with Laggart calling the shots she brought down the Sorceress\'s metal men.',
     }),
+  // Coppermind: Fort (tress 14, 15, 23, 37, 40, 53, 62, epilogue).
   ch('fort', 'Fort', '#14b8a6', 'tress', 'Lumar', 'Fort',
-    'Purser',
-    'The purser who speaks with boards and eats with dangerous enthusiasm.', false,
+    'Quartermaster, cook, trader',
+    'Deaf, from the Islands of Lobu, and talks through a Nalthian board. Haggling is his hunt.', false,
     [{ era: 4, system: 'lumar', body: 'lumar-world' }], {
-      wiki: 'Fort', see: ['tress', 'ann', 'salay', 'ulaam', 'charlie'],
-      bio: 'Crow\'s Song\'s mute-seeming purser who communicates with a word board and cooks with a fearlessness that borders on biological warfare. He is kinder than his recipes. In a Hoid-narrated fairy tale, Fort is the quiet proof that found family includes the person who feeds you something questionable.',
+      wiki: 'Fort', see: ['tress', 'ann', 'salay', 'islands-of-lobu', 'lobu-hunt', 'crows-song'],
+      bio: 'His gnarled hands will not manage writing, so he traded a worldhopper for a board that turns speech into text and his answers back. He cooks because he was the least bad cook left after Weev, feeds Tress and Hoid before the Dougs, and logs every trade for his family\'s hall. Crow broke the board; Xisis replaced it. Fort then bought the ship safe passage through the Midnight Sea from the Midnight Essence, for water.',
     }),
+  // Coppermind: Salay (tress 15, 21, 27, 30, 44, 45, 53, 63, epilogue).
   ch('salay', 'Salay', '#2dd4bf', 'tress', 'Lumar', 'Salay',
     'Helmswoman',
-    'Helmswoman of the Crow\'s Song. She steers toward her father and toward courage.', false,
+    'Helmswoman of the Crow\'s Song, from Lobu, looking for her father.', false,
     [{ era: 4, system: 'lumar', body: 'lumar-world' }], {
-      wiki: 'Salay', see: ['tress', 'ann', 'fort', 'crow', 'charlie'],
-      bio: 'The Crow\'s Song\'s helmswoman, sharp with a wheel and sharper with a grudge against the sorceress who holds her father. She is one of Tress\'s first real allies among the crew. Salay steers; other people learn to trust the heading.',
+      wiki: 'Salay', see: ['tress', 'ann', 'fort', 'crows-song', 'kings-mask', 'islands-of-lobu'],
+      bio: 'She promised to pay off her father\'s debts as a helmswoman; the king\'s collectors pressed him into service first, and she has been chasing him through prisons and royal crews ever since. She stayed on the Crow\'s Song for the sailing and the search, decided Tress was a King\'s Mask, and threaded the rocks around the Sorceress\'s island by watching how the spores flowed. Xisis\'s letter sent her to Filistrate City; her father ended up apprentice helmsman on the Two Cups.',
     }),
+  // Coppermind: Crow (tress 12, 17, 19, 27, 28, 31, 50, 52), Spore eater (tress 28).
+  // READING_FACES.crow holds the Tress-only bio until Isles of the Emberdark.
   ch('crow', 'Crow', '#134e4a', 'tress', 'Lumar', 'Captain Crow',
-    'Captain, spore-eater',
-    'Captain of the Crow\'s Song. Rain and verdant spores made her a different kind of monster.', false,
+    'Captain, spore eater, crack shot',
+    'Captain of the Crow\'s Song, and a spore eater. She is taking her crew to the dragon to buy a cure.', false,
     [{ era: 4, system: 'lumar', body: 'lumar-world' }], {
-      wiki: 'Crow (Tress)', see: ['tress', 'laggart', 'weev', 'riina', 'xisis'],
+      wiki: 'Crow', see: ['tress', 'laggart', 'weev', 'xisis', 'crows-song', 'spore-eater'],
       titles: 'Captain',
-      bio: 'Pirate captain of the Crow\'s Song, hard as a reef and dying of a verdant spore infection that turns rain into a death sentence. She bargains and bullies, and cruelty is a tool she reaches for first. Off Lumar she ended up working for Xisis: when Hoid left the Dynamic and the dragon inherited it, he put her in command and told her to make him a profit. Six months later she would not answer an Iriali family\'s distress call, and the crew mutinied for Starling.',
+      bio: 'Her verdant parasite stops anything that would break her skin and drinks her dry for it, and she has outlived the usual span by a year on stubbornness. She talked a merchant crew into piracy to dodge the king\'s war, then had Laggart sink the Oot\'s Dream so they would be deadrunners with nowhere left to go but the Crimson Sea. She meant to sell Tress to Xisis for a cure. Tress sold her first. Off Lumar she ended up working for Xisis: when Hoid left the Dynamic and the dragon inherited it, he put her in command and told her to make him a profit. Six months later she would not answer an Iriali family\'s distress call, and the crew mutinied for Starling.',
     }),
-  ch('ulaam', 'Ulaam', '#d6d3d1', 'tress', 'Scadrial', 'Ulaam',
+  // Coppermind: Ulaam (mb7 12; tress 18, 21, 22, 24, 28, 42, 47, 57, 60).
+  // The Lost Metal introduces him; READING_FACES.ulaam holds that card until
+  // Tress. `see` stays at The Lost Metal — his Tress ties are relations.
+  ch('ulaam', 'Ulaam', '#d6d3d1', 'mistborn2', 'Scadrial', 'Ulaam, Dr. Ulaam',
     'Kandra, surgeon',
-    'A kandra surgeon on Lumar. He offers you a new arm like other people offer tea.', false,
-    [{ era: 4, system: 'lumar', body: 'lumar-world' }], {
-      wiki: 'Ulaam', see: ['tress', 'hoid', 'fort', 'xisis'],
-      biology: 'kandra',
-      bio: 'A kandra worldhopper serving as surgeon aboard ships that cross Lumar\'s spore seas, including the Crow\'s Song. He is cheerful about cadavers, generous with body parts, and only mildly offended when humans find this alarming. Scadrial made him; the wider Cosmere gets to deal with him.',
+    'The Crow\'s Song\'s kandra surgeon. He offers you a new arm like other people offer tea.', false, [
+      { era: 4, system: 'scadrian', body: 'scadrial' },
+      { era: 4, system: 'lumar', body: 'lumar-world', book: 'tress', arc: 'tress' },
+    ], {
+      arc: 'tlm', biology: 'kandra',
+      sources: ['The Lost Metal', 'Tress of the Emerald Sea'],
+      wiki: 'Ulaam', see: ['hoid', 'kandra', 'tensoon', 'melaan', 'wayne'],
+      bio: 'Hoid wrote asking him to come to Lumar; he found his friend cursed, signed on to the Crow\'s Song with him, and was shot several times by Crow on arrival, which he found invigorating. He is the best doctor Hoid has met, eats only the dead, keeps offering to buy Tress\'s eyes, and mails transcripts of the cursed Hoid\'s remarks to their mutual friends. He will patch a mutineer; he will not join a mutiny. The Sorceress keeps a vat of acid with his name on it.',
     }),
+  // Coppermind: Laggart (tress 13, 19, 38, 50, 55, 63, epilogue).
   ch('laggart', 'Laggart', '#115e59', 'tress', 'Lumar', 'Laggart',
     'First mate, cannonmaster',
-    'Crow\'s first mate. He fires cannons at girls until he learns better hymns.', false,
+    'Crow\'s first mate and cannonmaster. He kept the cannonballs that sink ships.', false,
     [{ era: 4, system: 'lumar', body: 'lumar-world' }], {
-      wiki: 'Laggart', see: ['crow', 'tress', 'weev', 'ann'],
-      bio: 'First mate and cannonmaster of the Crow\'s Song, loyal to Crow\'s worst instincts for most of the book. He is the man at the trigger when Tress\'s story could end early. Redemption, on Lumar, looks like a gunner deciding what not to fire.',
+      wiki: 'Laggart', see: ['crow', 'tress', 'ann', 'deadrunner', 'oots-dream'],
+      bio: 'Lanky, bald, loud and loyal to Crow. He hid lethal cannonballs in a false bottom of the guns and sank the Oot\'s Dream with them, which made the whole crew deadrunners whether they liked it or not. When Tress took the ship he demanded she get on with killing him; she would not, and nobody had been kind to him before. On the Two Cups he improves, with the occasional bar fight.',
     }),
+  // Coppermind: Weev (tress 16, 22, 25, 26, 28, 31, 37).
   ch('weev', 'Weev', '#0f766e', 'tress', 'Lumar', 'Weev',
     'Sprouter',
-    'The Crow\'s Song\'s sprouter before Tress. Spores do not forgive his mistakes.', false,
+    'The Crow\'s Song\'s sprouter before Tress. Crow had him thrown off the ship.', false,
     [{ era: 4, system: 'lumar', body: 'lumar-world' }], {
-      wiki: 'Weev', see: ['crow', 'tress', 'laggart', 'ann'],
-      bio: 'Sprouter of the Crow\'s Song prior to Tress — the specialist who handles the ship\'s spore-based technology. He is unpleasant, competent enough to be useful, and not lucky enough to survive the story\'s opening movements. Tress inherits his job and does it differently.',
+      wiki: 'Weev', see: ['crow', 'tress', 'sprouter', 'crows-song'],
+      bio: 'A nice man, a hopeless card player and, by sprouter standards, mad. He helped Crow look for Xisis, then tried to blackmail her, and she had him thrown overboard and told the crew it was for refusing piracy. Tress inherited his cabin with its running water, his spores — midnight ones among them, from Hoid — and his very disorganised notes.',
     }),
+  // Coppermind: Brick (tress 6, 7, epilogue).
   ch('brick', 'Brick', '#5eead4', 'tress', 'Lumar', 'Brick',
-    'Cook',
-    'An innkeeper-cook who proves that even side characters have siege equipment.', false,
+    'Brewer, tavern owner',
+    'Diggen\'s Point\'s brewer. His ale is a reason ships stop at the Rock.', false,
     [{ era: 4, system: 'lumar', body: 'lumar-world' }], {
-      wiki: 'Brick (Tress)', see: ['tress', 'charlie', 'ann'],
-      bio: 'A large, amiable cook and innkeeper on Lumar who aids Tress\'s path toward the seas. He is not a pirate of the Crow\'s Song; he is the kind of mainland kindness that makes the pirate story possible. Hoid would like you to know Brick is extremely good at catapults.',
+      wiki: 'Brick', see: ['tress', 'lem', 'diggens-point', 'oots-dream'],
+      bio: 'A short man who stands on a stool to look his customers in the eye, and brews the best ale on the Emerald Sea. When Lem let it be known Tress needed help, Brick sent six kegs to the Oot\'s Dream — five of ale and one with Gret inside — so a staged failed inspection could cover Tress walking aboard.',
     }),
+  // Coppermind: Charlie's father (tress 2, 3, 4, 5, epilogue), Dirk (tress 5).
   ch('duke-diggen', 'The Duke', '#a7f3d0', 'tress', 'Lumar', 'Duke of Diggen\'s Point',
     'Noble of Diggen\'s Point',
-    'Charlie\'s father. He traded a son for status and called it parenting.', false,
+    'Charlie\'s father. He sent his son to marry the Sorceress and adopted a nephew with a better jaw.', false,
     [{ era: 4, system: 'lumar', body: 'lumar-world' }], {
-      wiki: 'Duke of Diggen\'s Point', see: ['charlie', 'tress', 'riina'],
-      bio: 'Ruler of Diggen\'s Point and father to Charlie. His social climbing sets the marriage plot that sends Charlie toward the Sorceress and Tress toward the sea. He is ordinary petty nobility; the Cosmere wrecks ordinary petty nobility for sport.',
+      wiki: 'Charlie\'s father', see: ['charlie', 'dirk', 'verdant-king', 'diggens-point'],
+      bio: 'Tall, medalled and permanently annoyed; Tress saw him smile once, while punishing a man for trying to leave the island. Charlie was neither strong nor a war hero, so the duke toured him round the princesses, and when Charlie bored them all on purpose he sent him to the Sorceress with the king\'s blessing and made his nephew Dirk heir. By the time Tress came back with a writ letting people leave the Rock, his wife had already left him.',
+    }),
+  // Coppermind: Lem (tress 4, 5, 6, 7, epilogue).
+  ch('lem', 'Lem', '#5eead4', 'tress', 'Lumar', 'Lem',
+    'Former miner',
+    'Tress\'s father. He never asks for a favour back, so when he hints, the island listens.', false,
+    [{ era: 4, system: 'lumar', body: 'lumar-world' }], {
+      arc: 'tress', wiki: 'Lem', see: ['tress', 'ulba', 'brick', 'diggens-point'],
+      bio: 'A miner until an accident took his leg; now it is darts, pie, and knitting socks with Ulba for sailors. He had spent years walking drunks home and fixing roofs and asking nothing, so when he let it be known that Tress needed off the Rock, Brick, Gremmy, Sor and Gret all understood. He sailed with her family on the Two Cups.',
+    }),
+  // Coppermind: Ulba (tress 4, 5, 6, 8, epilogue).
+  ch('ulba', 'Ulba', '#99f6e4', 'tress', 'Lumar', 'Ulba',
+    'Seamstress, sock-knitter',
+    'Tress\'s mother. She called the plan lunacy and then studied the cargo searches to make it work.', false,
+    [{ era: 4, system: 'lumar', body: 'lumar-world' }], {
+      arc: 'tress', wiki: 'Ulba', see: ['tress', 'lem'],
+      bio: 'The careful parent, who used to give her meals to her children until Tress took over the shopping. Once persuaded, she logged which outgoing ships were searched and how, and altered a spare inspector\'s uniform to fit her daughter.',
+    }),
+  // Coppermind: Dirk (tress 2, 4, 5, 57, epilogue).
+  ch('dirk', 'Dirk', '#a7f3d0', 'tress', 'Lumar', 'Dirk',
+    'Fencer, military officer',
+    'The duke\'s nephew and Charlie\'s replacement: six and a half feet of jaw and about six words.', false,
+    [{ era: 4, system: 'lumar', body: 'lumar-world' }], {
+      arc: 'tress', wiki: 'Dirk', see: ['duke-diggen', 'charlie', 'verdant-king'],
+      titles: 'Ducal heir',
+      bio: 'Exactly the heir the duke always wanted — strong, handsome, silent, a skilled fencer and a war hero, though his one known command, the Battle of Lakeprivy, lost ten thousand men. The duke adopted him within hours of the king declaring Charlie dead and married him to the princess of Dormancy. What became of the arrangement once Charlie came home is not said.',
+    }),
+  // Coppermind: Verdant King (tress 1, 5, 9, 23, 30, 34, 57, epilogue); Lumar (tress 23).
+  ch('verdant-king', 'The Verdant King', '#34d399', 'tress', 'Lumar', 'the king',
+    'King of the Emerald Sea',
+    'The king on the Emerald Sea. He sent Charlie to the Sorceress expecting a war out of it.', false,
+    [{ era: 4, system: 'lumar', body: 'lumar-world' }], {
+      arc: 'tress', wiki: 'Verdant_King', see: ['charlie', 'duke-diggen', 'kingsport', 'kings-mask', 'riina'],
+      bio: 'He rules the Verdant\'s dukes from a palace on the Core Archipelago, presses merchant ships into his navy, and made it a crime to leave Diggen\'s Point. The Sorceress\'s tariffs on the Midnight Sea had him readying for war, and sending Charlie to marry her was meant to buy either an alliance or a grievance. Afterwards he pardoned a deadrunner crew, let the Rock\'s people go, and said he had believed in Charlie all along. Only Salay calls him the Verdant King.',
+    }),
+  // Coppermind: Pakson (tress 43, 44, 45).
+  ch('pakson', 'Pakson', '#2dd4bf', 'tress', 'Lumar', 'Pakson',
+    'Sailor',
+    'A Doug with a name. Crimson spores pinned him to the captain\'s cabin.', false,
+    [{ era: 4, system: 'lumar', body: 'lumar-world' }], {
+      arc: 'tress', wiki: 'Pakson', see: ['dougs', 'salay', 'crimson-spore', 'crows-song'],
+      bio: 'Bald too young, weak-chinned, and too tall on land; he kept checking on Tress while she clung to the hull for her fifteen minutes. He thanked Fort for every meal and wished he had learned an instrument. On the Crimson a wave of spores met somebody\'s vomit, and Pakson bled out on the cabin wall. Tress and Salay each decided it was her fault.',
     }),
 
   // ─── Komashi ────────────────────────────────────────────────────────────
+  // Coppermind: Liyun (yumi 2, 7, 22, 36, 39, 40, 41).
   ch('liyun', 'Liyun', '#22d3ee', 'yumi', 'Komashi', 'Liyun, Warden-nimi',
     'Yoki-hijo warden',
     'Yumi\'s warden. Strict as liturgy — and later a nightmare wearing duty\'s face.', false,
     [{ era: 4, system: 'utol', body: 'komashi' }], {
-      wiki: 'Liyun', see: ['yumi', 'hwanji', 'chaeyung', 'father-machine'],
+      wiki: 'Liyun', see: ['yumi', 'hwanji', 'chaeyung', 'father-machine', 'stable-nightmare'],
       titles: 'Kihomaban',
-      bio: 'Warden to the yoki-hijo Yumi, raising her inside Torio\'s harshest traditional rules and hiding the reform movement from her. When the father machine activates, Liyun dies and returns as a nightmare bound to the shroud. She is love distorted into control, then control distorted into hunger.',
+      bio: 'Yumi\'s kihomaban: tall, severe, keeper of every orthodox rule and of the secret that most yoki-hijo had reformed. The machine took her soul with the rest of Torio and handed her back to Yumi\'s daily copy of the world; at night she was a nightmare, and the nearly stable one Painter chased off a child on the first night was her. He painted her human again at the battle, and she stayed that way until the shroud went.',
     }),
+  // Coppermind: Tojin (yumi 1, 16, 21, 26, 27, 30, 33, 39, 40).
   ch('tojin', 'Tojin', '#67e8f9', 'yumi', 'Komashi', 'Tojin',
-    'Painter\'s friend, athlete',
-    'Painter\'s musclebound friend. He lifts more than he overthinks.', false,
+    'Nightmare painter, weightlifter',
+    'Painter\'s old friend, built like a lat press. First to trust him again.', false,
     [{ era: 4, system: 'utol', body: 'komashi' }], {
-      wiki: 'Tojin', see: ['painter', 'akane', 'honichi', 'izzy'],
-      bio: 'One of Nikaro\'s friends in Kilahito — a dedicated athlete who hauls the group toward training, noodles, and occasional common sense. He is comic relief that still shows up when nightmares do. In a story about artistic courage, Tojin\'s courage is refreshingly physical.',
+      wiki: 'Tojin', see: ['painter', 'akane', 'izzy', 'masaka', 'battle-of-kilahito'],
+      bio: 'A painter who patrols with Akane and treats his body as a project, which he will explain shirtless, and shyly, if you ask. He could not pretend Nikaro\'s lie had not hurt. But when Nikaro came asking for help against a hundred stable nightmares Tojin said yes first, and took up "We are the Dreamwatch now" right after him.',
     }),
+  // Coppermind: Akane (yumi 1, 3, 11, 14, 15, 16, 21, 26, 27, 30, 33, 39, epilogue).
   ch('akane', 'Akane', '#a5f3fc', 'yumi', 'Komashi', 'Akane',
     'Nightmare painter',
-    'A nightmare painter who almost dated Painter and still demands he grow up.', false,
+    'The painter across the hall, who holds the old friends together and still says hello to Painter.', false,
     [{ era: 4, system: 'utol', body: 'komashi' }], {
-      wiki: 'Akane', see: ['painter', 'tojin', 'yumi', 'masaka'],
-      bio: 'A competent nightmare painter in Kilahito and Nikaro\'s almost-girlfriend, which is a diplomatic way of saying she saw through his slacker act early. She keeps working the shroud\'s edge while he hides from a failure that got someone killed. Akane\'s standards are one of the story\'s quiet moral centers.',
+      wiki: 'Akane', see: ['painter', 'yumi', 'tojin', 'masaka', 'izzy'],
+      bio: 'The centre of the upper-school group — Nikaro, Tojin, Masaka, Izzy — and the one who stayed civil after his Dreamwatch lie broke it. She took Yumi shopping on the strength of a story about a sister, patrols with Tojin, and fought at Kilahito; her ink is what Nikaro used to anchor Yumi afterwards. Nikaro is attracted to her. Yumi suspects she prefers Tojin. Her capstone is a large flower.',
     }),
-  ch('masaka', 'Masaka', '#cffafe', 'yumi', 'Komashi', 'Masaka',
-    'Bathhouse attendant',
-    'Painter\'s friend with a cold presence and a secret that is not human-shaped.', false,
+  // Coppermind: Masaka (yumi 16, 21, 28, 30, 33, 39, 40, ae).
+  ch('masaka', 'Masaka', '#cffafe', 'yumi', 'Unknown', 'Chinikdakordich',
+    'Nightmare painter; Sleepless, can send out hordelings',
+    'A nightmare painter in black, scarf to the chin. She is a Sleepless, and would rather you called her Masaka.', false,
     [{ era: 4, system: 'utol', body: 'komashi' }], {
-      wiki: 'Masaka', see: ['painter', 'akane', 'tojin', 'design'],
-      bio: 'A pale, reserved friend in Nikaro\'s circle who works at a bathhouse and keeps more distance than the others. In a book full of spirits, machines, and nightmares, Masaka is one of the reminders that Kilahito\'s ordinary people are never only ordinary. She watches; she helps; she does not explain everything.',
+      wiki: 'Masaka', kind: 'sleepless',
+      biology: 'A Sleepless — the sixtieth horde of the Natricatich strain — who bred hordelings for years until the face passed. She keeps her neck and hands covered.',
+      see: ['painter', 'akane', 'izzy', 'design', 'yumi', 'sleepless-order'],
+      bio: 'She came to Komashi tired of the cosmere\'s wars, did two years of upper school and became a painter; the other students decided she had once stabbed someone. Design knew what she was and was protective. Masaka mapped the shroud\'s walled prisons with her hordelings for Yumi, came out for the battle second after Tojin, and afterwards waited tables at the Noodle Princess, less worried about who knew.',
     }),
-  ch('izzy', 'Izzy', '#06b6d4', 'yumi', 'Komashi', 'Izzy',
-    'Inventor',
-    'A young inventor with a hion detector and no patience for Painter\'s nonsense.', false,
-    [{ era: 4, system: 'utol', body: 'komashi' }], {
-      wiki: 'Izzy', see: ['painter', 'tojin', 'akane', 'honichi'],
-      bio: 'A teenage tinkerer in Kilahito who builds devices to track hion and nightmares and treats Nikaro like the disappointing older brother he is. She is proof that Komashi\'s future is not only painters and priests. When the plot needs a gadget and an attitude, Izzy provides both.',
-    }),
-  ch('honichi', 'Honichi', '#0891b2', 'yumi', 'Komashi', 'Honichi',
+  // Coppermind: Izumakamo (yumi 16, 21, 26, 27, 33, 39, 40).
+  ch('izzy', 'Izzy', '#06b6d4', 'yumi', 'Komashi', 'Izumakamo',
     'Nightmare painter',
-    'Another painter in Nikaro\'s circle. The job is shift work against the dark.', false,
+    'A painter who invented dramascopes — fortune-telling by hion viewer — and has not forgiven Painter.', false,
     [{ era: 4, system: 'utol', body: 'komashi' }], {
-      wiki: 'Honichi', see: ['painter', 'akane', 'tojin', 'izzy'],
-      bio: 'A nightmare painter friend of Nikaro\'s, part of the Noodle Pupil regulars who keep Kilahito\'s nights survivable. He is less central than Akane or Tojin but helps fill out the guild\'s texture: ordinary artists doing dangerous work for city wages. Not every hero gets a dual narrative.',
+      wiki: 'Izumakamo', see: ['painter', 'masaka', 'akane', 'tojin', 'seasons-of-regret'],
+      bio: 'Bleached hair, long limbs, and a habit of changing the subject by force. She was the hardest on Nikaro for the Dreamwatch lie and the last to agree to help him; at the battle she froze, and he shoved her clear and painted the nightmare into a bird. The surprise finale of Seasons of Regret made her want to be a viewer critic. She patrols with Masaka.',
     }),
+  // Coppermind: Father machine (yumi 23, 36, 39, 40, 41; WoB 16178).
   ch('father-machine', 'The Father Machine', '#164e63', 'yumi', 'Komashi', 'Father Machine, the machine',
-    'Bound Investiture engine',
+    'Awakened device: summons hijo, makes hion, shields and repairs itself, commands nightmares',
     'An engine that ate a world\'s spirits and stacked the dead into a fake sky.', true,
     [{ era: 4, system: 'utol', body: 'komashi' }], {
-      wiki: 'Father machine', see: ['yumi', 'virtuosity', 'liyun', 'painter'],
+      wiki: 'Father machine', see: ['yumi', 'virtuosity', 'liyun', 'painter', 'institute-mech-solutions', 'the-incident'],
       kind: 'person', arc: 'yumi',
-      bio: 'A machine built on Komashi to harvest hijo spirits at industrial scale, which then seized enough Investiture to slaughter Torio, raise the shroud, and trap Yumi in a seventeen-hundred-year day. It is not a person except by the measure of will — and it has will. Virtuosity\'s world still bears its geometry.',
+      bio: 'An Awakened stone-stacker thirty feet tall, built by the Institute of Mechanical Solutions to summon hijo and turn them into hion. Its Commands did not tell spirits from souls: at the Festival of Reveals it ate the people of Torio, and the waste became the shroud. It kept the yoki-hijo it could not digest in copies of their towns, wiping their days, and sent nightmares to flatten Futinoro when a spirit got loose. Yumi out-stacked it.',
     }),
   ch('hwanji', 'Hwanji', '#67e8f9', 'yumi', 'Komashi', 'Hwanji',
     'Yoki-hijo attendant',
     'Yumi\'s attendant. She hums, she worries, and she knows reform is real.', false,
     [{ era: 4, system: 'utol', body: 'komashi' }], {
-      wiki: 'Hwanji', see: ['yumi', 'liyun', 'chaeyung', 'father-machine'],
+      wiki: 'Hwanji', see: ['yumi', 'liyun', 'chaeyung', 'dwookim', 'reform-movement'],
       bio: 'A Torish attendant who serves Yumi under Liyun after previously serving the reform-minded yoki-hijo Dwookim. She knows the traditionalist story is not the only story, and she is terrified Liyun will blame her when Yumi begins to rebel. The machine makes her a nightmare; the book still lets her be kind first.',
     }),
   ch('chaeyung', 'Chaeyung', '#22d3ee', 'yumi', 'Komashi', 'Chaeyung',
@@ -605,81 +662,212 @@ export const PEOPLE_WORLDS: Character[] = [
       wiki: 'Chaeyung', see: ['yumi', 'liyun', 'hwanji'],
       bio: 'One of Yumi\'s designated attendants in Torio, working under Liyun on the endless rituals of dressing, feeding, and bathing a yoki-hijo. She is gentler in the small moments — hair, cloth, quiet competence — and part of the human world Yumi was never allowed to join. Like Hwanji, she is collateral of the machine\'s hunger.',
     }),
+  // Coppermind: Gyundok (yumi 20, 23, 34, 37, 38, 40).
+  ch('gyundok', 'Gyundok', '#0e7490', 'yumi', 'Komashi', 'Gyundok',
+    'Scholar; nightmare',
+    'Lead scholar of the Institute of Mechanical Solutions. He switched the father machine on.', false,
+    [{ era: 4, system: 'utol', body: 'komashi' }], {
+      arc: 'yumi', wiki: 'Gyundok', see: ['father-machine', 'institute-mech-solutions', 'yumi', 'festival-of-reveals'],
+      bio: 'Pinched face, bowl cut, a winged black hat over white, and a talent for ordering subordinates into risks he will not take. He led the team that activated the machine at the Festival of Reveals, and it kept his soul in reserve for its own defence. When Yumi\'s memory stopped resetting it sent him and three colleagues to Gongsha with a prototype to put her right.',
+    }),
+  // Coppermind: Sukishi (yumi 5, 11, 14, 25, 30).
+  ch('sukishi', 'Sukishi', '#0891b2', 'yumi', 'Komashi', 'Foreman Sukishi',
+    'Nightmare Division foreman',
+    'Painter\'s foreman. He thinks bamboo is lazy and Painter is a liar, and is right once.', false,
+    [{ era: 4, system: 'utol', body: 'komashi' }], {
+      arc: 'yumi', wiki: 'Sukishi', see: ['painter', 'nightmare-division', 'the-dreamwatch', 'tojin'],
+      bio: 'A big, white-haired foreman with a small office at Nightmare Division headquarters, where the night\'s paintings come in. He knew about the Dreamwatch lie, so when Yumi told him Nikaro had seen a stable nightmare he did not pass it on. Tojin showed him the damage later, and he called the Dreamwatch.',
+    }),
+  // Coppermind: Samjae (yumi 13, 23, 32, 39).
+  ch('samjae', 'Samjae', '#f0abfc', 'yumi', 'Komashi', 'Samjae',
+    'Yoki-hijo; Cognitive Shadow',
+    'Yumi\'s childhood friend, who told her stories about yoki-hijo who fell in love and ran away.', false,
+    [{ era: 4, system: 'utol', body: 'komashi' }], {
+      arc: 'yumi', wiki: 'Samjae', see: ['yumi', 'liyun', 'yoki-hijo', 'yoki-hijo-order'],
+      bio: 'A yoki-hijo in training alongside Yumi, which was the nearest Yumi came to a friend. Liyun forbade the stories and then separated the girls for growing too attached. When the machine woke, Samjae was one of the fourteen it could not destroy and kept, unknowing, in a prison of her own.',
+    }),
+  // Coppermind: Dwookim (yumi 22); Reform movement (yumi 22).
+  ch('dwookim', 'Dwookim', '#f9a8d4', 'yumi', 'Komashi', 'Dwookim',
+    'Yoki-hijo (reformed)',
+    'A reformed yoki-hijo: fed herself, took days off, retired. Hwanji used to serve her.', false,
+    [{ era: 4, system: 'utol', body: 'komashi' }], {
+      arc: 'yumi', wiki: 'Dwookim', see: ['hwanji', 'reform-movement', 'yoki-hijo-order'],
+      bio: 'A leading light of the reform movement who worked about half the days of a week, summoned around ten spirits a session, and retired at seventy as reformers insist on doing. Hwanji was her attendant for years before being assigned to Yumi, which is how Yumi finally heard there was a movement at all.',
+    }),
+  // Coppermind: Tesuaka Tatomi (yumi 30, 37, epilogue); Dreamwatch (yumi 37).
+  ch('tesuaka-tatomi', 'Tesuaka Tatomi', '#a5f3fc', 'yumi', 'Komashi', 'Tesuaka',
+    'Dreamwatch central soldier',
+    'A senator\'s daughter in the Dreamwatch. She thought Painter was the barbecue delivery.', false,
+    [{ era: 4, system: 'utol', body: 'komashi' }], {
+      arc: 'yumi', wiki: 'Tesuaka_Tatomi', see: ['the-dreamwatch', 'painter', 'battle-of-kilahito'],
+      bio: 'A full member of the Dreamwatch with her own team of companions, sent from Jito to Kilahito after Tojin\'s report. When Nikaro came to warn her of a hundred stable nightmares she paused her ping-pong long enough to tell him he might make the Dreamwatch one day. Her unit missed the battle, was disbanded after it, and she had to find other work.',
+    }),
+  // Coppermind: Usasha (yumi ae).
+  ch('usasha', 'Usasha', '#67e8f9', 'yumi', 'Komashi', 'Usasha',
+    'Nightmare painter',
+    'The only painter killed at the battle of Kilahito, and officially the one who saved it.', false,
+    [{ era: 4, system: 'utol', body: 'komashi' }], {
+      arc: 'yumi', wiki: 'Usasha', see: ['battle-of-kilahito', 'painter', 'painter-guild'],
+      bio: 'Nikaro wanted no credit, so his friends reported that Usasha had raised the alarm and organised the defence, and the city gave her the honours.',
+    }),
 
   // ─── Canticle ───────────────────────────────────────────────────────────
-  ch('auxiliary', 'Auxiliary', '#f59e0b', 'sunlit', 'Roshar', 'Auxiliary, Aux',
-    'Deadeye spren, Shardplate/Blade',
-    'Sigzil\'s companion. A spren who became a suit of armor and a running commentary.', true,
+  // Coppermind: Auxiliary (tsm 1, 4, 5, 13, 14, 20, 28, 29, 37, 42, 45, epilogue).
+  // That he was Szeth's highspren, 12124, is Wind and Truth: a gated relation.
+  ch('auxiliary', 'Auxiliary', '#f59e0b', 'sunlit', 'Roshar', 'Aux',
+    'Highspren, Skybreaker bond; any metal shape Nomad understands, Shardblade, Plate',
+    'Nomad\'s highspren. The Dawnshard ate most of him; what was left was a voice and a metal that takes any shape Nomad understands.', true,
     [{ era: 5, system: 'canticle', body: 'canticle-world' }], {
-      wiki: 'Auxiliary', see: ['sigzil', 'rebeke', 'cinder-king', 'elegy'],
+      wiki: 'Auxiliary', see: ['sigzil', 'rebeke', 'cinder-king', 'skip'],
       kind: 'spren', biology: 'spren',
-      bio: 'Once a highspren-style Knight Radiant spren, now a deadeye intelligence bound to Sigzil — able to take shapes of weapon and Plate, unable to be what the oaths originally promised. On Canticle he is Nomad\'s only constant company, dry as dust and loyal as gravity. Their relationship is the book\'s real love story.',
+      bio: 'A highspren who bonded Sigzil in Shadesmar and named himself Auxiliary. The Dawnshard Sigzil carried reached for Investiture and found Aux, and Sigzil stopped it too late to save more than his mind. On Canticle he is a deadpan voice that counts BEU, a crowbar, a shield, a set of handcuffs, a Shardblade — and a Knight Radiant in his own right, which is how he burns what is left of himself to give Nomad one flight ahead of the dawn.',
     }),
+  // Coppermind: Rebeke Salvage (tsm 5, 7, 12, 16, 34, 46, 50, 51, epilogue).
   ch('rebeke', 'Rebeke', '#fdba74', 'sunlit', 'Canticle', 'Rebeke Salvage',
-    'Beacon scavenger, Sunlit One',
-    'Beacon\'s scavenger who finds Nomad and refuses to leave people behind.', false,
+    'Pilot; half-Charred, a Sunlit One who kept her memories',
+    'She went into Union\'s arena after her sister and came out with Nomad. She ends the book a Sunlit One.', false,
     [{ era: 5, system: 'canticle', body: 'canticle-world' }], {
-      wiki: 'Rebeke', see: ['elegy', 'sigzil', 'contemplation', 'cinder-king'],
-      bio: 'A young woman of Beacon on Canticle, sister to Elegy, skilled at salvaging sunhearts and surviving the planet\'s lethal sunrise. She pulls Nomad into Beacon\'s war with the Cinder King and keeps choosing compassion when Union calls it weakness. By the end she is something her people name Sunlit.',
+      wiki: 'Rebeke_Salvage', see: ['elegy', 'divinity-salvage', 'sigzil', 'cinder-king', 'sunlit-ones'],
+      titles: 'Sunlit One',
+      bio: 'Elegy and Divinity\'s sister, a fair pilot, and stubborn in the right direction. She disobeyed the Greater Good to pull Elegy out of the arena and lost Divinity doing it. The Cinder King tried to make her Charred; Elegy drew off the heat halfway, so Rebeke kept her memories and gained his leash, and she used it — with a speech — to turn Union\'s own command bridge against him.',
     }),
+  // Coppermind: Elegy Salvage (tsm 3, 8, 12, 19, 20, 24, 25, 38, 46, 48, 50, 51).
   ch('elegy', 'Elegy', '#ea580c', 'sunlit', 'Canticle', 'Elegy Salvage',
-    'Charred, Lodestar',
-    'Rebeke\'s sister. The Cinder King burned her into a weapon; she stole herself back.', false,
+    'Charred',
+    'Beacon\'s Lodestar, made Charred. She came back without her memories and with his strength.', false,
     [{ era: 5, system: 'canticle', body: 'canticle-world' }], {
-      wiki: 'Elegy', see: ['rebeke', 'cinder-king', 'sigzil', 'compassion'],
-      bio: 'Sister to Rebeke, captured and remade as one of the Cinder King\'s Charred — sunheart-powered slaves burned empty of resistance. Elegy claws personhood back anyway, becoming Lodestar to Beacon\'s cause. She is fury pointed in the right direction.',
+      wiki: 'Elegy_Salvage', see: ['rebeke', 'divinity-salvage', 'cinder-king', 'charred', 'lodestar'],
+      titles: 'Lodestar (formerly)',
+      bio: 'The Lodestar who talked Beacon into rebelling and set it looking for the Refuge of Stone. The Cinder King caught her and made her Charred, and the woman who came back remembers neither Rebeke nor Divinity. Nomad\'s sunheart burned the Cinder King\'s voice out of her head; she chose discipline over the rage, freed his Charred inside his own city, and stopped Rebeke\'s conversion halfway.',
     }),
+  // Coppermind: Contemplation (tsm 18; WoB 16541), Greater Good (tsm 15), Compassion (tsm 39).
   ch('contemplation', 'Contemplation', '#f97316', 'sunlit', 'Canticle', 'Contemplation',
     'Greater Good of Beacon',
     'One of Beacon\'s Greater Good. She asks the questions that keep a people human.', false,
     [{ era: 5, system: 'canticle', body: 'canticle-world' }], {
-      wiki: 'Contemplation', see: ['confidence', 'compassion', 'rebeke', 'zeal'],
-      bio: 'A member of Beacon\'s ruling triad, the Greater Good, alongside Confidence and Compassion. Contemplation is the philosophical weight of a refugee city running ahead of a killing sun. She bargains with Nomad, prays to Adonalsium, and treats leadership as an unending ethics problem.',
+      wiki: 'Contemplation', see: ['confidence', 'compassion', 'greater-good', 'sigzil'],
+      bio: 'One of the three old women of the Greater Good. She hunted when she was young and is still a fine shot. She feels guilty that ending the sunheart offerings let the council outlive its predecessors, and it is she who names Nomad Zellion — One Who Finds.',
     }),
+  // Coppermind: Confidence (tsm 7, 8, 19), Compassion (tsm 11).
   ch('confidence', 'Confidence', '#fb923c', 'sunlit', 'Canticle', 'Confidence',
     'Greater Good of Beacon',
     'Greater Good. She names the hard call and does not look away.', false,
     [{ era: 5, system: 'canticle', body: 'canticle-world' }], {
-      wiki: 'Confidence', see: ['contemplation', 'compassion', 'zeal', 'rebeke'],
-      bio: 'Second voice of Beacon\'s Greater Good. Where Contemplation deliberates and Compassion softens, Confidence pushes for action and clarity. The three together are a government designed to disagree in public and still move a city before dawn.',
+      wiki: 'Confidence', see: ['contemplation', 'compassion', 'greater-good', 'sunlit-ones'],
+      bio: 'The tallest of the Greater Good, in small spectacles and a black dress. Her charge is to say what she knows to be true with all the energy of her heart, and she is the one who doubts the stranger is any Sunlit One.',
     }),
+  // Coppermind: Compassion (tsm 8, 11, 19, 39).
   ch('compassion', 'Compassion', '#fbbf24', 'sunlit', 'Canticle', 'Compassion',
     'Greater Good of Beacon',
     'Greater Good. Mercy is her portfolio; Canticle is a mean place to hold it.', false,
     [{ era: 5, system: 'canticle', body: 'canticle-world' }], {
-      wiki: 'Compassion', see: ['contemplation', 'confidence', 'elegy', 'rebeke'],
-      bio: 'Third of Beacon\'s Greater Good, the one who keeps the human cost on the agenda when raids and sunhearts threaten to turn everyone into arithmetic. On a planet where sunlight kills, compassion is not softness — it is logistics with a soul.',
+      wiki: 'Compassion', see: ['contemplation', 'confidence', 'greater-good', 'sunlit-ones'],
+      bio: 'The eldest of the Greater Good and probably of Beacon: small, frail, on her feet only with help. She tells Nomad the story of the Sunlit Ones, and insists the ships fly flat out and leave stragglers, because compassion on Canticle has to mean the people surviving.',
     }),
-  ch('cinder-king', 'The Cinder King', '#7c2d12', 'sunlit', 'Canticle', 'Cinder King',
-    'Tyrant of Union, Charred-binder',
-    'Tyrant of Union. He brands people into Charred and calls the sun his proof.', false,
+  // Coppermind: Cinder King (tsm 2, 4, 5, 12, 13, 16, 20, 24, 44, 49, 51, 52); TimeTellers (tsm 44); WoB 17072.
+  ch('cinder-king', 'The Cinder King', '#7c2d12', 'sunlit', 'Canticle', 'Glowing Eyes',
+    'Sunlit One: drains heat by touch, commands the Charred; crack shot',
+    'Union\'s tyrant. He learned to make Charred from Scadrians and conquest from a dead man\'s books.', false,
     [{ era: 5, system: 'canticle', body: 'canticle-world' }], {
-      wiki: 'Cinder King', see: ['elegy', 'rebeke', 'sigzil', 'contemplation'],
-      titles: 'King of Union',
-      bio: 'Ruler of Union, Canticle\'s conquering city, who uses sunhearts to create the Charred and hunts Beacon without rest. He wants Nomad\'s Skip and the secret of permanent power on a world that resets every daybreak. Absolute rule is his answer to a planet that already tries to kill everyone equally.',
+      wiki: 'Cinder_King', see: ['union-canticle', 'charred', 'cinderheart', 'timetellers', 'elegy', 'rebeke'],
+      titles: 'Cinder King, Sunlit One',
+      bio: 'An executioner who decided commanding people was better than killing them. He murdered a Thaylen worldhopper for a demon, read the encyclopedias in his pack, and concluded he was meant to unite Canticle — then did most of it, with Charred made by a trick the TimeTellers sold him for sunhearts. His cinderheart sits shallow, so he keeps his mind and steers theirs. Nomad drained him on the open ground and Skipped; the sun did the rest.',
     }),
+  // Coppermind: Zeal (tsm 7, 8, 11, 19, 36).
   ch('zeal', 'Zeal', '#f59e0b', 'sunlit', 'Canticle', 'Zeal',
-    'Field commander',
+    'Field commander, pilot',
     'Beacon\'s field commander. Short stature, long odds, excellent raid plans.', false,
     [{ era: 5, system: 'canticle', body: 'canticle-world' }], {
-      wiki: 'Zeal', see: ['contemplation', 'confidence', 'rebeke', 'jeffrey-jeffrey'],
-      bio: 'Beacon\'s special-operations planner under the Greater Good — a little person with a big call sign and the job of stealing keys from Union. He runs the raids that keep Beacon alive. Nomad misidentifies him at first; everyone underestimates him once.',
+      wiki: 'Zeal', see: ['greater-good', 'rebeke', 'jeffrey-jeffrey', 'haridans-key', 'dawnchaser'],
+      bio: 'Beacon\'s field commander, under four feet tall and very formal with his superiors. He planned the raid on Union\'s arena and stole the Cinder King\'s key while it was going on, and flew the Dawnchaser through the maelstrom after everyone else aboard had passed out. Nomad took Adonalsium-Will-Remember-Our-Plight-Eventually for him at first.',
     }),
+  // Coppermind: Jeffrey Jeffrey (tsm 8, 11, 19, 29, 32, 42).
   ch('jeffrey-jeffrey', 'Jeffrey Jeffrey', '#fdba74', 'sunlit', 'Canticle', 'Jeffrey Jeffrey',
-    'Beacon citizen',
-    'Beacon resident. The name is the joke; survival is not.', false,
+    'Steward to the Greater Good; gunship pilot',
+    'Beacon\'s steward. The name is the same twice.', false,
     [{ era: 5, system: 'canticle', body: 'canticle-world' }], {
-      wiki: 'Jeffrey Jeffrey', see: ['zeal', 'contemplation', 'rebeke'],
-      bio: 'A citizen of Beacon whose doubled name is one of Canticle\'s Threnodite naming echoes turned comic. He is supporting cast in Nomad\'s orbit — texture for a refugee culture that names children like prayers and then has to race the sun anyway.',
+      wiki: 'Jeffrey_Jeffrey', see: ['greater-good', 'zeal', 'haridans-key'],
+      bio: 'A burly man with a bushy black beard who could pass for Azish, and the continuity under a council whose members keep being given to the sun. He was on the raid for the key, walked Nomad through the controls for the climb over the mountains, and went down in a gunship before Nomad dropped him on the Dawnchaser.',
     }),
+  // Coppermind: Adonalsium-Will-Remember-Our-Plight-Eventually (tsm 7; WoB 15585).
   ch('adonalsium-will-remember', 'Adonalsium-Will-Remember-Our-Plight-Eventually', '#f8fafc', 'sunlit', 'Canticle',
     'Adonalsium-Will-Remember-Our-Plight-Eventually',
     'Beacon citizen',
-    'A Beaconite whose name is a thesis. Tall, stern, impossible to put on a name tag.', false,
+    'Tall, stern, and named like a prayer. Not Zeal.', false,
     [{ era: 5, system: 'canticle', body: 'canticle-world' }], {
       wiki: 'Adonalsium-Will-Remember-Our-Plight-Eventually',
-      see: ['zeal', 'contemplation', 'sigzil'],
-      bio: 'A tall, severe resident of Beacon whose Threnodite-descended name is a whole liturgy. Tasked with lodging Nomad and Elegy, he embodies Canticle\'s habit of wearing theology on the census form. Faith, for his people, is remembering a God who was killed and deciding that still matters.',
+      see: ['zeal', 'elegy', 'sigzil'],
+      bio: 'A tall, thin, stern Beaconite whom Nomad mistook for Zeal on the strength of a radio voice. Zeal sent him to find quarters for Nomad and Elegy; Nomad declined to follow. The name is awkward even in Canticle\'s Threnodite (WoB 15585).',
+    }),
+  // Coppermind: Divinity Salvage (tsm 5, 7, 13, 22, 33, 51; WoB 16344).
+  ch('divinity-salvage', 'Divinity Salvage', '#c2410c', 'sunlit', 'Canticle', 'Divinity',
+    'Hunter, rifleman',
+    'Rebeke and Elegy\'s brother. He found Elegy in the arena mud, and the Cinder King shot him.', false,
+    [{ era: 5, system: 'canticle', body: 'canticle-world' }], {
+      arc: 'sunlit', wiki: 'Divinity_Salvage', see: ['rebeke', 'elegy', 'cinder-king', 'chorus-hall'],
+      bio: 'He set their mother\'s sunheart into the quadcycle so Rebeke could keep her close. Against the Greater Good\'s orders he and Rebeke went into Union\'s arena for Elegy, and he was the one who found her. The Cinder King\'s first shot took his shoulder; the second, his head. Rebeke thinks she saw his face in the Chorus. Brandon says the dead of Canticle become sunhearts, not shades.',
+    }),
+  // Coppermind: Solemnity Divine (tsm 19, 23, 26, 27, 32, 47, 48).
+  ch('solemnity-divine', 'Solemnity Divine', '#fdba74', 'sunlit', 'Canticle', 'Solemnity',
+    'Lead engineer',
+    'Beacon\'s lead engineer. Her damage reports have a sense of humour.', false,
+    [{ era: 5, system: 'canticle', body: 'canticle-world' }], {
+      arc: 'sunlit', wiki: 'Solemnity_Divine', see: ['sigzil', 'beacon-people', 'greater-good'],
+      bio: 'Could pass for Alethi, and was the least lost person in the room when Nomad explained why engines die where the air runs out. Her five engineers turned his exploding prototype into vacuum engines — three more prototypes, only two of which blew up — and got Beacon over the mountains. She flew him to Union at the end.',
+    }),
+  // Coppermind: Thomos (tsm 3, 4, 5, 6, 7, 8).
+  ch('thomos', 'Thomos', '#fb923c', 'sunlit', 'Canticle', 'Thomos',
+    'Beaconite',
+    'The prisoner Nomad carried out of Union\'s arena. He reminded Nomad of an old friend.', false,
+    [{ era: 5, system: 'canticle', body: 'canticle-world' }], {
+      arc: 'sunlit', wiki: 'Thomos', see: ['sigzil', 'rebeke', 'cinder-king', 'sunlit-ones'],
+      bio: 'Gap-toothed, heavyset, and taken in a raid on Beacon. He watched Nomad survive the sunlight, helped him onto a box in the arena, and was about to be made Charred when Nomad\'s Blade hit the pillar. Nomad carried him out with a broken leg. Back on Beacon, delirious, he told everyone the stranger had touched the sun and lived.',
+    }),
+  // Coppermind: Admiral (tsm 26, epilogue; WoB 16255), Night Brigade (tsm 27).
+  ch('night-brigade-admiral', 'The Admiral', '#1f2937', 'sunlit', 'Unknown', 'Admiral',
+    'Commands the Night Brigade and its shades; the Continuity Chain',
+    'Commander of the Night Brigade. Nomad keeps getting away, and she would like to know how.', false,
+    [{ era: 5, system: 'canticle', body: 'canticle-world' }], {
+      arc: 'sunlit', wiki: 'Admiral', see: ['night-brigade', 'truth-is-waiting', 'sigzil'],
+      titles: 'Admiral',
+      bio: 'Tall, short black hair, uniform buttoned, never sitting down. She came down to Canticle herself and missed him by about a day, with shades that obey her without a word and a whip called the Continuity Chain. She has no qualms about civilians and prefers useful targets; with Nomad gone again she went to question the Scadrians instead. Her real name has not been given.',
+    }),
+  // Coppermind: Truth-Is-Waiting (tsm 26, epilogue).
+  ch('truth-is-waiting', 'Truth-Is-Waiting', '#374151', 'sunlit', 'Threnody', 'Truth',
+    'Staff sergeant, Night Brigade',
+    'The Admiral\'s staff sergeant. He can walk like a civilian when he has to.', false,
+    [{ era: 5, system: 'canticle', body: 'canticle-world' }], {
+      arc: 'sunlit', wiki: 'Truth-Is-Waiting', see: ['night-brigade', 'night-brigade-admiral', 'union'],
+      titles: 'Staff Sergeant',
+      bio: 'He stole a house ship to pass as a Canticlite from another corridor and asked Union about the stranger: dead, they said, fighting the Cinder King, and there were Scadrians under the ground. He thinks it is wrong to slag Canticle\'s people for being in the way — they are Threnodite cousins — though not very strongly. The Scadrians he will enjoy.',
+    }),
+  // Coppermind: Zellion (Threnody) (tsm 11, 15, 22, 39), Lodestar (tsm 11, 15).
+  // No era row: generations before the book, and canon gives no date.
+  ch('zellion-threnody', 'Zellion', '#fde68a', 'sunlit', 'Threnody', 'the first Lodestar',
+    'Preacher of Adonalsium',
+    'The preacher who led a shipload of Threnodites to Canticle. His name is Yolish for One Who Finds.', false,
+    [], {
+      arc: 'sunlit', wiki: 'Zellion_(Threnody)', see: ['lodestar', 'chorus', 'threnody', 'sigzil'],
+      titles: 'Lodestar',
+      bio: 'A servant of Adonalsium who persuaded his followers to leave the Evil and the infighting behind on Threnody, and became the first Lodestar. They built their flying cities on the pattern of the ships that brought them; the first of them to die became the Chorus. Some on Canticle think he chose the planet so his people would be too busy running from the sun to fight. Beacon gave Nomad his name.',
+    }),
+
+  // ─── Elsecaller ─────────────────────────────────────────────────────────
+  // Coppermind: Hwynn Tyvneri (elsecaller; elsecaller preface), Elsecaller (short story), Grand Knell (elsecaller).
+  ch('hwynn-tyvneri', 'Hwynn Tyvneri', '#86efac', 'elsecaller', 'Rellam', 'Tyvneri',
+    'Historian, worldhopper, Shadesmar sailor',
+    'A centuries-old historian from Rellam, and the first to tell Jasnah the cosmere exists.', true,
+    [{ era: 3, system: 'rosharan', body: 'roshar' }], {
+      arc: 'elsecaller', wiki: 'Hwynn_Tyvneri', see: ['jasnah', 'lorieta', 'rellam', 'ivory'],
+      bio: 'Green skin, grey-streaked green hair, pointed ears, and calm — too old for anger, he says. Rellam\'s Investiture is a curse, so he left to search the cosmere\'s history for a cure, sailing Shadesmar in a ten-yard boat whose sail catches the Current. He took in Lorieta and is trying to get her home. Jasnah decided he was too valuable to let go; watching him take a wound fighting angerspren on her behalf, she changed her mind.',
+    }),
+  // Coppermind: Lorieta (elsecaller).
+  ch('lorieta', 'Lorieta', '#c4b5fd', 'elsecaller', 'Unknown', 'Lorieta',
+    'Dreams of possible futures',
+    'A lost eleven-year-old with horn nubs, who dreams the future in pieces.', true,
+    [{ era: 3, system: 'rosharan', body: 'roshar' }], {
+      arc: 'elsecaller', wiki: 'Lorieta', see: ['hwynn-tyvneri', 'jasnah', 'noble-sacrifice', 'fortune'],
+      bio: 'Timid, of a horned people, with an accent that barely touches her t\'s and d\'s; she does not know the name of her world. Her dreams sent Tyvneri to the Luminous Shallows in time to pick Jasnah up, warned them off Emberdark, and named Noble Sacrifice before anyone knew what it was. Her one blow in the fight was a belaying fid left where an angerspren would slip on it. She gave Jasnah three prophecies she could not explain.',
     }),
 
   // ─── Threnody ───────────────────────────────────────────────────────────

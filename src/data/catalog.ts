@@ -608,7 +608,7 @@ export const BODIES: Body[] = [
     shards: [], magic: [], species: ['Rellamites'], locations: 'Unknown', biome: 'oceanic', hasSurface: false,
     fact: 'A world with no gods, where Investiture is a curse on the people who carry it. Its people are green-skinned and live for centuries.',
     bio: 'Hwynn Tyvneri, a historian from Rellam, met Jasnah in Shadesmar and had to leave his own world before he learned the word "god". If he is typical of the place, Rellamites are long-lived and green-skinned — which is all we have.',
-    wiki: 'Physical Realm', see: ['jasnah'],
+    wiki: 'Physical Realm', see: ['jasnah', 'hwynn-tyvneri'],
     canon: C, sources: ['Elsecaller'],
     fieldNotes: { system: { canon: S, note: 'Named in a conversation in Shadesmar, where there are no stars to point at. The placement is ours.' } } },
   { id: 'bjendal-world', name: 'Bjendal', system: 'bjendal', book: 'mistborn2', arc: 'tlm', kind: 'planet', color: '#fbbf24',
@@ -758,9 +758,9 @@ function lunagrees(): Moon[] {
     ['verdant', 'Verdant Moon', '#34d399', 'Green spores over the Emerald Sea. Vines, instantly, wherever water finds them — which is how Tress learned what a sea can do.'],
     ['crimson', 'Crimson Moon', '#f43f5e', 'Red spores over the Crimson Sea. They grow enormous spikes, which turn out to be coral, and Xisis lives underneath them.'],
     ['midnight', 'Midnight Moon', '#374151', 'Black spores over the Midnight Sea. Midnight Essence takes the shape of whatever is nearest and lets someone else look out through it.'],
-    ['zephyr', 'Zephyr Moon', '#93c5fd', 'Blue spores over the Sapphire Sea. They make air, violently, which is the only reason ships cross anything at all.'],
-    ['sunlight', 'Sunlight Moon', '#fde047', 'Gold spores over the sea nobody on the page names. Fire waiting for water — sailors carry them and hate carrying them.'],
-    ['roseite', 'Roseite Moon', '#fbcfe8', 'Pink-red spores over the Rose Sea. Roseite sets into crystal hard enough to patch a hull, and Silajana is the aether behind it.'],
+    ['zephyr', 'Zephyr Moon', '#93c5fd', 'Blue spores over the Sapphire Sea. Water makes them air, all at once — Lumar\'s gunpowder.'],
+    ['sunlight', 'Sunlight Moon', '#fde047', 'Gold spores over a sea the book never names. Wet, they give light and heat; ovens and flares run on them.'],
+    ['roseite', 'Roseite Moon', '#fbcfe8', 'Pink-red spores over the Rose Sea. Wet, they set into crystal hard enough to patch a hull.'],
   ];
   const rows: Moon[] = [];
   for (let i = 0; i < 12; i++) {

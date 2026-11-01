@@ -21,9 +21,14 @@ export const CHARACTERS: Character[] = [
       { era: 2, system: 'scadrian', body: 'scadrial' },
       { era: 3, system: 'rosharan', body: 'roshar' },
       { era: 4, system: 'scadrian', body: 'scadrial' },
+      // A cursed deckhand on the Crow's Song, betting the Sorceress for AonDor.
+      { era: 4, system: 'lumar', body: 'lumar-world', book: 'tress', arc: 'tress' },
+      // Frozen as the Noodle Pupil's coatrack. Canon puts Yumi after The Sunlit
+      // Man (WoB 16524); the era is the app's. He is never on Canticle — Aux
+      // only pushes an illusion of him along Sigzil's Connection.
+      { era: 4, system: 'utol', body: 'komashi', at: 'kilahito', book: 'yumi', arc: 'yumi' },
       // After Scadrial, looking for Valor. Her temple in Kingseat burns him.
       { era: 4, system: 'miralan', body: 'miral', at: 'kingseat', book: 'fod', arc: 'fod' },
-      { era: 5, system: 'canticle', body: 'canticle-world' },
     ], {
       wiki: 'Hoid', kind: 'person', titles: 'King\'s Wit, Court jester, storyteller',
       see: ['frost', 'design', 'sigzil', 'dawnshard', 'yolen', 'seventeenth-shard'],
@@ -92,11 +97,11 @@ export const CHARACTERS: Character[] = [
       { era: 1, system: 'selish', body: 'sel' },
       { era: 3, system: 'rosharan', body: 'roshar' },
     ]),
-  ch('sigzil', 'Sigzil', '#f59e0b', 'stormlight', 'Roshar', 'Nomad, the Sunlit Man',
-    'Windrunner, then Dawnshard residual, skip-capable',
+  ch('sigzil', 'Sigzil', '#f59e0b', 'stormlight', 'Roshar', 'Nomad, Zellion, the Sunlit Man, Sess Nassith Tor',
+    'Windrunner, then Skybreaker; Skips between worlds; once carried a Dawnshard',
     'Hoid\'s apprentice. Far-future wanderer of The Sunlit Man.', false, [
       { era: 3, system: 'rosharan', body: 'roshar' },
-      { era: 5, system: 'canticle', body: 'canticle-world' },
+      { era: 5, system: 'canticle', body: 'canticle-world', book: 'sunlit', arc: 'sunlit' },
     ]),
   ch('vasher', 'Vasher', '#a78bfa', 'warbreaker', 'Nalthis', 'Zahel, Kalad',
     'Returned, Awakener, Nightblood\'s creator',
@@ -264,20 +269,20 @@ export const CHARACTERS: Character[] = [
     'Sand Master, Lord Mastrell',
     'The under-mastered Diemite who would not let his order die.', false,
     [{ era: 2, system: 'taldainian', body: 'taldain' }]),
-  ch('yumi', 'Yumi', '#22d3ee', 'yumi', 'Komashi', 'yoki-hijo',
-    'Spirit-summoner',
+  ch('yumi', 'Yumi', '#22d3ee', 'yumi', 'Komashi', 'Chosen, Honored One',
+    'Yoki-hijo; Cognitive Shadow',
     'A stone-stacker whose life was a machine\'s lie.', false,
     [{ era: 4, system: 'utol', body: 'komashi' }]),
   ch('painter', 'Painter', '#67e8f9', 'yumi', 'Komashi', 'Nikaro',
     'Nightmare painter',
     'A slacker who learned to see what he was painting.', false,
     [{ era: 4, system: 'utol', body: 'komashi' }]),
-  ch('tress', 'Tress', '#6ee7b7', 'tress', 'Lumar', 'The Captain',
-    'Sprouter, aether-bonded',
+  ch('tress', 'Tress', '#6ee7b7', 'tress', 'Lumar', 'Glorf',
+    'Sprouter, cook, Luhel bond with Midnight Essence',
     'A girl who went to sea for a boy and stayed for herself.', false,
     [{ era: 4, system: 'lumar', body: 'lumar-world' }]),
-  ch('charlie', 'Charlie', '#fcd34d', 'tress', 'Lumar', 'The Duke\'s son, the Raven',
-    'Storyteller',
+  ch('charlie', 'Charlie', '#fcd34d', 'tress', 'Lumar', 'Huck',
+    'Valet; passable storyteller and musician; terrible liar',
     'The boy Tress went to save.', false,
     [{ era: 4, system: 'lumar', body: 'lumar-world' }]),
   ch('shai', 'Shai', '#6366f1', 'emperorssoul', 'Sel', 'Wan ShaiLu',
@@ -312,14 +317,14 @@ export const CHARACTERS: Character[] = [
       { era: 3, system: 'rosharan', body: 'roshar' },
     ]),
   ch('design', 'Design', '#22d3ee', 'stormlight', 'Roshar', 'Design',
-    'Cryptic, Hoid\'s spren',
-    'A spren who learned to walk off Roshar. She has opinions about hats.', true, [
+    'Cryptic, Lightweaver bond, some control of Connection',
+    'Hoid\'s Cryptic. On Komashi she ran a noodle shop and used him as the coatrack.', true, [
       { era: 3, system: 'rosharan', body: 'roshar' },
-      { era: 4, system: 'utol', body: 'komashi' },
+      { era: 4, system: 'utol', body: 'komashi', at: 'kilahito', book: 'yumi', arc: 'yumi' },
     ], { kind: 'spren', wiki: 'Design' }),
   ch('riina', 'Riina', '#a78bfa', 'tress', 'Sel', 'The Sorceress',
-    'Elantrian, aether-wise',
-    'An Ire-adjacent Elantrian on Lumar, cursing sailors from a midnight tower.', false, [
+    'Elantrian, AonDor curses, Awakener, worldhopper',
+    'An Elantrian of the Ire who landed a spaceship on Lumar and let the locals call it a tower.', false, [
       { era: 1, system: 'selish', body: 'sel' },
       { era: 4, system: 'lumar', body: 'lumar-world' },
     ]),
@@ -491,10 +496,12 @@ CHARACTERS.push(
     ALL_ERAS('yolish', 'yolen'),
     { arc: 'wat', canon: 'wob', sources: ['Wind and Truth', 'Word of Brandon'] }),
 
+  // Tress card only. The Dynamic, Silverlight, the piano and his opinion of
+  // Hoid are Isles of the Emberdark (iote 25, 32), carried by gated relations.
   drake('xisis', 'Xisisrefliel', '#f87171', 'tress', 'Xisis · Foil',
-    'Tenth Heightening Awakener · aether research · crimson spore work · pianist',
-    'A morally flexible dragon who takes human servants in exchange for boons — off-world technology, medical treatment, passage. Keeps a large establishment in Silverlight.',
-    'A dragon scholar studying aethers beneath Lumar’s Crimson Sea, aboard the ship Dynamic. Dislikes Hoid, which puts him in respectable company.',
+    'Shapeshifter · Tenth Heightening Awakener · commands crimson spores · a cure for spore eaters that lasts a year or two',
+    'Black scales, silvery hair, dragonsteel horns, ridges and claws; about four people tall. Like every greater dragon he has a human body as well.',
+    'A dragon who has kept a palace of spore tunnels under the Crimson Sea for centuries, studying how aethers rot. He trades boons for servants.',
     [...ALL_ERAS('yolish', 'yolen').slice(0, 4), { era: 4, system: 'lumar', body: 'lumar-world' }, { era: 5, system: 'yolish', body: 'yolen' }],
     { sources: ['Tress of the Emerald Sea', 'Word of Brandon'] }),
 

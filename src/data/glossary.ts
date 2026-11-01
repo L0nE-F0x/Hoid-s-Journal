@@ -61,11 +61,15 @@ export const GLOSSARY: GlossaryTerm[] = [
   t('soulstamp', 'Soulstamp', 'emperorssoul', 'A carved Forgery that rewrites an object\'s or person\'s history into a plausible lie.', ["The Emperor's Soul"], { category: 'object' }),
   t('shade', 'Shade', 'shadowsforsilence', 'A Threnodite Cognitive Shadow. Blood, fire, and running at night draw them.', ['Shadows for Silence'], { category: 'creature' }),
   t('aviar-term', 'Aviar', 'sixthofdusk', 'Pantheon birds that grant a talent after visiting Patji\'s Eye.', ['Sixth of the Dusk'], { category: 'creature' }),
-  t('aether-spore', 'Aether spores', 'tress', 'Twelve colours of symbiotic aether raining from Lumar\'s moons. Water is the trigger.', ['Tress of the Emerald Sea'], { category: 'object' }),
+  // Coppermind: Aether spores (tress 1, 10, 28). Lumar's strain is parasitic, not symbiotic.
+  t('aether-spore', 'Aether spores', 'tress', 'Twelve kinds of spore, one per moon, falling in lunagrees until they make the seas. Water turns a spore into its aether; silver and salt kill it.', ['Tress of the Emerald Sea'], { category: 'object', see: ['aether', 'lunagree', 'water-trigger'] }),
   t('hion-term', 'Hion', 'yumi', 'Virtuosity\'s Splintered light: cyan and magenta lines that power Komashi.', ['Yumi and the Nightmare Painter'], { category: 'magic' }),
-  t('nightmare', 'Nightmare (Komashi)', 'yumi', 'A painter-banished spirit, born of Virtuosity\'s Splinters and the machine\'s hunger.', ['Yumi and the Nightmare Painter'], { category: 'creature' }),
-  t('sunheart', 'Sunheart', 'sunlit', 'A person\'s Invested remnant after Canticle\'s sun. Cities run on them.', ['The Sunlit Man'], { category: 'object' }),
-  t('skip', 'Skipping', 'sunlit', 'Sigzil\'s Dawnshard-scarred talent: leave a place so hard you arrive somewhere else.', ['The Sunlit Man'], { category: 'magic' }),
+  // Coppermind: Nightmare (yumi 3, 23, 39, 40).
+  t('nightmare', 'Nightmare (Komashi)', 'yumi', 'A Cognitive Shadow of someone the father machine killed. At night they leave the shroud and feed on sleepers; painted, they become the painting.', ['Yumi and the Nightmare Painter'], { category: 'creature', see: ['stable-nightmare', 'father-machine', 'bamboo-painting'] }),
+  // Coppermind: Sunheart (tsm 8, 11, 12, 13, 20, 21, 24, 45). One entry; the duplicate id further down is gone.
+  t('sunheart', 'Sunheart', 'sunlit', 'A person caught between Canticle\'s sun and its core, condensed into a red-glowing cell of two hundred BEU or more. Every ship on the planet runs on one, and a Connection to whoever it was lets you fill it again.', ['The Sunlit Man'], { arc: 'sunlit', category: 'object', aliases: 'sunhearts', see: ['cinderheart', 'sunhearts', 'prospector'] }),
+  // Coppermind: Sigzil "Skipping" (tsm 1; WoB 15593, 15626).
+  t('skip', 'Skipping', 'sunlit', 'Nomad\'s jump from one world to another along the Connection the Dawnshard left him. About 20,000 BEU a time; where he lands is random, weighted toward Investiture.', ['The Sunlit Man', 'Word of Brandon'], { category: 'magic', see: ['sigzil', 'auxiliary', 'nomads-torment'] }),
   t('initiation', 'Initiation', 'core', 'The moment a person is Invested into a world\'s magic. Vax\'s system is named only this.', ['Word of Brandon', 'Arcanum Unbounded'], { category: 'magic' }),
   t('spren', 'Spren', 'stormlight', 'Splinters of Investiture on Roshar that embody ideas, emotions, and forces. Some bond humans as Knights Radiant.', ['The Stormlight Archive'], { category: 'creature' }),
   t('honorblade', 'Honorblade', 'stormlight', 'A Herald\'s Blade. It grants the two Surges of that Herald without a spren bond, and leaks Stormlight.', ['The Stormlight Archive'], { category: 'object' }),
@@ -101,7 +105,6 @@ export const GLOSSARY: GlossaryTerm[] = [
   t('catacendre', 'The Catacendre', 'mistborn1', 'The remaking of Scadrial by Sazed after Ruin and Preservation destroyed it — new plants, new seasons, and the Basin where the ash had been.', ['The Hero of Ages'], { arc: 'hoa', category: 'history' }),
   t('harmony', 'Harmony', 'mistborn1', 'Sazed holding Preservation and Ruin together. Two opposed intents in one Vessel, which is why he can so rarely act.', ['The Hero of Ages'], { arc: 'hoa', category: 'realmatic' }),
   t('trell', 'Trell', 'mistborn2', 'The name a Scadrian cult prays to. It is Autonomy, working through an avatar, and it has designs on the planet.', ['The Lost Metal'], { arc: 'tlm', category: 'people' }),
-  t('sunheart', 'Sunheart', 'sunlit', 'A crystallised store of the Canticle sun\'s energy, and the currency of every hover-city racing the dawn.', ['The Sunlit Man'], { arc: 'sunlit', category: 'object' }),
   t('shade', 'Shade', 'shadowsforsilence', 'A Cognitive Shadow on Threnody, held in place by the Forests. Break a Simple Rule and one comes for you and makes you cold.', ['Shadows for Silence in the Forests of Hell'], { category: 'creature' }),
   t('simple-rules', 'The Simple Rules', 'shadowsforsilence', 'Do not kindle flame. Do not shed the blood of another. Do not run at night. Break one in the Forests and the shades notice.', ['Shadows for Silence in the Forests of Hell'], { category: 'culture' }),
   t('seon', 'Seon', 'elantris', 'A Splinter of Devotion in the shape of a floating light with a character in it. Bonded to a family, and aware.', ['Elantris'], { category: 'creature' }),

@@ -155,7 +155,7 @@ export const RELATIONS_MORE: Relation[] = [
   { a: { kind: 'character', id: 'tress' }, b: { kind: 'character', id: 'xisis' }, type: 'rival', label: 'Bargained under the sea', book: 'tress', canon: C },
   { a: { kind: 'character', id: 'tress' }, b: { kind: 'character', id: 'riina' }, type: 'rival', label: 'Broke the curse', book: 'tress', canon: C },
   { a: { kind: 'character', id: 'charlie' }, b: { kind: 'character', id: 'riina' }, type: 'rival', label: 'Her curse', book: 'tress', canon: C },
-  { a: { kind: 'character', id: 'hoid' }, b: { kind: 'character', id: 'riina' }, type: 'rival', label: 'Ire trouble', book: 'tress', canon: C },
+  { a: { kind: 'character', id: 'hoid' }, b: { kind: 'character', id: 'riina' }, type: 'rival', label: 'The bet: break her curse, become Elantrian', book: 'tress', canon: C },
   // Riina is one of the Ire and an Elantrian, but that is Tress's news, so it
   // is a sentence here rather than a name on the older orders' rosters.
   { a: { kind: 'character', id: 'riina' }, b: { kind: 'org', id: 'the-ire' }, type: 'bond', label: 'One of the Ire', book: 'tress', canon: C },
@@ -163,6 +163,102 @@ export const RELATIONS_MORE: Relation[] = [
   { a: { kind: 'character', id: 'nikli' }, b: { kind: 'character', id: 'sleepless-hordes' }, type: 'family', label: 'One of the Sleepless', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'sigzil' }, b: { kind: 'org', id: 'night-brigade' }, type: 'rival', label: 'Hunted by them', book: 'sunlit', canon: C },
   { a: { kind: 'character', id: 'design' }, b: { kind: 'character', id: 'pattern' }, type: 'ally', label: 'Fellow Cryptics', book: 'stormlight', canon: C },
+
+  // --- Tress of the Emerald Sea -------------------------------------------
+  // Coppermind: Crow, Xisisrefliel, Riina, Ulaam, Charlie, Charlie's father, Dirk, Lem,
+  // Ulba, Brick, Laggart, Weev, Verdant King, Crow's Song, Hoid (tress 5–64, epilogue).
+  { a: { kind: 'character', id: 'tress' }, b: { kind: 'character', id: 'crow' }, type: 'rival', label: 'Traded her to the dragon', book: 'tress', arc: 'tress', canon: C },
+  { a: { kind: 'character', id: 'crow' }, b: { kind: 'character', id: 'xisis' }, type: 'ally', label: 'His servant now', book: 'tress', arc: 'tress', canon: C },
+  { a: { kind: 'character', id: 'crow' }, b: { kind: 'character', id: 'laggart' }, type: 'ally', label: 'Captain & first mate', book: 'tress', arc: 'tress', canon: C },
+  { a: { kind: 'character', id: 'crow' }, b: { kind: 'character', id: 'weev' }, type: 'rival', label: 'Had him thrown overboard', book: 'tress', arc: 'tress', canon: C },
+  { a: { kind: 'character', id: 'tress' }, b: { kind: 'character', id: 'laggart' }, type: 'ally', label: 'Spared him', book: 'tress', arc: 'tress', canon: C },
+  { a: { kind: 'character', id: 'tress' }, b: { kind: 'character', id: 'salay' }, type: 'ally', label: 'Found her father', book: 'tress', arc: 'tress', canon: C },
+  { a: { kind: 'character', id: 'tress' }, b: { kind: 'character', id: 'ulaam' }, type: 'ally', label: 'Ship\'s surgeon', book: 'tress', arc: 'tress', canon: C },
+  { a: { kind: 'character', id: 'tress' }, b: { kind: 'character', id: 'lem' }, type: 'family', label: 'Daughter & father', book: 'tress', arc: 'tress', canon: C },
+  { a: { kind: 'character', id: 'tress' }, b: { kind: 'character', id: 'ulba' }, type: 'family', label: 'Daughter & mother', book: 'tress', arc: 'tress', canon: C },
+  { a: { kind: 'character', id: 'lem' }, b: { kind: 'character', id: 'ulba' }, type: 'romance', label: 'Married', book: 'tress', arc: 'tress', canon: C },
+  { a: { kind: 'character', id: 'tress' }, b: { kind: 'character', id: 'brick' }, type: 'ally', label: 'Got her off the Rock', book: 'tress', arc: 'tress', canon: C },
+  { a: { kind: 'character', id: 'charlie' }, b: { kind: 'character', id: 'duke-diggen' }, type: 'family', label: 'Son & father', book: 'tress', arc: 'tress', canon: C },
+  { a: { kind: 'character', id: 'duke-diggen' }, b: { kind: 'character', id: 'dirk' }, type: 'family', label: 'Uncle & adopted heir', book: 'tress', arc: 'tress', canon: C },
+  { a: { kind: 'character', id: 'charlie' }, b: { kind: 'character', id: 'dirk' }, type: 'family', label: 'Cousins', book: 'tress', arc: 'tress', canon: C },
+  { a: { kind: 'character', id: 'verdant-king' }, b: { kind: 'character', id: 'charlie' }, type: 'rival', label: 'Sent him to the Sorceress', book: 'tress', arc: 'tress', canon: C },
+  { a: { kind: 'character', id: 'hoid' }, b: { kind: 'character', id: 'charlie' }, type: 'mentor', label: 'Rewrote his curse', book: 'tress', arc: 'tress', canon: C },
+  { a: { kind: 'character', id: 'hoid' }, b: { kind: 'character', id: 'ulaam' }, type: 'ally', label: 'Old friends', book: 'tress', arc: 'tress', canon: C },
+  { a: { kind: 'character', id: 'ulaam' }, b: { kind: 'character', id: 'riina' }, type: 'rival', label: 'She keeps acid for him', book: 'tress', arc: 'tress', canon: C },
+  { a: { kind: 'character', id: 'xisis' }, b: { kind: 'character', id: 'riina' }, type: 'rival', label: 'The one being he fears', book: 'tress', arc: 'tress', canon: C },
+  { a: { kind: 'character', id: 'tress' }, b: { kind: 'org', id: 'crows-song' }, type: 'bond', label: 'Sprouter, then captain', book: 'tress', arc: 'tress', canon: C },
+  { a: { kind: 'character', id: 'crow' }, b: { kind: 'org', id: 'crows-song' }, type: 'bond', label: 'Captain, until the dragon', book: 'tress', arc: 'tress', canon: C },
+  // Gated: Hoid wins the bet and becomes an Elantrian on Lumar (tress 64). His
+  // card stays as it is; this is the sentence that says so.
+  { a: { kind: 'character', id: 'hoid' }, b: { kind: 'org', id: 'elantrians' }, type: 'bond', label: 'Became one on Lumar', book: 'tress', arc: 'tress', canon: C },
+  // Gated on Wind and Truth (sa5 147): Hoid regrows from the largest living piece of himself.
+  { a: { kind: 'character', id: 'ulaam' }, b: { kind: 'character', id: 'hoid' }, type: 'ally', label: 'Kept a culture of his cells', book: 'stormlight', arc: 'wat', canon: C },
+
+  // --- Yumi and the Nightmare Painter -------------------------------------
+  // Coppermind: Nikaro, Akane, Izumakamo, Masaka, Yumi, Liyun, Design, Gyundok, Father machine (yumi 2–41, ae).
+  { a: { kind: 'character', id: 'painter' }, b: { kind: 'character', id: 'akane' }, type: 'ally', label: 'Friends, then not, then again', book: 'yumi', arc: 'yumi', canon: C },
+  { a: { kind: 'character', id: 'painter' }, b: { kind: 'character', id: 'tojin' }, type: 'ally', label: 'First to trust him again', book: 'yumi', arc: 'yumi', canon: C },
+  { a: { kind: 'character', id: 'painter' }, b: { kind: 'character', id: 'masaka' }, type: 'ally', label: 'Upper-school friends', book: 'yumi', arc: 'yumi', canon: C },
+  { a: { kind: 'character', id: 'painter' }, b: { kind: 'character', id: 'izzy' }, type: 'ally', label: 'Upper-school friends', book: 'yumi', arc: 'yumi', canon: C },
+  { a: { kind: 'character', id: 'akane' }, b: { kind: 'character', id: 'tojin' }, type: 'ally', label: 'Patrol partners', book: 'yumi', arc: 'yumi', canon: C },
+  { a: { kind: 'character', id: 'masaka' }, b: { kind: 'character', id: 'izzy' }, type: 'ally', label: 'Patrol partners', book: 'yumi', arc: 'yumi', canon: C },
+  { a: { kind: 'character', id: 'yumi' }, b: { kind: 'character', id: 'liyun' }, type: 'mentor', label: 'Yoki-hijo & warden', book: 'yumi', arc: 'yumi', canon: C },
+  { a: { kind: 'character', id: 'yumi' }, b: { kind: 'character', id: 'hwanji' }, type: 'ally', label: 'Attendant', book: 'yumi', arc: 'yumi', canon: C },
+  { a: { kind: 'character', id: 'yumi' }, b: { kind: 'character', id: 'chaeyung' }, type: 'ally', label: 'Attendant', book: 'yumi', arc: 'yumi', canon: C },
+  { a: { kind: 'character', id: 'yumi' }, b: { kind: 'character', id: 'akane' }, type: 'ally', label: 'Took her shopping', book: 'yumi', arc: 'yumi', canon: C },
+  { a: { kind: 'character', id: 'yumi' }, b: { kind: 'character', id: 'masaka' }, type: 'ally', label: 'Kept her secret', book: 'yumi', arc: 'yumi', canon: C },
+  { a: { kind: 'character', id: 'yumi' }, b: { kind: 'character', id: 'samjae' }, type: 'ally', label: 'Girlhood friends, separated', book: 'yumi', arc: 'yumi', canon: C },
+  { a: { kind: 'character', id: 'liyun' }, b: { kind: 'character', id: 'father-machine' }, type: 'rival', label: 'Made her a nightmare', book: 'yumi', arc: 'yumi', canon: C },
+  { a: { kind: 'character', id: 'gyundok' }, b: { kind: 'character', id: 'father-machine' }, type: 'ally', label: 'Built it, then served it', book: 'yumi', arc: 'yumi', canon: C },
+  { a: { kind: 'character', id: 'yumi' }, b: { kind: 'character', id: 'father-machine' }, type: 'rival', label: 'Out-stacked it', book: 'yumi', arc: 'yumi', canon: C },
+  { a: { kind: 'character', id: 'painter' }, b: { kind: 'org', id: 'the-dreamwatch' }, type: 'rival', label: 'Turned down; then the battle cry', book: 'yumi', arc: 'yumi', canon: C },
+  { a: { kind: 'character', id: 'painter' }, b: { kind: 'org', id: 'painter-guild' }, type: 'bond', label: 'Nightmare painter', book: 'yumi', arc: 'yumi', canon: C },
+  { a: { kind: 'character', id: 'yumi' }, b: { kind: 'org', id: 'yoki-hijo-order' }, type: 'bond', label: 'Yoki-hijo', book: 'yumi', arc: 'yumi', canon: C },
+  // Gated: Yumi facts about Stormlight people (Hoid page; Design; yumi 5, 17, 21, 33, 39, ae).
+  { a: { kind: 'character', id: 'hoid' }, b: { kind: 'body', id: 'komashi' }, type: 'ally', label: 'Frozen there, as a coatrack', book: 'yumi', arc: 'yumi', canon: C },
+  { a: { kind: 'character', id: 'hoid' }, b: { kind: 'character', id: 'yumi' }, type: 'ally', label: 'Felt her through a Connection', book: 'yumi', arc: 'yumi', canon: C },
+  { a: { kind: 'character', id: 'design' }, b: { kind: 'character', id: 'masaka' }, type: 'ally', label: 'Knows she is Sleepless', book: 'yumi', arc: 'yumi', canon: C },
+  { a: { kind: 'character', id: 'design' }, b: { kind: 'character', id: 'painter' }, type: 'ally', label: 'His noodle shop', book: 'yumi', arc: 'yumi', canon: C },
+  { a: { kind: 'character', id: 'masaka' }, b: { kind: 'org', id: 'sleepless-order' }, type: 'bond', label: 'Sixtieth horde, Natricatich strain', book: 'yumi', arc: 'yumi', canon: C },
+
+  // --- The Sunlit Man -----------------------------------------------------
+  // Coppermind: Rebeke/Elegy/Divinity Salvage, Cinder King, Greater Good, Contemplation,
+  // Night Brigade, Admiral, Truth-Is-Waiting, TimeTellers, Thomos (tsm 5–52, epilogue).
+  { a: { kind: 'character', id: 'rebeke' }, b: { kind: 'character', id: 'elegy' }, type: 'family', label: 'Sisters', book: 'sunlit', arc: 'sunlit', canon: C },
+  { a: { kind: 'character', id: 'rebeke' }, b: { kind: 'character', id: 'divinity-salvage' }, type: 'family', label: 'Sister & brother', book: 'sunlit', arc: 'sunlit', canon: C },
+  { a: { kind: 'character', id: 'elegy' }, b: { kind: 'character', id: 'divinity-salvage' }, type: 'family', label: 'Sister & brother', book: 'sunlit', arc: 'sunlit', canon: C },
+  { a: { kind: 'character', id: 'rebeke' }, b: { kind: 'character', id: 'sigzil' }, type: 'ally', label: 'Out of the arena together', book: 'sunlit', arc: 'sunlit', canon: C },
+  { a: { kind: 'character', id: 'elegy' }, b: { kind: 'character', id: 'cinder-king' }, type: 'rival', label: 'Made her Charred', book: 'sunlit', arc: 'sunlit', canon: C },
+  { a: { kind: 'character', id: 'rebeke' }, b: { kind: 'character', id: 'cinder-king' }, type: 'rival', label: 'Took his city off him', book: 'sunlit', arc: 'sunlit', canon: C },
+  { a: { kind: 'character', id: 'sigzil' }, b: { kind: 'character', id: 'cinder-king' }, type: 'rival', label: 'Left him for the sun', book: 'sunlit', arc: 'sunlit', canon: C },
+  { a: { kind: 'character', id: 'cinder-king' }, b: { kind: 'character', id: 'divinity-salvage' }, type: 'rival', label: 'Shot him in the arena', book: 'sunlit', arc: 'sunlit', canon: C },
+  { a: { kind: 'character', id: 'contemplation' }, b: { kind: 'character', id: 'sigzil' }, type: 'ally', label: 'Named him Zellion', book: 'sunlit', arc: 'sunlit', canon: C },
+  { a: { kind: 'character', id: 'solemnity-divine' }, b: { kind: 'character', id: 'sigzil' }, type: 'ally', label: 'Built his engines', book: 'sunlit', arc: 'sunlit', canon: C },
+  { a: { kind: 'character', id: 'sigzil' }, b: { kind: 'character', id: 'thomos' }, type: 'ally', label: 'Carried him out', book: 'sunlit', arc: 'sunlit', canon: C },
+  { a: { kind: 'character', id: 'compassion' }, b: { kind: 'org', id: 'greater-good' }, type: 'bond', label: 'Eldest member', book: 'sunlit', arc: 'sunlit', canon: C },
+  { a: { kind: 'character', id: 'confidence' }, b: { kind: 'org', id: 'greater-good' }, type: 'bond', label: 'Member', book: 'sunlit', arc: 'sunlit', canon: C },
+  { a: { kind: 'character', id: 'contemplation' }, b: { kind: 'org', id: 'greater-good' }, type: 'bond', label: 'Member', book: 'sunlit', arc: 'sunlit', canon: C },
+  { a: { kind: 'character', id: 'zeal' }, b: { kind: 'org', id: 'greater-good' }, type: 'ally', label: 'Their field commander', book: 'sunlit', arc: 'sunlit', canon: C },
+  { a: { kind: 'character', id: 'jeffrey-jeffrey' }, b: { kind: 'org', id: 'greater-good' }, type: 'ally', label: 'Their steward', book: 'sunlit', arc: 'sunlit', canon: C },
+  { a: { kind: 'character', id: 'night-brigade-admiral' }, b: { kind: 'org', id: 'night-brigade' }, type: 'bond', label: 'Commander', book: 'sunlit', arc: 'sunlit', canon: C },
+  { a: { kind: 'character', id: 'truth-is-waiting' }, b: { kind: 'org', id: 'night-brigade' }, type: 'bond', label: 'Staff sergeant', book: 'sunlit', arc: 'sunlit', canon: C },
+  { a: { kind: 'character', id: 'cinder-king' }, b: { kind: 'org', id: 'timetellers' }, type: 'ally', label: 'Sunhearts for secrets', book: 'sunlit', arc: 'sunlit', canon: C },
+  { a: { kind: 'character', id: 'sigzil' }, b: { kind: 'org', id: 'timetellers' }, type: 'rival', label: 'Asylum refused, sunheart taken', book: 'sunlit', arc: 'sunlit', canon: C },
+  { a: { kind: 'character', id: 'cinder-king' }, b: { kind: 'org', id: 'union-canticle' }, type: 'bond', label: 'Built it, lost it', book: 'sunlit', arc: 'sunlit', canon: C },
+  // Gated: Hoid on Canticle is an illusion along Sigzil's Connection (tsm 10); the
+  // Dawnshard he carried (tsm 11, 20) is named Exist only in Wind and Truth.
+  { a: { kind: 'character', id: 'hoid' }, b: { kind: 'character', id: 'sigzil' }, type: 'mentor', label: 'An apology, by Connection', book: 'sunlit', arc: 'sunlit', canon: C },
+  { a: { kind: 'character', id: 'sigzil' }, b: { kind: 'dawnshard', id: 'dawnshard-exist' }, type: 'bond', label: 'Carried it, then passed it on', book: 'sunlit', arc: 'sunlit', canon: C },
+  // Gated on Wind and Truth (sa5 135, 147): Aux was Szeth's highspren, 12124.
+  { a: { kind: 'character', id: 'auxiliary' }, b: { kind: 'character', id: 'szeth' }, type: 'bond', label: 'Was his highspren, 12124', book: 'stormlight', arc: 'wat', canon: C },
+
+  // --- Elsecaller ---------------------------------------------------------
+  // Coppermind: Hwynn Tyvneri, Lorieta, Elsecaller (short story).
+  { a: { kind: 'character', id: 'jasnah' }, b: { kind: 'character', id: 'hwynn-tyvneri' }, type: 'mentor', label: 'Told her the cosmere exists', book: 'elsecaller', arc: 'elsecaller', canon: C },
+  { a: { kind: 'character', id: 'hwynn-tyvneri' }, b: { kind: 'character', id: 'lorieta' }, type: 'family', label: 'Taking her home', book: 'elsecaller', arc: 'elsecaller', canon: C },
+  { a: { kind: 'character', id: 'jasnah' }, b: { kind: 'character', id: 'lorieta' }, type: 'ally', label: 'Three prophecies', book: 'elsecaller', arc: 'elsecaller', canon: C },
+  { a: { kind: 'character', id: 'jasnah' }, b: { kind: 'character', id: 'hoid' }, type: 'ally', label: 'He admits to other worlds', book: 'elsecaller', arc: 'elsecaller', canon: C },
+  { a: { kind: 'character', id: 'hwynn-tyvneri' }, b: { kind: 'body', id: 'rellam' }, type: 'ally', label: 'Homeworld', book: 'elsecaller', arc: 'elsecaller', canon: C },
 
   // --- Org membership edges ---------------------------------------------
   { a: { kind: 'character', id: 'shallan' }, b: { kind: 'org', id: 'ghostbloods' }, type: 'ally', label: 'Joined, then left', book: 'stormlight', canon: C },

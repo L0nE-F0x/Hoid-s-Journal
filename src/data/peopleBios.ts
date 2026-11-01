@@ -223,23 +223,23 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   yumi: {
     wiki: 'Yumi',
-    see: ['painter', 'yoki-hijo', 'father-machine'],
-    bio: 'A yoki-hijo stacked into sainthood by ritual until a machine\'s lie and a painter\'s honesty unmake the shroud. She and Painter share bodies, nightmares, and a love story that has to survive the end of her world\'s favourite story about her.',
+    see: ['painter', 'liyun', 'father-machine', 'yoki-hijo', 'torio', 'samjae'],
+    bio: 'A yoki-hijo of Torio, born under a falling star and raised by Liyun inside the strictest form of the tradition; her record is thirty-seven spirits at once. When the father machine woke it ate her people and could not eat her, so it kept her in a copy of her old life and wiped each day, for one thousand seven hundred and sixty-three years. A spirit Connected her to Painter; she remembered, learned to paint, and took the spirits back from the machine stone by stone. She is a Cognitive Shadow now, anchored with painter\'s ink, and runs the Noodle Princess with him.',
   },
   painter: {
     wiki: 'Nikaro',
-    see: ['yumi', 'bamboo-painting', 'hion'],
-    bio: 'Nikaro of Kilahito — nightmare painter, professional fraud, and the ordinary man Yumi\'s miracle lands on. He learns to tell the truth with a bamboo pen and to stack stones when stacking souls is required.',
+    see: ['yumi', 'akane', 'tojin', 'the-dreamwatch', 'bamboo-painting', 'battle-of-kilahito'],
+    bio: 'The best artist of his year, who failed the Dreamwatch, told his friends he had got in, and has painted nothing but bamboo since. A spirit Connected him to Yumi: he learned to stack stones in her body, she learned to paint in his. At the battle of Kilahito he worked out that a nightmare painted as the person it used to be stays that way, and painted Gongsha Town back one face at a time.',
   },
   tress: {
     wiki: 'Tress',
-    see: ['charlie', 'hoid', 'xisis', 'verdant'],
-    bio: 'A sprouter\'s daughter who sails spore seas to rescue her love and accidentally becomes the kind of captain pirates negotiate with. Practical, soft-hearted, and terrifying once she understands the spores.',
+    see: ['charlie', 'hoid', 'crow', 'crows-song', 'xisis', 'two-cups'],
+    bio: 'Born Glorf on Diggen\'s Point and called Tress for her hair. She washed the duke\'s windows, traded pies to sailors for cups, and fell for his son. When the Sorceress took Charlie she conned her way off a rock nobody is allowed to leave, became the Crow\'s Song\'s sprouter to make herself useful, sold her captain to a dragon, and sailed the ship into the Midnight Sea.',
   },
   charlie: {
     wiki: 'Charlie',
-    see: ['tress', 'hoid', 'riina'],
-    bio: 'A duke\'s son cursed into a rat and a foil for Hoid\'s storytelling. He is the reason Tress leaves the Rock — and the proof that curses are just another kind of unfinished negotiation.',
+    see: ['tress', 'hoid', 'riina', 'duke-diggen', 'dirk', 'sorceress-curse'],
+    bio: 'The duke\'s son, who bored a year of princesses on purpose and sent Tress a cup after every rejection. His father sent him to marry the Sorceress instead. She made him a rat whose curse would break only if he brought Tress to her to be cursed, and he spent the book trying to stop Tress reaching the island — as Huck, on her shoulder. Hoid rewrote the terms: bring her home, and write her a verse.',
   },
   shai: {
     wiki: 'Wan_ShaiLu',
@@ -274,12 +274,13 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   design: {
     wiki: 'Design',
     see: ['hoid', 'cryptic', 'yolen'],
-    bio: 'Hoid\'s Cryptic on Roshar — dry, curious, and unimpressed by her bondmate\'s theatrics. She is proof he finally entered a Nahel bond, with all the oath-shaped complications that implies.',
+    // Published face (Yumi). Stormlight readers get READING_FACES.design.early.
+    bio: 'The Cryptic Hoid found in Kholinar near where Elhokar died, and bonded himself. She spoils his endings on purpose and thinks surprises are dumb unless they are pranks. Off Roshar she wears a wireframe Lightweaving of a striking Nagadan woman — she does not see herself as female, she just likes the shape. When Hoid froze on Komashi she founded the Noodle Pupil, stood him in a corner for coats, spotted Masaka for a Sleepless, stretched Painter\'s Connection, and willed the shop to him and Yumi when they left.',
   },
   riina: {
     wiki: 'Riina',
-    see: ['the-ire', 'tress', 'hoid'],
-    bio: 'An Ire sorceress who curses Charlie and underestimates a sprouter. Elantrian tools, Cognitive Realm politics, and a grudging exit when Tress and Hoid ruin her afternoon.',
+    see: ['the-ire', 'tress', 'hoid', 'sorceress-curse', 'riina-tower', 'sorceress-island'],
+    bio: 'She picked Lumar because nothing on it could stop her. Over the years her metal soldiers, Midnight Essence and tariffs on the Midnight Sea made her the Sorceress, and anyone who reached her island left cursed — in rhyme, told every term, and unable to say any of them. She turned Charlie into a rat and took Hoid\'s bet: a curse now, Elantrian status if he broke it. When he walked back into her ship cured, she weighed the odds and left the planet.',
   },
   nikli: {
     wiki: 'Nikli',
@@ -413,8 +414,8 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   xisis: {
     wiki: 'Xisisrefliel',
-    see: ['tress', 'crimson-spore', 'lumar-world', 'aether'],
-    bio: 'A dragon under Lumar\'s Crimson Sea, trading favours for servants and studying aethers with proprietary calm. Tress bargains with him; Hoid would rather not.',
+    see: ['tress', 'crow', 'xisis-palace', 'crimson-sea', 'spore-eater', 'riina'],
+    bio: 'Xisis researches the seafloor under the spore seas — how the spores decompose, what that does to the seethe — and takes servants in trade for boons. Crow came to buy a cure with Tress. Tress offered Crow instead, argued that a servant who will never stop trying to leave is a bad buy, and won; she took three small boons for her friends. There is precisely one being on Lumar he fears, and it is the Sorceress.',
   },
   illistandrista: {
     wiki: 'Illistandrista',

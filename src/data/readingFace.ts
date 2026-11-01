@@ -184,7 +184,29 @@ export const READING_FACES: Record<string, ReadingFace> = {
       bio: 'An Azish man who apprenticed to Hoid and then to a bridge crew. He writes down what the others survive.',
     },
     steps: [
+      // Coppermind: Sigzil (sa5 118, 146). Before the Sunlit step, so the
+      // Sunlit card still wins once both are read.
+      {
+        book: 'stormlight', arc: 'wat',
+        fact: 'Bridge Four\'s Worldsinger. He broke his bond to save his spren, and Hoid handed him a Dawnshard on the way out.',
+        abilities: 'Windrunner (formerly); a Dawnshard',
+        aliases: 'Sigzil',
+        bio: 'An Azish man who apprenticed to Hoid and then to a bridge crew. On the last day he renounced his Windrunner oaths so Moash could not kill Vienta, and Hoid, about to be found by Retribution, pushed his Dawnshard into him and sent him into Shadesmar.',
+      },
       { book: 'sunlit', arc: 'sunlit', published: true },
+    ],
+  },
+  // Coppermind: Design (sa3 98, sa4 80; yumi 5, 17, 21, 32, 33, ae; WoB 10746).
+  // Komashi, the noodle shop and the disguise are Yumi's.
+  design: {
+    early: {
+      fact: 'Hoid\'s Cryptic. She spoils his endings on purpose.',
+      abilities: 'Cryptic, Lightweaver bond',
+      aliases: 'Design',
+      bio: 'The Cryptic Hoid found in Kholinar, near where Elhokar died, and bonded himself. She plays his flute without lips, considers surprises dumb, and told Kaladin how the Dog and the Dragon ends before Hoid could.',
+    },
+    steps: [
+      { book: 'yumi', arc: 'yumi', published: true },
     ],
   },
   // Isles of the Emberdark is Sixth of the Dusk retold and carried on five
@@ -245,10 +267,22 @@ export const READING_FACES: Record<string, ReadingFace> = {
   },
   crow: {
     early: {
-      bio: 'Pirate captain of the Crow\'s Song, hard as a reef and dying of a verdant spore infection that turns rain into a death sentence. She bargains and bullies, and cruelty is a tool she reaches for first.',
+      bio: 'Her verdant parasite stops anything that would break her skin and drinks her dry for it, and she has outlived the usual span by a year on stubbornness. She talked a merchant crew into piracy to dodge the king\'s war, then had Laggart sink the Oot\'s Dream so they would be deadrunners with nowhere left to go but the Crimson Sea. She meant to sell Tress to Xisis for a cure. Tress sold her first.',
     },
     steps: [
       { book: 'emberdark', arc: 'emberdark', published: true },
+    ],
+  },
+  // Coppermind: Ulaam (mb7 12). The Lost Metal gives him one scene; Tress gives him a ship.
+  ulaam: {
+    early: {
+      fact: 'A kandra. He and TenSoon took MeLaan aside about Wayne.',
+      abilities: 'Kandra',
+      aliases: 'Ulaam',
+      bio: 'A kandra on Scadrial who, with TenSoon, warned MeLaan about her relationship with Wayne. That is the whole of what The Lost Metal says about him.',
+    },
+    steps: [
+      { book: 'tress', arc: 'tress', published: true },
     ],
   },
   rysn: {

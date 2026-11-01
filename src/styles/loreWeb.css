@@ -45,10 +45,13 @@
   font-size: 12px;
 }
 .ceph-web-type.is-off { opacity: 0.35; }
+/* Sits on the playhead's top edge, which `hud.ts` publishes. It used to be a
+   fixed 118px up, which is inside the timeline at every size the timeline
+   comes in: the one sentence the web exists to say was drawn behind it. */
 .ceph-web-path {
   position: absolute;
   left: 50%;
-  bottom: calc(118px + var(--ceph-safe-bottom));
+  bottom: calc(var(--ceph-timeline-top, 160px) + 6px);
   transform: translateX(-50%);
   max-width: min(720px, calc(100% - 32px));
   text-align: center;
@@ -95,6 +98,8 @@
     color: var(--ceph-text-dim);
   }
   .ceph-web-legend-more::after { content: ' ▾'; }
+  /* The closed legend is a one-line pill on the same edge; the path clears it. */
+  .ceph-web-path { bottom: calc(var(--ceph-timeline-top, 160px) + 60px); }
   .ceph-web-legend.is-open .ceph-web-legend-more::after { content: ' ▴'; }
 }
 

@@ -47,7 +47,8 @@ const WEB_TYPES: Record<string, { label: string; color: string; soft?: boolean }
 export function mountLoreWeb(root: HTMLElement): { destroy(): void } {
   const canvas = el('canvas', { className: 'ceph-web-canvas' });
   const legend = el('div', { className: 'ceph-panel ceph-web-legend' });
-  const pathEl = el('div', { className: 'ceph-web-path' });
+  // A status region, so the path is read out when it changes, not only drawn.
+  const pathEl = el('div', { className: 'ceph-web-path', attrs: { role: 'status', 'aria-live': 'polite' } });
   const host = el('div', { className: 'ceph-web' }, [canvas, legend, pathEl]);
   root.append(host);
 

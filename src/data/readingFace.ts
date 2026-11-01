@@ -158,11 +158,33 @@ export const READING_FACES: Record<string, ReadingFace> = {
       { book: 'mistborn1', arc: 'hoa', published: true },
     ],
   },
+  // Aona and Skai: their names and their deaths are a Way of Kings letter;
+  // Odium's hand is that letter's implication and Wind and Truth's statement.
+  aona: {
+    early: {
+      fact: 'Vessel of Devotion. Long dead; Sel still runs on what she left.',
+      bio: 'The original Vessel of Devotion, one of the Yolish who took up a Shard at the Shattering and went to Sel with Skai. She did not last. What she held, tangled with Dominion\'s power, is the Dor, and every Aon draws on it.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'twok', published: true },
+    ],
+  },
+  skai: {
+    early: {
+      fact: 'Vessel of Dominion. Long dead, beside Aona.',
+      bio: 'The original Vessel of Dominion, who went to Sel with Aona and died there with her. Dominion is the other half of the Dor, and the skaze are its Splinters.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'twok', published: true },
+    ],
+  },
+  // "Lord of Scars" is Rhythm of War's name for him (ch. 82, 115) — the hint
+  // Brandon pointed at for Thaidakar (WoB 15051) — so it waits for that book.
   kelsier: {
     early: {
       fact: 'The Survivor of Hathsin, building a crew to kill a god.',
       abilities: 'Mistborn',
-      aliases: 'Survivor, Lord of Scars, Survivor of Hathsin',
+      aliases: 'Survivor, Survivor of Hathsin',
       bio: 'A half-skaa Mistborn who walked into the Pits of Hathsin and walked out a religion. He is going to kill the Lord Ruler, and he has convinced a crew to help.',
     },
     steps: [
@@ -170,10 +192,136 @@ export const READING_FACES: Record<string, ReadingFace> = {
         book: 'secrethistory', arc: 'secrethistory',
         fact: 'The Survivor. Death has not finished with him.',
         abilities: 'Mistborn, Cognitive Shadow',
-        aliases: 'Survivor, Lord of Scars',
-        bio: 'A half-skaa Mistborn who walked into the Pits of Hathsin and walked out a religion. He died at the Lord Ruler\'s hand and refused to finish dying.',
+        aliases: 'Survivor, Survivor of Hathsin',
+        bio: 'A half-skaa Mistborn who walked into the Pits of Hathsin and walked out a religion. He died at the Lord Ruler\'s hand and refused to finish dying; for a little while he even held Preservation.',
       },
+      {
+        book: 'stormlight', arc: 'row',
+        fact: 'The Survivor, and Thaidakar: master of the Ghostbloods.',
+        abilities: 'Mistborn, Cognitive Shadow',
+        aliases: 'Survivor, Thaidakar, Lord of Scars',
+        bio: 'A half-skaa Mistborn who died at the Lord Ruler\'s hand and refused to finish dying. Three centuries on he is Thaidakar, master of the Ghostbloods — the Lord of Scars, Hoid calls him — and since he cannot leave Scadrial he runs Mraize and Iyatil by seon.',
+      },
+      { book: 'mistborn2', arc: 'tlm', published: true },
+    ],
+  },
+  // The Purelake three — Grump, Thinker and Blunt in The Way of Kings
+  // Interlude 1 — are Galladon, Demoux and Baon by Word of Brandon (10085,
+  // 6683, 9208). Each one's own book does not know he will ever leave home.
+  galladon: {
+    early: {
+      fact: 'A Dula in Elantris who teaches Raoden how to live there.',
+      aliases: 'Galladon',
+      abilities: 'Elantrian',
+      bio: 'A Duladen farmer taken by the Shaod, who knows Elantris because his father was an Elantrian before him. He says "kolo?", calls people "sule", expects the worst, and helps build New Elantris anyway.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'twok', published: true },
+    ],
+  },
+  demoux: {
+    early: {
+      fact: 'A young captain in Kelsier\'s skaa army, and a believer.',
+      aliases: 'Demoux',
+      abilities: 'Soldier',
+      bio: 'One of the skaa army\'s officers, and one of the first to believe in the Survivor.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'twok', published: true },
+    ],
+  },
+  baon: {
+    early: {
+      fact: 'Khriss\'s bodyguard on Dayside, and the Dynasty\'s man.',
+      aliases: 'Baon',
+      abilities: 'Soldier, marksman',
+      bio: 'A Darksider soldier and crack shot who guards Khrissalla across the Kerla, and was sent by the Dynasty to judge whether the sand masters are a threat. He sees no conflict between the two jobs.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'twok', published: true },
+    ],
+  },
+  // Felt on Roshar is Word of Brandon (138, 9429) behind a name in Words of
+  // Radiance ch. 81; the Ghostbloods and the Awakening are Wind and Truth.
+  felt: {
+    early: {
+      fact: 'House Venture\'s best spy.',
+      abilities: 'Spy, scout',
+      bio: 'House Venture\'s spy, who works for a living and likes it. He watched Kelsier\'s crew for Elend and told him they were a well-funded, competent thieving crew — which is how Elend began to wonder about Valette Renoux.',
+    },
+    steps: [
+      {
+        book: 'stormlight', arc: 'wor',
+        fact: 'House Venture\'s spy on Scadrial; three centuries later a Kholin scout on Roshar.',
+        abilities: 'Spy, scout, worldhopper',
+        bio: 'A Scadrian worldhopper (Word of Brandon). He spied for Elend in the Final Empire, and turns up on the Shattered Plains scouting for the Kholins.',
+      },
+      { book: 'stormlight', arc: 'wat', published: true },
+    ],
+  },
+  // Coppermind: Iyatil (sa2 43, 54, 63, 88; sa5 28, 134; WoB 12733, 13475, 8134).
+  iyatil: {
+    early: {
+      fact: 'Mraize\'s babsk among the Ghostbloods. The mask stays on.',
+      abilities: 'Ghostblood, spy, worldhopper',
+      bio: 'A small, masked woman who outranks Mraize and does not explain herself. The mask is carapace, painted, and growing into her skin; she will kill anyone who tries to take it off. After Narak she nearly killed Amaram with a blowgun.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'wat', published: true },
+    ],
+  },
+  // Zahel is Words of Radiance; that he is Vasher is Word of Brandon there and
+  // plain by Rhythm of War.
+  vasher: {
+    early: {
+      fact: 'A Returned who has lived too long, carrying a sword that talks.',
+      aliases: 'Vasher, Warbreaker the Peaceful, Kalad',
+      abilities: 'Returned, Awakener',
+      bio: 'One of the Five Scholars, who made Nightblood with Shashara and once called himself Kalad. In T\'Telir he is a scruffy man in a cell who would rather nobody remembered any of that.',
+    },
+    steps: [
       { book: 'stormlight', arc: 'wor', published: true },
+    ],
+  },
+  // Lady Sequence is The Bands of Mourning's twist (ch. 27); the Key and the
+  // avatar are The Lost Metal.
+  telsin: {
+    early: {
+      fact: 'Wax\'s sister. Their uncle says the Set is holding her.',
+      abilities: 'Unknown',
+      aliases: 'Telsin',
+      bio: 'Wax\'s sister, nearly a stranger to him after twenty years of letters neither kept up. Edwarn tells Wax that if he moves against the Set, she is as good as dead.',
+    },
+    steps: [
+      {
+        book: 'mistborn2', arc: 'bom',
+        fact: 'Wax\'s sister, and the Set\'s Lady Sequence.',
+        abilities: 'Hemalurgic spikes: Coinshot, Bloodmaker, Leecher',
+        aliases: 'Lady Sequence',
+        bio: 'She played the Set\'s captive all the way to the temple, then shot her brother three times and took MeLaan\'s spikes. As Lady Sequence she outranks even Suit.',
+      },
+      { book: 'mistborn2', arc: 'tlm', published: true },
+    ],
+  },
+  // Hoid is core: his card is on screen before any book. The published card
+  // has Oathbringer's spren, Rhythm of War's refused Shard and The Sunlit
+  // Man's Dawnshard in it, so it waits for The Sunlit Man.
+  hoid: {
+    early: {
+      fact: 'A storyteller who is always somewhere important, and never says why.',
+      abilities: 'Storytelling, disguise',
+      aliases: 'Hoid',
+      bio: 'A beggar in bandages, an informant with bad eyes, a fool at court: he wears whatever face a place needs, and his stories are never only stories. He is older than he looks, and he does not explain.',
+    },
+    steps: [
+      {
+        book: 'stormlight', arc: 'twok',
+        fact: 'The King\'s Wit, who is neither Alethi nor a fool.',
+        abilities: 'Storytelling, disguise, a great deal of knowledge',
+        aliases: 'Wit, Hoid, Roamer',
+        bio: 'On Roshar he is the King\'s Wit, paid to insult lighteyes, and never quite answers what he is. He says he came to chase an old acquaintance and spends most of his time hiding from him. Sigzil was his apprentice, once.',
+      },
+      { book: 'sunlit', arc: 'sunlit', published: true },
     ],
   },
   sigzil: {

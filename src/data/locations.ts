@@ -8,8 +8,9 @@ function eraMinFromBook(book: string): number {
   if (book === 'core') return 0;
   if (book === 'mistborn1' || book === 'secrethistory') return 2;
   if (book === 'mistborn2') return 3;
-  if (book === 'tress' || book === 'yumi' || book === 'fod') return 4;
-  if (book === 'sunlit' || book === 'sixthofdusk' || book === 'emberdark') return 5;
+  if (book === 'tress' || book === 'fod') return 4;
+  // Yumi is after The Sunlit Man (WoB 16524); Sixth of the Dusk after Mistborn Era 3.
+  if (book === 'sunlit' || book === 'yumi' || book === 'sixthofdusk' || book === 'emberdark') return 5;
   return 1;
 }
 
@@ -490,11 +491,6 @@ export const LOCATIONS: Location[] = [
     {
       region: 'UTol',
       bio: 'UTol is a principal Sho Del world — four-armed, Invested, and originally of Yolen, where they fought humans in a war nobody now living saw. What any of that looks like from the ground has not been put on the page.', canon: 'wob', sources: ['Word of Brandon'] }),
-  loc('obrodai-claim', "Autonomy's claim", 'obrodai-world', 'mistborn2', 0.500, 0.500, '#db2777', 'land',
-    'A world Autonomy took and put an avatar on. The avatar took a name of her own.',
-    {
-      region: 'Obrodai',
-      bio: 'A world Autonomy took and put an avatar on, the way she has taken others. The avatar chose a name of her own, which is the part of the arrangement Autonomy keeps discovering she did not fully think through.', arc: 'tlm', sources: ['The Lost Metal'] }),
   loc('suluko', 'Suluko', 'first-of-the-sun', 'sixthofdusk', 0.470, 0.520, '#a3e635', 'island',
     'A Pantheon island. Less lethal than Patji, which is not the same as safe.', {
       region: 'The Pantheon',
@@ -557,33 +553,39 @@ export const PERPS: Perpendicularity[] = [
   { id: 'well-of-ascension-perp', name: 'The Well of Ascension', body: 'scadrial', book: 'mistborn1',
     fact: 'Preservation\'s pool beneath Kredik Shaw. Used, then collapsed.', at: 'luthadel',
     eraMin: 2, eraMax: 2, canon: C, sources: ['Mistborn Era 1'] },
-  { id: 'harmony-pool', name: "Harmony's Perpendicularity", body: 'scadrial', book: 'mistborn2',
-    fact: 'The surviving Scadrian pool after the Catacendre.', at: 'elendel',
-    eraMin: 3, canon: C, sources: ['Mistborn Era 2'] },
+  // The Lost Metal ch. 50: in the far south, watched by the Malwish — not in the Basin.
+  { id: 'harmony-pool', name: "Harmony's Perpendicularity", body: 'scadrial', book: 'mistborn2', arc: 'tlm',
+    fact: 'Harmony\'s perpendicularity, somewhere in the far south. The Malwish watch it closely.', at: 'malwish-nations',
+    eraMin: 3, canon: C, sources: ['The Lost Metal ch. 50'] },
   { id: 'elantris-pool-perp', name: 'The Pool of Elantris', body: 'sel', book: 'elantris',
     fact: 'Devotion\'s perpendicularity in the mountains above Elantris.', at: 'elantris-city',
     eraMin: 1, canon: C, sources: ['Elantris'] },
   { id: 'cultivation-pool', name: "Cultivation's Perpendicularity", body: 'roshar', book: 'stormlight',
     fact: 'The Horneater Peaks\' thermal oceans. A stable transit.', at: 'horneater-peaks',
     eraMin: 1, canon: C, sources: ['The Stormlight Archive'] },
-  { id: 'honors-perp', name: "Honor's Perpendicularity", body: 'roshar', book: 'stormlight',
+  { id: 'honors-perp', name: "Honor's Perpendicularity", body: 'roshar', book: 'stormlight', arc: 'oathbringer',
     fact: 'Opened by Dalinar at Thaylen Field; not a stable geographic pool.', at: 'thaylen-city',
     eraMin: 3, eraMax: 3, canon: C, sources: ['Oathbringer'] },
-  { id: 'tears-of-edgli-perp', name: 'Tears of Edgli', body: 'nalthis', book: 'warbreaker',
-    fact: 'Flowers whose dye is Endowment\'s Investiture made pigment.', at: 'tears-of-edgli',
-    eraMin: 1, canon: C, sources: ['Warbreaker'] },
+  // The flowers are not the crossing; they drink what wells up from it (WoB 9833).
+  { id: 'tears-of-edgli-perp', name: "Endowment's Perpendicularity", body: 'nalthis', book: 'warbreaker',
+    fact: 'Somewhere in Hallandren. The Tears of Edgli take their colour from the Investiture that wells up from it.', at: 'tears-of-edgli',
+    aliases: 'Tears of Edgli',
+    eraMin: 1, canon: W, sources: ['Warbreaker', 'Word of Brandon 9833'] },
   { id: 'patjis-eye-perp', name: "Patji's Eye", body: 'first-of-the-sun', book: 'sixthofdusk',
     fact: 'A perpendicularity on the island Patji, source of Aviar powers.', at: 'patji',
     eraMin: 1, canon: C, sources: ['Sixth of the Dusk'] },
   { id: 'pits-of-hathsin-perp', name: 'The Pits of Hathsin', body: 'scadrial', book: 'mistborn1',
     fact: 'Where Ruin\'s power crystallised into atium. Not a doorway so much as a wound that produced metal.',
     at: 'pits-of-hathsin', eraMin: 2, eraMax: 2, canon: C, sources: ['Mistborn Era 1'] },
+  // WoB 13093: Sel has a second perpendicularity, presumably Dominion's. Where is not said.
   { id: 'dominion-pool', name: "Dominion's Pool", body: 'sel', book: 'elantris',
-    fact: 'The second Selish perpendicularity. Dominion was Splintered with Devotion, and both pools remain.',
-    at: 'fjorden', eraMin: 1, canon: C, sources: ['Arcanum Unbounded — Sel essay'] },
-  { id: 'silverlight-nexus', name: 'The Silverlight Nexus', body: 'yolen', book: 'arcanum',
-    fact: 'The crossing that made a city possible where no world is. Khriss came through it and stayed.',
-    eraMin: 1, canon: W, sources: ['Arcanum Unbounded', 'Word of Brandon'] },
+    fact: 'Sel has a second perpendicularity, presumably Dominion\'s. Where it is has not been said.',
+    eraMin: 1, canon: W, sources: ['Word of Brandon 13093'] },
+  // The name is Word of Brandon 16603 (2024); everything else is Isles of the Emberdark ch. 30.
+  { id: 'silverlight-nexus', name: 'The Silverlight Nexus', body: 'yolen', book: 'emberdark',
+    fact: 'Silverlight\'s perpendicularity: a frosty white sun hanging under the city, the size of the city, the largest crossing in the cosmere. It opens on three places in the Physical Realm, and one is the greatstar of Yolen. Its pull slows time: a day in Silverlight is ten outside.',
+    aliases: 'the Nexus',
+    eraMin: 1, canon: C, sources: ['Isles of the Emberdark ch. 30', 'Word of Brandon 16603'] },
   { id: 'miral-perp', name: "Miral's Perpendicularity", body: 'miral', book: 'fod',
     fact: 'A natural perpendicularity, unusually irregular and attuned to no Shard. It is why so few people come to Miral, and why it is hard when they do.',
     aliases: 'the Mirali perpendicularity',

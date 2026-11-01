@@ -470,7 +470,7 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Brightlady · Sadeas princedom schemer',
     'Torol\'s widow; keeps the Sadeas knives sharp after his death.', false, R3, {
       kind: 'person', arc: 'twok', wiki: 'Ialai',
-      see: ['sadeas', 'dalinar', 'shallan', 'mraize'],
+      see: ['sadeas', 'dalinar', 'shallan'],
       bio: 'Wife of Torol Sadeas and the keener politician of the pair. After Adolin kills Torol she runs the princedom\'s intrigues until Shallan\'s agents end her — a reminder that Sadeas\'s house was never only Torol.',
     }),
   ch('restares', 'Restares', '#7f1d1d', 'stormlight', 'Roshar',
@@ -648,7 +648,7 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Head of House Davar · Ghostblood pawn',
     'Shallan\'s father; violence in a lighteyed coat.', false, R3, {
       kind: 'person', arc: 'twok', wiki: 'Lin Davar',
-      see: ['shallan', 'helaran', 'testament', 'mraize', 'chana'],
+      see: ['shallan', 'helaran', 'testament', 'chana'],
       bio: 'Brightlord of House Davar in Jah Keved. Abusive, indebted, and entangled with the Ghostbloods\' predecessors; Shallan kills him after years of terror and buries the memory beneath identities.',
     }),
   ch('helaran', 'Helaran Davar', '#9f1239', 'stormlight', 'Roshar',

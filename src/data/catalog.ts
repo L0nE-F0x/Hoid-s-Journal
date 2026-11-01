@@ -104,22 +104,23 @@ export const ERAS: Era[] = [
     id: 0, name: 'Pre-Shattering', start: -8000,
     event: 'Adonalsium exists on Yolen. The origin of magic and humanity.',
     realDate: 'Yolen — pre-Shattering',
-    chrono: "Adonalsium is whole on Yolen. No canonical absolute date exists; the Shattering is only loosely placed 'over 10,000 years' before the Cosmere space age.",
-    canon: S, sources: ['Coppermind: Shattering', 'Word of Brandon'],
+    chrono: 'Adonalsium is whole on Yolen. Nothing before the Shattering has a date; the Shattering itself falls over ten thousand years before the True Desolation.',
+    canon: S, sources: ['Rhythm of War Interlude 1', 'The Sunlit Man ch. 11', 'Wind and Truth ch. 100'],
   },
   {
     id: 1, name: 'Post-Shattering', start: -7000,
-    event: 'Sixteen Vessels Shatter Adonalsium and scatter. Worlds are Shaped and Invested.',
+    event: 'Sixteen of Adonalsium\'s killers take up the pieces and scatter. Worlds are Shaped and Invested.',
     realDate: 'Early post-Shattering (millennia)',
-    chrono: 'The sixteen Vessels disperse and Invest worlds over millennia. Elantris, Warbreaker and White Sand fall in the broad early-modern span that follows.',
-    canon: C, sources: ['Arcanum Unbounded'],
+    // Warbreaker is after Mistborn Era 1 (WoB 10273), so it is not this band's.
+    chrono: 'The Vessels disperse and Invest worlds over millennia. White Sand comes first in the timeline, then Elantris and The Emperor\'s Soul (Word of Brandon).',
+    canon: C, sources: ['Mistborn: Secret History', 'Word of Brandon 10502, 10273'],
   },
   {
     id: 2, name: 'Mistborn Era 1', start: -350,
     event: 'The Lord Ruler holds Scadrial in ash. A thousand years of the Final Empire.',
     realDate: "Scadrial — the Final Empire (~1,000 yrs) → Catacendre",
-    chrono: "Scadrial's Final Empire endures roughly a thousand years under the Lord Ruler, ending with the Catacendre.",
-    canon: C, sources: ['Mistborn Era 1'],
+    chrono: "Scadrial's Final Empire endures roughly a thousand years under the Lord Ruler, ending with the Catacendre. Warbreaker (a few generations before The Way of Kings) and Shadows for Silence come after it, before Roshar's Desolation; this atlas keeps them in this band.",
+    canon: C, sources: ['Mistborn Era 1', 'Word of Brandon 10273, 14099'],
   },
   {
     id: 3, name: 'Stormlight Era 1', start: 0,
@@ -132,15 +133,18 @@ export const ERAS: Era[] = [
     id: 4, name: 'Mistborn Era 2', start: 15,
     event: 'Scadrial three centuries after the ash. Railways, newspapers, Twinborn.',
     realDate: 'Scadrial — ~341 years after the Catacendre',
-    chrono: 'The Wax & Wayne era. Tress, Yumi and The Fires of December sit in this band; December happens first of the three, after Stormlight Five and before Stormlight Six.',
-    canon: C, sources: ['Mistborn Era 2', 'Word of Brandon (State of the Sanderson 2025)'],
+    // Era 2 is in the ten years between Stormlight 5 and 6 (WoB 549, 14582);
+    // The Fires of December is post-5, pre-6 (WoB 17183); Yumi is after The
+    // Sunlit Man (WoB 16524), so it is era 5's.
+    chrono: 'The Wax & Wayne era, which Brandon places in the ten years between the fifth and sixth Stormlight books. The Fires of December and Tress sit in this band; December comes first of Hoid\'s three told stories, after Stormlight Five and before Stormlight Six. Tress\'s exact place is not fixed. Yumi, the third, is after The Sunlit Man.',
+    canon: C, sources: ['Mistborn Era 2', 'Word of Brandon (State of the Sanderson 2025)', 'Word of Brandon 549, 14582, 17183, 16524'],
   },
   {
     id: 5, name: 'Future Convergence', start: 300,
     event: 'The Cosmere space age. Interplanetary travel becomes common.',
     realDate: 'Cosmere space age (latest known anchor)',
-    chrono: 'Sixth of the Dusk, then The Sunlit Man, then Isles of the Emberdark. Only the broad ordering is canon.',
-    canon: S, sources: ['The Sunlit Man', 'Isles of the Emberdark'],
+    chrono: 'After Mistborn\'s third era: Sixth of the Dusk, The Sunlit Man a little after it, then Yumi, then Isles of the Emberdark (Word of Brandon). Only the ordering is canon, not the dates.',
+    canon: S, sources: ['Word of Brandon 15579, 16524', 'The Sunlit Man', 'Isles of the Emberdark'],
   },
 ];
 
@@ -223,9 +227,10 @@ export const SYSTEMS: System[] = [
     starDesc: 'A large red-orange sun, bigger than Roshar\'s and closer to the worlds that circle it.',
     fact: 'A double planet: UTol and Komashi swing around each other while the pair goes round the sun. From Komashi, UTol is the daystar — the one light the shroud never covered.',
     wiki: 'UTol system', sources: ['Yumi and the Nightmare Painter'] },
-  { id: 'obrodai', name: 'Obrodai', sunColor: '#fcd34d', position: sys(-520, -280, 30), book: 'mistborn2', nebula: '#db2777',
+  // The only canon for Obrodai is Patji's letter, Oathbringer ch. 50 epigraph.
+  { id: 'obrodai', name: 'Obrodai', sunColor: '#fcd34d', position: sys(-520, -280, 30), book: 'stormlight', nebula: '#db2777',
     starDesc: 'Unnamed, unvisited on the page. Autonomy has claimed the world under it.',
-    wiki: 'Physical Realm', sources: ['Oathbringer — the second letter'] },
+    wiki: 'Physical Realm', sources: ['Oathbringer ch. 50 epigraph'] },
   { id: 'vaxian', name: 'Vaxian', sunColor: '#fcd34d', position: sys(-1050, 850, 90), book: 'core', nebula: '#d8b4fe',
     starDesc: 'Unnamed. Vax is spoken of far more often than it is described, and its star not at all.',
     wiki: 'Physical Realm', sources: ['Word of Brandon'] },
@@ -278,7 +283,7 @@ export const BODIES: Body[] = [
     biome: 'scadrial-ash', hasSurface: true,
     fact: 'A world literally constructed by its Shards, originally suffering under ashfalls before being reformed.',
     bio: 'Preservation and Ruin made Scadrial together, then spent an age fighting over it. The Lord Ruler moved the planet too close to the sun and buried the difference in ash. Sazed put it back. The Basin is the garden that grew in the wreckage; the south built a different civilisation under ice, and now they have met. Harmony holds both Shards and can rarely act. Autonomy has noticed.',
-    wiki: 'Scadrial', see: ['preservation', 'ruin', 'harmony', 'luthadel', 'elendel'],
+    wiki: 'Scadrial', see: ['harmony', 'luthadel', 'elendel'],
     // The one world the Shards built from scratch after the Shattering.
     // Aagal Nod and Aagal Uch were Adonalsium's; we do not draw them, so the
     // labelled Scadrian system waits with this planet. Coppermind: Scadrian system.
@@ -541,11 +546,11 @@ export const BODIES: Body[] = [
     locations: 'Torio, Kilahito', biome: 'komashi', hasSurface: true,
     fact: 'A world shrouded in darkness, powered by glowing magenta and cyan Hion lines.',
     ...cited('yumi', ['Yumi and the Nightmare Painter']) },
-  { id: 'obrodai-world', name: 'Obrodai', system: 'obrodai', book: 'mistborn2', kind: 'minor-shardworld', color: '#db2777',
+  { id: 'obrodai-world', name: 'Obrodai', system: 'obrodai', book: 'stormlight', arc: 'oathbringer', kind: 'minor-shardworld', color: '#db2777',
     orbit: { a: 11.2, e: 0.13, i: 0.05, omega: 3.5, period: 0.92 }, radius: 1.16,
     shards: ['autonomy'], magic: [], species: [], locations: 'Unknown', biome: 'oceanic', hasSurface: true,
-    fact: 'Planet claimed by the Shard Autonomy. Home to a new female avatar of Autonomy.',
-    ...cited('mistborn2', ['The Lost Metal']) },
+    fact: 'A world Autonomy has claimed. She is raising a new avatar there, a female one, taught to dislike Hoid so that he will not come back.',
+    ...cited('stormlight', ['Oathbringer ch. 50 epigraph']) },
   { id: 'vax', name: 'Vax', system: 'vaxian', book: 'core', kind: 'planet', color: '#d8b4fe',
     orbit: { a: 11.7, e: 0.22, i: 0.15, omega: 4.8, period: 0.9 }, radius: 0.98,
     shards: [], magic: [], species: [], locations: 'Unknown', biome: 'barren', hasSurface: true,
@@ -565,7 +570,7 @@ export const BODIES: Body[] = [
     aliases: 'the land of the aethers',
     fact: 'The origin of the aethers — twelve primal beings worshipped as gods, one to each of the twelve kingdoms.',
     bio: 'A twelve-world, the way Roshar is a ten and Scadrial a sixteen. The Dhatrians hold that the aethers predate not just the Shattering but Adonalsium, that they made people to each think differently, and that the dead go back to them to think it over. Then something called the dark aether struck, and the world turned unfriendly to the Aetherbound.',
-    wiki: 'Dhatri', see: ['aether'],
+    wiki: 'Dhatri',
     canon: C, sources: ['The Lost Metal', 'Word of Brandon'],
     fieldNotes: { system: { canon: S, note: 'Canon names Dhatri and a Dhatrian Planetary Network, never its star. The placement is ours.' } } },
   { id: 'grand-apparatus', name: 'The Grand Apparatus', system: 'apparatus', book: 'emberdark', kind: 'planet', color: '#94a3b8',
@@ -855,14 +860,15 @@ export const WORLD_EPOCHS: Record<string, WorldEpoch[]> = {
     { era: 1, date: "After Ambition's death scarred the system", canon: C },
     { era: 2, date: 'Shadows for Silence era — placement uncertain', canon: S },
   ],
+  // Sixth of the Dusk comes after Mistborn's third era (WoB 15579, 10273).
   drominad: [
-    { era: 4, date: 'Sixth of the Dusk — Cosmere space age', canon: S },
     { era: 5, date: 'Sixth of the Dusk — Cosmere space age', canon: S },
   ],
   lumar: [{ era: 4, date: 'Tress of the Emerald Sea — later-modern band', canon: S }],
   canticle: [{ era: 5, date: 'The Sunlit Man — far future', canon: S }],
-  utol: [{ era: 4, date: 'Yumi and the Nightmare Painter — later-modern band', canon: S }],
-  obrodai: [{ era: 4, date: "Autonomy's avatar world (Mistborn Era 2 band)", canon: S }],
+  // Yumi is after The Sunlit Man (WoB 16524).
+  utol: [{ era: 5, date: 'Yumi and the Nightmare Painter — after The Sunlit Man', canon: S }],
+  obrodai: [{ era: 3, date: "Autonomy's avatar world (around the True Desolation)", canon: S }],
   vaxian: [],
   dhatrian: [{ era: 4, date: 'After the dark aether — Dhatri closed to the Aetherbound', canon: S }],
   apparatus: [{ era: 5, date: 'Isles of the Emberdark — the space age', canon: S }],

@@ -600,7 +600,7 @@ export const PEOPLE_WORLDS: Character[] = [
   ch('liyun', 'Liyun', '#22d3ee', 'yumi', 'Komashi', 'Liyun, Warden-nimi',
     'Yoki-hijo warden',
     'Yumi\'s warden. Strict as liturgy — and later a nightmare wearing duty\'s face.', false,
-    [{ era: 4, system: 'utol', body: 'komashi' }], {
+    [{ era: 5, system: 'utol', body: 'komashi' }], {
       wiki: 'Liyun', see: ['yumi', 'hwanji', 'chaeyung', 'father-machine', 'stable-nightmare'],
       titles: 'Kihomaban',
       bio: 'Yumi\'s kihomaban: tall, severe, keeper of every orthodox rule and of the secret that most yoki-hijo had reformed. The machine took her soul with the rest of Torio and handed her back to Yumi\'s daily copy of the world; at night she was a nightmare, and the nearly stable one Painter chased off a child on the first night was her. He painted her human again at the battle, and she stayed that way until the shroud went.',
@@ -609,7 +609,7 @@ export const PEOPLE_WORLDS: Character[] = [
   ch('tojin', 'Tojin', '#67e8f9', 'yumi', 'Komashi', 'Tojin',
     'Nightmare painter, weightlifter',
     'Painter\'s old friend, built like a lat press. First to trust him again.', false,
-    [{ era: 4, system: 'utol', body: 'komashi' }], {
+    [{ era: 5, system: 'utol', body: 'komashi' }], {
       wiki: 'Tojin', see: ['painter', 'akane', 'izzy', 'masaka', 'battle-of-kilahito'],
       bio: 'A painter who patrols with Akane and treats his body as a project, which he will explain shirtless, and shyly, if you ask. He could not pretend Nikaro\'s lie had not hurt. But when Nikaro came asking for help against a hundred stable nightmares Tojin said yes first, and took up "We are the Dreamwatch now" right after him.',
     }),
@@ -617,7 +617,7 @@ export const PEOPLE_WORLDS: Character[] = [
   ch('akane', 'Akane', '#a5f3fc', 'yumi', 'Komashi', 'Akane',
     'Nightmare painter',
     'The painter across the hall, who holds the old friends together and still says hello to Painter.', false,
-    [{ era: 4, system: 'utol', body: 'komashi' }], {
+    [{ era: 5, system: 'utol', body: 'komashi' }], {
       wiki: 'Akane', see: ['painter', 'yumi', 'tojin', 'masaka', 'izzy'],
       bio: 'The centre of the upper-school group — Nikaro, Tojin, Masaka, Izzy — and the one who stayed civil after his Dreamwatch lie broke it. She took Yumi shopping on the strength of a story about a sister, patrols with Tojin, and fought at Kilahito; her ink is what Nikaro used to anchor Yumi afterwards. Nikaro is attracted to her. Yumi suspects she prefers Tojin. Her capstone is a large flower.',
     }),
@@ -625,7 +625,7 @@ export const PEOPLE_WORLDS: Character[] = [
   ch('masaka', 'Masaka', '#cffafe', 'yumi', 'Unknown', 'Chinikdakordich',
     'Nightmare painter; Sleepless, can send out hordelings',
     'A nightmare painter in black, scarf to the chin. She is a Sleepless, and would rather you called her Masaka.', false,
-    [{ era: 4, system: 'utol', body: 'komashi' }], {
+    [{ era: 5, system: 'utol', body: 'komashi' }], {
       wiki: 'Masaka', kind: 'sleepless',
       biology: 'A Sleepless — the sixtieth horde of the Natricatich strain — who bred hordelings for years until the face passed. She keeps her neck and hands covered.',
       see: ['painter', 'akane', 'izzy', 'design', 'yumi', 'sleepless-order'],
@@ -635,7 +635,7 @@ export const PEOPLE_WORLDS: Character[] = [
   ch('izzy', 'Izzy', '#06b6d4', 'yumi', 'Komashi', 'Izumakamo',
     'Nightmare painter',
     'A painter who invented dramascopes — fortune-telling by hion viewer — and has not forgiven Painter.', false,
-    [{ era: 4, system: 'utol', body: 'komashi' }], {
+    [{ era: 5, system: 'utol', body: 'komashi' }], {
       wiki: 'Izumakamo', see: ['painter', 'masaka', 'akane', 'tojin', 'seasons-of-regret'],
       bio: 'Bleached hair, long limbs, and a habit of changing the subject by force. She was the hardest on Nikaro for the Dreamwatch lie and the last to agree to help him; at the battle she froze, and he shoved her clear and painted the nightmare into a bird. The surprise finale of Seasons of Regret made her want to be a viewer critic. She patrols with Masaka.',
     }),
@@ -643,7 +643,7 @@ export const PEOPLE_WORLDS: Character[] = [
   ch('father-machine', 'The Father Machine', '#164e63', 'yumi', 'Komashi', 'Father Machine, the machine',
     'Awakened device: summons hijo, makes hion, shields and repairs itself, commands nightmares',
     'An engine that ate a world\'s spirits and stacked the dead into a fake sky.', true,
-    [{ era: 4, system: 'utol', body: 'komashi' }], {
+    [{ era: 5, system: 'utol', body: 'komashi' }], {
       wiki: 'Father machine', see: ['yumi', 'virtuosity', 'liyun', 'painter', 'institute-mech-solutions', 'the-incident'],
       kind: 'person', arc: 'yumi',
       bio: 'An Awakened stone-stacker thirty feet tall, built by the Institute of Mechanical Solutions to summon hijo and turn them into hion. Its Commands did not tell spirits from souls: at the Festival of Reveals it ate the people of Torio, and the waste became the shroud. It kept the yoki-hijo it could not digest in copies of their towns, wiping their days, and sent nightmares to flatten Futinoro when a spirit got loose. Yumi out-stacked it.',
@@ -651,14 +651,14 @@ export const PEOPLE_WORLDS: Character[] = [
   ch('hwanji', 'Hwanji', '#67e8f9', 'yumi', 'Komashi', 'Hwanji',
     'Yoki-hijo attendant',
     'Yumi\'s attendant. She hums, she worries, and she knows reform is real.', false,
-    [{ era: 4, system: 'utol', body: 'komashi' }], {
+    [{ era: 5, system: 'utol', body: 'komashi' }], {
       wiki: 'Hwanji', see: ['yumi', 'liyun', 'chaeyung', 'dwookim', 'reform-movement'],
       bio: 'A Torish attendant who serves Yumi under Liyun after previously serving the reform-minded yoki-hijo Dwookim. She knows the traditionalist story is not the only story, and she is terrified Liyun will blame her when Yumi begins to rebel. The machine makes her a nightmare; the book still lets her be kind first.',
     }),
   ch('chaeyung', 'Chaeyung', '#22d3ee', 'yumi', 'Komashi', 'Chaeyung',
     'Yoki-hijo attendant',
     'Yumi\'s other attendant. She can comb out tangles without making them a sermon.', false,
-    [{ era: 4, system: 'utol', body: 'komashi' }], {
+    [{ era: 5, system: 'utol', body: 'komashi' }], {
       wiki: 'Chaeyung', see: ['yumi', 'liyun', 'hwanji'],
       bio: 'One of Yumi\'s designated attendants in Torio, working under Liyun on the endless rituals of dressing, feeding, and bathing a yoki-hijo. She is gentler in the small moments — hair, cloth, quiet competence — and part of the human world Yumi was never allowed to join. Like Hwanji, she is collateral of the machine\'s hunger.',
     }),
@@ -666,7 +666,7 @@ export const PEOPLE_WORLDS: Character[] = [
   ch('gyundok', 'Gyundok', '#0e7490', 'yumi', 'Komashi', 'Gyundok',
     'Scholar; nightmare',
     'Lead scholar of the Institute of Mechanical Solutions. He switched the father machine on.', false,
-    [{ era: 4, system: 'utol', body: 'komashi' }], {
+    [{ era: 5, system: 'utol', body: 'komashi' }], {
       arc: 'yumi', wiki: 'Gyundok', see: ['father-machine', 'institute-mech-solutions', 'yumi', 'festival-of-reveals'],
       bio: 'Pinched face, bowl cut, a winged black hat over white, and a talent for ordering subordinates into risks he will not take. He led the team that activated the machine at the Festival of Reveals, and it kept his soul in reserve for its own defence. When Yumi\'s memory stopped resetting it sent him and three colleagues to Gongsha with a prototype to put her right.',
     }),
@@ -674,7 +674,7 @@ export const PEOPLE_WORLDS: Character[] = [
   ch('sukishi', 'Sukishi', '#0891b2', 'yumi', 'Komashi', 'Foreman Sukishi',
     'Nightmare Division foreman',
     'Painter\'s foreman. He thinks bamboo is lazy and Painter is a liar, and is right once.', false,
-    [{ era: 4, system: 'utol', body: 'komashi' }], {
+    [{ era: 5, system: 'utol', body: 'komashi' }], {
       arc: 'yumi', wiki: 'Sukishi', see: ['painter', 'nightmare-division', 'the-dreamwatch', 'tojin'],
       bio: 'A big, white-haired foreman with a small office at Nightmare Division headquarters, where the night\'s paintings come in. He knew about the Dreamwatch lie, so when Yumi told him Nikaro had seen a stable nightmare he did not pass it on. Tojin showed him the damage later, and he called the Dreamwatch.',
     }),
@@ -682,7 +682,7 @@ export const PEOPLE_WORLDS: Character[] = [
   ch('samjae', 'Samjae', '#f0abfc', 'yumi', 'Komashi', 'Samjae',
     'Yoki-hijo; Cognitive Shadow',
     'Yumi\'s childhood friend, who told her stories about yoki-hijo who fell in love and ran away.', false,
-    [{ era: 4, system: 'utol', body: 'komashi' }], {
+    [{ era: 5, system: 'utol', body: 'komashi' }], {
       arc: 'yumi', wiki: 'Samjae', see: ['yumi', 'liyun', 'yoki-hijo', 'yoki-hijo-order'],
       bio: 'A yoki-hijo in training alongside Yumi, which was the nearest Yumi came to a friend. Liyun forbade the stories and then separated the girls for growing too attached. When the machine woke, Samjae was one of the fourteen it could not destroy and kept, unknowing, in a prison of her own.',
     }),
@@ -690,7 +690,7 @@ export const PEOPLE_WORLDS: Character[] = [
   ch('dwookim', 'Dwookim', '#f9a8d4', 'yumi', 'Komashi', 'Dwookim',
     'Yoki-hijo (reformed)',
     'A reformed yoki-hijo: fed herself, took days off, retired. Hwanji used to serve her.', false,
-    [{ era: 4, system: 'utol', body: 'komashi' }], {
+    [{ era: 5, system: 'utol', body: 'komashi' }], {
       arc: 'yumi', wiki: 'Dwookim', see: ['hwanji', 'reform-movement', 'yoki-hijo-order'],
       bio: 'A leading light of the reform movement who worked about half the days of a week, summoned around ten spirits a session, and retired at seventy as reformers insist on doing. Hwanji was her attendant for years before being assigned to Yumi, which is how Yumi finally heard there was a movement at all.',
     }),
@@ -698,7 +698,7 @@ export const PEOPLE_WORLDS: Character[] = [
   ch('tesuaka-tatomi', 'Tesuaka Tatomi', '#a5f3fc', 'yumi', 'Komashi', 'Tesuaka',
     'Dreamwatch central soldier',
     'A senator\'s daughter in the Dreamwatch. She thought Painter was the barbecue delivery.', false,
-    [{ era: 4, system: 'utol', body: 'komashi' }], {
+    [{ era: 5, system: 'utol', body: 'komashi' }], {
       arc: 'yumi', wiki: 'Tesuaka_Tatomi', see: ['the-dreamwatch', 'painter', 'battle-of-kilahito'],
       bio: 'A full member of the Dreamwatch with her own team of companions, sent from Jito to Kilahito after Tojin\'s report. When Nikaro came to warn her of a hundred stable nightmares she paused her ping-pong long enough to tell him he might make the Dreamwatch one day. Her unit missed the battle, was disbanded after it, and she had to find other work.',
     }),
@@ -706,7 +706,7 @@ export const PEOPLE_WORLDS: Character[] = [
   ch('usasha', 'Usasha', '#67e8f9', 'yumi', 'Komashi', 'Usasha',
     'Nightmare painter',
     'The only painter killed at the battle of Kilahito, and officially the one who saved it.', false,
-    [{ era: 4, system: 'utol', body: 'komashi' }], {
+    [{ era: 5, system: 'utol', body: 'komashi' }], {
       arc: 'yumi', wiki: 'Usasha', see: ['battle-of-kilahito', 'painter', 'painter-guild'],
       bio: 'Nikaro wanted no credit, so his friends reported that Usasha had raised the alarm and organised the defence, and the city gave her the honours.',
     }),
@@ -928,7 +928,6 @@ export const PEOPLE_WORLDS: Character[] = [
   ch('vathi', 'Vathi', '#4ade80', 'sixthofdusk', 'First of the Sun', 'Vathi, Lady Vathi, President Vathi',
     'Northern Interests Trading Company; later president of the First Company',
     'A homeisles scholar who came to Patji with the Company, lost her scouting party to a deepwalker, and walked out of the jungle with Dusk.', false, [
-      { era: 4, system: 'drominad', body: 'first-of-the-sun' },
       { era: 5, system: 'drominad', body: 'first-of-the-sun' },
     ], {
       wiki: 'Vathi', see: ['dusk', 'sak', 'kokerlii', 'patji'],
@@ -937,7 +936,6 @@ export const PEOPLE_WORLDS: Character[] = [
   ch('sak', 'Sak', '#166534', 'sixthofdusk', 'First of the Sun', 'Sak',
     'Aviar — visions of possible deaths',
     'Dusk\'s Aviar. She shows the corpse a mistake would leave, a minute before you make it.', false, [
-      { era: 4, system: 'drominad', body: 'first-of-the-sun' },
       { era: 5, system: 'drominad', body: 'first-of-the-sun' },
     ], {
       wiki: 'Sak', see: ['dusk', 'kokerlii', 'vathi', 'aviar-talent'],
@@ -947,7 +945,6 @@ export const PEOPLE_WORLDS: Character[] = [
   ch('kokerlii', 'Kokerlii', '#86efac', 'sixthofdusk', 'First of the Sun', 'Kokerlii',
     'Aviar — hides minds',
     'Dusk\'s other Aviar, red and green and oblivious. He hides every mind near him from the things that hunt by thought.', false, [
-      { era: 4, system: 'drominad', body: 'first-of-the-sun' },
       { era: 5, system: 'drominad', body: 'first-of-the-sun' },
     ], {
       wiki: 'Kokerlii', see: ['dusk', 'sak', 'vathi'],
@@ -1016,7 +1013,6 @@ export const PEOPLE_WORLDS: Character[] = [
   ch('mirris', 'Mirris', '#d9f99d', 'emberdark', 'First of the Sun', 'Mirris',
     'Aviar — hides minds',
     'Vathi\'s Aviar, white and green, a breed called a streamer that does not come from Patji.', false, [
-      { era: 4, system: 'drominad', body: 'first-of-the-sun' },
       { era: 5, system: 'drominad', body: 'first-of-the-sun' },
     ], {
       wiki: 'Mirris', see: ['vathi', 'dusk', 'kokerlii'],
@@ -1131,53 +1127,52 @@ export const PEOPLE_WORLDS: Character[] = [
       kind: 'vessel',
       bio: 'Original and continuing Vessel of Endowment on Nalthis. She Returns the dead with a purpose, hands every Nalthian a Breath, and grows Tears of Edgli in the soil. Letters in the Stormlight Archive epigraphs brush her voice: amused, giving, and unwilling to be anyone\'s soldier.',
     }),
-  ch('uli-da', 'Uli Da', '#f97316', 'arcanum', 'Yolen', 'Ambition, Uli Da',
+  ch('uli-da', 'Uli Da', '#f97316', 'arcanum', 'Yolen', 'Ambition',
     'Vessel of Ambition',
-    'Vessel of Ambition. Odium and Mercy hunted her; Threnody wears the scar.', true, [
+    'Vessel of Ambition, and one of the Sho Del. Odium wounded her at Threnody and finished her beyond it.', true, [
       { era: 0, system: 'yolish', body: 'yolen' },
       { era: 1, system: 'threnodite', body: 'threnody' },
     ], {
-      wiki: 'Uli Da', see: ['ambition', 'mercy-vessel', 'silence', 'nazh'],
+      wiki: 'Uli Da', see: ['ambition', 'threnody', 'shade'],
       kind: 'vessel', canon: 'wob',
-      sources: ['arcanum', 'wob'],
-      bio: 'Original Vessel of Ambition, named Uli Da in Word of Brandon material. She fled the early Shardwars toward what became the Threnodite system; Odium, with Mercy\'s help, mortally wounded and Splintered her. The Evil, the shades, and the system\'s scar are what leftover Ambition looks like when murder is unfinished.',
+      sources: ['Arcanum Unbounded — Threnodite system', 'Oathbringer ch. 40 epigraph', 'Word of Brandon'],
+      // WoB 8398 (Vessel), 8933 (Sho Del), 1550 (first on Odium's list). Endowment's
+      // "good riddance" is Oathbringer and is a relation, not this card.
+      bio: 'The original Vessel of Ambition, a Sho Del of Yolen. She took her Shard to the Threnodite system. Odium came for her first; she escaped the system with pieces torn off her, and died somewhere past it. The shades and the Evil are, Khriss thinks, what she left behind.',
     }),
   ch('virtuosity-vessel', "Virtuosity's Vessel", '#22d3ee', 'yumi', 'Yolen', 'Virtuosity',
     'Vessel of Virtuosity',
     'Vessel of Virtuosity. The name is not on the page; the Splintering is.', true, [
       { era: 0, system: 'yolish', body: 'yolen' },
-      { era: 1, system: 'utol', body: 'komashi' },
     ], {
-      wiki: 'Virtuosity', see: ['virtuosity', 'father-machine', 'yumi', 'painter'],
+      wiki: 'Virtuosity', see: ['virtuosity', 'komashi', 'hion'],
       kind: 'vessel', canon: 'wob',
-      sources: ['yumi', 'wob'],
-      bio: 'The original Vessel of Virtuosity — artistic excellence as Invested Intent — who settled around Komashi and eventually Splintered herself. Their personal name is not given in the novels; this entry exists under a title because the atlas refuses to invent one. Hion lines and nightmares are what her power became after she broke it.',
+      sources: ['Yumi and the Nightmare Painter', 'Word of Brandon'],
+      // WoB 15530: she explored the cosmere's arts and would not settle. Yumi ch. 1: Splintered in the UTol system.
+      bio: 'The original Vessel of Virtuosity — artistic talent as Invested Intent. She spent millennia exploring the cosmere\'s arts rather than settle, then Splintered herself in the UTol system. Her name is not in the book, and this entry will not make one up. The hijo are her Splinters; the nightmares are something else entirely.',
     }),
-  ch('invention-vessel', "Invention's Vessel", '#94a3b8', 'stormlight', 'Yolen', 'Invention',
+  ch('invention-vessel', 'Chan Ko Sar', '#94a3b8', 'stormlight', 'Yolen', 'Invention',
     'Vessel of Invention',
-    'Vessel of Invention. Named as a Shard; the holder\'s name is not on the page.', true, [
+    'Vessel of Invention. Went about the cosmere making marvels, and turned Honor down.', true, [
       { era: 0, system: 'yolish', body: 'yolen' },
-      { era: 1, system: 'yolish', body: 'yolen' },
-      { era: 3, system: 'yolish', body: 'yolen' },
-      { era: 5, system: 'yolish', body: 'yolen' },
     ], {
-      wiki: 'Invention', see: ['invention', 'reason-vessel', 'whimsy-vessel', 'mercy-vessel'],
-      kind: 'vessel', canon: 'wob', arc: 'wat',
-      sources: ['stormlight', 'wob'],
-      bio: 'Whoever took up Invention at the Shattering. Wind and Truth confirms the Shard\'s name among the sixteen; the Vessel\'s personal name is not on the page, and Word of Brandon material has not handed the atlas a stable one. Location and agenda remain largely unknown.',
+      wiki: 'Chan Ko Sar', see: ['invention', 'reason-vessel', 'whimsy-vessel', 'mercy-vessel'],
+      kind: 'vessel', arc: 'wat',
+      sources: ['Wind and Truth ch. 115'],
+      // Wind and Truth ch. 115: three thousand years on, making wonders, and refused Honor.
+      bio: 'One of the Yolish who killed Adonalsium and took a Shard. Three thousand years later, when Honor went looking for allies against Odium, Chan Ko Sar was busy making wonderful things and said no. Where Invention is now, nobody has said.',
+      fieldNotes: { eras: { canon: 'canon', note: 'No world is given for them; the only row is Yolen before the Shattering.' } },
     }),
-  ch('mercy-vessel', "Mercy's Vessel", '#fca5a5', 'arcanum', 'Yolen', 'Mercy',
+  // First named in Harmony's Rhythm of War letter, not Arcanum Unbounded.
+  ch('mercy-vessel', "Mercy's Vessel", '#fca5a5', 'stormlight', 'Yolen', 'Mercy',
     'Vessel of Mercy',
-    'Vessel of Mercy. Helped kill Ambition. The name is not on the page.', true, [
+    'Vessel of Mercy. Was there when Ambition died. The name is not on the page.', true, [
       { era: 0, system: 'yolish', body: 'yolen' },
-      { era: 1, system: 'yolish', body: 'yolen' },
-      { era: 3, system: 'yolish', body: 'yolen' },
-      { era: 5, system: 'yolish', body: 'yolen' },
     ], {
-      wiki: 'Mercy', see: ['mercy', 'uli-da', 'ambition', 'invention-vessel'],
-      kind: 'vessel', canon: 'wob',
-      sources: ['arcanum', 'wob'],
-      bio: 'The Vessel behind Mercy, present for Ambition\'s wounding alongside Odium and otherwise almost absent from the novels. Their personal name is not on the page. Mercy\'s Intent and that early act of violence are a contradiction the Cosmere has not explained yet.',
+      wiki: 'Mercy', see: ['mercy', 'whimsy-vessel'],
+      kind: 'vessel', arc: 'row',
+      sources: ['Rhythm of War — Harmony\'s letter'],
+      bio: 'Whoever took up Mercy at the Shattering. Harmony\'s letter puts Mercy in the clash where Ambition was destroyed, alongside Odium, and says Mercy worries him. Nothing else about them is on the page — not a name, not a world.',
     }),
   // ─── Miral ──────────────────────────────────────────────────────────────
   ch('december', 'December', '#c084fc', 'fod', 'Miral', 'Hodołnika, Lady December',
@@ -1331,25 +1326,20 @@ export const PEOPLE_WORLDS: Character[] = [
     'Vessel of Whimsy',
     'Vessel of Whimsy. Shard named; Vessel unnamed on the page.', true, [
       { era: 0, system: 'yolish', body: 'yolen' },
-      { era: 1, system: 'yolish', body: 'yolen' },
-      { era: 5, system: 'yolish', body: 'yolen' },
     ], {
-      wiki: 'Whimsy', see: ['whimsy', 'reason-vessel', 'invention-vessel', 'frost'],
-      kind: 'vessel', canon: 'wob', arc: 'wat',
-      sources: ['stormlight', 'wob'],
-      bio: 'Holder of Whimsy, one of the sixteen Shards named in modern Cosmere material. No personal name appears in the books; Brandon has treated the Vessel as deliberately obscure. This entry refuses to invent a clever name where the page has none.',
+      wiki: 'Whimsy', see: ['whimsy', 'mercy-vessel', 'frost'],
+      kind: 'vessel', canon: 'wob', arc: 'row',
+      sources: ['Rhythm of War — Harmony\'s letter', 'Word of Brandon'],
+      bio: 'Holder of Whimsy, one of the Shards Harmony wrote to in Rhythm of War. No name appears in the books, and this entry will not invent one.',
     }),
-  ch('reason-vessel', "Reason's Vessel", '#c4b5fd', 'stormlight', 'Yolen', 'Reason',
+  ch('reason-vessel', 'Euridrius', '#c4b5fd', 'stormlight', 'Yolen', 'Reason',
     'Vessel of Reason',
-    'Vessel of Reason. Named in Wind and Truth; personal name not on the page.', true, [
+    'Vessel of Reason. Hid so well that Honor could not find her.', true, [
       { era: 0, system: 'yolish', body: 'yolen' },
-      { era: 1, system: 'yolish', body: 'yolen' },
-      { era: 3, system: 'yolish', body: 'yolen' },
-      { era: 5, system: 'yolish', body: 'yolen' },
     ], {
-      wiki: 'Reason', see: ['reason', 'invention-vessel', 'whimsy-vessel', 'mercy-vessel'],
-      kind: 'vessel', canon: 'wob', arc: 'wat',
-      sources: ['stormlight', 'wob'],
-      bio: 'The Vessel of Reason, a Shard named among others in Wind and Truth. As with Invention, Whimsy, and Mercy, the person under the Intent has not been given a personal name on the page. The atlas records the office and leaves the name blank on purpose.',
+      wiki: 'Euridrius', see: ['reason', 'invention-vessel', 'whimsy-vessel', 'mercy-vessel'],
+      kind: 'vessel', arc: 'wat',
+      sources: ['Wind and Truth ch. 115', 'Word of Brandon'],
+      bio: 'One of the Yolish who took a Shard at the Shattering. Euridrius wanted only to hide from the other Shards\' wars and survive them, and she managed it: when Honor went looking for help against Odium, he could not find her at all.',
     }),
 ];

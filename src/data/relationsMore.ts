@@ -85,7 +85,8 @@ export const RELATIONS_MORE: Relation[] = [
   { a: { kind: 'character', id: 'sazed' }, b: { kind: 'character', id: 'tensoon' }, type: 'ally', label: 'Harmony & wolfhound', book: 'mistborn1', canon: C },
   { a: { kind: 'character', id: 'marsh' }, b: { kind: 'character', id: 'vin' }, type: 'rival', label: 'Inquisitor hunt', book: 'mistborn1', canon: C },
   { a: { kind: 'character', id: 'spook' }, b: { kind: 'character', id: 'sazed' }, type: 'ally', label: 'Catacendre survivors', book: 'mistborn1', canon: C },
-  { a: { kind: 'character', id: 'kelsier' }, b: { kind: 'org', id: 'ghostbloods' }, type: 'bond', label: 'Founded Ghostbloods', book: 'secrethistory', canon: C },
+  // Rhythm of War ch. 115 (Thaidakar, the Lord of Scars); The Lost Metal ch. 36 (he founded them). Secret History has no Ghostbloods.
+  { a: { kind: 'character', id: 'kelsier' }, b: { kind: 'org', id: 'ghostbloods' }, type: 'bond', label: 'Thaidakar, its master', book: 'stormlight', arc: 'row', canon: C },
   { a: { kind: 'character', id: 'kelsier' }, b: { kind: 'org', id: 'kelsiers-crew' }, type: 'bond', label: 'Crewleader', book: 'mistborn1', canon: C },
 
   // --- Scadrial vessels & gods ------------------------------------------
@@ -94,12 +95,52 @@ export const RELATIONS_MORE: Relation[] = [
   { a: { kind: 'character', id: 'leras' }, b: { kind: 'character', id: 'ati' }, type: 'rival', label: 'Friends turned foes', book: 'mistborn1', canon: C },
   { a: { kind: 'character', id: 'rayse' }, b: { kind: 'shard', id: 'odium' }, type: 'vessel', label: 'Original Vessel', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'tanavast' }, b: { kind: 'shard', id: 'honor' }, type: 'vessel', label: 'Original Vessel', book: 'stormlight', canon: C },
-  { a: { kind: 'character', id: 'aona' }, b: { kind: 'shard', id: 'devotion' }, type: 'vessel', label: 'Original Vessel', book: 'elantris', canon: C },
-  { a: { kind: 'character', id: 'skai' }, b: { kind: 'shard', id: 'dominion' }, type: 'vessel', label: 'Original Vessel', book: 'elantris', canon: C },
-  { a: { kind: 'character', id: 'edgli' }, b: { kind: 'shard', id: 'endowment' }, type: 'vessel', label: 'Holds Endowment', book: 'warbreaker', canon: C },
+  { a: { kind: 'character', id: 'aona' }, b: { kind: 'shard', id: 'devotion' }, type: 'vessel', label: 'Original Vessel', book: 'elantris', canon: W },
+  { a: { kind: 'character', id: 'skai' }, b: { kind: 'shard', id: 'dominion' }, type: 'vessel', label: 'Original Vessel', book: 'elantris', canon: W },
+  { a: { kind: 'character', id: 'edgli' }, b: { kind: 'shard', id: 'endowment' }, type: 'vessel', label: 'Holds Endowment', book: 'warbreaker', canon: W },
   { a: { kind: 'character', id: 'tanavast' }, b: { kind: 'character', id: 'koravellium' }, type: 'romance', label: 'Partners once', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'rayse' }, b: { kind: 'character', id: 'hoid' }, type: 'rival', label: 'Ancient enmity', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'lord-ruler' }, b: { kind: 'shard', id: 'preservation' }, type: 'bond', label: 'Sliver of Infinity', book: 'mistborn1', canon: C },
+  // Secret History ch. 6:4: he takes up Preservation as Leras dies, and hands it to Vin.
+  { a: { kind: 'character', id: 'kelsier' }, b: { kind: 'shard', id: 'preservation' }, type: 'vessel', label: 'Held it, briefly', book: 'secrethistory', canon: C },
+
+  // --- Shards: who killed whom, who wrote to whom ------------------------
+  // Each is a later book than the Shard card it touches, which is why it is
+  // here and not in shards.ts.
+  // Arcanum Unbounded (Selish system); The Way of Kings ch. 22 epigraph;
+  // Wind and Truth ch. 113 (set against each other, then killed).
+  { a: { kind: 'shard', id: 'odium' }, b: { kind: 'shard', id: 'devotion' }, type: 'rival', label: 'Splintered her, with Dominion', book: 'arcanum', canon: C },
+  { a: { kind: 'shard', id: 'odium' }, b: { kind: 'shard', id: 'dominion' }, type: 'rival', label: 'Splintered him, with Devotion', book: 'arcanum', canon: C },
+  // Arcanum Unbounded (Threnodite system).
+  { a: { kind: 'shard', id: 'odium' }, b: { kind: 'shard', id: 'ambition' }, type: 'rival', label: 'Tore her apart', book: 'arcanum', canon: C },
+  // Rhythm of War ch. 27 epigraph: "where Ambition, Mercy, and Odium clashed".
+  { a: { kind: 'shard', id: 'mercy' }, b: { kind: 'shard', id: 'ambition' }, type: 'rival', label: 'Clashed where she died', book: 'stormlight', arc: 'row', canon: C },
+  // Harmony's letter, Rhythm of War chs. 22–25 epigraphs.
+  { a: { kind: 'character', id: 'sazed' }, b: { kind: 'shard', id: 'mercy' }, type: 'rival', label: '"Mercy worries me"', book: 'stormlight', arc: 'row', canon: C },
+  { a: { kind: 'character', id: 'sazed' }, b: { kind: 'shard', id: 'valor' }, type: 'ally', label: 'Found her reasonable', book: 'stormlight', arc: 'row', canon: C },
+  { a: { kind: 'character', id: 'sazed' }, b: { kind: 'shard', id: 'invention' }, type: 'ally', label: 'One exchange, then silence', book: 'stormlight', arc: 'row', canon: C },
+  { a: { kind: 'character', id: 'sazed' }, b: { kind: 'shard', id: 'whimsy' }, type: 'ally', label: 'Not terribly useful', book: 'stormlight', arc: 'row', canon: C },
+  { a: { kind: 'character', id: 'sazed' }, b: { kind: 'shard', id: 'endowment' }, type: 'ally', label: 'At least she answered', book: 'stormlight', arc: 'row', canon: C },
+  // Endowment's letter, Oathbringer chs. 33–41 epigraphs ("Dearest Cephandrius").
+  { a: { kind: 'character', id: 'hoid' }, b: { kind: 'shard', id: 'endowment' }, type: 'rival', label: '"Dearest Cephandrius" — and no help', book: 'stormlight', arc: 'oathbringer', canon: C },
+  // Oathbringer ch. 40 epigraph: "As for Uli Da … Good riddance."
+  { a: { kind: 'character', id: 'edgli' }, b: { kind: 'character', id: 'uli-da' }, type: 'rival', label: '"Good riddance"', book: 'stormlight', arc: 'oathbringer', canon: C },
+  // Endowment's Wind and Truth letter (chs. 62–65 epigraphs).
+  { a: { kind: 'shard', id: 'valor' }, b: { kind: 'shard', id: 'endowment' }, type: 'ally', label: 'Asked her help; got it at a distance', book: 'stormlight', arc: 'wat', canon: C },
+  // Wind and Truth ch. 115.
+  { a: { kind: 'character', id: 'tanavast' }, b: { kind: 'shard', id: 'valor' }, type: 'ally', label: 'Looked for her; never found her', book: 'stormlight', arc: 'wat', canon: C },
+  { a: { kind: 'character', id: 'tanavast' }, b: { kind: 'character', id: 'invention-vessel' }, type: 'rival', label: 'Turned down his call for help', book: 'stormlight', arc: 'wat', canon: C },
+  { a: { kind: 'character', id: 'invention-vessel' }, b: { kind: 'shard', id: 'invention' }, type: 'vessel', label: 'Holds Invention', book: 'stormlight', arc: 'wat', canon: C },
+  { a: { kind: 'character', id: 'reason-vessel' }, b: { kind: 'shard', id: 'reason' }, type: 'vessel', label: 'Holds Reason', book: 'stormlight', arc: 'wat', canon: C },
+  // Isles of the Emberdark ch. 42 (its people call themselves Invention's); ch. 25 (built before the Shattering).
+  { a: { kind: 'shard', id: 'invention' }, b: { kind: 'body', id: 'grand-apparatus' }, type: 'ally', label: 'Its people call themselves Invention\'s', book: 'emberdark', canon: C },
+  // The Lost Metal ch. 19.
+  { a: { kind: 'character', id: 'bavadin' }, b: { kind: 'shard', id: 'autonomy' }, type: 'vessel', label: 'Holds Autonomy', book: 'mistborn2', arc: 'tlm', canon: C },
+  // The Lost Metal chs. 18–19, 66, 69.
+  { a: { kind: 'character', id: 'telsin' }, b: { kind: 'shard', id: 'autonomy' }, type: 'bond', label: 'Her avatar, on a deadline', book: 'mistborn2', arc: 'tlm', canon: C },
+  // Oathbringer chs. 46–50 epigraphs: Patji's letter, and the Obrodai avatar taught to dislike him.
+  { a: { kind: 'character', id: 'hoid' }, b: { kind: 'shard', id: 'autonomy' }, type: 'rival', label: 'Her avatars told him to stay away', book: 'stormlight', arc: 'oathbringer', canon: C },
+  { a: { kind: 'shard', id: 'autonomy' }, b: { kind: 'body', id: 'obrodai-world' }, type: 'ally', label: 'Raising a new avatar there', book: 'stormlight', arc: 'oathbringer', canon: C },
 
   // --- Scadrial Era 2 ---------------------------------------------------
   { a: { kind: 'character', id: 'wax' }, b: { kind: 'character', id: 'telsin' }, type: 'family', label: 'Siblings', book: 'mistborn2', canon: C },
@@ -137,9 +178,9 @@ export const RELATIONS_MORE: Relation[] = [
   { a: { kind: 'character', id: 'hrathen' }, b: { kind: 'character', id: 'dilaf' }, type: 'rival', label: 'Gyorn vs gragdet', book: 'elantris', canon: C },
   { a: { kind: 'character', id: 'raoden' }, b: { kind: 'character', id: 'kiin' }, type: 'family', label: 'Nephew & uncle', book: 'elantris', canon: C },
   { a: { kind: 'character', id: 'sarene' }, b: { kind: 'character', id: 'kiin' }, type: 'ally', label: 'Teod in Arelon', book: 'elantris', canon: C },
-  { a: { kind: 'character', id: 'galladon' }, b: { kind: 'character', id: 'demoux' }, type: 'ally', label: 'Seventeenth Shard', book: 'stormlight', canon: C },
-  { a: { kind: 'character', id: 'demoux' }, b: { kind: 'character', id: 'baon' }, type: 'ally', label: 'Seventeenth Shard', book: 'stormlight', canon: C },
-  { a: { kind: 'character', id: 'baon' }, b: { kind: 'character', id: 'galladon' }, type: 'ally', label: 'Seventeenth Shard', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'galladon' }, b: { kind: 'character', id: 'demoux' }, type: 'ally', label: 'Seventeenth Shard', book: 'stormlight', canon: W },
+  { a: { kind: 'character', id: 'demoux' }, b: { kind: 'character', id: 'baon' }, type: 'ally', label: 'Seventeenth Shard', book: 'stormlight', canon: W },
+  { a: { kind: 'character', id: 'baon' }, b: { kind: 'character', id: 'galladon' }, type: 'ally', label: 'Seventeenth Shard', book: 'stormlight', canon: W },
   // --- Taldain / shorts / secret projects -------------------------------
   { a: { kind: 'character', id: 'kenton' }, b: { kind: 'character', id: 'baon' }, type: 'ally', label: 'Diem & guard', book: 'whitesand', canon: C },
   { a: { kind: 'character', id: 'kenton' }, b: { kind: 'character', id: 'khriss' }, type: 'ally', label: 'Dayside politics', book: 'whitesand', canon: C },
@@ -261,9 +302,16 @@ export const RELATIONS_MORE: Relation[] = [
   { a: { kind: 'character', id: 'hwynn-tyvneri' }, b: { kind: 'body', id: 'rellam' }, type: 'ally', label: 'Homeworld', book: 'elsecaller', arc: 'elsecaller', canon: C },
 
   // --- Org membership edges ---------------------------------------------
-  { a: { kind: 'character', id: 'shallan' }, b: { kind: 'org', id: 'ghostbloods' }, type: 'ally', label: 'Joined, then left', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'shallan' }, b: { kind: 'org', id: 'ghostbloods' }, type: 'ally', label: 'Joined, to get close to them', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'mraize' }, b: { kind: 'org', id: 'ghostbloods' }, type: 'bond', label: 'Roshar cell', book: 'stormlight', canon: C },
-  { a: { kind: 'character', id: 'frost' }, b: { kind: 'org', id: 'seventeenth-shard' }, type: 'bond', label: 'Leads / speaks for', book: 'stormlight', canon: C },
+  // Wind and Truth Interlude 1, ch. 25: the Ghostbloods send him to take Kalak.
+  { a: { kind: 'character', id: 'felt' }, b: { kind: 'org', id: 'ghostbloods' }, type: 'bond', label: 'Sent to take Kalak', book: 'stormlight', arc: 'wat', canon: C },
+  // The Way of Kings ch. 26 epigraph: "your friends of the Seventeenth Shard". Not their leader.
+  { a: { kind: 'character', id: 'frost' }, b: { kind: 'org', id: 'seventeenth-shard' }, type: 'bond', label: '"Your friends," Hoid calls them', book: 'stormlight', canon: C },
+  // Same letter: "following a false trail I left for them".
+  { a: { kind: 'character', id: 'hoid' }, b: { kind: 'org', id: 'seventeenth-shard' }, type: 'rival', label: 'Left them a false trail', book: 'stormlight', canon: C },
+  // WoB 8134: she was Seventeenth Shard before she was a Ghostblood.
+  { a: { kind: 'character', id: 'iyatil' }, b: { kind: 'org', id: 'seventeenth-shard' }, type: 'ally', label: 'A member, once', book: 'stormlight', arc: 'wor', canon: W },
   { a: { kind: 'character', id: 'gavilar' }, b: { kind: 'org', id: 'sons-of-honor' }, type: 'bond', label: 'Secret society', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'telsin' }, b: { kind: 'org', id: 'the-set' }, type: 'bond', label: 'Set leadership', book: 'mistborn2', canon: C },
   { a: { kind: 'character', id: 'sazed' }, b: { kind: 'org', id: 'keepers' }, type: 'bond', label: 'Terris Keeper', book: 'mistborn1', canon: C },
@@ -283,7 +331,10 @@ export const RELATIONS_MORE: Relation[] = [
   { a: { kind: 'character', id: 'silence' }, b: { kind: 'body', id: 'threnody' }, type: 'ally', label: 'Forests of Hell', book: 'shadowsforsilence', canon: C },
   { a: { kind: 'character', id: 'raoden' }, b: { kind: 'body', id: 'sel' }, type: 'ally', label: 'Arelon', book: 'elantris', canon: C },
   { a: { kind: 'character', id: 'vasher' }, b: { kind: 'body', id: 'nalthis' }, type: 'ally', label: 'Origin world', book: 'warbreaker', canon: C },
-  { a: { kind: 'character', id: 'hoid' }, b: { kind: 'dawnshard', id: 'dawnshard-change' }, type: 'bond', label: 'Held a Dawnshard once', book: 'core', canon: W },
+  // He held Exist, not Change (The Sunlit Man ch. 21; Wind and Truth ch. 146).
+  { a: { kind: 'character', id: 'hoid' }, b: { kind: 'dawnshard', id: 'dawnshard-exist' }, type: 'bond', label: 'Bore it for millennia', book: 'sunlit', canon: C },
+  // Wind and Truth Interlude 15: their Dawnshards nearly pulled them together; they agreed never to meet again.
+  { a: { kind: 'character', id: 'hoid' }, b: { kind: 'character', id: 'rysn' }, type: 'ally', label: 'Two Dawnshards in one room', book: 'stormlight', arc: 'wat', canon: C },
   // --- Drominad / Emberdark ---------------------------------------------
   // Isles of the Emberdark. Every sentence here waits for that book, even
   // where one end is a Sixth of the Dusk or a Tress character.

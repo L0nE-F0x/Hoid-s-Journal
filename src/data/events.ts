@@ -26,15 +26,17 @@ const C = 'canon' as const;
 export const COSMERE_EVENTS: CosmereEvent[] = [
   {
     id: 'shattering', year: -7000, name: 'The Shattering', visual: 'shatter', focus: 'yolen', canon: C,
-    fact: 'Sixteen Vessels kill Adonalsium on Yolen. The power splits; the worlds that follow are Shaped around the pieces.',
+    fact: 'Sixteen people kill Adonalsium on Yolen and take up the pieces. The worlds that follow are Shaped around them.',
   },
   {
-    id: 'heraldic', year: -4500, name: 'The Desolations', canon: S,
-    fact: 'The Oathpact holds. Between returns, Roshar rebuilds; each Desolation knocks it back.',
+    // 4,500 years before the True Desolation: The Way of Kings prologue; Oathbringer ch. 38.
+    id: 'heraldic', year: -4500, name: 'Aharietiam', canon: C,
+    fact: 'Four and a half thousand years before the True Desolation: the Last Desolation, as Roshar remembers it.',
   },
   {
-    id: 'recreance', year: -2000, name: 'The Recreance', canon: S,
-    fact: 'The Knights Radiant abandon their Shards. The cause is not a date we print as fact.',
+    // About two thousand Rosharan years before the True Desolation (Wind and Truth chs. 7, 11).
+    id: 'recreance', year: -2000, name: 'The Recreance', canon: C,
+    fact: 'Around two thousand years before the True Desolation, the Knights Radiant abandon their oaths.',
   },
   {
     id: 'final-empire', year: -350, name: 'The Final Empire', visual: 'ash', focus: 'scadrial', canon: C,
@@ -46,7 +48,7 @@ export const COSMERE_EVENTS: CosmereEvent[] = [
   },
   {
     id: 'true-desolation', year: 0, name: 'The True Desolation', visual: 'storm', focus: 'roshar', canon: C,
-    fact: 'The Everstorm. The Knights Radiant return. Roshar years 1173–1175.',
+    fact: 'A Desolation comes back to Roshar. Roshar years 1173–1175.',
   },
   {
     id: 'wax', year: 15, name: 'The Alloy of Law', canon: C,
@@ -58,6 +60,7 @@ export const COSMERE_EVENTS: CosmereEvent[] = [
   },
   {
     id: 'space', year: 300, name: 'The space age', canon: S,
-    fact: 'Worlds can reach each other without a perpendicularity. Sixth of the Dusk, then Canticle, then the Emberdark.',
+    // WoB 15579, 16524.
+    fact: 'Ships cross between worlds in the Physical Realm, and then faster than light. Sixth of the Dusk, then Canticle a little after, then Komashi, then the Emberdark.',
   },
 ];

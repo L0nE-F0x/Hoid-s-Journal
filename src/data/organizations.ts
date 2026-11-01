@@ -10,26 +10,32 @@ function org(
 }
 
 export const ORGANIZATIONS: Organization[] = [
+  // Words of Radiance card. Thaidakar being Kelsier (Rhythm of War ch. 115),
+  // the Scadrian Ghostbloods (The Lost Metal) and Felt (Wind and Truth) reach
+  // it through gated relations; members are not gated, so they are not here.
   org('ghostbloods', 'The Ghostbloods', '#a3a3a3', 'stormlight', 'secret',
-    'A covert worldhopper society after Investiture and the knowledge to use it. Three overlapping diamonds. Thaidakar runs it from Scadrial.',
+    'A covert worldhopper society after Investiture and the knowledge to use it. Three overlapping diamonds. Mraize answers to Master Thaidakar.',
     {
       aliases: 'Ghostblood',
-      arc: 'wor', world: 'Roshar / Scadrial', wiki: 'Ghostbloods',
-      members: ['kelsier', 'mraize', 'iyatil', 'felt', 'shallan'],
-      see: ['kelsier', 'mraize', 'seventeenth-shard', 'the-set'],
-      bio: 'Founded by Kelsier after his death, operating on Roshar as a cell under Mraize and Iyatil while the Survivor himself cannot leave the Scadrian system as a Cognitive Shadow. They want a way to move Investiture off-world. Shallan joined, then left. The Lost Metal makes the Scadrian end of the same organisation explicit.',
+      arc: 'wor', world: 'Roshar', wiki: 'Ghostbloods',
+      members: ['mraize', 'iyatil', 'shallan'],
+      see: ['mraize', 'iyatil', 'seventeenth-shard', 'thaidakar'],
+      bio: 'On Roshar they are a cell under Mraize and Iyatil, hunting Investiture, worldhoppers and the Sons of Honor\'s secrets. They do not work with the Seventeenth Shard, and recruit its field agents when they can (Word of Brandon). Shallan joins to get close to them.',
     }),
   org('seventeenth-shard', 'The Seventeenth Shard', '#e0f2fe', 'stormlight', 'secret',
-    'Worldhoppers who observe and do not intervene. Frost writes their letters. They hunt Hoid anyway.',
+    'Worldhoppers who watch the worlds and try not to touch them. The Shards split for a reason, they think, and should stay split. They hunt Hoid anyway.',
     {
       aliases: 'the Seventeenth Shard',
-      world: 'Yolen / Cosmere', wiki: 'Seventeenth_Shard',
+      world: 'Silverlight / Cosmere', wiki: 'Seventeenth_Shard',
       members: ['frost', 'galladon', 'demoux', 'baon'],
       see: ['frost', 'hoid', 'ghostbloods'],
-      bio: 'Named for the Shard they are not. Frost leads from Yolen. Galladon, Demoux and Baon are the three who ask after Hoid in The Way of Kings. Their charter is non-intervention; their practice is imperfect. They are the other secret society a reread keeps mixing up with the Ghostbloods.',
+      // The Way of Kings ch. 26 epigraph and Interlude 1; WoB 1564, 1735, 12508, 2561, 7427, 6683, 9208.
+      bio: 'Hoid calls them Frost\'s friends and leaves them false trails. Three of them spent The Way of Kings paying a Purelake fisherman to find him; by Word of Brandon they are Galladon, Demoux and Baon. They keep their base in Silverlight, slow their own ageing, and would rather nobody went native on any world (Word of Brandon).',
+      canon: 'wob',
     }),
   org('the-ire', 'The Ire', '#a78bfa', 'secrethistory', 'secret',
-    'Elantrian worldhoppers who built a fortress in Sel\'s Cognitive Realm and once tried to take up a Shard.',
+    // The fortress is at the edge of Scadrial's subastral (Secret History ch. 5:2; WoB 6987).
+    'Elantrian worldhoppers who keep a fortress at the edge of Scadrial\'s subastral, and once tried to take up a Shard.',
     {
       aliases: 'the Ire',
       world: 'Sel', wiki: 'Ire',
@@ -185,12 +191,14 @@ export const ORGANIZATIONS: Organization[] = [
       see: ['kholinar', 'alethkar', 'dalinar'],
     }),
   org('the-set', 'The Set', '#e11d48', 'mistborn2', 'secret',
-    'A conspiracy inside Elendel society, funded by Trell, run by Wax\'s own family.',
+    // Shadows of Self card. Lady Sequence is The Bands of Mourning; the Faceless
+    // Immortals its epilogue; Autonomy and the avatar The Lost Metal — all by relation.
+    'A conspiracy among Elendel\'s powerful, praying to a god called Trell. Wax\'s uncle Edwarn — Mister Suit — is one of its masters.',
     {
       arc: 'sos', world: 'Scadrial', wiki: 'Set',
       members: ['edwarn-ladrian', 'telsin'],
-      see: ['edwarn-ladrian', 'telsin', 'wax', 'trell', 'autonomy', 'ghostbloods'],
-      bio: 'Edwarn Ladrian (Suit) and Telsin (Sequence) built a political and religious machine to hand Scadrial to Autonomy. The Set kidnapped, converted, and spiked. Harmony asked Wax to stop his own uncle. He did. Telsin became an avatar anyway.',
+      see: ['edwarn-ladrian', 'telsin', 'wax', 'trell'],
+      bio: 'Suit\'s people collect Allomancers, buy their way into the Basin\'s best houses, and answer to someone they call Trell. Wax is told his sister is their prisoner.',
     }),
   org('kelsiers-crew', "Kelsier's crew", '#ef4444', 'mistborn1', 'crew',
     'A thieving crew that decided to overthrow a thousand-year empire. They did.',
@@ -227,7 +235,8 @@ export const ORGANIZATIONS: Organization[] = [
       see: ['elendel', 'marasi'],
     }),
   org('malwish', 'The Malwish', '#94a3b8', 'mistborn2', 'nation',
-    'Southern Scadrians who survived the ice with the Lord Mistborn\'s gift, and built a civilisation out of ettmetal.',
+    // The Bands of Mourning chs. 21–22, epilogue: five southern peoples; the Sovereign (Kelsier) saved them, not the Lord Mistborn.
+    'One of the five peoples of Scadrial\'s far south, who survived the Ice Death with medallions the Sovereign taught them to fill, and who fly.',
     {
       members: ['allik', 'jordis'],
       aliases: 'Southern Scadrians, south Scadrial',
@@ -306,10 +315,10 @@ export const ORGANIZATIONS: Organization[] = [
       see: ['akinah', 'rysn', 'dawnshard'],
     }),
   org('silverlight-university', 'Silverlight University', '#e2e8f0', 'arcanum', 'guild',
-    'The scholars of a city that is not on a planet. Khriss writes from here. Nazh steals maps for the footnotes.',
+    'The universities of a city that is not on a planet. Khriss helped found one (Word of Brandon 8342); Nazh steals maps for her footnotes.',
     {
       world: 'Cognitive Realm', wiki: 'Silverlight',
-      members: ['khriss', 'nazh'],
+      members: ['khriss'],
       see: ['silverlight', 'khriss', 'nazh'],
     }),
   org('vanrial', 'The Vanrial', '#c4b5fd', 'stormlight', 'guild',

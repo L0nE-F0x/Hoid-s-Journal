@@ -6,8 +6,9 @@ function eraMinFromBook(book: string): number {
   if (book === 'core') return 0;
   if (book === 'mistborn1' || book === 'secrethistory') return 2;
   if (book === 'mistborn2') return 3;
-  if (book === 'tress' || book === 'yumi' || book === 'fod') return 4;
-  if (book === 'sunlit' || book === 'sixthofdusk' || book === 'emberdark') return 5;
+  if (book === 'tress' || book === 'fod') return 4;
+  // Yumi is after The Sunlit Man (WoB 16524); Sixth of the Dusk after Mistborn Era 3.
+  if (book === 'sunlit' || book === 'yumi' || book === 'sixthofdusk' || book === 'emberdark') return 5;
   return 1;
 }
 
@@ -612,10 +613,6 @@ export const PLACES_MORE: Location[] = [
     'A world named more often than described. Worldhoppers use it as a direction and a shrug.', {
       region: 'Vax',
       bio: 'A world named far more often than it is described: worldhoppers use it as a direction and a shrug. Its magic is said to involve Initiation, it is restricted for reasons nobody will state, and any map that claims to place it — including this one — is guessing.', canon: 'wob', sources: ['Word of Brandon', 'Elantris'], wiki: 'Vax' }),
-  loc('obrodai-avatar-shore', 'Autonomy\'s Shore', 'obrodai-world', 'mistborn2', 0.52, 0.48, '#db2777', 'land',
-    'Coast where Autonomy\'s avatar took root. The planet learned a new name for ambition.', {
-      region: 'Obrodai',
-      bio: 'The coast where Autonomy\'s avatar took root and a local religion grew up around her. Worldhoppers who meddle here find that the local religious scene is not friendly and that the deity is paying attention.', arc: 'tlm', see: ['obrodai-claim'], sources: ['The Lost Metal'] }),
   loc('moelach-valley', 'Moelach\'s Drift', 'roshar', 'stormlight', 0.7, 0.6, '#78716c', 'storm',
     'Country where the Unmade Moelach\'s influence made Death Rattles common coin.', {
       bio: 'Country where the Unmade Moelach drifted, and where the dying began to speak in rhymes nobody had taught them. The Diagram was built on a harvest of those Death Rattles; Taravangian\'s people collected them in hospital beds and called it charity.', arc: 'twok', region: 'Jah Keved', see: ['jah-keved', 'bavland'], wiki: 'Moelach' }),

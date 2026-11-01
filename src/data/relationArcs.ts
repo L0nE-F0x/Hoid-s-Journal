@@ -26,9 +26,16 @@ export const RELATION_ARCS: { a: string; b: string; arc: string }[] = [
   { a: 'rysn', b: 'nikli', arc: 'dawnshard' },
   { a: 'navani', b: 'sibling', arc: 'row' },
   { a: 'venli', b: 'timbre', arc: 'row' },
+  // Thaidakar is Kelsier from Rhythm of War ch. 115; Felt is a Ghostblood from Wind and Truth.
+  { a: 'mraize', b: 'kelsier', arc: 'row' },
+  { a: 'iyatil', b: 'kelsier', arc: 'row' },
+  { a: 'felt', b: 'kelsier', arc: 'wat' },
   // Mistborn — the ascensions are the last book, not the first
   { a: 'vin', b: 'preservation', arc: 'hoa' },
   { a: 'vin', b: 'elend', arc: 'woa' },
   { a: 'sazed', b: 'preservation', arc: 'hoa' },
   { a: 'sazed', b: 'ruin', arc: 'hoa' },
+  // Mistborn Era 2 — Telsin is Lady Sequence from The Bands of Mourning ch. 27
+  { a: 'telsin', b: 'edwarn-ladrian', arc: 'bom' },
+  { a: 'telsin', b: 'the-set', arc: 'bom' },
 ];

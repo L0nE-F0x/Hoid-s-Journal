@@ -46,7 +46,7 @@ export const PEOPLE_SCADRIAL: Character[] = [
     'Tineye',
     'Kelsier\'s wife; the woman who put a flower and a betrayal in his story.', false, E1, {
       arc: 'tfe', wiki: 'Mare',
-      see: ['kelsier', 'gemmel', 'pits-of-hathsin', 'preservation'],
+      see: ['kelsier', 'gemmel', 'pits-of-hathsin'],
       bio: 'A Tineye who loved gardens in a world of ash. Mare was captured with Kelsier, sent to the Pits of Hathsin, and died there — but not before her memory became the religion Kelsier sold the skaa. Whether she betrayed him to the Inquisitors is a wound he never stops pressing.',
     }),
   ch('gemmel', 'Gemmel', '#64748b', 'eleventhmetal', 'Scadrial', 'Gemmel',
@@ -91,7 +91,7 @@ export const PEOPLE_SCADRIAL: Character[] = [
     'Mistborn (Hemalurgically spiked)',
     'Straff\'s bastard Mistborn; Ruin\'s favorite knife pointed at Vin.', false, E1, {
       arc: 'woa', wiki: 'Zane',
-      see: ['straff-venture', 'vin', 'elend', 'ruin', 'ati'],
+      see: ['straff-venture', 'vin', 'elend', 'ati'],
       bio: 'A Mistborn driven half-mad by a spike Ruin used as a loudspeaker. Zane loved Vin in the only way he understood — as proof that someone else heard the voices too — and he tried to cut her free of Elend and empire alike. She kills him on the snow above Luthadel; the spike\'s lesson outlives him.',
     }),
   ch('ashweather-cett', 'Ashweather Cett', '#f59e0b', 'mistborn1', 'Scadrial', 'Cett, Lord Cett',
@@ -235,7 +235,7 @@ export const PEOPLE_SCADRIAL: Character[] = [
     'Seeker, presumed Hero of Ages',
     'Kwaan\'s student; the man Rashek murdered at the Well to stop a false Hero.', false, PRE_ASCENSION, {
       arc: 'tfe', wiki: 'Alendi', titles: 'The Conqueror',
-      see: ['kwaan', 'lord-ruler', 'well-of-ascension', 'preservation', 'ruin'],
+      see: ['kwaan', 'lord-ruler', 'well-of-ascension'],
       bio: 'A packman elevated by prophecies Ruin had edited. Alendi conquered his way to the Well of Ascension believing he was the Hero of Ages, while his uncle\'s former student Kwaan realized the truth too late. Rashek, a Terris packman, killed Alendi at the Well and took the power instead — and the Final Empire began.',
       sources: ['mistborn1'],
     }),
@@ -243,7 +243,7 @@ export const PEOPLE_SCADRIAL: Character[] = [
     'Worldbringer, Feruchemist',
     'The Worldbringer who first named Alendi — then tried to stop him.', false, PRE_ASCENSION, {
       arc: 'tfe', wiki: 'Kwaan', titles: 'Worldbringer',
-      see: ['alendi', 'lord-ruler', 'tindwyl', 'conventical-of-seran', 'ruin'],
+      see: ['alendi', 'lord-ruler', 'tindwyl', 'conventical-of-seran'],
       bio: 'A Terris scholar of the Worldbringers who announced Alendi as the Hero, then watched the prophecies twist under Ruin\'s hands. Kwaan sent his nephew Rashek to do murder at the Well and carved a confession into steel so it could not be altered. Sazed finds that steel a thousand years later.',
       sources: ['mistborn1'],
     }),

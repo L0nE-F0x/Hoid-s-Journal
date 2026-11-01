@@ -13,27 +13,33 @@ function ch(
 }
 
 export const CHARACTERS: Character[] = [
-  ch('hoid', 'Hoid', '#ffffff', 'core', 'Yolen', 'Wit, Cephandrius, Dust, Topaz, Midius, Roamer, The Traveler',
-    'Yolish Lightweaving, Allomancy, Breath, Fortune, a Dawnshard residual',
+  ch('hoid', 'Hoid', '#ffffff', 'core', 'Yolen', 'Wit, Cephandrius, Midius, Dust, Topaz, Roamer, Drifter',
+    'Yolish Lightweaving, Allomancy, Awakening, Fortune, Lightweaver (Design), AonDor, the Dawnshard Exist',
     'The ultimate worldhopper. Present in almost every major Cosmere event.', true, [
       { era: 0, system: 'yolish', body: 'yolen' },
-      { era: 1, system: 'selish', body: 'sel' },
-      { era: 2, system: 'scadrian', body: 'scadrial' },
-      { era: 3, system: 'rosharan', body: 'roshar' },
-      { era: 4, system: 'scadrian', body: 'scadrial' },
-      // A cursed deckhand on the Crow's Song, betting the Sorceress for AonDor.
-      { era: 4, system: 'lumar', body: 'lumar-world', book: 'tress', arc: 'tress' },
-      // Frozen as the Noodle Pupil's coatrack. Canon puts Yumi after The Sunlit
-      // Man (WoB 16524); the era is the app's. He is never on Canticle — Aux
-      // only pushes an illusion of him along Sigzil's Connection.
-      { era: 4, system: 'utol', body: 'komashi', at: 'kilahito', book: 'yumi', arc: 'yumi' },
+      // In White Sand, hidden (WoB 5776). White Sand is the earliest book in time (WoB 10502).
+      { era: 1, system: 'taldainian', body: 'taldain', book: 'whitesand', arc: 'ws1' },
+      { era: 1, system: 'selish', body: 'sel', book: 'elantris', arc: 'elantris' },
+      { era: 2, system: 'scadrian', body: 'scadrial', book: 'mistborn1', arc: 'tfe' },
+      { era: 3, system: 'rosharan', body: 'roshar', book: 'stormlight', arc: 'twok' },
+      // The Yomen–Ostlin wedding (The Alloy of Law ch. 4). Mistborn Era 2 falls
+      // after Wind and Truth, which is where Hoid re-forms on Scadrial.
+      { era: 4, system: 'scadrian', body: 'scadrial', book: 'mistborn2', arc: 'aol' },
       // After Scadrial, looking for Valor. Her temple in Kingseat burns him.
+      // The first of his three, and straight after The Lost Metal.
       { era: 4, system: 'miralan', body: 'miral', at: 'kingseat', book: 'fod', arc: 'fod' },
+      // A cursed deckhand on the Crow's Song, betting the Sorceress for AonDor.
+      // Tress is post-Lost Metal (the kandra are loose); its exact place is not fixed.
+      { era: 4, system: 'lumar', body: 'lumar-world', book: 'tress', arc: 'tress' },
+      // Frozen as the Noodle Pupil's coatrack. Yumi is after The Sunlit Man
+      // (WoB 16524). He is never on Canticle — Aux only pushes an illusion of
+      // him along Sigzil's Connection.
+      { era: 5, system: 'utol', body: 'komashi', at: 'kilahito', book: 'yumi', arc: 'yumi' },
     ], {
       wiki: 'Hoid', kind: 'person', titles: 'King\'s Wit, Court jester, storyteller',
-      see: ['frost', 'design', 'sigzil', 'dawnshard', 'yolen', 'seventeenth-shard'],
-      bio: 'Born on Yolen before the Shattering; one of the people who was there when Adonalsium died and who did not take a Shard. He collects magics the way other people collect scars — Lightweaving from home, Allomancy on Scadrial, Breath on Nalthis, a spren on Roshar — and he cannot hurt people, which he treats as an inconvenience and a joke. On Roshar he is Wit. In the Cognitive Realm he is Cephandrius. He is looking for someone, and he will not say who.',
-      fieldNotes: { origin: { canon: 'wob', note: 'Yolen is the strongest current reading, not a page-stated fact in every book.' } },
+      see: ['frost', 'sigzil', 'dawnshard', 'yolen', 'seventeenth-shard'],
+      bio: 'Born on Yolen before the Shattering; one of the people who was there when Adonalsium died and who did not take a Shard. He collects magics the way other people collect scars — Lightweaving from home, Allomancy on Scadrial, Breath on Nalthis, a spren on Roshar — and he cannot hurt people, which he treats as an inconvenience and a joke. On Roshar he is Wit. The Shards call him Cephandrius. He is looking for someone, and he will not say who.',
+      fieldNotes: { origin: { canon: 'canon', note: 'The Sunlit Man ch. 10 puts his birth on Yolen, before the Shattering.' } },
     }),
   ch('vin', 'Vin', '#77aaff', 'mistborn1', 'Scadrial', 'Valette Renoux',
     'Mistborn, Splinter of Preservation',
@@ -65,22 +71,27 @@ export const CHARACTERS: Character[] = [
     'Mistborn, Cognitive Shadow',
     'Founder of the Ghostbloods. Bound strictly to the Scadrian system as a Shadow.', true, [
       { era: 2, system: 'scadrian', body: 'scadrial' },
-      { era: 3, system: 'scadrian', body: 'scadrial' },
-      { era: 4, system: 'scadrian', body: 'scadrial' },
-      { era: 5, system: 'scadrian', body: 'scadrial' },
+      // Surviving The Final Empire is Secret History; leading the Bilming
+      // Ghostbloods is The Lost Metal. Nothing places him in the space age.
+      { era: 3, system: 'scadrian', body: 'scadrial', book: 'secrethistory', arc: 'secrethistory' },
+      { era: 4, system: 'scadrian', body: 'scadrial', book: 'mistborn2', arc: 'tlm' },
     ], {
       wiki: 'Kelsier',
-      see: ['ghostbloods', 'vin', 'marsh', 'preservation', 'scadrial'],
-      bio: 'A half-skaa Mistborn who walked into the Pits of Hathsin and walked out a religion. He died at the Lord Ruler\'s hand and refused to finish dying; as a Cognitive Shadow he stole a spike of identity, founded the Ghostbloods, and took the name Thaidakar — which is the name Shallan is told to fear on Roshar. He cannot leave the Scadrian system. That has not stopped him running a war on three worlds.',
+      see: ['vin', 'marsh', 'scadrial', 'kelsiers-crew'],
+      // msh 6:4; mb6 epilogue (the Sovereign); mb7 36, 40, 47; sa4 115.
+      bio: 'A half-skaa Mistborn who walked into the Pits of Hathsin and walked out a religion. He died at the Lord Ruler\'s hand and refused to finish dying: he held Preservation for a while, found his way back into a body with a spike through one eye, and saved the far south as its Sovereign. He founded the Ghostbloods to keep Scadrial safe from the rest of the cosmere; on Roshar they call him Thaidakar. He still cannot leave home.',
     }),
   ch('khriss', 'Khriss', '#a5b4fc', 'whitesand', 'Taldain', 'Khrissalla',
     'Worldhopper scholar',
     'Author of the Ars Arcanum essays. The Cosmere\'s foremost arcanist.', false, [
       { era: 1, system: 'taldainian', body: 'taldain' },
-      { era: 2, system: 'scadrian', body: 'scadrial' },
-      { era: 3, system: 'scadrian', body: 'scadrial' },
-      { era: 4, system: 'scadrian', body: 'scadrial' },
-      { era: 5, system: 'scadrian', body: 'scadrial' },
+      // Scadrial's Cognitive Realm as Preservation dies (Secret History); New
+      // Seran, 342 PC (The Bands of Mourning ch. 12); and by the Emberdark she is
+      // "otherwise occupied on Taldain" (iote 30). Nothing puts her on Scadrial
+      // in the Stormlight era or the space age.
+      { era: 2, system: 'scadrian', body: 'scadrial', book: 'secrethistory', arc: 'secrethistory' },
+      { era: 4, system: 'scadrian', body: 'scadrial', book: 'mistborn2', arc: 'bom' },
+      { era: 5, system: 'taldainian', body: 'taldain', book: 'emberdark', arc: 'emberdark' },
     ]),
   ch('nazh', 'Nazh', '#78716c', 'arcanum', 'Threnody', 'Nazh, Nazrilof',
     'Worldhopper, mapmaker; a shade',
@@ -91,12 +102,12 @@ export const CHARACTERS: Character[] = [
       // Dead, a shade, and the Dynamic's security officer by the space age.
       { era: 5, system: 'drominad', body: 'first-of-the-sun', book: 'emberdark', arc: 'emberdark' },
     ]),
-  ch('galladon', 'Galladon', '#a78bfa', 'elantris', 'Sel', 'Temoo',
-    'Elantrian',
-    'Dula from Sel; later seen on Roshar with the Seventeenth Shard.', false, [
+  ch('galladon', 'Galladon', '#a78bfa', 'elantris', 'Sel', 'Grump',
+    'Elantrian, worldhopper',
+    'A Dula Elantrian; later one of three Seventeenth Shard agents hunting Hoid on Roshar.', false, [
       { era: 1, system: 'selish', body: 'sel' },
-      { era: 3, system: 'rosharan', body: 'roshar' },
-    ]),
+      { era: 3, system: 'rosharan', body: 'roshar', book: 'stormlight', arc: 'twok' },
+    ], { fieldNotes: { fact: { canon: 'wob', note: 'Ishikk calls him Grump; that Grump is Galladon is Word of Brandon 7427, 10085.' } } }),
   ch('sigzil', 'Sigzil', '#f59e0b', 'stormlight', 'Roshar', 'Nomad, Zellion, the Sunlit Man, Sess Nassith Tor',
     'Windrunner, then Skybreaker; Skips between worlds; once carried a Dawnshard',
     'Hoid\'s apprentice. Far-future wanderer of The Sunlit Man.', false, [
@@ -107,20 +118,20 @@ export const CHARACTERS: Character[] = [
     'Returned, Awakener, Nightblood\'s creator',
     'Worldhopper hiding as an ardent on Roshar.', false, [
       { era: 2, system: 'nalthian', body: 'nalthis' },
-      { era: 3, system: 'rosharan', body: 'roshar' },
+      { era: 3, system: 'rosharan', body: 'roshar', book: 'stormlight', arc: 'wor' },
     ]),
   ch('azure', 'Azure', '#38bdf8', 'warbreaker', 'Nalthis', 'Vivenna',
     'Awakener, royal of Idris',
-    'Vasher\'s partner; later the Wall Guard\'s commander in Kholinar.', false, [
+    'Vasher\'s student, then his travelling companion; later the Wall Guard\'s commander in Kholinar.', false, [
       { era: 2, system: 'nalthian', body: 'nalthis' },
       { era: 3, system: 'rosharan', body: 'roshar' },
     ]),
   ch('demoux', 'Demoux', '#64748b', 'mistborn1', 'Scadrial', 'Thinker',
-    'Seventeenth Shard field agent',
-    'Once Kelsier\'s captain; later hunts Hoid across worlds.', false, [
+    'Seer, Seventeenth Shard field agent, worldhopper',
+    'Kelsier\'s captain, then Elend\'s general; three centuries on, one of three Seventeenth Shard agents hunting Hoid on Roshar.', false, [
       { era: 2, system: 'scadrian', body: 'scadrial' },
-      { era: 3, system: 'rosharan', body: 'roshar' },
-    ]),
+      { era: 3, system: 'rosharan', body: 'roshar', book: 'stormlight', arc: 'twok' },
+    ], { fieldNotes: { fact: { canon: 'wob', note: 'Ishikk calls him Thinker; that Thinker is Demoux is Word of Brandon 6683.' } } }),
   ch('lift', 'Lift', '#86efac', 'stormlight', 'Roshar', 'Lift',
     'Edgedancer Radiant',
     'A thief who metabolizes food directly into Stormlight.', false, [
@@ -272,11 +283,11 @@ export const CHARACTERS: Character[] = [
   ch('yumi', 'Yumi', '#22d3ee', 'yumi', 'Komashi', 'Chosen, Honored One',
     'Yoki-hijo; Cognitive Shadow',
     'A stone-stacker whose life was a machine\'s lie.', false,
-    [{ era: 4, system: 'utol', body: 'komashi' }]),
+    [{ era: 5, system: 'utol', body: 'komashi' }]),
   ch('painter', 'Painter', '#67e8f9', 'yumi', 'Komashi', 'Nikaro',
     'Nightmare painter',
     'A slacker who learned to see what he was painting.', false,
-    [{ era: 4, system: 'utol', body: 'komashi' }]),
+    [{ era: 5, system: 'utol', body: 'komashi' }]),
   ch('tress', 'Tress', '#6ee7b7', 'tress', 'Lumar', 'Glorf',
     'Sprouter, cook, Luhel bond with Midnight Essence',
     'A girl who went to sea for a boy and stayed for herself.', false,
@@ -296,32 +307,33 @@ export const CHARACTERS: Character[] = [
   ch('dusk', 'Sixth of the Dusk', '#4ade80', 'sixthofdusk', 'First of the Sun', 'Dusk, Sixth',
     'Trapper; Aviar-bonded (Sak, Kokerlii, then Rokke); Navigator',
     'A Patji trapper who paddled through Patji\'s Eye into the dark, came back the first Navigator in millennia, and bought his people their freedom with it.', false, [
-      { era: 4, system: 'drominad', body: 'first-of-the-sun' },
       { era: 5, system: 'drominad', body: 'first-of-the-sun' },
     ]),
-  ch('mraize', 'Mraize', '#a3a3a3', 'stormlight', 'Unknown', 'Mraize',
-    'Ghostblood, worldhopper',
+  // Both first appear in Words of Radiance.
+  ch('mraize', 'Mraize', '#a3a3a3', 'stormlight', 'Roshar (Thaylenah)', 'Mraize',
+    'Ghostblood, hunter, worldhopper',
     'Shallan\'s would-be master. A hunter who collects worlds like trophies.', false, [
       { era: 3, system: 'rosharan', body: 'roshar' },
-    ]),
-  ch('iyatil', 'Iyatil', '#fb923c', 'stormlight', 'Scadrial (south)', 'Iyatil',
-    'Ghostblood, mask, worldhopper',
-    'Mraize\'s master. The mask is Malwish; the errand is Thaidakar\'s.', false, [
+    ], { arc: 'wor', fieldNotes: { origin: { canon: 'wob', note: 'Thaylen by Word of Brandon 10403.' } } }),
+  // She died in the Spiritual Realm in Wind and Truth (ch. 134): no later row.
+  ch('iyatil', 'Iyatil', '#fb923c', 'stormlight', 'Silverlight', 'Iyatil',
+    'Ghostblood, spy, worldhopper; an Elsecaller by an Enlightened inkspren',
+    'Mraize\'s babsk among the Ghostbloods. The mask is a Hunter\'s; the errand was Thaidakar\'s.', false, [
       { era: 3, system: 'rosharan', body: 'roshar' },
-      { era: 4, system: 'scadrian', body: 'scadrial' },
-    ]),
+    ], { arc: 'wor', fieldNotes: { origin: { canon: 'wob', note: 'Born in Silverlight, of Southern Scadrian heritage — Word of Brandon 12733, 13475.' } } }),
   ch('felt', 'Felt', '#64748b', 'mistborn1', 'Scadrial', 'Felt',
-    'Worldhopper, lookout',
-    'House Venture\'s spy, later a scout on the Shattered Plains. Still looking.', false, [
+    'Spy, scout, Awakener, worldhopper',
+    'House Venture\'s spy on Scadrial; three centuries later a Kholin scout on Roshar, and a Ghostblood.', false, [
       { era: 2, system: 'scadrian', body: 'scadrial' },
-      { era: 3, system: 'rosharan', body: 'roshar' },
+      { era: 3, system: 'rosharan', body: 'roshar', book: 'stormlight', arc: 'wor' },
     ]),
   ch('design', 'Design', '#22d3ee', 'stormlight', 'Roshar', 'Design',
     'Cryptic, Lightweaver bond, some control of Connection',
     'Hoid\'s Cryptic. On Komashi she ran a noodle shop and used him as the coatrack.', true, [
       { era: 3, system: 'rosharan', body: 'roshar' },
-      { era: 4, system: 'utol', body: 'komashi', at: 'kilahito', book: 'yumi', arc: 'yumi' },
-    ], { kind: 'spren', wiki: 'Design' }),
+      // Yumi is after The Sunlit Man (WoB 16524).
+      { era: 5, system: 'utol', body: 'komashi', at: 'kilahito', book: 'yumi', arc: 'yumi' },
+    ], { kind: 'spren', wiki: 'Design', arc: 'oathbringer' }),
   ch('riina', 'Riina', '#a78bfa', 'tress', 'Sel', 'The Sorceress',
     'Elantrian, AonDor curses, Awakener, worldhopper',
     'An Elantrian of the Ire who landed a spaceship on Lumar and let the locals call it a tower.', false, [
@@ -344,12 +356,13 @@ export const CHARACTERS: Character[] = [
     'Herdazian, one-armed, then two. The universe is invited to his family.', false, [
       { era: 3, system: 'rosharan', body: 'roshar' },
     ]),
-  ch('baon', 'Baon', '#b45309', 'whitesand', 'Taldain', 'Baon, Blunt',
-    'Dynastic soldier, Seventeenth Shard',
-    'Khriss\'s guard on Dayside; later hunting Hoid with Galladon and Demoux.', false, [
-      { era: 2, system: 'taldainian', body: 'taldain' },
-      { era: 3, system: 'rosharan', body: 'roshar' },
-    ]),
+  ch('baon', 'Baon', '#b45309', 'whitesand', 'Taldain', 'Blunt',
+    'Soldier, marksman, worldhopper',
+    'Khriss\'s bodyguard on Dayside; later one of three Seventeenth Shard agents hunting Hoid on Roshar.', false, [
+      // White Sand is the earliest book in time (WoB 10502), as Khriss's row has it.
+      { era: 1, system: 'taldainian', body: 'taldain' },
+      { era: 3, system: 'rosharan', body: 'roshar', book: 'stormlight', arc: 'twok' },
+    ], { fieldNotes: { fact: { canon: 'wob', note: 'Ishikk calls him Blunt; that Blunt is Baon is Word of Brandon 9208, 5556. He is not Invested (WoB 1564).' } } }),
   ch('syl', 'Sylphrena', '#7dd3fc', 'stormlight', 'Roshar', 'Syl',
     'Honorspren, Windrunner bond',
     'Kaladin\'s spren. Ancient, loyal, and still learning what a joke is.', true, [
@@ -420,9 +433,9 @@ export const CHARACTERS: Character[] = [
     'Venli\'s spren, small enough to hide in a gemheart.', true, [
       { era: 3, system: 'rosharan', body: 'roshar' },
     ], { arc: 'oathbringer', kind: 'spren', wiki: 'Timbre' }),
-  ch('telsin', 'Telsin Ladrian', '#e11d48', 'mistborn2', 'Scadrial', 'Sequence',
-    'Twinborn, Set, avatar of Autonomy',
-    'Wax\'s sister. The Set\'s Sequence. Autonomy looked at her and smiled.', false, [
+  ch('telsin', 'Telsin Ladrian', '#e11d48', 'mistborn2', 'Scadrial', 'Lady Sequence, the Key, Trell',
+    'Hemalurgic spikes; the Set\'s Key; avatar of Autonomy',
+    'Wax\'s sister, the Set\'s Key, and for a little while Autonomy\'s avatar on Scadrial.', false, [
       { era: 4, system: 'scadrian', body: 'scadrial' },
     ], { arc: 'sos' }),
   ch('blushweaver', 'Blushweaver', '#fb7185', 'warbreaker', 'Nalthis', 'Blushweaver the Honest',
@@ -478,7 +491,7 @@ CHARACTERS.push(
   drake('frost', 'Frost', '#e0f2fe', 'stormlight', 'the oldest of them',
     'Functionally immortal · shapeshifter · vast Cosmere knowledge',
     'The oldest known being in the Cosmere, older than Hoid. In human form, a pale man of about sixty with a long silver beard in white and silver robes. Like all greater dragons he spent his first thirty years in human form before his First Light.',
-    "Hoid's oldest friend and fiercest philosophical opponent. Stayed on Yolen after the Shattering and holds to non-intervention; leads the Seventeenth Shard. The letters in the Stormlight epigraphs are to him.",
+    "Hoid's oldest friend and fiercest philosophical opponent. He keeps an oath of non-intervention, and the Seventeenth Shard share it; Hoid's letters in The Way of Kings are to him, and the replies in Words of Radiance are his.",
     ALL_ERAS('yolish', 'yolen'),
     { sources: ['The Stormlight Archive', 'Arcanum Unbounded', 'Word of Brandon'] }),
 
@@ -491,10 +504,14 @@ CHARACTERS.push(
 
   drake('medelantorius', 'Medelantorius', '#fbbf24', 'stormlight', 'Valor',
     'Vessel of Valor · functionally immortal · shapeshifter · trained warrior',
-    'A dragon who was a warrior before the Shattering. Her draconic form is not described anywhere on the page.',
-    'Took up the Shard of Valor after the Shattering and has kept out of everything since; her location is unknown. She and Hoid were together, once. He has resolved to find her.',
-    ALL_ERAS('yolish', 'yolen'),
-    { arc: 'wat', canon: 'wob', sources: ['Wind and Truth', 'Word of Brandon'] }),
+    'A dragon of Yolen, and a warrior before the Shattering. Her draconic form is not described on the page.',
+    'Took up Valor at the Shattering and has kept herself hidden since: Tanavast could not find her, and Endowment will not say where she is. She and Hoid were together, once. He means to find her.',
+    // Every Vessel left Yolen; where she went is not said.
+    [{ era: 0, system: 'yolish', body: 'yolen' }],
+    {
+      arc: 'wat', sources: ['Wind and Truth ch. 115', 'Wind and Truth — Endowment\'s letter', 'Word of Brandon'],
+      fieldNotes: { fact: { canon: 'wob', note: 'That she and Hoid dated is Word of Brandon 16895.' } },
+    }),
 
   // Tress card only. The Dynamic, Silverlight, the piano and his opinion of
   // Hoid are Isles of the Emberdark (iote 25, 32), carried by gated relations.
@@ -519,12 +536,15 @@ CHARACTERS.push(
     ALL_ERAS('yolish', 'yolen'),
     { canon: 'wob', sources: ['Word of Brandon'] }),
 
-  drake('frosts-sister', "Frost's sister", '#94a3b8', 'emberdark', 'unnamed',
+  // Wind and Truth ch. 18: Hoid reaches Frost and his sister by tamukek; Frost
+  // will not look at the contract, his sister will. That she is Starling's
+  // parent is not on the page — Starling's parents are only "mourned".
+  drake('frosts-sister', "Frost's sister", '#94a3b8', 'stormlight', 'unnamed',
     'Presumed standard greater-dragon abilities',
-    'A dragon known only by her relations. Died some time before Isles of the Emberdark, leaving Starling to Frost.',
-    'Sister to Frost and parent to Starling. The books have not given her a name, and neither will this.',
-    ALL_ERAS('yolish', 'yolen').slice(0, 5),
-    { canon: 'wob', sources: ['Isles of the Emberdark', 'Word of Brandon'] }),
+    'A dragon known only by her brother. Hoid reached them both by tamukek in the last days of the contest.',
+    'Frost\'s sister. When Hoid needed a Rosharan contract read and Frost would not do it, she would. The books have not given her a name, and neither will this.',
+    ALL_ERAS('yolish', 'yolen').slice(0, 4),
+    { arc: 'wat', sources: ['Wind and Truth ch. 18'] }),
 
   {
     id: 'arclo', name: 'Arclo', color: '#86efac', book: 'stormlight', arc: 'row',

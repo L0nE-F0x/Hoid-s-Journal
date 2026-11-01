@@ -4,7 +4,7 @@ import type { Character } from './types.ts';
 export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   vin: {
     wiki: 'Vin',
-    see: ['elend', 'kelsier', 'preservation', 'lord-ruler', 'sazed'],
+    see: ['elend', 'kelsier', 'lord-ruler', 'sazed'],
     bio: 'A half-skaa Mistborn raised by the crewleader Reen to trust no one, then taught by Kelsier to trust a crew. She kills the Lord Ruler, loves Elend, and briefly holds Preservation before giving her life so Ruin can die. The mists chose her; she still had to choose what to do with them.',
   },
   kaladin: {
@@ -14,7 +14,7 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   shallan: {
     wiki: 'Shallan',
-    see: ['pattern', 'adolin', 'jasnah', 'mraize', 'veil'],
+    see: ['pattern', 'adolin', 'jasnah', 'veil'],
     bio: 'A Lightweaver who survived her family by fracturing herself into Veil and Radiant, then had to reclaim the truths those masks were hiding. Scholar, spy, murderer of a Cryptic\'s last knight, and eventually someone who can live with the whole story. Her art is not decoration; it is how she makes reality sit still long enough to face it.',
   },
   wax: {
@@ -44,7 +44,8 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   galladon: {
     wiki: 'Galladon',
     see: ['raoden', 'elantris-city', 'seventeenth-shard'],
-    bio: 'A Dula Elantrian who taught Raoden how to live in a broken city, then later walks Roshar under another name for the Seventeenth Shard. Dry humour, citrus obsession, and more Cosmere mileage than he admits.',
+    // The Way of Kings Interlude 1; WoB 7427, 10085, 14949; Wind and Truth Interlude 11.
+    bio: 'A Duladen farmer taken by the Shaod, who knows Elantris because his father was an Elantrian before him, and who teaches Raoden how to live in it. Much later he is one of three Seventeenth Shard agents who pay a Purelake fisherman for five months to find Hoid. They never do. They leave, come back to Iri for a letter he left them, and leave again.',
   },
   sigzil: {
     wiki: 'Sigzil',
@@ -64,7 +65,8 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   demoux: {
     wiki: 'Demoux',
     see: ['kelsier', 'seventeenth-shard', 'sazed'],
-    bio: 'An officer of Kelsier\'s rebellion who survives into Harmony\'s age and eventually into the Seventeenth Shard\'s quiet war. On Roshar he is one of the three who ask after Hoid; the Survivor\'s faith never entirely left him.',
+    // WoB 6683, 2561, 15956; The Way of Kings Interlude 1.
+    bio: 'A captain of Kelsier\'s rebellion and a general of the New Empire, a Seer the mists made and a preacher of the Survivor. He joins the Seventeenth Shard and slows his own ageing; on Roshar, Ishikk calls him Thinker because he listens more than he talks. He knows Iyatil and her brother Dlavil (Word of Brandon).',
   },
   lift: {
     wiki: 'Lift',
@@ -88,12 +90,12 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   marsh: {
     wiki: 'Marsh',
-    see: ['kelsier', 'ruin', 'inquisitor', 'harmony'],
+    see: ['kelsier', 'inquisitor', 'harmony'],
     bio: 'Kelsier\'s brother, turned Inquisitor against his will, then Ruin\'s favourite puppet. He murders a god on command and spends the next era as Ironeyes — Harmony\'s grim reminder that Hemalurgy does not easily let go.',
   },
   'lord-ruler': {
     wiki: 'Rashek',
-    see: ['well', 'preservation', 'vin', 'final-empire'],
+    see: ['well', 'vin', 'final-empire'],
     bio: 'Rashek the Traveller, who murdered Alendi, took the Well, became the Lord Ruler, and crushed a planet into a thousand years of ash. Compounding made him unkillable until Vin found the flaw; history still walks in his footprints.',
   },
   tensoon: {
@@ -258,18 +260,20 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   mraize: {
     wiki: 'Mraize',
-    see: ['iyatil', 'shallan', 'ghostbloods', 'kelsier'],
+    see: ['iyatil', 'shallan', 'ghostbloods'],
     bio: 'Ghostblood handler on Roshar: hunter, collector, and teacher of ugly lessons. He recruits Shallan, answers to Iyatil, and ultimately to Thaidakar — trophies on his wall, strings on everyone else.',
   },
   iyatil: {
     wiki: 'Iyatil',
-    see: ['mraize', 'ghostbloods', 'kelsier'],
-    bio: 'A masked Southern Scadrian Ghostblood who outranks Mraize on Roshar. Hunting Investiture and worldhoppers with equal professionalism, she is the Set\'s cousin in method and Kelsier\'s hand in another system.',
+    see: ['mraize', 'ghostbloods', 'seventeenth-shard'],
+    // WoB 12733, 13475, 8134; Rhythm of War ch. 13; Wind and Truth chs. 28, 49, 134, 138.
+    bio: 'Born in Silverlight, of the Southern Scadrian Hunters by blood, and a member of the Seventeenth Shard before the Ghostbloods had her (Word of Brandon). On Roshar she outranked Mraize and reported to Thaidakar by seon, chasing Stormlight that could be moved off-world. Sja-anat gave her an Enlightened inkspren. In the Spiritual Realm she wore Formless\'s face to steer Shallan, and when Shallan\'s anti-Stormlight knife found her and she tried to heal, it killed her.',
   },
   felt: {
     wiki: 'Felt',
-    see: ['ghostbloods', 'elend', 'scadrial'],
-    bio: 'A worldhopper who spied for Elend Venture and later turns up in Ghostblood circles. Longevity, bland competence, and a reminder that Scadrial\'s agents got off-world somehow.',
+    see: ['elend', 'scadrial'],
+    // WoB 11812, 1514; Oathbringer ch. 114; Rhythm of War ch. 21; Wind and Truth Interlude 1, ch. 25.
+    bio: 'A minor nobleman\'s third son who works for a living, and cosmere-aware even in the Final Empire — close to the trade through the Pits of Hathsin, though how close Brandon will not say. On Roshar he scouted for Dalinar, who trusted him with the trip to the Nightwatcher, and for Adolin in Shadesmar. The Ghostbloods sent him to take Kalak. He has belonged to a great many groups; his wife Malli goes where he goes.',
   },
   design: {
     wiki: 'Design',
@@ -300,7 +304,8 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   baon: {
     wiki: 'Baon',
     see: ['kenton', 'khriss', 'seventeenth-shard'],
-    bio: 'A Darksider warrior who guards scholars across Taldain and later across the Cosmere. One of the three Seventeenth Shard agents asking after Hoid on Roshar — loyalty as a profession.',
+    // White Sand (Dynasty agent); The Way of Kings Interlude 1; WoB 9208, 5556, 1564.
+    bio: 'A Darksider soldier and crack shot who guards Khrissalla across the Kerla — and was sent by the Dynasty to judge whether the sand masters were a threat. He sees no conflict between the two jobs. Later he is one of the three Seventeenth Shard agents asking after Hoid on Roshar.',
   },
   syl: {
     wiki: 'Sylphrena',
@@ -375,7 +380,8 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   telsin: {
     wiki: 'Telsin_Ladrian',
     see: ['wax', 'trell', 'the-set'],
-    bio: 'Wax\'s sister and a high operative of the Set under Trell\'s influence. Ambition plus Autonomy\'s religion turns family into opposing command structures; their reunion is a firefight.',
+    // The Bands of Mourning chs. 27, 35; The Lost Metal chs. 18–19, 21, 66, 69, epilogue.
+    bio: 'Wax\'s sister. She joined the Set young, brought their uncle in for his money, and rose to be its Key. She talked Autonomy out of simply destroying Scadrial by promising to conquer the Basin instead, and was made an avatar on a deadline. In Independence Tower Harmony cut her off from Autonomy; Autonomy let her go, and she died. Scratched into her arm: "You have proven yourselves. For now."',
   },
   blushweaver: {
     wiki: 'Blushweaver',

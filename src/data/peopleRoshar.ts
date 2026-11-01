@@ -27,7 +27,7 @@ export const PEOPLE_ROSHAR: Character[] = [
     'King of Heralds who abandoned the Oathpact and left Taln alone on Braize.', true, R15, {
       kind: 'herald', arc: 'twok', wiki: 'Jezrien', titles: 'Herald of Kings',
       see: ['taln', 'ishar', 'nale', 'kaladin', 'oathpact'],
-      bio: 'Herald of Kings and patron of the Windrunners. After Aharietiam he walked away from the Oathpact with the others, leaving Taln to hold Braize alone. Millennia later he drinks himself hollow in Kholinar alleys as a mad beggar until Moash kills him with a knives of raysium, ending a Herald permanently.',
+      bio: 'Herald of Kings and patron of the Windrunners. After Aharietiam he walked away from the Oathpact with the others, leaving Taln to hold Braize alone. Millennia later he drinks himself hollow in Kholinar alleys as a mad beggar until Moash kills him with a strange Fused knife, ending a Herald permanently.',
     }),
   ch('chana', 'Chanarach', '#ef4444', 'stormlight', 'Roshar',
     'Chana, Chanaranach, Herald of the Common Man',
@@ -41,7 +41,7 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Vedeledev, Herald of Healing',
     'Herald · Edgedancer patron · Surgebinding (Abrasion, Progression)',
     'Herald of Loving and Healing; patron of the Edgedancers.', true, R15, {
-      kind: 'herald', arc: 'oathbringer', wiki: 'Vedel', titles: 'Herald of Healing',
+      kind: 'herald', arc: 'twok', wiki: 'Vedel', titles: 'Herald of Healing',
       see: ['lift', 'ym', 'wyndle', 'jezrien'],
       bio: 'Herald associated with loving and healing, and patron of the Edgedancers. After abandoning the Oathpact she vanished into legend; Vorin art still paints her with the attributes of Loving and Healing. Living Heralds treat her as one of the broken ten.',
     }),
@@ -49,7 +49,7 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Pali, Pailiah\'Elin, Herald of Learned',
     'Herald · Truthwatcher patron · Surgebinding (Progression, Illumination)',
     'Herald of Learned and Giving; patron of the Truthwatchers.', true, R15, {
-      kind: 'herald', arc: 'oathbringer', wiki: 'Pailiah', titles: 'Herald of Learned',
+      kind: 'herald', arc: 'wor', wiki: 'Pailiah', titles: 'Herald of Learned',
       see: ['renarin', 'glys', 'battar', 'jezrien'],
       bio: 'Herald of Learned and Giving, patron of the Truthwatchers. Like most of her peers she walked away from the Oathpact at Aharietiam and has spent the intervening millennia fractured. Sightings in the present day remain sparse and contested.',
     }),
@@ -65,9 +65,9 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Battah, Dova, Herald of Counsel',
     'Herald · Elsecaller patron · Surgebinding (Transformation, Transportation)',
     'Herald of Counsel; hides in Kharbranth as the ardent Dova.', true, R15, {
-      kind: 'herald', arc: 'wor', wiki: 'Battar', titles: 'Herald of Counsel',
+      kind: 'herald', arc: 'oathbringer', wiki: 'Battar', titles: 'Herald of Counsel',
       see: ['taravangian', 'jasnah', 'ivory', 'adrotagia'],
-      bio: 'Herald of Counsel and Wise, patron of the Elsecallers. In the present age she works in Kharbranth under the name Dova, helping Taravangian\'s Diagram scholars track Death Rattles — a Herald quietly feeding the machine that will remake Odium.',
+      bio: 'Herald of Counsel and Wisdom, patron of the Elsecallers. In the present age she works in Kharbranth as the ardent Dova, helping Taravangian\'s Diagram track the Death Rattles.',
     }),
   ch('kalak', 'Kalak', '#a855f7', 'stormlight', 'Roshar',
     'Kelek, Kellai, Herald of Resolute',
@@ -83,15 +83,15 @@ export const PEOPLE_ROSHAR: Character[] = [
     'the Thrill, Nergaoul',
     'Unmade · battle-lust Connected across armies',
     'The Thrill: an Unmade that turns warfare into addictive ecstasy.', true, R15, {
-      kind: 'unmade', arc: 'wor', wiki: 'Nergaoul',
+      kind: 'unmade', arc: 'oathbringer', wiki: 'Nergaoul',
       see: ['dalinar', 'moash', 'sadeas', 'odium'],
-      bio: 'The Unmade called the Thrill. It rode Alethi battlefields for generations, making slaughter feel holy — Dalinar felt it at the Rift and again on the Shattered Plains. Captured in the King\'s Drop at Thaylen Field, then later used and contested as the war against Odium shifted.',
+      bio: 'The Unmade called the Thrill. It rode Alethi battlefields for generations, making slaughter feel holy; Dalinar felt it at the Rift and again on the Shattered Plains. At Thaylen Field Dalinar trapped it in the King\'s Drop, and the gem was locked in an aluminum box and sunk deep in the ocean.',
     }),
   ch('sja-anat', 'Sja-anat', '#7c3aed', 'stormlight', 'Roshar',
     'Taker of Secrets, Sja-anat',
     'Unmade · Enlightens spren · corrupts bonds',
     'Taker of Secrets; she Enlightens spren and bargains with Radiants.', true, R15, {
-      kind: 'unmade', arc: 'wor', wiki: 'Sja-anat',
+      kind: 'unmade', arc: 'oathbringer', wiki: 'Sja-anat',
       see: ['shallan', 'renarin', 'glys', 'odium'],
       bio: 'The Unmade who Enlightens spren, twisting their nature without always destroying them. She corrupted the Kholinar Oathgate spren, created Glys, and later sought alliance with Shallan — an Unmade trying to choose a side other than Odium\'s.',
     }),
@@ -113,19 +113,19 @@ export const PEOPLE_ROSHAR: Character[] = [
     }),
   ch('yelig-nar', 'Yelig-nar', '#450a0a', 'stormlight', 'Roshar',
     'Blightwind, Yelig-nar',
-    'Unmade · grants all Surges to a host · consumes them',
-    'Blightwind; possesses a host and feeds them every Surge until they burn out.', true, R15, {
+    'Unmade · grants nine Surges to a host · consumes them',
+    'Blightwind; possesses a host and feeds them nine Surges until they burn out.', true, R15, {
       kind: 'unmade', arc: 'oathbringer', wiki: 'Yelig-nar',
       see: ['aesudan', 'amaram', 'dalinar', 'odium'],
-      bio: 'Called Blightwind in song. Bonds a willing host and pours all ten Surges through them — power that destroys the vessel. Aesudan took him in Kholinar; Amaram later became his host at Thaylen Field and died for it.',
+      bio: 'Called Blightwind in song. Bonds a willing host and pours nine Surges through them, every one but Adhesion, power that destroys the vessel. Aesudan took him in Kholinar; Amaram later became his host at Thaylen Field and died for it.',
     }),
   ch('moelach', 'Moelach', '#6b21a8', 'stormlight', 'Roshar',
     'Moelach',
     'Unmade · Death Rattles · future sight on dying minds',
-    'Causes Death Rattles; Taravangian built the Diagram on its leavings.', true, R15, {
+    'The Unmade whose presence draws Death Rattles from the dying.', true, R15, {
       kind: 'unmade', arc: 'wor', wiki: 'Moelach',
       see: ['taravangian', 'battar', 'adrotagia', 'diagram'],
-      bio: 'The Unmade behind Death Rattles — prophetic utterances torn from the dying when it is near. Taravangian\'s Silent Gatherers followed its path across Roshar to harvest those words into the Diagram.',
+      bio: 'The Unmade behind the Death Rattles: near him, the dying speak the future. Taravangian\'s Diagram tells him to collect them, so his Silent Gatherers bled the dying in Kharbranth and wrote down every word, until Moelach drifted west and the Rattles thinned.',
     }),
   ch('re-shephir', 'Re-Shephir', '#1e1b4b', 'stormlight', 'Roshar',
     'Midnight Mother, Re-Shephir',
@@ -133,23 +133,23 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Midnight Mother; hid in Urithiru copying murder until Shallan drove her out.', true, R15, {
       kind: 'unmade', arc: 'oathbringer', wiki: 'Re-Shephir',
       see: ['shallan', 'pattern', 'urithiru', 'odium'],
-      bio: 'The Midnight Mother creates creatures of Midnight Essence that imitate what she studies. She nested in Urithiru after the Recreance, learning from ages of quiet violence, until Shallan\'s confrontation forced her to flee into the unclaimed hills.',
+      bio: 'The Midnight Mother makes creatures of Midnight Essence that imitate whatever she studies. A Lightweaver imprisoned her in Urithiru before the Recreance; loose again, she copied the tower\'s murders until Shallan faced her and drove her out. Where she went is not known.',
     }),
   ch('dai-gonarthis', 'Dai-Gonarthis', '#0f172a', 'stormlight', 'Roshar',
     'Black Fisher, Dai-Gonarthis',
     'Unmade · poorly understood · associated with collapse and taking',
-    'Black Fisher; named in death songs, almost unseen on the page.', true, R15, {
-      kind: 'unmade', arc: 'wor', wiki: 'Dai-Gonarthis', canon: 'wob',
+    'The Black Fisher: an Unmade so destructive that even Odium hesitates to use her.', true, R15, {
+      kind: 'unmade', arc: 'wor', wiki: 'Dai-Gonarthis',
       see: ['ba-ado-mishram', 'nergaoul', 'odium'],
-      bio: 'Called the Black Fisher in the epigraphs. One of the Unmade whose modern activity is least documented; scholars argue over whether certain historical collapses were his work. Treat every specific attribution as provisional.',
+      bio: 'Called the Black Fisher. She wants to break and burn the world, and even Odium thought her too dangerous to loose again; Hessi wonders whether she scoured Aimia. In Wind and Truth Taravangian pays her price anyway, to open an Elsegate that brings his armies to the Shattered Plains.',
     }),
   ch('chemoarish', 'Chemoarish', '#78716c', 'stormlight', 'Roshar',
     'Dustmother, Chemoarish',
     'Unmade · associated with dust and withering',
-    'Dustmother; an Unmade known more from lore than from present sightings.', true, R15, {
-      kind: 'unmade', arc: 'wor', wiki: 'Chemoarish', canon: 'wob',
+    'Dustmother; one of the nine Unmade, known almost only by her name.', true, R15, {
+      kind: 'unmade', arc: 'oathbringer', wiki: 'Chemoarish', canon: 'wob',
       see: ['ba-ado-mishram', 're-shephir', 'odium'],
-      bio: 'Named Dustmother in Vorin and listener tradition. Among the least observed Unmade in the True Desolation\'s early years; her exact powers remain thinly attested on the page.',
+      bio: 'One of the Unmade, an ancient spren of Odium named in Hessi\'s Mythica, and the Dustmother of older stories. Almost nothing on the page says what she does.',
     }),
 
   // ── Spren ────────────────────────────────────────────────────────────────
@@ -165,7 +165,7 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Glys',
     'Enlightened mistspren · corrupted Truthwatcher bond',
     'Renarin\'s mistspren, Enlightened by Sja-anat; visions cut both ways.', true, R3, {
-      kind: 'spren', arc: 'wor', wiki: 'Glys',
+      kind: 'spren', arc: 'oathbringer', wiki: 'Glys',
       see: ['renarin', 'sja-anat', 'shallan', 'pailiah'],
       bio: 'A mistspren Enlightened by Sja-anat before bonding Renarin. The corruption lets Renarin see futures Odium would rather keep, at the cost of a bond the old Radiants would have called impossible.',
     }),
@@ -175,15 +175,15 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Shallan\'s first Cryptic; a deadeye carrying the truth she buried.', true, R3, {
       kind: 'spren', arc: 'row', wiki: 'Testament',
       see: ['shallan', 'pattern', 'lin-davar', 'chana'],
-      bio: 'Shallan\'s first spren, bonded in childhood and killed when Shallan broke her oaths after murdering her mother. As a deadeye she still answers when Shallan finally remembers; Pattern is the second chance, Testament is the first wound.',
+      bio: 'Shallan\'s first spren, bonded in childhood. The day Shallan killed her mother in self-defence she broke the bond, and Testament became a deadeye. Pattern is the second chance; Testament is the first wound, and the one Shallan had to remember to become whole.',
     }),
   ch('notum', 'Notum', '#38bdf8', 'stormlight', 'Roshar',
     'Notum',
-    'Honorspren · ship captain · Shadesmar law',
-    'Honorspren captain who first arrests, then aids, Adolin\'s party.', true, R3, {
+    'Honorspren · ship captain · Unoathed',
+    'Honorspren captain who let Syl go, defended Adolin, and came to Azimir unbonded.', true, R3, {
       kind: 'spren', arc: 'oathbringer', wiki: 'Notum',
       see: ['adolin', 'shallan', 'kalak', 'syl'],
-      bio: 'Captain of the honorspren ship Honor\'s Path. He takes Adolin, Shallan, and their spren captive bound for Lasting Integrity, then risks exile to help them escape a deadeye hunt — honor practiced as choice, not decree.',
+      bio: 'Captain of the honorspren ship Honor\'s Path. At Celebrant he took Syl and her Radiants aboard and locked them in; after hours spent outrunning the Fused he let them go, and was exiled for it to patrol the waters near Lasting Integrity. When Adolin saved his life, he threw away his prepared speech to defend Adolin at his trial. In Wind and Truth a woman\'s voice urged him to fight: with no bond at all he came into the Physical Realm, flew to Azimir, and stood with the Unoathed in Plate.',
     }),
   ch('phendorana', 'Phendorana', '#0284c7', 'stormlight', 'Roshar',
     'Phendorana',
@@ -197,7 +197,7 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Rua',
     'Honorspren · Windrunner bond to Lopen',
     'Lopen\'s honorspren; mischief recognized mischief.', true, R3, {
-      kind: 'spren', arc: 'row', wiki: 'Rua',
+      kind: 'spren', arc: 'oathbringer', wiki: 'Rua',
       see: ['lopen', 'huio', 'kaladin', 'syl'],
       bio: 'Lopen\'s honorspren. Playful even by honorspren standards, Rua matches The Lopen joke for joke and still holds him to the Second Ideal when Herdazian charm is not enough.',
     }),
@@ -223,15 +223,15 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Voidspren who whispered Venli into stormform and Odium\'s war.', true, R3, {
       kind: 'spren', arc: 'oathbringer', wiki: 'Ulim',
       see: ['venli', 'eshonai', 'odium', 'ba-ado-mishram'],
-      bio: 'A voidspren smuggled onto the Shattered Plains in a gemstone. He coached Venli through the discovery of stormform, played listener politics like a board game, and fled when larger Fused and Unmade took the stage.',
+      bio: 'A voidspren who coached Venli through the discovery of stormform and played listener politics like a game of Towers, all the while serving Odium. Venli was the one he chose; she was also the one he could not keep.',
     }),
   ch('cusicesh', 'Cusicesh', '#06b6d4', 'stormlight', 'Roshar',
     'Cusicesh the Protector',
     'Great spren · daily face at Kasitor',
-    'Iriali great spren who rises from the bay each day at sunset.', true, R15, {
+    'Iriali great spren who rises from the bay of Kasitor at the same minute every morning.', true, R15, {
       kind: 'spren', arc: 'twok', wiki: 'Cusicesh',
       see: ['rall-elorim', 'stormfather', 'nightwatcher', 'sibling'],
-      bio: 'A vast spren worshipped in Kasitor. Every day at sunset Cusicesh rises from the water, displays a sequence of human faces, and radiates a draining awe that leaves witnesses exhausted — old Roshar, still keeping schedule.',
+      bio: 'A vast spren of Kasitor, called the Protector. At exactly seven forty-six every morning Cusicesh rises out of the bay and turns through a sequence of human faces while the city watches. Old Roshar, keeping its schedule.',
     }),
 
   // ── Bridge Four / Windrunners ────────────────────────────────────────────
@@ -253,11 +253,11 @@ export const PEOPLE_ROSHAR: Character[] = [
     }),
   ch('hobber', 'Hobber', '#67e8f9', 'stormlight', 'Roshar',
     'Hobber',
-    'Windrunner squire · Bridge Four',
-    'First Bridge Four man Kaladin heals; legs, then skies.', false, R3, {
+    'Windrunner · Bridge Four',
+    'The first Bridge Four man Kaladin saved from a wound that should have killed him.', false, R3, {
       kind: 'person', arc: 'twok', wiki: 'Hobber',
       see: ['kaladin', 'teft', 'rock', 'syl'],
-      bio: 'Wounded early in Bridge Four\'s rebirth and healed by Kaladin\'s first deliberate Stormlight work. His recovery is the crew\'s proof that their bridgeleader is more than lucky.',
+      bio: 'Wounded early, while Bridge Four were still dying on every run; Kaladin nursed him back with field surgery and stolen antiseptic, and he was the first of them to believe in Kaladin. Then the Assassin in White cut him down in the palace and left his legs grey and dead, and he served from a stump in Rock\'s kitchen until Stormlight healed them. He is a Windrunner now.',
     }),
   ch('leyten', 'Leyten', '#0e7490', 'stormlight', 'Roshar',
     'Leyten',
@@ -277,11 +277,11 @@ export const PEOPLE_ROSHAR: Character[] = [
     }),
   ch('dabbid', 'Dabbid', '#94a3b8', 'stormlight', 'Roshar',
     'Dabbid',
-    'Windrunner squire · Bridge Four',
-    'Mute Bridge Four brother who speaks when it finally matters.', false, R3, {
+    'Bridge Four · never a squire',
+    'Silent Bridge Four brother who speaks when it finally matters.', false, R3, {
       kind: 'person', arc: 'twok', wiki: 'Dabbid',
       see: ['kaladin', 'teft', 'rlain', 'rock'],
-      bio: 'Trauma took his voice after early bridge runs. He stays useful, loyal, and easy to overlook — until Urithiru\'s occupation, when his quiet courage helps crack Raboniel\'s grip.',
+      bio: 'Shell-shocked from the bridge runs and silent ever since, he never learns to hold Stormlight, and he stays easy to overlook. In the occupation of Urithiru it turns out he was feigning the silence, and his quiet courage helps crack Raboniel\'s grip.',
     }),
   ch('peet', 'Peet', '#155e75', 'stormlight', 'Roshar',
     'Peet',
@@ -293,11 +293,11 @@ export const PEOPLE_ROSHAR: Character[] = [
     }),
   ch('eth', 'Eth', '#0c4a6e', 'stormlight', 'Roshar',
     'Eth',
-    'Windrunner · Bridge Four',
-    'Bridge Four Windrunner; falls holding the line for his brothers.', false, R3, {
-      kind: 'person', arc: 'twok', wiki: 'Eth',
-      see: ['skar', 'peet', 'kaladin', 'teft'],
-      bio: 'Peet\'s crewmate and Skar\'s friend. Fights through the Windrunner expansion and dies in the war\'s later years — Bridge Four\'s reminder that oaths do not make you unkillable.',
+    'Windrunner squire · Bridge Four',
+    'Bridge Four, Mart\'s brother. Killed in the barracks by a Diagram agent.', false, R3, {
+      kind: 'person', arc: 'wor', wiki: 'Eth',
+      see: ['skar', 'peet', 'kaladin', 'diagram'],
+      bio: 'Mart\'s brother, one of the Bridge Four men who became Kaladin\'s squires. He was holding Jezrien\'s Honorblade when Taravangian sent a man of the Diagram into Bridge Four\'s barracks to steal it, and he was killed for it.',
     }),
   ch('bisig', 'Bisig', '#0284c7', 'stormlight', 'Roshar',
     'Bisig',
@@ -309,11 +309,11 @@ export const PEOPLE_ROSHAR: Character[] = [
     }),
   ch('huio', 'Huio', '#f59e0b', 'stormlight', 'Roshar',
     'Huio',
-    'Windrunner · Herdazian · fabrial tinkerer',
-    'Lopen\'s cousin; punches a Fused and invents on accident.', false, R3, {
-      kind: 'person', arc: 'row', wiki: 'Huio',
-      see: ['lopen', 'rua', 'navani', 'rushu'],
-      bio: 'Herdazian cousin to The Lopen. Bonds an honorspren, survives battles he narrates badly, and — while fixing a spanreed — stumbles into a breakthrough Navani\'s scholars would have claimed if he had written it down properly.',
+    'Windrunner of the Third Ideal (Caelinora) · cook',
+    'Lopen\'s cousin: a cook, a Windrunner, and in the end a fabrial patent-holder.', false, R3, {
+      kind: 'person', arc: 'wor', wiki: 'Huio',
+      see: ['lopen', 'rock', 'rysn', 'bridge-four'],
+      bio: 'One of Lopen\'s Herdazian cousins, short, bald and beefy, brought into Bridge Four late in 1173; he would rather be on kitchen duty with Rock, and improves Rock\'s recipes. Off Aimia he fought a yu-thorak to save the Wandersail, swore the Third Ideal to save Lopen, and summoned his honorspren Caelinora as a Shardhammer. Afterward he went into business with Rysn, registering a Thaylen patent for aluminum-modified fabrials.',
     }),
   ch('punio', 'Punio', '#d97706', 'stormlight', 'Roshar',
     'Punio',
@@ -325,19 +325,19 @@ export const PEOPLE_ROSHAR: Character[] = [
     }),
   ch('rod', 'Rod', '#0369a1', 'stormlight', 'Roshar',
     'Rod',
-    'Windrunner squire · Bridge Four',
-    'Bridge Four recruit from the later Windrunner surge.', false, R3, {
-      kind: 'person', arc: 'oathbringer', wiki: 'Rod',
-      see: ['kaladin', 'teft', 'lyn', 'skar'],
-      bio: 'One of the newer Bridge Four names carried into the True Desolation\'s air war. Represents the second wave: not a slave of Sadeas\'s bridges, still sworn to the same crew.',
+    'Bridgeman · Bridge Four',
+    'Lopen\'s Herdazian cousin; he died at Narak.', false, R3, {
+      kind: 'person', arc: 'wor', wiki: 'Rod (Roshar)',
+      see: ['lopen', 'huio', 'kaladin', 'narak'],
+      bio: 'One of Lopen\'s many Herdazian cousins, brought into Bridge Four with Huio late in 1173. He died at the Battle of Narak.',
     }),
-  ch('kaya', 'Kaya', '#7dd3fc', 'stormlight', 'Roshar',
-    'Kaya',
-    'Windrunner · Bridge Four',
-    'Windrunner among Bridge Four\'s later ranks.', false, R3, {
-      kind: 'person', arc: 'oathbringer', wiki: 'Kaya',
-      see: ['kaladin', 'lyn', 'teft', 'skar'],
-      bio: 'A Windrunner listed among Bridge Four\'s expanded roster as Kaladin\'s order grows beyond the original bridgemen.',
+  ch('kara', 'Kara', '#7dd3fc', 'stormlight', 'Roshar',
+    'Kara',
+    'Windrunner squire · Bridge Four',
+    'A former scout who joined Bridge Four and became a Windrunner squire.', false, R3, {
+      kind: 'person', arc: 'oathbringer', wiki: 'Kara',
+      see: ['kaladin', 'lyn', 'bridge-four'],
+      bio: 'One of the scouts who came over to Bridge Four as Kaladin\'s order grew past the original bridgemen, and learned to hold Stormlight as a Windrunner squire.',
     }),
   ch('colot', 'Colot', '#38bdf8', 'stormlight', 'Roshar',
     'Captain Colot',
@@ -350,11 +350,11 @@ export const PEOPLE_ROSHAR: Character[] = [
     }),
   ch('gaz', 'Gaz', '#57534e', 'stormlight', 'Roshar',
     'Gaz',
-    'Former bridge sergeant · Lightweaver squire',
-    'One-eyed bully of the bridges who later swears to Shallan.', false, R3, {
+    'Lightweaver of the Unseen Court',
+    'One-eyed bridge sergeant, then one of Shallan\'s Lightweavers.', false, R3, {
       kind: 'person', arc: 'twok', wiki: 'Gaz',
       see: ['kaladin', 'shallan', 'lopen', 'sadeas'],
-      bio: 'Sadeas\'s bridge sergeant, debt-ridden and cruel from fear. After the Tower he drifts until Shallan collects broken people for her Lightweavers; Gaz finds a thinner, stranger kind of redemption as her squire.',
+      bio: 'Sadeas\'s one-eyed bridge sergeant, in debt and cruel from fear. He deserted after the Tower and turned up among the men Shallan collected on the road; she gave his debts a way out, and he became one of her Lightweavers in the Unseen Court.',
     }),
   ch('cenn', 'Cenn', '#64748b', 'stormlight', 'Roshar',
     'Cenn',
@@ -367,10 +367,10 @@ export const PEOPLE_ROSHAR: Character[] = [
   ch('maps', 'Maps', '#78716c', 'stormlight', 'Roshar',
     'Maps',
     'Bridgeman · Bridge Four',
-    'Bridge Four cartographer with a tattooed face; dies on a run.', false, R3, {
+    'Bridge Four man named for a birthmark he swears is a map. He died on a run.', false, R3, {
       kind: 'person', arc: 'twok', wiki: 'Maps',
       see: ['kaladin', 'dunny', 'teft', 'rock'],
-      bio: 'Nicknamed for the glyphs tattooed across his face. One of the early Bridge Four dead, killed before the crew learns Stormlight can change their odds.',
+      bio: 'Called Maps for a birthmark on his chest that he swears is an exact map. One of the early Bridge Four dead, killed with Arik on a run before the crew learns that Stormlight can change their odds.',
     }),
   ch('dunny', 'Dunny', '#a8a29e', 'stormlight', 'Roshar',
     'Dunny',
@@ -379,14 +379,6 @@ export const PEOPLE_ROSHAR: Character[] = [
       kind: 'person', arc: 'twok', wiki: 'Dunny',
       see: ['kaladin', 'maps', 'rock', 'teft'],
       bio: 'A youthful bridgeman with a singing voice Rock approves of. Dies on a bridge run, another name Kaladin adds to the ledger that will one day become the Second Ideal.',
-    }),
-  ch('jem', 'Jem', '#475569', 'stormlight', 'Roshar',
-    'Jem',
-    'Bridgeman · Bridge Four',
-    'Bridge Four member from the Sadeas crew years.', false, R3, {
-      kind: 'person', arc: 'twok', wiki: 'Jem',
-      see: ['kaladin', 'teft', 'skar', 'gaz'],
-      bio: 'One of the bridgemen who share Bridge Four\'s early suffering under Gaz and Sadeas. Survives into the crew\'s tighter circle as Kaladin remakes them.',
     }),
   ch('narm', 'Narm', '#334155', 'stormlight', 'Roshar',
     'Narm',
@@ -418,7 +410,7 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Gav',
     'Heir to Alethkar',
     'Elhokar\'s son; a child wearing a kingdom\'s grief.', false, R3, {
-      kind: 'person', arc: 'oathbringer', wiki: 'Gavinor', titles: 'King of Alethkar',
+      kind: 'person', arc: 'oathbringer', wiki: 'Gavinor', titles: 'Prince of Alethkar',
       see: ['elhokar', 'aesudan', 'dalinar', 'drehy'],
       bio: 'Son of Elhokar and Aesudan. Rescued from fallen Kholinar and raised amid Radiants and war councils, a small boy whose name is a political weapon and a reminder of what Moash took.',
     }),
@@ -484,7 +476,7 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Torol\'s widow; keeps the Sadeas knives sharp after his death.', false, R3, {
       kind: 'person', arc: 'twok', wiki: 'Ialai',
       see: ['sadeas', 'dalinar', 'shallan', 'mraize'],
-      bio: 'Wife of Torol Sadeas and the keener politician of the pair. After Adolin kills Torol she runs the princedom\'s intrigues until Shallan\'s agents end her — a reminder that Sadeas\'s house was never only Torol.',
+      bio: 'Torol Sadeas\'s wife and the keener politician of the pair, with the best network of spies and assassins in the warcamps. After Adolin killed Torol she kept the Sadeas knives sharp, and ran what was left of the Sons of Honor from the Shattered Plains, until Shallan came for her; it was Radiant who put the poison in her wine.',
     }),
   ch('restares', 'Restares', '#7f1d1d', 'stormlight', 'Roshar',
     'Restares',
@@ -494,11 +486,11 @@ export const PEOPLE_ROSHAR: Character[] = [
       see: ['amaram', 'gavilar', 'nale', 'ishar'],
       bio: 'Senior figure in the Sons of Honor. Writes the letters that push Amaram and once guided Gavilar\'s circle toward returning the Heralds by forcing a Desolation — Vorin nostalgia as apocalypse plan.',
     }),
-  ch('sebarial', 'Turakavach Sebarial', '#a3e635', 'stormlight', 'Roshar',
+  ch('sebarial', 'Turinad Sebarial', '#a3e635', 'stormlight', 'Roshar',
     'Sebarial, Highprince Sebarial',
     'Alethi highprince · logistics over glory',
     'The highprince who would rather profit than posture.', false, R3, {
-      kind: 'person', arc: 'twok', wiki: 'Sebarial', titles: 'Highprince',
+      kind: 'person', arc: 'wor', wiki: 'Sebarial', titles: 'Highprince',
       see: ['palona', 'dalinar', 'shallan', 'aladar'],
       bio: 'Highprince of one of Alethkar\'s softer warcamps. Openly lazy, privately competent, he backs Dalinar when the math says unity pays, and lets Palona run half his life with a smile.',
     }),
@@ -506,14 +498,14 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Palona',
     'Sebarial\'s mistress · camp administrator',
     'The brain and backbone of Sebarial\'s warcamp.', false, R3, {
-      kind: 'person', arc: 'twok', wiki: 'Palona',
+      kind: 'person', arc: 'wor', wiki: 'Palona',
       see: ['sebarial', 'shallan', 'dalinar', 'navani'],
       bio: 'Sebarial\'s long-time mistress and the person who actually makes his camp function. Warm to Shallan, sharp with fools, and proof that Alethi power is not only Shardblades.',
     }),
   ch('aladar', 'Aladar', '#1d4ed8', 'stormlight', 'Roshar',
     'Highprince Aladar',
     'Alethi highprince · Highprince of Information',
-    'First highprince to truly throw in with Dalinar\'s reforms.', false, R3, {
+    'Highprince who comes round to Dalinar\'s reforms and stays.', false, R3, {
       kind: 'person', arc: 'twok', wiki: 'Aladar', titles: 'Highprince',
       see: ['dalinar', 'sebarial', 'roion', 'sadeas'],
       bio: 'Highprince who shifts from cautious rival to Dalinar\'s key ally. Takes the Information mantle after Sadeas and fights at Narak and beyond as a soldier who chose unity on purpose.',
@@ -569,26 +561,18 @@ export const PEOPLE_ROSHAR: Character[] = [
   ch('tanalan', 'Tanalan', '#ef4444', 'stormlight', 'Roshar',
     'Tanalan, young Tanalan',
     'Heir of Rathalas',
-    'Rift boy who survives Dalinar\'s fire and comes back for revenge.', false, R3, {
+    'Rift boy who watched Dalinar kill his father, and came back to rebel.', false, R3, {
       kind: 'person', arc: 'oathbringer', wiki: 'Tanalan',
       see: ['dalinar', 'evi', 'gavilar', 'rathalas'],
-      bio: 'Son of the lord of Rathalas. As a child he watches the Blackthorn destroy the Rift; as a man he rebels again and dies in the second burning — the personal face of Dalinar\'s worst atrocity.',
+      bio: 'Son of the lord of Rathalas. At seven he watched the Blackthorn kill his father in the siege of the Rift; as a grown man and lord he rebelled again, and died, choking, when Dalinar burned the Rift: the personal face of Dalinar\'s worst atrocity.',
     }),
   ch('teleb', 'Teleb', '#1e40af', 'stormlight', 'Roshar',
     'Teleb',
     'Kholin Shardbearer',
-    'Dalinar\'s officer; falls in the Sadeas betrayal at the Tower.', false, R3, {
+    'Kholin officer and Shardbearer, loyal to Dalinar.', false, R3, {
       kind: 'person', arc: 'twok', wiki: 'Teleb',
       see: ['dalinar', 'sadeas', 'adolin', 'kaladin'],
-      bio: 'Loyal Kholin officer and Shardbearer. Commands flank forces during the Tower assault and dies when Sadeas withdraws — one of the named prices of that betrayal.',
-    }),
-  ch('bergan', 'Bergan', '#334155', 'stormlight', 'Roshar',
-    'Bergan',
-    'Kholin guard captain',
-    'Officer in Dalinar\'s camp guard.', false, R3, {
-      kind: 'person', arc: 'twok', wiki: 'Bergan',
-      see: ['dalinar', 'adolin', 'elhokar', 'teleb'],
-      bio: 'A Kholin military officer appearing through the early warcamp years — part of the professional spine around Dalinar and Elhokar before Radiants rewrite the chain of command.',
+      bio: 'Loyal Kholin officer and Shardbearer, one of the professional spine around Dalinar in the warcamps. He survives the Tower; he dies at the Battle of Narak.',
     }),
   ch('kadash', 'Kadash', '#c4b5fd', 'stormlight', 'Roshar',
     'Kadash',
@@ -600,11 +584,11 @@ export const PEOPLE_ROSHAR: Character[] = [
     }),
   ch('redin', 'Redin', '#991b1b', 'stormlight', 'Roshar',
     'Redin',
-    'Sadeas bastard · investigator',
-    'Torol Sadeas\'s illegitimate son; carries out quiet knives.', false, R3, {
+    'Assassin and executioner · Jah Keved',
+    'Highprince Valam\'s bastard son and his assassin.', false, R3, {
       kind: 'person', arc: 'wor', wiki: 'Redin',
-      see: ['sadeas', 'ialai', 'dalinar', 'amaram'],
-      bio: 'Acknowledged bastard of Torol Sadeas. Used for enforcement and inquiry — the face Sadeas sends when a highprince wants intimidation without wearing his own plumage.',
+      see: ['lin-davar', 'shallan', 'nan-balat'],
+      bio: 'The illegitimate son of Highprince Valam of Jah Keved, who served his father as assassin and executioner while Valam schemed for the Veden throne.',
     }),
   ch('relis', 'Relis Ruthar', '#e11d48', 'stormlight', 'Roshar',
     'Relis',
@@ -633,10 +617,10 @@ export const PEOPLE_ROSHAR: Character[] = [
   ch('sheler', 'Sheler', '#7f1d1d', 'stormlight', 'Roshar',
     'Brightlord Sheler',
     'Alethi officer',
-    'Alethi commander infamous among listeners for massacres.', false, R3, {
-      kind: 'person', arc: 'wor', wiki: 'Sheler',
-      see: ['dalinar', 'eshonai', 'venli', 'sadeas'],
-      bio: 'Alethi brightlord whose troops committed brutal raids against listeners. His name surfaces as a measure of how ugly the War of Reckoning became beyond the dueling codes.',
+    'Amaram\'s officer whose stand cost Tien his life; later a war criminal in Herdaz.', false, R3, {
+      kind: 'person', arc: 'oathbringer', wiki: 'Sheler',
+      see: ['tien', 'amaram', 'kaladin'],
+      bio: 'The Alethi brightlord whose company Tien died with in Amaram\'s army. Years later he robbed and murdered Herdazian civilians, was captured by the Mink, and died to a yu-nerig.',
     }),
   ch('hashal', 'Hashal', '#a8a29e', 'stormlight', 'Roshar',
     'Brightness Hashal',
@@ -652,25 +636,25 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Gaz\'s superior; dies for Bridge Four\'s early rebellion fallout.', false, R3, {
       kind: 'person', arc: 'twok', wiki: 'Lamaril',
       see: ['gaz', 'kaladin', 'sadeas', 'hashal'],
-      bio: 'Officer over the bridge crews. After Kaladin\'s men wear carapace armor, Sadeas\'s command makes Lamaril the scapegoat and has him executed.',
+      bio: 'Officer over Sadeas\'s bridge crews and Gaz\'s superior. When Bridge Four\'s side-carry wrecks the assault at the Tower, Sadeas executes him personally within the hour.',
     }),
 
   // ── Shallan\'s family ─────────────────────────────────────────────────────
   ch('lin-davar', 'Lin Davar', '#44403c', 'stormlight', 'Roshar',
     'Lin, Brightlord Davar',
-    'Head of House Davar · Ghostblood pawn',
+    'Head of House Davar · Ghostblood ally',
     'Shallan\'s father; violence in a lighteyed coat.', false, R3, {
       kind: 'person', arc: 'twok', wiki: 'Lin Davar',
       see: ['shallan', 'helaran', 'testament', 'mraize', 'chana'],
-      bio: 'Brightlord of House Davar in Jah Keved. Abusive, indebted, and entangled with the Ghostbloods\' predecessors; Shallan kills him after years of terror and buries the memory beneath identities.',
+      bio: 'Brightlord of House Davar in Jah Keved: abusive, indebted, and propped up by the Ghostbloods. Shallan killed him after years of terror, and buried the memory under other faces.',
     }),
   ch('helaran', 'Helaran Davar', '#9f1239', 'stormlight', 'Roshar',
     'Helaran, Helaran Davar',
-    'Shardbearer · Sons of Honor affiliate',
-    'Shallan\'s eldest brother; dies under Kaladin\'s spear.', false, R3, {
+    'Shardbearer',
+    'Shallan\'s eldest brother. He died under Kaladin\'s spear.', false, R3, {
       kind: 'person', arc: 'twok', wiki: 'Helaran',
       see: ['shallan', 'kaladin', 'amaram', 'lin-davar'],
-      bio: 'Oldest Davar sibling. Leaves home with a Shardblade tied to Restares\'s circles and dies on the field against Amaram\'s army — killed by Kaladin in the fight that Amaram later steals.',
+      bio: 'Oldest of the Davar children. He left home with a Shardblade he had from the Skybreakers, and died on an Alethi battlefield attacking Amaram: killed by Kaladin, in the fight whose Shards Amaram then stole.',
     }),
   ch('nan-balat', 'Balat Davar', '#a3a3a3', 'stormlight', 'Roshar',
     'Nan Balat, Balat',
@@ -694,15 +678,15 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Shallan\'s brother; numbers and quiet despair.', false, R3, {
       kind: 'person', arc: 'twok', wiki: 'Wikim',
       see: ['shallan', 'nan-balat', 'jushu', 'lin-davar'],
-      bio: 'Davar brother who sinks into depression under Lin\'s household. Shallan\'s early Lightweaving and kindness pull him back toward function — one of her first unnoticed Radiant acts.',
+      bio: 'Davar brother who sinks into depression under Lin\'s household. Shallan pulls him back toward function by setting him maths problems: one of her first unnoticed acts of care.',
     }),
   ch('malise', 'Malise Gevelmar', '#d6d3d1', 'stormlight', 'Roshar',
     'Malise, Stepmother Davar',
     'Shallan\'s stepmother',
-    'Lin\'s second wife; frightened caretaker in a violent house.', false, R3, {
-      kind: 'person', arc: 'twok', wiki: 'Malise Gevelmar',
+    'Lin\'s second wife. He killed her when he learned she meant to run.', false, R3, {
+      kind: 'person', arc: 'wor', wiki: 'Malise Gevelmar',
       see: ['lin-davar', 'shallan', 'helaran', 'nan-balat'],
-      bio: 'Married to Lin Davar after Shallan\'s mother dies. Means well and lacks the power to stop Lin; dies in the household\'s final collapse.',
+      bio: 'Married to Lin Davar after Shallan\'s mother was gone. When Lin learned she had been planning to flee with Balat and Eylita, he made her confess it and killed her for it.',
     }),
   ch('tyn', 'Tyn', '#e879f9', 'stormlight', 'Roshar',
     'Tyn',
@@ -710,15 +694,15 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Teaches Shallan to be Veil; dies when the lesson ends.', false, R3, {
       kind: 'person', arc: 'wor', wiki: 'Tyn',
       see: ['shallan', 'pattern', 'mraize', 'jasnah'],
-      bio: 'Professional trickster who briefly mentors Shallan in disguise and confidence work. Tries to claim Jasnah\'s fabrial spoils and is killed when Shallan\'s Shardblade proves the apprentice was never harmless.',
+      bio: 'A professional con artist and assassin, hired with her team to kill Jasnah. She takes Shallan on as an apprentice in disguise and confidence work; when she learns her apprentice is Jasnah\'s ward she attacks, and Shallan\'s Shardblade ends it.',
     }),
   ch('vathah', 'Vathah', '#a21caf', 'stormlight', 'Roshar',
     'Vathah',
-    'Deserter captain · Lightweaver squire',
+    'Lightweaver of the Unseen Court (Mosaic)',
     'Leads deserters Shallan recruits into Lightweaver orbit.', false, R3, {
       kind: 'person', arc: 'wor', wiki: 'Vathah',
       see: ['shallan', 'gaz', 'pattern', 'adolin'],
-      bio: 'Captain of deserters on the Plains whom Shallan hires with stolen authority. Later becomes one of her Lightweaver squires — skepticism sanded down by too many impossibilities.',
+      bio: 'Captain of the deserters Shallan hires on the Frostlands road with stolen authority and a speech. He stays with her, through Kholinar, into the Unseen Court, and swears as a Lightweaver to the Cryptic Mosaic: skepticism sanded down by too many impossibilities.',
     }),
 
   // ── Fused / singers / listeners ──────────────────────────────────────────
@@ -739,12 +723,12 @@ export const PEOPLE_ROSHAR: Character[] = [
       bio: 'One of the most brilliant Fused. Captures Urithiru, studies Lights with Navani, creates anti-Stormlight, and seeks an ending to the endless war even as she serves Odium — enemy, colleague, and tragedy in the same voice.',
     }),
   ch('el-fused', 'El', '#14532d', 'stormlight', 'Roshar',
-    'El',
-    'Fused · stripped of rhythms · dangerous loyalist',
-    'Fused whose title was taken; wears Hoid\'s old gift as threat.', true, R3, {
-      kind: 'fused', arc: 'row', wiki: 'El (Fused)',
+    'El, once Vyre',
+    'Fused · grows metal where carapace should be · Odium\'s strategist',
+    'A Fused stripped of his title and his rhythms for wanting humans reconditioned rather than killed.', true, R3, {
+      kind: 'fused', arc: 'row', wiki: 'El',
       see: ['leshwi', 'raboniel', 'odium', 'moash'],
-      bio: 'A Fused so extreme his own kind removed his rhythms. Returns to prominence as Odium\'s war escalates, wearing a metal plate inscribed by a certain worldhopper and promising a colder species of loyalty.',
+      bio: 'A Fused who lost his title, Vyre, and his rhythms for insisting that humans should not be killed but reconditioned. At each rebirth he removes his carapace and replaces it with metal. In Wind and Truth Taravangian makes him a commander: he brings Odium\'s armies to the Shattered Plains through an Elsegate opened by Dai-Gonarthis, and when the contest begins he honours the listeners\' treaty and withdraws.',
     }),
   ch('lezian', 'Lezian', '#3f6212', 'stormlight', 'Roshar',
     'The Pursuer, Lezian',
@@ -760,15 +744,15 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Fused who delivers Odium\'s spear to Moash.', true, R3, {
       kind: 'fused', arc: 'oathbringer', wiki: 'Hnanan',
       see: ['moash', 'odium', 'jezrien', 'leshwi'],
-      bio: 'A Fused in Odium\'s command structure. Tasks Moash with Jezrien\'s murder and hands him the raysium knife that can kill a Herald — bureaucracy of the Desolation.',
+      bio: 'A Fused in Odium\'s command structure. Tasks Moash with Jezrien\'s murder and hands him the knife that can kill a Herald — bureaucracy of the Desolation.',
     }),
   ch('vatwha', 'Vatwha', '#15803d', 'stormlight', 'Roshar',
     'Vatwha',
     'Fused · Heavenly One',
-    'Heavenly One who once knew Hoid under another face.', true, R3, {
+    'A Heavenly One trained to watch for Wit, who gives his disguise barely a glance.', true, R3, {
       kind: 'fused', arc: 'oathbringer', wiki: 'Vatwha',
       see: ['hoid', 'leshwi', 'kaladin', 'odium'],
-      bio: 'A Heavenly One among the returning Fused. Recognizes Wit from ancient wars and lets him pass — a small mercy from an immortal who remembers too many Desolations.',
+      bio: 'A Heavenly One among the returning Fused. Despite her training to spot Hoid, she gives him barely a glance as he slips past in disguise.',
     }),
   ch('abidi', 'Abidi the Monarch', '#991b1b', 'stormlight', 'Roshar',
     'Abidi, the Monarch',
@@ -780,11 +764,11 @@ export const PEOPLE_ROSHAR: Character[] = [
     }),
   ch('thude', 'Thude', '#65a30d', 'stormlight', 'Roshar',
     'Thude',
-    'Listener · stormform survivor · Council',
-    'Listener who rejects Oblivion\'s script and leads survivors.', false, R3, {
+    'Listener · warpair with Bila · Willshaper\'s people',
+    'Listener who refused stormform and escaped into the chasms with Venli\'s remnant.', false, R3, {
       kind: 'person', arc: 'wor', wiki: 'Thude', biology: 'singer',
       see: ['venli', 'rlain', 'eshonai', 'demid'],
-      bio: 'Warrior among Eshonai\'s people. Survives stormform\'s catastrophe, helps gather listeners who refuse Odium, and becomes a voice for the remnant nation Venli tries to save.',
+      bio: 'One of Eshonai\'s warriors, Bila\'s mate and warpair. When the listeners were ordered into stormform he refused, and fled into the chasms with seventeen hundred others; he became a voice for the remnant Venli tries to save.',
     }),
   ch('demid', 'Demid', '#84cc16', 'stormlight', 'Roshar',
     'Demid',
@@ -798,7 +782,7 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Mother, Jaxlim',
     'Listener · keeper of songs',
     'Venli and Eshonai\'s mother; memory fraying, songs intact.', false, R3, {
-      kind: 'person', arc: 'oathbringer', wiki: 'Jaxlim', biology: 'singer',
+      kind: 'person', arc: 'row', wiki: 'Jaxlim', biology: 'singer',
       see: ['venli', 'eshonai', 'thude', 'timbre'],
       bio: 'Mother of Venli and Eshonai, a keeper of listener songs whose mind deteriorates as the war intensifies. Her need pulls Venli toward a different oath than Odium offered.',
     }),
@@ -926,12 +910,12 @@ export const PEOPLE_ROSHAR: Character[] = [
       bio: 'Veteran Thaylen trader who apprentices Rysn. Teaches her to see people as more than ledgers, then steps back as she becomes the center of Aimia\'s oldest secret.',
     }),
   ch('au-nak', 'Au-nak', '#67e8f9', 'stormlight', 'Roshar',
-    'Au-nak',
-    'Thaylen merchant',
-    'Thaylen merchant tangled in the Aimia voyage politics.', false, R3, {
-      kind: 'person', arc: 'dawnshard', wiki: 'Au-nak',
-      see: ['rysn', 'nikli', 'vstim', 'cord'],
-      bio: 'Thaylen merchant involved in the expedition toward Akinah. Part of the competing interests Rysn must navigate while Cord, Nikli, and a Dawnshard rewrite the deal.',
+    'Au-nak, Nak-ali',
+    'Ambassador of New Natanan',
+    'An ambassador of the city-state of New Natanan; Nak-ali in the high form.', false, R3, {
+      kind: 'person', arc: 'twok', wiki: 'Au-nak',
+      see: ['new-natanan', 'natanatan'],
+      bio: 'New Natanan\'s ambassador, whose name in the high form is Nak-ali. The Natan are the people of what was once Natanatan, the Silver Kingdom whose capital lies under the Shattered Plains.',
     }),
   ch('graves', 'Graves', '#44403c', 'stormlight', 'Roshar',
     'Graves',
@@ -947,12 +931,12 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Chiri-Chiri',
     'Larkin · Investiture eater',
     'Rysn\'s larkin; eats Investiture and grows on trouble.', false, R3, {
-      kind: 'person', arc: 'edgedancer', wiki: 'Chiri-Chiri', biology: 'larkin',
+      kind: 'person', arc: 'wor', wiki: 'Chiri-Chiri', biology: 'larkin',
       see: ['rysn', 'vstim', 'nikli', 'dawnshard'],
       bio: 'A larkin — ancient winged scavenger of Investiture — bonded in practice if not in oath to Rysn. Vents Stormlight, voids threats, and becomes inseparable from the Dawnshard crisis at Akinah.',
     }),
   ch('cord', 'Cord', '#fdba74', 'stormlight', 'Roshar',
-    'Cord, Kuma\'tik\'i',
+    'Cord, Hualinam\'lunanaki\'akilu',
     'Unkalaki · Shardplate bearer',
     'Rock\'s daughter; takes Plate and a voyage to Aimia.', false, R3, {
       kind: 'person', arc: 'dawnshard', wiki: 'Cord',
@@ -963,7 +947,7 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Gift',
     'Unkalaki · Rock\'s son',
     'One of Rock\'s children drawn toward Bridge Four\'s orbit.', false, R3, {
-      kind: 'person', arc: 'row', wiki: 'Gift',
+      kind: 'person', arc: 'oathbringer', wiki: 'Gift',
       see: ['rock', 'cord', 'song', 'lopen'],
       bio: 'Son of Lunamor and Song. Part of the Unkalaki family that turns Kaladin\'s barracks into a kitchen and a culture lesson.',
     }),
@@ -971,23 +955,23 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Song, Tuaka',
     'Unkalaki · Rock\'s wife',
     'Rock\'s wife; the household name behind the cookfire legend.', false, R3, {
-      kind: 'person', arc: 'row', wiki: 'Song',
+      kind: 'person', arc: 'oathbringer', wiki: 'Tuaka',
       see: ['rock', 'cord', 'gift', 'kaladin'],
       bio: 'Tuaka, called Song — Lunamor\'s wife. Arrives with their children when the war reaches for the Horneater Peaks\' people, grounding Rock\'s humor in a family that can be hurt.',
     }),
   ch('ral-na', 'Ral-na', '#14b8a6', 'stormlight', 'Roshar',
     'King Ral-na',
-    'Reshi king · takes dullform ill',
-    'Reshi island king met by Rysn on her early babsk voyage.', false, R3, {
-      kind: 'person', arc: 'twok', wiki: 'Ral-na',
+    'King of Relu-na · Dustbringer (ashspren)',
+    'King of Relu-na, the Reshi greatshell island Rysn fell from.', false, R3, {
+      kind: 'person', arc: 'wor', wiki: 'Ral-na',
       see: ['rysn', 'vstim', 'talik', 'fen'],
-      bio: 'King of a Reshi island visited by Vstim and Rysn. Aging into illness, he embodies the Reshi bond to their great shell-islands and the cost of trading with outsiders.',
+      bio: 'King of the Reshi people who live on Relu-na, a living greatshell island in the Reshi Sea. Vstim brought Rysn to trade with him, and she learned there what a fall costs. By Dawnshard he is a Dustbringer, bonded to an ashspren.',
     }),
   ch('talik', 'Talik', '#2dd4bf', 'stormlight', 'Roshar',
     'Talik',
     'Reshi trademaster · fluent in Thaylen deals',
     'Reshi negotiator who matches Vstim move for move.', false, R3, {
-      kind: 'person', arc: 'twok', wiki: 'Talik',
+      kind: 'person', arc: 'wor', wiki: 'Talik',
       see: ['ral-na', 'rysn', 'vstim', 'fen'],
       bio: 'Trademaster for Ral-na\'s island. Educated in Thaylen customs, he forces Rysn to learn that "barbarian" courts can outmaneuver a babsk\'s apprentice.',
     }),
@@ -1025,19 +1009,19 @@ export const PEOPLE_ROSHAR: Character[] = [
     }),
   ch('bluth', 'Bluth', '#57534e', 'stormlight', 'Roshar',
     'Bluth',
-    'Mercenary guard · later deserter under Shallan',
-    'Tvlakv\'s guard who dies covering Shallan\'s deserters.', false, R3, {
+    'Mercenary guard',
+    'Tvlakv\'s guard. He dies fighting bandits beside Shallan\'s deserters.', false, R3, {
       kind: 'person', arc: 'wor', wiki: 'Bluth',
       see: ['tvlakv', 'shallan', 'vathah', 'gaz'],
-      bio: 'Mercenary tough working for Tvlakv. Later falls in with the deserters Shallan recruits and dies buying them time — an ugly man choosing one clean act.',
+      bio: 'A mercenary tough working for Tvlakv. When the caravan is attacked he joins the defence beside Shallan\'s deserters with sudden enthusiasm, and is killed: an ugly man choosing one clean act.',
     }),
   ch('arik', 'Arik', '#06b6d4', 'stormlight', 'Roshar',
     'Arik',
-    'Thaylen sailor · Akinah voyage',
-    'Sailor on Wandersail\'s Aimia run.', false, R3, {
-      kind: 'person', arc: 'dawnshard', wiki: 'Arik',
-      see: ['rysn', 'cord', 'nikli', 'lopen'],
-      bio: 'Crewman on the Wandersail during the Dawnshard expedition to Akinah. Another Thaylen name in the ledger of people who saw Aimia\'s secrets and lived.',
+    'Bridgeman · Bridge Four',
+    'Bridge Four. He died on the same bridge run as Maps.', false, R3, {
+      kind: 'person', arc: 'twok', wiki: 'Arik',
+      see: ['kaladin', 'maps', 'bridge-four'],
+      bio: 'One of the Bridge Four men who lived long enough to see Kaladin decide he would try to save them, and then died on the same bridge run as Maps. Kaladin could save neither of them.',
     }),
 
   // ── Radiants & arcanists adjacent ────────────────────────────────────────
@@ -1051,33 +1035,25 @@ export const PEOPLE_ROSHAR: Character[] = [
     }),
   ch('ym', 'Ym', '#86efac', 'stormlight', 'Roshar',
     'Ym',
-    'Edgedancer · cobbler',
-    'Iriali cobbler Radiant; Nale kills him for old crimes.', false, R3, {
-      kind: 'person', arc: 'edgedancer', wiki: 'Ym',
-      see: ['lift', 'nale', 'wyndle', 'vedel'],
-      bio: 'Aging Iriali shoemaker and secret Edgedancer who heals the forgotten of the streets. Nale executes him for a long-ago sin just before Lift\'s story collides with the Skybreakers.',
+    'Truthwatcher (mistspren) · cobbler',
+    'A cobbler who healed the poor in secret, a Truthwatcher. Nale killed him.', false, R3, {
+      kind: 'person', arc: 'wor', wiki: 'Ym',
+      see: ['nale', 'pailiah', 'lift', 'truthwatchers'],
+      bio: 'An old shoemaker who healed the forgotten of the streets, bonded in secret to a mistspren: a Truthwatcher, not an Edgedancer. Nale executed him in 1173 for Surgebinding outside the Skybreakers.',
     }),
   ch('mik', 'Mik', '#bbf7d0', 'stormlight', 'Roshar',
     'Mik',
-    'Street orphan',
-    'Boy Lift saves; proof her oaths have names.', false, R3, {
+    'Orphan · Yeddaw',
+    'A head-hurt boy in a Yeddaw orphanage, and the clue that gives the Stump away.', false, R3, {
       kind: 'person', arc: 'edgedancer', wiki: 'Mik',
-      see: ['lift', 'ym', 'yanagawn', 'noura'],
-      bio: 'An urchin in Azimir Lift goes out of her way to protect. A small character who keeps the Edgedancer Ideal from becoming an abstraction.',
-    }),
-  ch('ines', 'Ines', '#4ade80', 'stormlight', 'Roshar',
-    'Ines',
-    'Edgedancer',
-    'Edgedancer among the growing order after Lift.', false, R3, {
-      kind: 'person', arc: 'row', wiki: 'Ines',
-      see: ['lift', 'ym', 'wyndle', 'vedel'],
-      bio: 'Named among the Edgedancers gathered as the order returns. Represents the wider weave of Progression Radiants beyond Lift\'s singular chaos.',
+      see: ['lift', 'yeddaw', 'wyndle'],
+      bio: 'A child with a head wound at the Stump\'s orphanage in Yeddaw. The Stump had been healing him without knowing it, and he was what let Lift see what she was. He left with his mother.',
     }),
   ch('rushu', 'Rushu', '#c4b5fd', 'stormlight', 'Roshar',
     'Sister Rushu',
     'Ardent · artifabrian',
     'Navani\'s brilliant, distractible fabrial scholar.', false, R3, {
-      kind: 'person', arc: 'twok', wiki: 'Rushu',
+      kind: 'person', arc: 'wor', wiki: 'Rushu',
       see: ['navani', 'huio', 'sibling', 'urithiru'],
       bio: 'Ardent artifabrian in Navani\'s circle. Sees sideways solutions — falling plate, spanreeds, tower mechanisms — and occasionally walks into walls while inventing the future.',
     }),
@@ -1087,7 +1063,7 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Ardent who denounces Aesudan and is executed for it.', false, R3, {
       kind: 'person', arc: 'wor', wiki: 'Pai',
       see: ['aesudan', 'elhokar', 'lhan', 'kholinar'],
-      bio: 'Young ardent in Kholinar who writes a formal denunciation of the queen\'s excess. Aesudan has her executed; the city remembers the silence that follows.',
+      bio: 'Young ardent in Kholinar who writes a formal denunciation of the queen\'s excess. Aesudan has her executed, and that evening the city riots.',
     }),
   ch('lhan', 'Lhan', '#d8b4fe', 'stormlight', 'Roshar',
     'Brother Lhan',
@@ -1101,7 +1077,7 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Bordin',
     'Dalinar\'s agent',
     'Trusted servant who escorts the "madman" Taln to the camps.', false, R3, {
-      kind: 'person', arc: 'twok', wiki: 'Bordin',
+      kind: 'person', arc: 'wor', wiki: 'Bordin',
       see: ['dalinar', 'taln', 'elhokar', 'amaram'],
       bio: 'A Kholin agent used for quiet transport and testimony. Brings Taln — and the shardblade story around him — into the warcamps\' politics.',
     }),
@@ -1113,21 +1089,13 @@ export const PEOPLE_ROSHAR: Character[] = [
       see: ['kaladin', 'lirin', 'tien', 'syl'],
       bio: 'Worked in Amaram\'s army logistics and pulled Kaladin toward a life after spears. He chose duty — or trauma — instead; she remains the road not taken.',
     }),
-  ch('masha-daughter-shan', 'Masha-daughter-Shan', '#a7f3d0', 'stormlight', 'Roshar',
-    'Masha',
-    'Ardent · teacher',
-    'Teaches young Kaladin his letters in Hearthstone.', false, R3, {
-      kind: 'person', arc: 'twok', wiki: 'Masha-daughter-Shan',
-      see: ['kaladin', 'lirin', 'hesina', 'tien'],
-      bio: 'Ardent who instructs Kaladin in reading and writing. A small kindness that lets a darkeyed surgeon\'s son grow into a man who can read death warrants and codes of law.',
-    }),
   ch('axindweth', 'Axindweth', '#78716c', 'stormlight', 'Scadrial',
     'Axindweth',
-    'Terris worldhopper · Feruchemist · healer to the singers',
+    'Terris worldhopper · Feruchemist',
     'Off-world voice who pointed listeners toward forms of power.', false, R3, {
-      kind: 'person', arc: 'oathbringer', wiki: 'Axindweth',
+      kind: 'person', arc: 'row', wiki: 'Axindweth',
       see: ['venli', 'gavilar', 'ulim', 'kelsier'],
-      bio: 'A Terriswoman worldhopper serving as a surgeon in Gavilar\'s orbit while quietly aiding the listeners. Leaves Venli the gemstone that holds Ulim — Scadrial\'s fingers on Roshar\'s throat.',
+      bio: 'A Terriswoman worldhopper, allegedly a surgeon\'s assistant in Gavilar\'s orbit, who quietly approached the listeners. Scadrial\'s fingers on Roshar\'s throat.',
     }),
 
   // ── Shin / vessels / ancient ─────────────────────────────────────────────
@@ -1196,11 +1164,20 @@ export const PEOPLE_ROSHAR: Character[] = [
       see: ['szeth', 'jezrien', 'honorbearers', 'moss-son-farrier'],
       bio: 'Keeper of the Windrunner Honorblade, who gathered acolytes thrown out of the other monasteries and spoke, where Szeth could not hear, of rebellion and civil war. The Honorbearers sent Szeth to take his Blade. Tuko insisted on a duel to the death, begged Szeth with his last breath to reject the Voice and stop following him, and died speaking a Death Rattle.',
     }),
+  ch('masha-daughter-shaliv', 'Masha-daughter-Shaliv', '#e7e5e4', 'stormlight', 'Roshar',
+    'Masha, the historian',
+    'Scholar of the Recreance · historian',
+    'The Shin historian behind Knights of Wind and Truth, and Szeth\'s wife.', false, R3, {
+      kind: 'person', arc: 'oathbringer', wiki: 'Masha-daughter-Shaliv',
+      sources: ['Oathbringer', 'Wind and Truth'],
+      see: ['szeth', 'knights-of-wind-and-truth', 'recreance', 'jasnah'],
+      bio: 'A Shin scholar whose history of the Recreance Jasnah checks against Dalinar\'s visions. On Stormfall she was asleep in her parents\' house near the Bondsmith monastery when Kaladin and Szeth bought their wagon; the next day she helped Szeth bury Kaladin\'s body. Six years later she finished Knights of Wind and Truth, from the testimony of her husband, Szeth, his black sword, and Jasnah Kholin.',
+    }),
   ch('rayse', 'Rayse', '#7f1d1d', 'stormlight', 'Yolen',
     'Odium, Rayse',
     'Former Vessel of Odium',
     'Vessel of Odium until Taravangian cuts his way onto the throne.', true, R13, {
-      kind: 'vessel', arc: 'wat', wiki: 'Rayse', titles: 'Vessel of Odium',
+      kind: 'vessel', arc: 'row', wiki: 'Rayse', titles: 'Vessel of Odium',
       see: ['taravangian', 'tanavast', 'odium', 'hoid'],
       bio: 'Original Vessel of Odium after the Shattering. Spent millennia hunting other Vessels and trapping himself in the Rosharan system. Hoid hated him personally; Taravangian killed him and took the Shard.',
     }),

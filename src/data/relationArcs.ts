@@ -31,8 +31,8 @@ export const RELATION_ARCS: { a: string; b: string; arc: string }[] = [
   { a: 'kaladin', b: 'szeth', arc: 'wor' },
   { a: 'nightblood', b: 'szeth', arc: 'wor' },
   { a: 'nale', b: 'szeth', arc: 'edgedancer' },
-  // Adolin kills Sadeas in Oathbringer, not The Way of Kings
-  { a: 'adolin', b: 'sadeas', arc: 'oathbringer' },
+  // Adolin kills Sadeas at the end of Words of Radiance (ch. 89)
+  { a: 'adolin', b: 'sadeas', arc: 'wor' },
   // Azimir
   { a: 'shalash', b: 'taln', arc: 'oathbringer' },
   { a: 'shalash', b: 'jezrien', arc: 'wat' },

@@ -219,7 +219,7 @@ export const READING_FACES: Record<string, ReadingFace> = {
         fact: 'Dalinar\'s heir, duelling his father\'s rivals out of their Shards.',
         abilities: 'Shardbearer, duelist',
         aliases: 'Adolin',
-        bio: 'Highprince Dalinar\'s heir. He duels to strip Shards from the men who would not follow his father, and survives a four-on-one stacked against him because a bridgeman jumps into the ring. He is causally betrothed to Shallan Davar, and is beginning to suspect she is the best thing that ever happened to him.',
+        bio: 'Highprince Dalinar\'s heir. He duels to strip Shards from the men who would not follow his father, and survives a four-on-one stacked against him because a bridgeman jumps into the ring. He is causally betrothed to Shallan Davar, and in Urithiru he kills Torol Sadeas in a corridor when Sadeas finally says too much.',
       },
       {
         book: 'stormlight', arc: 'oathbringer',
@@ -301,6 +301,272 @@ export const READING_FACES: Record<string, ReadingFace> = {
         bio: 'Herald of Beauty and patron of the Lightweavers. Shame over abandoning the Oathpact drives her to destroy her own images across Roshar. Then a painting lures her to Thaylen City, where she finds Taln, the man the nine left behind, and she stays at his side: apologising, and dismayed that he does not hate her.',
       },
       { book: 'stormlight', arc: 'wat', published: true },
+    ],
+  },
+  // Bridge Four and the court: The Way of Kings knows them as bridgemen and
+  // highprinces. What they become waits for the book that says so.
+  skar: {
+    early: {
+      fact: 'Short, stubborn Bridge Four spearman; Kaladin calls him a killer.',
+      abilities: 'Bridgeman · Bridge Four',
+      bio: 'A wiry former rocksplitter who wanted to be one of Aladar\'s Blackcaps and ended up on Sadeas\'s bridges. He takes to Kaladin\'s spear training instinctively, and becomes one of the men the crew follows.',
+    },
+    steps: [
+      {
+        book: 'stormlight', arc: 'wor',
+        fact: 'Bridge Four\'s lieutenant: short, stubborn, and the first to call himself Bridge Four instead of Cobalt Guard.',
+        abilities: 'Bridge Four lieutenant',
+        bio: 'A wiry former rocksplitter, made lieutenant when Bridge Four becomes Dalinar\'s guard; he is the first to tear off the Cobalt Guard patch and insist they are Bridge Four. At Narak he holds Adolin back from a chasm by his Plate\'s skirt. After the Everstorm he is one of the few of them who cannot draw in Stormlight.',
+      },
+      { book: 'stormlight', arc: 'row', published: true },
+    ],
+  },
+  drehy: {
+    early: {
+      fact: 'Quiet Bridge Four spearman; the one you send when it must work.',
+      abilities: 'Bridgeman · Bridge Four',
+      bio: 'Soft-spoken and deadly reliable, one of Bridge Four\'s original bridgemen under Gaz and Sadeas.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'oathbringer', published: true },
+    ],
+  },
+  hobber: {
+    early: {
+      fact: 'The first Bridge Four man Kaladin saved from a wound that should have killed him.',
+      abilities: 'Bridgeman · Bridge Four',
+      bio: 'Wounded early, while Bridge Four were still dying on every run. Kaladin nursed him back with field surgery and stolen antiseptic, and Hobber limped out: the first of them to believe in Kaladin.',
+    },
+    steps: [
+      {
+        book: 'stormlight', arc: 'wor',
+        abilities: 'Bridgeman · Bridge Four',
+        bio: 'The first of Bridge Four to believe in Kaladin, nursed back from a wound that should have killed him. Then the Assassin in White cut him down in the palace and left his legs grey and dead, and he served Bridge Four from a stump in Rock\'s kitchen.',
+      },
+      { book: 'stormlight', arc: 'oathbringer', published: true },
+    ],
+  },
+  leyten: {
+    early: {
+      fact: 'Bridge Four\'s armour and kit man.',
+      abilities: 'Bridgeman · Bridge Four',
+      bio: 'Thick-bodied, curly-haired and neat, the bridgeman who looks after the crew\'s gear.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'row', published: true },
+    ],
+  },
+  peet: {
+    early: {
+      fact: 'Bridge Four spearman; a steady hand, fewer jokes than Lopen.',
+      abilities: 'Bridgeman · Bridge Four',
+      bio: 'One of the core Bridge Four survivors under Kaladin. He shares the crew\'s scars and its stubborn refusal to leave people behind.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'oathbringer', published: true },
+    ],
+  },
+  bisig: {
+    early: {
+      fact: 'Bridge Four spearman.',
+      abilities: 'Bridgeman · Bridge Four',
+      bio: 'Another of Kaladin\'s original bridge crew. Less famous than Rock or Lopen, no less Bridge Four.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'oathbringer', published: true },
+    ],
+  },
+  gaz: {
+    early: {
+      fact: 'One-eyed bridge sergeant, debt-ridden and cruel from fear.',
+      abilities: 'Bridge sergeant',
+      bio: 'Sadeas\'s bridge sergeant, one-eyed, in debt, and cruel out of fear. He takes bribes, keeps Bridge Four on the worst duty, and does what he is told, until Kaladin\'s crew stops dying on schedule.',
+    },
+    steps: [
+      {
+        book: 'stormlight', arc: 'wor',
+        fact: 'One-eyed bridge sergeant who deserted, and fell in with Shallan.',
+        abilities: 'Deserter · one of Shallan\'s men',
+        bio: 'Sadeas\'s one-eyed bridge sergeant, who deserted after the Tower and turned up among the men Shallan collected on the road. She gave his debts a way out.',
+      },
+      { book: 'stormlight', arc: 'row', published: true },
+    ],
+  },
+  vathah: {
+    early: {
+      fact: 'Leads the deserters Shallan recruits on the road.',
+      abilities: 'Deserter captain',
+      bio: 'Captain of the deserters Shallan hires on the Frostlands road with stolen authority and a speech. Skepticism, slowly sanded down.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'row', published: true },
+    ],
+  },
+  elhokar: {
+    early: {
+      fact: 'Gavilar\'s son and heir, King of Alethkar, sure that someone is trying to kill him.',
+      abilities: 'King of Alethkar · Shardbearer',
+      bio: 'King of Alethkar since his father\'s murder: paranoid, theatrical, and less foolish than his court assumes. He leaves the war to his highprinces and is convinced someone wants him dead.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'oathbringer', published: true },
+    ],
+  },
+  lirin: {
+    early: {
+      bio: 'Darkeyed surgeon of Hearthstone. He teaches Kaladin to heal, clashes with him over violence, and refuses the spear because saving lives is the only argument he trusts.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'oathbringer', published: true },
+    ],
+  },
+  amaram: {
+    early: {
+      fact: 'The hero of the darkeyes, who stole Kaladin\'s Shards and branded him a slave.',
+      abilities: 'Highmarshal · Shardbearer',
+      bio: 'Highmarshal Amaram, a lighteyed general and a hero to the darkeyes. When Kaladin killed a Shardbearer to save him, Amaram murdered Kaladin\'s squad, took the Shards for himself, and had Kaladin branded and sold.',
+    },
+    steps: [
+      {
+        book: 'stormlight', arc: 'wor',
+        abilities: 'Highmarshal · Shardbearer · Sons of Honor',
+        bio: 'Highmarshal Amaram, hero of the darkeyes, who murdered Kaladin\'s squad to take the Shards Kaladin won. He serves Sadeas in the open and the Sons of Honor in secret: he wants the Heralds back, and he will start a Desolation to do it.',
+      },
+      { book: 'stormlight', arc: 'oathbringer', published: true },
+    ],
+  },
+  ruthar: {
+    early: {
+      fact: 'Conservative highprince of the warcamps, opposed to Dalinar.',
+      bio: 'Highprince of a martial Alethi faction, opposed to Dalinar\'s changes and comfortable saying so.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'row', published: true },
+    ],
+  },
+  roion: {
+    early: {
+      fact: 'A cautious, worried highprince of the warcamps.',
+      bio: 'One of the ten highprinces of the War of Reckoning: cautious, worried, and slow to commit, more interested in surviving the plateau runs than winning them.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'wor', published: true },
+    ],
+  },
+  vstim: {
+    early: {
+      bio: 'Veteran Thaylen trader who takes Rysn as his apprentice, his babsk, and teaches her to see people as more than ledgers.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'dawnshard', published: true },
+    ],
+  },
+  yalb: {
+    early: {
+      fact: 'Friendly Thaylen sailor on the Wind\'s Pleasure.',
+      bio: 'Sailor aboard Tozbek\'s Wind\'s Pleasure, who teaches Shallan shipboard ease and flirts with her for the crew\'s amusement.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'wor', published: true },
+    ],
+  },
+  tozbek: {
+    early: {
+      fact: 'Thaylen captain of the Wind\'s Pleasure.',
+      bio: 'Thaylen captain of the Wind\'s Pleasure, contracted to carry Jasnah and her ward.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'wor', published: true },
+    ],
+  },
+  notum: {
+    early: {
+      fact: 'Honorspren captain who imprisons Syl\'s Radiants, then lets them go.',
+      abilities: 'Honorspren · ship captain',
+      bio: 'Captain of the honorspren ship Honor\'s Path. At Celebrant he takes Syl and her Radiants aboard and locks them in; after hours spent outrunning the Fused he lets them go, though it puts his crew at risk.',
+    },
+    steps: [
+      {
+        book: 'stormlight', arc: 'row',
+        abilities: 'Honorspren · ship captain',
+        fact: 'Honorspren captain who let Syl go, and then defended Adolin.',
+        bio: 'Captain of the honorspren ship Honor\'s Path. He let Syl and her Radiants go at Celebrant and was exiled for it, to patrol near Lasting Integrity. When Adolin saved his life he threw away his prepared speech and defended Adolin at his trial.',
+      },
+      { book: 'stormlight', arc: 'wat', published: true },
+    ],
+  },
+  ialai: {
+    early: {
+      fact: 'Torol Sadeas\'s wife, and the sharper of the two.',
+      bio: 'Wife of Highprince Torol Sadeas: short, green-eyed, a reported touch of foreign blood under hair dyed black to look wholly Alethi, and always measuring the room for weaknesses.',
+    },
+    steps: [
+      {
+        book: 'stormlight', arc: 'wor',
+        fact: 'Torol\'s widow; keeps the Sadeas knives sharp after his death.',
+        bio: 'Torol Sadeas\'s wife and the keener politician of the pair, with the best network of spies and assassins in the warcamps. Adolin killed her husband in Urithiru. She has not forgiven it.',
+      },
+      { book: 'stormlight', arc: 'row', published: true },
+    ],
+  },
+  aladar: {
+    early: {
+      abilities: 'Alethi highprince',
+      fact: 'One of the ten highprinces of the War of Reckoning.',
+      bio: 'Highprince of one of Alethkar\'s princedoms, cautious and calculating, weighing Dalinar\'s talk of unity against the gemhearts on the plateaus.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'oathbringer', published: true },
+    ],
+  },
+  teleb: {
+    early: {
+      bio: 'Loyal Kholin officer and Shardbearer, one of the professional spine around Dalinar in the warcamps.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'wor', published: true },
+    ],
+  },
+  'lin-davar': {
+    early: {
+      bio: 'Brightlord of House Davar in Jah Keved, a violent man with debts and dangerous friends. He is dead, and his children are hiding it while they try to save the house.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'wor', published: true },
+    ],
+  },
+  helaran: {
+    early: {
+      fact: 'Shallan\'s eldest brother, who left home and did not come back.',
+      bio: 'Oldest of the Davar children. He left home with a Shardblade nobody could explain and has not come back.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'wor', published: true },
+    ],
+  },
+  'chiri-chiri': {
+    early: {
+      fact: 'A palm-sized winged creature Rysn came home with.',
+      abilities: 'Small winged creature',
+      bio: 'A palm-sized thing like a cremling with wings, a sleek head and solid silver eyes. Rysn came away from the Reshi Isles with her.',
+    },
+    steps: [
+      {
+        book: 'stormlight', arc: 'oathbringer',
+        fact: 'Rysn\'s larkin: she eats Stormlight, and grows on it.',
+        abilities: 'Larkin · eats Investiture',
+        bio: 'Rysn\'s larkin, one of only three known to be left alive. She sucks the Stormlight out of spheres, and out of fabrials if nobody is watching, and grows fast on it.',
+      },
+      { book: 'stormlight', arc: 'dawnshard', published: true },
+    ],
+  },
+  sadeas: {
+    early: {
+      fact: 'Dalinar\'s rival. The bridges, the plateaus, and a smile.',
+      bio: 'Highprince of Information, Dalinar\'s old friend and rival, who runs his bridge crews as disposable tools and his plateaus as ledger columns. At the Tower he leaves Dalinar\'s army to die.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'wor', published: true },
     ],
   },
   neturo: {

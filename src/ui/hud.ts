@@ -15,7 +15,7 @@ import { store } from '../core/store.ts';
 import { copyShareLink } from '../core/urlState.ts';
 import { BRAND_TAGLINE, BRAND_WORDMARK } from './brand.ts';
 import { atlasIsOpen } from './atlas.ts';
-import { announce, el, listen } from './dom.ts';
+import { announce, el, keyboardMode, listen } from './dom.ts';
 import { fillLoreCard } from './loreCard.ts';
 import '../styles/hud.css';
 
@@ -382,7 +382,9 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): {
     store.on('selected', () => { refreshDrawer(); measure(); }),
     store.on('hovered', () => {
       const h = loreById(store.state.hovered);
-      tooltip.classList.toggle('is-on', !!h && !store.state.selected);
+      // The tooltip follows the mouse. A hover that came from the keyboard
+      // (stepping the atlas pins) would put it wherever the pointer was left.
+      tooltip.classList.toggle('is-on', !!h && !store.state.selected && !keyboardMode());
       tooltip.textContent = h
         ? `${loreLabel(store.state.hovered!)} · ${h.kind === 'body' ? 'world' : h.kind} · click`
         : '';

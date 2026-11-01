@@ -18,7 +18,7 @@ import {
   CATACENDRE_YEAR,
 } from '../data/index.ts';
 import { store } from '../core/store.ts';
-import { el, listen, setColumnBottom } from './dom.ts';
+import { announce, el, listen, setColumnBottom } from './dom.ts';
 import '../styles/atlas.css';
 
 const W = 800;
@@ -62,7 +62,7 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
   // otherwise. The label tracks the heading, which already says what is drawn.
   const canvas = el('canvas', {
     className: 'ceph-atlas-canvas',
-    attrs: { width: String(W), height: String(H), role: 'img', 'aria-label': 'Surface scan' },
+    attrs: { width: String(W), height: String(H), role: 'img', 'aria-label': 'Surface scan', tabindex: '0' },
   });
   const title = el('div', { className: 'ceph-atlas-title', text: 'Surface scan' });
   const kicker = el('div', { className: 'ceph-kicker', text: 'Cartography' });
@@ -385,7 +385,10 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
       kicker.textContent = official ? 'Cartography' : 'Cartography';
       title.textContent = s.realm === 'cognitive' ? `${body.name} · Shadesmar` : body.name;
     }
-    canvas.setAttribute('aria-label', `${kicker.textContent}: ${title.textContent}`);
+    const n = pinRows().length;
+    canvas.setAttribute('aria-label', n
+      ? `${kicker.textContent}: ${title.textContent}. ${n} marked ${n === 1 ? 'place' : 'places'}; arrow keys step through them, Enter goes there.`
+      : `${kicker.textContent}: ${title.textContent}`);
     credit.textContent = official ? MAP_CREDIT : '';
     composeMap();
     composePins();
@@ -410,19 +413,63 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
       return;
     }
     if (!click) { store.set('hovered', best.id); return; }
+    activate(best.id);
+  };
+
+  /** What a click on a pin does: a mark opens its card, a place is flown to. */
+  const activate = (id: string) => {
     const s = store.state;
-    const landmark = landmarkById[best.id];
+    const landmark = landmarkById[id];
     if (landmark) {
       store.set('selected', landmark.id);
       return;
     }
-    const loc = visibleLocations().find((l) => l.id === best.id);
+    const loc = visibleLocations().find((l) => l.id === id);
     if (!loc) return;
     const dive = s.focusedLocation === loc.id
       && (s.scale === 'surface' || s.scale === 'city')
       && canEnterCity(loc, s.era, s.realm, s.year);
     store.set('cameraCue', { kind: 'focus', id: loc.id, scale: dive ? 'city' : 'surface' });
   };
+
+  /**
+   * The plate's pins were pointer-only: on a globe, the only keyboard way to
+   * a place was Search. Focused, the plate steps through its pins west to
+   * east with the arrow keys (the hover ring and label follow, and the name
+   * is read out), and Enter does what a click does. The keys it handles stop
+   * here, so they neither fly the camera nor trigger a shortcut.
+   */
+  let keyed: string | null = null;
+  const stepPin = (dir: 1 | -1 | 'first' | 'last') => {
+    const rows = [...pinRows()].sort((a, b) => a.u - b.u || a.v - b.v);
+    if (!rows.length) return;
+    const at = rows.findIndex((r) => r.id === (keyed ?? store.state.hovered ?? store.state.focusedLocation));
+    const i = dir === 'first' ? 0 : dir === 'last' ? rows.length - 1
+      : at < 0 ? (dir > 0 ? 0 : rows.length - 1) : (at + dir + rows.length) % rows.length;
+    const row = rows[i]!;
+    keyed = row.id;
+    store.set('hovered', row.id);
+    announce(`${row.name}, ${i + 1} of ${rows.length}.`);
+  };
+  const keyOffs = [
+    listen(canvas, 'keydown', (ev) => {
+      const e = ev as KeyboardEvent;
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
+      const k = e.key;
+      if (k === 'ArrowRight' || k === 'ArrowDown') stepPin(1);
+      else if (k === 'ArrowLeft' || k === 'ArrowUp') stepPin(-1);
+      else if (k === 'Home') stepPin('first');
+      else if (k === 'End') stepPin('last');
+      else if ((k === 'Enter' || k === ' ') && keyed) activate(keyed);
+      else return;
+      e.preventDefault();
+      e.stopPropagation();
+    }),
+    listen(canvas, 'blur', () => {
+      if (keyed && store.state.hovered === keyed) store.set('hovered', null);
+      keyed = null;
+    }),
+  ];
 
   let pointer: { x: number; y: number; id: number } | null = null;
   let hold = 0;
@@ -530,6 +577,7 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
     destroy() {
       cancelAnimationFrame(raf);
       offs.forEach((o) => o());
+      keyOffs.forEach((o) => o());
       panel.remove();
     },
   };

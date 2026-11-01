@@ -726,6 +726,32 @@ async function run() {
     check('UTol and Komashi are a double planet',
       !!pair && pair.apart < 6 && pair.out > 12, JSON.stringify(pair));
 
+    // The atlas plate from the keyboard: arrows step its pins without flying
+    // the camera, Enter goes to the one stepped to.
+    await page.evaluate(() => window.__ceph.store.set('cameraCue', { kind: 'focus', id: 'roshar', scale: 'globe' }));
+    await settle(page);
+    const stepped = await page.evaluate(() => {
+      window.__ceph.store.set('selected', null);
+      const c = document.querySelector('.ceph-atlas-canvas');
+      c?.focus();
+      window.__cephAim = window.__ceph.app.rig.goalTarget.clone();
+      return document.activeElement === c;
+    });
+    await page.keyboard.press('ArrowRight');
+    await page.keyboard.press('ArrowRight');
+    await sleep(150);
+    const pinKey = await page.evaluate(() => ({
+      hovered: window.__ceph.store.state.hovered,
+      still: window.__cephAim.distanceTo(window.__ceph.app.rig.goalTarget) < 1e-6,
+    }));
+    check('keyboard: arrows step the atlas pins, not the camera',
+      stepped && !!pinKey.hovered && pinKey.still, JSON.stringify(pinKey));
+    await page.keyboard.press('Enter');
+    await settle(page);
+    s = await state(page);
+    check('keyboard: Enter on the plate goes to the pin',
+      s.scale === 'surface' && s.focusedLocation === pinKey.hovered, `${s.scale}/${s.focusedLocation}`);
+
     // A phone still leaves the world a band to live in.
     await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 1 });
     await page.evaluate(() => window.dispatchEvent(new Event('resize')));

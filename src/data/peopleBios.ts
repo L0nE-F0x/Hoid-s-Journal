@@ -133,8 +133,8 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   adolin: {
     wiki: 'Adolin_Kholin',
-    see: ['shallan', 'maya', 'dalinar', 'renarin'],
-    bio: 'Alethi Shardbearer, duelist, and the Radiant who never spoke an Ideal — he befriended a deadeye instead. Maya\'s voice and his stubborn decency do as much for spren-human peace as many oaths.',
+    see: ['shallan', 'dalinar', 'renarin', 'kholin'],
+    bio: 'Dalinar\'s heir: duelist, Shardbearer, Shallan\'s husband, and the man who befriended a deadeye instead of speaking an Ideal. At Lasting Integrity Maya testified beside him. In Wind and Truth the coalition sends him to hold Azimir; a thunderclast takes his right leg below the knee, and he fights on with a peg. On the last day he took Azir\'s throne room back from Abidi the Monarch, and when Maya came through Shadesmar with thirty-seven deadeyes he called his ten the Unoathed. Azir is the one nation not under the Everstorm. All book long he is furious with his father, and then, before the end, he is not.',
   },
   renarin: {
     wiki: 'Renarin_Kholin',
@@ -339,7 +339,7 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   taln: {
     wiki: 'Talenel',
     see: ['heralds', 'oathpact', 'shalash'],
-    bio: 'Herald of War who held Braize alone for four thousand years after the others broke. He returns mad, loyal, and still trying to warn a world that has turned his agony into scripture.',
+    bio: 'Talenelat\'Elin, Herald of War, and the tenth Herald: Nale put him forward when Hoid turned the place down. At Aharietiam he died holding a pass nobody could hold, and the other nine left him on Braize alone for four and a half thousand years. He came back broken, repeating his warning, and spent most of the True Desolation in other people\'s care. At Azimir, when Abidi the Monarch sent Fused to kill him and Ash, Taln stood up and Abidi fled; he died there, on a pile of the dead, with Ash beside him. In the reforged Oathpact his mind is somewhere the Fused cannot reach, and he has told Kaladin he forgives the others.',
   },
   ishar: {
     wiki: 'Ishar',
@@ -364,7 +364,7 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   maya: {
     wiki: 'Mayalaran',
     see: ['adolin', 'deadeye', 'recreance'],
-    bio: 'A cultivationspren deadeye who relearns personhood through Adolin\'s stubborn friendship. She speaks at Lasting Integrity and cracks the thesis that a broken oath ends a spren forever.',
+    bio: 'Mayalaran, a cultivationspren bonded to an Edgedancer before the Recreance, and Adolin\'s Shardblade ever since. His stubborn friendship drew her back toward personhood, and at Lasting Integrity she spoke for him. In Wind and Truth he can summon her again, and before the contest she crossed Shadesmar and came back to Azimir with thirty-seven deadeyes: the Blades and Plate of the Unoathed. Since Ba-Ado-Mishram was freed, the deadeyes have begun to heal.',
   },
   timbre: {
     wiki: 'Timbre',

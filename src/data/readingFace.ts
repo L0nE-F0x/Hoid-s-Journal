@@ -206,6 +206,103 @@ export const READING_FACES: Record<string, ReadingFace> = {
       { book: 'stormlight', arc: 'wat', published: true },
     ],
   },
+  adolin: {
+    early: {
+      fact: 'Dalinar\'s elder son: a Shardbearer, a duelist, and the most eligible man in the warcamps.',
+      abilities: 'Shardbearer, duelist',
+      aliases: 'Adolin',
+      bio: 'Highprince Dalinar\'s heir, a Shardbearer and a brilliant duelist who would rather be at a dance than in a war council. He loves his father, worries about his visions, and goes through courtships faster than spheres.',
+    },
+    steps: [
+      {
+        book: 'stormlight', arc: 'wor',
+        fact: 'Dalinar\'s heir, duelling his father\'s rivals out of their Shards.',
+        abilities: 'Shardbearer, duelist',
+        aliases: 'Adolin',
+        bio: 'Highprince Dalinar\'s heir. He duels to strip Shards from the men who would not follow his father, and survives a four-on-one stacked against him because a bridgeman jumps into the ring. He is causally betrothed to Shallan Davar, and is beginning to suspect she is the best thing that ever happened to him.',
+      },
+      {
+        book: 'stormlight', arc: 'oathbringer',
+        fact: 'The best swordsman in Alethkar, and a better man than he believes.',
+        abilities: 'Shardbearer',
+        aliases: 'Adolin',
+        bio: 'Dalinar\'s heir and the best duelist in Alethkar. He marries Shallan in Urithiru, kills Torol Sadeas in a corridor when Sadeas finally says too much, and fights his way through occupied Kholinar and out across Shadesmar. His Shardblade is a dead spren, Maya, and she has begun to answer him.',
+      },
+      { book: 'stormlight', arc: 'wat', published: true },
+    ],
+  },
+  maya: {
+    early: {
+      fact: 'Adolin\'s Shardblade, who is not as dead as the Recreance promised.',
+      abilities: 'Deadeye cultivationspren',
+      aliases: 'Maya',
+      bio: 'Adolin\'s Shardblade is a dead spren: in Shadesmar a deadeye with scratched-out eyes, who follows him like a soldier. He talks to his sword. She seems to listen.',
+    },
+    steps: [
+      {
+        book: 'stormlight', arc: 'row',
+        bio: 'A cultivationspren deadeye who relearns personhood through Adolin\'s stubborn friendship. She speaks at Lasting Integrity and cracks the thesis that a broken oath ends a spren forever.',
+      },
+      { book: 'stormlight', arc: 'wat', published: true },
+    ],
+  },
+  yanagawn: {
+    early: {
+      fact: 'Gawx the thief, who woke up Prime Aqasix of Azir.',
+      abilities: 'Prime Aqasix',
+      aliases: 'Gawx, Prime Aqasix Yanagawn the First',
+      bio: 'A street thief who broke into the palace with his uncle and Lift on the night Azir was choosing a new Prime, after the last two had been murdered in a single week. One of Darkness\'s attendants struck him down; Lift brought him back, the viziers called it a miracle and crowned him, and his first act was to pardon her.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'wat', published: true },
+    ],
+  },
+  colot: {
+    early: {
+      fact: 'Captain of archers in the Kholin Fifth Battalion, and a lighteyed Windrunner squire.',
+      abilities: 'Archer captain · Windrunner squire',
+      aliases: 'Captain Colot',
+      bio: 'A lanky lighteyes with red in his hair, captain of the archer battalion that helped Bridge Four scout Urithiru. Kaladin did not want lighteyed squires; Skar vouched for Colot anyway, and he took the tryout without complaint and learned to breathe Stormlight with Bridge Four.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'wat', published: true },
+    ],
+  },
+  'may-aladar': {
+    early: {
+      fact: 'Highprince Aladar\'s only known child.',
+      abilities: 'Lighteyed noblewoman',
+      aliases: 'May',
+      bio: 'Highprince Aladar\'s only known child: short, round-faced, with cropped curly black hair.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'wat', published: true },
+    ],
+  },
+  taln: {
+    early: {
+      fact: 'He held Braize alone for four thousand years. Then he broke, and did not.',
+      abilities: 'Herald of War',
+      aliases: 'Talenelat, Stonesinew',
+      bio: 'Herald of War who held Braize alone for four thousand years after the others broke. He returns mad, loyal, and still trying to warn a world that has turned his agony into scripture.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'wat', published: true },
+    ],
+  },
+  shalash: {
+    early: {
+      fact: 'Herald of Beauty, who destroys every depiction of herself she can find.',
+      bio: 'Herald of Beauty and patron of the Lightweavers. Shame over abandoning the Oathpact drives her across Roshar with hired help, breaking into palaces to deface or destroy every image of herself she can find. She does not want the job to be easy.',
+    },
+    steps: [
+      {
+        book: 'stormlight', arc: 'oathbringer',
+        bio: 'Herald of Beauty and patron of the Lightweavers. Shame over abandoning the Oathpact drives her to destroy her own images across Roshar. Then a painting lures her to Thaylen City, where she finds Taln, the man the nine left behind, and she stays at his side: apologising, and dismayed that he does not hate her.',
+      },
+      { book: 'stormlight', arc: 'wat', published: true },
+    ],
+  },
   neturo: {
     early: {
       fact: 'Szeth\'s father: a Shin shepherd who taught him to add to the world, not subtract.',

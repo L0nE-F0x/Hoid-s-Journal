@@ -179,7 +179,7 @@ export const CHARACTERS: Character[] = [
       { era: 3, system: 'rosharan', body: 'roshar' },
     ]),
   ch('adolin', 'Adolin Kholin', '#eab308', 'stormlight', 'Roshar', 'Adolin',
-    'Shardbearer, later Maya\'s partner',
+    'Shardbearer · duelist · Unoathed (Maya)',
     'The best swordsman in Alethkar, and a better man than he believes.', false, [
       { era: 3, system: 'rosharan', body: 'roshar' },
     ]),
@@ -379,7 +379,7 @@ export const CHARACTERS: Character[] = [
     'Herald of Justice. A thousand years of killing Radiants on Ishar\'s word, and then he broke.', true, [
       { era: 3, system: 'rosharan', body: 'roshar' },
     ], { kind: 'herald', wiki: 'Nale' }),
-  ch('taln', 'Taln', '#7f1d1d', 'stormlight', 'Roshar', 'Talenelat, Stonesinew',
+  ch('taln', 'Taln', '#7f1d1d', 'stormlight', 'Roshar', 'Talenelat\'Elin, Talenel, Stonesinew, Tuk, Talmut',
     'Herald of War',
     'He held Braize alone for four thousand years. Then he broke, and did not.', true, [
       { era: 3, system: 'rosharan', body: 'roshar' },

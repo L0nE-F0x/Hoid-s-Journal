@@ -28,6 +28,7 @@ export const PRESENCE_AT: Record<string, PlaceBeat[]> = {
   adolin: [
     { era: 3, at: 'warcamps', arc: 'twok' },
     { era: 3, at: 'urithiru', arc: 'wor' },
+    { era: 3, at: 'azimir', arc: 'wat' },
   ],
   renarin: [
     { era: 3, at: 'warcamps', arc: 'twok' },
@@ -63,6 +64,18 @@ export const PRESENCE_AT: Record<string, PlaceBeat[]> = {
     { era: 3, at: 'urithiru', arc: 'row' },
   ],
   sigzil: [{ era: 3, at: 'urithiru', arc: 'wor' }],
+  // Azimir: Yanagawn from his crowning, the defenders from the siege.
+  yanagawn: [{ era: 3, at: 'azimir', arc: 'wor' }],
+  'zarb-kushkam': [{ era: 3, at: 'azimir', arc: 'wat' }],
+  'gezamal-kushkam': [{ era: 3, at: 'azimir', arc: 'wat' }],
+  neziham: [{ era: 3, at: 'azimir', arc: 'wat' }],
+  'may-aladar': [{ era: 3, at: 'azimir', arc: 'wat' }],
+  zabra: [{ era: 3, at: 'azimir', arc: 'wat' }],
+  sarqqin: [{ era: 3, at: 'azimir', arc: 'wat' }],
+  hmask: [{ era: 3, at: 'azimir', arc: 'wat' }],
+  rahel: [{ era: 3, at: 'azimir', arc: 'wat' }],
+  colot: [{ era: 3, at: 'azimir', arc: 'wat' }],
+  abidi: [{ era: 3, at: 'azimir', arc: 'wat' }],
   // Shinovar, as Wind and Truth tells it.
   szeth: [{ era: 3, at: 'shinovar', arc: 'wat' }],
   neturo: [{ era: 3, at: 'shinovar', arc: 'wat' }],

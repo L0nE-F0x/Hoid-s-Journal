@@ -12,7 +12,11 @@ function ch(
   eras: Character['eras'],
   extra: Partial<Character> = {},
 ): Character {
-  return { id, name, color, book, origin, aliases, abilities, fact, cognitive, eras, canon: extra.canon ?? C, sources: extra.sources ?? [book], ...extra };
+  // Each person gets their own copy of the trail. R3 and friends are shared
+  // constants, and data/index.ts pushes presence beats onto `eras` in place:
+  // without the copy, one person standing in Shinovar puts everyone there.
+  const own = eras.map((row) => ({ ...row }));
+  return { id, name, color, book, origin, aliases, abilities, fact, cognitive, eras: own, canon: extra.canon ?? C, sources: extra.sources ?? [book], ...extra };
 }
 
 export const PEOPLE_ROSHAR: Character[] = [
@@ -54,8 +58,8 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Herald · Lightweaver patron · Surgebinding (Illumination, Transformation)',
     'Herald of Beauty who destroys every depiction of herself she can find.', true, R15, {
       kind: 'herald', arc: 'twok', wiki: 'Shalash', titles: 'Herald of Beauty',
-      see: ['shallan', 'taln', 'pattern', 'jezrien'],
-      bio: 'Herald of Beauty and patron of the Lightweavers. Shame over abandoning the Oathpact drives her to vandalize her own images across Roshar — the defaced Baxil job and the ruined palace murals are hers. She stays near Taln after his return, equally broken and equally stubborn.',
+      see: ['shallan', 'jezrien', 'lightweavers', 'heralds'],
+      bio: 'Herald of Beauty, patron of the Lightweavers, and Jezrien\'s daughter, born on Ashyn. Shame at walking away from the Oathpact drove her to destroy every image of herself she could find, until she found Taln in Thaylen City and would not leave him again. At Azimir she knew Abidi the Monarch by his patterns. When Taln died there she leaned against him, said she was not letting him go alone, and died too. The reforged Oathpact took her with the others.',
     }),
   ch('battar', 'Battar', '#6366f1', 'stormlight', 'Roshar',
     'Battah, Dova, Herald of Counsel',
@@ -334,6 +338,15 @@ export const PEOPLE_ROSHAR: Character[] = [
       kind: 'person', arc: 'oathbringer', wiki: 'Kaya',
       see: ['kaladin', 'lyn', 'teft', 'skar'],
       bio: 'A Windrunner listed among Bridge Four\'s expanded roster as Kaladin\'s order grows beyond the original bridgemen.',
+    }),
+  ch('colot', 'Colot', '#38bdf8', 'stormlight', 'Roshar',
+    'Captain Colot',
+    'Archer captain · Windrunner squire (formerly) · Unoathed',
+    'A lighteyed archer captain who squired for Bridge Four, and held Azimir\'s throne room as one of the Unoathed.', false, R3, {
+      kind: 'person', arc: 'oathbringer', wiki: 'Colot',
+      sources: ['Oathbringer', 'Wind and Truth'],
+      see: ['skar', 'kaladin', 'adolin', 'bridge-four'],
+      bio: 'A lanky lighteyes with red in his hair, captain of archers in the Kholin Fifth Battalion and one of the few lighteyes ever in Bridge Four: Skar vouched for him as a Windrunner squire. When the honorspren came looking for Radiants they passed him over, and he left the squires. Adolin took him to Azimir as his second, and he was one of the ten Unoathed who held the throne room until the contest began.',
     }),
   ch('gaz', 'Gaz', '#57534e', 'stormlight', 'Roshar',
     'Gaz',
@@ -757,6 +770,14 @@ export const PEOPLE_ROSHAR: Character[] = [
       see: ['hoid', 'leshwi', 'kaladin', 'odium'],
       bio: 'A Heavenly One among the returning Fused. Recognizes Wit from ancient wars and lets him pass — a small mercy from an immortal who remembers too many Desolations.',
     }),
+  ch('abidi', 'Abidi the Monarch', '#991b1b', 'stormlight', 'Roshar',
+    'Abidi, the Monarch',
+    'Fused · Heavenly One (Gravitation) · duelist',
+    'The Heavenly One who took Azimir\'s throne room in Adolin\'s stolen Plate, and lost it anyway.', true, R3, {
+      kind: 'fused', arc: 'wat', wiki: 'Abidi',
+      see: ['adolin', 'yanagawn', 'unoathed', 'shalash', 'taln'],
+      bio: 'A Heavenly One whose face is almost a white glyph, who tells his enemies he will one day rule the world and is known, even among the Fused, for liking pain. He ambushed Adolin and Shallan in Shadesmar, then commanded the assault on Azimir; when Adolin wounded him he would not go back to Braize to heal, because he wanted to watch the city fall. He sent Fused to kill Taln and Ash in the hospital and fled the moment Taln stood up. On the last day he waited in the aluminum-lined throne room wearing Adolin\'s own Plate. Midway through the duel the Plate\'s spren left him and went back to Adolin.',
+    }),
   ch('thude', 'Thude', '#65a30d', 'stormlight', 'Roshar',
     'Thude',
     'Listener · stormform survivor · Council',
@@ -800,12 +821,12 @@ export const PEOPLE_ROSHAR: Character[] = [
       bio: 'Bodily guardian and practical warden of Taravangian\'s condition. On brilliant days he restrains a monster; on stupid days he steers a kind old man away from the throne\'s levers.',
     }),
   ch('yanagawn', 'Yanagawn', '#fbbf24', 'stormlight', 'Roshar',
-    'Gawx, Emperor Yanagawn',
-    'Emperor of Azir',
-    'Lift\'s thief friend, crowned Azir\'s emperor.', false, R3, {
-      kind: 'person', arc: 'edgedancer', wiki: 'Yanagawn', titles: 'Emperor of Azir',
-      see: ['lift', 'noura', 'dalinar', 'ym'],
-      bio: 'Once Gawx the thief, raised to the Azish throne after Lift saves him from Darkness. Grows from terrified proxy into a real emperor negotiating with Radiants and gods.',
+    'Gawx, Prime Aqasix Yanagawn the First, Emperor of Makabak',
+    'Prime Aqasix · Unoathed (Xorm)',
+    'Gawx the thief, Prime of Azir, and one of the ten who held its throne room.', false, R3, {
+      kind: 'person', arc: 'wor', wiki: 'Yanagawn', titles: 'Prime Aqasix of Azir',
+      see: ['lift', 'noura', 'dalinar', 'azimir'],
+      bio: 'A thief made Prime by a miracle that was really Lift, and the boy the viziers put on the throne because they were afraid the assassin would come back. He grew into an emperor who sat in Dalinar\'s coalition, learned Towers and Plate from Adolin, and would not leave Azimir when it fell. On the last day he changed back into a thief\'s clothes, led his friends in by a smugglers\' entrance Noura swore did not exist, and held his own throne room in a deadeye\'s Plate. Azir is the one nation not under the Everstorm.',
     }),
   ch('noura', 'Noura', '#f59e0b', 'stormlight', 'Roshar',
     'Vizier Noura',
@@ -814,6 +835,71 @@ export const PEOPLE_ROSHAR: Character[] = [
       kind: 'person', arc: 'oathbringer', wiki: 'Noura',
       see: ['yanagawn', 'lift', 'dalinar', 'jasnah'],
       bio: 'Senior Azish vizier. Skeptical, procedural, and indispensable — she keeps the empire coherent while a former thief wears the crown and Desolation paperwork stacks to the ceiling.',
+    }),
+  ch('zarb-kushkam', 'Zarb Kushkam', '#b45309', 'stormlight', 'Roshar',
+    'Kushkam, Commandant Supreme',
+    'Commandant Supreme of the Imperial Guard · tactician · Unoathed',
+    'Azimir\'s one-eyed Commandant Supreme, and one of the ten who held the throne room.', false, R3, {
+      kind: 'person', arc: 'wat', wiki: 'Zarb Kushkam', titles: 'Commandant Supreme',
+      see: ['adolin', 'yanagawn', 'gezamal-kushkam', 'unoathed', 'azimir'],
+      bio: 'A short, thick-necked soldier who wears tattoos round the eye he lost instead of a patch, an expert Towers player, and a field commander promoted to the Imperial Guard against his wishes. He had the defence of the Oathgate at Azimir, ran the siege beside Adolin, survived the fall of the dome, and on the last day took up a deadeye\'s Blade and Plate as one of the Unoathed.',
+    }),
+  ch('gezamal-kushkam', 'Gezamal Kushkam', '#d97706', 'stormlight', 'Roshar',
+    'Gezamal',
+    'Imperial Guard · Shardbearer · Unoathed',
+    'Kushkam\'s son: the guardsman who joked with Adolin, and then stood with him.', false, R3, {
+      kind: 'person', arc: 'wat', wiki: 'Gezamal Kushkam',
+      see: ['zarb-kushkam', 'yanagawn', 'adolin', 'unoathed'],
+      bio: 'A young guardsman with a wide, bushy moustache, posted at Yanagawn\'s side through the Battle of Azimir. Easy enough to joke with Adolin the day they met, mortified when the Prime spoke to him against protocol, and a patriot who can see his nation\'s flaws. He watched Adolin teach the emperor strategy over Towers, and became one of the Unoathed.',
+    }),
+  ch('neziham', 'Neziham', '#78350f', 'stormlight', 'Roshar',
+    'Neziham',
+    'Shardbearer · the Blade of Memories',
+    'Azir\'s Shardbearer in the capital. He fell fighting a thunderclast.', false, R3, {
+      kind: 'person', arc: 'wat', wiki: 'Neziham',
+      see: ['adolin', 'yanagawn', 'thunderclast', 'azimir'],
+      bio: 'A shaven-headed Makabaki soldier with bronze teeth, who earned an imperial set of Shards and spent most of his years with them cutting trenches for hire. Held back to guard the capital while his colleagues went south, he fought the Battle of Azimir beside Adolin and died when the two of them took on a thunderclast. Adolin carried his Blade, the Blade of Memories, into the palace on the last day and gave it to Yanagawn.',
+    }),
+  ch('may-aladar', 'May Aladar', '#60a5fa', 'stormlight', 'Roshar',
+    'May, Brightness May Aladar',
+    'Scribe · archer commander · Unoathed',
+    'Aladar\'s daughter: Adolin\'s scribe at Azimir, and one of the Unoathed.', false, R3, {
+      kind: 'person', arc: 'oathbringer', wiki: 'May Aladar',
+      sources: ['Oathbringer', 'Wind and Truth'],
+      see: ['aladar', 'adolin'],
+      bio: 'Highprince Aladar\'s only child. When Adolin asked Aladar to spare some staff for the Battle of Azimir, Aladar sent his best: his daughter. She commanded archers on the dome, kept wards of her own in Kaminah and the young Truthwatcher Rahel, went into the Bronze Palace with Adolin on the last day, and was one of the ten Unoathed who held its throne room.',
+    }),
+  ch('zabra', 'Zabra', '#fbbf24', 'stormlight', 'Roshar',
+    'Zabra',
+    'Shardbearer · Unoathed',
+    'A young Azish soldier who asked Adolin for her chance, and got it.', false, R3, {
+      kind: 'person', arc: 'wat', wiki: 'Zabra',
+      see: ['adolin', 'yanagawn', 'unoathed'],
+      bio: 'Light, willowy and obviously young. In the last hours before the contest she asked Adolin whether she could come into the palace with them, and he told her that her chance had finally come. She is one of the Unoathed, and wears the hokra of a Shardbearer with her hair in braids.',
+    }),
+  ch('sarqqin', 'Sarqqin', '#a16207', 'stormlight', 'Roshar',
+    'Sarqqin',
+    'Blacksmith · Unoathed',
+    'An Azish blacksmith who became one of the Unoathed.', false, R3, {
+      kind: 'person', arc: 'wat', wiki: 'Sarqqin',
+      see: ['adolin', 'unoathed', 'azimir'],
+      bio: 'A heavily muscled Azish blacksmith, assigned female at birth, who filled out the papers to live as a man. He fought in the defence of Azimir and was one of the ten Unoathed: dead Shardplate that glows with a fiery light, and a deadeye\'s Blade he can summon and dismiss like a Radiant\'s.',
+    }),
+  ch('hmask', 'Hmask', '#22d3ee', 'stormlight', 'Roshar',
+    'Hmask',
+    'Cobalt Guard · Unoathed',
+    'A Thaylen guardsman who follows Adolin because Adolin once pulled his son out of a falling building.', false, R3, {
+      kind: 'person', arc: 'wat', wiki: 'Hmask',
+      see: ['adolin', 'unoathed', 'abidi'],
+      bio: 'A white-moustached Thaylen with long white eyebrows who grins hardest when things are worst. At Thaylen Field Adolin saved his son from a crumbling building. At Azimir Hmask put himself between Adolin and Abidi the Monarch, kept volunteering for guard shifts that were not his, was taken into the Cobalt Guard, and became one of the Unoathed.',
+    }),
+  ch('rahel', 'Rahel', '#a3e635', 'stormlight', 'Roshar',
+    'Rahel',
+    'Truthwatcher (mistspren) · healer',
+    'A teenage Truthwatcher who would rather be taken for an Edgedancer. She kept Adolin alive at Azimir.', false, R3, {
+      kind: 'person', arc: 'wat', wiki: 'Rahel',
+      see: ['may-aladar', 'adolin', 'truthwatchers', 'taln'],
+      bio: 'One of May Aladar\'s wards, about seventeen, bonded to an unnamed mistspren. In the Azimir hospital she was ashamed that she could not heal Taln\'s mind, or lost limbs. She healed Adolin after the thunderclast, though the leg was gone, and volunteered to go into the Bronze Palace with him on the last day.',
     }),
   ch('fen', 'Fen Rnamdi', '#0ea5e9', 'stormlight', 'Roshar',
     'Queen Fen, Fen',

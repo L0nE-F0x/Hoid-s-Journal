@@ -32,6 +32,23 @@ export const RELATIONS_MORE: Relation[] = [
   { a: { kind: 'character', id: 'kaladin' }, b: { kind: 'org', id: 'heralds' }, type: 'ally', label: 'Took Jezrien\'s place', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'kaladin' }, b: { kind: 'character', id: 'jezrien' }, type: 'ally', label: 'Herald in his place', book: 'stormlight', canon: C },
 
+  // --- Azimir (Wind and Truth) -----------------------------------------
+  { a: { kind: 'character', id: 'adolin' }, b: { kind: 'character', id: 'abidi' }, type: 'rival', label: 'Took the throne room back from him', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'adolin' }, b: { kind: 'character', id: 'yanagawn' }, type: 'mentor', label: 'Taught him Towers, and Plate', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'adolin' }, b: { kind: 'character', id: 'neziham' }, type: 'ally', label: 'Fought the thunderclast together', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'adolin' }, b: { kind: 'character', id: 'colot' }, type: 'ally', label: 'His second at Azimir', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'adolin' }, b: { kind: 'character', id: 'hmask' }, type: 'ally', label: 'Saved his son at Thaylen Field', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'adolin' }, b: { kind: 'character', id: 'zarb-kushkam' }, type: 'ally', label: 'Held Azimir together', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'zarb-kushkam' }, b: { kind: 'character', id: 'gezamal-kushkam' }, type: 'family', label: 'Father & son', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'may-aladar' }, b: { kind: 'character', id: 'aladar' }, type: 'family', label: 'Daughter & father', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'may-aladar' }, b: { kind: 'character', id: 'rahel' }, type: 'mentor', label: 'Ward', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'rahel' }, b: { kind: 'character', id: 'adolin' }, type: 'ally', label: 'Healed him, though not the leg', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'abidi' }, b: { kind: 'character', id: 'taln' }, type: 'rival', label: 'Fled when Taln stood up', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'maya' }, b: { kind: 'org', id: 'unoathed' }, type: 'ally', label: 'Brought the deadeyes', book: 'stormlight', canon: C },
+
+  { a: { kind: 'character', id: 'shalash' }, b: { kind: 'character', id: 'taln' }, type: 'ally', label: 'Stays at his side', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'shalash' }, b: { kind: 'character', id: 'jezrien' }, type: 'family', label: 'Daughter & father', book: 'stormlight', canon: C },
+
   // --- Shallan family ---------------------------------------------------
   { a: { kind: 'character', id: 'shallan' }, b: { kind: 'character', id: 'lin-davar' }, type: 'family', label: 'Daughter & father', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'shallan' }, b: { kind: 'character', id: 'helaran' }, type: 'family', label: 'Sister & brother', book: 'stormlight', canon: C },

@@ -31,6 +31,23 @@ export const RELATION_ARCS: { a: string; b: string; arc: string }[] = [
   { a: 'kaladin', b: 'szeth', arc: 'wor' },
   { a: 'nightblood', b: 'szeth', arc: 'wor' },
   { a: 'nale', b: 'szeth', arc: 'edgedancer' },
+  // Adolin kills Sadeas in Oathbringer, not The Way of Kings
+  { a: 'adolin', b: 'sadeas', arc: 'oathbringer' },
+  // Azimir
+  { a: 'shalash', b: 'taln', arc: 'oathbringer' },
+  { a: 'shalash', b: 'jezrien', arc: 'wat' },
+  { a: 'adolin', b: 'abidi', arc: 'wat' },
+  { a: 'adolin', b: 'yanagawn', arc: 'wat' },
+  { a: 'adolin', b: 'neziham', arc: 'wat' },
+  { a: 'adolin', b: 'colot', arc: 'wat' },
+  { a: 'adolin', b: 'hmask', arc: 'wat' },
+  { a: 'adolin', b: 'zarb-kushkam', arc: 'wat' },
+  { a: 'zarb-kushkam', b: 'gezamal-kushkam', arc: 'wat' },
+  { a: 'may-aladar', b: 'aladar', arc: 'oathbringer' },
+  { a: 'may-aladar', b: 'rahel', arc: 'wat' },
+  { a: 'rahel', b: 'adolin', arc: 'wat' },
+  { a: 'abidi', b: 'taln', arc: 'wat' },
+  { a: 'maya', b: 'unoathed', arc: 'wat' },
   // Shinovar: Rhythm of War names Szeth's father; everything else is Wind and Truth
   { a: 'szeth', b: 'neturo', arc: 'row' },
   { a: 'szeth', b: 'zeenid', arc: 'wat' },

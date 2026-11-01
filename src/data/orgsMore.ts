@@ -123,6 +123,16 @@ export const ORGS_MORE: Organization[] = [
       see: ['monastery-of-truth', 'honorblade', 'human-fused', 'ishar', 'shin-shamans'],
       bio: 'When the Heralds walked away they left their Blades in Shinovar and taught the Shin that the Voidbringers would return. The Shin made keeping them a sacred trust and built ten monasteries to do it. A candidate trains with every Blade and must beat the bearer they would replace; the Bondsmith alone is elected. In Szeth\'s day the Elsecaller, Pozen, decides who rises. Ishar corrupted them: all but Sivi let him make them human Fused. Szeth freed them with Nightblood on Stormfall, and the reforged Oathpact took the Blades back. There are presumably no Honorbearers now.',
     }),
+  org('unoathed', 'The Unoathed', '#fb923c', 'stormlight', 'military',
+    'Ten people, with Shardblades alight: Adolin\'s company of deadeye bonds, who held Azimir\'s throne room until the contest began.',
+    {
+      arc: 'wat',
+      world: 'Roshar', wiki: 'Unoathed',
+      sources: ['Wind and Truth', 'The Way of Kings'],
+      members: ['adolin', 'colot', 'gezamal-kushkam', 'hmask', 'may-aladar', 'notum', 'sarqqin', 'yanagawn', 'zabra', 'zarb-kushkam'],
+      see: ['maya', 'deadeye', 'azimir', 'abidi'],
+      bio: 'In the last minutes before the contest of champions, with Abidi\'s forces closing on the throne room, Maya came back through Shadesmar not with honorspren but with thirty-seven deadeyes and their armour spren. Adolin realised a promise holds where an oath breaks, asked for nine sets of Blade and Plate, and called his people the Unoathed. Most of them untrained, they held until the contest began, and under its terms Azir stayed free. Since the Oathpact was reforged they can summon their Blades and regrow their Plate with no Stormlight at all. A Death Rattle in The Way of Kings had already seen them: ten people, with Shardblades alight.',
+    }),
   org('thaylen-guilds', 'Thaylen guilds', '#22d3ee', 'stormlight', 'guild',
     'Merchant houses and naval money that keep Thaylenah rich between storms. Rysn\'s career starts in their ledgers.',
     {

@@ -4,7 +4,7 @@
 import '../styles/base.css';
 import { COSMERE, locationsOn, onTheMap, systemOnTheMap } from '../data/index.ts';
 import { store } from '../core/store.ts';
-import { listen } from './dom.ts';
+import { keyboardMode, listen } from './dom.ts';
 import { mountAtlas } from './atlas.ts';
 import { mountDirectory } from './directory.ts';
 import { mountHud } from './hud.ts';
@@ -58,11 +58,52 @@ export function mountUI(root: HTMLElement): UIHandles {
   root.classList.add('ceph-root');
   const title = mountTitle(root);
   const hud = mountHud(root, { onHome: () => title.open() });
+  const web = mountLoreWeb(root);
   const atlas = mountAtlas(root);
   const directory = mountDirectory(root);
+  // Document order is Tab order. Every panel here is fixed and carries its
+  // own z-index, so moving a node changes what Tab reaches next and nothing
+  // about what is drawn on top: top bar, Lore Web legend, the left column
+  // (atlas or directory, then the card under it), the galaxy chart, the
+  // playhead.
+  root.append(hud.cardLayer);
   const minimap = mountMinimap(root);
-  const web = mountLoreWeb(root);
+  root.append(hud.lowLayer);
   const modals = mountModals(root);
+
+  /**
+   * Panels swap under the reader: choosing Roshar in the directory flies to
+   * the globe, the atlas takes the column and the directory row that had
+   * focus is gone. Focus fell to <body> and the next Tab started from the
+   * top of the page. When the control a keyboard reader was on disappears,
+   * put them on what replaced it: the card, the plate, the directory.
+   */
+  let lastFocus: HTMLElement | null = null;
+  const shown = (n: Element | null): n is HTMLElement => n instanceof HTMLElement
+    && n.isConnected && n.getClientRects().length > 0 && getComputedStyle(n).visibility !== 'hidden';
+  let rescueQueued = 0;
+  const rescue = () => {
+    rescueQueued = 0;
+    if (!keyboardMode() || !lastFocus || shown(lastFocus)) return;
+    const active = document.activeElement;
+    if (active && active !== document.body && active !== lastFocus && shown(active)) return;
+    const next = [
+      root.querySelector('[aria-modal="true"] .ceph-modal-card'),
+      root.querySelector('.ceph-panel-drawer'),
+      root.querySelector('.ceph-atlas.is-on .ceph-atlas-canvas[tabindex]'),
+      root.querySelector('.ceph-atlas.is-on button'),
+      root.querySelector('.ceph-directory.is-on .ceph-dir-tabs .is-on'),
+      root.querySelector('.ceph-web.is-on button'),
+      root.querySelector('.ceph-topbar button'),
+    ].find(shown);
+    next?.focus({ preventScroll: true });
+  };
+  const queueRescue = () => { if (!rescueQueued) rescueQueued = requestAnimationFrame(rescue); };
+  const focusWatch = [
+    listen(root, 'focusin', (e) => { lastFocus = e.target instanceof HTMLElement ? e.target : null; }),
+    ...(['scale', 'view', 'chrome', 'selected', 'panel', 'focusedBody', 'realm', 'shell', 'cinematic'] as const)
+      .map((key) => store.on(key, queueRescue)),
+  ];
 
   const keys = listen(window, 'keydown', (ev) => {
     const e = ev as KeyboardEvent;
@@ -156,6 +197,8 @@ export function mountUI(root: HTMLElement): UIHandles {
     openTitle: () => title.open(),
     destroy() {
       keys();
+      focusWatch.forEach((o) => o());
+      cancelAnimationFrame(rescueQueued);
       title.destroy();
       hud.destroy();
       atlas.destroy();

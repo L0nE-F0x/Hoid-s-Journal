@@ -23,7 +23,11 @@ const TIME_RATES = [0.25, 1, 4, 16, 64];
 
 
 
-export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy(): void } {
+export function mountHud(root: HTMLElement, host: { onHome(): void }): {
+  cardLayer: HTMLElement;
+  lowLayer: HTMLElement;
+  destroy(): void;
+} {
   const word = el('button', { className: 'ceph-wordmark', text: BRAND_WORDMARK, attrs: { type: 'button', title: BRAND_TAGLINE } });
   const scaleLabel = el('div', { className: 'ceph-command-sub', text: 'Cosmere · Physical' });
   const readingLabel = el('button', { className: 'ceph-reading', text: '', attrs: { type: 'button', title: 'Reading companion' } });
@@ -102,7 +106,13 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
     eraRow,
   ]);
 
-  const drawer = el('div', { className: 'ceph-panel ceph-panel-drawer', style: { display: 'none' } });
+  // A region named for its entry, and focusable from script, so a keyboard
+  // reader whose control vanished under them can be put on the card.
+  const drawer = el('div', {
+    className: 'ceph-panel ceph-panel-drawer',
+    attrs: { role: 'region', tabindex: '-1', 'aria-label': 'Card' },
+    style: { display: 'none' },
+  });
 
   // A renderer fault is the one thing the HUD must not hide behind itself.
   const faultText = el('p', { className: 'ceph-fault-text' });
@@ -119,8 +129,16 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
   const skip = el('button', { className: 'ceph-btn ceph-btn--primary ceph-skip', text: 'Skip · Space', attrs: { type: 'button' } });
   const tooltip = el('div', { className: 'ceph-panel ceph-tooltip', text: '' });
 
-  const hud = el('div', { className: 'ceph-hud' }, [topbar, timeline, drawer, skip, tooltip]);
-  root.append(hud, fault);
+  // Three layers rather than one, so the document can run in the order the
+  // screen reads: top bar, the left column (whose atlas and directory are
+  // mounted between these by ui/index.ts), the card under them, the galaxy
+  // chart, then the playhead. In one layer Tab went from the top bar through
+  // twenty playhead stops before it reached the directory beside it.
+  const hud = el('div', { className: 'ceph-hud' }, [topbar]);
+  const cardLayer = el('div', { className: 'ceph-hud' }, [drawer]);
+  const lowLayer = el('div', { className: 'ceph-hud' }, [timeline, skip, tooltip]);
+  const layers = [hud, cardLayer, lowLayer];
+  root.append(hud, cardLayer, lowLayer, fault);
 
   /**
    * Stable chrome owns insets. The info card is an overlay: it must never
@@ -241,6 +259,7 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
     listen(close, 'click', () => { store.set('selected', null); store.set('hovered', null); });
     drawer.append(close);
     fillLoreCard(drawer, id);
+    drawer.setAttribute('aria-label', `${drawer.querySelector('h2')?.textContent ?? 'Entry'} — card`);
     // A phone shows the head and the gist first (hud.css), so the world the
     // card is about is still on screen. Every new card starts that way.
     drawer.classList.remove('is-open');
@@ -310,7 +329,7 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
       faultText.textContent = msg ?? '';
     }),
     store.on('shell', (shell) => {
-      hud.classList.toggle('is-on', shell === 'play');
+      for (const layer of layers) layer.classList.toggle('is-on', shell === 'play');
       measure();
     }),
     store.on('year', refreshTime),
@@ -342,5 +361,9 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
   measure();
   requestAnimationFrame(edges);
 
-  return { destroy() { offs.forEach((o) => o()); hud.remove(); } };
+  return {
+    cardLayer,
+    lowLayer,
+    destroy() { offs.forEach((o) => o()); layers.forEach((l) => l.remove()); fault.remove(); },
+  };
 }

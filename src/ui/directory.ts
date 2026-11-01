@@ -161,7 +161,7 @@ export function mountDirectory(root: HTMLElement): { destroy(): void } {
 
   const row = (id: string, name: string, kind: string, color: string, hint: string) => {
     const hot = store.state.selected === id || store.state.focusedSystem === id || store.state.focusedBody === id;
-    const b = el('button', { className: `ceph-dir-row${hot ? ' is-on' : ''}`, attrs: { type: 'button' } }, [
+    const b = el('button', { className: `ceph-dir-row${hot ? ' is-on' : ''}`, attrs: { type: 'button', 'data-id': id } }, [
       el('span', { className: 'ceph-dir-dot', style: { background: color } }),
       el('span', { className: 'ceph-dir-name', text: name }),
       el('span', { className: 'ceph-dir-kind', text: kind }),
@@ -186,6 +186,10 @@ export function mountDirectory(root: HTMLElement): { destroy(): void } {
       if (s.realm === 'spiritual') tab = 'shards';
     }
     const q = search.value.trim().toLowerCase();
+    // The list is rebuilt on every change, and a row that had focus went with
+    // it: choosing an entry with Enter dropped the reader to <body>.
+    const had = document.activeElement instanceof HTMLElement && list.contains(document.activeElement)
+      ? (document.activeElement.dataset.id ?? '') : null;
     list.replaceChildren();
     [...tabs.children].forEach((c, i) => c.classList.toggle('is-on', TAB[i]!.id === tab));
     title.textContent = TAB.find((t) => t.id === tab)?.label ?? 'Directory';
@@ -219,6 +223,10 @@ export function mountDirectory(root: HTMLElement): { destroy(): void } {
         }
         list.append(jump);
       }
+    }
+    if (had !== null) {
+      const again = had ? [...list.querySelectorAll<HTMLElement>('[data-id]')].find((n) => n.dataset.id === had) : null;
+      (again ?? tabs.querySelector<HTMLElement>('.is-on') ?? search).focus({ preventScroll: true });
     }
   };
 

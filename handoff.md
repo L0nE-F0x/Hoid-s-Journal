@@ -16,6 +16,33 @@ Architecture lock: `AGENTS.md` + `DESIGN.md`. This file is the live todo.
 
 # ▶ START HERE — next session
 
+**2026-11-02 overnight overhaul — ~90 commits on `master`, NOT PUSHED (push is deploy).**
+Rollback point: local tag `pre-overhaul-2026-11-02`. Seven agents in worktrees,
+merged by the coordinator. Last full run (before the final lore merge, at
+a39837c): cartography 18/18, interaction 83/83; tsc + audit:data clean at 4cb27db.
+**Run the full suite once more on HEAD before pushing.**
+
+- Platform: CSP + headers, SW update flow, noscript, JSON-LD, CI builds + smoke
+  (`npm run build && node .github/scripts/smoke-dist.mjs`). Readers no longer need
+  a hard refresh; bump `SHELL_CACHE` only if the shell file list changes.
+- Cartography: Final Empire + ~36 Roshar pins measured on the plates; city marks fixed.
+- Lore: Wind and Truth (~45 people), Lost Metal (16), Emberdark, FoD court, ~170
+  factual fixes, invented entries removed (checked against Coppermind), many leaks gated.
+  News digest: scratchpad `lore-new/NEWS.md` (not in repo).
+- Render/core: boot 9.6 s → 2.5 s, chunked build, WebGL context-loss recovery, deep-link hardening.
+- UI: keyboard/focus/tab order, touch, contrast, card spoiler filter, title link (the "app vanished" bug).
+- Coordinator: Presence trail, Catacendre swap and sky events gated on reading progress.
+
+**Unfinished / owner decisions:** city-plates agent stopped mid-run (branch
+`worktree-agent-a67029c44db63e434`, unmerged; Thaylen/Shattered Plains/Fadrex/Urteau/New
+Seran landmarks). `publicationSafeProgress` still orders by series (Emperor's Soul reader
+sees Lost Metal). ShardEra per-era gating; stormwardens (Elthebar, Matain, Dukar);
+restore see-chips removed in dc2a80d now that the UI filters them; Suluko (IotE ch14)
+re-add. Owner: Kredik Shaw plate is an E. Monteiro painting credited to Stewart; orbit
+calm tint (dead code); Cosmere cloud cost; Yumi/Sixth moved to era 5; page zoom
+(`user-scalable=no`); Vivenna card renamed from Azure.
+
+
 **2026-10-09, evening: trailer re-conceived (and a Shadesmar redraw, reverted).** The owner
 said the Cognitive Realm did not read as Shadesmar ("you can't see the
 black beads") and that the trailer's planet close-ups were cut too fast.

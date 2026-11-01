@@ -189,7 +189,7 @@ function wikiLink(wiki: string | undefined): HTMLElement | null {
   return el('a', {
     className: 'ceph-wiki',
     text: 'Coppermind',
-    attrs: { href, target: '_blank', rel: 'noopener noreferrer' },
+    attrs: { href, target: '_blank', rel: 'noopener noreferrer', 'aria-label': 'Coppermind (opens in a new tab)' },
   });
 }
 

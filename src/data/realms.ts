@@ -347,7 +347,7 @@ export const DAWNSHARDS: Dawnshard[] = [
   {
     id: 'dawnshard-unite', name: 'A third Dawnshard', command: 'Unknown',
     holder: 'unknown', book: 'stormlight', arc: 'dawnshard',
-    fact: 'Nikli says there are four. Two Commands are named; this is not one of them. One of the four is different from all the rest (Word of Brandon), and which one is not said.',
+    fact: 'Nikli says there are four. This one\'s Command is not on the page. One of the four is different from all the rest (Word of Brandon), and which one is not said.',
     canon: W, sources: ['Dawnshard ch. 19', 'Word of Brandon 4824, 14364'],
   },
   {

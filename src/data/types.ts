@@ -376,6 +376,7 @@ export type CityKind =
   | 'kholinar'
   | 'kharbranth'
   | 'thaylen'
+  | 'narak'
   | 'luthadel'
   | 'elendel'
   | 'elantris'

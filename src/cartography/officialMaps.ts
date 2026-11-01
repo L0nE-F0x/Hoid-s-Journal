@@ -61,9 +61,11 @@ const CITY_LAYERS: Record<string, MapLayer[]> = {
     { name: 'Warcamps', file: 'warcamps.jpg' },
     { name: 'Detail', file: 'shattered_plains2.jpg' },
   ],
+  // The radial sketch is the only plate whose centre is Narak itself.
   narak: [
     { name: 'Plains', file: 'shattered_plains.jpg' },
     { name: 'Warcamps', file: 'warcamps.jpg' },
+    { name: 'Detail', file: 'shattered_plains2.jpg' },
   ],
   luthadel: [
     { name: 'Survey', file: 'luthadel.jpg' },

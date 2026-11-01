@@ -109,6 +109,37 @@ export const CITY_PLATES: CityPlate[] = [
         { book: 'stormlight', arc: 'oathbringer', on: [{ file: 'thaylen_city.jpg', u: 0.858, v: 0.534 }] }),
     ],
   },
+  // Three plates, none of them labelled. The Prime Map's caption names the
+  // Tower ("the largest plateau", lower right — Coppermind's caption agrees)
+  // and the warcamps (the craters down the west edge); Vandonas's painting
+  // keys the king's complex; the radial sketch marks only its centre.
+  // Neither Narak's Oathgate nor the Well of Control is drawn on any of them,
+  // so they are roster chips with no dot.
+  {
+    id: 'narak',
+    kind: 'narak',
+    kicker: 'Shattered Plains',
+    landmarks: [
+      mark('stormseat-mark', 'narak', 'Stormseat', 0.47, 0.50, '#e2e8f0',
+        'Every chasm on the Plains runs out from here. Stormseat, the old capital of Natanatan, stood at the centre; the listeners built Narak on its ruins.',
+        { entry: 'stormseat', book: 'stormlight', arc: 'wor', on: [{ file: 'shattered_plains2.jpg', u: 0.483, v: 0.376 }] }),
+      mark('narak-oathgate', 'narak', 'Oathgate', 0.40, 0.60, '#a78bfa',
+        'The one Oathgate the Radiants never locked. It broke away whole when the Plains shattered and stands as a plateau of its own under a skin of crem. Shallan woke it to carry the armies out from under the Everstorm.',
+        { book: 'stormlight', arc: 'wor' }),
+      mark('warcamps-mark', 'narak', 'Warcamps', 0.10, 0.50, '#fbbf24',
+        'Ten craters along the western rim, one highprince\'s army in each, and each camp a town of its own with markets and taverns.',
+        { entry: 'warcamps', book: 'stormlight', on: [{ file: 'shattered_plains.jpg', u: 0.103, v: 0.559 }] }),
+      mark('narak-tower-plateau', 'narak', 'The Tower', 0.30, 0.62, '#f87171',
+        'The largest plateau in the explored east, and a favourite place for chasmfiends to pupate. Sadeas pulled his bridges back here and left Dalinar\'s army to the Parshendi.',
+        { book: 'stormlight', on: [{ file: 'shattered_plains.jpg', u: 0.859, v: 0.654 }] }),
+      mark('warcamps-palace', 'narak', 'Royal Palace', 0.14, 0.32, '#fde68a',
+        'The king\'s palace on its hill above the camps. Vandonas keys the king\'s complex from top to bottom: the palace, the Gallery of Maps, the feasting basin, the duelling arena.',
+        { book: 'stormlight', on: [{ file: 'warcamps.jpg', u: 0.768, v: 0.267 }] }),
+      mark('well-of-control-mark', 'narak', 'Well of Control', 0.55, 0.44, '#facc15',
+        'Odium\'s perpendicularity, in a sealed cavern under the Plains, inside what is left of Roshar\'s fourth moon. Retribution\'s now.',
+        { entry: 'well-of-control', book: 'stormlight', arc: 'wat' }),
+    ],
+  },
   {
     id: 'luthadel',
     kind: 'luthadel',

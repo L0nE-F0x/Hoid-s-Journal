@@ -518,6 +518,9 @@ const PLANS: Record<CityKind, Plan> = {
   urithiru: { pal: VORIN, radial: { rings: 6, spokes: 10, wall: false, gates: 0 }, citadel: 'tower', water: 'none' },
   kholinar: { pal: VORIN, radial: { rings: 4, spokes: 8, wall: true, gates: 6 }, citadel: 'keep', water: 'none', outskirts: 26 },
   kharbranth: { pal: VORIN, water: 'bay', citadel: 'terraces', grid: { cols: 7, rows: 4, tilt: -0.10 }, outskirts: 14 },
+  // The plates below have Stewart rasters; a plan is drawn only if one fails
+  // to load. A cymatic old town inside a seaward wall, terraces behind.
+  thaylen: { pal: VORIN, water: 'bay', radial: { rings: 3, spokes: 10, wall: true, gates: 3 }, citadel: 'terraces', outskirts: 12 },
   luthadel: { pal: SCADRIAL, radial: { rings: 3, spokes: 12, wall: true, gates: 8 }, citadel: 'keep', water: 'river', outskirts: 30 },
   elendel: { pal: SCADRIAL, grid: { cols: 12, rows: 8, tilt: 0.06 }, citadel: 'tower', water: 'canals', outskirts: 22 },
   elantris: { pal: SELISH, radial: { rings: 5, spokes: 4, wall: true, gates: 4 }, citadel: 'tower', water: 'none', outskirts: 34 },

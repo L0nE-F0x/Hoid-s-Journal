@@ -90,9 +90,10 @@ npm run shot -- --focus roshar --scale globe --out /tmp/roshar.png
 npm run shot -- --intro --settle 8000 --out /tmp/intro.png
 npm run shot -- --eval "__ceph.store.set('realm','cognitive')" --out /tmp/c.png
 
-npm run test:interaction   # 59 checks through real mouse and keyboard
+npm run test:interaction   # ~85 checks through real mouse, keyboard and touch
 npm run test:cartography   # the globe and the atlas still draw the same world
 npm run audit:data         # every id resolves, every reference points at something
+npm run build && node .github/scripts/smoke-dist.mjs   # dist/ under netlify.toml's headers, offline included
 npm run perf               # fps per Realm, expensive layers toggled off
 node tools/film.mjs --script tools/trailer.mjs --out /tmp/clips   # 60 fps trailer clips (--stills for PNGs)
 node tools/film-cut.mjs --script tools/trailer.mjs --clips /tmp/clips --out ~/Videos/hoids-journal

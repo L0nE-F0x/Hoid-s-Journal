@@ -10,9 +10,11 @@ can actually use while you reread.
 
 Live at **[the-cosmere.com](https://the-cosmere.com)**.
 
-*The Fires of December* is in: Miral, its blood rivers, witchcraft and the
-people who went up the Violet. It was written from the published book's
-cited canon, not from a preview, and the star it sits at is ours.
+Every published book is in, through *Wind and Truth*, *Isles of the
+Emberdark* and *The Fires of December*. The lore is written from the books'
+cited canon on the Coppermind, not from previews, and each fact waits for the
+book that reveals it: tell the journal where you are, and it never shows you
+more than you have read.
 
 This is the successor to the original interactive Cosmere map, rebuilt from
 first principles. The original is preserved untouched.
@@ -49,12 +51,12 @@ Netlify: connect this GitHub repo, branch `master`. The build is
 ### What is in it
 
 Nineteen systems · thirty-three worlds and eighteen gas giants · fifty-seven
-moons · six belts · sixteen Shards · four hundred and thirty-eight people, seven
-of them dragons · three hundred and eight places, every one with a biography ·
-city-plate landmarks measured onto the Stewart plates that have them · sixteen
-Cognitive sites · eleven perpendicularities · sixty-eight organisations · twenty
-magic systems, each with a table · two hundred and ninety-three glossary terms ·
-four Dawnshards.
+moons · six belts · sixteen Shards · five hundred and thirty-five people, seven
+of them dragons · two hundred and eighty-six places, every one with a biography
+· city-plate landmarks measured onto the Stewart plates that have them ·
+seventeen Cognitive sites · twelve perpendicularities · eighty-six
+organisations · twenty-one magic systems, each with a table · three hundred and
+eighty-six glossary terms · four Dawnshards.
 
 ### The three Realms
 
@@ -72,11 +74,14 @@ Drag to orbit · right/middle/shift-drag to pan · scroll to zoom.
 `WASD` fly, `Q`/`E` rise and fall, `Shift` faster.
 `Space` play/pause time · `←` `→` step · `1`–`6` jump era.
 Focusing a world holds the playhead; `Space` sets it running again.
-`C` Cognitive · `V` Spiritual · `L` Lore Web · `M` galaxy · `/` search · `K` Codex.
+`C` Cognitive · `V` Spiritual · `L` Lore Web · `M` galaxy · `/` or `K` search the Codex.
+`H` or `?` help · `F` frame the Cosmere · `[` `]` previous / next thing at this scale.
+`Tab` walks every panel; on the atlas, arrow keys step through the pins and `Enter` goes there.
 In the Lore Web, scroll zooms and dragging the background pans.
 `Esc` backs out a scale (city → surface → globe → system → Cosmere) or leaves the Web.
 Hover names a world; click opens its card. WASD/QE fly and never open panels.
-Arcanum, Music and Share are buttons. Official maps are credited on the atlas.
+Search, Arcanum, Journal, Realms, Settings, Lore, Help and Share are on the top bar; the
+soundtrack is in Settings. Official maps are credited on the atlas.
 
 ## Architecture
 
@@ -94,6 +99,7 @@ npm run test:interaction   # checks through real mouse and keyboard
 npm run test:cartography   # the globe and the atlas still draw the same world
 npm run audit:data         # every id resolves, every reference points at something
 npm run audit:ui           # clicks every control, reports the ones that do nothing
+npm run build && node .github/scripts/smoke-dist.mjs   # the production build under the live headers
 npm run perf               # fps per Realm, expensive layers toggled off one at a time
 ```
 

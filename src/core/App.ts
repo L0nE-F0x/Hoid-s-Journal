@@ -13,7 +13,9 @@ import { SPIRITUAL_RADIUS, Spiritual } from '../render/Spiritual.ts';
 import { Shadesmar } from '../render/Shadesmar.ts';
 import { Starfield } from '../render/Starfield.ts';
 import { EventFx } from '../render/EventFx.ts';
-import { planetPlates, readPlateBytes, PLATE_SMALL, seedFromId } from '../render/planetBake.ts';
+import { forgetPlates, planetPlates, platesReady, readPlateBytes, warmPlateProgram, PLATE_SMALL, seedFromId } from '../render/planetBake.ts';
+import { compileAsync } from '../render/compile.ts';
+import { rebakeAll } from '../render/skyBake.ts';
 
 const FOV = 52;
 const CLICK_SLOP = 12;
@@ -88,6 +90,7 @@ export class App {
   private yearTick = Math.round(yearToSlider(store.state.year) * 1000);
   private warmQueue: { kind: string; seed: number; cognitive: boolean }[] = [];
   private lastWarm = 0;
+  private warming: Promise<void> | null = null;
 
   constructor(canvas: HTMLCanvasElement, opts: { onHoverAnchor?: (p: { x: number; y: number } | null) => void } = {}) {
     this.canvas = canvas;
@@ -154,12 +157,7 @@ export class App {
     }));
     this.disposers.push(store.on('realm', (realm, prev) => {
       if (realm === 'spiritual') {
-        this.rig.flyTo(
-          new THREE.Vector3(),
-          this.rig.framingDistance(SPIRITUAL_RADIUS, 0.85, 'width'),
-          2.2,
-        );
-        this.rig.setAngles(Math.PI * 0.25, 1.18);
+        this.frameSpiritual();
       } else if (prev === 'spiritual') {
         const body = store.state.focusedBody;
         const sys = store.state.focusedSystem;
@@ -174,7 +172,7 @@ export class App {
     }));
     this.rig.setInsets(store.state.insets);
     this.applyQuality();
-    this.warmUp();
+    void this.warmUp();
     this.queuePlateWarm();
   }
 
@@ -207,23 +205,67 @@ export class App {
   }
 
   /**
-   * Compile every Realm's materials before the reader can ask for one.
+   * Compile every Realm's materials before the reader can ask for one, and
+   * the planet baker with them, without blocking the main thread.
    *
    * Shadesmar and the Spiritual Realm are hidden groups, so Three skips them
    * when it compiles the first frame — and then the press of C or V pays for
    * three new shader programs in the middle of a camera flight. On this
    * machine that stall was long enough to swallow the whole transition.
+   *
+   * This used to compile with no render target bound, which builds the
+   * canvas's sRGB variant of every program; the scene only ever draws into
+   * the post chain's linear buffer, so all of that work was thrown away and
+   * the C/V stall was still there. `compileAsync` binds a target. See
+   * `render/compile.ts`.
+   *
+   * Resolves when both are linked, or after `limit` ms — a driver that never
+   * reports completion must not hold the boot screen up for ever; the frame
+   * that needs a program will wait for it the old way.
    */
-  private warmUp(): void {
+  warmUp(limit = 20000): Promise<void> {
+    if (this.warming) return this.warming;
     const groups = [this.shadesmar.group, this.spiritual.group];
     const was = groups.map((g) => g.visible);
     for (const g of groups) g.visible = true;
+    let scene: Promise<void>;
     try {
-      this.renderer.compile(this.scene, this.camera);
-    } catch {
+      scene = compileAsync(this.renderer, this.scene, this.camera);
+    } catch (err) {
       // A driver that will not pre-compile is not a reason to refuse to boot.
+      console.warn('[cephandrius] shader warm-up skipped:', err);
+      scene = Promise.resolve();
+    } finally {
+      groups.forEach((g, i) => { g.visible = was[i]!; });
     }
-    groups.forEach((g, i) => { g.visible = was[i]!; });
+    const plates = warmPlateProgram(this.renderer).catch(() => undefined);
+    let timer = 0;
+    const timeout = new Promise<void>((resolve) => { timer = window.setTimeout(resolve, limit); });
+    this.warming = Promise.race([Promise.all([scene, plates]).then(() => undefined), timeout])
+      .finally(() => window.clearTimeout(timer));
+    return this.warming;
+  }
+
+  /**
+   * Rebuild what a lost context took with it, once Three has re-initialised
+   * itself on the restored one (its own listener runs before ours).
+   *
+   * Three re-uploads everything it has a source for: geometry, canvases, data
+   * textures, shader programs. What it cannot bring back is anything that was
+   * only ever drawn on the GPU — the sky, the Spiritual field, Shadesmar's
+   * glass and every world's plates. The fixed bakes are redrawn into the same
+   * targets; the world plates are forgotten and come back through the same
+   * budgeted path they took at boot, so the restore is not one long stall.
+   */
+  private recoverContext(): void {
+    rebakeAll(this.renderer);
+    forgetPlates();
+    this.orrery.forgetPlates();
+    this.queuePlateWarm();
+    this.warming = null;
+    void this.warmUp();
+    this.resize();
+    this.start();
   }
 
   start(): void {
@@ -260,6 +302,20 @@ export class App {
       store.set('focusedBody', null);
       store.set('focusedSystem', null);
     });
+  }
+
+  /**
+   * The Shard map, framed whole. The realm listener calls this on V; boot
+   * calls it for a link that opens in the Spiritual Realm, because the link
+   * is read before this App exists and so before that listener does.
+   */
+  frameSpiritual(): void {
+    this.rig.flyTo(
+      new THREE.Vector3(),
+      this.rig.framingDistance(SPIRITUAL_RADIUS, 0.85, 'width'),
+      2.2,
+    );
+    this.rig.setAngles(Math.PI * 0.25, 1.18);
   }
 
   private playSkyEvent(id: string, passive: boolean): void {
@@ -458,22 +514,41 @@ export class App {
       this.pickAt(e.clientX, e.clientY, false);
     };
     // A lost context leaves every DOM panel working over a black canvas,
-    // which reads as "the app is fine, the Cosmere is missing". Say so.
+    // which reads as "the app is fine, the Cosmere is missing". Say so, and
+    // then try to come back without one.
+    //
+    // A hybrid laptop loses the context whenever the driver switches GPUs or
+    // resets, and Chrome hands it back if the loss was `preventDefault`ed.
+    // This used to stop the loop for good and ask for a reload, which meant a
+    // black sky after every GPU switch. Now the restore rebuilds what the old
+    // context took with it. If the browser never gives the context back — it
+    // stops doing that for a page that has lost too many — the message says
+    // to reload, and the panel's button does it.
+    let giveUp = 0;
     const lost = (e: Event) => {
       e.preventDefault();
       this.running = false;
       cancelAnimationFrame(this.raf);
-      store.set('fault', 'The graphics context was lost. Reload to bring the sky back.');
+      store.set('fault', 'The graphics driver reset. Bringing the sky back…');
+      window.clearTimeout(giveUp);
+      giveUp = window.setTimeout(() => {
+        store.set('fault', 'The graphics driver reset and has not come back. Reload to bring the sky back.');
+      }, 8000);
     };
     const restored = () => {
-      // Everything baked lives in render targets that the driver has thrown
-      // away. Rebuilding them in place is a larger machine than this needs;
-      // a reload is honest and takes a second.
-      store.set('fault', 'The graphics context came back. Reload to rebuild the sky.');
+      window.clearTimeout(giveUp);
+      try {
+        this.recoverContext();
+        store.set('fault', null);
+      } catch (err) {
+        console.error('[cephandrius] could not rebuild after a context restore:', err);
+        store.set('fault', 'The graphics driver came back, but the sky could not be rebuilt. Reload to bring it back.');
+      }
     };
     this.canvas.addEventListener('webglcontextlost', lost);
     this.canvas.addEventListener('webglcontextrestored', restored);
     this.disposers.push(() => {
+      window.clearTimeout(giveUp);
       this.canvas.removeEventListener('webglcontextlost', lost);
       this.canvas.removeEventListener('webglcontextrestored', restored);
     });
@@ -889,7 +964,7 @@ export class App {
     store.state.viewHeading = this.rig.heading;
 
     if (
-      this.warmQueue.length && !s.cinematic && s.shell === 'play'
+      this.warmQueue.length && platesReady() && !s.cinematic && s.shell === 'play'
       && dt < 0.017 && t - this.lastWarm > 0.08
     ) {
       this.lastWarm = t;
@@ -933,8 +1008,16 @@ export class App {
       s.realm === 'cognitive' ? 1 : 0,
     );
 
-    this.post.setRealm(s.realm);
-    this.post.composer.render();
+    // The Lore Web is an opaque page over the canvas. Drawing the whole sky
+    // and its post chain underneath it every frame was a full frame of GPU
+    // work nobody could see, competing with the graph the reader was
+    // actually looking at. Everything above still runs, so the sky is where
+    // it should be the moment the Web closes; only the draw waits.
+    const covered = s.view === 'web';
+    if (!covered) {
+      this.post.setRealm(s.realm);
+      this.post.composer.render();
+    }
 
     this.frames++;
     this.frameCount++;
@@ -943,7 +1026,8 @@ export class App {
       store.state.stats.fps = this.frames / this.fpsAccum;
       store.state.stats.ms = (this.fpsAccum / this.frames) * 1000;
       store.touch('stats');
-      this.stepQuality(store.state.stats.fps);
+      // A frame that drew nothing says nothing about how fast the sky draws.
+      if (!covered) this.stepQuality(store.state.stats.fps);
       this.frames = 0;
       this.fpsAccum = 0;
     }

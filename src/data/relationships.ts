@@ -35,7 +35,6 @@ const W = 'wob' as const;
 export const RELATIONS: Relation[] = [
   { a: { kind: 'character', id: 'kaladin' }, b: { kind: 'shard', id: 'honor' }, type: 'bond', label: 'Windrunner', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'dalinar' }, b: { kind: 'shard', id: 'honor' }, type: 'bond', label: 'Bondsmith', book: 'stormlight', canon: C },
-  { a: { kind: 'character', id: 'jasnah' }, b: { kind: 'shard', id: 'cultivation' }, type: 'bond', label: 'Elsecaller', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'vin' }, b: { kind: 'shard', id: 'preservation' }, type: 'vessel', label: 'Held Preservation', book: 'mistborn1', canon: C },
   { a: { kind: 'character', id: 'sazed' }, b: { kind: 'shard', id: 'preservation' }, type: 'vessel', label: 'Harmony', book: 'mistborn1', canon: C },
   { a: { kind: 'character', id: 'sazed' }, b: { kind: 'shard', id: 'ruin' }, type: 'vessel', label: 'Harmony', book: 'mistborn1', canon: C },
@@ -53,7 +52,7 @@ export const RELATIONS: Relation[] = [
   // Secret History: Khriss and Nazh are distressed to hear Hoid has come and taken lerasium.
   { a: { kind: 'character', id: 'hoid' }, b: { kind: 'character', id: 'khriss' }, type: 'rival', label: 'Wary of each other', book: 'secrethistory', canon: C },
   { a: { kind: 'character', id: 'khriss' }, b: { kind: 'character', id: 'nazh' }, type: 'ally', label: 'Scholar & agent', book: 'arcanum', canon: C },
-  { a: { kind: 'character', id: 'vasher' }, b: { kind: 'character', id: 'azure' }, type: 'mentor', label: 'Taught her Awakening; she followed him', book: 'warbreaker', canon: C },
+  { a: { kind: 'character', id: 'vasher' }, b: { kind: 'character', id: 'azure' }, type: 'ally', label: 'Travels with him after the war', book: 'warbreaker', canon: C },
   { a: { kind: 'character', id: 'kelsier' }, b: { kind: 'character', id: 'vin' }, type: 'mentor', label: 'Mentor & apprentice', book: 'mistborn1', canon: C },
   { a: { kind: 'character', id: 'hoid' }, b: { kind: 'shard', id: 'odium' }, type: 'rival', label: 'Opposes Odium', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'kaladin' }, b: { kind: 'character', id: 'moash' }, type: 'rival', label: 'Former friend', book: 'stormlight', canon: C },
@@ -66,7 +65,7 @@ export const RELATIONS: Relation[] = [
   { a: { kind: 'character', id: 'kaladin' }, b: { kind: 'character', id: 'lopen' }, type: 'ally', label: 'Bridge Four', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'wax' }, b: { kind: 'character', id: 'wayne' }, type: 'ally', label: 'Partners', book: 'mistborn2', canon: C },
   { a: { kind: 'character', id: 'wax' }, b: { kind: 'character', id: 'steris' }, type: 'romance', label: 'Married', book: 'mistborn2', canon: C },
-  { a: { kind: 'character', id: 'wax' }, b: { kind: 'character', id: 'marasi' }, type: 'ally', label: 'Constabulary', book: 'mistborn2', canon: C },
+  { a: { kind: 'character', id: 'wax' }, b: { kind: 'character', id: 'marasi' }, type: 'ally', label: 'Allies since the Vanishers', book: 'mistborn2', canon: C },
   { a: { kind: 'character', id: 'sazed' }, b: { kind: 'character', id: 'kelsier' }, type: 'ally', label: "Survivor's crew", book: 'mistborn1', canon: C },
   { a: { kind: 'character', id: 'marsh' }, b: { kind: 'shard', id: 'ruin' }, type: 'bond', label: 'Hemalurgically bound', book: 'mistborn1', canon: C },
   { a: { kind: 'character', id: 'hoid' }, b: { kind: 'character', id: 'kelsier' }, type: 'rival', label: 'Wary acquaintances', book: 'secrethistory', canon: C },
@@ -94,6 +93,6 @@ export const RELATIONS: Relation[] = [
   { a: { kind: 'character', id: 'vambrakastram' }, b: { kind: 'character', id: 'frost' }, type: 'ally', label: 'Both of Yolen', book: 'core', canon: W },
   { a: { kind: 'character', id: 'arclo' }, b: { kind: 'character', id: 'sleepless-hordes' }, type: 'family', label: 'One of them', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'sleepless-hordes' }, b: { kind: 'dawnshard', id: 'dawnshard-change' }, type: 'ally', label: 'Guarded it at Akinah', book: 'stormlight', canon: C },
-  { a: { kind: 'character', id: 'arclo' }, b: { kind: 'character', id: 'lift' }, type: 'ally', label: 'Talked philosophy in the Palanaeum', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'arclo' }, b: { kind: 'character', id: 'lift' }, type: 'ally', label: 'Talked philosophy on an orphanage porch in Yeddaw', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'rysn' }, b: { kind: 'dawnshard', id: 'dawnshard-change' }, type: 'bond', label: 'Bears it', book: 'stormlight', canon: C },
 ];

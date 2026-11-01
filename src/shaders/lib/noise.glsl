@@ -7,6 +7,20 @@ vec4 mod289(vec4 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
 vec4 permute(vec4 x) { return mod289(((x * 34.0) + 1.0) * x); }
 vec4 taylorInvSqrt(vec4 r) { return 1.79284291400159 - 0.85373472095314 * r; }
 
+// A bake can ask for its octave loops to stay loops. With `oct` a literal at
+// every call site the compiler unrolls each fbm into that many inlined
+// simplex bodies, and the planet baker has dozens of call sites: it took four
+// seconds to link on an integrated GPU. Adding a uniform that is always zero
+// hides the count, so each call site keeps one body and a loop around it.
+// Same arithmetic in the same order; only the code size changes. Shaders that
+// run every frame leave this off and keep the unrolled, faster form.
+#ifdef NOISE_ROLLED_OCTAVES
+uniform int uOctaveZero;
+#define NOISE_OCTAVES(oct) (oct + uOctaveZero)
+#else
+#define NOISE_OCTAVES(oct) (oct)
+#endif
+
 float snoise(vec3 v) {
   const vec2 C = vec2(1.0 / 6.0, 1.0 / 3.0);
   const vec4 D = vec4(0.0, 0.5, 1.0, 2.0);
@@ -73,7 +87,7 @@ float fbm3(vec3 p, int oct, float lacunarity, float gain) {
   float s = 0.0;
   float norm = 0.0;
   for (int i = 0; i < 8; i++) {
-    if (i >= oct) break;
+    if (i >= NOISE_OCTAVES(oct)) break;
     s += a * snoise(p);
     norm += a;
     p *= lacunarity;
@@ -88,7 +102,7 @@ float ridged(vec3 p, int oct, float lacunarity, float gain) {
   float s = 0.0;
   float norm = 0.0;
   for (int i = 0; i < 8; i++) {
-    if (i >= oct) break;
+    if (i >= NOISE_OCTAVES(oct)) break;
     float n = 1.0 - abs(snoise(p));
     s += a * n * n;
     norm += a;
@@ -100,7 +114,19 @@ float ridged(vec3 p, int oct, float lacunarity, float gain) {
 
 /** Domain-warped fbm: the swirl that keeps procedural terrain off a grid. */
 float warped(vec3 p, int oct, float amount) {
+#ifdef NOISE_ROLLED_OCTAVES
+  // The same three fields as below, as one call site in a loop rather than
+  // three inlined copies. `p + 0.0` is `p`, exactly.
+  vec3 q = vec3(0.0);
+  for (int k = 0; k < 3; k++) {
+    if (k >= NOISE_OCTAVES(3)) break;
+    float off = k == 0 ? 0.0 : (k == 1 ? 5.2 : 11.7);
+    float v = fbm3(p + off, 3, 2.03, 0.5);
+    if (k == 0) q.x = v; else if (k == 1) q.y = v; else q.z = v;
+  }
+#else
   vec3 q = vec3(fbm3(p, 3, 2.03, 0.5), fbm3(p + 5.2, 3, 2.03, 0.5), fbm3(p + 11.7, 3, 2.03, 0.5));
+#endif
   return fbm3(p + q * amount, oct, 2.03, 0.5);
 }
 

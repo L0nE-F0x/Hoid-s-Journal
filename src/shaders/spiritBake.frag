@@ -1,3 +1,5 @@
+// Baked once at boot: keep the noise octaves as loops (see noise.glsl).
+#define NOISE_ROLLED_OCTAVES
 #include "./lib/noise.glsl"
 
 /**

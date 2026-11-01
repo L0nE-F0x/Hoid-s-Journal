@@ -3,14 +3,46 @@
   "name": "Hoid’s Journal",
   "short_name": "Hoid’s Journal",
   "description": "An unofficial, spoiler-aware, nested atlas of Brandon Sanderson’s Cosmere.",
+  "lang": "en",
+  "dir": "ltr",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#04050b",
-  "theme_color": "#05060d",
+  "background_color": "#05060c",
+  "theme_color": "#05060c",
+  "categories": ["books", "education", "entertainment"],
   "icons": [
     { "src": "./icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
     { "src": "./icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
     { "src": "./icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    {
+      "name": "Roshar",
+      "description": "Open the journal on Roshar’s globe.",
+      "url": "./#body=roshar",
+      "icons": [{ "src": "./icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "Scadrial",
+      "description": "Open the journal on Scadrial’s globe.",
+      "url": "./#body=scadrial",
+      "icons": [{ "src": "./icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "Nalthis",
+      "description": "Open the journal on Nalthis’ globe.",
+      "url": "./#body=nalthis",
+      "icons": [{ "src": "./icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "./og.jpg",
+      "sizes": "1200x630",
+      "type": "image/jpeg",
+      "form_factor": "wide",
+      "label": "The title page of Hoid’s Journal over the orbits of a star system"
+    }
   ]
 }

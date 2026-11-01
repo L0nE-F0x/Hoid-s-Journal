@@ -9,7 +9,7 @@ function ch(
   eras: Character['eras'],
   extra: Partial<Character> = {},
 ): Character {
-  return { id, name, color, book, origin, aliases, abilities, fact, cognitive, eras, canon: C, sources: [book], ...extra };
+  return { id, name, color, book, origin, aliases, abilities, fact, cognitive, eras: eras.map((row) => ({ ...row })), canon: C, sources: [book], ...extra };
 }
 
 export const CHARACTERS: Character[] = [
@@ -42,25 +42,25 @@ export const CHARACTERS: Character[] = [
       fieldNotes: { origin: { canon: 'canon', note: 'The Sunlit Man ch. 10 puts his birth on Yolen, before the Shattering.' } },
     }),
   ch('vin', 'Vin', '#77aaff', 'mistborn1', 'Scadrial', 'Valette Renoux',
-    'Mistborn, Splinter of Preservation',
+    'Mistborn; briefly the Vessel of Preservation',
     'Ascended to become the vessel of Preservation.', false,
     [{ era: 2, system: 'scadrian', body: 'scadrial' }]),
-  ch('kaladin', 'Kaladin', '#22d3ee', 'stormlight', 'Roshar', 'Stormblessed',
-    'Windrunner Radiant',
-    'A former surgeon turned leader of the Knights Radiant.', false, [
+  ch('kaladin', 'Kaladin', '#22d3ee', 'stormlight', 'Roshar', 'Stormblessed, Kal, Herald of Second Chances, Herald of the Wind',
+    'Windrunner of the Fifth Ideal · Herald',
+    'Surgeon\'s son, bridgeman, Windrunner, and since Stormfall the Herald in Jezrien\'s place.', false, [
       { era: 3, system: 'rosharan', body: 'roshar' },
       { era: 5, system: 'rosharan', body: 'roshar' },
     ]),
   ch('shallan', 'Shallan', '#f472b6', 'stormlight', 'Roshar', 'Veil, Radiant',
     'Lightweaver Radiant',
-    'A brilliant scholar grappling with deeply suppressed trauma.', false, [
+    'Lightweaver, scholar, Adolin\'s wife, and the daughter of the Herald she killed at eleven.', false, [
       { era: 3, system: 'rosharan', body: 'roshar' },
       { era: 5, system: 'rosharan', body: 'roshar' },
     ]),
-  ch('wax', 'Waxillium', '#fbbf24', 'mistborn2', 'Scadrial', 'Dawnshot',
-    'Twinborn (Coinshot / Skimmer)',
+  ch('wax', 'Waxillium', '#fbbf24', 'mistborn2', 'Scadrial', 'Wax, Lord Ladrian, Asinthew, Dawnshot, Harmony\'s Sword',
+    'Twinborn (Coinshot / Skimmer): a Crasher',
     'A former lawman of the Roughs pulled back into politics.', false,
-    [{ era: 4, system: 'scadrian', body: 'scadrial' }]),
+    [{ era: 4, system: 'scadrian', body: 'scadrial' }], { titles: 'High Lord of House Ladrian, Senator' }),
   ch('jasnah', 'Jasnah', '#a78bfa', 'stormlight', 'Roshar', 'Heretic',
     'Elsecaller Radiant',
     'A fierce scholar and Queen of Alethkar.', false, [
@@ -69,17 +69,16 @@ export const CHARACTERS: Character[] = [
     ]),
   ch('kelsier', 'Kelsier', '#ef4444', 'mistborn1', 'Scadrial', 'Survivor, Thaidakar, Lord of Scars, Survivor of Hathsin',
     'Mistborn, Cognitive Shadow',
-    'Founder of the Ghostbloods. Bound strictly to the Scadrian system as a Shadow.', true, [
+    'The Survivor, and Thaidakar of the Ghostbloods. Bound to the Scadrian system as a Shadow.', true, [
       { era: 2, system: 'scadrian', body: 'scadrial' },
-      // Surviving The Final Empire is Secret History; leading the Bilming
-      // Ghostbloods is The Lost Metal. Nothing places him in the space age.
+      // That he outlives the Final Empire at all is a Secret History reveal.
       { era: 3, system: 'scadrian', body: 'scadrial', book: 'secrethistory', arc: 'secrethistory' },
-      { era: 4, system: 'scadrian', body: 'scadrial', book: 'mistborn2', arc: 'tlm' },
+      { era: 4, system: 'scadrian', body: 'scadrial', book: 'secrethistory', arc: 'secrethistory' },
+      { era: 5, system: 'scadrian', body: 'scadrial', book: 'secrethistory', arc: 'secrethistory' },
     ], {
       wiki: 'Kelsier',
-      see: ['vin', 'marsh', 'scadrial', 'kelsiers-crew'],
-      // msh 6:4; mb6 epilogue (the Sovereign); mb7 36, 40, 47; sa4 115.
-      bio: 'A half-skaa Mistborn who walked into the Pits of Hathsin and walked out a religion. He died at the Lord Ruler\'s hand and refused to finish dying: he held Preservation for a while, found his way back into a body with a spike through one eye, and saved the far south as its Sovereign. He founded the Ghostbloods to keep Scadrial safe from the rest of the cosmere; on Roshar they call him Thaidakar. He still cannot leave home.',
+      see: ['vin', 'marsh', 'mare', 'kelsiers-crew', 'pits-of-hathsin'],
+      bio: 'A half-skaa Mistborn who walked into the Pits of Hathsin and walked out a religion. He died at the Lord Ruler\'s hand and refused to finish dying: he held Preservation for a moment, haunted the Cognitive Realm through the Final Empire\'s last days, and outlasted it. He leads the Ghostbloods as Thaidakar, and cannot easily leave the Scadrian system.',
     }),
   ch('khriss', 'Khriss', '#a5b4fc', 'whitesand', 'Taldain', 'Khrissalla',
     'Worldhopper scholar',
@@ -103,8 +102,8 @@ export const CHARACTERS: Character[] = [
       { era: 5, system: 'drominad', body: 'first-of-the-sun', book: 'emberdark', arc: 'emberdark' },
     ]),
   ch('galladon', 'Galladon', '#a78bfa', 'elantris', 'Sel', 'Grump',
-    'Elantrian, worldhopper',
-    'A Dula Elantrian; later one of three Seventeenth Shard agents hunting Hoid on Roshar.', false, [
+    'Elantrian',
+    'A Dula Elantrian from Sel; later seen on Roshar with the Seventeenth Shard.', false, [
       { era: 1, system: 'selish', body: 'sel' },
       { era: 3, system: 'rosharan', body: 'roshar', book: 'stormlight', arc: 'twok' },
     ], { fieldNotes: { fact: { canon: 'wob', note: 'Ishikk calls him Grump; that Grump is Galladon is Word of Brandon 7427, 10085.' } } }),
@@ -114,89 +113,95 @@ export const CHARACTERS: Character[] = [
       { era: 3, system: 'rosharan', body: 'roshar' },
       { era: 5, system: 'canticle', body: 'canticle-world', book: 'sunlit', arc: 'sunlit' },
     ]),
-  ch('vasher', 'Vasher', '#a78bfa', 'warbreaker', 'Nalthis', 'Zahel, Kalad',
-    'Returned, Awakener, Nightblood\'s creator',
-    'Worldhopper hiding as an ardent on Roshar.', false, [
+  ch('vasher', 'Vasher', '#a78bfa', 'warbreaker', 'Nalthis', 'Kalad the Usurper, Peacegiver the Blessed, Warbreaker the Peaceful, Tax, Zahel',
+    'Returned, Awakener, Nightblood\'s co-creator',
+    'Kalad, Peacegiver, Warbreaker — and on Roshar, an ardent called Zahel.', false, [
       { era: 2, system: 'nalthian', body: 'nalthis' },
       { era: 3, system: 'rosharan', body: 'roshar', book: 'stormlight', arc: 'wor' },
     ]),
-  ch('azure', 'Azure', '#38bdf8', 'warbreaker', 'Nalthis', 'Vivenna',
-    'Awakener, royal of Idris',
-    'Vasher\'s student, then his travelling companion; later the Wall Guard\'s commander in Kholinar.', false, [
+  ch('azure', 'Vivenna', '#38bdf8', 'warbreaker', 'Nalthis', 'Azure, Princess of Idris',
+    'Awakener, Royal Locks',
+    'Idris\'s eldest princess; later, as Azure, the Wall Guard\'s commander in Kholinar.', false, [
       { era: 2, system: 'nalthian', body: 'nalthis' },
-      { era: 3, system: 'rosharan', body: 'roshar' },
+      { era: 3, system: 'rosharan', body: 'roshar', book: 'stormlight', arc: 'oathbringer' },
     ]),
   ch('demoux', 'Demoux', '#64748b', 'mistborn1', 'Scadrial', 'Thinker',
-    'Seer, Seventeenth Shard field agent, worldhopper',
-    'Kelsier\'s captain, then Elend\'s general; three centuries on, one of three Seventeenth Shard agents hunting Hoid on Roshar.', false, [
+    'Seer (atium Misting), worldhopper',
+    'Once Kelsier\'s captain; later hunts Hoid across worlds.', false, [
       { era: 2, system: 'scadrian', body: 'scadrial' },
       { era: 3, system: 'rosharan', body: 'roshar', book: 'stormlight', arc: 'twok' },
-    ], { fieldNotes: { fact: { canon: 'wob', note: 'Ishikk calls him Thinker; that Thinker is Demoux is Word of Brandon 6683.' } } }),
+    ], { fieldNotes: { aliases: { canon: 'wob', note: '"Thinker", in Ishikk\'s Way of Kings interlude, is Demoux by Word of Brandon.' } } }),
   ch('lift', 'Lift', '#86efac', 'stormlight', 'Roshar', 'Lift',
     'Edgedancer Radiant',
-    'A thief who metabolizes food directly into Stormlight.', false, [
+    'A thief who turns food into Light, and the only person who can grab a spren.', false, [
       { era: 3, system: 'rosharan', body: 'roshar' },
-    ]),
-  ch('szeth', 'Szeth', '#e2e8f0', 'stormlight', 'Roshar', 'Truthless, the Assassin in White',
-    'Skybreaker Radiant, Nightblood',
-    'Shin exile who reshaped Roshar\'s politics with a single Blade.', false, [
+    ], { arc: 'wor' }),
+  ch('szeth', 'Szeth', '#e2e8f0', 'stormlight', 'Roshar', 'Szeth-son-Neturo, Szeth-son-son-Vallano, Truthless, the Assassin in White',
+    'Skybreaker of the Fifth Ideal (bond broken) · Nightblood',
+    'The Assassin in White, who went home and cut his family free of a Herald.', false, [
       { era: 3, system: 'rosharan', body: 'roshar' },
     ]),
   ch('sazed', 'Sazed', '#a3e635', 'mistborn1', 'Scadrial', 'Harmony',
     'Keeper, then Vessel of Harmony',
     'The Hero of Ages. Holds Preservation and Ruin together.', false, [
       { era: 2, system: 'scadrian', body: 'scadrial' },
-      { era: 3, system: 'scadrian', body: 'scadrial' },
-      { era: 4, system: 'scadrian', body: 'scadrial' },
-      { era: 5, system: 'scadrian', body: 'scadrial' },
+      { era: 3, system: 'scadrian', body: 'scadrial', arc: 'hoa' },
+      { era: 4, system: 'scadrian', body: 'scadrial', arc: 'hoa' },
+      { era: 5, system: 'scadrian', body: 'scadrial', arc: 'hoa' },
     ]),
   ch('elend', 'Elend Venture', '#93c5fd', 'mistborn1', 'Scadrial', 'Emperor',
-    'Mistborn (lerasium)',
+    'Mistborn',
     'Scholar-emperor of the New Empire.', false,
     [{ era: 2, system: 'scadrian', body: 'scadrial' }]),
   ch('marsh', 'Marsh', '#334155', 'mistborn1', 'Scadrial', 'Ironeyes',
-    'Steel Inquisitor, Cognitive survivor',
+    'Seeker; Steel Inquisitor',
     'Kelsier\'s brother; Death walking the Elendel Basin.', false, [
       { era: 2, system: 'scadrian', body: 'scadrial' },
-      { era: 4, system: 'scadrian', body: 'scadrial' },
+      { era: 4, system: 'scadrian', body: 'scadrial', book: 'mistborn2', arc: 'aol' },
     ]),
   ch('lord-ruler', 'The Lord Ruler', '#b45309', 'mistborn1', 'Scadrial', 'Rashek, Sliver of Infinity',
-    'Compounding Fullborn',
+    'Mistborn and Feruchemist',
     'Held Scadrial in ash for a thousand years.', false,
     [{ era: 2, system: 'scadrian', body: 'scadrial' }]),
   ch('tensoon', 'TenSoon', '#a8a29e', 'mistborn1', 'Scadrial', 'OreSeur (assumed)',
     'Kandra, Third Generation',
     'Vin\'s once-spy, later a voice of the kandra.', false, [
       { era: 2, system: 'scadrian', body: 'scadrial' },
-      { era: 4, system: 'scadrian', body: 'scadrial' },
-    ]),
-  ch('spook', 'Spook', '#fb923c', 'mistborn1', 'Scadrial', 'Lestibournes, Lord Mistborn',
-    'Tineye, later Mistborn',
+      { era: 4, system: 'scadrian', body: 'scadrial', book: 'mistborn2', arc: 'sos' },
+    ], { biology: 'Kandra' }),
+  ch('spook', 'Spook', '#fb923c', 'mistborn1', 'Scadrial', 'Lestibournes, Survivor of the Flames, Lord Mistborn',
+    'Tineye; Mistborn after the Catacendre',
     'Survivor of the Flames; ancestor of Elendel\'s nobility.', false,
     [{ era: 2, system: 'scadrian', body: 'scadrial' }]),
-  ch('wayne', 'Wayne', '#f59e0b', 'mistborn2', 'Scadrial', 'Wayne',
+  ch('wayne', 'Wayne', '#f59e0b', 'mistborn2', 'Scadrial', 'Maxil, Abrigain',
     'Twinborn (Slider / Bloodmaker)',
     'Hats, accents, and a goldmind. Wax\'s oldest friend.', false,
     [{ era: 4, system: 'scadrian', body: 'scadrial' }]),
-  ch('marasi', 'Marasi Colms', '#38bdf8', 'mistborn2', 'Scadrial', 'Marasi',
-    'Pulser, later Leecher',
+  ch('marasi', 'Marasi Colms', '#38bdf8', 'mistborn2', 'Scadrial', 'Mara',
+    'Pulser (cadmium Misting)',
     'Constable and scholar of the Basin.', false,
     [{ era: 4, system: 'scadrian', body: 'scadrial' }]),
-  ch('steris', 'Steris Harms', '#94a3b8', 'mistborn2', 'Scadrial', 'Steris',
+  ch('steris', 'Steris Harms', '#94a3b8', 'mistborn2', 'Scadrial', 'Steris Ladrian',
     'Lists, contingency, courage',
     'The most prepared person in Elendel.', false,
-    [{ era: 4, system: 'scadrian', body: 'scadrial' }]),
-  ch('melaan', 'MeLaan', '#d6d3d1', 'mistborn2', 'Scadrial', 'MeLaan',
+    [{ era: 4, system: 'scadrian', body: 'scadrial' }],
+    { fieldNotes: { bio: { canon: 'wob', note: 'Brandon has said Steris is autistic.' } } }),
+  ch('melaan', 'MeLaan', '#d6d3d1', 'mistborn1', 'Scadrial', 'Milan',
     'Kandra, Seventh Generation',
-    'Harmony\'s agent in a changing world.', false,
-    [{ era: 4, system: 'scadrian', body: 'scadrial' }]),
+    'Harmony\'s agent in a changing world.', false, [
+      { era: 2, system: 'scadrian', body: 'scadrial' },
+      { era: 4, system: 'scadrian', body: 'scadrial', book: 'mistborn2', arc: 'sos' },
+    ], {
+      arc: 'hoa', biology: 'Kandra',
+      fieldNotes: { bio: { canon: 'wob', note: 'TenSoon was MeLaan\'s appointed "parent" in the Homeland, which is Word of Brandon rather than a line in the books.' } },
+    }),
   ch('dalinar', 'Dalinar', '#1d4ed8', 'stormlight', 'Roshar', 'Blackthorn, Bondsmith',
-    'Bondsmith Radiant',
-    'Highprince, then Bondsmith, then the man who refused Odium.', false, [
+    'Bondsmith Radiant · briefly Vessel of Honor',
+    'Highprince, Bondsmith, for a moment the Vessel of Honor, and the man who gave it up.', false, [
       { era: 3, system: 'rosharan', body: 'roshar' },
     ]),
   ch('adolin', 'Adolin Kholin', '#eab308', 'stormlight', 'Roshar', 'Adolin',
-    'Shardbearer, later Maya\'s partner',
+    'Shardbearer · duelist · Unoathed (Maya)',
     'The best swordsman in Alethkar, and a better man than he believes.', false, [
       { era: 3, system: 'rosharan', body: 'roshar' },
     ]),
@@ -214,7 +219,7 @@ export const CHARACTERS: Character[] = [
     'Willshaper Radiant',
     'The sister who chose a different song.', false, [
       { era: 3, system: 'rosharan', body: 'roshar' },
-    ]),
+    ], { arc: 'wor' }),
   ch('taravangian', 'Taravangian', '#f87171', 'stormlight', 'Roshar', 'Odium, Retribution',
     'Vessel of Odium, then Retribution',
     'The man who would save the world by destroying it.', false, [
@@ -243,17 +248,17 @@ export const CHARACTERS: Character[] = [
       { era: 3, system: 'rosharan', body: 'roshar' },
     ]),
   ch('rysn', 'Rysn Ftori', '#a1a1aa', 'stormlight', 'Roshar', 'Dawnshard',
-    'Dawnshard of Change',
+    'Bearer of the Dawnshard Change',
     'Thaylen merchant who became something the Sleepless could not refuse.', false, [
       { era: 3, system: 'rosharan', body: 'roshar' },
     ]),
-  ch('eshonai', 'Eshonai', '#4ade80', 'stormlight', 'Roshar', 'Last Listener',
+  ch('eshonai', 'Eshonai', '#4ade80', 'stormlight', 'Roshar', 'The Explorer',
     'Stormform, then Willshaper in death',
     'The sister who tried to save her people from a song.', false, [
       { era: 3, system: 'rosharan', body: 'roshar' },
     ]),
-  ch('siri', 'Siri', '#f9a8d4', 'warbreaker', 'Nalthis', 'Vessel of Austrism\'s joke',
-    'Queen of Hallandren',
+  ch('siri', 'Siri', '#f9a8d4', 'warbreaker', 'Nalthis', 'Sisirinah, Vessel',
+    'Royal Locks',
     'The youngest daughter sent to marry a god.', false,
     [{ era: 2, system: 'nalthian', body: 'nalthis' }]),
   ch('susebron', 'Susebron', '#e879f9', 'warbreaker', 'Nalthis', 'God King',
@@ -262,7 +267,7 @@ export const CHARACTERS: Character[] = [
     [{ era: 2, system: 'nalthian', body: 'nalthis' }]),
   ch('lightsong', 'Lightsong', '#fb7185', 'warbreaker', 'Nalthis', 'Lightsong the Bold',
     'Returned',
-    'The god who did not believe in his own divinity — and died proving it.', true,
+    'The god who did not believe in his own divinity — until he found what he had Returned to do.', true,
     [{ era: 2, system: 'nalthian', body: 'nalthis' }]),
   ch('raoden', 'Raoden', '#a78bfa', 'elantris', 'Sel', 'Spirit',
     'Elantrian',
@@ -273,13 +278,13 @@ export const CHARACTERS: Character[] = [
     'A woman who refused to be a widow to a living city.', false,
     [{ era: 1, system: 'selish', body: 'sel' }]),
   ch('hrathen', 'Hrathen', '#ef4444', 'elantris', 'Sel', 'Gyorn',
-    'Dakhor-adjacent priest of Shu-Dereth',
+    'Gyorn of Shu-Dereth; one Dakhor bone in his arm',
     'The gyorn who chose a people over a conversion quota.', false,
     [{ era: 1, system: 'selish', body: 'sel' }]),
   ch('kenton', 'Kenton', '#fbbf24', 'whitesand', 'Taldain', 'Kenton',
     'Sand Master, Lord Mastrell',
     'The under-mastered Diemite who would not let his order die.', false,
-    [{ era: 2, system: 'taldainian', body: 'taldain' }]),
+    [{ era: 1, system: 'taldainian', body: 'taldain' }]),
   ch('yumi', 'Yumi', '#22d3ee', 'yumi', 'Komashi', 'Chosen, Honored One',
     'Yoki-hijo; Cognitive Shadow',
     'A stone-stacker whose life was a machine\'s lie.', false,
@@ -296,12 +301,15 @@ export const CHARACTERS: Character[] = [
     'Valet; passable storyteller and musician; terrible liar',
     'The boy Tress went to save.', false,
     [{ era: 4, system: 'lumar', body: 'lumar-world' }]),
-  ch('shai', 'Shai', '#6366f1', 'emperorssoul', 'Sel', 'Wan ShaiLu',
-    'Forger',
-    'The woman who restamped an emperor — and herself.', false,
-    [{ era: 1, system: 'selish', body: 'sel' }]),
-  ch('silence', 'Silence Montane', '#78716c', 'shadowsforsilence', 'Threnody', 'Silence',
-    'Shade-wise innkeeper',
+  ch('shai', 'Shai', '#6366f1', 'emperorssoul', 'Sel', 'Wan ShaiLu, Moonlight',
+    'Forger, worldhopper',
+    'The woman who restamped an emperor — and herself.', false, [
+      { era: 1, system: 'selish', body: 'sel' },
+      // The Lost Metal: a Ghostblood on Scadrial, working against Trell as Moonlight.
+      { era: 4, system: 'scadrian', body: 'scadrial', book: 'mistborn2', arc: 'tlm' },
+    ]),
+  ch('silence', 'Silence Montane', '#78716c', 'shadowsforsilence', 'Threnody', 'White Fox, Silence Forescout',
+    'Bounty hunter, waystop keeper',
     'She keeps the Simple Rules. The Forests do not.', false,
     [{ era: 2, system: 'threnodite', body: 'threnody' }]),
   ch('dusk', 'Sixth of the Dusk', '#4ade80', 'sixthofdusk', 'First of the Sun', 'Dusk, Sixth',
@@ -309,24 +317,24 @@ export const CHARACTERS: Character[] = [
     'A Patji trapper who paddled through Patji\'s Eye into the dark, came back the first Navigator in millennia, and bought his people their freedom with it.', false, [
       { era: 5, system: 'drominad', body: 'first-of-the-sun' },
     ]),
-  // Both first appear in Words of Radiance.
-  ch('mraize', 'Mraize', '#a3a3a3', 'stormlight', 'Roshar (Thaylenah)', 'Mraize',
-    'Ghostblood, hunter, worldhopper',
+  ch('mraize', 'Mraize', '#a3a3a3', 'stormlight', 'Thaylenah', 'Mraize, Betd',
+    'Ghostblood · Lightweaver (Enlightened Cryptic)',
     'Shallan\'s would-be master. A hunter who collects worlds like trophies.', false, [
       { era: 3, system: 'rosharan', body: 'roshar' },
-    ], { arc: 'wor', fieldNotes: { origin: { canon: 'wob', note: 'Thaylen by Word of Brandon 10403.' } } }),
-  // She died in the Spiritual Realm in Wind and Truth (ch. 134): no later row.
+    ], { arc: 'wor' }),
+  // She dies in the Spiritual Realm in Wind and Truth (ch. 134), so she has
+  // no row after the Stormlight era.
   ch('iyatil', 'Iyatil', '#fb923c', 'stormlight', 'Silverlight', 'Iyatil',
-    'Ghostblood, spy, worldhopper; an Elsecaller by an Enlightened inkspren',
-    'Mraize\'s babsk among the Ghostbloods. The mask is a Hunter\'s; the errand was Thaidakar\'s.', false, [
+    'Ghostblood, mask, worldhopper',
+    'Mraize\'s babsk, a masked worldhopper among the Ghostbloods.', false, [
       { era: 3, system: 'rosharan', body: 'roshar' },
     ], { arc: 'wor', fieldNotes: { origin: { canon: 'wob', note: 'Born in Silverlight, of Southern Scadrian heritage — Word of Brandon 12733, 13475.' } } }),
   ch('felt', 'Felt', '#64748b', 'mistborn1', 'Scadrial', 'Felt',
-    'Spy, scout, Awakener, worldhopper',
-    'House Venture\'s spy on Scadrial; three centuries later a Kholin scout on Roshar, and a Ghostblood.', false, [
+    'Awakener, worldhopper, scout',
+    'House Venture\'s spy, later a scout on the Shattered Plains. Still looking.', false, [
       { era: 2, system: 'scadrian', body: 'scadrial' },
       { era: 3, system: 'rosharan', body: 'roshar', book: 'stormlight', arc: 'wor' },
-    ]),
+    ], { fieldNotes: { origin: { canon: 'wob', note: 'The Felt of Mistborn and the Alethi scout of the Stormlight Archive are the same man by Word of Brandon.' } } }),
   ch('design', 'Design', '#22d3ee', 'stormlight', 'Roshar', 'Design',
     'Cryptic, Lightweaver bond, some control of Connection',
     'Hoid\'s Cryptic. On Komashi she ran a noodle shop and used him as the coatrack.', true, [
@@ -344,25 +352,25 @@ export const CHARACTERS: Character[] = [
     'Sleepless, hordeling swarm',
     'A Sleepless who tried to keep a Dawnshard off the board, and failed kindly.', false, [
       { era: 3, system: 'rosharan', body: 'roshar' },
-    ]),
+    ], { arc: 'dawnshard' }),
+
   ch('nightblood', 'Nightblood', '#111827', 'warbreaker', 'Nalthis', 'Sword-nimi',
     'Awakened sword, Destroy Evil',
     'A thousand Breaths in a blade. Vasher\'s, then Szeth\'s. It wants to help.', true, [
       { era: 2, system: 'nalthian', body: 'nalthis' },
-      { era: 3, system: 'rosharan', body: 'roshar' },
+      { era: 3, system: 'rosharan', body: 'roshar', book: 'stormlight', arc: 'wor' },
     ]),
   ch('lopen', 'Lopen', '#fbbf24', 'stormlight', 'Roshar', 'The Lopen',
     'Windrunner Radiant',
     'Herdazian, one-armed, then two. The universe is invited to his family.', false, [
       { era: 3, system: 'rosharan', body: 'roshar' },
     ]),
-  ch('baon', 'Baon', '#b45309', 'whitesand', 'Taldain', 'Blunt',
-    'Soldier, marksman, worldhopper',
-    'Khriss\'s bodyguard on Dayside; later one of three Seventeenth Shard agents hunting Hoid on Roshar.', false, [
-      // White Sand is the earliest book in time (WoB 10502), as Khriss's row has it.
+  ch('baon', 'Baon', '#b45309', 'whitesand', 'Taldain', 'Vao, Blunt',
+    'Dynasty soldier, sand master, Seventeenth Shard',
+    'Khriss\'s guard on Dayside; later hunting Hoid with Galladon and Demoux.', false, [
       { era: 1, system: 'taldainian', body: 'taldain' },
       { era: 3, system: 'rosharan', body: 'roshar', book: 'stormlight', arc: 'twok' },
-    ], { fieldNotes: { fact: { canon: 'wob', note: 'Ishikk calls him Blunt; that Blunt is Baon is Word of Brandon 9208, 5556. He is not Invested (WoB 1564).' } } }),
+    ]),
   ch('syl', 'Sylphrena', '#7dd3fc', 'stormlight', 'Roshar', 'Syl',
     'Honorspren, Windrunner bond',
     'Kaladin\'s spren. Ancient, loyal, and still learning what a joke is.', true, [
@@ -377,10 +385,10 @@ export const CHARACTERS: Character[] = [
     'Inkspren, Elsecaller bond',
     'Jasnah\'s spren. Logic first, the Physical Realm second.', true, [
       { era: 3, system: 'rosharan', body: 'roshar' },
-    ], { kind: 'spren', wiki: 'Ivory' }),
+    ], { arc: 'wor', kind: 'spren', wiki: 'Ivory' }),
   ch('stormfather', 'The Stormfather', '#1e3a8a', 'stormlight', 'Roshar', 'Rider of Storms',
-    'Cognitive Shadow of Honor, Bondsmith spren',
-    'The highstorm given a mind. Dalinar\'s bond, and Tanavast\'s last voice.', true, [
+    'Spren of the highstorm · Bondsmith spren · Honor\'s memories',
+    'The highstorm given a mind, and Tanavast\'s memory. Retribution unmade him on Stormfall.', true, [
       { era: 3, system: 'rosharan', body: 'roshar' },
     ], { kind: 'spren', wiki: 'Stormfather' }),
   ch('nightwatcher', 'The Nightwatcher', '#166534', 'stormlight', 'Roshar', 'Nightwatcher',
@@ -393,19 +401,19 @@ export const CHARACTERS: Character[] = [
     'Tower-spren, half Honor and half Cultivation. Navani woke them.', true, [
       { era: 3, system: 'rosharan', body: 'roshar' },
     ], { arc: 'row', kind: 'spren', wiki: 'Sibling' }),
-  ch('nale', 'Nale', '#0f172a', 'stormlight', 'Roshar', 'Nin, Herald of Justice',
-    'Herald of the Skybreakers',
-    'The only Herald still trying to keep an oath. It is not going well.', true, [
+  ch('nale', 'Nale', '#0f172a', 'stormlight', 'Roshar', 'Nalan\'Elin, Nin, Nakku, Darkness, Herald of Justice',
+    'Herald · Skybreaker of the Fifth Ideal',
+    'Herald of Justice. A thousand years of killing Radiants on Ishar\'s word, and then he broke.', true, [
       { era: 3, system: 'rosharan', body: 'roshar' },
     ], { kind: 'herald', wiki: 'Nale' }),
-  ch('taln', 'Taln', '#7f1d1d', 'stormlight', 'Roshar', 'Talenelat, Stonesinew',
+  ch('taln', 'Taln', '#7f1d1d', 'stormlight', 'Roshar', 'Talenelat\'Elin, Talenel, Stonesinew, Tuk, Talmut',
     'Herald of War',
-    'He held Braize alone for four thousand years. Then he broke, and did not.', true, [
+    'He held Braize alone for four thousand years and never broke. His mind did.', true, [
       { era: 3, system: 'rosharan', body: 'roshar' },
     ], { kind: 'herald', wiki: 'Talenel' }),
-  ch('ishar', 'Ishar', '#ca8a04', 'stormlight', 'Roshar', 'Tukiri, Herald of Luck',
-    'Herald of the Bondsmiths',
-    'Mad god-priest of Tukar. The Oathpact was his idea.', true, [
+  ch('ishar', 'Ishar', '#ca8a04', 'stormlight', 'Roshar', 'Ishi\'Elin, Ishu-son-God, Tezim, Tashi, the Voice, Herald of Luck',
+    'Herald · Bondsmith Honorblade · a fraction of the Well of Control',
+    'The Herald who bound the Oathpact, and the Voice that ruled Shinovar.', true, [
       { era: 3, system: 'rosharan', body: 'roshar' },
     ], { kind: 'herald', wiki: 'Ishar' }),
   ch('gavilar', 'Gavilar Kholin', '#1d4ed8', 'stormlight', 'Roshar', 'King of Alethkar',
@@ -433,9 +441,9 @@ export const CHARACTERS: Character[] = [
     'Venli\'s spren, small enough to hide in a gemheart.', true, [
       { era: 3, system: 'rosharan', body: 'roshar' },
     ], { arc: 'oathbringer', kind: 'spren', wiki: 'Timbre' }),
-  ch('telsin', 'Telsin Ladrian', '#e11d48', 'mistborn2', 'Scadrial', 'Lady Sequence, the Key, Trell',
-    'Hemalurgic spikes; the Set\'s Key; avatar of Autonomy',
-    'Wax\'s sister, the Set\'s Key, and for a little while Autonomy\'s avatar on Scadrial.', false, [
+  ch('telsin', 'Telsin Ladrian', '#e11d48', 'mistborn2', 'Scadrial', 'Lady Sequence, the Key',
+    'Hemalurgist; chosen avatar of Autonomy',
+    'Wax\'s sister, the Set\'s leader, and the woman who talked a god out of destroying Scadrial.', false, [
       { era: 4, system: 'scadrian', body: 'scadrial' },
     ], { arc: 'sos' }),
   ch('blushweaver', 'Blushweaver', '#fb7185', 'warbreaker', 'Nalthis', 'Blushweaver the Honest',
@@ -445,15 +453,15 @@ export const CHARACTERS: Character[] = [
     ]),
   ch('denth', 'Denth', '#64748b', 'warbreaker', 'Nalthis', 'VaraTreledees',
     'Returned, mercenary',
-    'Vasher\'s brother, once. A smile that hid a thousand Breaths of hurt.', false, [
+    'Shashara\'s brother, once Vasher\'s friend. He is the better swordsman, and it does not save him.', false, [
       { era: 2, system: 'nalthian', body: 'nalthis' },
     ]),
-  ch('dilaf', 'Dilaf', '#dc2626', 'elantris', 'Sel', 'Gragdet',
-    'Dakhor monk',
+  ch('dilaf', 'Dilaf', '#dc2626', 'elantris', 'Sel', 'Arteth Dilaf',
+    'Dakhor monk, gragdet of Dakhor',
     'Hrathen\'s arteth, and something older and crueller than Shu-Dereth.', false, [
       { era: 1, system: 'selish', body: 'sel' },
     ]),
-  ch('breeze', 'Breeze', '#f59e0b', 'mistborn1', 'Scadrial', 'Ladrian',
+  ch('breeze', 'Breeze', '#f59e0b', 'mistborn1', 'Scadrial', 'Edgard Ladrian, Ladrian',
     'Soother',
     'A nobleman who pushed emotions for a living, and a crew that let him.', false, [
       { era: 2, system: 'scadrian', body: 'scadrial' },
@@ -479,7 +487,7 @@ function drake(
 ): Character {
   return {
     id, name, color, book, origin: 'Yolen', aliases, abilities, fact,
-    cognitive: true, eras, kind: 'dragon', biology,
+    cognitive: true, eras: eras.map((row) => ({ ...row })), kind: 'dragon', biology,
     canon: 'canon', sources: [book], ...extra,
   };
 }
@@ -498,7 +506,7 @@ CHARACTERS.push(
   drake('koravellium', 'Koravellium Avast', '#4ade80', 'stormlight', 'Cultivation · Kor · Slammer',
     'Vessel of Cultivation · future sight · boons and curses · spren-making',
     'A dragon considered heretical on Yolen for refusing the worship her kind expected. Prefers human form with mortals. Immortal twice over — once by birth, once by Shard.',
-    'The dragon behind Cultivation. She helped Shatter Adonalsium, and she spent millennia engineering the ascension of Taravangian. Also called She Who Brings the Dews at Dawn.',
+    'The dragon behind Cultivation. She helped Shatter Adonalsium, and she engineered the ascension of Taravangian. Also called She Who Brings the Dews at Dawn.',
     [{ era: 0, system: 'yolish', body: 'yolen' }, ...ALL_ERAS('rosharan', 'roshar').slice(1)],
     { arc: 'row', sources: ['The Stormlight Archive', 'Word of Brandon'] }),
 
@@ -547,11 +555,11 @@ CHARACTERS.push(
     { arc: 'wat', sources: ['Wind and Truth ch. 18'] }),
 
   {
-    id: 'arclo', name: 'Arclo', color: '#86efac', book: 'stormlight', arc: 'row',
-    origin: 'Aimia', aliases: 'the librarian', kind: 'sleepless',
+    id: 'arclo', name: 'Arclo', color: '#86efac', book: 'stormlight', arc: 'edgedancer', wiki: 'Arclomedarian',
+    origin: 'Aimia', aliases: 'Arclomedarian', kind: 'sleepless',
     abilities: 'Distributed mind · hivebody · deep Cosmere knowledge',
     biology: 'A Dysian Aimian: one mind carried by thousands of cremling-like creatures, which can be assembled into a human shape or dispersed entirely. Losing a few is an inconvenience, not a death.',
-    fact: 'A Sleepless who posed as a librarian in the Palanaeum. Knows far more about the Cosmere than he volunteers, and volunteers more than most of his kind.',
+    fact: 'A Sleepless who sits on the porch of a Yeddaw orphanage and talks philosophy with Lift. Knows far more about the Cosmere than he volunteers, and volunteers more than most of his kind.',
     cognitive: false,
     canon: 'canon', sources: ['Rhythm of War', 'The Stormlight Archive'],
     eras: [
@@ -563,7 +571,7 @@ CHARACTERS.push(
     ],
   },
   {
-    id: 'sleepless-hordes', name: 'The Sleepless', color: '#4ade80', book: 'stormlight',
+    id: 'sleepless-hordes', name: 'The Sleepless', color: '#4ade80', book: 'stormlight', arc: 'dawnshard',
     origin: 'Aimia', aliases: 'Dysian Aimians', kind: 'sleepless',
     abilities: 'Hivemind · shape-building · centuries of patience',
     biology: 'Each Sleepless is a collective of thousands of hordelings, bred for tasks — eyes, hands, memory. They build bodies the way a person builds a tool, and they have been building them since before the Recreance.',

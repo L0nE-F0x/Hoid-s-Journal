@@ -8,6 +8,7 @@ import sunFrag from '../shaders/sun.frag';
 import skyVert from '../shaders/sky.vert';
 import seaFrag from '../shaders/spiritsea.frag';
 import { spiritPlates } from './skyBake.ts';
+import { rewriteLine } from './lines.ts';
 
 const RING = 18;
 const DAWN_RING = 30;
@@ -15,6 +16,9 @@ const AXIS_RING = 25;
 /** Half-extent of the whole diagram, for framing. */
 export const SPIRITUAL_RADIUS = 33;
 const THREAD_STEPS = 28;
+const _threadPts = new Float32Array(THREAD_STEPS * 3);
+const _threadCols = new Float32Array(THREAD_STEPS * 3);
+const _threadTint = new THREE.Color();
 /** Fragments a Splintered Shard breaks into. */
 const SHARDS_OF = 9;
 
@@ -336,27 +340,28 @@ export class Spiritual {
       // is the whole point of the Realm: nothing in it is actually separate.
       m.thread.visible = show;
       if (show) {
-        const pts: number[] = [];
-        const cols: number[] = [];
-        const c = new THREE.Color(sh.color);
+        const pts = _threadPts;
+        const cols = _threadCols;
+        const c = _threadTint.set(sh.color);
         const phase = time * 0.35 + i * 0.4;
         for (let s = 0; s < THREAD_STEPS; s++) {
           const t = s / (THREAD_STEPS - 1);
           // Bow the thread out of the plane so sixteen of them do not overlay.
           const bow = Math.sin(t * Math.PI) * 3.2;
-          pts.push(
-            m.pos.x * t,
-            m.pos.y * t + bow * Math.cos(a * 2 + i),
-            m.pos.z * t + bow * Math.sin(a * 2 + i) * 0.4,
-          );
+          pts[s * 3] = m.pos.x * t;
+          pts[s * 3 + 1] = m.pos.y * t + bow * Math.cos(a * 2 + i);
+          pts[s * 3 + 2] = m.pos.z * t + bow * Math.sin(a * 2 + i) * 0.4;
           const pulse = Math.pow(Math.max(0, Math.sin((t - phase) * Math.PI * 2)), 12);
           const base = (broken ? 0.10 : 0.22) * (hot ? 2.4 : 1);
           const k = base + pulse * (hot ? 1.3 : 0.75);
-          cols.push(c.r * k, c.g * k, c.b * k);
+          cols[s * 3] = c.r * k;
+          cols[s * 3 + 1] = c.g * k;
+          cols[s * 3 + 2] = c.b * k;
         }
-        m.threadGeo.setPositions(pts);
-        m.threadGeo.setColors(cols);
-        m.thread.computeLineDistances();
+        // In place: a new buffer per thread per frame was forty-eight GPU
+        // allocations a frame. The material is not dashed, so the distances
+        // `computeLineDistances` used to rebuild here were never read.
+        rewriteLine(m.threadGeo, pts, cols);
       }
     }
 
@@ -407,7 +412,12 @@ export class Spiritual {
       if (this.worldChipKey !== key) {
         this.worldChipKey = key;
         const mat = this.worldChip.material as THREE.SpriteMaterial;
-        mat.map = (textSprite(where.toUpperCase(), sh.color, 30, 600, 3).material as THREE.SpriteMaterial).map;
+        // The chip is redrawn per Shard; the one it replaces is let go, or
+        // every Shard clicked in here kept its name on the GPU for good.
+        mat.map?.dispose();
+        const made = textSprite(where.toUpperCase(), sh.color, 30, 600, 3).material as THREE.SpriteMaterial;
+        mat.map = made.map;
+        made.dispose();
         mat.needsUpdate = true;
       }
       const s = apparent(picked.pos, 0.034);

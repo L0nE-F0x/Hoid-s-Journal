@@ -4,28 +4,28 @@ import type { Character } from './types.ts';
 export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   vin: {
     wiki: 'Vin',
-    see: ['elend', 'kelsier', 'lord-ruler', 'sazed'],
-    bio: 'A half-skaa Mistborn raised by the crewleader Reen to trust no one, then taught by Kelsier to trust a crew. She kills the Lord Ruler, loves Elend, and briefly holds Preservation before giving her life so Ruin can die. The mists chose her; she still had to choose what to do with them.',
+    see: ['elend', 'kelsier', 'reen', 'lord-ruler', 'sazed'],
+    bio: 'A half-skaa thief raised by her half-brother Reen to trust no one, then taught by Kelsier to trust a crew. She kills the Lord Ruler, loves Elend, and briefly holds Preservation before giving her life so Ruin can die. The mists chose her; she still had to choose what to do with them.',
   },
   kaladin: {
     wiki: 'Kaladin',
-    see: ['syl', 'bridge-four', 'tien', 'dalinar', 'moash'],
-    bio: 'A darkeyed surgeon\'s son who becomes a slave, a bridgeman, and the first Windrunner of the new Radiance. Depression and the weight of everyone he failed nearly break the Fourth Ideal; Syl and Bridge Four keep pulling him back into the sky. By Wind and Truth he is more than a soldier — he is the man who keeps choosing to protect anyway.',
+    see: ['syl', 'bridge-four', 'tien', 'szeth', 'ishar', 'heralds'],
+    bio: 'A darkeyed surgeon\'s son who became a slave, a bridgeman, and the first Windrunner of the new Radiance. Depression and the weight of everyone he failed nearly broke him more than once; Syl, Bridge Four and Teft kept dragging him back into the sky, and after Rhythm of War he turned his father\'s training on minds instead of bodies. In Wind and Truth he goes to Shinovar with Szeth to help a mad Herald, swears the Fifth Ideal to Ishar himself, and on Stormfall takes Jezrien\'s place in a reforged Oathpact. His body is left behind, and Szeth buries it. He is the Herald of Second Chances now.',
   },
   shallan: {
     wiki: 'Shallan',
-    see: ['pattern', 'adolin', 'jasnah', 'veil'],
-    bio: 'A Lightweaver who survived her family by fracturing herself into Veil and Radiant, then had to reclaim the truths those masks were hiding. Scholar, spy, murderer of a Cryptic\'s last knight, and eventually someone who can live with the whole story. Her art is not decoration; it is how she makes reality sit still long enough to face it.',
+    see: ['jasnah', 'adolin', 'lin-davar', 'helaran'],
+    bio: 'A Lightweaver who survived her family by splitting into Veil and Radiant, and then had to take back what those masks were holding: that the first Cryptic she bonded, Testament, was the one she killed, and that the mother she killed at eleven was the Herald Chanarach, sent with a Skybreaker to kill her, who hesitated. In Wind and Truth she hunts the Ghostbloods through the Spiritual Realm with Renarin and Rlain, and refuses the self she calls Formless. The Formless she finally stabs is Iyatil in disguise; she kills Mraize too, and Radiant folds back into her. She ends the book stranded in Shadesmar, where Cultivation\'s Perpendicularity has vanished, bargaining with Thaidakar for a seon that can reach Adolin.',
   },
   wax: {
     wiki: 'Waxillium_Ladrian',
-    see: ['wayne', 'steris', 'marasi', 'telsin', 'harmony'],
-    bio: 'Twinborn lawman of the Roughs dragged back to Elendel as Lord Ladrian. Steelpushes and ironpulls define his fights; Steris and Wayne define his life. He spends Era 2 learning that Harmony\'s quiet is not the same as Harmony\'s help, and that family can be the Set.',
+    see: ['wayne', 'steris', 'marasi', 'telsin', 'harmony', 'house-ladrian', 'weathering'],
+    bio: 'A Coinshot and a Skimmer who spent twenty years as a lawman in the Roughs, came home to Elendel when his uncle died, and found his uncle was Mister Suit. Harmony speaks to him through an earring MeLaan gave him; Lessie turned out to be a kandra; his sister shot him at the Sovereign\'s temple. By The Lost Metal he is a senator, a husband and a father, and Harmony\'s Sword — and he climbs the Shaw in Bilming to cut Telsin off from Autonomy, while Wayne goes out to sea with the bomb.',
   },
   jasnah: {
     wiki: 'Jasnah_Kholin',
-    see: ['ivory', 'shallan', 'dalinar', 'elsecallers'],
-    bio: 'Alethkar\'s heretic scholar-queen, an Elsecaller who Soulcasts assassins into smoke and walks Shadesmar on purpose. She mentors Shallan, out-argues Vorinism, and treats monarchy as another research problem with lethal stakes. Softness is not her brand; competence is.',
+    see: ['shallan', 'dalinar', 'navani', 'kharbranth'],
+    bio: 'Alethkar\'s heretic scholar-queen, an Elsecaller who Soulcasts assassins into smoke and walks Shadesmar on purpose, mentor to Shallan, and Wit\'s lover. In Wind and Truth she holds Thaylen City and finds the invasion ships empty; then the new Odium shows her his face, Taravangian\'s, and challenges her to a public debate for Thaylenah. Queen Fen chooses him. Jasnah ends things with Wit by letter, and he agrees. After Stormfall she gives the Shattered Plains to the listeners by treaty, watches Alethkar fall, and with Renarin begins a government that does not need a throne. By the time Knights of Wind and Truth is written, she leads her order.',
   },
   kelsier: {
     wiki: 'Kelsier',
@@ -33,7 +33,7 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   khriss: {
     wiki: 'Khrissalla',
-    see: ['nazh', 'silverlight', 'taldain', 'sand-mastery'],
+    see: ['baon', 'gevalden', 'kenton', 'taldain', 'sand-mastery', 'nazh'],
     bio: 'Duchess Khrissalla of Taldain, the Cosmere\'s foremost arcanist and the voice behind the Ars Arcanum essays. She studies Investiture the way generals study maps, sends Nazh to steal the footnotes, and knows more about your planet than your priests do.',
   },
   nazh: {
@@ -43,14 +43,13 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   galladon: {
     wiki: 'Galladon',
-    see: ['raoden', 'elantris-city', 'seventeenth-shard'],
-    // The Way of Kings Interlude 1; WoB 7427, 10085, 14949; Wind and Truth Interlude 11.
-    bio: 'A Duladen farmer taken by the Shaod, who knows Elantris because his father was an Elantrian before him, and who teaches Raoden how to live in it. Much later he is one of three Seventeenth Shard agents who pay a Purelake fisherman for five months to find Hoid. They never do. They leave, come back to Iri for a letter he left them, and leave again.',
+    see: ['raoden', 'karata', 'elantris-city', 'seventeenth-shard'],
+    bio: 'A Dula Elantrian who taught Raoden how to live in a broken city, then left Sel with the Seventeenth Shard. On Roshar, with Baon and Demoux, he hunts for Hoid; a Purelake fisherman knows him as Grump. Pessimistic, practical, and better travelled than he admits.',
   },
   sigzil: {
     wiki: 'Sigzil',
     see: ['hoid', 'kaladin', 'bridge-four'],
-    bio: 'Bridge Four\'s azish Worldsinger, Hoid\'s former apprentice, and later the man called Nomad. He held a Dawnshard long enough for the Night Brigade to hunt him across the stars, bonded the highspren Aux, and learned that skipping is not the same as escaping.',
+    bio: 'Bridge Four\'s Azish Worldsinger and Hoid\'s apprentice. In Wind and Truth he commands the Windrunners holding Narak: he watches Moash kill Leyten and his spren, and to save his own honorspren, Vienta, from Moash\'s knife he renounces his oaths. On the Night of Sorrows, with Retribution coming for him, Wit gives Sigzil the Dawnshard Exist and pushes him into Shadesmar, and he leaves Roshar with an Iriali caravan. He becomes the man called Nomad: bonded to Szeth\'s old highspren, Aux, hunted across the stars by the Night Brigade, and learning that skipping is not the same as escaping.',
   },
   vasher: {
     wiki: 'Vasher',
@@ -60,133 +59,132 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   azure: {
     wiki: 'Vivenna',
     see: ['vasher', 'siri', 'nightblood'],
-    bio: 'Vivenna of Idris, who lost her betrothal, her hair dye, and her certainties, then gained Breath, a Shardblade that is not a spren, and the name Azure. She hunts Vasher across worlds with a soldier\'s pragmatism and a princess\'s unfinished business.',
+    bio: 'Vivenna of Idris, who lost her betrothal, her hair, and her certainties, then gained Breath, a Shardblade that is not a spren, and the name Azure. She hunts Vasher across worlds with a soldier\'s pragmatism and a princess\'s unfinished business.',
   },
   demoux: {
     wiki: 'Demoux',
     see: ['kelsier', 'seventeenth-shard', 'sazed'],
-    // WoB 6683, 2561, 15956; The Way of Kings Interlude 1.
-    bio: 'A captain of Kelsier\'s rebellion and a general of the New Empire, a Seer the mists made and a preacher of the Survivor. He joins the Seventeenth Shard and slows his own ageing; on Roshar, Ishikk calls him Thinker because he listens more than he talks. He knows Iyatil and her brother Dlavil (Word of Brandon).',
+    bio: 'A captain of Kelsier\'s army who preached the Survivor at night in Luthadel, rose to general under Elend, and was struck down by the mists — which Snapped him into a Seer. Long after, he is one of the three who ask after Hoid on Roshar for the Seventeenth Shard.',
   },
   lift: {
     wiki: 'Lift',
-    see: ['wyndle', 'edgedancers', 'nightwatcher', 'dalinar'],
-    bio: 'A Reshi thief who asked the Old Magic to stay the same and received a metabolism that turns food into Lifelight. Edgedancer Ideals, Wyndle\'s complaining vines, and a stubborn compassion for the people empires forget.',
+    see: ['yanagawn', 'nightwatcher', 'azimir'],
+    bio: 'A Reshi thief who asked the Nightwatcher to stay herself, and got something stranger: a body that turns food into Lifelight, a foot in the Cognitive Realm, and hands that can touch spren. Edgedancer Ideals, Wyndle\'s complaining vines, and a stubborn compassion for the people empires forget. In Wind and Truth she is growing up and hates it, slips into the Stormfather\'s visions on her own, and teaches Gavinor that disobeying your elders is sometimes right, which is how he ends up in the Spiritual Realm.',
   },
   szeth: {
     wiki: 'Szeth',
-    see: ['nightblood', 'nale', 'kaladin', 'shin-shamans'],
-    bio: 'Truthless of Shinovar, Assassin in White, Skybreaker, and finally a man who chooses his own Ideal. He carries Nightblood, the guilt of kings, and a progress through oaths that is somehow both legalistic and raw.',
+    see: ['nightblood', 'kaladin', 'ishar', 'shin-shamans', 'truthless'],
+    bio: 'Szeth-son-Neturo: Truthless of Shinovar, the Assassin in White, Skybreaker. He went home with Kaladin to cleanse Shinovar and found that the Voice which had guided him since childhood was Ishar, and that the Honorbearers he had to beat included his own father and sister, remade as Ishar\'s Fused. He swore the Fifth Ideal and broke his bond with his highspren in the same breath, then freed them all with Nightblood; the sword ate his right arm. Ishar wanted him for a Herald. Kaladin took the place instead, and Szeth buried his body. Years on, he is married to the Shin historian who wrote the Knights of Wind and Truth down.',
   },
   sazed: {
     wiki: 'Sazed',
-    see: ['harmony', 'vin', 'kelsier', 'keepers', 'tensoon'],
-    bio: 'A Terris Keeper who catalogued dead religions, lost faith when Tindwyl died, and then remade Scadrial as Harmony. Two Shards in one Vessel leave him vast and often paralysed — the Hero of Ages who can rarely act without undoing himself.',
+    see: ['vin', 'kelsier', 'keepers', 'tindwyl', 'tensoon'],
+    bio: 'A Terris Keeper who catalogued dead religions, lost his faith when Tindwyl died, and then remade Scadrial as Harmony.',
   },
   elend: {
     wiki: 'Elend_Venture',
     see: ['vin', 'sazed', 'house-venture'],
-    bio: 'A scholarly heir who becomes emperor because someone has to read the books on how not to be his father. Mistborn by lerasium, idealist by temperament, he dies beside Vin holding a Koloss army and a philosophy that almost worked.',
+    bio: 'A scholarly heir who becomes king and then emperor because someone has to read the books on how not to be his father. He marries Vin, becomes Mistborn at the Well, and dies at the Battle of Hathsin, beheaded by Marsh, holding a koloss army and a philosophy that almost worked.',
   },
   marsh: {
     wiki: 'Marsh',
-    see: ['kelsier', 'inquisitor', 'harmony'],
-    bio: 'Kelsier\'s brother, turned Inquisitor against his will, then Ruin\'s favourite puppet. He murders a god on command and spends the next era as Ironeyes — Harmony\'s grim reminder that Hemalurgy does not easily let go.',
+    see: ['kelsier', 'inquisitor', 'steel-ministry', 'vin'],
+    bio: 'Kelsier\'s brother, made an Inquisitor by the Ministry he went in to spy on, then Ruin\'s favourite puppet. He beheads Elend at Hathsin and, with what is left of himself, tears out the earring that kept Vin from Preservation. Centuries later the Basin calls him Ironeyes, the death in its folk tales, and he still runs Harmony\'s errands.',
   },
   'lord-ruler': {
     wiki: 'Rashek',
-    see: ['well', 'vin', 'final-empire'],
-    bio: 'Rashek the Traveller, who murdered Alendi, took the Well, became the Lord Ruler, and crushed a planet into a thousand years of ash. Compounding made him unkillable until Vin found the flaw; history still walks in his footprints.',
+    see: ['alendi', 'kwaan', 'vin', 'final-empire', 'kredik-shaw'],
+    bio: 'Rashek, a Terris packman who killed Alendi at the Well of Ascension, took its power, and ruled Scadrial as the Lord Ruler for a thousand years of ash. Allomancy and Feruchemy together made him all but unkillable, until Vin took his metalminds from him.',
   },
   tensoon: {
     wiki: 'TenSoon',
-    see: ['vin', 'kandra', 'harmony', 'sazed'],
-    bio: 'A Third Generation kandra of Potency who wears OreSeur\'s bones, a dog\'s body, and eventually the trust of gods. He breaks the First Contract for Vin and becomes Harmony\'s messenger when the world needs a spy who can be anyone.',
+    see: ['vin', 'oreseur', 'kandra', 'sazed', 'melaan'],
+    bio: 'A Third Generation kandra, born with the Blessing of Presence, who took OreSeur\'s Blessing of Potency when he killed him and spent the siege of Luthadel in a wolfhound\'s bones as Vin\'s "OreSeur". He broke his Contract for her, stood trial in the Homeland, and pulled his own spikes when Ruin seized his body. Three centuries on he is Harmony\'s agent among the kandra, still partial to the wolfhound.',
   },
   spook: {
     wiki: 'Spook',
-    see: ['kelsier', 'sazed', 'vin'],
-    bio: 'The crew\'s half-skaa Tineye who becomes Lord Mistborn after the Catacendre — pewter-burning, city-building, and briefly Ruin\'s whisper-toy. Elendel remembers him as founder; the crew remembered him as the boy who wanted to be useful.',
+    see: ['clubs', 'kelsier', 'vin', 'beldre', 'quellion'],
+    bio: 'Clubs\'s nephew and the crew\'s youngest Tineye, who goes north to Urteau, takes a Hemalurgic spike that Ruin speaks through in Kelsier\'s voice, and tears it out to save the city. After the Catacendre Sazed makes him Mistborn, and he rules the survivors as the Lord Mistborn. The crew remembered him as the boy who wanted to be useful.',
   },
   wayne: {
     wiki: 'Wayne',
     see: ['wax', 'marasi', 'harmonium'],
-    bio: 'A Slider with a hat for every accent and a guilt for every grave. He speed-bubbles through Wax\'s disasters, loves Marasi without winning her, and dies buying Scadrial time with a bomb only he could place.',
+    bio: 'A Slider and a Bloodmaker with a hat for every accent, who shot a man named Durkel in a robbery at sixteen and has paid his daughter every month since. He rode with Wax in the Roughs, followed him to Elendel, joined the constabulary and partnered Marasi for six years. In The Lost Metal he pushes Wax off the Bilming warship, wraps the bomb in a speed bubble with duralumin and bendalloy burning together, and dies in the biggest explosion anyone has ever made. Harmony told him so.',
   },
   marasi: {
     wiki: 'Marasi_Colms',
     see: ['wax', 'wayne', 'steris', 'malwish'],
-    bio: 'Steris\'s illegitimate sister, constable, Pulser, and the scholar who actually finishes the political work Wax starts with bullets. She grows from admiring the Roughs into shaping Elendel\'s future — including a trip into the god-metal underbelly of the Cosmere.',
+    bio: 'Lord Harms\'s illegitimate daughter and Steris\'s half-sister, raised in the Outer Estates, who came to the city to study legal justice and criminal behaviour and had read every report about Wax and Wayne before she met them. Aradel hired her as a constable; at the Sovereign\'s temple she took up the Bands of Mourning and turned the fight. In The Lost Metal the Ghostbloods recruit her and she turns them down because she could not share what she learned. Two years later she is leaving for the Malwish Consortium as an ambassador, and planning to run for governor.',
   },
   steris: {
     wiki: 'Steris_Harms',
     see: ['wax', 'marasi', 'house-ladrian'],
-    bio: 'A woman who weaponises notebooks. Marriage to Wax begins as ledger-alliance and becomes the partnership that keeps House Ladrian solvent and alive; her contingency plans save as many lives as his Pushing.',
+    bio: 'A woman who weaponises notebooks: she memorises social rules because they do not come to her, and keeps a contingency for every occasion. Her marriage to Wax began as a contract and became the partnership that keeps House Ladrian solvent and alive. When the bomb came for Elendel she ran the evacuation of the docks herself, and the governor made her the city\'s Disaster Preparations Officer.',
   },
   melaan: {
     wiki: 'MeLaan',
     see: ['tensoon', 'wax', 'kandra', 'wayne'],
-    bio: 'A Sixth Generation kandra comfortable in any body and few boundaries. She spies for Harmony, flirts with disaster, and gives Wayne a goodbye that is pure MeLaan — honest, theatrical, and kind.',
+    bio: 'A Seventh Generation kandra raised by TenSoon, who backed him at his trial in the Homeland and freed the First Generation when KanPaar turned on them. Three centuries later she is Harmony\'s hands in Elendel, introduces herself to Wax at a party as "Milan", and wears Governor Innate\'s bones in front of a riot. After six years with Wayne she asked Harmony for a mission off-world — the first kandra to go — and left him for Shadesmar.',
   },
   dalinar: {
     wiki: 'Dalinar_Kholin',
-    see: ['navani', 'stormfather', 'evi', 'adolin', 'honor'],
-    bio: 'The Blackthorn who burned a city, forgot his wife by Cultivation\'s knife, and rebuilt himself into a Bondsmith. He refounds the Knights Radiant, renounces conquest, and eventually yields Honor\'s power rather than become another tyrant wearing a god.',
+    see: ['navani', 'stormfather', 'adolin', 'honor'],
+    bio: 'The Blackthorn who burned the Rift, gave his memory of his wife to the Old Magic, and rebuilt himself into a Bondsmith and the man who refounded the Knights Radiant. In Wind and Truth he walks Honor\'s past in the Spiritual Realm, then meets Odium\'s champion on top of Urithiru: Gavinor, grown up in a vision and taught to hate him. He will not kill the boy. He takes up Honor, finds it wants only war on Odium, and renounces his oaths instead, buying Roshar time with his life. He dies shielding Gavinor from the wind, and Taravangian takes up what he let go.',
   },
   adolin: {
     wiki: 'Adolin_Kholin',
-    see: ['shallan', 'maya', 'dalinar', 'renarin'],
-    bio: 'Alethi Shardbearer, duelist, and the Radiant who never spoke an Ideal — he befriended a deadeye instead. Maya\'s voice and his stubborn decency do as much for spren-human peace as many oaths.',
+    see: ['shallan', 'dalinar', 'renarin', 'kholin'],
+    bio: 'Dalinar\'s heir: duelist, Shardbearer, Shallan\'s husband, and the man who befriended a deadeye instead of speaking an Ideal. At Lasting Integrity Maya testified beside him. In Wind and Truth the coalition sends him to hold Azimir; a thunderclast takes his right leg below the knee, and he fights on with a peg. On the last day he took Azir\'s throne room back from Abidi the Monarch, and when Maya came through Shadesmar with thirty-seven deadeyes he called his ten the Unoathed. Azir is the one nation not under the Everstorm. All book long he is furious with his father, and then, before the end, he is not.',
   },
   renarin: {
     wiki: 'Renarin_Kholin',
-    see: ['glys', 'dalinar', 'adolin', 'truthwatchers'],
-    bio: 'The son who did not fit Alethi war culture, bonded an Enlightened mistspren, and sees futures Odium would rather stay blank. His Truthwatcher visions are a side channel in the war — quiet, stigmatised, and decisive.',
+    see: ['dalinar', 'adolin', 'elhokar', 'kholin'],
+    bio: 'Dalinar\'s younger son, who never fit Alethi war culture: quiet, epileptic, and bonded to Glys, a mistspren Enlightened by Sja-anat, so that he sees futures Odium would rather keep. In Wind and Truth he and Rlain hunt Ba-Ado-Mishram\'s prison through the Spiritual Realm and choose to break it open rather than seal her away again. After his father dies he refuses the crown of Urithiru and asks Jasnah to help him build a representative government instead.',
   },
   navani: {
     wiki: 'Navani_Kholin',
-    see: ['dalinar', 'sibling', 'fabrial', 'gavilar'],
-    bio: 'Artifabrian queen who turns grief into scholarship and scholarship into Towerlight. She bonds the Sibling, outmanoeuvres Raboniel in the weaponisation of anti-Light, and proves that engineering is a Radiant Calling.',
+    see: ['dalinar', 'fabrial', 'gavilar'],
+    bio: 'Gavilar\'s widow and Dalinar\'s wife, an artifabrian who turned grief into scholarship and scholarship into Towerlight. She bonded the Sibling and out-thought Raboniel. In Wind and Truth she walks Roshar\'s history with Dalinar in the Spiritual Realm, one of the few humans who can find its pure tones, and comes back believing she has Gavinor; Taravangian has left her a sleeping copy. When Dalinar dies she has the Sibling seal Urithiru in crystal against Retribution, and sleeps inside it.',
   },
   venli: {
     wiki: 'Venli',
-    see: ['timbre', 'eshonai', 'odium', 'willshapers'],
-    bio: 'Listener scholar who bargained toward stormform, lost her sister to it, and then took a different spren entirely. As a Willshaper and Voice, she tries to build a singer future that is neither slavery nor Odium\'s script.',
+    see: ['eshonai', 'listeners', 'thude'],
+    bio: 'A listener scholar who bargained her people toward stormform, lost her sister to it, and then took a different spren entirely: a Willshaper, the Last Listener, Raboniel\'s Voice. In Wind and Truth she goes home to Narak and what is left of the listeners, with their new chasmfiend allies and Leshwi looking for a place outside Odium. Under the plateau she finds the Well of Control. When the contest begins the listeners hold Narak by treaty with Jasnah, and El withdraws. After Stormfall Retribution lets them take Warlight, and Venli tells her people they will take in anyone who will listen for peace.',
   },
   taravangian: {
     wiki: 'Taravangian',
-    see: ['diagram', 'odium', 'retribution', 'cultivation'],
-    bio: 'King of Kharbranth who built the Diagram on one brilliant day and a hospital of Death Rattles. He murders his way into Odium\'s Shard, takes Honor as well, and becomes Retribution — the disaster Cultivation thought she could aim.',
+    see: ['odium', 'cultivation'],
+    bio: 'King of Kharbranth, whose Diagram was written on the one day he woke brilliant. At the end of Rhythm of War he killed Rayse with Nightblood and took up Odium. In Wind and Truth he keeps every contract by its letter: he raises Gavinor in a vision to be his champion, and when Dalinar gives up Honor he takes that too and becomes Retribution, among the most Invested beings in the cosmere and no longer bound to Roshar\'s system. He destroys the Stormfather, folds the highstorm into the Everstorm, and goes to ground before the other Shards can move. Kharbranth, which he seemed to drown, is safe in a copy he built in the Spiritual Realm.',
   },
   moash: {
     wiki: 'Moash',
     see: ['kaladin', 'odium', 'jezrien'],
-    bio: 'Bridge Four\'s friend who chooses vengeance over the Ideal, kills a Herald, and takes Vyre\'s name under Odium. He is the warning Kaladin cannot stop replaying: protection without mercy curdles.',
+    bio: 'Bridge Four\'s friend who chose vengeance over the Ideal, killed Elhokar and a Herald, and took Vyre\'s name under Odium. In Rhythm of War he kills Teft. In Wind and Truth, blinded, he lets Odium and the Herald Battar drive crystal spikes into his eyes so that he sees Investiture as light; on the Shattered Plains he kills Leyten and his spren, and comes close to Vienta. He is the warning Kaladin cannot stop replaying: protection without mercy curdles.',
   },
   rlain: {
     wiki: 'Rlain',
-    see: ['renarin', 'bridge-four', 'listener', 'timbre'],
-    bio: 'Listener spy who becomes Bridge Four\'s bridge, then a Truthwatcher with an Enlightened spren of his own. He stands between human and singer camps when both sides want simpler enemies.',
+    see: ['kaladin', 'bridge-four', 'teft'],
+    bio: 'A listener spy who became Bridge Four\'s own, and then, in the occupation of Urithiru, a Truthwatcher bonded to the Enlightened mistspren Tumi. In Wind and Truth he goes into the Spiritual Realm after Ba-Ado-Mishram with Renarin and Shallan, argues that hating all humans for Melishi\'s betrayal is exactly what Odium wants, and convinces Renarin that they must free her. When she strikes at Renarin, Rlain steps between them. He and Renarin are together.',
   },
   teft: {
     wiki: 'Teft',
-    see: ['kaladin', 'bridge-four', 'firemoss', 'windrunners'],
-    bio: 'A firemoss addict who takes the First Ideal seriously enough to drag Bridge Four into Radiance with him. He dies in Urithiru buying Kaladin time — a sergeant\'s death, and a Windrunner\'s.',
+    see: ['kaladin', 'bridge-four'],
+    bio: 'Bridge Four\'s sergeant, raised among the Envisagers who wanted the Radiants back, and a firemoss addict who takes the First Ideal seriously enough to drag Bridge Four into Radiance with him. He bonds Phendorana. In the occupation of Urithiru he dies fighting Moash to shield the helpless Radiants: a sergeant\'s death, and a Windrunner\'s.',
   },
   rock: {
-    wiki: 'Rock_(Roshar)',
+    wiki: 'Lunamor',
     see: ['kaladin', 'bridge-four', 'horneaters'],
     bio: 'Numuhukumakiaki\'aialunamor — Horneater cook, bridgepuller, and the man who sees spren when others cannot. He feeds Bridge Four until the war asks him to kill, then goes home carrying scars stewardship cannot wash off.',
   },
   rysn: {
     wiki: 'Rysn_Ftori',
-    see: ['dawnshard', 'chiri-chiri', 'nikli', 'command-change'],
-    bio: 'Thaylen merchant who trades her legs, gains a larkin, and becomes the bearer of Change. The Sleepless guard her; the Dawnshard rewrites her so she cannot casually destroy life — a merchant\'s oath written into the spiritweb.',
+    see: [],
+    bio: 'A Thaylen merchant who lost the use of her legs in a fall on Relu-na, raised a larkin, and at Akinah became the bearer of the Dawnshard Change, which the Sleepless had guarded for millennia. It lies dormant in her, though she can sense life, and a voice in her head offers suggestions. Afterward she makes the coalition accept Thaylen patent law, and goes into business with Huio.',
   },
   eshonai: {
     wiki: 'Eshonai',
-    see: ['venli', 'stormform', 'listener'],
-    bio: 'Listener Shardbearer and general who wanted exploration more than war, then became stormform\'s first tragedy. Her death is the Everstorm\'s birth-cry; her sister inherits both the guilt and the chance to choose differently.',
+    see: [],
+    bio: 'A listener general and Shardbearer who wanted to explore the world more than fight for it. To save her people she took stormform, and it took her; her sister inherits both the guilt and the chance to choose differently. In her last moments she bonded Timbre.',
   },
   siri: {
     wiki: 'Siri',
@@ -245,13 +243,13 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   shai: {
     wiki: 'Wan_ShaiLu',
-    see: ['forgery', 'rose-empire', 'essence-mark'],
-    bio: 'A Forger who rewrites objects — and herself — with stamps and research. Imprisoned to restore an emperor\'s soul, she walks out having forged a life the court cannot quite revoke.',
+    see: ['gaotona', 'ashravan', 'frava', 'han-shuxen', 'forgery', 'ghostbloods'],
+    bio: 'A MaiPon Forger, among the best alive, caught in the Rose Palace after the Imperial Fool swapped her fake Moon Scepter for the real one and gave her up. Facing execution, she is offered a deal: Forge a new soul for the comatose Emperor Ashravan within his hundred days of mourning. She carries five Essence Marks that took eight years to make, writes him a soul with no backdoors in it, and walks out. Long afterwards, unable to go home to Sel, she is a Ghostblood on Scadrial called Moonlight; under Bilming she stamps her own past to become an Elantrian and holds a wall so Marasi can get through — and no longer remembers who Marasi is.',
   },
   silence: {
     wiki: 'Silence_Montane',
     see: ['william-ann', 'shade', 'simple-rules'],
-    bio: 'A Forests innkeeper who harvests shades with silver and silence. She keeps her daughter alive through debt, lies, and the Simple Rules — a horror story told from the hunter\'s side of the counter.',
+    bio: 'Proprietor of a waystop in the Forests of Hell and, secretly, the White Fox, the bounty hunter every storyteller in the Forests has a tale about. She takes Chesterton Divide\'s bounty to keep the waystop out of Theopolis\'s hands; it costs William Ann a hand and very nearly both their lives. Her grandmother\'s shade, locked in the shrine, settles Theopolis.',
   },
   dusk: {
     wiki: 'Sixth_of_the_Dusk',
@@ -260,20 +258,18 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   mraize: {
     wiki: 'Mraize',
-    see: ['iyatil', 'shallan', 'ghostbloods'],
-    bio: 'Ghostblood handler on Roshar: hunter, collector, and teacher of ugly lessons. He recruits Shallan, answers to Iyatil, and ultimately to Thaidakar — trophies on his wall, strings on everyone else.',
+    see: ['shallan', 'iyatil', 'ghostbloods', 'thaidakar'],
+    bio: 'Betd, called Mraize: a Thaylen-born Ghostblood, hunter and collector, Shallan\'s handler, answering to Iyatil and to Thaidakar. He bonded an Enlightened Cryptic of his own and learned to Lightweave. In Wind and Truth he hunts Ba-Ado-Mishram\'s prison through the Spiritual Realm with Iyatil wearing the face of Shallan\'s Formless. Shallan kills them both; Mraize dies breathing in Stormlight, trying to heal from a knife that will not let him.',
   },
   iyatil: {
     wiki: 'Iyatil',
-    see: ['mraize', 'ghostbloods', 'seventeenth-shard'],
-    // WoB 12733, 13475, 8134; Rhythm of War ch. 13; Wind and Truth chs. 28, 49, 134, 138.
-    bio: 'Born in Silverlight, of the Southern Scadrian Hunters by blood, and a member of the Seventeenth Shard before the Ghostbloods had her (Word of Brandon). On Roshar she outranked Mraize and reported to Thaidakar by seon, chasing Stormlight that could be moved off-world. Sja-anat gave her an Enlightened inkspren. In the Spiritual Realm she wore Formless\'s face to steer Shallan, and when Shallan\'s anti-Stormlight knife found her and she tried to heal, it killed her.',
+    see: ['mraize', 'ghostbloods', 'thaidakar'],
+    bio: 'A masked Ghostblood of Southern Scadrian blood, from Silverlight, who outranks Mraize on Roshar and is his babsk. In Wind and Truth she follows Dalinar into the Spiritual Realm wearing a Lightweaving of Shallan\'s Formless. Shallan drives an anti-Stormlight knife into her eye; when Iyatil tries to heal, the two Lights destroy her.',
   },
   felt: {
     wiki: 'Felt',
-    see: ['elend', 'scadrial'],
-    // WoB 11812, 1514; Oathbringer ch. 114; Rhythm of War ch. 21; Wind and Truth Interlude 1, ch. 25.
-    bio: 'A minor nobleman\'s third son who works for a living, and cosmere-aware even in the Final Empire — close to the trade through the Pits of Hathsin, though how close Brandon will not say. On Roshar he scouted for Dalinar, who trusted him with the trip to the Nightwatcher, and for Adolin in Shadesmar. The Ghostbloods sent him to take Kalak. He has belonged to a great many groups; his wife Malli goes where he goes.',
+    see: ['elend', 'kelsier', 'ghostbloods'],
+    bio: 'A House Venture spy who tailed Kelsier\'s crew for Elend, and who turns up, by Word of Brandon, as a scout on Roshar\'s Shattered Plains — and in Ghostblood company. Bland competence, and a reminder that Scadrial\'s agents got off-world somehow.',
   },
   design: {
     wiki: 'Design',
@@ -292,70 +288,69 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
     bio: 'A Sleepless guardian who wears a human role beside Rysn until the Dawnshard secret forces honesty. Hordelings, guilt, and an ancient mandate to keep Change from becoming a weapon.',
   },
   nightblood: {
-    wiki: 'Nightblood_(Roshar)',
-    see: ['vasher', 'szeth', 'type-iv', 'command'],
+    wiki: 'Nightblood',
+    see: ['vasher', 'shashara', 'type-iv', 'command'],
     bio: 'A Type IV BioChromatic entity in sword form, Commanded to destroy evil and permanently confused about the definition. It vaporizes what it judges, chatters like a child, and has changed hands from Vasher to Szeth without getting any better at philosophy.',
   },
   lopen: {
     wiki: 'Lopen',
-    see: ['kaladin', 'bridge-four', 'windrunners'],
-    bio: 'Herazanian one-armed Windrunner who collects cousins, nicknames, and the Second Ideal with equal enthusiasm. He grows the arm back and never grows out of being Bridge Four\'s best morale officer.',
+    see: ['kaladin', 'bridge-four'],
+    bio: 'A one-armed Herdazian on Bridge Four who collects cousins, nicknames and opinions. He grows the arm back with Stormlight, swears the Windrunner Ideals with the honorspren Rua, and never grows out of being Bridge Four\'s best morale officer.',
   },
   baon: {
     wiki: 'Baon',
-    see: ['kenton', 'khriss', 'seventeenth-shard'],
-    // White Sand (Dynasty agent); The Way of Kings Interlude 1; WoB 9208, 5556, 1564.
-    bio: 'A Darksider soldier and crack shot who guards Khrissalla across the Kerla — and was sent by the Dynasty to judge whether the sand masters were a threat. He sees no conflict between the two jobs. Later he is one of the three Seventeenth Shard agents asking after Hoid on Roshar.',
+    see: ['kenton', 'khriss', 'cynder', 'acron', 'seventeenth-shard'],
+    bio: 'A Darksider warrior who guards scholars across Taldain and later across the Cosmere. One of the three Seventeenth Shard agents asking after Hoid on Roshar — loyalty as a profession.',
   },
   syl: {
     wiki: 'Sylphrena',
-    see: ['kaladin', 'honorspren', 'windrunners'],
-    bio: 'An honorspren who defied Lasting Integrity to bond Kaladin. She dies when he breaks, returns when he remembers why he wanted to be good, and remains the wind\'s opinion about what honour is for.',
+    see: ['kaladin'],
+    bio: 'An honorspren, one of the Stormfather\'s first children, born in the Godforge, who defied Lasting Integrity to bond Kaladin. She dies when he breaks and returns when he remembers why he wanted to be good. In Wind and Truth she feels despair for the first time, and when the Stormfather is destroyed she stands with Kaladin as he takes Jezrien\'s place: the spren of a Herald.',
   },
   pattern: {
     wiki: 'Pattern',
-    see: ['shallan', 'cryptic', 'lightweavers'],
-    bio: 'A Cryptic who loves lies that become true. He bonds Shallan, survives her attempted murder of him in childhood memory, and keeps humming whenever the truth is about to hurt productively.',
+    see: ['shallan'],
+    bio: 'A Cryptic who loves lies that become true. He bonds Shallan knowing she killed the Cryptic before him, and keeps humming whenever the truth is about to hurt productively.',
   },
   ivory: {
     wiki: 'Ivory',
-    see: ['jasnah', 'inkspren', 'elsecallers'],
+    see: ['jasnah'],
     bio: 'An inkspren who risked a human bond after the Recreance\'s betrayal. He matches Jasnah for precision and occasionally for disdain — a scholar\'s spren in every sense.',
   },
   stormfather: {
     wiki: 'Stormfather',
-    see: ['dalinar', 'honor', 'highstorm', 'tanavast'],
-    bio: 'A Cognitive Shadow of Honor\'s power fused with an ancient spren, sender of highstorms and binder of Bondsmiths. He remembers Tanavast, distrusts humans, and still kneels into a bond with Dalinar.',
+    see: ['dalinar', 'highstorm', 'honorspren'],
+    bio: 'A spren of the highstorm, first made an avatar of Honor and later merged with a half-finished Cognitive Shadow of Tanavast, so that he carries Honor\'s memories. He made the modern honorspren, stopped after the Recreance, and then made ten more. He bonded Dalinar as a Bondsmith, and in Wind and Truth showed him Honor\'s history. On Stormfall, Retribution destroyed him.',
   },
   nightwatcher: {
     wiki: 'Nightwatcher',
-    see: ['cultivation', 'old-magic', 'dalinar', 'lift'],
+    see: ['cultivation', 'old-magic', 'dalinar'],
     bio: 'Cultivation\'s spren of the Old Magic, dispenser of boons and curses in the Valley. She is younger than the Stormfather in personality, older in consequence, and not interested in making petitioners comfortable.',
   },
   sibling: {
     wiki: 'Sibling',
     see: ['navani', 'urithiru', 'towerlight', 'bondsmiths'],
-    bio: 'The third Bondsmith spren, soul of Urithiru. Wounded by the Recreance\'s aftershocks and Raboniel\'s occupation, it bonds Navani and relearns how to trust a human with the tower\'s veins.',
+    bio: 'The third Bondsmith spren, soul of Urithiru, child of Honor and Cultivation. Wounded by the Recreance\'s aftershocks and Raboniel\'s occupation, they bond Navani and relearn how to trust a human with the tower\'s veins. When Dalinar dies on Stormfall, the Sibling and Navani seal the tower in crystal that even a Shard cannot break, and both fall into a coma; inside, the fabrials still run.',
   },
   nale: {
     wiki: 'Nale',
-    see: ['szeth', 'skybreakers', 'heralds', 'ishar'],
-    bio: 'Herald of Justice and the only one who never abandoned the Skybreakers. He hunts nascent Radiants under Ishar\'s bad advice, bonds a highspren, and remains the most legally dangerous immortal on Roshar.',
+    see: ['szeth', 'heralds', 'ishar', 'kaladin'],
+    bio: 'Nalan\'Elin, Herald of Justice, born on Ashyn at his uncle Makibak\'s side. For a thousand years he hunted every Surgebinder outside his own Skybreakers, because Ishar told him the return of the Radiants would bring a Desolation. In Shinovar Kaladin broke through his rationalisations and he fell apart in horror at what he had become; his highspren left him. He helped Szeth and Kaladin reach Ishar, and on Stormfall he laid the Honorblades in the circle that remade the Oathpact.',
   },
   taln: {
     wiki: 'Talenel',
     see: ['heralds', 'oathpact', 'shalash'],
-    bio: 'Herald of War who held Braize alone for four thousand years after the others broke. He returns mad, loyal, and still trying to warn a world that has turned his agony into scripture.',
+    bio: 'Talenelat\'Elin, Herald of War, and the tenth Herald: Nale put him forward when Hoid turned the place down. At Aharietiam he died holding a pass nobody could hold, and the other nine left him on Braize alone for four and a half thousand years. He came back broken, repeating his warning, and spent most of the True Desolation in other people\'s care. At Azimir, when Abidi the Monarch sent Fused to kill him and Ash, Taln stood up and Abidi fled; he died there, on a pile of the dead, with Ash beside him. In the reforged Oathpact his mind is somewhere the Fused cannot reach, and he has told Kaladin he forgives the others.',
   },
   ishar: {
     wiki: 'Ishar',
-    see: ['heralds', 'bondsmiths', 'nale', 'dalinar'],
-    bio: 'Herald who would be a god of bonds. His experiments tear spren and men apart; his madness wears the mask of priesthood. Dalinar\'s confrontation with him is Bondsmith against Bondsmith unbound.',
+    see: ['heralds', 'nale', 'szeth'],
+    bio: 'The Herald who Connected the others to Honor and bound the Oathpact. Long before, on Ashyn, Odium tricked him first into the experiments with the Surges that ruined that world. A thousand years before the True Desolation he took a fraction of the Well of Control and Connected himself to Shinovar like a god: he spoke in Shin heads as the Voice, groomed Szeth for decades to replace a Herald, drove the spren out of the land, and remade the Honorbearers as human Fused. On Stormfall Kaladin swore his Fifth Ideal to him and forced Odium\'s power out. Ishar then reforged the Oathpact, and made Kaladin a Herald.',
   },
   gavilar: {
     wiki: 'Gavilar_Kholin',
-    see: ['dalinar', 'navani', 'sons-of-honor', 'szeth'],
-    bio: 'King of Alethkar who unified a kingdom and secretly chased immortality through Voidlight and old oaths. Szeth kills him on the night he would have made the wrong kind of history — and still almost did.',
+    see: ['dalinar', 'navani', 'szeth', 'elhokar'],
+    bio: 'King of Alethkar, who unified the princedoms with Dalinar as his knife. In secret he was a Son of Honor, harvesting Voidlight with Vasher\'s help and working the Stormfather for the Words that would make him a Herald, meaning to give in on Braize and come back with every death. Szeth killed him on the night of the treaty. In Wind and Truth, Dalinar finally accepts that his brother was not the man he thought.',
   },
   sadeas: {
     wiki: 'Torol_Sadeas',
@@ -370,7 +365,7 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   maya: {
     wiki: 'Mayalaran',
     see: ['adolin', 'deadeye', 'recreance'],
-    bio: 'A cultivationspren deadeye who relearns personhood through Adolin\'s stubborn friendship. She speaks at Lasting Integrity and cracks the thesis that a broken oath ends a spren forever.',
+    bio: 'Mayalaran, a cultivationspren bonded to an Edgedancer before the Recreance, and Adolin\'s Shardblade ever since. His stubborn friendship drew her back toward personhood, and at Lasting Integrity she spoke for him. In Wind and Truth he can summon her again, and before the contest she crossed Shadesmar and came back to Azimir with thirty-seven deadeyes: the Blades and Plate of the Unoathed. Since Ba-Ado-Mishram was freed, the deadeyes have begun to heal.',
   },
   timbre: {
     wiki: 'Timbre',
@@ -380,8 +375,7 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   telsin: {
     wiki: 'Telsin_Ladrian',
     see: ['wax', 'trell', 'the-set'],
-    // The Bands of Mourning chs. 27, 35; The Lost Metal chs. 18–19, 21, 66, 69, epilogue.
-    bio: 'Wax\'s sister. She joined the Set young, brought their uncle in for his money, and rose to be its Key. She talked Autonomy out of simply destroying Scadrial by promising to conquer the Basin instead, and was made an avatar on a deadline. In Independence Tower Harmony cut her off from Autonomy; Autonomy let her go, and she died. Scratched into her arm: "You have proven yourselves. For now."',
+    bio: 'Wax\'s sister, who stayed in the Village when he left, joined the Set as a young woman and brought their uncle in for his money. She faked her death with Edwarn and played the Set\'s captive to control her brother; at the Sovereign\'s temple she shot him three times and took MeLaan\'s spikes. As the Key she persuaded Autonomy to let her prove Scadrial could be conquered, and built Bilming to do it. When Harmony cut her Connection on the roof of the Shaw, Autonomy left her, and she died with "You have proven yourselves. For now." scratched into her own arm.',
   },
   blushweaver: {
     wiki: 'Blushweaver',
@@ -391,12 +385,12 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   denth: {
     wiki: 'Denth',
     see: ['vasher', 'azure', 'nightblood'],
-    bio: 'A Returned mercenary who smiles while steering Vivenna into catastrophe. Old comrade to Vasher, on the other side of the Manywar\'s leftovers — until the smile cracks.',
+    bio: 'A Returned mercenary, and one of the Five Scholars, who smiles while steering Vivenna into the war Bluefingers is paying for. He took Vasher\'s side in the Manywar and has hated him since Vasher killed his sister Shashara with Nightblood. He is the better swordsman; Vasher wins their last duel with a trick.',
   },
   dilaf: {
     wiki: 'Dilaf',
     see: ['hrathen', 'dakhor', 'shu-dereth'],
-    bio: 'A Dakhor gragdet wearing the mask of an Arelene priest. Hatred of Elantris outruns even Wyrn\'s strategy; Hrathen dies stopping him.',
+    bio: 'Hrathen\'s zealous arteth in Kae — in truth the gragdet of Dakhor, his body remade to pass as Arelene. He hates Elantris because the woman he loved died despite Elantrian help. He leads the massacres in Kae and Teoras; Hrathen kills him, and dies of it.',
   },
   breeze: {
     wiki: 'Breeze',
@@ -406,7 +400,7 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   ham: {
     wiki: 'Hammond',
     see: ['kelsier', 'breeze', 'pewterarm'],
-    bio: 'A Thug who philosophises between pewter burns. Muscle for the crew, conscience in plate armour, happier in a debate than a massacre.',
+    bio: 'A Thug who philosophises between pewter burns. Muscle for the crew, its conscience, and happier in a debate than a massacre.',
   },
   frost: {
     wiki: 'Frost',
@@ -416,7 +410,7 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   koravellium: {
     wiki: 'Koravellium_Avast',
     see: ['cultivation', 'taravangian', 'nightwatcher', 'honor'],
-    bio: 'Dragon Vessel of Cultivation. She prunes Dalinar, gambles on Taravangian, and withdraws when Retribution crowns itself — gardening on a scale that makes mortals into hedging shears.',
+    bio: 'Dragon Vessel of Cultivation, a heretic on Yolen for refusing to be worshipped, who helped Shatter Adonalsium because she believes no one god can rule everyone. She and Tanavast loved each other, against his oaths. She prunes Dalinar\'s memories and gambles on Taravangian with a boon that makes him Odium; when he becomes Retribution she leaves Roshar, and her perpendicularity vanishes behind her.',
   },
   xisis: {
     wiki: 'Xisisrefliel',

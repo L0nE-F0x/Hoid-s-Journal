@@ -31,5 +31,24 @@ export default defineConfig({
   base: './',
   plugins: [glsl({ compress: false }), siteUrl()],
   server: { host: '127.0.0.1', port: 5174 },
-  build: { target: 'es2022', assetsInlineLimit: 0 },
+  build: {
+    target: 'es2022',
+    assetsInlineLimit: 0,
+    // The engine and the lore are each ~650 kB on purpose; warn past that.
+    chunkSizeWarningLimit: 720,
+    // Three is most of the bytes and changes once a release; the lore changes
+    // with nearly every commit. As one 1.6 MB chunk, a new paragraph about a
+    // Herald sent every returning reader the whole renderer again. Split, a
+    // lore deploy re-downloads the lore and the browser keeps the engine.
+    // Both are preloaded by the entry, so a first visit costs the same.
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('/node_modules/three/') || id.includes('/node_modules/postprocessing/')) return 'engine';
+          if (id.includes('/src/data/')) return 'lore';
+          return undefined;
+        },
+      },
+    },
+  },
 });

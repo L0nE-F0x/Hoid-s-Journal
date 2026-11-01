@@ -268,8 +268,12 @@ async function run() {
         // click: the moon that is furthest away is often the one that has
         // projected off the edge of the window entirely, and clicking past the
         // viewport reports whatever was selected before.
+        // And not under a panel: the atlas and the card cover the left of
+        // the frame, and a click there is the panel's, so the selection
+        // stayed on Roshar whenever the playhead left a moon behind them.
         const onScreen = x > 8 && x < window.innerWidth - 8
-          && y > 8 && y < window.innerHeight - 8;
+          && y > 8 && y < window.innerHeight - 8
+          && document.elementFromPoint(x, y)?.id === 'stage';
         if (onScreen && d > 28 && (!best || d > best.d)) best = { id, x, y, d };
       }
       return best;
@@ -690,6 +694,97 @@ async function run() {
     check('UTol and Komashi are a double planet',
       !!pair && pair.apart < 6 && pair.out > 12, JSON.stringify(pair));
 
+    // A mark measured on a Stewart city plate is a place you can click, at
+    // the spot the plate draws it. `on` UVs are 0–1 of the named file and the
+    // atlas stretches the file over its canvas, so the dot is that fraction of
+    // the canvas rect. Read from the data rather than copied here, so a
+    // re-measure moves the click with it. (The Urithiru check above uses a
+    // roster chip; this one is the mouse on the art.)
+    await page.evaluate(() => {
+      window.__ceph.store.set('selected', null);
+      window.__ceph.store.set('year', 1);
+      window.__ceph.store.set('era', 3);
+      window.__ceph.store.set('cameraCue', { kind: 'focus', id: 'elendel', scale: 'city' });
+    });
+    await settle(page);
+    await page.waitForFunction(() => {
+      const s = window.__ceph.store.state;
+      return s.scale === 'city' && s.focusedLocation === 'elendel'
+        && document.querySelector('.ceph-atlas-credit')?.textContent;
+    }, { timeout: 20000, polling: 200 }).catch(() => {});
+    await sleep(800);
+    const plateMark = await page.evaluate(async () => {
+      const { landmarkById } = await import('/src/data/cities.ts');
+      const c = document.querySelector('.ceph-atlas-canvas');
+      const hit = landmarkById['elendel-rebirth']?.on?.find((o) => o.file === 'elendel.jpg');
+      if (!(c instanceof HTMLElement) || !hit) return null;
+      const r = c.getBoundingClientRect();
+      return { x: r.left + r.width * hit.u, y: r.top + r.height * hit.v };
+    });
+    if (plateMark) {
+      await page.mouse.click(plateMark.x, plateMark.y);
+      await sleep(300);
+    }
+    s = await state(page);
+    check('a measured mark on a Stewart city plate is clicked where it is drawn',
+      !!plateMark && s.scale === 'city' && s.selected === 'elendel-rebirth',
+      `${s.scale}/${s.focusedLocation}/${s.selected}`);
+    await page.evaluate(() => window.__ceph.store.set('selected', null));
+    // A lost WebGL context must come back as the same sky, not stay black.
+    // A hybrid laptop loses it on every GPU switch; the app used to stop for
+    // good and ask for a reload. Measure the middle of the frame, where the
+    // world is, before the loss and after the restore.
+    {
+      await page.evaluate(() => window.__ceph.store.set('cameraCue', { kind: 'focus', id: 'roshar', scale: 'globe' }));
+      await settle(page);
+      const brightness = async () => {
+        const c = await freeCentre(page);
+        const shot = await page.screenshot({
+          type: 'png', encoding: 'base64',
+          clip: { x: c.x - 120, y: c.y - 120, width: 240, height: 240 },
+        });
+        return page.evaluate(async (b64) => {
+          const img = new Image();
+          img.src = `data:image/png;base64,${b64}`;
+          await img.decode();
+          const cv = document.createElement('canvas');
+          cv.width = 60; cv.height = 60;
+          const g = cv.getContext('2d');
+          g.drawImage(img, 0, 0, 60, 60);
+          const d = g.getImageData(0, 0, 60, 60).data;
+          let sum = 0;
+          for (let i = 0; i < d.length; i += 4) sum += (d[i] + d[i + 1] + d[i + 2]) / 3;
+          return sum / (d.length / 4);
+        }, shot);
+      };
+      const lit = await brightness();
+      await page.evaluate(() => window.__ceph.app.renderer.forceContextLoss());
+      await sleep(600);
+      const down = await page.evaluate(() => ({
+        fault: window.__ceph.store.state.fault, frame: window.__ceph.app.frameCount,
+      }));
+      await sleep(400);
+      const still = await page.evaluate(() => window.__ceph.app.frameCount);
+      check('a lost context says so and stops drawing',
+        !!down.fault && still === down.frame, JSON.stringify({ ...down, still }));
+      await page.evaluate(() => window.__ceph.app.renderer.forceContextRestore());
+      await sleep(slowRenderer ? 6000 : 1500);
+      await settle(page);
+      const back = await page.evaluate(() => {
+        const a = window.__ceph.app;
+        const albedo = a.orrery.bodyNodes.get('roshar').mat.uniforms.uAlbedo.value;
+        return {
+          fault: window.__ceph.store.state.fault,
+          lost: a.renderer.getContext().isContextLost(),
+          baked: !!albedo.isRenderTargetTexture,
+        };
+      });
+      const relit = await brightness();
+      check('a restored context brings the sky back without a reload',
+        !back.fault && !back.lost && back.baked && relit > lit * 0.75,
+        JSON.stringify({ ...back, before: Math.round(lit), after: Math.round(relit) }));
+    }
+
     // A phone still leaves the world a band to live in.
     await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 1 });
     await page.evaluate(() => window.dispatchEvent(new Event('resize')));
@@ -713,6 +808,36 @@ async function run() {
     check('phone tool strip can scroll',
       !!tools && tools.overflow === 'auto' && tools.pointer !== 'none',
       JSON.stringify(tools));
+
+    // A link is a string anyone can type, and one the app writes itself in
+    // the Spiritual Realm. Neither may strand the reader. An unknown id used
+    // to leave the app at globe scale over an empty sky; a Spiritual link
+    // flew to the world it named and parked the camera eighty units from the
+    // Shard map, in a white wash.
+    for (const [hash, want, test] of [
+      ['scale=globe&body=nonexistent', 'no unknown body in the store',
+        (s) => s.body !== 'nonexistent' && s.scale !== 'surface'],
+      ['y=0.0&realm=spiritual&scale=city&system=rosharan&body=roshar&loc=kholinar', 'the Shard map is framed',
+        (s) => s.realm === 'spiritual' && s.aim < 6],
+    ]) {
+      const link = await browser.newPage();
+      await link.setViewport({ width: 1512, height: 900, deviceScaleFactor: 1 });
+      const linkErrors = [];
+      link.on('pageerror', (e) => linkErrors.push(e.message));
+      await link.goto(`${URL}#${hash}`, { waitUntil: 'domcontentloaded', timeout: 30000 });
+      await link.waitForFunction('window.__ceph && window.__ceph.store.state.ready', { timeout: 60000, polling: 200 });
+      await sleep(slowRenderer ? 12000 : 4000);
+      const s = await link.evaluate(() => {
+        const st = window.__ceph.store.state;
+        return {
+          scale: st.scale, realm: st.realm, body: st.focusedBody,
+          aim: window.__ceph.app.rig.target.length(),
+        };
+      });
+      check(`a link to #${hash.slice(0, 32)}… lands: ${want}`, test(s) && !linkErrors.length,
+        JSON.stringify({ ...s, aim: Math.round(s.aim), errors: linkErrors.slice(0, 1) }));
+      await link.close();
+    }
 
     check('no page errors', errors.length === 0, errors.slice(0, 2).join(' | '));
   } finally {

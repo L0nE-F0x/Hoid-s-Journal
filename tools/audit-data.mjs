@@ -208,6 +208,12 @@ const { coastCoverage, hasCoast } = await (async () => {
  * Reshi Isles are region pins among islands; Rishir's centre is land on the
  * plate and only reads wet because the mask is blurred, which eats capes.
  *
+ * The Conventical of Seran sits on its own printed dot on `final_empire.jpg`,
+ * right on the empire's dashed south-eastern border. The ash trace reads
+ * everything beyond that border as sea — it is hatched land on the plate,
+ * with the River Seran running through it — so the pin is right and the
+ * mask is wrong there.
+ *
  * Do not add to this list to silence a pin. Measure it off the plate first —
  * Kasitor, Cusicesh and Rit-vo-Ma were all genuinely in the wrong place, and
  * they were found because this report was short.
@@ -215,7 +221,7 @@ const { coastCoverage, hasCoast } = await (async () => {
 const AT_SEA_ON_PURPOSE = new Set([
   'the-origin', 'reshi-isles', 'aimia', 'aimian-scouring', 'fu-abra', 'rishir',
   'tarat-sea', 'steamwater-ocean', 'reshi-sea', 'southern-depths', 'purelake-temple',
-  'hammondar-bay',
+  'hammondar-bay', 'conventical-of-seran',
 ]);
 
 const wet = [];
@@ -273,7 +279,10 @@ if (noRegion) note(`locations without a region: ${pct(noRegion, C.locations.leng
 const noCat = C.glossary.filter((g) => !g.category).length;
 if (noCat) note(`glossary terms with no category (the Codex chips skip them): ${pct(noCat, C.glossary.length)}`);
 const noMembers = C.organizations.filter((o) => !o.members?.length).length;
-if (noMembers) note(`organizations with no members: ${pct(noMembers, C.organizations.length)}`);
+if (noMembers) {
+  note(`organizations with no members: ${pct(noMembers, C.organizations.length)}`);
+  note(`    ${C.organizations.filter((o) => !o.members?.length).map((o) => o.id).join(', ')}`);
+}
 
 // Counted the way the web builds it: hand-written relations, org rosters,
 // home world, and `see[]` in either direction. A person with none of those
@@ -290,20 +299,58 @@ const isolated = C.characters.filter((c) => !degree.has(c.id)).length;
 if (isolated) note(`people with no Lore Web edge: ${pct(isolated, C.characters.length)}`);
 
 // Two pins closer than this land on top of each other at every zoom.
+//
+// That is only a fault when the two are different places drawn on the same
+// plate. A place inside another — a keep in Luthadel, the windblades in
+// Kholinar, Stormseat under Narak — is meant to share its spot: it names the
+// other as its `region` or points at it with `see`, or both sit in one named
+// place whose own pin is right there. And two pins that are never drawn
+// together are not a crowd at all: another Realm, or another era's plate
+// (Scadrial's ash and basin pins are measured on two different maps, so
+// their UVs coincide by accident). What is left is named, because a count
+// with no names sent nobody to the plate.
+const CROWD = 0.004;
+const locByName = new Map(C.locations.map((l) => [l.name, l]));
+const near = (a, b, d) => Math.abs(a.u - b.u) < d && Math.abs(a.v - b.v) < d;
+const drawnTogether = (a, b) => {
+  if ((a.realm ?? 'physical') !== (b.realm ?? 'physical')) return false;
+  if (a.eraMaps && b.eraMaps && !a.eraMaps.some((m) => b.eraMaps.includes(m))) return false;
+  const lo = Math.max(a.eraMin ?? -Infinity, b.eraMin ?? -Infinity);
+  const hi = Math.min(a.eraMax ?? Infinity, b.eraMax ?? Infinity);
+  return lo <= hi;
+};
+// Only a *place* can hold another at its own spot. A country or a sea pin
+// belongs on its printed name, so Rall Elorim sitting on Iri's pin, or the
+// Shattered Plains on Narak's, is still a fault. `canEnterCity` is the
+// app's own test for a point rather than a region.
+const point = (l) => D.canEnterCity(l);
+const inside = (inner, outer) =>
+  point(outer) && (inner.region === outer.name || !!inner.see?.includes(outer.id) || !!outer.see?.includes(inner.id));
+const nested = (a, b) => {
+  if (inside(a, b) || inside(b, a)) return true;
+  const home = a.region && a.region === b.region ? locByName.get(a.region) : undefined;
+  return !!home && point(home) && home.body === a.body && near(home, a, 0.016) && near(home, b, 0.016);
+};
 const byBody = new Map();
 for (const l of C.locations) {
   if (!byBody.has(l.body)) byBody.set(l.body, []);
   byBody.get(l.body).push(l);
 }
-let crowded = 0;
+const crowded = [];
 for (const ls of byBody.values()) {
   for (let i = 0; i < ls.length; i++) {
     for (let j = i + 1; j < ls.length; j++) {
-      if (Math.abs(ls[i].u - ls[j].u) < 0.004 && Math.abs(ls[i].v - ls[j].v) < 0.004) crowded++;
+      const a = ls[i];
+      const b = ls[j];
+      if (!near(a, b, CROWD) || !drawnTogether(a, b) || nested(a, b)) continue;
+      crowded.push(`${a.id} ~ ${b.id} (${a.body})`);
     }
   }
 }
-if (crowded) note(`pin pairs within 0.004 uv of each other: ${crowded}`);
+if (crowded.length) {
+  note(`different places within ${CROWD} uv of each other on one plate — measure one off it: ${crowded.length}`);
+  for (const c of crowded) note(`    ${c}`);
+}
 
 // --- report ------------------------------------------------------------------
 const counts = ORDER.map(([k, rows]) => `${rows.length} ${k}`).join(' · ');

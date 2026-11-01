@@ -23,7 +23,8 @@ import sporeVert from '../shaders/spore.vert';
 import sporeFrag from '../shaders/spore.frag';
 import beltVert from '../shaders/belt.vert';
 import beltFrag from '../shaders/belt.frag';
-import { PLATE_LARGE, PLATE_SMALL, planetPlates, seedFromId } from './planetBake.ts';
+import { PLATE_LARGE, PLATE_SMALL, planetPlates, platesReady, seedFromId } from './planetBake.ts';
+import { rewriteLine } from './lines.ts';
 
 const _off = new THREE.Vector3();
 const _partner = new THREE.Vector3();
@@ -61,6 +62,13 @@ interface BodyNode {
 
 const SHADESMAR_SKY = '#8b6bd6';
 const TRAIL_STEPS = 26;
+/** Cosmere scale draws a shorter comet tail; see `updateTrails`. */
+const TRAIL_STEPS_FAR = 10;
+const _trailPts = new Float32Array(TRAIL_STEPS * 3);
+const _trailCols = new Float32Array(TRAIL_STEPS * 3);
+const _trailPtsFar = new Float32Array(TRAIL_STEPS_FAR * 3);
+const _trailColsFar = new Float32Array(TRAIL_STEPS_FAR * 3);
+const _trailTint = new THREE.Color();
 
 /**
  * Fade the half of an orbit that is behind its own star.
@@ -570,6 +578,8 @@ export class Orrery {
           uCraters: { value: moon.parent === 'lumar-world' ? 0.15 : 0.8 },
           uGlow: { value: moon.parent === 'lumar-world' ? 0.22 : 0.0 },
           uDetail: { value: 1 },
+          // Always zero; keeps the noise octaves rolled. See noise.glsl.
+          uOctaveZero: { value: 0 },
         },
         vertexShader: planetVert,
         fragmentShader: moonFrag,
@@ -699,6 +709,21 @@ export class Orrery {
     this.spinLock = spin;
   }
 
+  /**
+   * Unbind every world's plates after a lost context comes back. Each world
+   * wears the neutral stand-in until `update` asks for its plate again on the
+   * usual per-frame budget, nearest world first.
+   */
+  forgetPlates(): void {
+    const blank = this.blankPlate();
+    for (const node of this.bodyNodes.values()) {
+      node.skin = '';
+      node.mat.uniforms.uAlbedo.value = blank;
+      node.mat.uniforms.uData.value = blank;
+    }
+    this.detailed = null;
+  }
+
   /** Shader sample counts. Mesh LOD is per-body in `update`, not a global swap. */
   setQuality(band: 'high' | 'medium' | 'low'): void {
     this.band = band;
@@ -754,7 +779,9 @@ export class Orrery {
     const flipped = biome !== this.lastBiome || shadesmar !== this.lastCognitive;
     this.lastBiome = biome;
     this.lastCognitive = shadesmar;
-    let budget = flipped ? 4 : 2;
+    // Nothing until the baker has linked: a bake before that blocks the main
+    // thread on the compile (see `warmPlateProgram`). Worlds wear the stand-in.
+    let budget = !platesReady() ? 0 : flipped ? 4 : 2;
     // The world you are looking at cannot wait its turn behind ten gas giants.
     const queue = [...this.bodyNodes.values()].sort((a, b) => {
       const ax = a.body.id === visual.focusedBody ? 0 : a.body.system === visual.focusedSystem ? 1 : 2;
@@ -1074,7 +1101,7 @@ export class Orrery {
       this.lastTrailYear = year;
       this.lastTrailKey = key;
     }
-    const steps = scale === 'cosmere' ? 10 : TRAIL_STEPS;
+    const steps = scale === 'cosmere' ? TRAIL_STEPS_FAR : TRAIL_STEPS;
     for (const node of this.bodyNodes.values()) {
       const mine = scale === 'system'
         ? node.body.system === focusedSystem
@@ -1084,19 +1111,25 @@ export class Orrery {
       if (!rebuild) continue;
       const sysPos = node.sunPos;
       const span = 0.16 / Math.max(0.0001, node.body.orbit.period);
-      const pts: number[] = [];
-      const cols: number[] = [];
-      const c = new THREE.Color(node.body.color);
+      const pts = steps === TRAIL_STEPS ? _trailPts : _trailPtsFar;
+      const cols = steps === TRAIL_STEPS ? _trailCols : _trailColsFar;
+      const c = _trailTint.set(node.body.color);
       for (let i = 0; i < steps; i++) {
         const t = i / (steps - 1);
         keplerOffset(node.body.orbit, year - span * (1 - t), _off);
-        pts.push(_off.x + sysPos.x, _off.y + sysPos.y, _off.z + sysPos.z);
+        pts[i * 3] = _off.x + sysPos.x;
+        pts[i * 3 + 1] = _off.y + sysPos.y;
+        pts[i * 3 + 2] = _off.z + sysPos.z;
         const k = Math.pow(t, 2.4) * 0.9;
-        cols.push(c.r * k, c.g * k, c.b * k);
+        cols[i * 3] = c.r * k;
+        cols[i * 3 + 1] = c.g * k;
+        cols[i * 3 + 2] = c.b * k;
       }
-      node.trailGeo.setPositions(pts);
-      node.trailGeo.setColors(cols);
-      node.trail.computeLineDistances();
+      // Into the buffers the trail already has (see `lines.ts`). Fifty worlds
+      // each built three new GPU buffers on every rebuild, and at a fast
+      // playhead that is every frame. The trail is not dashed, so its line
+      // distances were never read.
+      rewriteLine(node.trailGeo, pts, cols);
     }
   }
 }

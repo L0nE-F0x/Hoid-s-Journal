@@ -3,6 +3,7 @@ import { coastBytes, COAST_H, COAST_W } from '../cartography/coastlines.ts';
 import { DEFAULT_FLORA, recipeFor, type Recipe } from '../cartography/recipes.ts';
 import bakeVert from '../shaders/planetBake.vert';
 import bakeFrag from '../shaders/planetBake.frag';
+import { compileAsync } from './compile.ts';
 
 /**
  * Equirectangular plates baked on the GPU. Two draws per world — albedo, then
@@ -112,6 +113,8 @@ function ensureQuad(): THREE.ShaderMaterial {
       uWedges: { value: Array.from({ length: MAX_WEDGES }, () => new THREE.Color()) },
       uHasMask: { value: 0 },
       uMask: { value: null },
+      // Always zero. It keeps the noise octaves as loops; see noise.glsl.
+      uOctaveZero: { value: 0 },
     },
     vertexShader: bakeVert,
     fragmentShader: bakeFrag,
@@ -124,6 +127,31 @@ function ensureQuad(): THREE.ShaderMaterial {
   scene.add(quad);
   cam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
   return material;
+}
+
+let warm: Promise<void> | null = null;
+let warmed = false;
+
+/**
+ * Start linking the baker's program without waiting for it.
+ *
+ * It is the largest shader in the app — every recipe branch, a dozen noise
+ * fields — and on an integrated GPU the link took four seconds, which used to
+ * be four seconds of frozen boot screen inside the first plate bake. Callers
+ * that can wait (the orrery, the warm queue) check `platesReady` and leave a
+ * world on its neutral stand-in until then; anything that bakes regardless,
+ * like the cartography test, still gets its plate, synchronously, as before.
+ */
+export function warmPlateProgram(renderer: THREE.WebGLRenderer): Promise<void> {
+  if (warm) return warm;
+  ensureQuad();
+  warm = compileAsync(renderer, scene!, cam!).then(() => { warmed = true; });
+  return warm;
+}
+
+/** True once the baker's program has finished linking. */
+export function platesReady(): boolean {
+  return warmed;
 }
 
 function applyRecipe(mat: THREE.ShaderMaterial, r: Recipe, seed: number, cognitive: boolean): void {
@@ -196,6 +224,22 @@ function evict(): void {
     for (const rt of gone.targets) rt.dispose();
     cache.delete(gone.key);
   }
+}
+
+/**
+ * Drop every plate after the WebGL context has been lost and restored.
+ *
+ * Their contents went with the old context, and re-baking a hundred pairs in
+ * the frame the driver comes back is exactly the kind of spike that loses it
+ * again. So they are forgotten instead — not disposed, since their GL objects
+ * belonged to a context that no longer exists — and each world asks for its
+ * plate again through the same budgeted path it used at boot.
+ */
+export function forgetPlates(): void {
+  cache.clear();
+  // The program went with the context too; link it again before baking.
+  warm = null;
+  warmed = false;
 }
 
 /**

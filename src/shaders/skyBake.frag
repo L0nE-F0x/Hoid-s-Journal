@@ -1,3 +1,5 @@
+// Baked once at boot: keep the noise octaves as loops (see noise.glsl).
+#define NOISE_ROLLED_OCTAVES
 #include "./lib/skyfield.glsl"
 
 /** One equirectangular plate of deep sky. Run twice: Physical, then Cognitive. */

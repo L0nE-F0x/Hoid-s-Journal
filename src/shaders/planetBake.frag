@@ -1,3 +1,5 @@
+// Built once per plate, so compile time matters more than loop overhead.
+#define NOISE_ROLLED_OCTAVES
 #include "./lib/noise.glsl"
 
 /**

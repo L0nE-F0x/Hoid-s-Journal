@@ -67,6 +67,15 @@ export const RELATION_ARCS: { a: string; b: string; arc: string }[] = [
   { a: 'kaladin', b: 'moash', arc: 'wor' },
   { a: 'moash', b: 'jezrien', arc: 'oathbringer' },
   { a: 'venli', b: 'leshwi', arc: 'row' },
+  // Thaylen City and the Heralds
+  { a: 'jasnah', b: 'hoid', arc: 'row' },
+  { a: 'jasnah', b: 'taravangian', arc: 'wat' },
+  { a: 'fen', b: 'taravangian', arc: 'wat' },
+  { a: 'kalak', b: 'restares', arc: 'row' },
+  { a: 'chana', b: 'lin-davar', arc: 'wat' },
+  { a: 'lift', b: 'gavinor', arc: 'wat' },
+  { a: 'dieno', b: 'sheler', arc: 'oathbringer' },
+  { a: 'lift', b: 'dalinar', arc: 'oathbringer' },
   // Azimir
   { a: 'shalash', b: 'taln', arc: 'oathbringer' },
   { a: 'shalash', b: 'jezrien', arc: 'wat' },

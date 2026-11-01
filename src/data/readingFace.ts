@@ -117,7 +117,8 @@ export const READING_FACES: Record<string, ReadingFace> = {
       bio: 'Gavilar\'s daughter and a scholar who says the Vorin church is wrong out loud. Shallan comes to Kharbranth to be her ward.',
     },
     steps: [
-      { book: 'stormlight', arc: 'oathbringer', published: true },
+      { book: 'stormlight', arc: 'oathbringer', bio: 'Alethkar\'s heretic scholar-queen, an Elsecaller who Soulcasts assassins into smoke and walks Shadesmar on purpose. She mentors Shallan, out-argues Vorinism, and treats monarchy as another research problem with lethal stakes. Softness is not her brand; competence is.' },
+      { book: 'stormlight', arc: 'wat', published: true },
     ],
   },
   navani: {
@@ -818,6 +819,63 @@ export const READING_FACES: Record<string, ReadingFace> = {
       { book: 'stormlight', arc: 'wat', published: true },
     ],
   },
+  lift: {
+    early: {
+      fact: 'A Reshi thief who glows when she eats, and does not like being told no.',
+      abilities: 'Something the Nightwatcher gave her',
+      aliases: 'Lift',
+      bio: 'A Reshi thief who claims to be ten, eats everything, and calls the glow it gives her her awesomeness. She asked the Nightwatcher for something and got it. Breaking into the Azish palace, she brings a dying boy back to life, and he is made Prime.',
+    },
+    steps: [
+      {
+        book: 'stormlight', arc: 'edgedancer',
+        fact: 'An Edgedancer who remembers the people everyone forgets.',
+        abilities: 'Edgedancer Radiant',
+        aliases: 'Lift',
+        bio: 'A Reshi thief bonded to Wyndle, a cultivationspren who wanted a gardener. In Yeddaw she outruns Darkness and his Skybreakers and swears to remember those who have been forgotten.',
+      },
+      { book: 'stormlight', arc: 'row', fact: 'A thief whose body turns food into Lifelight.', bio: 'A Reshi thief who asked the Old Magic to stay the same and received a metabolism that turns food into Lifelight. Edgedancer Ideals, Wyndle\'s complaining vines, and a stubborn compassion for the people empires forget.' },
+      { book: 'stormlight', arc: 'wat', published: true },
+    ],
+  },
+  kalak: {
+    early: {
+      fact: 'One of the ten Heralds, who opens The Way of Kings walking away from a battlefield.',
+      abilities: 'Herald · Honorblade',
+      aliases: 'Kalak, Kelek',
+      bio: 'One of the ten Heralds. In the Prelude he walks off the field of Aharietiam, and with the others leaves his Blade in the stone and Taln behind on Braize.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'row', aliases: 'Kelek, Kellai, Restares', bio: 'Herald of Resolute and Building, patron of the Willshapers. After Aharietiam he fled into Shadesmar and became High Judge of the honorspren at Lasting Integrity, and, as Restares, the leader of the Sons of Honor. Exhausted and afraid of Braize, he knows more about spren law and the ancient Radiants than almost anyone alive.' },
+      { book: 'stormlight', arc: 'wat', published: true },
+    ],
+  },
+  chana: {
+    early: {
+      fact: 'Herald of the Common Man, patron of the Dustbringers.',
+      bio: 'Herald of the Common Man and patron of the Dustbringers, fierce and protective in the Vorin stories: Chana help whoever stands between a mother and her own.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'wat', published: true },
+    ],
+  },
+  pailiah: {
+    early: {
+      aliases: 'Pali, Pailiah\'Elin, Herald of Learned',
+      bio: 'Herald of Learned and Giving, patron of the Truthwatchers. Like most of her peers she walked away from the Oathpact at Aharietiam and has spent the intervening millennia fractured. Sightings in the present day remain sparse and contested.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'wat', published: true },
+    ],
+  },
+  fen: {
+    early: {
+      bio: 'Queen of Thaylenah during the True Desolation. Pragmatic, sharp-tongued, and unwilling to pawn her island for Alethi theater; becomes one of Dalinar\'s essential coalition partners.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'wat', published: true },
+    ],
+  },
   neturo: {
     early: {
       fact: 'Szeth\'s father: a Shin shepherd who taught him to add to the world, not subtract.',
@@ -895,7 +953,8 @@ export const READING_FACES: Record<string, ReadingFace> = {
       bio: 'Vstim\'s apprentice, learning that a deal is a kind of travel.',
     },
     steps: [
-      { book: 'stormlight', arc: 'dawnshard', published: true },
+      { book: 'stormlight', arc: 'dawnshard', bio: 'A Thaylen merchant who lost the use of her legs in a fall on Relu-na, raised a larkin, and at Akinah became the bearer of the Dawnshard Change, which the Sleepless had guarded for millennia. It lies dormant in her, though she can sense life.' },
+      { book: 'stormlight', arc: 'wat', published: true },
     ],
   },
 };

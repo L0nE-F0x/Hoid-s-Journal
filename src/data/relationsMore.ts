@@ -80,6 +80,15 @@ export const RELATIONS_MORE: Relation[] = [
   { a: { kind: 'character', id: 'thundercloud' }, b: { kind: 'org', id: 'listeners' }, type: 'ally', label: 'Chasmfiend allies', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'dami' }, b: { kind: 'org', id: 'stonewards' }, type: 'ally', label: 'Stoneward of the Fourth Ideal', book: 'stormlight', canon: C },
 
+  // --- Thaylen City and the Heralds (Wind and Truth) ------------------
+  { a: { kind: 'character', id: 'jasnah' }, b: { kind: 'character', id: 'hoid' }, type: 'romance', label: 'Lovers, until her letter', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'jasnah' }, b: { kind: 'character', id: 'taravangian' }, type: 'rival', label: 'Debated him for Thaylenah, and lost', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'fen' }, b: { kind: 'character', id: 'taravangian' }, type: 'ally', label: 'Signed Thaylenah over to him', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'kalak' }, b: { kind: 'character', id: 'restares' }, type: 'ally', label: 'The same man', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'chana' }, b: { kind: 'character', id: 'lin-davar' }, type: 'romance', label: 'Married, in another life', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'lift' }, b: { kind: 'character', id: 'gavinor' }, type: 'ally', label: 'Taught him a secret handshake', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'dieno' }, b: { kind: 'character', id: 'sheler' }, type: 'rival', label: 'Let his victims choose', book: 'stormlight', canon: C },
+
   // --- Shallan family ---------------------------------------------------
   { a: { kind: 'character', id: 'shallan' }, b: { kind: 'character', id: 'lin-davar' }, type: 'family', label: 'Daughter & father', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'shallan' }, b: { kind: 'character', id: 'helaran' }, type: 'family', label: 'Sister & brother', book: 'stormlight', canon: C },

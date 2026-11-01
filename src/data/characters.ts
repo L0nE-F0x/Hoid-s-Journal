@@ -117,9 +117,9 @@ export const CHARACTERS: Character[] = [
     ]),
   ch('lift', 'Lift', '#86efac', 'stormlight', 'Roshar', 'Lift',
     'Edgedancer Radiant',
-    'A thief who metabolizes food directly into Stormlight.', false, [
+    'A thief who turns food into Light, and the only person who can grab a spren.', false, [
       { era: 3, system: 'rosharan', body: 'roshar' },
-    ]),
+    ], { arc: 'wor' }),
   ch('szeth', 'Szeth', '#e2e8f0', 'stormlight', 'Roshar', 'Szeth-son-Neturo, Szeth-son-son-Vallano, Truthless, the Assassin in White',
     'Skybreaker of the Fifth Ideal (bond broken) · Nightblood',
     'The Assassin in White, who went home and cut his family free of a Herald.', false, [
@@ -226,7 +226,7 @@ export const CHARACTERS: Character[] = [
       { era: 3, system: 'rosharan', body: 'roshar' },
     ]),
   ch('rysn', 'Rysn Ftori', '#a1a1aa', 'stormlight', 'Roshar', 'Dawnshard',
-    'Dawnshard of Change',
+    'Bearer of the Dawnshard Change',
     'Thaylen merchant who became something the Sleepless could not refuse.', false, [
       { era: 3, system: 'rosharan', body: 'roshar' },
     ]),

@@ -24,8 +24,8 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   jasnah: {
     wiki: 'Jasnah_Kholin',
-    see: ['ivory', 'shallan', 'dalinar', 'elsecallers'],
-    bio: 'Alethkar\'s heretic scholar-queen, an Elsecaller who Soulcasts assassins into smoke and walks Shadesmar on purpose. She mentors Shallan, out-argues Vorinism, and treats monarchy as another research problem with lethal stakes. Softness is not her brand; competence is.',
+    see: ['shallan', 'dalinar', 'navani', 'kharbranth'],
+    bio: 'Alethkar\'s heretic scholar-queen, an Elsecaller who Soulcasts assassins into smoke and walks Shadesmar on purpose, mentor to Shallan, and Wit\'s lover. In Wind and Truth she holds Thaylen City and finds the invasion ships empty; then the new Odium shows her his face, Taravangian\'s, and challenges her to a public debate for Thaylenah. Queen Fen chooses him. Jasnah ends things with Wit by letter, and he agrees. After Stormfall she gives the Shattered Plains to the listeners by treaty, watches Alethkar fall, and with Renarin begins a government that does not need a throne. By the time Knights of Wind and Truth is written, she leads her order.',
   },
   kelsier: {
     wiki: 'Kelsier',
@@ -68,8 +68,8 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   lift: {
     wiki: 'Lift',
-    see: ['wyndle', 'edgedancers', 'nightwatcher', 'dalinar'],
-    bio: 'A Reshi thief who asked the Old Magic to stay the same and received a metabolism that turns food into Lifelight. Edgedancer Ideals, Wyndle\'s complaining vines, and a stubborn compassion for the people empires forget.',
+    see: ['yanagawn', 'nightwatcher', 'azimir'],
+    bio: 'A Reshi thief who asked the Nightwatcher to stay herself, and got something stranger: a body that turns food into Lifelight, a foot in the Cognitive Realm, and hands that can touch spren. Edgedancer Ideals, Wyndle\'s complaining vines, and a stubborn compassion for the people empires forget. In Wind and Truth she is growing up and hates it, slips into the Stormfather\'s visions on her own, and teaches Gavinor that disobeying your elders is sometimes right, which is how he ends up in the Spiritual Realm.',
   },
   szeth: {
     wiki: 'Szeth',
@@ -179,7 +179,7 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   rysn: {
     wiki: 'Rysn_Ftori',
     see: ['dawnshard', 'chiri-chiri', 'nikli', 'command-change'],
-    bio: 'Thaylen merchant who trades her legs, gains a larkin, and becomes the bearer of Change. The Sleepless guard her; the Dawnshard rewrites her so she cannot casually destroy life — a merchant\'s oath written into the spiritweb.',
+    bio: 'A Thaylen merchant who lost the use of her legs in a fall on Relu-na, raised a larkin, and at Akinah became the bearer of the Dawnshard Change, which the Sleepless had guarded for millennia. It lies dormant in her, though she can sense life, and a voice in her head offers suggestions. Afterward she makes the coalition accept Thaylen patent law, and goes into business with Huio.',
   },
   eshonai: {
     wiki: 'Eshonai',

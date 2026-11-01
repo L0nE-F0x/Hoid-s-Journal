@@ -2,7 +2,7 @@
  * Isaac Stewart cartography, shown in the atlas with credit.
  * Globe textures stay procedural — these plates are not equirectangular.
  */
-import { scadrialIsBasin } from '../data/index.ts';
+import { isVisible, scadrialIsBasin } from '../data/index.ts';
 
 const BASE = `${import.meta.env.BASE_URL}maps/`;
 
@@ -49,23 +49,38 @@ export interface MapLayer {
   file: string;
   /** Who made this plate, when it is not Isaac Stewart's cartography. */
   credit?: string;
+  /**
+   * The book whose events the drawing itself shows. A plate is art, and some
+   * of it is annotated: Thaylen City's survey is Navani's map of a battle.
+   * A reader short of this book gets the plate's other layers, or the
+   * procedural plan, as a city with no Stewart plate does.
+   */
+  book?: string;
+  arc?: string;
 }
 
 const CITY_LAYERS: Record<string, MapLayer[]> = {
   urithiru: [{ name: 'Tower', file: 'urithiru.jpg' }],
   kholinar: [{ name: 'City', file: 'Kholinar.jpg' }],
   kharbranth: [{ name: 'City', file: 'kharbranth.jpg' }],
-  'thaylen-city': [{ name: 'City', file: 'thaylen_city.jpg' }],
+  // "Rough map of the Battle of Thaylen Field. Annotated by Navani Kholin":
+  // where the enemy fleet landed, where the wall broke, where the Thrill came
+  // out of the sea. Oathbringer's climax, printed on the city's only plate.
+  'thaylen-city': [{ name: 'City', file: 'thaylen_city.jpg', book: 'stormlight', arc: 'oathbringer' }],
+  // The radial sketch is Shallan's Words of Radiance map ("Mapped on the
+  // journey to the center", "Mapped while lost in the chasms"; Coppermind
+  // files it as Shattered_Plains_WoR_map). The symmetry it shows is that
+  // book's discovery, so a Way of Kings reader keeps the other two layers.
   'shattered-plains': [
     { name: 'Plains', file: 'shattered_plains.jpg' },
     { name: 'Warcamps', file: 'warcamps.jpg' },
-    { name: 'Detail', file: 'shattered_plains2.jpg' },
+    { name: 'Detail', file: 'shattered_plains2.jpg', book: 'stormlight', arc: 'wor' },
   ],
   // The radial sketch is the only plate whose centre is Narak itself.
   narak: [
     { name: 'Plains', file: 'shattered_plains.jpg' },
     { name: 'Warcamps', file: 'warcamps.jpg' },
-    { name: 'Detail', file: 'shattered_plains2.jpg' },
+    { name: 'Detail', file: 'shattered_plains2.jpg', book: 'stormlight', arc: 'wor' },
   ],
   luthadel: [
     { name: 'Survey', file: 'luthadel.jpg' },
@@ -75,20 +90,24 @@ const CITY_LAYERS: Record<string, MapLayer[]> = {
   ],
   elendel: [
     { name: 'Basin', file: 'elendel.jpg' },
-    { name: 'Lost Metal', file: 'elendel_lost_metal.jpeg' },
+    // The survey as printed with The Lost Metal: it marks places from across
+    // the whole Wax and Wayne era, so it waits for the book it came in.
+    { name: 'Lost Metal', file: 'elendel_lost_metal.jpeg', book: 'mistborn2', arc: 'tlm' },
   ],
   fadrex: [{ name: 'City', file: 'fadrex.jpg' }],
   urteau: [{ name: 'City', file: 'urteau.jpg' }],
   'new-seran': [{ name: 'City', file: 'new_seran.png' }],
 };
 
-export function cityMapLayers(locationId: string): MapLayer[] {
-  return CITY_LAYERS[locationId] ?? [];
+/** A city's plates, without the ones whose drawing is ahead of the reader. */
+export function cityMapLayers(locationId: string, progress?: Record<string, number>): MapLayer[] {
+  const layers = CITY_LAYERS[locationId] ?? [];
+  return progress ? layers.filter((l) => !l.book || isVisible(l, progress)) : layers;
 }
 
-export function cityMapFile(locationId: string, layer = 0): string | null {
-  const layers = CITY_LAYERS[locationId];
-  if (!layers?.length) return null;
+export function cityMapFile(locationId: string, layer = 0, progress?: Record<string, number>): string | null {
+  const layers = cityMapLayers(locationId, progress);
+  if (!layers.length) return null;
   return layers[Math.min(layer, layers.length - 1)]!.file;
 }
 

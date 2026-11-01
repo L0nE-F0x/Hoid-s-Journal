@@ -194,7 +194,7 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
     ctx.clearRect(0, 0, W, H);
     fit = { x: 0, y: 0, w: 1, h: 1 };
     if (s.scale === 'city' && s.focusedLocation) {
-      const raster = getOfficialMap(cityMapFile(s.focusedLocation, plateLayer), () => { composeMap(); composePins(); paint(); });
+      const raster = getOfficialMap(cityMapFile(s.focusedLocation, plateLayer, s.readProgress), () => { composeMap(); composePins(); paint(); });
       if (raster) {
         plateMode = 'official';
         drawPlate(ctx, raster);
@@ -222,7 +222,7 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
   const pinRows = (): { id: string; name: string; u: number; v: number; color: string }[] => {
     const s = store.state;
     if (s.scale === 'city' && s.focusedLocation && plateMode === 'official') {
-      const file = cityMapFile(s.focusedLocation, plateLayer);
+      const file = cityMapFile(s.focusedLocation, plateLayer, s.readProgress);
       const plate = cityById[s.focusedLocation];
       if (!file || !plate) return [];
       // World-map coordinates painted on a city drawing were a lie: Alethkar
@@ -466,7 +466,7 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
       : `w:${s.focusedBody}:${s.era}:${basin}:${s.realm}`;
     if (key !== plateKey) { plateKey = key; plateLayer = 0; }
     const layerRows = s.scale === 'city' && loc
-      ? cityMapLayers(loc.id)
+      ? cityMapLayers(loc.id, s.readProgress)
       : worldMapLayers(body.id, s.era, s.realm === 'cognitive', s.year, s.readProgress);
     layersEl.replaceChildren();
     if (layerRows.length > 1) {
@@ -481,7 +481,7 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
       });
     }
     const official = s.scale === 'city' && loc
-      ? !!cityMapFile(loc.id, plateLayer)
+      ? !!cityMapFile(loc.id, plateLayer, s.readProgress)
       : !!worldMapFile(body.id, s.era, s.realm === 'cognitive', plateLayer, s.year, s.readProgress);
     if (s.scale === 'city' && loc) {
       kicker.textContent = official ? 'City plate' : (cityById[loc.id] ? 'City plate' : 'Local scan');

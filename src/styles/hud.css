@@ -420,8 +420,27 @@
 .ceph-codex-counts {
   display: flex;
   flex-wrap: wrap;
-  gap: 14px 18px;
+  gap: 6px 10px;
   margin: 8px 0 4px;
+}
+/* The index of the title screen, as a row of ways in. */
+.ceph-codex-count {
+  pointer-events: auto;
+  appearance: none;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  border-radius: 0;
+  cursor: pointer;
+  padding: 3px 4px;
+  transition: border-color 160ms var(--ceph-ease);
+}
+.ceph-codex-count:hover { border-bottom-color: var(--ceph-border-strong); }
+.ceph-codex-count:hover span { color: var(--ceph-text-dim); }
+.ceph-grid.ceph-codex-grid {
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 8px;
+  margin-top: 6px;
 }
 .ceph-meta {
   display: grid;
@@ -534,6 +553,20 @@
   letter-spacing: 0.02em;
 }
 .ceph-search::placeholder { color: var(--ceph-text-faint); }
+/* The browser's own clear button is a bold white glyph unlike anything else
+   in the chrome. Same job, drawn as a hairline cross in the dim ink. */
+.ceph-search::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 11px;
+  height: 11px;
+  margin-right: 4px;
+  cursor: pointer;
+  background:
+    linear-gradient(45deg, transparent calc(50% - 0.7px), var(--ceph-text-dim) calc(50% - 0.7px), var(--ceph-text-dim) calc(50% + 0.7px), transparent calc(50% + 0.7px)),
+    linear-gradient(-45deg, transparent calc(50% - 0.7px), var(--ceph-text-dim) calc(50% - 0.7px), var(--ceph-text-dim) calc(50% + 0.7px), transparent calc(50% + 0.7px));
+}
+.ceph-search::-webkit-search-cancel-button:hover { filter: brightness(1.5); }
 .ceph-search:focus { border-bottom-color: var(--ceph-cyan); }
 
 .ceph-look-slider {

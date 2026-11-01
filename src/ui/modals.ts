@@ -301,30 +301,41 @@ function renderCodex(card: HTMLElement): void {
       if (filter === 'all') {
         results.append(el('div', { className: 'ceph-kicker', text: 'Browse' }));
         const counts = el('div', { className: 'ceph-codex-counts' });
-        const rows: [string, number][] = [
-          ['people', COSMERE.characters.length],
-          ['places', COSMERE.locations.length],
-          ['terms', COSMERE.glossary.length],
-          ['orders', COSMERE.organizations.length],
-          ['magics', COSMERE.magics.length],
+        // Each count opens its list. They were set like the title screen's
+        // index and looked like links, and clicking "438 people" did nothing.
+        const rows: [string, number, SearchKind][] = [
+          ['people', COSMERE.characters.length, 'person'],
+          ['places', COSMERE.locations.length, 'place'],
+          ['terms', COSMERE.glossary.length, 'term'],
+          ['orders', COSMERE.organizations.length, 'org'],
+          ['magics', COSMERE.magics.length, 'magic'],
         ];
-        for (const [label, n] of rows) {
-          counts.append(el('div', { className: 'ceph-title-count' }, [
+        for (const [label, n, kind] of rows) {
+          const b = el('button', {
+            className: 'ceph-title-count ceph-codex-count',
+            attrs: { type: 'button', 'aria-label': `Browse ${n} ${label}` },
+          }, [
             el('b', { text: String(n) }),
             el('span', { text: label }),
-          ]));
+          ]);
+          listen(b, 'click', () => { filter = kind; paintFilters(); run(); });
+          counts.append(b);
         }
         results.append(counts);
         results.append(el('div', { className: 'ceph-kicker', text: 'Systems', style: { marginTop: '12px' } }));
+        // A tile per system, not a full-width bar: nineteen bars were most of
+        // a screen to scroll for a list of names.
+        const grid = el('div', { className: 'ceph-grid ceph-codex-grid' });
         for (const sys of COSMERE.systems) {
           if (!systemOnTheMap(sys.id, store.state.readProgress, store.state.era)) continue;
-          const b = el('button', { className: 'ceph-card' }, [
+          const b = el('button', { className: 'ceph-card', attrs: { type: 'button' } }, [
             el('div', { className: 'ceph-kicker', text: 'system' }),
             el('div', { text: sys.name, style: { fontWeight: '600' } }),
           ]);
           listen(b, 'click', () => flyCodexHit(sys.id));
-          results.append(b);
+          grid.append(b);
         }
+        results.append(grid);
         return;
       }
       results.append(el('div', { className: 'ceph-kicker', text: CODEX_FILTERS.find((f) => f.id === filter)?.label ?? '' }));
@@ -403,8 +414,30 @@ function renderCodex(card: HTMLElement): void {
       listen(row, 'click', () => flyCodexHit(h.id));
       results.append(row);
     }
-    announce(hits.length ? `${hits.length === 60 ? 'Sixty or more' : hits.length} matches.` : 'No matches.');
-    if (!hits.length) {
+    // A filter that hides every hit is not "nothing": say which lists have
+    // them, one click away — the directory has done this since the design pass.
+    const elsewhere = !hits.length && filter !== 'all'
+      ? CODEX_FILTERS
+        .filter((f) => f.id !== 'all' && f.id !== filter)
+        .map((f) => ({ ...f, n: searchJournal(q, store.state.readProgress, [f.id as SearchKind], 60).length }))
+        .filter((f) => f.n > 0)
+      : [];
+    const here = CODEX_FILTERS.find((f) => f.id === filter)?.label.toLowerCase() ?? 'entries';
+    announce(hits.length ? `${hits.length === 60 ? 'Sixty or more' : hits.length} matches.`
+      : elsewhere.length ? `No ${here} match. Found in ${elsewhere.map((f) => f.label).join(', ')}.` : 'No matches.');
+    if (elsewhere.length) {
+      results.append(el('div', {
+        text: `No ${here} match “${q}”. Found in:`,
+        style: { color: 'var(--ceph-text-dim)' },
+      }));
+      const jump = el('div', { className: 'ceph-codex-filters' });
+      for (const f of elsewhere) {
+        const b = el('button', { className: 'ceph-chip', text: `${f.label} · ${f.n === 60 ? '60+' : f.n}`, attrs: { type: 'button' } });
+        listen(b, 'click', () => { filter = f.id; paintFilters(); run(); });
+        jump.append(b);
+      }
+      results.append(jump);
+    } else if (!hits.length) {
       results.append(el('div', {
         text: 'Nothing in the journal matches — or it is still spoiler-gated.',
         style: { color: 'var(--ceph-text-dim)' },

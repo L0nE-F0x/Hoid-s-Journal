@@ -150,7 +150,14 @@ async function main(): Promise<void> {
     store.set('ready', true);
     // A shared link is a save state: fly to what it names instead of playing
     // the opening. The title stays up — that is where the disclaimer lives.
-    if (deepLink) store.set('cameraCue', { kind: 'focus', id: deepLink.id, scale: deepLink.scale });
+    //
+    // A link written in the Spiritual Realm still names the world and place
+    // the reader pressed V on, and flying there put the camera eighty units
+    // from a diagram drawn at the origin: a white wash of the nearest mote.
+    // Frame the Shard map instead; the place stays in the store, so pressing
+    // V again goes back to it the way it always has.
+    if (store.state.realm === 'spiritual') app.frameSpiritual();
+    else if (deepLink) store.set('cameraCue', { kind: 'focus', id: deepLink.id, scale: deepLink.scale });
     else app.playIntro();
   });
 }

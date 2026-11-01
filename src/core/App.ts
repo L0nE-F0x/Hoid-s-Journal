@@ -157,12 +157,7 @@ export class App {
     }));
     this.disposers.push(store.on('realm', (realm, prev) => {
       if (realm === 'spiritual') {
-        this.rig.flyTo(
-          new THREE.Vector3(),
-          this.rig.framingDistance(SPIRITUAL_RADIUS, 0.85, 'width'),
-          2.2,
-        );
-        this.rig.setAngles(Math.PI * 0.25, 1.18);
+        this.frameSpiritual();
       } else if (prev === 'spiritual') {
         const body = store.state.focusedBody;
         const sys = store.state.focusedSystem;
@@ -307,6 +302,20 @@ export class App {
       store.set('focusedBody', null);
       store.set('focusedSystem', null);
     });
+  }
+
+  /**
+   * The Shard map, framed whole. The realm listener calls this on V; boot
+   * calls it for a link that opens in the Spiritual Realm, because the link
+   * is read before this App exists and so before that listener does.
+   */
+  frameSpiritual(): void {
+    this.rig.flyTo(
+      new THREE.Vector3(),
+      this.rig.framingDistance(SPIRITUAL_RADIUS, 0.85, 'width'),
+      2.2,
+    );
+    this.rig.setAngles(Math.PI * 0.25, 1.18);
   }
 
   private playSkyEvent(id: string, passive: boolean): void {

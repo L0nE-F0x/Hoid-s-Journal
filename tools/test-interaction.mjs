@@ -805,6 +805,36 @@ async function run() {
       !!tools && tools.overflow === 'auto' && tools.pointer !== 'none',
       JSON.stringify(tools));
 
+    // A link is a string anyone can type, and one the app writes itself in
+    // the Spiritual Realm. Neither may strand the reader. An unknown id used
+    // to leave the app at globe scale over an empty sky; a Spiritual link
+    // flew to the world it named and parked the camera eighty units from the
+    // Shard map, in a white wash.
+    for (const [hash, want, test] of [
+      ['scale=globe&body=nonexistent', 'no unknown body in the store',
+        (s) => s.body !== 'nonexistent' && s.scale !== 'surface'],
+      ['y=0.0&realm=spiritual&scale=city&system=rosharan&body=roshar&loc=kholinar', 'the Shard map is framed',
+        (s) => s.realm === 'spiritual' && s.aim < 6],
+    ]) {
+      const link = await browser.newPage();
+      await link.setViewport({ width: 1512, height: 900, deviceScaleFactor: 1 });
+      const linkErrors = [];
+      link.on('pageerror', (e) => linkErrors.push(e.message));
+      await link.goto(`${URL}#${hash}`, { waitUntil: 'domcontentloaded', timeout: 30000 });
+      await link.waitForFunction('window.__ceph && window.__ceph.store.state.ready', { timeout: 60000, polling: 200 });
+      await sleep(slowRenderer ? 12000 : 4000);
+      const s = await link.evaluate(() => {
+        const st = window.__ceph.store.state;
+        return {
+          scale: st.scale, realm: st.realm, body: st.focusedBody,
+          aim: window.__ceph.app.rig.target.length(),
+        };
+      });
+      check(`a link to #${hash.slice(0, 32)}… lands: ${want}`, test(s) && !linkErrors.length,
+        JSON.stringify({ ...s, aim: Math.round(s.aim), errors: linkErrors.slice(0, 1) }));
+      await link.close();
+    }
+
     check('no page errors', errors.length === 0, errors.slice(0, 2).join(' | '));
   } finally {
     await browser.close();

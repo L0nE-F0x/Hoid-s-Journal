@@ -19,10 +19,10 @@ export const CITY_PLATES: CityPlate[] = [
     landmarks: [
       mark('urithiru-atrium', 'urithiru', 'Gemstone pillar', 0.42, 0.52, '#7dd3fc',
         'The atrium\'s glowing pillar, the tower\'s heart and the Sibling\'s voice.',
-        { book: 'stormlight', arc: 'wor', on: [{ file: 'urithiru.jpg', u: 0.50, v: 0.30 }] }),
+        { book: 'stormlight', arc: 'wor' }),
       mark('urithiru-oathgates', 'urithiru', 'Oathgate plateau', 0.72, 0.64, '#fbbf24',
         'Ten platforms at the tower\'s foot. Each is a door to a capital.',
-        { book: 'stormlight', arc: 'wor', on: [{ file: 'urithiru.jpg', u: 0.34, v: 0.66 }] }),
+        { book: 'stormlight', arc: 'wor', on: [{ file: 'urithiru.jpg', u: 0.332, v: 0.824 }] }),
       mark('urithiru-breakaway', 'urithiru', 'The Breakaway', 0.32, 0.62, '#fde68a',
         'A market in a vast hall — the liveliest floor in a city of stone.',
         { book: 'stormlight', arc: 'wor' }),

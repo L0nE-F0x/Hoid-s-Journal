@@ -208,6 +208,12 @@ const { coastCoverage, hasCoast } = await (async () => {
  * Reshi Isles are region pins among islands; Rishir's centre is land on the
  * plate and only reads wet because the mask is blurred, which eats capes.
  *
+ * The Conventical of Seran sits on its own printed dot on `final_empire.jpg`,
+ * right on the empire's dashed south-eastern border. The ash trace reads
+ * everything beyond that border as sea — it is hatched land on the plate,
+ * with the River Seran running through it — so the pin is right and the
+ * mask is wrong there.
+ *
  * Do not add to this list to silence a pin. Measure it off the plate first —
  * Kasitor, Cusicesh and Rit-vo-Ma were all genuinely in the wrong place, and
  * they were found because this report was short.
@@ -215,7 +221,7 @@ const { coastCoverage, hasCoast } = await (async () => {
 const AT_SEA_ON_PURPOSE = new Set([
   'the-origin', 'reshi-isles', 'aimia', 'aimian-scouring', 'fu-abra', 'rishir',
   'tarat-sea', 'steamwater-ocean', 'reshi-sea', 'southern-depths', 'purelake-temple',
-  'hammondar-bay',
+  'hammondar-bay', 'conventical-of-seran',
 ]);
 
 const wet = [];

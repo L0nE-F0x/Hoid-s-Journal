@@ -584,7 +584,9 @@ export const PLACES_MORE: Location[] = [
   loc('shattering-site', 'Site of the Shattering', 'yolen', 'core', 0.5, 0.48, '#fef3c7', 'crystal',
     'Wherever on Yolen the Vessels killed Adonalsium. The planet has not forgotten the geometry.', {
       region: 'Yolen',
-      bio: 'Wherever on Yolen sixteen people killed Adonalsium. What is known is that it happened, that they used a Dawnshard to do it, and that the power went sixteen ways rather than back where it came from. The planet has not forgotten the geometry; nobody has written down what the geometry was.', canon: 'speculation', sources: ['Word of Brandon'], see: ['fain-wilds', 'yolen-dragons'] }),
+      // That a Dawnshard did it is the Dawnshard novella; it lives on the
+      // Dawnshard term, which waits for that book. This place is every reader's.
+      bio: 'Wherever on Yolen sixteen people killed Adonalsium. What is known is that it happened, and that the power went sixteen ways rather than back where it came from. The planet has not forgotten the geometry; nobody has written down what the geometry was.', canon: 'speculation', sources: ['Word of Brandon'], see: ['fain-wilds', 'yolen-dragons'] }),
   loc('fain-border', 'Fain Borderlands', 'yolen', 'core', 0.6, 0.5, '#86efac', 'forest',
     'Where fain ecology meets everything else. The two biologies share a planet and refuse a treaty.', {
       region: 'Yolen',

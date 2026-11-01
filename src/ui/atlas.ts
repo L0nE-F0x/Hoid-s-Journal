@@ -465,10 +465,11 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
       title.textContent = s.realm === 'cognitive' ? `${body.name} · Shadesmar` : body.name;
     }
     const firstLayer = layerRows[0]?.name;
+    const byline = layerRows[plateLayer]?.credit ?? MAP_CREDIT;
     credit.textContent = !official ? ''
       : plateLayer > 0 && s.scale !== 'city' && firstLayer
-        ? `${MAP_CREDIT} · places are marked on the ${firstLayer} plate`
-        : MAP_CREDIT;
+        ? `${byline} · places are marked on the ${firstLayer} plate`
+        : byline;
     composeMap();
     const n = pinRows().length;
     canvas.setAttribute('aria-label', n

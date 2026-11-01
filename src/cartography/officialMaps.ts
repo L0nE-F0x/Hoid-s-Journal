@@ -44,7 +44,12 @@ export function worldMapFile(
   return layers[Math.min(layer, layers.length - 1)]!.file;
 }
 
-export interface MapLayer { name: string; file: string }
+export interface MapLayer {
+  name: string;
+  file: string;
+  /** Who made this plate, when it is not Isaac Stewart's cartography. */
+  credit?: string;
+}
 
 const CITY_LAYERS: Record<string, MapLayer[]> = {
   urithiru: [{ name: 'Tower', file: 'urithiru.jpg' }],
@@ -63,7 +68,8 @@ const CITY_LAYERS: Record<string, MapLayer[]> = {
   luthadel: [
     { name: 'Survey', file: 'luthadel.jpg' },
     { name: 'Endpaper', file: 'luthadel_endpaper.png' },
-    { name: 'Kredik Shaw', file: 'kredik_shaw.jpg' },
+    // A painting, signed "E MONTEIRO" in its corner, not a Stewart map.
+    { name: 'Kredik Shaw', file: 'kredik_shaw.jpg', credit: 'Painting by E. Monteiro' },
   ],
   elendel: [
     { name: 'Basin', file: 'elendel.jpg' },

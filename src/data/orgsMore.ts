@@ -13,7 +13,7 @@ export const ORGS_MORE: Organization[] = [
   org('ardentia', 'The Ardentia', '#c4b5fd', 'stormlight', 'church',
     'Vorin ardents: priests, scholars and Soulcasters owned by princes yet sworn to the Almighty. They burn glyphwards while Radiants rewrite their theology.',
     {
-      members: ['kadash', 'lhan', 'pai', 'rushu'],
+      members: ['kadash'],
       aliases: 'ardents, ardent',
       world: 'Roshar', wiki: 'Ardent',
       see: ['vorinism', 'vorin-church', 'soulcaster-device', 'navani'],
@@ -28,7 +28,7 @@ export const ORGS_MORE: Organization[] = [
   org('vorin-church', 'Vorin Church', '#818cf8', 'stormlight', 'church',
     'The institutional faith of Alethkar, Jah Keved and Kharbranth: Heralds, Callings, safehands and a hierarchy that outlived the truth of its own myths.',
     {
-      members: ['kadash', 'lhan', 'pai', 'rushu'],
+      members: ['kadash'],
       world: 'Roshar', wiki: 'Vorinism',
       see: ['ardentia', 'vorinism', 'heralds'],
     }),
@@ -94,7 +94,7 @@ export const ORGS_MORE: Organization[] = [
   org('iriali', 'The Iriali', '#fde047', 'stormlight', 'nation',
     'Golden-haired people of the Long Trail, with a religion of experience and a habit of moving on.',
     {
-      members: ['ym'],
+      members: [],
       world: 'Roshar', wiki: 'Iriali',
       see: ['yolish-lightweaving', 'hoid'],
       bio: 'They hold that this Rosharan chapter is only one Land on a longer journey.',
@@ -132,7 +132,7 @@ export const ORGS_MORE: Organization[] = [
     {
       world: 'Roshar', wiki: 'Thaylenah',
       members: ['rysn'],
-      see: ['rysn', 'dawnshard'],
+      see: ['rysn'],
     }),
   org('azish-empire', 'Azish Empire', '#f59e0b', 'stormlight', 'nation',
     'Bureaucracy as statecraft: essays for elections, forms for miracles. Sigzil\'s homeland, and a coalition partner that files everything in triplicate.',

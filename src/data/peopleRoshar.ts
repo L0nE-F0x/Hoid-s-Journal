@@ -34,7 +34,7 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Herald · Dustbringer patron · Surgebinding (Division, Abrasion)',
     'Herald of the Common Man; her return to Braize helped start the True Desolation.', true, R15, {
       kind: 'herald', arc: 'wor', wiki: 'Chanarach', titles: 'Herald of the Common Man',
-      see: ['jezrien', 'taln', 'oathpact', 'dustbringers'],
+      see: ['jezrien', 'taln', 'oathpact'],
       bio: 'Herald of the Common Man and patron of the Dustbringers. Wind and Truth reveals that she lived another life as Lin Davar\'s wife and Shallan\'s mother. Nale sent a Skybreaker to make her kill her Radiant daughter; she hesitated, and eleven-year-old Shallan killed them both. On Braize it was Chana who broke, and the True Desolation came. She was at Shallan\'s wedding.',
     }),
   ch('vedel', 'Vedel', '#86efac', 'stormlight', 'Roshar',
@@ -42,7 +42,7 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Herald · Edgedancer patron · Surgebinding (Abrasion, Progression)',
     'Herald of Loving and Healing; patron of the Edgedancers.', true, R15, {
       kind: 'herald', arc: 'twok', wiki: 'Vedel', titles: 'Herald of Healing',
-      see: ['lift', 'ym', 'wyndle', 'jezrien'],
+      see: ['jezrien'],
       bio: 'Herald associated with loving and healing, and patron of the Edgedancers. After abandoning the Oathpact she vanished into legend; Vorin art still paints her with the attributes of Loving and Healing. Living Heralds treat her as one of the broken ten.',
     }),
   ch('pailiah', 'Pailiah', '#a3e635', 'stormlight', 'Roshar',
@@ -50,7 +50,7 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Herald · Truthwatcher patron · Surgebinding (Progression, Illumination)',
     'Herald of Learned and Giving; patron of the Truthwatchers.', true, R15, {
       kind: 'herald', arc: 'wor', wiki: 'Pailiah', titles: 'Herald of Learned',
-      see: ['renarin', 'glys', 'battar', 'jezrien'],
+      see: ['renarin', 'jezrien'],
       bio: 'Herald of Learned and Giving, patron of the Truthwatchers, a scholar before she was a Herald, born on Ashyn like all of them but Taln. Pailiah is her Vorin name; her own, Wind and Truth gives, is Pralla. She is a good woman with a weakness for secrets. It was Vedel who made her stasis immortal, by Connecting her to Honor.',
     }),
   ch('shalash', 'Shalash', '#e11d48', 'stormlight', 'Roshar',
@@ -58,7 +58,7 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Herald · Lightweaver patron · Surgebinding (Illumination, Transformation)',
     'Herald of Beauty who destroys every depiction of herself she can find.', true, R15, {
       kind: 'herald', arc: 'twok', wiki: 'Shalash', titles: 'Herald of Beauty',
-      see: ['shallan', 'jezrien', 'lightweavers', 'heralds'],
+      see: ['shallan', 'jezrien', 'heralds'],
       bio: 'Herald of Beauty, patron of the Lightweavers, and Jezrien\'s daughter, born on Ashyn. Shame at walking away from the Oathpact drove her to destroy every image of herself she could find, until she found Taln in Thaylen City and would not leave him again. At Azimir she knew Abidi the Monarch by his patterns. When Taln died there she leaned against him, said she was not letting him go alone, and died too. The reforged Oathpact took her with the others.',
     }),
   ch('battar', 'Battar', '#6366f1', 'stormlight', 'Roshar',
@@ -109,7 +109,7 @@ export const PEOPLE_ROSHAR: Character[] = [
     'The Bondsmith who trapped Ba-Ado-Mishram, and broke the Radiants doing it.', false, R13, {
       kind: 'person', arc: 'wor', wiki: 'Melishi',
       sources: ['Words of Radiance', 'Rhythm of War', 'Wind and Truth'],
-      see: ['ba-ado-mishram', 'sibling', 'garith', 'bondsmiths'],
+      see: [],
       bio: 'The Bondsmith of the Recreance\'s generation, bonded to the Sibling, who drew away from the other Radiants. On Honor\'s word Melishi brought Ba-Ado-Mishram to a parley that was meant to make peace, trapped her in a flawless heliodor and hid it in the Spiritual Realm. The singers lost their forms on the spot; when Garith touched Honor, every Radiant saw a vision of themselves destroying the world, and the orders broke. Renarin and Rlain found Melishi\'s body lying beside the gem.',
     }),
   ch('garith', 'Garith', '#38bdf8', 'stormlight', 'Roshar',
@@ -150,7 +150,7 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Unmade · Death Rattles · future sight on dying minds',
     'The Unmade whose presence draws Death Rattles from the dying.', true, R15, {
       kind: 'unmade', arc: 'wor', wiki: 'Moelach',
-      see: ['taravangian', 'battar', 'adrotagia', 'diagram'],
+      see: ['taravangian', 'adrotagia', 'diagram'],
       bio: 'The Unmade behind the Death Rattles: near him, the dying speak the future. Taravangian\'s Diagram tells him to collect them, so his Silent Gatherers bled the dying in Kharbranth and wrote down every word, until Moelach drifted west and the Rattles thinned.',
     }),
   ch('re-shephir', 'Re-Shephir', '#1e1b4b', 'stormlight', 'Roshar',
@@ -166,7 +166,7 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Unmade · poorly understood · associated with collapse and taking',
     'The Black Fisher: an Unmade so destructive that even Odium hesitates to use her.', true, R15, {
       kind: 'unmade', arc: 'wor', wiki: 'Dai-Gonarthis',
-      see: ['ba-ado-mishram', 'nergaoul', 'odium'],
+      see: ['odium'],
       bio: 'Called the Black Fisher. She wants to break and burn the world, and even Odium thought her too dangerous to loose again; Hessi wonders whether she scoured Aimia. In Wind and Truth Taravangian pays her price anyway, to open an Elsegate that brings his armies to the Shattered Plains.',
     }),
   ch('chemoarish', 'Chemoarish', '#78716c', 'stormlight', 'Roshar',
@@ -272,7 +272,7 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Great spren · daily face at Kasitor',
     'Iriali great spren who rises from the bay of Kasitor at the same minute every morning.', true, R15, {
       kind: 'spren', arc: 'twok', wiki: 'Cusicesh',
-      see: ['rall-elorim', 'stormfather', 'nightwatcher', 'sibling'],
+      see: ['rall-elorim', 'stormfather', 'nightwatcher'],
       bio: 'A vast spren of Kasitor, called the Protector. At exactly seven forty-six every morning Cusicesh rises out of the bay and turns through a sequence of human faces while the city watches. Old Roshar, keeping its schedule.',
     }),
 
@@ -282,7 +282,7 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Windrunner · Bridge Four lieutenant',
     'Short, stubborn Bridge Four spearman who earns the sky anyway.', false, R3, {
       kind: 'person', arc: 'twok', wiki: 'Skar',
-      see: ['kaladin', 'drehy', 'teft', 'eth'],
+      see: ['kaladin', 'drehy', 'teft'],
       bio: 'A Bridge Four regular from the early crew. Too practical to believe in Radiants until he becomes one; he trains squires, holds the line when Kaladin cannot, and keeps Drehy\'s orbit steady.',
     }),
   ch('drehy', 'Drehy', '#22d3ee', 'stormlight', 'Roshar',
@@ -290,7 +290,7 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Windrunner · Bridge Four',
     'Quiet Bridge Four Windrunner; the one you send when it must work.', false, R3, {
       kind: 'person', arc: 'twok', wiki: 'Drehy',
-      see: ['skar', 'kaladin', 'gavinor', 'teft'],
+      see: ['skar', 'kaladin', 'teft'],
       bio: 'Soft-spoken, deadly reliable. Helps extract Gavinor from Kholinar\'s fall and later flies the missions that need fewer speeches than Skar and more results than glory.',
     }),
   ch('hobber', 'Hobber', '#67e8f9', 'stormlight', 'Roshar',
@@ -330,7 +330,7 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Windrunner · Bridge Four',
     'Bridge Four Windrunner; steady hand, fewer jokes than Lopen.', false, R3, {
       kind: 'person', arc: 'twok', wiki: 'Peet',
-      see: ['kaladin', 'eth', 'skar', 'lopen'],
+      see: ['kaladin', 'skar', 'lopen'],
       bio: 'One of the core Bridge Four survivors who rise from bridgeman to Radiant squire and beyond. Shares the crew\'s scars and its stubborn refusal to leave people behind.',
     }),
   ch('eth', 'Eth', '#0c4a6e', 'stormlight', 'Roshar',
@@ -403,7 +403,7 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Spearman · Amaram\'s army',
     'Green recruit Kaladin fails to save in Amaram\'s ranks.', false, R3, {
       kind: 'person', arc: 'twok', wiki: 'Cenn',
-      see: ['kaladin', 'tien', 'amaram', 'tarah'],
+      see: ['kaladin', 'tien', 'amaram'],
       bio: 'A terrified under-trained boy placed in Kaladin\'s squad. Dies in the same campaign that wins Kaladin a Shardblade he will refuse — the first named cost of Kaladin\'s impossible promise to protect everyone.',
     }),
   ch('maps', 'Maps', '#78716c', 'stormlight', 'Roshar',
@@ -437,7 +437,7 @@ export const PEOPLE_ROSHAR: Character[] = [
     'King of Alethkar · almost a Lightweaver',
     'Gavilar\'s son; dies in Kholinar reaching for a better oath.', false, R3, {
       kind: 'person', arc: 'twok', wiki: 'Elhokar', titles: 'King of Alethkar',
-      see: ['dalinar', 'aesudan', 'gavinor', 'moash', 'kaladin'],
+      see: ['dalinar', 'moash', 'kaladin'],
       bio: 'King of Alethkar after Gavilar\'s assassination — paranoid, theatrical, and less foolish than his court assumes. In Kholinar he begins the First Ideal in truth just before Moash kills him, leaving the throne to a child and a legend.',
     }),
   ch('aesudan', 'Aesudan Kholin', '#e11d48', 'stormlight', 'Roshar',
@@ -469,7 +469,7 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Surgeon · Hearthstone',
     'Kaladin\'s father; a surgeon who refuses the spear.', false, R3, {
       kind: 'person', arc: 'twok', wiki: 'Lirin',
-      see: ['kaladin', 'hesina', 'tien', 'oroden', 'roshone'],
+      see: ['kaladin', 'hesina', 'tien', 'roshone'],
       bio: 'Darkeyed surgeon of Hearthstone. Teaches Kaladin to heal, clashes with him over violence, and keeps practicing medicine under occupation because saving lives is the only argument he trusts.',
     }),
   ch('hesina', 'Hesina', '#a7f3d0', 'stormlight', 'Roshar',
@@ -477,7 +477,7 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Apothecary mind · Hearthstone',
     'Kaladin\'s mother; brighter than the town she chose.', false, R3, {
       kind: 'person', arc: 'twok', wiki: 'Hesina',
-      see: ['kaladin', 'lirin', 'tien', 'oroden'],
+      see: ['kaladin', 'lirin', 'tien'],
       bio: 'Lirin\'s wife and Kaladin\'s mother. Born a touch higher than darkeyed Hearthstone expects, she brings learning, stubborn kindness, and the family\'s softer spine.',
     }),
   ch('oroden', 'Oroden', '#bfdbfe', 'stormlight', 'Roshar',
@@ -509,7 +509,7 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Shardbearer · Sons of Honor · Yelig-nar host',
     'Stole Kaladin\'s Shards and branded him a slave.', false, R3, {
       kind: 'person', arc: 'twok', wiki: 'Amaram', titles: 'Highlord',
-      see: ['kaladin', 'restares', 'gavilar', 'yelig-nar', 'tien'],
+      see: ['kaladin', 'restares', 'gavilar', 'tien'],
       bio: 'Alethi highlord and Sons of Honor conspirator. Murders Kaladin\'s squad to steal a Shardblade, brands Kaladin a deserter, then rides old Vorin ambition straight into Odium\'s pocket and Yelig-nar\'s hunger.',
     }),
   ch('ialai', 'Ialai Sadeas', '#9f1239', 'stormlight', 'Roshar',
@@ -517,7 +517,7 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Brightlady · Sadeas princedom schemer',
     'Torol\'s widow; keeps the Sadeas knives sharp after his death.', false, R3, {
       kind: 'person', arc: 'twok', wiki: 'Ialai',
-      see: ['sadeas', 'dalinar', 'shallan', 'mraize'],
+      see: ['sadeas', 'dalinar', 'shallan'],
       bio: 'Torol Sadeas\'s wife and the keener politician of the pair, with the best network of spies and assassins in the warcamps. After Adolin killed Torol she kept the Sadeas knives sharp, and ran what was left of the Sons of Honor from the Shattered Plains, until Shallan came for her; it was Radiant who put the poison in her wine.',
     }),
   ch('restares', 'Restares', '#7f1d1d', 'stormlight', 'Roshar',
@@ -549,7 +549,7 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Alethi highprince · Highprince of Information',
     'Highprince who comes round to Dalinar\'s reforms and stays.', false, R3, {
       kind: 'person', arc: 'twok', wiki: 'Aladar', titles: 'Highprince',
-      see: ['dalinar', 'sebarial', 'roion', 'sadeas'],
+      see: ['dalinar', 'roion', 'sadeas'],
       bio: 'Highprince who shifts from cautious rival to Dalinar\'s key ally. Takes the Information mantle after Sadeas and fights at Narak and beyond as a soldier who chose unity on purpose.',
     }),
   ch('ruthar', 'Ruthar', '#b91c1c', 'stormlight', 'Roshar',
@@ -557,7 +557,7 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Alethi highprince',
     'Conservative highprince; Adolin humiliates him in court.', false, R3, {
       kind: 'person', arc: 'twok', wiki: 'Ruthar', titles: 'Highprince',
-      see: ['adolin', 'dalinar', 'relis', 'jasnah'],
+      see: ['adolin', 'dalinar', 'jasnah'],
       bio: 'Highprince of a martial Alethi faction opposed to Dalinar\'s changes. Loses political skin when Adolin beats his champions and Jasnah later breaks his standing in Urithiru\'s court.',
     }),
   ch('roion', 'Roion', '#15803d', 'stormlight', 'Roshar',
@@ -597,7 +597,7 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Alethi highprince',
     'Highprince who lets his wife handle the politics.', false, R3, {
       kind: 'person', arc: 'twok', wiki: 'Bethab', titles: 'Highprince',
-      see: ['dalinar', 'thanadal', 'hatham', 'sebarial'],
+      see: ['dalinar', 'thanadal', 'hatham'],
       bio: 'Alethi highprince on the Plains, notable for leaving negotiations to his brighter spouse while he enjoys the title.',
     }),
   ch('tanalan', 'Tanalan', '#ef4444', 'stormlight', 'Roshar',
@@ -687,7 +687,7 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Head of House Davar · Ghostblood ally',
     'Shallan\'s father; violence in a lighteyed coat.', false, R3, {
       kind: 'person', arc: 'twok', wiki: 'Lin Davar',
-      see: ['shallan', 'helaran', 'testament', 'mraize', 'chana'],
+      see: ['shallan', 'helaran'],
       bio: 'Brightlord of House Davar in Jah Keved: abusive, indebted, and propped up by the Ghostbloods. Shallan killed him after years of terror, and buried the memory under other faces.',
     }),
   ch('helaran', 'Helaran Davar', '#9f1239', 'stormlight', 'Roshar',
@@ -753,7 +753,7 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Fused · Heavenly One',
     'Honorable Fused; rivals Kaladin in the sky and respects the fight.', true, R3, {
       kind: 'fused', arc: 'oathbringer', wiki: 'Leshwi',
-      see: ['kaladin', 'venli', 'moash', 'raboniel'],
+      see: ['kaladin', 'venli', 'moash'],
       bio: 'A Heavenly One of the Fused who prefers contested duels to slaughter. She spares and spars with Kaladin, sponsors Venli\'s dangerous double life, and treats honour as something even Odium\'s immortals can choose. In Wind and Truth she follows Venli to the listeners at Narak looking for a place free of Odium, attuning Joy; after Stormfall she is one of the Fused who stay with them.',
     }),
   ch('raboniel', 'Raboniel', '#365314', 'stormlight', 'Roshar',
@@ -850,7 +850,7 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Listener scholar · once Venli\'s once-mate',
     'Venli\'s once-mate; taken by a Fused soul.', false, R3, {
       kind: 'person', arc: 'oathbringer', wiki: 'Demid', biology: 'singer',
-      see: ['venli', 'ulim', 'eshonai', 'raboniel'],
+      see: ['venli', 'ulim', 'eshonai'],
       bio: 'Listener scholar and Venli\'s once-mate. Helps pursue new forms, then loses his body to a returning Fused — intimacy rewritten as occupation.',
     }),
   ch('jaxlim', 'Jaxlim', '#a3e635', 'stormlight', 'Roshar',
@@ -868,7 +868,7 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Head scholar of the Diagram',
     'Taravangian\'s old friend; keeps the Diagram\'s math honest.', false, R3, {
       kind: 'person', arc: 'wor', wiki: 'Adrotagia',
-      see: ['taravangian', 'mrall', 'battar', 'moelach'],
+      see: ['taravangian', 'mrall', 'moelach'],
       bio: 'Kharbranth scholar and Taravangian\'s confidante since youth. Interprets his variable intelligence, runs Silent Gatherer analysis, and follows him into cosmic stakes without mistaking him for a saint.',
     }),
   ch('mrall', 'Mrall', '#78716c', 'stormlight', 'Roshar',
@@ -884,7 +884,7 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Prime Aqasix · Unoathed (Xorm)',
     'Gawx the thief, Prime of Azir, and one of the ten who held its throne room.', false, R3, {
       kind: 'person', arc: 'wor', wiki: 'Yanagawn', titles: 'Prime Aqasix of Azir',
-      see: ['lift', 'noura', 'dalinar', 'azimir'],
+      see: ['lift', 'dalinar', 'azimir'],
       bio: 'A thief made Prime by a miracle that was really Lift, and the boy the viziers put on the throne because they were afraid the assassin would come back. He grew into an emperor who sat in Dalinar\'s coalition, learned Towers and Plate from Adolin, and would not leave Azimir when it fell. On the last day he changed back into a thief\'s clothes, led his friends in by a smugglers\' entrance Noura swore did not exist, and held his own throne room in a deadeye\'s Plate. Azir is the one nation not under the Everstorm.',
     }),
   ch('noura', 'Noura', '#f59e0b', 'stormlight', 'Roshar',
@@ -989,7 +989,7 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Thaylen merchant · babsk to Rysn',
     'Rysn\'s babsk; trades across Roshar with eyes open.', false, R3, {
       kind: 'person', arc: 'twok', wiki: 'Vstim',
-      see: ['rysn', 'chiri-chiri', 'fen', 'dawnshard'],
+      see: ['rysn'],
       bio: 'Veteran Thaylen trader who apprentices Rysn. Teaches her to see people as more than ledgers, then steps back as she becomes the center of Aimia\'s oldest secret.',
     }),
   ch('au-nak', 'Au-nak', '#67e8f9', 'stormlight', 'Roshar',
@@ -1015,7 +1015,7 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Larkin · Investiture eater',
     'Rysn\'s larkin; eats Investiture and grows on trouble.', false, R3, {
       kind: 'person', arc: 'wor', wiki: 'Chiri-Chiri', biology: 'larkin',
-      see: ['rysn', 'vstim', 'nikli', 'dawnshard'],
+      see: ['rysn', 'vstim'],
       bio: 'A larkin — ancient winged scavenger of Investiture — bonded in practice if not in oath to Rysn. Vents Stormlight, voids threats, and becomes inseparable from the Dawnshard crisis at Akinah.',
     }),
   ch('cord', 'Cord', '#fdba74', 'stormlight', 'Roshar',
@@ -1031,7 +1031,7 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Unkalaki · Rock\'s son',
     'One of Rock\'s children drawn toward Bridge Four\'s orbit.', false, R3, {
       kind: 'person', arc: 'oathbringer', wiki: 'Gift',
-      see: ['rock', 'cord', 'song', 'lopen'],
+      see: ['rock', 'song', 'lopen'],
       bio: 'Son of Lunamor and Song. Part of the Unkalaki family that turns Kaladin\'s barracks into a kitchen and a culture lesson.',
     }),
   ch('song', 'Song', '#fdba74', 'stormlight', 'Roshar',
@@ -1039,7 +1039,7 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Unkalaki · Rock\'s wife',
     'Rock\'s wife; the household name behind the cookfire legend.', false, R3, {
       kind: 'person', arc: 'oathbringer', wiki: 'Tuaka',
-      see: ['rock', 'cord', 'gift', 'kaladin'],
+      see: ['rock', 'gift', 'kaladin'],
       bio: 'Tuaka, called Song — Lunamor\'s wife. Arrives with their children when the war reaches for the Horneater Peaks\' people, grounding Rock\'s humor in a family that can be hurt.',
     }),
   ch('ral-na', 'Ral-na', '#14b8a6', 'stormlight', 'Roshar',
@@ -1047,7 +1047,7 @@ export const PEOPLE_ROSHAR: Character[] = [
     'King of Relu-na · Dustbringer (ashspren)',
     'King of Relu-na, the Reshi greatshell island Rysn fell from.', false, R3, {
       kind: 'person', arc: 'wor', wiki: 'Ral-na',
-      see: ['rysn', 'vstim', 'talik', 'fen'],
+      see: ['rysn', 'vstim', 'talik'],
       bio: 'King of the Reshi people who live on Relu-na, a living greatshell island in the Reshi Sea. Vstim brought Rysn to trade with him, and she learned there what a fall costs. By Dawnshard he is a Dustbringer, bonded to an ashspren.',
     }),
   ch('talik', 'Talik', '#2dd4bf', 'stormlight', 'Roshar',
@@ -1055,7 +1055,7 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Reshi trademaster · fluent in Thaylen deals',
     'Reshi negotiator who matches Vstim move for move.', false, R3, {
       kind: 'person', arc: 'wor', wiki: 'Talik',
-      see: ['ral-na', 'rysn', 'vstim', 'fen'],
+      see: ['ral-na', 'rysn', 'vstim'],
       bio: 'Trademaster for Ral-na\'s island. Educated in Thaylen customs, he forces Rysn to learn that "barbarian" courts can outmaneuver a babsk\'s apprentice.',
     }),
   ch('kaza', 'Kaza', '#a1a1aa', 'stormlight', 'Roshar',
@@ -1063,7 +1063,7 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Soulcaster · pirate expedition',
     'Soulcaster on the first modern Akinah raid; turns to smoke.', false, R3, {
       kind: 'person', arc: 'oathbringer', wiki: 'Kaza',
-      see: ['nikli', 'rysn', 'akinah', 'vstim'],
+      see: ['rysn', 'akinah', 'vstim'],
       bio: 'A diseased Soulcaster who joins a pirate attempt on Akinah seeking a cure. Her interlude records the island\'s defenses from the inside as her body soulcasts itself toward vapor.',
     }),
   ch('yalb', 'Yalb', '#38bdf8', 'stormlight', 'Roshar',
@@ -1087,7 +1087,7 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Slaver',
     'Sells Kaladin into Sadeas\'s bridges; cowardice with a ledger.', false, R3, {
       kind: 'person', arc: 'twok', wiki: 'Tvlakv',
-      see: ['kaladin', 'bluth', 'gaz', 'sadeas'],
+      see: ['kaladin', 'gaz', 'sadeas'],
       bio: 'Itinerant slaver who buys Kaladin\'s branded crew and sells them to the warcamps. Always calculating, never brave — a small man essential to a large cruelty.',
     }),
   ch('bluth', 'Bluth', '#57534e', 'stormlight', 'Roshar',
@@ -1137,7 +1137,7 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Ardent · artifabrian',
     'Navani\'s brilliant, distractible fabrial scholar.', false, R3, {
       kind: 'person', arc: 'wor', wiki: 'Rushu',
-      see: ['navani', 'huio', 'sibling', 'urithiru'],
+      see: ['navani', 'huio', 'urithiru'],
       bio: 'Ardent artifabrian in Navani\'s circle. Sees sideways solutions — falling plate, spanreeds, tower mechanisms — and occasionally walks into walls while inventing the future.',
     }),
   ch('pai', 'Pai', '#e9d5ff', 'stormlight', 'Roshar',
@@ -1145,7 +1145,7 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Ardent · silent protest',
     'Ardent who denounces Aesudan and is executed for it.', false, R3, {
       kind: 'person', arc: 'wor', wiki: 'Pai',
-      see: ['aesudan', 'elhokar', 'lhan', 'kholinar'],
+      see: ['elhokar', 'lhan', 'kholinar'],
       bio: 'Young ardent in Kholinar who writes a formal denunciation of the queen\'s excess. Aesudan has her executed, and that evening the city riots.',
     }),
   ch('lhan', 'Lhan', '#d8b4fe', 'stormlight', 'Roshar',
@@ -1153,7 +1153,7 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Ardent · lazy philosopher of the palace',
     'Idle Kholinar ardent; foil to Pai\'s zeal.', false, R3, {
       kind: 'person', arc: 'wor', wiki: 'Lhan',
-      see: ['pai', 'aesudan', 'ashertmarn', 'kholinar'],
+      see: ['pai', 'kholinar'],
       bio: 'A comfortably corrupt ardent in Aesudan\'s palace circle. His interlude with Pai sketches Kholinar\'s moral rot before the Unmade make it literal.',
     }),
   ch('bordin', 'Bordin', '#64748b', 'stormlight', 'Roshar',
@@ -1188,7 +1188,7 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Szeth\'s father. He followed his son everywhere, and then agreed to name him Truthless.', false, R3, {
       kind: 'person', arc: 'row', wiki: 'Neturo-son-Vallano',
       sources: ['Rhythm of War', 'Wind and Truth'],
-      see: ['szeth', 'elid', 'zeenid', 'ishar', 'honorbearers'],
+      see: ['szeth', 'ishar'],
       bio: 'A shepherd from outside Clearmount who taught his son that the best duty of a person is to add to the world. When Szeth killed a soldier at eleven, Neturo went with him to the soldiers\' camp, and then to the monasteries, so that he would never be alone. He rose to Bondsmith Honorbearer, and when Szeth came back from the Voice declaring that the Honorbearers served an Unmade, it was Neturo who agreed to the punishment. Ishar made him one of his human Fused. On Stormfall, Szeth freed him with Nightblood.',
     }),
   ch('elid', 'Elid-daughter-Zeenid', '#f8fafc', 'stormlight', 'Roshar',
@@ -1253,7 +1253,7 @@ export const PEOPLE_ROSHAR: Character[] = [
     'The Shin historian behind Knights of Wind and Truth, and Szeth\'s wife.', false, R3, {
       kind: 'person', arc: 'oathbringer', wiki: 'Masha-daughter-Shaliv',
       sources: ['Oathbringer', 'Wind and Truth'],
-      see: ['szeth', 'knights-of-wind-and-truth', 'recreance', 'jasnah'],
+      see: ['szeth', 'recreance', 'jasnah'],
       bio: 'A Shin scholar whose history of the Recreance Jasnah checks against Dalinar\'s visions. On Stormfall she was asleep in her parents\' house near the Bondsmith monastery when Kaladin and Szeth bought their wagon; the next day she helped Szeth bury Kaladin\'s body. Six years later she finished Knights of Wind and Truth, from the testimony of her husband, Szeth, his black sword, and Jasnah Kholin.',
     }),
   ch('rayse', 'Rayse', '#7f1d1d', 'stormlight', 'Yolen',
@@ -1261,7 +1261,7 @@ export const PEOPLE_ROSHAR: Character[] = [
     'Former Vessel of Odium',
     'Vessel of Odium until Taravangian cuts his way onto the throne.', true, R13, {
       kind: 'vessel', arc: 'row', wiki: 'Rayse', titles: 'Vessel of Odium',
-      see: ['taravangian', 'tanavast', 'odium', 'hoid'],
+      see: ['taravangian', 'odium', 'hoid'],
       bio: 'Original Vessel of Odium after the Shattering. Spent millennia hunting other Vessels and trapping himself in the Rosharan system. Hoid hated him personally; Taravangian killed him and took the Shard.',
     }),
   ch('tanavast', 'Tanavast', '#1d4ed8', 'stormlight', 'Yolen',

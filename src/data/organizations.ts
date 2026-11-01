@@ -25,7 +25,7 @@ export const ORGANIZATIONS: Organization[] = [
       aliases: 'the Seventeenth Shard',
       world: 'Yolen / Cosmere', wiki: 'Seventeenth_Shard',
       members: ['frost', 'galladon', 'demoux', 'baon'],
-      see: ['frost', 'hoid', 'ghostbloods'],
+      see: ['frost', 'hoid'],
       bio: 'Named for the Shard they are not. Galladon, Demoux and Baon are the three who ask after Hoid in the Purelake in The Way of Kings; Frost is of their number, and the Letter in the epigraphs is Hoid writing to him. Their charter is non-intervention; their practice is imperfect.',
     }),
   org('the-ire', 'The Ire', '#a78bfa', 'secrethistory', 'secret',
@@ -41,7 +41,7 @@ export const ORGANIZATIONS: Organization[] = [
     {
       world: 'Roshar', wiki: 'Bridge_Four',
       members: ['kaladin', 'teft', 'rock', 'lopen', 'sigzil', 'rlain', 'moash'],
-      see: ['kaladin', 'shattered-plains', 'windrunners'],
+      see: ['kaladin', 'shattered-plains'],
       bio: 'Bridge Four carried siege bridges across the Shattered Plains and died at it, until Kaladin made them a crew that lived. The tattoos, the stew, the salutes: they are the order, as much as any spren.',
     }),
   org('windrunners', 'The Windrunners', '#38bdf8', 'stormlight', 'order',
@@ -91,7 +91,7 @@ export const ORGANIZATIONS: Organization[] = [
     {
       arc: 'wor', world: 'Roshar', wiki: 'Truthwatchers',
       members: ['renarin'],
-      see: ['renarin', 'rlain', 'sja-anat'],
+      see: ['renarin', 'rlain'],
       bio: 'Ordinary Truthwatchers heal and see. Renarin, the first of the new order, sees more than he should.',
     }),
   org('willshapers', 'The Willshapers', '#a3e635', 'stormlight', 'order',
@@ -143,7 +143,7 @@ export const ORGANIZATIONS: Organization[] = [
     {
       members: ['kaladin', 'jasnah', 'shallan'],
       world: 'Roshar', wiki: 'Knights_Radiant',
-      see: ['surgebinding', 'recreance', 'heralds', 'urithiru'],
+      see: ['surgebinding', 'heralds'],
       bio: 'Ten orders, founded in the shadow of the Heralds and headquartered at Urithiru. The Vorin histories say they betrayed mankind at the Recreance; their Shardblades and Shardplate are what they left behind. Somebody on Roshar is Surgebinding again.',
     }),
   org('heralds', 'The Heralds', '#fde68a', 'stormlight', 'order',
@@ -170,7 +170,7 @@ export const ORGANIZATIONS: Organization[] = [
       arc: 'wor',
       world: 'Roshar', wiki: 'Listener',
       members: ['eshonai', 'venli', 'rlain'],
-      see: ['narak', 'shattered-plains', 'everstorm', 'singer'],
+      see: ['narak', 'shattered-plains', 'everstorm'],
       bio: 'They left the war and the Fused and made a people on the Shattered Plains. The Alethi found them. Venli found stormform. The Everstorm answered. What is left of them is a remnant trying not to be anyone\'s army.',
     }),
   org('worldsingers', 'The Worldsingers', '#fbbf24', 'stormlight', 'guild',
@@ -185,7 +185,7 @@ export const ORGANIZATIONS: Organization[] = [
     'The royal house of Alethkar: Gavilar who united it, Dalinar who broke and remade it, Jasnah who inherited a war.',
     {
       world: 'Roshar', wiki: 'House_Kholin',
-      members: ['gavilar', 'dalinar', 'jasnah', 'adolin', 'renarin', 'navani', 'evi'],
+      members: ['gavilar', 'dalinar', 'jasnah', 'adolin', 'renarin', 'navani'],
       see: ['kholinar', 'alethkar', 'dalinar'],
     }),
   org('the-set', 'The Set', '#e11d48', 'mistborn2', 'secret',

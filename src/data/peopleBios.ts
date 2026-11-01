@@ -128,7 +128,7 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   dalinar: {
     wiki: 'Dalinar_Kholin',
-    see: ['navani', 'stormfather', 'evi', 'adolin', 'honor'],
+    see: ['navani', 'stormfather', 'adolin', 'honor'],
     bio: 'The Blackthorn who burned the Rift, gave his memory of his wife to the Old Magic, and rebuilt himself into a Bondsmith and the man who refounded the Knights Radiant. In Wind and Truth he walks Honor\'s past in the Spiritual Realm, then meets Odium\'s champion on top of Urithiru: Gavinor, grown up in a vision and taught to hate him. He will not kill the boy. He takes up Honor, finds it wants only war on Odium, and renounces his oaths instead, buying Roshar time with his life. He dies shielding Gavinor from the wind, and Taravangian takes up what he let go.',
   },
   adolin: {
@@ -143,7 +143,7 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   navani: {
     wiki: 'Navani_Kholin',
-    see: ['dalinar', 'sibling', 'fabrial', 'gavilar'],
+    see: ['dalinar', 'fabrial', 'gavilar'],
     bio: 'Gavilar\'s widow and Dalinar\'s wife, an artifabrian who turned grief into scholarship and scholarship into Towerlight. She bonded the Sibling and out-thought Raboniel. In Wind and Truth she walks Roshar\'s history with Dalinar in the Spiritual Realm, one of the few humans who can find its pure tones, and comes back believing she has Gavinor; Taravangian has left her a sleeping copy. When Dalinar dies she has the Sibling seal Urithiru in crystal against Retribution, and sleeps inside it.',
   },
   venli: {
@@ -153,7 +153,7 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   taravangian: {
     wiki: 'Taravangian',
-    see: ['diagram', 'odium', 'retribution', 'cultivation'],
+    see: ['odium', 'cultivation'],
     bio: 'King of Kharbranth, whose Diagram was written on the one day he woke brilliant. At the end of Rhythm of War he killed Rayse with Nightblood and took up Odium. In Wind and Truth he keeps every contract by its letter: he raises Gavinor in a vision to be his champion, and when Dalinar gives up Honor he takes that too and becomes Retribution, among the most Invested beings in the cosmere and no longer bound to Roshar\'s system. He destroys the Stormfather, folds the highstorm into the Everstorm, and goes to ground before the other Shards can move. Kharbranth, which he seemed to drown, is safe in a copy he built in the Spiritual Realm.',
   },
   moash: {
@@ -178,12 +178,12 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   rysn: {
     wiki: 'Rysn_Ftori',
-    see: ['dawnshard', 'chiri-chiri', 'nikli', 'command-change'],
+    see: [],
     bio: 'A Thaylen merchant who lost the use of her legs in a fall on Relu-na, raised a larkin, and at Akinah became the bearer of the Dawnshard Change, which the Sleepless had guarded for millennia. It lies dormant in her, though she can sense life, and a voice in her head offers suggestions. Afterward she makes the coalition accept Thaylen patent law, and goes into business with Huio.',
   },
   eshonai: {
     wiki: 'Eshonai',
-    see: ['venli', 'listener'],
+    see: [],
     bio: 'A listener general and Shardbearer who wanted to explore the world more than fight for it. To save her people she took stormform, and it took her; her sister inherits both the guilt and the chance to choose differently. In her last moments she bonded Timbre.',
   },
   siri: {
@@ -308,12 +308,12 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   pattern: {
     wiki: 'Pattern',
-    see: ['shallan', 'cryptic', 'lightweavers'],
+    see: ['shallan'],
     bio: 'A Cryptic who loves lies that become true. He bonds Shallan knowing she killed the Cryptic before him, and keeps humming whenever the truth is about to hurt productively.',
   },
   ivory: {
     wiki: 'Ivory',
-    see: ['jasnah', 'inkspren', 'elsecallers'],
+    see: ['jasnah'],
     bio: 'An inkspren who risked a human bond after the Recreance\'s betrayal. He matches Jasnah for precision and occasionally for disdain — a scholar\'s spren in every sense.',
   },
   stormfather: {
@@ -323,7 +323,7 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   nightwatcher: {
     wiki: 'Nightwatcher',
-    see: ['cultivation', 'old-magic', 'dalinar', 'lift'],
+    see: ['cultivation', 'old-magic', 'dalinar'],
     bio: 'Cultivation\'s spren of the Old Magic, dispenser of boons and curses in the Valley. She is younger than the Stormfather in personality, older in consequence, and not interested in making petitioners comfortable.',
   },
   sibling: {
@@ -333,7 +333,7 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   nale: {
     wiki: 'Nale',
-    see: ['szeth', 'skybreakers', 'heralds', 'ishar', 'kaladin'],
+    see: ['szeth', 'heralds', 'ishar', 'kaladin'],
     bio: 'Nalan\'Elin, Herald of Justice, born on Ashyn at his uncle Makibak\'s side. For a thousand years he hunted every Surgebinder outside his own Skybreakers, because Ishar told him the return of the Radiants would bring a Desolation. In Shinovar Kaladin broke through his rationalisations and he fell apart in horror at what he had become; his highspren left him. He helped Szeth and Kaladin reach Ishar, and on Stormfall he laid the Honorblades in the circle that remade the Oathpact.',
   },
   taln: {
@@ -343,7 +343,7 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   ishar: {
     wiki: 'Ishar',
-    see: ['heralds', 'bondsmiths', 'nale', 'szeth'],
+    see: ['heralds', 'nale', 'szeth'],
     bio: 'The Herald who Connected the others to Honor and bound the Oathpact. Long before, on Ashyn, Odium tricked him first into the experiments with the Surges that ruined that world. A thousand years before the True Desolation he took a fraction of the Well of Control and Connected himself to Shinovar like a god: he spoke in Shin heads as the Voice, groomed Szeth for decades to replace a Herald, drove the spren out of the land, and remade the Honorbearers as human Fused. On Stormfall Kaladin swore his Fifth Ideal to him and forced Odium\'s power out. Ishar then reforged the Oathpact, and made Kaladin a Herald.',
   },
   gavilar: {

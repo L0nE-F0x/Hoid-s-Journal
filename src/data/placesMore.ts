@@ -25,7 +25,7 @@ function loc(
 export const PLACES_MORE: Location[] = [
   loc('warcamps', 'The Alethi Warcamps', 'roshar', 'stormlight', 0.8, 0.72, '#f87171', 'keep',
     'Ten princedoms dug in west of the Shattered Plains. Permanent enough to grow markets, temporary enough that nobody called them home.', {
-      bio: 'Ten camps in ten craters west of the Plains, one per princedom, dug in for a war that was supposed to take a season and took six years. They grew markets, bridge crews and a lighteyed social season, and Dalinar spent years trying to make ten rival courts behave like an army.', arc: 'twok', region: 'Shattered Plains', see: ['shattered-plains', 'narak'], wiki: 'Warcamp' }),
+      bio: 'Ten camps in ten craters west of the Plains, one per princedom, dug in for a war that was supposed to take a season and took six years. They grew markets, bridge crews and a lighteyed social season, and Dalinar spent years trying to make ten rival courts behave like an army.', arc: 'twok', region: 'Shattered Plains', see: ['shattered-plains'], wiki: 'Warcamp' }),
   loc('stormseat', 'Stormseat', 'roshar', 'stormlight', 0.836, 0.742, '#9ca3af', 'drum',
     'Capital of the old Silver Kingdom of Natanatan, at the heart of the Plains. The listeners call it Narak.', {
       bio: 'The capital of the Silver Kingdom of Natanatan, in the very centre of what became the Shattered Plains. In the War of Reckoning the listeners live there and call it Narak, Exile. Its Oathgate was the one never locked.', arc: 'wor', region: 'Shattered Plains', see: ['narak', 'shattered-plains'], wiki: 'Stormseat' }),
@@ -76,11 +76,11 @@ export const PLACES_MORE: Location[] = [
       bio: 'The bay west of Elendel where the Irongate meets the Sea of Yomend. Named for Hammond — Ham, of Kelsier\'s crew — who preferred a dockside den and a philosophical argument to anything a statue could commemorate.', eraMaps: ['basin'], see: ['elendel', 'irongate-river'], wiki: 'Hammondar_Bay' }),
   loc('makabak', 'Makabak', 'roshar', 'stormlight', 0.34, 0.68, '#fbbf24', 'land',
     'The Azish imperial sphere: Azir and the Makabaki states that answer when the essays go out.', {
-      bio: 'Not a country: the collective name for Azir and the states that orbit it — Emul, Tashikk, Yezier, Liafor, Alm, Desh, the Hexis and the rest. They answer Azimir\'s essays when it suits them, which is more often than an Alethi would expect and less often than Azir would like.', region: 'Makabak', see: ['azir', 'emul', 'tashikk'], wiki: 'Makabak' }),
+      bio: 'Not a country: the collective name for Azir and the states that orbit it — Emul, Tashikk, Yezier, Liafor, Alm, Desh, the Hexis and the rest. They answer Azimir\'s essays when it suits them, which is more often than an Alethi would expect and less often than Azir would like.', region: 'Makabak', see: ['azir'], wiki: 'Makabak' }),
   loc('makabakam', 'Makabakam', 'roshar', 'stormlight', 0.335, 0.655, '#f59e0b', 'land',
     'Ancient Silver Kingdom whose bones Azir still sits on. The Oathgate remembers the older name.', {
       region: 'Makabak',
-      bio: 'One of the ten Silver Kingdoms of the Heraldic Epochs, and the ground Azir and its neighbours are built on.', see: ['azimir', 'makabak'], wiki: 'Makabakam' }),
+      bio: 'One of the ten Silver Kingdoms of the Heraldic Epochs, and the ground Azir and its neighbours are built on.', see: ['makabak'], wiki: 'Makabakam' }),
   loc('tu-bayla', 'Tu Bayla', 'roshar', 'stormlight', 0.537, 0.518, '#a3e635', 'land',
     'A nation forming the Purelake\'s eastern shore, on the Veden border.', {
       region: 'Tu Bayla',
@@ -100,7 +100,7 @@ export const PLACES_MORE: Location[] = [
   loc('yezier', 'Yezier', 'roshar', 'stormlight', 0.305, 0.627, '#fdba74', 'land',
     'A Makabaki kingdom between Desh, Azir, Tashikk and Liafor.', {
       region: 'Makabak',
-      bio: 'A Makabaki kingdom with Desh to its north, Azir to the east, and Tashikk and Liafor to the south.', see: ['emul', 'azir'], wiki: 'Yezier' }),
+      bio: 'A Makabaki kingdom with Desh to its north, Azir to the east, and Tashikk and Liafor to the south.', see: ['azir'], wiki: 'Yezier' }),
   loc('rishir', 'Rishir', 'roshar', 'stormlight', 0.42, 0.285, '#fbcfe8', 'land',
     'Ancient Silver Kingdom of the northern coast. Kurth was its capital and still holds its Oathgate.', {
       region: 'Rishir',
@@ -108,19 +108,19 @@ export const PLACES_MORE: Location[] = [
   loc('sela-tales', 'Sela Tales', 'roshar', 'stormlight', 0.355, 0.48, '#c4b5fd', 'land',
     'Silver Kingdom of the west-central plains. Panatham keeps its Oathgate.', {
       region: 'Sela Tales',
-      bio: 'A Silver Kingdom of the west-central plains that claimed the Purelake, Marabethia, Babatharnam and Yulay, gone for four thousand years. Panatham still stands on its Oathgate.', see: ['panatham'], wiki: 'Sela_Tales' }),
+      bio: 'A Silver Kingdom of the west-central plains that claimed the Purelake, Marabethia, Babatharnam and Yulay, gone for four thousand years. Panatham still stands on its Oathgate.', see: [], wiki: 'Sela_Tales' }),
   loc('bavland', 'Bavland', 'roshar', 'stormlight', 0.598, 0.567, '#a8a29e', 'land',
     'Mining country in the mountains of south-western Jah Keved.', {
       bio: 'An autonomous corner of Jah Keved at the base of the mountains: mines, small towns, and nobody\'s priority. Szeth passed between masters here as a Truthless, once for a sack of seeds.', arc: 'twok', region: 'Jah Keved', see: ['jah-keved', 'shinovar'], wiki: 'Bavland' }),
   loc('peak-oceans', 'Horneater Oceans', 'roshar', 'stormlight', 0.672, 0.528, '#67e8f9', 'lake',
-    'Thermal oceans cupped between the Horneater Peaks. Cultivation\'s Perpendicularity opens in their heat.', { arc: 'wor', region: 'Horneater Peaks', see: ['horneater-peaks', 'the-valley'], wiki: 'Horneater_Oceans', bio: 'Rock\'s people farm the shores and swim water that would scald a lowlander. The pool at the heart is not for swimming.' }),
+    'Thermal oceans cupped between the Horneater Peaks. Cultivation\'s Perpendicularity opens in their heat.', { arc: 'wor', region: 'Horneater Peaks', see: ['horneater-peaks'], wiki: 'Horneater_Oceans', bio: 'Rock\'s people farm the shores and swim water that would scald a lowlander. The pool at the heart is not for swimming.' }),
   loc('sea-of-spears', 'Sea of Spears', 'roshar', 'stormlight', 0.82, 0.68, '#38bdf8', 'sea',
     'A large inland sea in south-eastern Alethkar.', {
-      bio: 'An inland body of water in south-eastern Alethkar; Rathalas, the Rift, stands at its northern tip.', region: 'Alethkar', see: ['rathalas', 'alethkar'], wiki: 'Sea_of_Spears' }),
+      bio: 'An inland body of water in south-eastern Alethkar; Rathalas, the Rift, stands at its northern tip.', region: 'Alethkar', see: ['alethkar'], wiki: 'Sea_of_Spears' }),
   loc('tarat-sea', 'Tarat Sea', 'roshar', 'stormlight', 0.607, 0.712, '#67e8f9', 'sea',
     'The sea Kharbranth sits on.', {
       region: 'Tarat Sea',
-      bio: 'A sea so sheltered that Kharbranth\'s bells were first hung to warn of highstorms its soft winds would not announce.', see: ['kharbranth', 'thaylenah'], wiki: 'Tarat_Sea' }),
+      bio: 'A sea so sheltered that Kharbranth\'s bells were first hung to warn of highstorms its soft winds would not announce.', see: ['kharbranth'], wiki: 'Tarat_Sea' }),
   loc('steamwater-ocean', 'Steamwater Ocean', 'roshar', 'stormlight', 0.818, 0.194, '#7dd3fc', 'sea',
     'Northern ocean beyond the Reshi Sea.', {
       region: 'Steamwater Ocean',
@@ -132,19 +132,19 @@ export const PLACES_MORE: Location[] = [
   loc('southern-depths', 'The Southern Depths', 'roshar', 'stormlight', 0.55, 0.92, '#1e3a8a', 'sea',
     'Deep water south of Thaylenah. Highstorms are born far east; down here the seas just take.', {
       region: 'The Southern Depths',
-      bio: 'Deep water south of Thaylenah, past where the shelf drops away. The highstorms are born far east of here; the Depths are simply cold, and old, and take what goes into them.', see: ['thaylenah', 'the-origin'] }),
+      bio: 'Deep water south of Thaylenah, past where the shelf drops away. The highstorms are born far east of here; the Depths are simply cold, and old, and take what goes into them.', see: ['the-origin'] }),
   loc('windrunner-river', 'Windrunner River', 'roshar', 'stormlight', 0.77, 0.48, '#38bdf8', 'canal',
     'The longest river in northern Alethkar, named for the Order of Windrunners.', {
       bio: 'It runs north-west past Hearthstone to the Bay of Elibath, and it carries the name of the Windrunners, one of the memories of the Radiants still left on the map.', region: 'Alethkar', see: ['alethkar', 'hearthstone'], wiki: 'Windrunner_River' }),
   loc('deathbend-river', 'Deathbend River', 'roshar', 'stormlight', 0.79, 0.56, '#64748b', 'canal',
     'A river of southern Alethkar, running through the Eastern Crownlands into Mevan Bay.', {
-      bio: 'A southern Alethi river. Gavilar first met the listeners while exploring one of its tributaries.', region: 'Alethkar', see: ['alethkar', 'listeners'], wiki: 'Deathbend_River' }),
+      bio: 'A southern Alethi river. Gavilar first met the listeners while exploring one of its tributaries.', region: 'Alethkar', see: ['alethkar'], wiki: 'Deathbend_River' }),
   loc('iriali-long-trail', 'The Long Trail', 'roshar', 'stormlight', 0.3, 0.22, '#fde68a', 'land',
     'The Iriali path through worlds. Iri is one stop; the Next Land is always further on.', { region: 'Iri', see: ['iri', 'rall-elorim'], wiki: 'Iriali', bio: 'Golden-haired pilgrims who treat continents as waystations. When the time comes, they leave.' }),
   loc('abamabar', 'Abamabar', 'roshar', 'stormlight', 0.52, 0.62, '#a8a29e', 'city',
     'Wherever Nohadon walked from to reach Urithiru. The parable survived; the road did not.', {
       region: 'The Heraldic Epochs',
-      bio: 'The city Nohadon walked from when he walked to Urithiru — the walk that became The Way of Kings and the parable Dalinar cannot stop rereading. Where Abamabar was is an open question; whether the walk happened as written is a better one.', see: ['urithiru'], wiki: 'Abamabar' }),
+      bio: 'The city Nohadon walked from when he walked to Urithiru — the walk that became The Way of Kings and the parable Dalinar cannot stop rereading. Where Abamabar was is an open question; whether the walk happened as written is a better one.', see: [], wiki: 'Abamabar' }),
   loc('shin-monasteries', 'The Shin Monasteries', 'roshar', 'stormlight', 0.21, 0.42, '#86efac', 'keep',
     'The Monasteries of Truth: Shinovar\'s watchtower-fortresses, one to each Herald, where the Honorbearers kept the Honorblades.', {
       arc: 'wat', bio: 'Ten monasteries, one dedicated to each Herald, built tall and stone as watchtowers and fortresses, and the seat of both Shin government and Stone Shamanism. Szeth\'s pilgrimage in Wind and Truth took him from one to the next, beating each Honorbearer in turn.', region: 'Shinovar', see: ['monastery-of-truth', 'honorbearers', 'shinovar'], wiki: 'Monastery_of_Truth' }),
@@ -192,11 +192,11 @@ export const PLACES_MORE: Location[] = [
   loc('expanse-of-vibrance', 'Expanse of Vibrance', 'roshar', 'stormlight', 0.55, 0.35, '#f472b6', 'storm',
     'Cognitive expanse associated with Nalthis — colour thick enough to feel like weather.', {
       region: 'Shadesmar',
-      bio: 'The expanse toward Nalthis, where colour thickens until it has weight and weather. Awakeners find it exhilarating and everyone else finds it exhausting.', realm: 'cognitive', see: ['expanse-of-the-vapors'], wiki: 'Expanse_of_Vibrance', canon: 'wob', sources: ['The Stormlight Archive', 'Word of Brandon'] }),
+      bio: 'The expanse toward Nalthis, where colour thickens until it has weight and weather. Awakeners find it exhilarating and everyone else finds it exhausting.', realm: 'cognitive', see: [], wiki: 'Expanse_of_Vibrance', canon: 'wob', sources: ['The Stormlight Archive', 'Word of Brandon'] }),
   loc('expanse-of-broken-sky', 'Expanse of the Broken Sky', 'roshar', 'stormlight', 0.45, 0.85, '#1e293b', 'storm',
     'A Shadesmar expanse that corresponds to Taldain.', {
       region: 'Shadesmar',
-      bio: 'The Expanse of the Broken Sky in Shadesmar, which corresponds to Taldain. A bearing rather than a destination.', realm: 'cognitive', see: ['lasting-integrity'], wiki: 'Expanse_of_the_Broken_Sky' }),
+      bio: 'The Expanse of the Broken Sky in Shadesmar, which corresponds to Taldain. A bearing rather than a destination.', realm: 'cognitive', see: [], wiki: 'Expanse_of_the_Broken_Sky' }),
   loc('riino-lighthouse', 'Riino\'s Lighthouse', 'roshar', 'stormlight', 0.76, 0.66, '#fbbf24', 'tower',
     'A lighthouse in Shadesmar kept by an Elantrian of the Ire.', {
       region: 'Shadesmar',
@@ -562,7 +562,7 @@ export const PLACES_MORE: Location[] = [
   loc('undersea-aimia', 'Aimian Sea', 'roshar', 'stormlight', 0.07, 0.58, '#475569', 'sea',
     'The sea around Aimia, off Roshar\'s south-western coast.', {
       wiki: 'Aimian_Sea', region: 'Aimia',
-      bio: 'The water that surrounds the Aimian islands and laps the coasts of Steen and Liafor. Ships give Aimia a wide berth.', see: ['aimia', 'akinah'] }),
+      bio: 'The water that surrounds the Aimian islands and laps the coasts of Steen and Liafor. Ships give Aimia a wide berth.', see: [] }),
   loc('urithiru-mountains', 'Mountains of Ur', 'roshar', 'stormlight', 0.46, 0.65, '#bae6fd', 'peak',
     'High central range that hides the tower-city. Above the storms; below the gods\' old arguments.', {
       arc: 'row', region: 'Urithiru',

@@ -119,6 +119,25 @@ export const HUBS: Hub[] = [
     sources: ['Sixth of the Dusk', 'Arcanum Unbounded'],
   },
   {
+    id: 'dakwaras-island',
+    name: "The Dakwara's island",
+    color: '#a5f3fc',
+    book: 'emberdark',
+    arc: 'emberdark',
+    kind: 'anomaly',
+    eraMin: 1,
+    system: 'drominad',
+    offset: 33,
+    bearing: 1.1,
+    rise: 0.7,
+    fact: "A flat ring of black coral-like rock in the Drominad subastral, with a moat and a tiny island in the hole. Cakoban is buried in the cave there, under Frost's runes: 'I was too late to help, but I laid him here.' The Malwish took it for the hidden perpendicularity.",
+    bio: "The tunnel through the outer island is full of Patji — deathants, memist, masher wasps, a nightmaw — because generations of trappers' fears made it, and it began to take on Dusk's own memories once he was a Navigator. It is a dead end. The Dakwara swam the moat with hundreds of skullsnakes until Dusk crossed to the inner island; afterwards he sent it to guard the real perpendicularity's island instead.",
+    see: ['dakwara', 'cakoban', 'frost', 'dusk', 'dajer'],
+    wiki: "Dakwara's island",
+    canon: C,
+    sources: ['Isles of the Emberdark'],
+  },
+  {
     id: 'grand-knell',
     name: 'The Grand Knell',
     color: '#ef4444',
@@ -294,8 +313,8 @@ export const ROUTES: WorldhopperRoute[] = [
     eraMin: 4, fact: "Autonomy's avatar came at Scadrial from here. Trell, to the people who prayed to it." },
   { id: 'roshar-braize', from: 'rosharan', to: 'rosharan', book: 'stormlight',
     eraMin: 1, fact: 'Not a worldhop at all: Roshar and Braize share a subastral, and that is what made the Oathpact possible.' },
-  { id: 'drominad-emberdark', from: 'drominad', to: 'yolish', book: 'emberdark', arc: 'emberdark',
-    eraMin: 5, fact: 'Starling took the Dynamic looking for a perpendicularity in this system, and for her uncle.' },
+  { id: 'drominad-emberdark', from: 'drominad', to: 'scadrian', via: 'silverlight', book: 'emberdark', arc: 'emberdark',
+    eraMin: 5, fact: 'Off the lanes, on an Iriali map: Starling took the Dynamic out of Silverlight after a perpendicularity in the Drominad system, and found the Malwish had got there first.' },
 ];
 
 export const DAWNSHARDS: Dawnshard[] = [

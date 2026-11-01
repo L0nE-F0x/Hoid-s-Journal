@@ -77,13 +77,14 @@ export const CHARACTERS: Character[] = [
       { era: 4, system: 'scadrian', body: 'scadrial' },
       { era: 5, system: 'scadrian', body: 'scadrial' },
     ]),
-  ch('nazh', 'Nazh', '#78716c', 'arcanum', 'Threnody', 'Nazh',
-    'Worldhopper, mapmaker',
+  ch('nazh', 'Nazh', '#78716c', 'arcanum', 'Threnody', 'Nazh, Nazrilof',
+    'Worldhopper, mapmaker; a shade',
     'Khriss\'s agent and annotator of stolen maps.', false, [
       { era: 2, system: 'scadrian', body: 'scadrial' },
       { era: 3, system: 'rosharan', body: 'roshar' },
       { era: 4, system: 'scadrian', body: 'scadrial' },
-      { era: 5, system: 'rosharan', body: 'roshar' },
+      // Dead, a shade, and the Dynamic's security officer by the space age.
+      { era: 5, system: 'drominad', body: 'first-of-the-sun', book: 'emberdark', arc: 'emberdark' },
     ]),
   ch('galladon', 'Galladon', '#a78bfa', 'elantris', 'Sel', 'Temoo',
     'Elantrian',
@@ -287,9 +288,9 @@ export const CHARACTERS: Character[] = [
     'Shade-wise innkeeper',
     'She keeps the Simple Rules. The Forests do not.', false,
     [{ era: 2, system: 'threnodite', body: 'threnody' }]),
-  ch('dusk', 'Sixth of the Dusk', '#4ade80', 'sixthofdusk', 'First of the Sun', 'Dusk',
-    'Trapper, Aviar-bonded',
-    'A man of Patji facing a sky full of other worlds.', false, [
+  ch('dusk', 'Sixth of the Dusk', '#4ade80', 'sixthofdusk', 'First of the Sun', 'Dusk, Sixth',
+    'Trapper; Aviar-bonded (Sak, Kokerlii, then Rokke); Navigator',
+    'A Patji trapper who paddled through Patji\'s Eye into the dark, came back the first Navigator in millennia, and bought his people their freedom with it.', false, [
       { era: 4, system: 'drominad', body: 'first-of-the-sun' },
       { era: 5, system: 'drominad', body: 'first-of-the-sun' },
     ]),
@@ -500,7 +501,7 @@ CHARACTERS.push(
   drake('illistandrista', 'Illistandrista', '#f472b6', 'emberdark', 'Starling',
     "Shapeshifter (manacled to human form) · ship's captain · Hoid's apprentice",
     "Frost's niece, raised by him after her parents died. Eighty-seven years old during Isles of the Emberdark, which is young. Wears manacles that hold her in human form.",
-    "Captain of the Dynamic Storyteller's Incredible Conveyance and apprentice to Hoid. Searching the Drominad system for a perpendicularity, and for her uncle, whom she does not believe is dead.",
+    "Captain of the Dynamic Storyteller's Incredible Conveyance and Hoid's apprentice: a young dragon exiled from Yolen and manacled into human form, who does not despair.",
     [{ era: 5, system: 'drominad', body: 'first-of-the-sun' }],
     { arc: 'emberdark', sources: ['Isles of the Emberdark'] }),
 

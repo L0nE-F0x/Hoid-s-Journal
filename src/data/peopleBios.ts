@@ -39,7 +39,7 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   nazh: {
     wiki: 'Nazrilof',
     see: ['khriss', 'threnody', 'silverlight'],
-    bio: 'Khriss\'s long-suffering Threnodite agent: map thief, annotator, and professional complainer. If a chart in your edition has dry sarcasm in the margins, that is Nazh earning his keep.',
+    bio: 'Khriss\'s long-suffering Threnodite agent: map thief, annotator, and professional complainer. If a chart in your edition has dry sarcasm in the margins, that is Nazh earning his keep. Somewhere before the space age he died and came back a shade, and he keeps the Dynamic\'s security for Starling — which is why the Malwish on the Dakwara\'s island had a shade prison ready for him.',
   },
   galladon: {
     wiki: 'Galladon',
@@ -254,7 +254,7 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   dusk: {
     wiki: 'Sixth_of_the_Dusk',
     see: ['vathi', 'aviar', 'patji-eye'],
-    bio: 'A trapper of the Pantheon islands who trusts Aviar more than people. Vathi and the ones above force him to decide whether First of the Sun stays isolated or joins a Cosmere that has already noticed Patji.',
+    bio: 'A trapper of the Pantheon, a man who says little, trusts Aviar more than people, and serves Patji as priest while treating it as a father trying to kill him. He wanted the island left alone. Then the Company came, and Vathi with it, and the Ones Above\'s machine turned out to be a trap, and he decided the Eelakin had to modernise before they were taken. Five years on, with Kokerlii dead and his people outmatched, he paddled a canoe through Patji\'s Eye into the Emberdark with Sak and Rokke. Patji made him a Navigator. He bluffed the Malwish on the Dakwara\'s island, bested the Dakwara, and brought Starling\'s crew back to the perpendicularity; after six months training the first Navigators, he signed on with the Dynamic.',
   },
   mraize: {
     wiki: 'Mraize',
@@ -403,8 +403,8 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   frost: {
     wiki: 'Frost',
-    see: ['hoid', 'seventeenth-shard', 'illistandrista', 'yolen'],
-    bio: 'Oldest dragon still corresponding with Hoid — mentor, critic, and Seventeenth Shard voice for non-intervention. He raises Starling, watches the Cosmere tilt toward war, and still prefers letters to cataclysm.',
+    see: ['hoid', 'seventeenth-shard', 'yolen'],
+    bio: 'Oldest dragon still corresponding with Hoid — mentor, critic, and Seventeenth Shard voice for non-intervention. He watches the Cosmere tilt toward war and still prefers letters to cataclysm. He raised his niece Starling after her parents died, taught her to feel for mortals, and let her apprentice herself to Hoid though he feared what Hoid attracts. Millennia earlier he reached Cakoban seconds too late in the Drominad subastral and buried him. By the space age he has been missing for years and most think him dead. Starling does not.',
   },
   koravellium: {
     wiki: 'Koravellium_Avast',
@@ -418,8 +418,8 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   illistandrista: {
     wiki: 'Illistandrista',
-    see: ['frost', 'hoid', 'emberdark'],
-    bio: 'Starling — Frost\'s niece, Hoid\'s apprentice, captain into the Emberdark. Young for a dragon, cuffed into human form, looking for a perpendicularity and for family the Cosmere has misplaced.',
+    see: ['frost', 'hoid', 'dynamic-crew', 'xisis', 'dusk', 'emberdark'],
+    bio: 'Leucistic in both forms: white scales and silver dragonsteel, or a pale young woman with white hair and eyes. Frost raised her on Yolen. At about seventy-five she defied her elders on a point of conscience, and they bound her powers with manacles that turn her own Investiture against her and exiled her until she learns her lesson — which is why Hoid took her as an apprentice and put her aboard the Dynamic as his lieutenant. When he left, Xisis took the ship and gave it to Crow; when Crow would not answer a distress call, Starling led the mutiny, then bargained the crew\'s future out of Xisis against finding the Drominad perpendicularity. Taken by the Malwish on the Dakwara\'s island, she let Dajer turn the Intensifier on her manacles, felt her wings come back, and held the manacles shut herself so the overload would black out the island and her crew could run. The ship is hers now and the crew are partners, and they have promised to get the manacles off. She believes her uncle is alive.',
   },
   hoid: {
     wiki: 'Hoid',

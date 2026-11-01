@@ -187,6 +187,70 @@ export const READING_FACES: Record<string, ReadingFace> = {
       { book: 'sunlit', arc: 'sunlit', published: true },
     ],
   },
+  // Isles of the Emberdark is Sixth of the Dusk retold and carried on five
+  // years. The novella's cast keep the novella's card until it is read.
+  dusk: {
+    early: {
+      fact: 'A man of Patji facing a sky full of other worlds.',
+      abilities: 'Trapper, Aviar-bonded',
+      aliases: 'Dusk',
+      bio: 'A trapper of the Pantheon who trusts Aviar more than people and wants Patji left alone. Then the Company comes with Vathi and a machine from the Ones Above, and he has to decide whether First of the Sun can stay as it is in a cosmere that has already noticed it.',
+    },
+    steps: [
+      { book: 'emberdark', arc: 'emberdark', published: true },
+    ],
+  },
+  vathi: {
+    early: {
+      aliases: 'Vathi, Lady Vathi',
+      abilities: 'Northern Interests Trading Company',
+      bio: 'Eelakin like Dusk, but a homeisler, educated and endlessly curious, and a woman in a Company that expects her to be a clerk. She joined the Patji expedition for the science. A deepwalker took the rest of her team; she followed an Aviar locator to Dusk\'s safecamp and ended up in his trap. Together they crossed the island at night, found out why only Patji\'s birds gain talents, and worked out that the Ones Above\'s gift was a trap.',
+    },
+    steps: [
+      { book: 'emberdark', arc: 'emberdark', published: true },
+    ],
+  },
+  sak: {
+    early: {
+      bio: 'A small black bird from the mainland with a limp and a scarred wing, which is why Dusk took her to Patji as a chick and why she rides his shoulder. She ate the worms at Patji\'s Eye like any Aviar and came away with a talent nobody had seen: an image of your own corpse wherever death is waiting, a minute or so ahead. That a mainland bird could gain a talent at all was news, and Dusk kept her secret for years. When the Company opened the Ones Above\'s machine she saw the whole island die.',
+    },
+    steps: [
+      { book: 'emberdark', arc: 'emberdark', published: true },
+    ],
+  },
+  kokerlii: {
+    early: {
+      bio: 'A cheerful, chattering bird who stays close because he would not fit in with wild Aviar. His talent masks all mental activity near him, which on Patji, where deepwalkers and nightmaws hunt by thought, is the difference between a trapper and a skeleton; it weakens as he flies further off.',
+    },
+    steps: [
+      { book: 'emberdark', arc: 'emberdark', published: true },
+    ],
+  },
+  nazh: {
+    early: {
+      abilities: 'Worldhopper, mapmaker',
+      bio: 'Khriss\'s long-suffering Threnodite agent: map thief, annotator, and professional complainer. If a chart in your edition has dry sarcasm in the margins, that is Nazh earning his keep.',
+    },
+    steps: [
+      { book: 'emberdark', arc: 'emberdark', published: true },
+    ],
+  },
+  frost: {
+    early: {
+      bio: 'Oldest dragon still corresponding with Hoid — mentor, critic, and Seventeenth Shard voice for non-intervention. He watches the Cosmere tilt toward war and still prefers letters to cataclysm.',
+    },
+    steps: [
+      { book: 'emberdark', arc: 'emberdark', published: true },
+    ],
+  },
+  crow: {
+    early: {
+      bio: 'Pirate captain of the Crow\'s Song, hard as a reef and dying of a verdant spore infection that turns rain into a death sentence. She bargains and bullies, and cruelty is a tool she reaches for first.',
+    },
+    steps: [
+      { book: 'emberdark', arc: 'emberdark', published: true },
+    ],
+  },
   rysn: {
     early: {
       fact: 'A Thaylen merchant apprentice who wants a ship of her own.',

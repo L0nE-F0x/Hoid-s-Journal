@@ -25,42 +25,39 @@ function loc(
 export const PLACES_MORE: Location[] = [
   loc('warcamps', 'The Alethi Warcamps', 'roshar', 'stormlight', 0.8, 0.72, '#f87171', 'keep',
     'Ten princedoms dug in west of the Shattered Plains. Permanent enough to grow markets, temporary enough that nobody called them home.', {
-      bio: 'Ten camps in ten craters west of the Plains, one per princedom, dug in for a war that was supposed to take a season and took six years. They grew markets, brothels, bridge crews and a lighteyed social season, and Dalinar spent Oathbringer trying to make them behave like an army instead of ten rival courts with a shared enemy.', arc: 'twok', region: 'Shattered Plains', see: ['shattered-plains', 'narak'], wiki: 'Warcamps' }),
+      bio: 'Ten camps in ten craters west of the Plains, one per princedom, dug in for a war that was supposed to take a season and took six years. They grew markets, bridge crews and a lighteyed social season, and Dalinar spent years trying to make ten rival courts behave like an army.', arc: 'twok', region: 'Shattered Plains', see: ['shattered-plains', 'narak'], wiki: 'Warcamp' }),
   loc('stormseat', 'Stormseat', 'roshar', 'stormlight', 0.836, 0.742, '#9ca3af', 'drum',
-    'The listener name for the capital plateau at the heart of the Plains. Narak stands on what is left of it.', {
-      bio: 'The Silver Kingdom capital at the centre of Natanatan, and the listeners\' name for what is left of it. Whatever shattered the Plains shattered this first; Narak is built on the remains, and the Oathgate that served the old city is still down there under the rubble.', arc: 'wor', region: 'Shattered Plains', see: ['narak', 'shattered-plains'], wiki: 'Stormseat' }),
+    'Capital of the old Silver Kingdom of Natanatan, at the heart of the Plains. The listeners call it Narak.', {
+      bio: 'The capital of the Silver Kingdom of Natanatan, in the very centre of what became the Shattered Plains. In the War of Reckoning the listeners live there and call it Narak, Exile. Its Oathgate was the one never locked.', arc: 'wor', region: 'Shattered Plains', see: ['narak', 'shattered-plains'], wiki: 'Stormseat' }),
   loc('kholinar-windblades', 'The Windblades', 'roshar', 'stormlight', 0.79, 0.49, '#fbbf24', 'peak',
-    'Knife-edged rock fins that cut through Kholinar. Palaces cling to them; storms scream between them.', {
-      bio: 'Stone fins standing up through the middle of Kholinar, sharp enough to have names, old enough that nobody agrees how they got there. The city is built around and between them; the palaces sit up on them, and when a highstorm comes through the gaps the sound is what Alethi children are told the Voidbringers make.', region: 'Alethkar', see: ['kholinar'], wiki: 'Kholinar' }),
+    'Rock fins that cut through Kholinar. Palaces cling to them.', {
+      bio: 'Stone fins standing up through Kholinar, around and between which the city is built; the palaces sit up on them.', region: 'Alethkar', see: ['kholinar'], wiki: 'Kholinar' }),
   loc('kharbranth-palanaeum', 'The Palanaeum', 'roshar', 'stormlight', 0.585, 0.77, '#a78bfa', 'scroll',
-    'The greatest library on Roshar, cut into the cliff behind Kharbranth. Taravangian traded lives to keep it funded.', { arc: 'twok', region: 'Kharbranth', see: ['kharbranth'], wiki: 'Palanaeum', bio: 'Jasnah came for the books. Shallan came for Jasnah. The Diagram was written in a hospital upstairs.' }),
+    'The greatest library on Roshar, cut into the rock of Kharbranth. Its fees keep the city\'s hospitals open.', { arc: 'twok', region: 'Kharbranth', see: ['kharbranth'], wiki: 'Palanaeum', bio: 'Jasnah came for the books. Shallan came for Jasnah.' }),
   loc('ironsway', 'Ironsway', 'roshar', 'stormlight', 0.595, 0.625, '#94a3b8', 'city',
     'Largest town in Bavland — taverns, transient miners, and the place Took dragged Szeth to show him off.', {
       bio: 'A mining town in Bavland with more taverns than reasons to be there. Took bought Szeth as a curiosity and paraded him through it, which is how the deadliest man on Roshar spent a stretch of his life being someone\'s dinner-party trick.', arc: 'twok', region: 'Bavland', see: ['bavland', 'jah-keved'], wiki: 'Ironsway' }),
   loc('silnasen', 'Silnasen', 'roshar', 'stormlight', 0.594, 0.626, '#fca5a5', 'city',
-    'A Jah Keved city of the southern marches, caught between Veden succession and Alethi ambition.', {
-      bio: 'A city of Jah Keved\'s southern marches, close enough to Alethkar to be a bargaining chip and far enough from Vedenar to be forgotten in a succession war. Lift passed through on her way south and stole from it, which is her usual arrangement with cities.', region: 'Jah Keved', see: ['jah-keved', 'vedenar'], wiki: 'Silnasen' }),
+    'A city of southern Jah Keved near Triax and Bavland, home of the Siln.', {
+      arc: 'wor', bio: 'A city in the south of Jah Keved, close to Triax and Bavland, named for the Siln, an indigenous people of the region.', region: 'Jah Keved', see: ['jah-keved', 'vedenar'], wiki: 'Silnasen' }),
   loc('valath', 'Valath', 'roshar', 'stormlight', 0.648, 0.513, '#f87171', 'city',
     'Northern Jah Keved city, and a name Vorin maps still bother to print.', {
-      bio: 'A northern Veden city that survives on Vorin maps mostly by having survived. It changed hands during the succession war without anyone outside the kingdom noticing.', region: 'Jah Keved', see: ['jah-keved'], wiki: 'Valath' }),
-  loc('bornwater', 'Bornwater', 'roshar', 'stormlight', 0.45, 0.5, '#67e8f9', 'village',
-    'A Purelake town where the water is the street and the fish know more than they should.', {
-      bio: 'A Purelake town where the streets are shin-deep water and the houses stand on stilts that have not needed replacing in living memory. The fish here are used medicinally, and the locals\' opinion of outsiders who try to buy the lake is unprintable.', arc: 'twok', region: 'Purelake', see: ['purelake'], wiki: 'Bornwater' }),
+      bio: 'A northern Veden city, home to the Holy Enclave.', region: 'Jah Keved', see: ['jah-keved'], wiki: 'Valath' }),
+  loc('bornwater', 'Bornwater', 'roshar', 'stormlight', 0.592, 0.565, '#67e8f9', 'village',
+    'The biggest mining town in Bavland, sheltered by a cliff on its east side.', {
+      bio: 'A backwater mining town in Bavland, the largest in its corner of the mountains, sheltered from the highstorms by a cliff to the east. Szeth lived here for a time as a Truthless, before he served Taravangian.', arc: 'twok', region: 'Bavland', see: ['bavland', 'szeth'], wiki: 'Bornwater' }),
   loc('fu-abra', 'Fu Abra', 'roshar', 'stormlight', 0.425, 0.505, '#22d3ee', 'village',
     'Purelake settlement Ishikk worked out of while fishing for a man who was not there.', {
-      bio: 'One of the Purelake settlements Ishikk worked out of, fishing in the mornings and asking after a foreigner in the afternoons. The three men paying him were Ghostbloods and the man they wanted was not in the lake, but the money was good and the lake is patient.', arc: 'twok', region: 'Purelake', see: ['purelake'], wiki: 'Fu_Abra' }),
-  loc('rit-vo-ma', 'Rit-vo-Ma', 'roshar', 'stormlight', 0.5575, 0.1661, '#4ade80', 'island',
-    'A Reshi island-greatshell. People live on its back and argue with its moods.', {
-      bio: 'One of the Reshi greatshells, with a town on its back and a king who reigns by the isle\'s consent rather than the other way round. When it decides to move, the town moves; when it decides to sulk, the town waits.', arc: 'wor', region: 'Reshi Isles', see: ['reshi-isles'], wiki: 'Rit-vo-Ma' }),
+      bio: 'A Purelake village where Ishikk fished in the mornings and asked after a foreigner in the afternoons, for three strangers who were looking for Hoid.', arc: 'twok', region: 'Purelake', see: ['purelake'], wiki: 'Fu_Abra' }),
   loc('cusicesh-site', 'Cusicesh the Protector', 'roshar', 'stormlight', 0.2525, 0.2675, '#c4b5fd', 'lake',
     'A spren the size of a district that rises each day in Kasitor\'s bay and wears a thousand faces.', {
-      bio: 'Every dawn something the size of a city district rises out of Kasitor\'s bay, turns through a thousand faces — some human, some not, all wrong — and sinks again. The Iriali have built a viewing platform. Jasnah wanted to know what it is; nobody has told her.', arc: 'wor', region: 'Iri', see: ['kasitor', 'iri'], wiki: 'Cusicesh' }),
+      bio: 'Every morning something the size of a city district rises out of Kasitor\'s bay, turns through a sequence of human faces, and sinks again. The Iriali call it Cusicesh, the Protector.', arc: 'twok', region: 'Iri', see: ['kasitor', 'iri'], wiki: 'Cusicesh' }),
   loc('thaylen-field', 'Thaylen Field', 'roshar', 'stormlight', 0.605, 0.85, '#4ade80', 'grass',
     'The plain outside Thaylen City where a god was stood down and a perpendicularity forced open.', {
-      bio: 'The plain outside Thaylen City where the coalition lost, and then did not. Dalinar refused Odium\'s claim on him in front of both armies, the Stormfather and Honor\'s own remnant, and forced open a perpendicularity that healed the wounded and burned the Thrill out of the sky. It is where the True Desolation stopped being a rout.', arc: 'oathbringer', region: 'Thaylenah', see: ['thaylen-city', 'thaylenah'], wiki: 'Battle_of_Thaylen_Field' }),
+      bio: 'The plain outside Thaylen City where the coalition lost, and then did not. Dalinar refused Odium\'s claim on him in front of both armies and opened Honor\'s perpendicularity; the Stormlight it poured out refilled the Radiants, and the Thrill was trapped in the King\'s Drop.', arc: 'oathbringer', region: 'Thaylenah', see: ['thaylen-city', 'thaylenah'], wiki: 'Battle_of_Thaylen_Field' }),
   loc('klna', 'Klna', 'roshar', 'stormlight', 0.638, 0.837, '#86efac', 'port',
-    'Thaylen shipyards. Where the Wandersail was refitted before Rysn sailed west.', {
-      bio: 'The Thaylen shipyards, where a merchant fleet is built to survive a coast that is trying to kill it. The Wandersail was refitted here before Rysn took it west, which is the last time anyone sailed for Aimia on purpose and came back.', arc: 'dawnshard', region: 'Thaylenah', see: ['thaylenah', 'akinah'], wiki: 'Klna' }),
+    'A Thaylen city on Longbrow\'s Straits, with shipyards.', {
+      bio: 'A city of Thaylenah on Longbrow\'s Straits. Vstim had a new ship built here for Rysn, the Wandersail.', arc: 'oathbringer', region: 'Thaylenah', see: ['thaylenah', 'akinah'], wiki: 'Klna' }),
   loc('steinel', 'Steinel', 'scadrial', 'mistborn2', 0.575, 0.332, '#94a3b8', 'city',
     'Basin city due east of Elendel along the Irongate River.', {
       region: 'Elendel Basin',
@@ -83,75 +80,65 @@ export const PLACES_MORE: Location[] = [
   loc('makabakam', 'Makabakam', 'roshar', 'stormlight', 0.335, 0.655, '#f59e0b', 'land',
     'Ancient Silver Kingdom whose bones Azir still sits on. The Oathgate remembers the older name.', {
       region: 'Makabak',
-      bio: 'One of the ten Silver Kingdoms of the Heraldic Epochs, and the ground Azir is built on. Its Oathgate still answers to the older name, which is one of the few pieces of evidence the modern empire has that it is standing on something.', see: ['azimir', 'makabak'], wiki: 'Makabakam' }),
+      bio: 'One of the ten Silver Kingdoms of the Heraldic Epochs, and the ground Azir and its neighbours are built on.', see: ['azimir', 'makabak'], wiki: 'Makabakam' }),
   loc('tu-bayla', 'Tu Bayla', 'roshar', 'stormlight', 0.537, 0.518, '#a3e635', 'land',
-    'A small nation east of Babatharnam, more often crossed than visited.', {
+    'A nation forming the Purelake\'s eastern shore, on the Veden border.', {
       region: 'Tu Bayla',
-      bio: 'A small nation east of Babatharnam, on the road between the Purelake and the western coast. It is crossed constantly and visited rarely, which is most of what can be said about it.', see: ['babatharnam', 'purelake'], wiki: 'Tu_Bayla' }),
+      bio: 'A nation along the eastern shore of the Purelake, bordering Jah Keved.', see: ['babatharnam', 'purelake'], wiki: 'Tu_Bayla' }),
   loc('triax', 'Triax', 'roshar', 'stormlight', 0.568, 0.663, '#86efac', 'land',
-    'Between the Purelake and the southern kingdoms. Easy to miss on a map, harder to hold.', {
+    'A small kingdom on the Tarat Sea between Jah Keved and Tu Fallia.', {
       region: 'Triax',
-      bio: 'A stretch between the Purelake and the southern kingdoms that has been claimed by several of them and held by none for long. Easy to miss on a map and harder to hold in practice.', see: ['purelake', 'marabethia'], wiki: 'Triax' }),
+      bio: 'A small kingdom on the Tarat Sea, between Jah Keved and Tu Fallia: a bottleneck for anyone crossing the south of Roshar by land.', see: ['purelake', 'marabethia'], wiki: 'Triax' }),
   loc('alm', 'Alm', 'roshar', 'stormlight', 0.263, 0.651, '#f9a8d4', 'land',
-    'A Makabaki state on Azir\'s fringe. Sigzil listed it among the places that still send delegates.', {
+    'A small Makabaki state on Azir\'s western fringe.', {
       region: 'Makabak',
-      bio: 'A Makabaki state on Azir\'s fringe that still sends delegates and still files essays. Sigzil listed it among the places a Worldsinger is expected to know the songs of, which is the closest thing it has to fame.', see: ['azir', 'liafor'], wiki: 'Alm' }),
+      bio: 'One of the smallest kingdoms of the Makabak region. Lift liked it, since relatively few people there tried to murder her.', see: ['azir', 'liafor'], wiki: 'Alm' }),
   loc('desh', 'Desh', 'roshar', 'stormlight', 0.318, 0.558, '#fda4af', 'land',
     'Another Makabaki neighbour of Azir, folded into the empire\'s paperwork more than its armies.', {
       region: 'Makabak',
       bio: 'An Azish neighbour absorbed more by paperwork than by conquest. Desh pays what Azimir asks and argues about the arithmetic afterwards, in writing, at length.', see: ['azir', 'steen'], wiki: 'Desh' }),
   loc('yezier', 'Yezier', 'roshar', 'stormlight', 0.305, 0.627, '#fdba74', 'land',
-    'Makabaki kingdom southwest of Azir, often named in the same breath as Emul and Tashikk.', {
+    'A Makabaki kingdom between Desh, Azir, Tashikk and Liafor.', {
       region: 'Makabak',
-      bio: 'A Makabaki kingdom southwest of Azir, named in the same breath as Emul and Tashikk because it sits between them and has spent centuries trying not to be. Its princess turns up in the Azish court when the coalition needs a quorum.', see: ['emul', 'azir'], wiki: 'Yezier' }),
-  loc('lesser-hexi', 'Lesser Hexi', 'roshar', 'stormlight', 0.395, 0.715, '#fbbf24', 'land',
-    'The smaller Hexi beside Greater Hexi. Azir counts both when it counts at all.', {
-      region: 'Makabak',
-      bio: 'The smaller of the two Hexis, distinguished from Greater Hexi by size and by nothing else anyone can now establish. Azir counts both, on the rare occasions Azir is counting.', see: ['greater-hexi', 'azir'], wiki: 'Hexi' }),
+      bio: 'A Makabaki kingdom with Desh to its north, Azir to the east, and Tashikk and Liafor to the south.', see: ['emul', 'azir'], wiki: 'Yezier' }),
   loc('rishir', 'Rishir', 'roshar', 'stormlight', 0.42, 0.285, '#fbcfe8', 'land',
     'Ancient Silver Kingdom of the northern coast. Kurth was its capital and still holds its Oathgate.', {
       region: 'Rishir',
-      bio: 'One of the ten Silver Kingdoms, on the northern coast, with Kurth for a capital and an Oathgate that still works. The modern maps have folded it into Iri; the Oathgate has not been told.', see: ['kurth'], wiki: 'Rishir' }),
+      bio: 'One of the northern Silver Kingdoms, with its Oathgate at Kurth. Its lands became Herdaz and the Reshi Isles; Kurth itself was taken over by Rira.', see: ['kurth'], wiki: 'Rishir' }),
   loc('sela-tales', 'Sela Tales', 'roshar', 'stormlight', 0.355, 0.48, '#c4b5fd', 'land',
     'Silver Kingdom of the west-central plains. Panatham keeps its Oathgate.', {
       region: 'Sela Tales',
-      bio: 'A Silver Kingdom of the west-central plains, gone for four thousand years, remembered because Panatham still stands on its Oathgate. The Radiants rebuilding the network had to explain to the modern occupants what the platform in the middle of their city was for.', see: ['panatham'], wiki: 'Sela_Tales' }),
+      bio: 'A Silver Kingdom of the west-central plains that claimed the Purelake, Marabethia, Babatharnam and Yulay, gone for four thousand years. Panatham still stands on its Oathgate.', see: ['panatham'], wiki: 'Sela_Tales' }),
   loc('bavland', 'Bavland', 'roshar', 'stormlight', 0.598, 0.567, '#a8a29e', 'land',
-    'Mining country in Jah Keved. Szeth was dumped here after Shinovar decided it was done with him.', {
-      bio: 'Mining country on Jah Keved\'s western edge, poor, cold and nobody\'s priority. Shinovar sent Szeth here after deciding he was Truthless and no longer their problem, and Bavland is where a man with an Honorblade spent years being bought and sold by people who had no idea.', arc: 'twok', region: 'Jah Keved', see: ['jah-keved', 'shinovar'], wiki: 'Bavland' }),
-  loc('longbrow-mountains', 'The Longbrow Mountains', 'roshar', 'stormlight', 0.72, 0.36, '#fdba74', 'peak',
-    'Range along the Alethi–Herdazian border. Horneaters trade across them; armies bleed on them.', {
-      bio: 'The range along the Alethi–Herdazian border, and the reason a small kingdom has held out against a large one for so long. Horneaters trade across the passes; armies bleed in them and then claim the map anyway.', region: 'Herdaz', see: ['herdaz', 'alethkar'], wiki: 'Longbrow_Mountains' }),
-  loc('herdazian-peaks', 'The Herdazian Peaks', 'roshar', 'stormlight', 0.745, 0.31, '#fca5a5', 'peak',
-    'High country of Herdaz, rockier than the Alethi pretend when they come to conquer it.', {
-      bio: 'The high country that makes Herdaz worth less than it costs to take. Alethi campaign maps flatten it out of habit, and Alethi campaigns have been finding out otherwise for three generations.', region: 'Herdaz', see: ['herdaz', 'longbrow-mountains'] }),
-  loc('peak-oceans', 'The Peak Oceans', 'roshar', 'stormlight', 0.672, 0.528, '#67e8f9', 'lake',
-    'Thermal oceans cupped between the Horneater Peaks. Cultivation\'s Perpendicularity opens in their heat.', { arc: 'wor', region: 'Horneater Peaks', see: ['horneater-peaks', 'the-valley'], wiki: 'Horneater_Peaks', bio: 'Rock\'s people farm the shores and swim water that would scald a lowlander. The pool at the heart is not for swimming.' }),
+    'Mining country in the mountains of south-western Jah Keved.', {
+      bio: 'An autonomous corner of Jah Keved at the base of the mountains: mines, small towns, and nobody\'s priority. Szeth passed between masters here as a Truthless, once for a sack of seeds.', arc: 'twok', region: 'Jah Keved', see: ['jah-keved', 'shinovar'], wiki: 'Bavland' }),
+  loc('peak-oceans', 'Horneater Oceans', 'roshar', 'stormlight', 0.672, 0.528, '#67e8f9', 'lake',
+    'Thermal oceans cupped between the Horneater Peaks. Cultivation\'s Perpendicularity opens in their heat.', { arc: 'wor', region: 'Horneater Peaks', see: ['horneater-peaks', 'the-valley'], wiki: 'Horneater_Oceans', bio: 'Rock\'s people farm the shores and swim water that would scald a lowlander. The pool at the heart is not for swimming.' }),
   loc('sea-of-spears', 'Sea of Spears', 'roshar', 'stormlight', 0.82, 0.68, '#38bdf8', 'sea',
-    'Waters off the Unclaimed Hills and the Plains. Named for the rock spires that stab up through the surf.', {
-      bio: 'The waters off the Unclaimed Hills, named for the rock spires that come up through the surf like a rank of raised weapons. No fleet uses it willingly and no chart of it is trusted twice.', region: 'Unclaimed Hills', see: ['shattered-plains', 'unclaimed-hills'], wiki: 'Sea_of_Spears' }),
-  loc('tarat-sea', 'Sea of Tarat', 'roshar', 'stormlight', 0.607, 0.712, '#67e8f9', 'sea',
-    'The sea Kharbranth clings to. Bells carry across it when the storms are kind.', {
+    'A large inland sea in south-eastern Alethkar.', {
+      bio: 'An inland body of water in south-eastern Alethkar; Rathalas, the Rift, stands at its northern tip.', region: 'Alethkar', see: ['rathalas', 'alethkar'], wiki: 'Sea_of_Spears' }),
+  loc('tarat-sea', 'Tarat Sea', 'roshar', 'stormlight', 0.607, 0.712, '#67e8f9', 'sea',
+    'The sea Kharbranth sits on.', {
       region: 'Tarat Sea',
-      bio: 'The sea Kharbranth clings to, sheltered enough for a lagoon city and open enough to trade with everyone. On a still day the bells carry all the way across it, which is how the City of Bells got the name and keeps it.', see: ['kharbranth', 'thaylenah'], wiki: 'Tarat' }),
+      bio: 'A sea so sheltered that Kharbranth\'s bells were first hung to warn of highstorms its soft winds would not announce.', see: ['kharbranth', 'thaylenah'], wiki: 'Tarat_Sea' }),
   loc('steamwater-ocean', 'Steamwater Ocean', 'roshar', 'stormlight', 0.818, 0.194, '#7dd3fc', 'sea',
-    'Northern ocean above the Purelake latitudes, warm where the peaks bleed heat into it.', {
+    'Northern ocean beyond the Reshi Sea.', {
       region: 'Steamwater Ocean',
-      bio: 'The northern ocean above the Purelake latitudes, warm where the Horneater Peaks bleed heat into it and warmer still where nobody has gone to check. Reshi traders cross it; Thaylen ones respect it and go around.', see: ['purelake', 'reshi-isles'], wiki: 'Steamwater_Ocean' }),
+      bio: 'The northern ocean beyond the Reshi Sea.', see: ['purelake', 'reshi-isles'], wiki: 'Steamwater_Ocean' }),
   loc('reshi-sea', 'Reshi Sea', 'roshar', 'stormlight', 0.491, 0.332, '#4ade80', 'sea',
     'Shallow seas of the Reshi Isles, where islands walk and greatshells decide the borders.', {
       region: 'Reshi Isles',
-      bio: 'The shallow water the Reshi Isles wander through. Charting it is a matter of opinion, since the islands are alive and have their own views about where the borders go this season.', see: ['reshi-isles', 'rit-vo-ma'], wiki: 'Reshi_Sea' }),
+      bio: 'The shallow water the Reshi Isles wander through. Charting it is a matter of opinion, since the islands are alive and have their own views about where the borders go this season.', see: ['reshi-isles'], wiki: 'Reshi_Sea' }),
   loc('southern-depths', 'The Southern Depths', 'roshar', 'stormlight', 0.55, 0.92, '#1e3a8a', 'sea',
     'Deep water south of Thaylenah. Highstorms are born far east; down here the seas just take.', {
       region: 'The Southern Depths',
       bio: 'Deep water south of Thaylenah, past where the shelf drops away. The highstorms are born far east of here; the Depths are simply cold, and old, and take what goes into them.', see: ['thaylenah', 'the-origin'] }),
   loc('windrunner-river', 'Windrunner River', 'roshar', 'stormlight', 0.77, 0.48, '#38bdf8', 'canal',
-    'Major Alethi river running toward the east. Named long before anyone swore the oaths.', {
-      bio: 'The great river of eastern Alethkar, running toward the Frostlands and the Plains. It carried the Alethi war east and the grain back west, and it was named long before anyone on Roshar had sworn a Windrunner\'s oaths — which is either coincidence or the kind of thing Roshar does.', region: 'Alethkar', see: ['alethkar', 'kholinar'], wiki: 'Windrunner_River' }),
+    'The longest river in northern Alethkar, named for the Order of Windrunners.', {
+      bio: 'It runs north-west past Hearthstone to the Bay of Elibath, and it carries the name of the Windrunners, one of the memories of the Radiants still left on the map.', region: 'Alethkar', see: ['alethkar', 'hearthstone'], wiki: 'Windrunner_River' }),
   loc('deathbend-river', 'Deathbend River', 'roshar', 'stormlight', 0.79, 0.56, '#64748b', 'canal',
-    'River of eastern Alethkar, dark water and worse stories, feeding toward the Frostlands.', {
-      bio: 'A dark river of eastern Alethkar with a bend that gave it the name and a set of stories nobody in the villages along it will tell a foreigner twice. It feeds toward the Frostlands, where nothing much is listening.', region: 'Alethkar', see: ['alethkar', 'rathalas'], wiki: 'Deathbend_River' }),
+    'A river of southern Alethkar, running through the Eastern Crownlands into Mevan Bay.', {
+      bio: 'A southern Alethi river. Gavilar first met the listeners while exploring one of its tributaries.', region: 'Alethkar', see: ['alethkar', 'listeners'], wiki: 'Deathbend_River' }),
   loc('iriali-long-trail', 'The Long Trail', 'roshar', 'stormlight', 0.3, 0.22, '#fde68a', 'land',
     'The Iriali path through worlds. Iri is one stop; the Next Land is always further on.', { region: 'Iri', see: ['iri', 'rall-elorim'], wiki: 'Iriali', bio: 'Golden-haired pilgrims who treat continents as waystations. When the time comes, they leave.' }),
   loc('abamabar', 'Abamabar', 'roshar', 'stormlight', 0.52, 0.62, '#a8a29e', 'city',
@@ -159,26 +146,26 @@ export const PLACES_MORE: Location[] = [
       region: 'The Heraldic Epochs',
       bio: 'The city Nohadon walked from when he walked to Urithiru — the walk that became The Way of Kings and the parable Dalinar cannot stop rereading. Where Abamabar was is an open question; whether the walk happened as written is a better one.', see: ['urithiru'], wiki: 'Abamabar' }),
   loc('shin-monasteries', 'The Shin Monasteries', 'roshar', 'stormlight', 0.21, 0.42, '#86efac', 'keep',
-    'Where Shin train Truthless and keep stone sacred. Outsiders are not shown the inside.', {
-      bio: 'Where the Shin keep their Honorblades, train their Truthless, and hold stone sacred enough that walking on it uncovered is an offence. Outsiders are not shown the inside, which is how the eight Blades Honor gave the Heralds sat unremarked in a farming country for four thousand years.', region: 'Shinovar', see: ['shinovar'], wiki: 'Shinovar' }),
+    'The Monasteries of Truth: Shinovar\'s watchtower-fortresses, one to each Herald, where the Honorbearers kept the Honorblades.', {
+      arc: 'wat', bio: 'Ten monasteries, one dedicated to each Herald, built tall and stone as watchtowers and fortresses, and the seat of both Shin government and Stone Shamanism. Szeth\'s pilgrimage in Wind and Truth took him from one to the next, beating each Honorbearer in turn.', region: 'Shinovar', see: ['monastery-of-truth', 'honorbearers', 'shinovar'], wiki: 'Monastery_of_Truth' }),
   loc('stone-shamanate', 'The Stone Shamanate', 'roshar', 'stormlight', 0.225, 0.455, '#a3e635', 'scroll',
     'Ruling clergy of Shinovar. They named Szeth Truthless and pretended that settled it.', {
-      bio: 'Shinovar\'s ruling clergy, who keep the Blades, name the Truthless and decide what the stone means. They declared Szeth Truthless for telling them the Voidbringers were returning, which he was right about, and sent him out with an Honorblade to prove how little they believed him.', region: 'Shinovar', see: ['shinovar'], wiki: 'Stone_Shamanate' }),
+      bio: 'Shinovar\'s ruling clergy, who keep the Blades, name the Truthless and decide what the stone means. They declared Szeth Truthless for telling them the Voidbringers were returning, which he was right about, and sent him out with an Honorblade to prove how little they believed him.', region: 'Shinovar', see: ['shinovar'], wiki: 'Stone_Shamanism' }),
   loc('kholin-princedom', 'Kholin Princedom', 'roshar', 'stormlight', 0.795, 0.47, '#3b82f6', 'crown',
-    'Eastern Alethkar under House Kholin. Kholinar is the seat; the windblades are the argument.', {
-      bio: 'Eastern Alethkar under House Kholin: Kholinar for a seat, the windblades for a wall, and a family that produced a Blackthorn, a king, a Bondsmith and two more Radiants inside one generation. Dalinar spent his life conquering it for his brother and the rest of it trying to be worth it.', region: 'Alethkar', see: ['kholinar', 'alethkar'], wiki: 'Kholin_princedom' }),
+    'Eastern Alethkar under House Kholin. Kholinar is the seat.', {
+      bio: 'Eastern Alethkar under House Kholin, with Kholinar for its seat and the windblades for a wall. Dalinar spent his youth conquering the rest of Alethkar for his brother.', region: 'Alethkar', see: ['kholinar', 'alethkar'], wiki: 'Kholin_princedom' }),
   loc('sadeas-princedom', 'Sadeas Princedom', 'roshar', 'stormlight', 0.74, 0.42, '#ef4444', 'keep',
     'Northwestern Alethkar. Torol Sadeas held it like a blade and aimed it at everyone else.', {
       bio: 'Northwestern Alethkar, held by Torol Sadeas as an instrument rather than a home. Gavilar\'s oldest friend and Dalinar\'s oldest problem; his bridge crews were a policy, and Bridge Four came out of it in spite of him.', region: 'Alethkar', see: ['alethkar', 'hearthstone'], wiki: 'Sadeas_princedom' }),
   loc('roion-princedom', 'Roion Princedom', 'roshar', 'stormlight', 0.81, 0.4, '#60a5fa', 'land',
-    'Northern coastal princedom. Roion died on Thaylen Field; the coast did not get quieter.', {
-      bio: 'A northern coastal princedom under a highprince who was never the strongest voice in the room and knew it. Roion followed Dalinar late and paid the full price for it at Thaylen Field.', arc: 'oathbringer', region: 'Alethkar', see: ['alethkar'], wiki: 'Roion_princedom' }),
+    'An Alethi princedom under Highprince Roion.', {
+      bio: 'A princedom under a highprince who was never the strongest voice in the room and knew it.', arc: 'twok', region: 'Alethkar', see: ['alethkar'], wiki: 'Roion_princedom' }),
   loc('aladar-princedom', 'Aladar Princedom', 'roshar', 'stormlight', 0.75, 0.48, '#818cf8', 'land',
-    'Western Alethi princedom. Aladar learned to follow Dalinar later than was comfortable.', {
-      bio: 'A western princedom whose highprince took longer than was comfortable to decide Dalinar was right, and then became the Alethi coalition\'s Highprince of Information. His daughter May is considerably faster at the same arithmetic.', region: 'Alethkar', see: ['alethkar'], wiki: 'Aladar_princedom' }),
+    'One of the most northern Alethi princedoms, on the Bay of Elibath.', {
+      bio: 'A northern princedom on the Bay of Elibath, under a highprince who took longer than was comfortable to decide that Dalinar was right.', region: 'Alethkar', see: ['alethkar'], wiki: 'Aladar_princedom' }),
   loc('ruthar-princedom', 'Ruthar Princedom', 'roshar', 'stormlight', 0.77, 0.54, '#c084fc', 'land',
-    'South-central Alethkar. Ruthar talked himself into a duel he could not win.', {
-      bio: 'South-central Alethkar, under a highprince who talked himself into a duel with Adolin Kholin and discovered what the Kholin boy actually is with a Blade in his hand.', arc: 'row', region: 'Alethkar', see: ['alethkar'], wiki: 'Ruthar_princedom' }),
+    'Western Alethkar, on the Veden border.', {
+      bio: 'A western princedom on the border with Jah Keved, under a highprince who opposes Dalinar and says so.', arc: 'twok', region: 'Alethkar', see: ['alethkar'], wiki: 'Ruthar_princedom' }),
   loc('sebarial-princedom', 'Sebarial Princedom', 'roshar', 'stormlight', 0.8, 0.56, '#f59e0b', 'land',
     'Southern princedom of merchants and excuses. Sebarial preferred profit to glory and survived both.', {
       bio: 'A southern princedom run on ledgers by a highprince nobody took seriously, which turned out to be an advantage. Sebarial brought merchants to the warcamps instead of glory, fed half the army, and survived a war his more martial peers did not.', region: 'Alethkar', see: ['alethkar', 'warcamps'], wiki: 'Sebarial_princedom' }),
@@ -186,14 +173,14 @@ export const PLACES_MORE: Location[] = [
     'Alethi princedom that played the warcamps carefully and still lost the larger game.', {
       bio: 'An Alethi princedom that played the warcamps carefully, sold what it could and committed to nothing. It kept its highprince alive longer than most and lost the larger game anyway.', region: 'Alethkar', see: ['alethkar', 'warcamps'], wiki: 'Thanadal_princedom' }),
   loc('hatham-princedom', 'Hatham Princedom', 'roshar', 'stormlight', 0.76, 0.45, '#fdba74', 'land',
-    'Alethi princedom of careful politics. Hatham collected allegiances like debt.', {
-      bio: 'A princedom of careful politics under a highprince who collected obligations the way others collect debts, and who is more often found among ardents than among soldiers.', region: 'Alethkar', see: ['alethkar'], wiki: 'Hatham_princedom' }),
+    'An Alethi princedom of careful politics.', {
+      bio: 'A princedom of careful politics under a highprince who collects obligations the way others collect debts.', region: 'Alethkar', see: ['alethkar'], wiki: 'Hatham_princedom' }),
   loc('bethab-princedom', 'Bethab Princedom', 'roshar', 'stormlight', 0.785, 0.51, '#a78bfa', 'land',
     'Princedom often named beside Thanadal\'s. Another banner on the Plains.', {
       bio: 'One of the ten, usually named beside Thanadal\'s and rarely for its own sake. Another banner on the Plains, another crater full of a princedom\'s pride.', region: 'Alethkar', see: ['alethkar', 'warcamps'], wiki: 'Bethab_princedom' }),
   loc('vamah-princedom', 'Vamah Princedom', 'roshar', 'stormlight', 0.72, 0.46, '#94a3b8', 'land',
-    'Northwestern marches of Alethkar, toward Herdaz. Vamah kept his head down when he could.', {
-      bio: 'The northwestern marches, toward Herdaz, under a highprince whose instinct in any crisis was to keep his head down until the arithmetic was clear. It served him better than it served Alethkar.', region: 'Alethkar', see: ['alethkar', 'herdaz'], wiki: 'Vamah_princedom' }),
+    'Western Alethkar, on the Veden border. Revolar is its seat.', {
+      bio: 'A western princedom bordering Jah Keved, seated at Revolar, under a highprince whose instinct in any crisis is to keep his head down until the arithmetic is clear.', region: 'Alethkar', see: ['alethkar', 'herdaz'], wiki: 'Vamah_princedom' }),
   loc('sea-of-lost-lights', 'Sea of Lost Lights', 'roshar', 'stormlight', 0.7, 0.65, '#312e81', 'sea',
     'Rosharan Shadesmar\'s dark ocean of beads. Ships sail the souls of objects; the shores are wrong.', {
       region: 'Shadesmar',
@@ -207,25 +194,21 @@ export const PLACES_MORE: Location[] = [
       region: 'Shadesmar',
       bio: 'The expanse toward Nalthis, where colour thickens until it has weight and weather. Awakeners find it exhilarating and everyone else finds it exhausting.', realm: 'cognitive', see: ['expanse-of-the-vapors'], wiki: 'Expanse_of_Vibrance', canon: 'wob', sources: ['The Stormlight Archive', 'Word of Brandon'] }),
   loc('expanse-of-broken-sky', 'Expanse of the Broken Sky', 'roshar', 'stormlight', 0.45, 0.85, '#1e293b', 'storm',
-    'Cognitive expanse whose sky is wrong even by Shadesmar standards. Direction, not destination.', {
+    'A Shadesmar expanse that corresponds to Taldain.', {
       region: 'Shadesmar',
-      bio: 'An expanse whose sky is wrong even by the standards of a realm where the sun does not move. It is used as a bearing rather than a destination: you go through it, and you do not stop.', realm: 'cognitive', see: ['lasting-integrity'], wiki: 'Expanse_of_the_Broken_Sky' }),
-  loc('expanse-of-densities', 'Expanse of Densities', 'roshar', 'stormlight', 0.15, 0.6, '#a78bfa', 'storm',
-    'Cognitive expanse toward Sel. Pressure and Dor bleed through in ways worldhoppers dread.', {
-      region: 'Shadesmar',
-      bio: 'The expanse toward Sel, where the Dor presses through from a Cognitive Realm that is already far too full. Worldhoppers who have been to Sel\'s subastral do not recommend it; the ones who have not are told why.', realm: 'cognitive', see: ['expanse-of-the-vapors'], wiki: 'Expanse_of_Densities', canon: 'wob', sources: ['Arcanum Unbounded', 'Word of Brandon'] }),
+      bio: 'The Expanse of the Broken Sky in Shadesmar, which corresponds to Taldain. A bearing rather than a destination.', realm: 'cognitive', see: ['lasting-integrity'], wiki: 'Expanse_of_the_Broken_Sky' }),
   loc('riino-lighthouse', 'Riino\'s Lighthouse', 'roshar', 'stormlight', 0.76, 0.66, '#fbbf24', 'tower',
-    'A lighthouse in Shadesmar run by a man who was once Elantrian. He sells futures by the cup.', {
+    'A lighthouse in Shadesmar kept by an Elantrian of the Ire.', {
       region: 'Shadesmar',
-      bio: 'A lighthouse standing in the bead ocean, kept by an Elantrian who ended up a long way from Arelon and sells glimpses of the future by the cup. Whether the futures are real is the sort of question Riino charges extra for.', arc: 'oathbringer', realm: 'cognitive', see: ['celebrant', 'elantris-city'], wiki: 'Riino' }),
+      bio: 'A lighthouse standing on the bead ocean, kept by Riino, an Elantrian of the Ire who used to be Hoed, a long way from Arelon. He sells glimpses of the future.', arc: 'oathbringer', realm: 'cognitive', see: ['celebrant', 'elantris-city'], wiki: 'Riino' }),
   loc('shadesmar-kholinar', 'Kholinar Oathgate (Shadesmar)', 'roshar', 'stormlight', 0.793, 0.5, '#f472b6', 'gem',
     'The Cognitive side of Kholinar\'s Oathgate. Control here is control of the city\'s throat.', {
       region: 'Shadesmar',
-      bio: 'The Cognitive side of Kholinar\'s Oathgate, and the reason Shallan\'s party had to fight for a platform rather than a city. Hold this and you hold the throat of Alethkar\'s capital from a realm its defenders cannot reach.', arc: 'oathbringer', realm: 'cognitive', see: ['kholinar', 'sea-of-lost-lights'] }),
+      bio: 'The Cognitive side of Kholinar\'s Oathgate. Sja-anat had corrupted the gate\'s spren, and when Kaladin\'s strike team tried to use it, it dropped them into Shadesmar instead.', arc: 'oathbringer', realm: 'cognitive', see: ['kholinar', 'sea-of-lost-lights'] }),
   loc('honorspren-ships', 'Honorspren Ships', 'roshar', 'stormlight', 0.4, 0.78, '#fbbf24', 'ship',
     'Honorspren fleets that patrol toward Lasting Integrity. Not every spren ship wants passengers.', {
       region: 'Shadesmar',
-      bio: 'Honorspren vessels patrolling the approaches to Lasting Integrity, crewed by spren with opinions about who deserves passage. After the Recreance those opinions hardened into policy, and the policy is mostly \'no\'.', arc: 'row', realm: 'cognitive', see: ['lasting-integrity'] }),
+      bio: 'Honorspren vessels patrolling the approaches to Lasting Integrity, crewed by spren with opinions about who deserves passage. After the Recreance those opinions hardened into policy, and the policy is mostly \'no\'.', arc: 'oathbringer', realm: 'cognitive', see: ['lasting-integrity'] }),
   loc('dominance-of-the-center', 'Central Dominance', 'scadrial', 'mistborn1', 0.636, 0.589, '#d6a44c', 'land',
     'Heart of the Final Empire. Luthadel sits at its centre like a spike through a map.', {
       region: 'Central Dominance',
@@ -556,15 +539,11 @@ export const PLACES_MORE: Location[] = [
       bio: 'The front where fain ecology meets ordinary ecology. Neither can eat the other and neither will yield ground, so the border is a standing argument several million years old.', canon: 'wob', sources: ['Word of Brandon'], see: ['fain-wilds'] }),
   loc('ashes-of-ashyn', 'The Ashes of Ashyn', 'ashyn', 'stormlight', 0.52, 0.52, '#fcd34d', 'fire',
     'Surface left uninhabitable by Surge-work and plague. The cities learned to stay off the ground.', {
-      region: 'Ashyn',
+      arc: 'oathbringer', region: 'Ashyn',
       bio: 'The surface: ruined by Surgebinding used without oaths and by the plagues that followed. It is the argument for why the Radiants have Ideals at all, and the reason the Heralds took the bargain they took.', canon: 'wob', sources: ['The Stormlight Archive', 'Word of Brandon'], see: ['floating-cities'] }),
   loc('damnation', 'Damnation', 'braize', 'stormlight', 0.5, 0.52, '#991b1b', 'fire',
     'Vorin name for Braize — the place of eternal punishment that turned out to be a prison for gods\' soldiers.', {
-      region: 'Braize', see: ['braize-prison'], wiki: 'Braize', bio: 'Ten heartbeats from the Heralds\' first lie. The fused came back anyway.' }),
-  loc('braize-holds', 'The Holds of Braize', 'braize', 'stormlight', 0.48, 0.48, '#7f1d1d', 'keep',
-    'Cognitive-adjacent prisons and proving grounds where Fused waited between Desolations.', {
-      region: 'Braize',
-      bio: 'The Cognitive-adjacent places where the Fused waited out the years between Desolations — not sleeping, not dead, and remembering every one of the nine returns.', realm: 'cognitive', see: ['damnation', 'braize-prison'], canon: 'wob', sources: ['The Stormlight Archive', 'Word of Brandon'] }),
+      arc: 'oathbringer', region: 'Braize', see: ['braize-prison'], wiki: 'Braize', bio: 'The Vorin hell, where the Voidbringers came from and where the Heralds went between Desolations. Older songs call it Braize.' }),
   loc('ire-fortress', 'The Ire Fortress', 'scadrial', 'secrethistory', 0.2, 0.2, '#a78bfa', 'keep',
     'Elantrian fortress in the Cognitive Realm near Scadrial. They meant to take Preservation\'s power with paperwork.', {
       region: 'Shadesmar', realm: 'cognitive', eraMaps: ['ash'], see: ['well-of-ascension'], wiki: 'Ire', bio: 'Kelsier robbed them. They never quite got over it.' }),
@@ -576,41 +555,18 @@ export const PLACES_MORE: Location[] = [
     'Coast where Autonomy\'s avatar took root. The planet learned a new name for ambition.', {
       region: 'Obrodai',
       bio: 'The coast where Autonomy\'s avatar took root and a local religion grew up around her. Worldhoppers who meddle here find that the local religious scene is not friendly and that the deity is paying attention.', arc: 'tlm', see: ['obrodai-claim'], sources: ['The Lost Metal'] }),
-  loc('moelach-valley', 'Moelach\'s Drift', 'roshar', 'stormlight', 0.7, 0.6, '#78716c', 'storm',
-    'Country where the Unmade Moelach\'s influence made Death Rattles common coin.', {
-      bio: 'Country where the Unmade Moelach drifted, and where the dying began to speak in rhymes nobody had taught them. The Diagram was built on a harvest of those Death Rattles; Taravangian\'s people collected them in hospital beds and called it charity.', arc: 'twok', region: 'Jah Keved', see: ['jah-keved', 'bavland'], wiki: 'Moelach' }),
-  loc('natan-coast', 'Natan Coast', 'roshar', 'stormlight', 0.87, 0.62, '#67e8f9', 'port',
-    'Shores of old Natanatan and New Natanan — blue-veined people and a broken kingdom\'s leftovers.', {
-      region: 'Natanatan',
-      bio: 'The shores of old Natanatan and the port that replaced it. The Natan people have blue-tinged skin and a kingdom that stopped existing when the Plains broke, and they have been a minority in other people\'s countries ever since.', see: ['new-natanan', 'natanatan'], wiki: 'Natanatan' }),
   loc('aimian-scouring', 'The Scouring of Aimia', 'roshar', 'stormlight', 0.1, 0.56, '#94a3b8', 'fire',
-    'Whatever broke Aimia left islands that kill visitors and a people in hiding.', {
+    'The sack of Aimia after the Recreance.', {
       region: 'Aimia',
-      bio: 'Whatever emptied Aimia. The larkins were hunted out, the islands became lethal to approach, and an entire people either died or went into hiding as Dysian hordes. The Sleepless know what happened. The Sleepless are not saying.', arc: 'dawnshard', see: ['aimia', 'akinah'], wiki: 'Scouring_of_Aimia' }),
-  loc('undersea-aimia', 'Aimian Waters', 'roshar', 'stormlight', 0.07, 0.58, '#475569', 'sea',
-    'Seas around Aimia\'s husks. Larkins hunted here until there was nothing left to hunt for.', {
-      region: 'Aimia',
-      bio: 'The seas around Aimia\'s husks, where the larkin were hunted until there was nothing left to hunt, and where the shipping charts simply stop. What defends the islands reaches this far out.', see: ['aimia', 'akinah'] }),
-  loc('cultivation-valley-approaches', 'Approaches to the Valley', 'roshar', 'stormlight', 0.457, 0.667, '#4ade80', 'forest',
-    'Forest roads to the Nightwatcher. Pilgrims mark them; few mark the walk back the same way.', {
-      region: 'The Valley',
-      bio: 'The forest roads that pilgrims take to the Nightwatcher. They mark the way in carefully; very few of them mark the way out the same, because the boon and the curse together tend to change what a person thinks the road was for.', arc: 'oathbringer', see: ['the-valley', 'horneater-peaks'] }),
-  loc('urithiru-mountains', 'The Mountains of Urithiru', 'roshar', 'stormlight', 0.46, 0.65, '#bae6fd', 'peak',
+      bio: 'When the Radiants fell, the kingdoms of Roshar turned on Aimia for its fabrials and its lanceryn. The survivors fled to Alm; the lanceryn died off.', arc: 'dawnshard', see: ['aimia', 'akinah'], wiki: 'Scouring_of_Aimia' }),
+  loc('undersea-aimia', 'Aimian Sea', 'roshar', 'stormlight', 0.07, 0.58, '#475569', 'sea',
+    'The sea around Aimia, off Roshar\'s south-western coast.', {
+      wiki: 'Aimian_Sea', region: 'Aimia',
+      bio: 'The water that surrounds the Aimian islands and laps the coasts of Steen and Liafor. Ships give Aimia a wide berth.', see: ['aimia', 'akinah'] }),
+  loc('urithiru-mountains', 'Mountains of Ur', 'roshar', 'stormlight', 0.46, 0.65, '#bae6fd', 'peak',
     'High central range that hides the tower-city. Above the storms; below the gods\' old arguments.', {
-      region: 'Urithiru',
-      bio: 'The high central range that hides the tower-city: above the storms, above the treeline, and far enough from every kingdom that none of them found it for four thousand years. The Oathgates are the only sensible way up, which was the design.', see: ['urithiru'], wiki: 'Urithiru' }),
-  loc('frostlands-road', 'Frostlands Road', 'roshar', 'stormlight', 0.78, 0.7, '#cbd5e1', 'land',
-    'Cold track between the warcamps\' supply and New Natanan\'s thin hospitality.', {
-      region: 'The Frostlands',
-      bio: 'The cold track between the warcamps\' supply lines and New Natanan\'s thin hospitality. It is the only land route east, it takes months, and the Alethi used it for six years while complaining that someone ought to do something about it.', see: ['frostlands', 'new-natanan', 'warcamps'] }),
-  loc('listener-atlas', 'Listener Homelands', 'roshar', 'stormlight', 0.84, 0.76, '#9ca3af', 'drum',
-    'Plateau country the listeners held before the Alethi war — Narak at the centre, songs at the edge.', {
-      region: 'Shattered Plains',
-      bio: 'The plateau country the listeners held before the Alethi came: Narak at the centre, the chasms for roads, and a people who had deliberately given up their gods\' forms to stay free of them. They lasted centuries out here by being beneath notice.', arc: 'wor', see: ['narak', 'stormseat'], wiki: 'Listeners' }),
-  loc('singer-last-legion', 'The Last Legion\'s March', 'roshar', 'stormlight', 0.85, 0.73, '#78716c', 'land',
-    'Remembered path of the listeners\' ancestors who fled the gods and found the Plains instead.', {
-      region: 'Shattered Plains',
-      bio: 'The remembered march of the listeners\' ancestors — singers who broke from Odium\'s forms, fled the war, and lost their memory of everything but the leaving. They found the Plains, and the Plains were empty, and that was enough for a very long time.', see: ['narak', 'shattered-plains'], wiki: 'Last_Legion' }),
+      arc: 'row', region: 'Urithiru',
+      bio: 'The high central range that hides the tower-city: above the storms, above the treeline, and far enough from every kingdom that none of them found it for four thousand years. The Oathgates are the only sensible way up, which was the design.', see: ['urithiru'], wiki: 'Mountains_of_Ur' }),
   loc('oathgate-thar', 'Thaylen Oathgate', 'roshar', 'stormlight', 0.612, 0.855, '#4ade80', 'gem',
     'Oathgate platform of Thaylen City — hub of the battle that remade the war.', {
       region: 'Thaylenah',
@@ -619,22 +575,6 @@ export const PLACES_MORE: Location[] = [
     'Contested ground where Azir, Emul, and Tukar spent a generation trading the same ruined towns.', {
       region: 'Emul',
       bio: 'The contested ground where Azir, Emul and Tukar traded the same ruined towns for a generation, and where the coalition\'s armies later found out that a war with the Fused is not a war with neighbours. Taravangian\'s Veden troops fought here for the wrong side.', arc: 'row', see: ['emul', 'tukar', 'sesemalex-dar'] }),
-  loc('tukari-coast', 'Tukari Coast', 'roshar', 'stormlight', 0.43, 0.72, '#a78bfa', 'port',
-    'Shoreline under the god-priest\'s war. Tezim\'s banners; someone else\'s soul behind them.', {
-      region: 'Tukar',
-      bio: 'The shoreline under Tezim\'s war: a god-priest\'s banners over a country run by a Herald who lost his mind four thousand years ago and has been giving orders ever since. Ishar\'s coast, and someone else\'s soul behind the crown.', see: ['tukar', 'emul'] }),
-  loc('marat-roads', 'Marat Trade Roads', 'roshar', 'stormlight', 0.465, 0.780, '#f59e0b', 'land',
-    'Caravan routes across Marat that fed Alethkar\'s wars and fled them in the same season.', {
-      region: 'Marat',
-      bio: 'The caravan routes across Marat that fed Alethkar\'s wars, and that the same caravans fled along when the Fused took the country in a season. Trade roads are an excellent way to move an army, which is why Marat had no chance.', see: ['marat', 'alethkar'] }),
-  loc('babatharnam-vines', 'The Living Cities', 'roshar', 'stormlight', 0.295, 0.555, '#86efac', 'forest',
-    'Babatharnam\'s settlements wound through animate vines. Age is rank; the plants enforce it.', {
-      region: 'Babatharnam',
-      bio: 'Babatharnam\'s settlements, grown through vinework that moves on its own schedule and rearranges the streets to suit a hierarchy based on age. Living here requires knowing both the politics and the plants, and the plants are less forgiving.', see: ['babatharnam'], wiki: 'Babatharnam' }),
-  loc('purelake-temple', 'Purelake Temple Ruins', 'roshar', 'stormlight', 0.44, 0.48, '#67e8f9', 'bell',
-    'Half-submerged holy sites the Purelakers still fish around. The water is the congregation.', {
-      region: 'The Purelake',
-      bio: 'Half-drowned holy sites the Purelakers fish around without much ceremony. Whatever was worshipped here predates Vorinism; the lake has covered it to the knee and the congregation has adapted.', see: ['purelake', 'bornwater'] }),
   loc('luthadel-gates', 'Luthadel Gates', 'scadrial', 'mistborn1', 0.618, 0.523, '#78716c', 'keep',
     'City gates of the Final Empire\'s capital — where armies learned the walls were not the real problem.', {
       region: 'Luthadel',

@@ -18,8 +18,9 @@ export const PRESENCE_AT: Record<string, PlaceBeat[]> = {
     { era: 3, at: 'urithiru', arc: 'wor' },
   ],
   shallan: [
-    { era: 3, at: 'shattered-plains', arc: 'twok' },
-    { era: 3, at: 'urithiru', arc: 'wor' },
+    { era: 3, at: 'kharbranth', arc: 'twok' },
+    { era: 3, at: 'shattered-plains', arc: 'wor' },
+    { era: 3, at: 'urithiru', arc: 'oathbringer' },
   ],
   dalinar: [
     { era: 3, at: 'warcamps', arc: 'twok' },
@@ -40,7 +41,7 @@ export const PRESENCE_AT: Record<string, PlaceBeat[]> = {
   ],
   jasnah: [
     { era: 3, at: 'kharbranth', arc: 'twok' },
-    { era: 3, at: 'urithiru', arc: 'wor' },
+    { era: 3, at: 'urithiru', arc: 'oathbringer' },
   ],
   teft: [
     { era: 3, at: 'warcamps', arc: 'twok' },
@@ -54,14 +55,14 @@ export const PRESENCE_AT: Record<string, PlaceBeat[]> = {
     { era: 3, at: 'yeddaw', arc: 'edgedancer' },
     { era: 3, at: 'urithiru', arc: 'oathbringer' },
   ],
-  eshonai: [{ era: 3, at: 'narak', arc: 'twok' }],
+  eshonai: [{ era: 3, at: 'narak', arc: 'wor' }],
   venli: [
-    { era: 3, at: 'narak', arc: 'twok' },
+    { era: 3, at: 'narak', arc: 'wor' },
     { era: 3, at: 'urithiru', arc: 'row' },
   ],
   taravangian: [
     { era: 3, at: 'kharbranth', arc: 'twok' },
-    { era: 3, at: 'urithiru', arc: 'row' },
+    { era: 3, at: 'urithiru', arc: 'oathbringer' },
   ],
   sigzil: [{ era: 3, at: 'urithiru', arc: 'wor' }],
   // Azimir: Yanagawn from his crowning, the defenders from the siege.

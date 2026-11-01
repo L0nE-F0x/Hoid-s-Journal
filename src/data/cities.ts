@@ -41,7 +41,7 @@ export const CITY_PLATES: CityPlate[] = [
         { book: 'stormlight', on: [{ file: 'Kholinar.jpg', u: 0.498, v: 0.588 }] }),
       mark('kholinar-oathgate', 'kholinar', 'Oathgate', 0.82, 0.48, '#a78bfa',
         'Alethkar\'s Oathgate: the Monastery Dais on the palace grounds, reached by the Sunwalk.',
-        { book: 'stormlight', arc: 'wor' }),
+        { book: 'stormlight', arc: 'oathbringer' }),
       mark('kholinar-windblades-mark', 'kholinar', 'Windblades', 0.42, 0.50, '#fdba74',
         'Stone ridges the city is built around and between.',
         { entry: 'kholinar-windblades', book: 'stormlight', on: [{ file: 'Kholinar.jpg', u: 0.506, v: 0.353 }] }),

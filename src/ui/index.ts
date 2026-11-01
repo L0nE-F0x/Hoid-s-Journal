@@ -67,7 +67,15 @@ export function mountUI(root: HTMLElement): UIHandles {
   const keys = listen(window, 'keydown', (ev) => {
     const e = ev as KeyboardEvent;
     if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
-      if (e.key === 'Escape') (e.target as HTMLElement).blur();
+      if (e.key !== 'Escape') return;
+      // In a panel, Esc closes the panel. It used to only blur the Codex
+      // box, so closing Search took two presses.
+      if (e.target.closest('[aria-modal="true"]')) {
+        e.preventDefault();
+        store.set('panel', 'none');
+        return;
+      }
+      (e.target as HTMLElement).blur();
       return;
     }
     const k = e.key.toLowerCase();

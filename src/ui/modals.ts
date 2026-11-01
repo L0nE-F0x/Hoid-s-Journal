@@ -19,19 +19,60 @@ import {
 } from '../data/index.ts';
 import { canInstall, promptInstall } from '../core/pwa.ts';
 import { store } from '../core/store.ts';
-import { el, listen } from './dom.ts';
+import { el, keyboardMode, listen } from './dom.ts';
 
+const FOCUSABLE = 'button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+function focusables(scope: HTMLElement): HTMLElement[] {
+  return [...scope.querySelectorAll<HTMLElement>(FOCUSABLE)]
+    .filter((n) => n.getClientRects().length > 0 && getComputedStyle(n).visibility !== 'hidden');
+}
+
+/** What identifies a control across a re-render that rebuilds it. */
+function keyOf(n: Element | null): string | null {
+  if (!(n instanceof HTMLElement)) return null;
+  return n.dataset.key ?? `${n.tagName}|${(n.textContent ?? '').trim().slice(0, 60)}|${n.getAttribute('aria-label') ?? ''}`;
+}
+
+/**
+ * Panels are dialogs. They used to be a div over a scrim: focus stayed on
+ * whatever opened them (so Journal, Arcanum, Settings, Help and Realms were
+ * opened with the keyboard and then had to be found), Tab walked straight out
+ * into the top bar behind the glass, and every re-render — picking a book,
+ * opening a magic — dropped focus to <body>.
+ */
 export function mountModals(root: HTMLElement): { destroy(): void } {
   const host = el('div');
   root.append(host);
   const offs: (() => void)[] = [];
+  let shown: string = 'none';
+  /** The control that opened the panel; focus goes back to it on close. */
+  let opener: HTMLElement | null = null;
+  /** A control a re-render should land on that the previous render did not have. */
+  let landOn: string | null = null;
 
   const render = () => {
-    host.replaceChildren();
     const panel = store.state.panel;
-    if (panel === 'none') return;
+    const was = shown;
+    const active = document.activeElement;
+    const inside = active instanceof HTMLElement && host.contains(active);
+    const key = inside ? keyOf(active) : null;
+    if (was === 'none' && panel !== 'none') {
+      opener = active instanceof HTMLElement && active !== document.body && !inside ? active : null;
+    }
+    host.replaceChildren();
+    shown = panel;
+    if (panel === 'none') {
+      // Back to where the reader was, if they came by keyboard. A mouse user
+      // gets nothing moved under them.
+      if (was !== 'none' && opener?.isConnected && opener.getClientRects().length && keyboardMode()) {
+        opener.focus({ preventScroll: true });
+      }
+      opener = null;
+      return;
+    }
 
-    const card = el('div', { className: 'ceph-panel ceph-modal-card' });
+    const card = el('div', { className: 'ceph-panel ceph-modal-card', attrs: { tabindex: '-1' } });
     const close = el('button', { className: 'ceph-btn', text: 'Close', attrs: { type: 'button' } });
     listen(close, 'click', () => store.set('panel', 'none'));
     card.append(el('div', { style: { display: 'flex', justifyContent: 'flex-end', marginBottom: '4px' } }, [close]));
@@ -43,13 +84,45 @@ export function mountModals(root: HTMLElement): { destroy(): void } {
     else if (panel === 'help') renderHelp(card);
     else if (panel === 'realms') renderRealms(card);
 
-    const modal = el('div', { className: 'ceph-modal' }, [card]);
+    const heading = card.querySelector('h2');
+    if (heading) heading.id = 'ceph-modal-title';
+    const modal = el('div', {
+      className: 'ceph-modal',
+      attrs: { role: 'dialog', 'aria-modal': 'true', ...(heading ? { 'aria-labelledby': 'ceph-modal-title' } : {}) },
+    }, [card]);
     listen(modal, 'click', (e) => {
       if (e.target === modal) store.set('panel', 'none');
     });
+    // Tab goes round the panel, not out of it into the chrome behind the glass.
+    listen(modal, 'keydown', (ev) => {
+      const e = ev as KeyboardEvent;
+      if (e.key !== 'Tab') return;
+      const list = focusables(card);
+      if (!list.length) { e.preventDefault(); card.focus(); return; }
+      const first = list[0]!;
+      const last = list[list.length - 1]!;
+      const at = document.activeElement;
+      if (e.shiftKey && (at === first || at === card || !card.contains(at))) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && (at === last || !card.contains(at))) {
+        e.preventDefault();
+        first.focus();
+      }
+    });
     host.append(modal);
+
+    const want = landOn ?? key;
+    landOn = null;
+    const again = want ? focusables(card).find((n) => keyOf(n) === want) : undefined;
+    if (again) again.focus({ preventScroll: false });
+    else card.focus({ preventScroll: true });
   };
 
+  offs.push(store.on('magicId', (next, prev) => {
+    // Back from a magic's page lands on that magic's tile in the grid.
+    if (!next && prev) landOn = `magic:${prev}`;
+  }));
   offs.push(store.on('panel', render));
   offs.push(store.on('magicId', () => { if (store.state.panel === 'arcanum') render(); }));
   offs.push(store.on('readingNow', () => { if (store.state.panel === 'journal') render(); }));
@@ -76,7 +149,7 @@ function renderArcanum(card: HTMLElement): void {
     const grid = el('div', { className: 'ceph-grid' });
     for (const m of COSMERE.magics) {
       if (!isVisible(m, store.state.readProgress)) continue;
-      const b = el('button', { className: 'ceph-card' }, [
+      const b = el('button', { className: 'ceph-card', attrs: { type: 'button', 'data-key': `magic:${m.id}` } }, [
         el('div', { className: 'ceph-kicker', text: m.world, style: { color: m.color } }),
         el('div', { text: m.name, style: { fontWeight: '600', marginTop: '6px' } }),
         el('div', { text: m.type, style: { color: 'var(--ceph-text-dim)', marginTop: '6px', fontSize: '11px' } }),

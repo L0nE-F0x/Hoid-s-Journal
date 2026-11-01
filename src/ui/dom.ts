@@ -71,3 +71,16 @@ export function setColumnBottom(source: string, bottom: number | null): void {
   if (low === null) root.removeProperty('--ceph-col-bottom');
   else root.setProperty('--ceph-col-bottom', `${Math.round(low)}px`);
 }
+
+/**
+ * Whether the reader is driving with the keyboard right now: the last thing
+ * they did was press a key rather than point. Focus that moves on its own —
+ * back to a panel's opener, onto a card — only moves for keyboard readers; a
+ * mouse user would just see a ring appear somewhere they did not click.
+ */
+let lastWasKey = false;
+if (typeof window !== 'undefined') {
+  window.addEventListener('keydown', () => { lastWasKey = true; }, true);
+  window.addEventListener('pointerdown', () => { lastWasKey = false; }, true);
+}
+export function keyboardMode(): boolean { return lastWasKey; }

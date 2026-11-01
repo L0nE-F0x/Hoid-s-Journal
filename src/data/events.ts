@@ -42,7 +42,7 @@ export const COSMERE_EVENTS: CosmereEvent[] = [
   },
   {
     id: 'catacendre', year: -1, name: 'The Catacendre', visual: 'dawn', focus: 'scadrial', canon: C,
-    fact: 'Sazed takes up Preservation and Ruin together. Scadrial is remade; the map itself changes.',
+    fact: 'The end of the ash. Scadrial is remade, and the map itself changes.',
   },
   {
     id: 'true-desolation', year: 0, name: 'The True Desolation', visual: 'storm', focus: 'roshar', canon: C,
@@ -50,11 +50,11 @@ export const COSMERE_EVENTS: CosmereEvent[] = [
   },
   {
     id: 'wax', year: 15, name: 'The Alloy of Law', canon: C,
-    fact: 'Three centuries after the Catacendre, Elendel has trains and newspapers. Harmony is not silent yet.',
+    fact: 'Three centuries after the Catacendre, Elendel has trains and newspapers.',
   },
   {
     id: 'contest', year: 2, name: 'The Contest of Champions', visual: 'duel', focus: 'roshar', canon: C,
-    fact: 'The last ten days. Honor and Odium in one hand. The war changes shape.',
+    fact: 'The last ten days of the Contest. The war on Roshar changes shape.',
   },
   {
     id: 'space', year: 300, name: 'The space age', canon: S,

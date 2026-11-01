@@ -116,7 +116,7 @@ export const ERAS: Era[] = [
   },
   {
     id: 2, name: 'Mistborn Era 1', start: -350,
-    event: "The Lord Ruler holds Scadrial in ash. Preservation and Ruin clash over its fate.",
+    event: 'The Lord Ruler holds Scadrial in ash. A thousand years of the Final Empire.',
     realDate: "Scadrial — the Final Empire (~1,000 yrs) → Catacendre",
     chrono: "Scadrial's Final Empire endures roughly a thousand years under the Lord Ruler, ending with the Catacendre.",
     canon: C, sources: ['Mistborn Era 1'],
@@ -130,10 +130,10 @@ export const ERAS: Era[] = [
   },
   {
     id: 4, name: 'Mistborn Era 2', start: 15,
-    event: 'Harmony guides a recovering Scadrial. Technology evolves.',
+    event: 'Scadrial three centuries after the ash. Railways, newspapers, Twinborn.',
     realDate: 'Scadrial — ~341 years after the Catacendre',
-    chrono: 'The Wax & Wayne era. Tress and Yumi sit in this later modern band.',
-    canon: C, sources: ['Mistborn Era 2'],
+    chrono: 'The Wax & Wayne era. Tress, Yumi and The Fires of December sit in this band; December happens first of the three, after Stormlight Five and before Stormlight Six.',
+    canon: C, sources: ['Mistborn Era 2', 'Word of Brandon (State of the Sanderson 2025)'],
   },
   {
     id: 5, name: 'Future Convergence', start: 300,

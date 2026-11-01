@@ -228,91 +228,91 @@ export const PLACES_MORE: Location[] = [
     'Honorspren fleets that patrol toward Lasting Integrity. Not every spren ship wants passengers.', {
       region: 'Shadesmar',
       bio: 'Honorspren vessels patrolling the approaches to Lasting Integrity, crewed by spren with opinions about who deserves passage. After the Recreance those opinions hardened into policy, and the policy is mostly \'no\'.', arc: 'row', realm: 'cognitive', see: ['lasting-integrity'] }),
-  loc('dominance-of-the-center', 'Central Dominance', 'scadrial', 'mistborn1', 0.508, 0.4, '#d6a44c', 'land',
-    'Heart of the Final Empire. Luthadel sits at its centre like a spike through a map.', {
+  loc('dominance-of-the-center', 'Central Dominance', 'scadrial', 'mistborn1', 0.669, 0.579, '#d6a44c', 'land',
+    'Heart of the Final Empire, with Luthadel at its centre.', {
       region: 'Central Dominance',
-      bio: 'The heart of the Final Empire, with Luthadel at its centre and the Pits of Hathsin in its hills. Everything the empire actually cared about was inside a week\'s ride of the capital, which is how one man governed a world for a thousand years.', eraMaps: ['ash'], see: ['luthadel'], wiki: 'Central_Dominance' }),
-  loc('northern-dominance', 'Northern Dominance', 'scadrial', 'mistborn1', 0.58, 0.25, '#60a5fa', 'land',
-    'Urteau\'s country. Canals, ambition, and a capital that drained itself dry.', {
+      bio: 'The heart of the Final Empire: Luthadel at its centre, the Pits of Hathsin and the Arguois caverns in the hills to the north, and Lake Tyrian to the west.', eraMaps: ['ash'], see: ['luthadel', 'pits-of-hathsin'], wiki: 'Central_Dominance' }),
+  loc('northern-dominance', 'Northern Dominance', 'scadrial', 'mistborn1', 0.781, 0.334, '#60a5fa', 'land',
+    'Urteau\'s country, with the Ashmount Kalling.', {
       region: 'Northern Dominance',
-      bio: 'Canal country, with Urteau for a capital and ambition out of proportion to its harvest. When the Collapse came it produced the rebellion that drained its own waterways to spite the nobility.', eraMaps: ['ash'], see: ['urteau'], wiki: 'Northern_Dominance' }),
-  loc('western-dominance', 'Western Dominance', 'scadrial', 'mistborn1', 0.28, 0.32, '#f59e0b', 'land',
-    'Cett\'s stronghold country. Fadrex City held when Luthadel could not.', {
+      bio: 'The Dominance north-east of Luthadel, ruled from Urteau, House Venture\'s home city. Its one Ashmount is Kalling.', eraMaps: ['ash'], see: ['urteau'], wiki: 'Northern_Dominance' }),
+  loc('western-dominance', 'Western Dominance', 'scadrial', 'mistborn1', 0.391, 0.270, '#f59e0b', 'land',
+    'Cett\'s country after the Collapse.', {
       region: 'Western Dominance',
-      bio: 'Cett\'s country, and the only Dominance whose capital was still standing and still armed when Luthadel\'s was not. Fadrex is built in rock; the Western Dominance has always known it could outlast the centre.', arc: 'hoa', eraMaps: ['ash'], see: ['fadrex'], wiki: 'Western_Dominance' }),
-  loc('southern-dominance', 'Southern Dominance', 'scadrial', 'mistborn1', 0.45, 0.58, '#a8a29e', 'land',
-    'Ash-choked south of the empire. Vetitan emptied itself walking north in the end.', {
+      bio: 'Cett\'s country after the Collapse, ruled from Fadrex City because its rocks made it easier to defend than Tremredare. Yomen took it from him while he was away at Luthadel.', arc: 'hoa', eraMaps: ['ash'], see: ['fadrex'], wiki: 'Western_Dominance' }),
+  loc('southern-dominance', 'Southern Dominance', 'scadrial', 'mistborn1', 0.405, 0.608, '#a8a29e', 'land',
+    'The south of the empire, down to the Southern Sea.', {
       region: 'Southern Dominance',
-      bio: 'The ash-choked south, where the Ashmounts fell heaviest and the plantations were worked hardest. Vetitan walked out of it northward in the last year, which is as close as the Southern Dominance came to an ending of its own.', arc: 'hoa', eraMaps: ['ash'], see: ['vetitan'], wiki: 'Southern_Dominance' }),
-  loc('eastern-dominance', 'Eastern Dominance', 'scadrial', 'mistborn1', 0.68, 0.4, '#94a3b8', 'land',
-    'Eastern reaches of the Final Empire, far from the Lord Ruler\'s daily shadow.', {
+      bio: 'The south of the Final Empire, down to the Southern Sea, with two Ashmounts, Zerinah and Doriel. Vetitan and Lekal City are here.', arc: 'hoa', eraMaps: ['ash'], see: ['vetitan', 'ashmount-zerinah', 'ashmount-doriel'], wiki: 'Southern_Dominance' }),
+  loc('eastern-dominance', 'Eastern Dominance', 'scadrial', 'mistborn1', 0.781, 0.785, '#94a3b8', 'land',
+    'The Final Empire\'s south-eastern reaches.', {
       region: 'Eastern Dominance',
-      bio: 'The eastern reaches, far enough from Luthadel that a Ministry Conventical could be built in the mountains and mostly forgotten about by everyone except the Inquisitors who came out of it.', eraMaps: ['ash'], see: ['dominance-of-the-center'], wiki: 'Eastern_Dominance' }),
-  loc('farmost-dominance', 'Farmost Dominance', 'scadrial', 'mistborn1', 0.35, 0.2, '#78716c', 'land',
-    'The empire\'s remote edge. Maps grow vague; the ash does not.', {
+      bio: 'The south-eastern reaches of the Final Empire, out toward the Crescent Dominance, with the Ashmount Faleast on their western side.', eraMaps: ['ash'], see: ['dominance-of-the-center'], wiki: 'Eastern_Dominance' }),
+  loc('farmost-dominance', 'Farmost Dominance', 'scadrial', 'mistborn1', 0.254, 0.257, '#78716c', 'land',
+    'The empire\'s far western edge, behind the mountains.', {
       region: 'Farmost Dominance',
-      bio: 'The empire\'s remote edge, where the maps grow vague and the obligators grow bored. The ash fell here exactly as hard as everywhere else.', eraMaps: ['ash'], wiki: 'Farmost_Dominance' }),
-  loc('inner-dominance', 'Inner Dominance', 'scadrial', 'mistborn1', 0.53, 0.36, '#cbd5e1', 'land',
-    'Belt around the Central Dominance — close enough to matter, far enough to scheme.', {
-      region: 'Inner Dominance',
-      bio: 'The belt around the Central Dominance: close enough to Luthadel to matter at court, far enough to plot in. Most of the Great Houses kept their real estates here and their politics in the capital.', eraMaps: ['ash'], see: ['dominance-of-the-center', 'luthadel'] }),
-  loc('keep-venture', 'Keep Venture', 'scadrial', 'mistborn1', 0.512, 0.378, '#d6a44c', 'keep',
-    'House Venture\'s fortress in Luthadel. Elend grew up inside its politics.', {
-      bio: 'House Venture\'s fortress in Luthadel, and the most powerful of the Great House keeps until it was not. Straff Venture ran it as a study in cruelty; his son Elend read books in it, married a Mistborn out of it, and ended up trying to govern the empire that had orbited it.', eraMaps: ['ash'], region: 'Luthadel', see: ['luthadel'], wiki: 'Keep_Venture' }),
-  loc('keep-lekal', 'Keep Lekal', 'scadrial', 'mistborn1', 0.5, 0.395, '#e8b86d', 'keep',
-    'Great House keep of the Lekals. Ballrooms upstairs, knives downstairs.', {
-      bio: 'A Great House keep with ballrooms upstairs and assassins downstairs, which describes most of Luthadel\'s nobility and Lekal more than most. House warfare in the capital was a social season with a body count.', eraMaps: ['ash'], region: 'Luthadel', see: ['luthadel'], wiki: 'Keep_Lekal' }),
-  loc('keep-erikell', 'Keep Erikell', 'scadrial', 'mistborn1', 0.52, 0.39, '#a8a29e', 'keep',
-    'Another of Luthadel\'s Great House fortresses, a skyline of spikes and balconies.', {
-      bio: 'One of Luthadel\'s Great House fortresses: spires, balconies, and the same arrangement of glass and iron every keep used to say it could outlast a siege. Most of them were wrong.', eraMaps: ['ash'], region: 'Luthadel', see: ['luthadel'], wiki: 'Keep_Erikell' }),
-  loc('keep-hasting', 'Keep Hasting', 'scadrial', 'mistborn1', 0.495, 0.375, '#fbbf24', 'keep',
-    'House Hasting\'s seat in the capital. The balls were prettier than the alliances.', {
-      bio: 'House Hasting\'s seat, famous for throwing the prettier balls and making the worse alliances. Kelsier\'s crew used its parties the way a burglar uses an unlocked window.', eraMaps: ['ash'], region: 'Luthadel', see: ['luthadel'], wiki: 'Keep_Hasting' }),
-  loc('keep-tekiel', 'Keep Tekiel', 'scadrial', 'mistborn1', 0.515, 0.4, '#94a3b8', 'keep',
-    'Tekiel fortress in Luthadel. The name survives into the Basin as a house that still ships cargo.', {
-      bio: 'The Tekiel fortress in Luthadel, and a house name that survived the Final Empire into the Basin as a freight company. Vin\'s father was its Lord Prelan, which is a fact she learned late and did nothing with.', eraMaps: ['ash'], region: 'Luthadel', see: ['luthadel'], wiki: 'Keep_Tekiel' }),
-  loc('fellise', 'Fellise', 'scadrial', 'mistborn1', 0.47, 0.41, '#c4b5fd', 'city',
-    'Suburb city of Luthadel where Vin lived as Valette. Quieter streets, same empire.', {
+      bio: 'The far western edge of the Final Empire: a strip of coast beyond the mountains west of the Western Dominance.', eraMaps: ['ash'], wiki: 'Farmost_Dominance' }),
+  loc('keep-venture', 'Keep Venture', 'scadrial', 'mistborn1', 0.6246, 0.5148, '#d6a44c', 'keep',
+    'House Venture\'s keep in Luthadel. Elend grew up inside its politics.', {
+      bio: 'The grandest keep in Luthadel and House Venture\'s seat: a vast hall of stained glass showing the Lord Ruler and the Deepness. Straff ran it as a study in cruelty; his son Elend read forbidden books at its balls.', eraMaps: ['ash'], region: 'Luthadel', see: ['luthadel', 'straff-venture', 'elend'], wiki: 'Keep_Venture' }),
+  loc('keep-lekal', 'Keep Lekal', 'scadrial', 'mistborn1', 0.6246, 0.5238, '#e8b86d', 'keep',
+    'House Lekal\'s keep: the best stained glass in Luthadel, and walls meant for war.', {
+      bio: 'House Lekal\'s keep, near Keep Venture and walled, unusually, for defence. Its stained glass is the finest in Luthadel and its pyramid-shaped ballroom stands on five platforms.', eraMaps: ['ash'], region: 'Luthadel', see: ['luthadel', 'jastes-lekal'], wiki: 'Keep_Lekal' }),
+  loc('keep-erikeller', 'Keep Erikeller', 'scadrial', 'mistborn1', 0.6156, 0.5193, '#a8a29e', 'keep',
+    'House Erikeller\'s keep, on the west bank of the Channerel.', {
+      bio: 'Seat of House Erikeller, sixth of Luthadel\'s ten Great Houses: weapon-makers, known for their dueling canes and for the Mistborn they produce. The keep stands on the western side of the River Channerel.', eraMaps: ['ash'], region: 'Luthadel', see: ['luthadel'], wiki: 'Keep_Erikeller' }),
+  loc('keep-hasting', 'Keep Hasting', 'scadrial', 'mistborn1', 0.6156, 0.5148, '#fbbf24', 'keep',
+    'House Hasting\'s seat: a great tower ringed by six more.', {
+      bio: 'A great tower ringed by six smaller ones, joined by walltop walkways, with the ballroom at the very top reached by skaa-worked lifts. House Hasting is second only to Venture.', eraMaps: ['ash'], region: 'Luthadel', see: ['luthadel', 'telden-hasting'], wiki: 'Keep_Hasting' }),
+  loc('keep-tekiel', 'Keep Tekiel', 'scadrial', 'mistborn1', 0.6246, 0.5193, '#94a3b8', 'keep',
+    'House Tekiel\'s keep in Luthadel, where Kelsier left a dead Entrone in the gardens.', {
+      bio: 'House Tekiel\'s keep in Luthadel: fourth of the Great Houses and an ally of House Entrone. Kelsier left Charrs Entrone\'s body in its gardens to start the houses killing each other.', eraMaps: ['ash'], region: 'Luthadel', see: ['luthadel', 'charrs-entrone'], wiki: 'Keep_Tekiel' }),
+  loc('fellise', 'Fellise', 'scadrial', 'mistborn1', 0.607, 0.520, '#c4b5fd', 'city',
+    'A city just outside Luthadel where Vin lived as Valette Renoux.', {
       region: 'Central Dominance',
-      bio: 'A suburb city outside Luthadel where the lesser nobility kept quieter houses, and where Vin lived as Valette Renoux — a country noblewoman with a made-up family and a borrowed accent, learning to be someone in rooms she could have killed.', arc: 'tfe', eraMaps: ['ash'], see: ['luthadel'], wiki: 'Fellise' }),
-  loc('holstep', 'Holstep', 'scadrial', 'mistborn1', 0.56, 0.35, '#a8a29e', 'city',
-    'Town near Luthadel. The skaa rebellion hit its garrison and learned what Inquisitors cost.', {
+      bio: 'A small city just outside Luthadel where "Lord Renoux" kept his mansion, and where Vin lived as Valette Renoux — a country noblewoman with a made-up family, learning to be someone in rooms she could have killed.', arc: 'tfe', eraMaps: ['ash'], see: ['luthadel', 'lord-renoux'], wiki: 'Fellise' }),
+  loc('holstep', 'Holstep', 'scadrial', 'mistborn1', 0.618, 0.441, '#a8a29e', 'city',
+    'The town whose garrison Yeden\'s army took — and then lost everything on the way back.', {
       region: 'Central Dominance',
-      bio: 'A town near Luthadel whose garrison the skaa rebellion attacked early, and where the rebellion found out exactly what one Steel Inquisitor costs a crowd.', arc: 'tfe', eraMaps: ['ash'], see: ['luthadel'], wiki: 'Holstep' }),
-  loc('kandra-homeland', 'The Kandra Homeland', 'scadrial', 'mistborn1', 0.365, 0.37, '#a3e635', 'keep',
-    'Secret city of the kandra beneath the world, adjacent to the Pits and the Trust.', {
-      region: 'Terris Dominance', arc: 'hoa', eraMaps: ['ash'], see: ['pits-of-hathsin'], wiki: 'Kandra_Homeland', bio: 'Contract, Bones, and the First Generation enthroned in a cavern of history. TenSoon walked out anyway.' }),
-  loc('well-of-ascension', 'The Well of Ascension', 'scadrial', 'mistborn1', 0.51, 0.38, '#e0f2fe', 'crystal',
-    'Preservation\'s pool beneath Kredik Shaw. Power enough to remake an empire — or free a god.', {
-      region: 'Luthadel', arc: 'woa', eraMaps: ['ash'], see: ['kredik-shaw', 'luthadel'], wiki: 'Well_of_Ascension', bio: 'Rashek used it. Vin took it and gave it away. The ash remembers both choices.' }),
-  loc('arguois-caverns', 'Arguois Caverns', 'scadrial', 'mistborn1', 0.48, 0.34, '#78716c', 'rock',
-    'Cave network near Luthadel where skaa rebels hid and kandra sometimes listened.', {
+      bio: 'A town north of Luthadel along the canals. Yeden\'s army took its garrison in a night raid and was wiped out on the march back by the Valtroux garrison; his head was left on a spear by the road.', arc: 'tfe', eraMaps: ['ash'], see: ['luthadel', 'yeden'], wiki: 'Holstep' }),
+  // No plate marks the Homeland: it is "in the same mountain range as the
+  // Arguois caverns and the Pits of Hathsin", so the pin sits in that range.
+  loc('kandra-homeland', 'The Kandra Homeland', 'scadrial', 'mistborn1', 0.616, 0.412, '#a3e635', 'keep',
+    'The kandra\'s hidden city, in the hills between Hathsin and the Arguois caverns.', {
+      region: 'Central Dominance', arc: 'hoa', eraMaps: ['ash'], see: ['pits-of-hathsin', 'arguois-caverns', 'tensoon', 'kanpaar'], wiki: 'Kandra_Homeland',
+      bio: 'The kandra\'s caverns, in the same mountains as the Arguois caverns and the Pits of Hathsin, where the First Generation sit in judgment in the Trustwarren. TenSoon was tried here, KanPaar\'s Seconds seized it, and under its floor lay the Trust.' }),
+  loc('well-of-ascension', 'The Well of Ascension', 'scadrial', 'mistborn1', 0.620, 0.510, '#e0f2fe', 'crystal',
+    'The pool beneath Kredik Shaw. Power enough to remake the world — or free what was trapped there.', {
+      region: 'Luthadel', arc: 'woa', eraMaps: ['ash'], see: ['kredik-shaw', 'luthadel'], wiki: 'Well_of_Ascension',
+      bio: 'A pool of power that fills every thousand years, hidden under Kredik Shaw. Rashek took it and kept it. Vin took it and let it go, which is what the thing trapped in it had wanted all along.' }),
+  loc('arguois-caverns', 'Arguois Caverns', 'scadrial', 'mistborn1', 0.641, 0.421, '#78716c', 'rock',
+    'Caves north of Luthadel where Kelsier\'s skaa army hid and trained.', {
       region: 'Central Dominance',
-      bio: 'A cave network near Luthadel used by skaa rebels for shelter and by kandra for other purposes. Nothing said in a cave on Scadrial was ever as private as the speaker assumed.', eraMaps: ['ash'], see: ['luthadel'], wiki: 'Arguois_Caverns' }),
-  loc('ashmount-tyrian', 'Ashmount Tyrian', 'scadrial', 'mistborn1', 0.42, 0.42, '#ef4444', 'fire',
-    'One of the Ashmounts that choked the Final Empire. Eruptions were policy.', {
+      bio: 'A cave system north of Luthadel, between the city and the Pits, reached through three rends in the ground. The skaa rebellion hid and trained an army of seven thousand there, and the Lord Ruler never managed to raid it.', eraMaps: ['ash'], see: ['luthadel', 'yeden', 'ham'], wiki: 'Arguois_Caverns' }),
+  loc('ashmount-tyrian', 'Ashmount Tyrian', 'scadrial', 'mistborn1', 0.554, 0.479, '#ef4444', 'fire',
+    'The Ashmount in Lake Tyrian, just west of Luthadel.', {
       region: 'Central Dominance',
-      bio: 'One of the Ashmounts Rashek raised when he remade the world: volcanoes as an instrument of policy, meant to cool a planet pushed too close to its sun. They worked, and they buried the sky for a thousand years.', eraMaps: ['ash'], see: ['dominance-of-the-center'], wiki: 'Ashmounts' }),
-  loc('ashmount-zerinah', 'Ashmount Zerinah', 'scadrial', 'mistborn1', 0.6, 0.45, '#f97316', 'fire',
-    'Eastern Ashmount. The sky went dark from more than one throat.', {
-      region: 'Eastern Dominance',
-      bio: 'The eastern Ashmount. The permanent dusk over the Final Empire came out of more than one throat, and this was one of the loudest.', eraMaps: ['ash'], wiki: 'Ashmounts' }),
-  loc('ashmount-doriel', 'Ashmount Doriel', 'scadrial', 'mistborn1', 0.38, 0.5, '#dc2626', 'fire',
-    'Southern Ashmount whose ashfall fed the empire\'s permanent winter.', {
+      bio: 'One of the Ashmounts whose ash falls on the Final Empire every day, standing in the middle of Lake Tyrian just west of Luthadel.', eraMaps: ['ash'], see: ['dominance-of-the-center'], wiki: 'Ashmounts' }),
+  loc('ashmount-zerinah', 'Ashmount Zerinah', 'scadrial', 'mistborn1', 0.474, 0.643, '#f97316', 'fire',
+    'One of the Southern Dominance\'s two Ashmounts, south-west of Luthadel.', {
       region: 'Southern Dominance',
-      bio: 'The southern Ashmount, whose fall fed the empire\'s permanent winter and the south\'s permanent grey. Whatever the Lord Ruler had intended, the arithmetic of ash was not something he ever got right.', eraMaps: ['ash'], wiki: 'Ashmounts' }),
-  loc('ashmount-torinish', 'Ashmount Torinish', 'scadrial', 'mistborn1', 0.55, 0.3, '#b91c1c', 'fire',
-    'Northern Ashmount over the canal country. Urteau breathed its dust for centuries.', {
-      region: 'Northern Dominance',
-      bio: 'The northern Ashmount over the canal country. Urteau breathed its dust for ten centuries and built its drainage around what settled out of the air.', eraMaps: ['ash'], see: ['urteau'], wiki: 'Ashmounts' }),
-  loc('river-channerel', 'River Channerel', 'scadrial', 'mistborn1', 0.5, 0.42, '#64748b', 'canal',
-    'Major river of the Final Empire\'s heartland, black with ash and industry.', {
-      region: 'Central Dominance',
-      bio: 'The great river of the Final Empire\'s heartland, black with ash and with everything the capital put into it. It joins the canal network at Austrex and carries the empire\'s freight to the sea.', eraMaps: ['ash'], see: ['luthadel'], wiki: 'River_Channerel' }),
-  loc('austrex', 'Austrex', 'scadrial', 'mistborn1', 0.48, 0.55, '#94a3b8', 'city',
-    'Capital of the Southern Dominance, where the Channerel meets the western canals.', {
+      bio: 'An Ashmount of the Southern Dominance, south-west of Luthadel near the Southern Sea.', eraMaps: ['ash'], wiki: 'Ashmounts' }),
+  loc('ashmount-doriel', 'Ashmount Doriel', 'scadrial', 'mistborn1', 0.574, 0.775, '#dc2626', 'fire',
+    'The Ashmount by the Southern Sea, south-south-west of Luthadel.', {
       region: 'Southern Dominance',
-      bio: 'Capital of the Southern Dominance, where the Channerel meets the western canals and the empire\'s grain went north. A bureaucratic town with a river\'s worth of leverage over a dominance that grew the food.', eraMaps: ['ash'], see: ['southern-dominance', 'river-channerel'], wiki: 'Austrex' }),
+      bio: 'The second Ashmount of the Southern Dominance, near the coast of the Southern Sea, south-south-west of Luthadel.', eraMaps: ['ash'], wiki: 'Ashmounts' }),
+  loc('ashmount-torinost', 'Ashmount Torinost', 'scadrial', 'mistborn1', 0.549, 0.280, '#b91c1c', 'fire',
+    'A Western Dominance Ashmount, north-north-west of Luthadel.', {
+      region: 'Western Dominance',
+      bio: 'One of the Western Dominance\'s two Ashmounts, with Morag, standing north-north-west of Luthadel.', eraMaps: ['ash'], wiki: 'Ashmounts' }),
+  loc('river-channerel', 'River Channerel', 'scadrial', 'mistborn1', 0.593, 0.566, '#64748b', 'canal',
+    'The river through Luthadel, south to Austrex and the Southern Sea.', {
+      region: 'Central Dominance',
+      bio: 'The great river of the Final Empire\'s heartland: down out of the north past Tathingdwen, through Luthadel, and on south past Austrex to the Southern Sea.', eraMaps: ['ash'], see: ['luthadel', 'austrex'], wiki: 'River_Channerel' }),
+  loc('austrex', 'Austrex', 'scadrial', 'mistborn1', 0.547, 0.613, '#94a3b8', 'city',
+    'A city of the Southern Dominance on the River Channerel, south of Luthadel.', {
+      region: 'Southern Dominance',
+      bio: 'A city on the River Channerel south of Luthadel, where the river and the canals meet on their way to the Southern Sea.', eraMaps: ['ash'], see: ['southern-dominance', 'river-channerel'], wiki: 'Austrex' }),
   loc('elendel-basin', 'Elendel Basin', 'scadrial', 'mistborn2', 0.583, 0.292, '#86efac', 'land',
     'Harmony\'s garden: a fertile ring of land around Elendel, walled by mountains.', {
       region: 'Elendel Basin',
@@ -672,26 +672,26 @@ export const PLACES_MORE: Location[] = [
     'Half-submerged holy sites the Purelakers still fish around. The water is the congregation.', {
       region: 'The Purelake',
       bio: 'Half-drowned holy sites the Purelakers fish around without much ceremony. Whatever was worshipped here predates Vorinism; the lake has covered it to the knee and the congregation has adapted.', see: ['purelake', 'bornwater'] }),
-  loc('luthadel-gates', 'Luthadel Gates', 'scadrial', 'mistborn1', 0.505, 0.392, '#78716c', 'keep',
-    'City gates of the Final Empire\'s capital — where armies learned the walls were not the real problem.', {
+  loc('luthadel-gates', 'Luthadel Gates', 'scadrial', 'mistborn1', 0.6291, 0.5193, '#78716c', 'keep',
+    'Eight gates named for the metals, in the only city wall the Lord Ruler permitted.', {
       region: 'Luthadel',
-      bio: 'The gates of the Final Empire\'s capital, where four armies converged after the Collapse and where the city learned that a wall is only as good as the koloss on the other side of it. Vin took the koloss instead.', eraMaps: ['ash'], see: ['luthadel'] }),
-  loc('skaa-slums-luthadel', 'Luthadel Skaa Slums', 'scadrial', 'mistborn1', 0.502, 0.398, '#57534e', 'village',
-    'Ash-choked districts where the empire\'s labour lived. Clubs, crews, and the occasional Mistborn.', {
+      bio: 'Eight gates, named for the metals, spaced around the only city wall the Lord Ruler permitted. The wall was always more a symbol than a defence.', eraMaps: ['ash'], see: ['luthadel'] }),
+  loc('skaa-slums-luthadel', 'Luthadel Skaa Slums', 'scadrial', 'mistborn1', 0.6201, 0.5238, '#57534e', 'village',
+    'The districts where Luthadel\'s skaa live, and its thieving crews work.', {
       region: 'Luthadel',
-      bio: 'The districts where the empire\'s labour lived, worked and died on a schedule: ash in the air, mists at night, and a thieving crew in every other cellar. Kelsier recruited his revolution out of here by convincing people with nothing that they were owed something.', eraMaps: ['ash'], see: ['luthadel'], wiki: 'Luthadel' }),
-  loc('urteau-canals', 'Urteau Canals', 'scadrial', 'mistborn1', 0.605, 0.235, '#38bdf8', 'canal',
-    'Drained waterways of Urteau — a city that burned its own circulation to spite a dead emperor.', {
+      bio: 'The districts where Luthadel\'s skaa live and die: ash in the air, mists at night that nobody walks in, and a thieving crew in more cellars than the obligators know about. Camon\'s crew worked out of here, and Kelsier recruited from it.', eraMaps: ['ash'], see: ['luthadel', 'camon'], wiki: 'Luthadel' }),
+  loc('urteau-canals', 'Urteau Canals', 'scadrial', 'mistborn1', 0.741, 0.413, '#38bdf8', 'canal',
+    'Urteau\'s streetslots: canals dry for a hundred years.', {
       region: 'Northern Dominance',
-      bio: 'Urteau\'s waterways, drained by its own rebels so that no nobleman would drink from them, leaving a city with dry stone trenches for streets. Spook fought a war in the bottom of them.', arc: 'hoa', eraMaps: ['ash'], see: ['urteau'], wiki: 'Urteau' }),
-  loc('fadrex-caves', 'Fadrex Caverns', 'scadrial', 'mistborn1', 0.27, 0.31, '#a8a29e', 'rock',
-    'Cave systems under Fadrex. Siege lines above; secrets and storage below.', {
+      bio: 'Urteau\'s streetslots: canals dry for a hundred years and paved with ash, the Marketpit the widest of them. Spook ended the Citizen\'s rule by opening Sazed\'s mechanism and letting the cache\'s water back in.', arc: 'hoa', eraMaps: ['ash'], see: ['urteau', 'spook', 'quellion'], wiki: 'Urteau' }),
+  loc('fadrex-caves', 'The Fadrex cache', 'scadrial', 'mistborn1', 0.434, 0.488, '#a8a29e', 'rock',
+    'The Lord Ruler\'s last storage cache, under Fadrex City.', {
       region: 'Western Dominance',
-      bio: 'The cave systems under Fadrex City: siege lines above, storage and secrets below, and the Lord Ruler\'s last cache among them — the one holding the record of what he had actually been holding back.', arc: 'hoa', eraMaps: ['ash'], see: ['fadrex'] }),
-  loc('storage-cavern-luthadel', 'Luthadel Storage Cavern', 'scadrial', 'mistborn1', 0.515, 0.385, '#cbd5e1', 'keep',
-    'One of the Lord Ruler\'s hidden supply caches beneath the Central Dominance.', {
+      bio: 'The last of the Lord Ruler\'s storage caches lies under Fadrex. Its plate offers no metal and no map, only a circle with a dot and an apology: he had found nothing that could stop the thing, and he had hidden its body well.', arc: 'hoa', eraMaps: ['ash'], see: ['fadrex', 'storage-cavern-luthadel'], wiki: 'Storage_cavern' }),
+  loc('storage-cavern-luthadel', 'Luthadel Storage Cavern', 'scadrial', 'mistborn1', 0.6156, 0.5238, '#cbd5e1', 'keep',
+    'The Lord Ruler\'s hidden supply cache under Kredik Shaw.', {
       region: 'Central Dominance',
-      bio: 'One of the Lord Ruler\'s hidden caches under the Central Dominance, stocked against a disaster he expected and did not name. Each one held food, water and a plate of inscribed metal, and the plates were the point.', arc: 'hoa', eraMaps: ['ash'], see: ['luthadel', 'conventical-of-seran'], wiki: 'Storage_cavern' }),
+      bio: 'The first of the Lord Ruler\'s hidden caches to be found, under Kredik Shaw: food, water, and a plate of inscribed metal. The plates were the point.', arc: 'woa', eraMaps: ['ash'], see: ['luthadel', 'kredik-shaw'], wiki: 'Storage_cavern' }),
   loc('eltania-pits', 'Pits of Eltania', 'scadrial', 'mistborn2', 0.640, 0.270, '#a8a29e', 'crystal',
     'Red-dusted Roughs country full of koloss, and the Survivor\'s Treasure.', {
       region: 'The Roughs',

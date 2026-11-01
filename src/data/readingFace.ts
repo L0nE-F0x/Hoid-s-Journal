@@ -158,23 +158,218 @@ export const READING_FACES: Record<string, ReadingFace> = {
       { book: 'mistborn1', arc: 'hoa', published: true },
     ],
   },
+  // Thaidakar is a Rhythm of War reveal and Secret History a later series
+  // in publication order, so the Stormlight step comes first and Secret
+  // History, the fuller story, publishes the card.
   kelsier: {
     early: {
       fact: 'The Survivor of Hathsin, building a crew to kill a god.',
       abilities: 'Mistborn',
-      aliases: 'Survivor, Lord of Scars, Survivor of Hathsin',
+      aliases: 'Survivor, Survivor of Hathsin',
       bio: 'A half-skaa Mistborn who walked into the Pits of Hathsin and walked out a religion. He is going to kill the Lord Ruler, and he has convinced a crew to help.',
     },
     steps: [
       {
-        book: 'secrethistory', arc: 'secrethistory',
-        fact: 'The Survivor. Death has not finished with him.',
+        book: 'stormlight', arc: 'row',
+        fact: 'The Survivor of Hathsin — and Thaidakar of the Ghostbloods.',
         abilities: 'Mistborn, Cognitive Shadow',
-        aliases: 'Survivor, Lord of Scars',
-        bio: 'A half-skaa Mistborn who walked into the Pits of Hathsin and walked out a religion. He died at the Lord Ruler\'s hand and refused to finish dying.',
+        aliases: 'Survivor, Survivor of Hathsin, Thaidakar, Lord of Scars',
+        bio: 'A half-skaa Mistborn who walked into the Pits of Hathsin and walked out a religion. He died at the Lord Ruler\'s hand, and the Ghostbloods\' Thaidakar turns out to be the same man. He cannot easily leave the Scadrian system.',
       },
-      { book: 'stormlight', arc: 'wor', published: true },
+      { book: 'secrethistory', arc: 'secrethistory', published: true },
     ],
+  },
+  // ── Mistborn Era 1: cards whose published text is a later book's ─────────
+  dockson: {
+    early: { bio: 'A plantation skaa who ran after Lord Devinshae raped and killed the girl he loved, and learned to hate the nobility with a clerk\'s precision. He and Kelsier were Luthadel\'s most infamous crewleaders; now Dockson keeps the crew paid, housed and pointed at the right keeps, the one man among them with no Allomancy at all.' },
+    steps: [{ book: 'mistborn1', arc: 'woa', published: true }],
+  },
+  clubs: {
+    early: { bio: 'Cladent Snapped as a Smoker in the Lord Ruler\'s army and came home with a scarred, limping leg and a carpentry shop that was really a coppercloud. He grumbles through every plan Kelsier makes, then follows it anyway, and keeps his nephew Spook close.' },
+    steps: [{ book: 'mistborn1', arc: 'woa', published: true }],
+  },
+  oreseur: {
+    early: {
+      fact: 'Kelsier\'s kandra, playing the elderly Lord Renoux.',
+      abilities: 'Kandra',
+      bio: 'A kandra bound by Contract to wear Lord Renoux\'s identity for Kelsier\'s plan, and the keeper of what Kelsier meant to happen after he was gone.',
+    },
+    steps: [{ book: 'mistborn1', arc: 'woa', published: true }],
+  },
+  'straff-venture': {
+    early: {
+      fact: 'Lord of House Venture, Elend\'s father, and the man who runs the Pits\' atium for the Lord Ruler.',
+      bio: 'Head of the most powerful Great House in Luthadel, a Tineye who flaunts his Allomancy, and a father who despises his heir\'s books. When the Lord Ruler falls he flees the city and leaves Elend behind.',
+    },
+    steps: [{ book: 'mistborn1', arc: 'woa', published: true }],
+  },
+  'jastes-lekal': {
+    early: {
+      fact: 'Elend\'s friend from House Lekal.',
+      abilities: 'Noble heir',
+      bio: 'The Lekal heir, one of the young nobles who drink wine with Elend and Telden at the balls and argue about the rights of men. He and Elend mean to be allies when they inherit.',
+    },
+    steps: [{ book: 'mistborn1', arc: 'woa', published: true }],
+  },
+  goradel: {
+    early: {
+      fact: 'The palace guard Vin talked out of a fight on the night of the Collapse.',
+      bio: 'A skaa who joined the Lord Ruler\'s army to escape the fields. On guard at Kredik Shaw the night Vin went in, he took her offer instead of a fight, tore off his insignia, and led Elend down to the cells to get her out.',
+    },
+    steps: [{ book: 'mistborn1', arc: 'hoa', published: true }],
+  },
+  penrod: {
+    early: {
+      fact: 'The nobleman the Assembly made king when it deposed Elend.',
+      bio: 'A minor lord who stayed in Luthadel after the Collapse and became the Assembly\'s patriarch. When the Assembly removed Elend, Penrod was made chancellor, then king, on votes Straff had bought.',
+    },
+    steps: [{ book: 'mistborn1', arc: 'hoa', published: true }],
+  },
+  'ashweather-cett': {
+    early: { bio: 'Cett took the Western Dominance when the Lord Ruler fell, lost Fadrex City to the obligator Yomen, and marched on Luthadel for an atium cache Breeze had talked him into. He loses the bid for the capital and swears to Elend at Vin\'s insistence. His mouth is a weapon; his children are the rest of the arsenal.' },
+    steps: [{ book: 'mistborn1', arc: 'hoa', published: true }],
+  },
+  kwaan: {
+    early: {
+      fact: 'The Terris Worldbringer who first named Alendi the Hero of Ages — then turned on him.',
+      bio: 'A Worldbringer who met Alendi in the library of Khlennium and first proclaimed him the Hero of Ages. Alendi\'s logbook remembers the old man as a father figure who later denounced him before the Conclave and fled.',
+    },
+    steps: [
+      {
+        book: 'mistborn1', arc: 'woa',
+        bio: 'The Worldbringer who proclaimed Alendi the Hero of Ages, then saw the prophecies the others quoted begin to change. He recanted, sent his nephew Rashek to stop Alendi at the Well, and carved his confession in steel because steel could not be altered. Sazed finds it a thousand years later.',
+      },
+      { book: 'mistborn1', arc: 'hoa', published: true },
+    ],
+  },
+  alendi: {
+    early: {
+      bio: 'A blacksmith\'s son who became king of Khlennium and marched north to the Well of Ascension as the Hero of Ages. His logbook is the book Vin and Kelsier steal from Kredik Shaw. Rashek, his Terris packman, killed him at the Well and took the power himself.',
+    },
+    steps: [
+      {
+        book: 'mistborn1', arc: 'woa',
+        bio: 'A blacksmith\'s son who became king of Khlennium and marched north as the Hero of Ages. Kwaan, who had proclaimed him, came to believe the prophecies were being changed and sent his nephew Rashek to stop him. Rashek killed Alendi at the Well and took the power himself.',
+      },
+      { book: 'mistborn1', arc: 'hoa', published: true },
+    ],
+  },
+  elend: {
+    early: {
+      fact: 'Straff Venture\'s heir, who reads forbidden books at balls.',
+      abilities: 'None (noble heir)',
+      aliases: 'Elend',
+      bio: 'The heir of House Venture, who skips the dancing to read philosophy the Ministry would burn and argues politics with Jastes Lekal and Telden Hasting over wine. He notices Valette Renoux because she is not like the other ladies at court.',
+    },
+    steps: [
+      {
+        book: 'mistborn1', arc: 'woa',
+        fact: 'King in Luthadel, then emperor; Mistborn by the bead at the Well.',
+        abilities: 'Mistborn',
+        aliases: 'Emperor',
+        bio: 'A scholar who took Luthadel\'s throne after the Collapse and wrote the clause his Assembly used to depose him. He survives the siege, marries Vin, and walks out of the Well\'s cavern a Mistborn and an emperor.',
+      },
+      { book: 'mistborn1', arc: 'hoa', published: true },
+    ],
+  },
+  marsh: {
+    early: {
+      fact: 'Kelsier\'s brother, who went into the Steel Ministry as a spy.',
+      abilities: 'Seeker, then Steel Inquisitor',
+      bio: 'Kelsier\'s older brother, called Ironeyes for his stare, who led the skaa rebellion before Yeden. He goes into the Ministry as an acolyte to spy for the crew; the Ministry wanted Seekers and made him an Inquisitor. On the night Vin faces the Lord Ruler, he pulls the spikes that keep the other Inquisitors alive.',
+    },
+    steps: [
+      {
+        book: 'mistborn1', arc: 'hoa',
+        fact: 'Kelsier\'s brother, an Inquisitor whose spikes let Ruin wear him.',
+        bio: 'Made an Inquisitor by the Ministry he spied on, then worn by Ruin through his spikes. He led Sazed to Kwaan\'s steel, spiked Penrod, killed Goradel, and beheaded Elend at Hathsin, and kept just enough of himself to tear out Vin\'s earring.',
+      },
+      { book: 'mistborn2', arc: 'aol', published: true },
+    ],
+  },
+  tensoon: {
+    early: {
+      fact: 'Straff Venture\'s kandra.',
+      abilities: 'Kandra',
+      aliases: 'TenSoon',
+      bio: 'A kandra on Contract to Straff Venture, wearing a Hasting servant\'s bones when Elend walks in on his father\'s meeting.',
+    },
+    steps: [
+      {
+        book: 'mistborn1', arc: 'woa',
+        fact: 'Zane\'s kandra, who killed OreSeur and took his place at Vin\'s side.',
+        aliases: 'OreSeur (assumed)',
+        abilities: 'Kandra, Third Generation',
+        bio: 'A Third Generation kandra on Contract to Zane, who killed OreSeur and spent the siege in a wolfhound\'s bones as Vin\'s "OreSeur", reporting on her. He came to like her better than his master, broke his Contract to tell her the kandra\'s secret, and went home to answer for it.',
+      },
+      {
+        book: 'mistborn1', arc: 'hoa',
+        fact: 'The kandra who broke his Contract for Vin and stood trial for it.',
+        abilities: 'Kandra, Third Generation (Blessings of Presence and Potency)',
+        bio: 'Judged in the Trustwarren for breaking his Contract, sentenced to ChanGaar, and fled in his wolfhound bones to find Vin. He brought Sazed to the Homeland, and when Ruin seized his body he enacted the Resolution and pulled his own Blessings.',
+      },
+      { book: 'mistborn2', arc: 'sos', published: true },
+    ],
+  },
+  spook: {
+    early: {
+      fact: 'Clubs\'s nephew, the crew\'s youngest, a Tineye.',
+      abilities: 'Tineye',
+      aliases: 'Spook, Lestibournes',
+      bio: 'A boy from the Eastern Dominance who talks a street slang nobody else follows, sheltered by his uncle Clubs and running errands for the crew. His tin makes him their lookout.',
+    },
+    steps: [
+      {
+        book: 'mistborn1', arc: 'hoa',
+        fact: 'Survivor of the Flames, who took Urteau back from the Citizen.',
+        abilities: 'Tineye; pewter by a Hemalurgic spike',
+        aliases: 'Lestibournes, Survivor of the Flames',
+        bio: 'Sent north to watch Urteau, he took a sword-tip in a fire that turned out to be a Hemalurgic spike, and heard "Kelsier" telling him what to do. He tore it out, pulled the Citizen\'s too, and opened the cache that put water back in the canals.',
+      },
+      { book: 'mistborn2', arc: 'aol', published: true },
+    ],
+  },
+  demoux: {
+    early: {
+      fact: 'A captain in Kelsier\'s skaa army, and its first believer.',
+      abilities: 'Soldier',
+      aliases: 'Demoux',
+      bio: 'One of the first recruits in the Arguois caverns, made captain by Ham, and the man Kelsier picked to fight the dissenter Bilg — with help nobody saw.',
+    },
+    steps: [
+      {
+        book: 'mistborn1', arc: 'hoa',
+        fact: 'Elend\'s general and a Survivorist preacher; one of the mistfallen.',
+        abilities: 'Seer (atium Misting)',
+        aliases: 'Demoux',
+        bio: 'A captain of Kelsier\'s army who preached the Survivor at night in Luthadel, rose to general under Elend, and was struck down by the mists — which turned out to have Snapped him into a Seer.',
+      },
+      { book: 'stormlight', arc: 'twok', published: true },
+    ],
+  },
+  felt: {
+    early: {
+      fact: 'A House Venture spy who watched Kelsier\'s crew for Elend.',
+      abilities: 'Spy',
+      bio: 'A Venture spy who tails Kelsier\'s crew and reports to Elend that they are a well-funded skaa thieving crew — which is how Elend learns Valette Renoux is not what she seems.',
+    },
+    steps: [
+      {
+        book: 'stormlight', arc: 'wor',
+        bio: 'A House Venture spy who tailed Kelsier\'s crew for Elend, and who turns up, by Word of Brandon, as a scout on Roshar\'s Shattered Plains. A reminder that Scadrial\'s agents got off-world somehow.',
+      },
+      { book: 'stormlight', arc: 'wat', published: true },
+    ],
+  },
+  breeze: {
+    early: { aliases: 'Breeze, Ladrian' },
+    steps: [{ book: 'mistborn2', arc: 'sos', published: true }],
+  },
+  gemmel: {
+    early: {
+      bio: 'A half-mad Mistborn who took Kelsier on three months after the Pits, taught him steel and iron, and led him to Keep Shezler in Mantiz and a dead lord\'s notebook about an Eleventh Metal. He talks to a voice in his head, thinks himself invincible, and threw his student off a roof to see what he would do. Kelsier walks out of the apprenticeship a Mistborn and a weapon.',
+    },
+    steps: [{ book: 'secrethistory', arc: 'secrethistory', published: true }],
   },
   melaan: {
     early: {

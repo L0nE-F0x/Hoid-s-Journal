@@ -4,8 +4,8 @@ import type { Character } from './types.ts';
 export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   vin: {
     wiki: 'Vin',
-    see: ['elend', 'kelsier', 'preservation', 'lord-ruler', 'sazed'],
-    bio: 'A half-skaa Mistborn raised by the crewleader Reen to trust no one, then taught by Kelsier to trust a crew. She kills the Lord Ruler, loves Elend, and briefly holds Preservation before giving her life so Ruin can die. The mists chose her; she still had to choose what to do with them.',
+    see: ['elend', 'kelsier', 'reen', 'lord-ruler', 'sazed'],
+    bio: 'A half-skaa thief raised by her half-brother Reen to trust no one, then taught by Kelsier to trust a crew. She kills the Lord Ruler, loves Elend, and briefly holds Preservation before giving her life so Ruin can die. The mists chose her; she still had to choose what to do with them.',
   },
   kaladin: {
     wiki: 'Kaladin',
@@ -64,7 +64,7 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   demoux: {
     wiki: 'Demoux',
     see: ['kelsier', 'seventeenth-shard', 'sazed'],
-    bio: 'An officer of Kelsier\'s rebellion who survives into Harmony\'s age and eventually into the Seventeenth Shard\'s quiet war. On Roshar he is one of the three who ask after Hoid; the Survivor\'s faith never entirely left him.',
+    bio: 'A captain of Kelsier\'s army who preached the Survivor at night in Luthadel, rose to general under Elend, and was struck down by the mists — which Snapped him into a Seer. Long after, he is one of the three who ask after Hoid on Roshar for the Seventeenth Shard.',
   },
   lift: {
     wiki: 'Lift',
@@ -78,33 +78,33 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   sazed: {
     wiki: 'Sazed',
-    see: ['harmony', 'vin', 'kelsier', 'keepers', 'tensoon'],
-    bio: 'A Terris Keeper who catalogued dead religions, lost faith when Tindwyl died, and then remade Scadrial as Harmony. Two Shards in one Vessel leave him vast and often paralysed — the Hero of Ages who can rarely act without undoing himself.',
+    see: ['vin', 'kelsier', 'keepers', 'tindwyl', 'tensoon'],
+    bio: 'A Terris Keeper who catalogued dead religions, lost his faith when Tindwyl died, and then remade Scadrial as Harmony.',
   },
   elend: {
     wiki: 'Elend_Venture',
     see: ['vin', 'sazed', 'house-venture'],
-    bio: 'A scholarly heir who becomes emperor because someone has to read the books on how not to be his father. Mistborn by lerasium, idealist by temperament, he dies beside Vin holding a Koloss army and a philosophy that almost worked.',
+    bio: 'A scholarly heir who becomes king and then emperor because someone has to read the books on how not to be his father. He marries Vin, becomes Mistborn at the Well, and dies at the Battle of Hathsin, beheaded by Marsh, holding a koloss army and a philosophy that almost worked.',
   },
   marsh: {
     wiki: 'Marsh',
-    see: ['kelsier', 'ruin', 'inquisitor', 'harmony'],
-    bio: 'Kelsier\'s brother, turned Inquisitor against his will, then Ruin\'s favourite puppet. He murders a god on command and spends the next era as Ironeyes — Harmony\'s grim reminder that Hemalurgy does not easily let go.',
+    see: ['kelsier', 'inquisitor', 'steel-ministry', 'vin'],
+    bio: 'Kelsier\'s brother, made an Inquisitor by the Ministry he went in to spy on, then Ruin\'s favourite puppet. He beheads Elend at Hathsin and, with what is left of himself, tears out the earring that kept Vin from Preservation. Centuries later the Basin calls him Ironeyes, the death in its folk tales, and he still runs Harmony\'s errands.',
   },
   'lord-ruler': {
     wiki: 'Rashek',
-    see: ['well', 'preservation', 'vin', 'final-empire'],
-    bio: 'Rashek the Traveller, who murdered Alendi, took the Well, became the Lord Ruler, and crushed a planet into a thousand years of ash. Compounding made him unkillable until Vin found the flaw; history still walks in his footprints.',
+    see: ['alendi', 'kwaan', 'vin', 'final-empire', 'kredik-shaw'],
+    bio: 'Rashek, a Terris packman who killed Alendi at the Well of Ascension, took its power, and ruled Scadrial as the Lord Ruler for a thousand years of ash. Allomancy and Feruchemy together made him all but unkillable, until Vin took his metalminds from him.',
   },
   tensoon: {
     wiki: 'TenSoon',
-    see: ['vin', 'kandra', 'harmony', 'sazed'],
-    bio: 'A Third Generation kandra of Potency who wears OreSeur\'s bones, a dog\'s body, and eventually the trust of gods. He breaks the First Contract for Vin and becomes Harmony\'s messenger when the world needs a spy who can be anyone.',
+    see: ['vin', 'oreseur', 'kandra', 'sazed', 'melaan'],
+    bio: 'A Third Generation kandra, born with the Blessing of Presence, who took OreSeur\'s Blessing of Potency when he killed him and spent the siege of Luthadel in a wolfhound\'s bones as Vin\'s "OreSeur". He broke his Contract for her, stood trial in the Homeland, and pulled his own spikes when Ruin seized his body. Three centuries on he is Harmony\'s agent among the kandra, still partial to the wolfhound.',
   },
   spook: {
     wiki: 'Spook',
-    see: ['kelsier', 'sazed', 'vin'],
-    bio: 'The crew\'s half-skaa Tineye who becomes Lord Mistborn after the Catacendre — pewter-burning, city-building, and briefly Ruin\'s whisper-toy. Elendel remembers him as founder; the crew remembered him as the boy who wanted to be useful.',
+    see: ['clubs', 'kelsier', 'vin', 'beldre', 'quellion'],
+    bio: 'Clubs\'s nephew and the crew\'s youngest Tineye, who goes north to Urteau, takes a Hemalurgic spike that Ruin speaks through in Kelsier\'s voice, and tears it out to save the city. After the Catacendre Sazed makes him Mistborn, and he rules the survivors as the Lord Mistborn. The crew remembered him as the boy who wanted to be useful.',
   },
   wayne: {
     wiki: 'Wayne',
@@ -268,8 +268,8 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   felt: {
     wiki: 'Felt',
-    see: ['ghostbloods', 'elend', 'scadrial'],
-    bio: 'A worldhopper who spied for Elend Venture and later turns up in Ghostblood circles. Longevity, bland competence, and a reminder that Scadrial\'s agents got off-world somehow.',
+    see: ['elend', 'kelsier', 'ghostbloods'],
+    bio: 'A House Venture spy who tailed Kelsier\'s crew for Elend, and who turns up, by Word of Brandon, as a scout on Roshar\'s Shattered Plains — and in Ghostblood company. Bland competence, and a reminder that Scadrial\'s agents got off-world somehow.',
   },
   design: {
     wiki: 'Design',
@@ -399,7 +399,7 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   ham: {
     wiki: 'Hammond',
     see: ['kelsier', 'breeze', 'pewterarm'],
-    bio: 'A Thug who philosophises between pewter burns. Muscle for the crew, conscience in plate armour, happier in a debate than a massacre.',
+    bio: 'A Thug who philosophises between pewter burns. Muscle for the crew, its conscience, and happier in a debate than a massacre.',
   },
   frost: {
     wiki: 'Frost',

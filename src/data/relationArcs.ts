@@ -31,6 +31,16 @@ export const RELATION_ARCS: { a: string; b: string; arc: string }[] = [
   { a: 'vin', b: 'elend', arc: 'woa' },
   { a: 'sazed', b: 'preservation', arc: 'hoa' },
   { a: 'sazed', b: 'ruin', arc: 'hoa' },
+  { a: 'vin', b: 'tensoon', arc: 'woa' },
+  { a: 'elend', b: 'sazed', arc: 'woa' },
+  { a: 'sazed', b: 'tensoon', arc: 'hoa' },
+  { a: 'marsh', b: 'vin', arc: 'hoa' },
+  { a: 'marsh', b: 'ruin', arc: 'hoa' },
+  { a: 'spook', b: 'sazed', arc: 'hoa' },
+  { a: 'leras', b: 'preservation', arc: 'hoa' },
+  { a: 'ati', b: 'ruin', arc: 'hoa' },
+  { a: 'leras', b: 'ati', arc: 'hoa' },
+  { a: 'lord-ruler', b: 'preservation', arc: 'hoa' },
   // Mistborn Era 2 — Lessie is a Shadows of Self reveal; the wedding, the
   // Set's leadership and the Malwish are The Bands of Mourning; the rest is
   // The Lost Metal.

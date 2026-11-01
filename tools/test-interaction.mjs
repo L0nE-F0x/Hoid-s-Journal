@@ -268,8 +268,12 @@ async function run() {
         // click: the moon that is furthest away is often the one that has
         // projected off the edge of the window entirely, and clicking past the
         // viewport reports whatever was selected before.
+        // And not under a panel: the atlas and the card cover the left of
+        // the frame, and a click there is the panel's, so the selection
+        // stayed on Roshar whenever the playhead left a moon behind them.
         const onScreen = x > 8 && x < window.innerWidth - 8
-          && y > 8 && y < window.innerHeight - 8;
+          && y > 8 && y < window.innerHeight - 8
+          && document.elementFromPoint(x, y)?.id === 'stage';
         if (onScreen && d > 28 && (!best || d > best.d)) best = { id, x, y, d };
       }
       return best;

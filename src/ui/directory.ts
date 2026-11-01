@@ -102,7 +102,7 @@ export function mountDirectory(root: HTMLElement): { destroy(): void } {
   let lastRealm = store.state.realm;
   const search = el('input', {
     className: 'ceph-search ceph-dir-search',
-    attrs: { placeholder: 'Find a world, person, shard…', type: 'search' },
+    attrs: { placeholder: 'Find a world, person, shard…', type: 'search', 'aria-label': 'Find in the directory' },
   }) as HTMLInputElement;
   const tabs = el('div', { className: 'ceph-dir-tabs' });
   const list = el('div', { className: 'ceph-dir-list' });
@@ -139,10 +139,16 @@ export function mountDirectory(root: HTMLElement): { destroy(): void } {
     { id: 'dawnshards', label: 'Dawnshards' },
   ];
   for (const t of TAB) {
-    const b = el('button', { className: 'ceph-chip', text: t.label, attrs: { type: 'button' } });
+    const b = el('button', { className: 'ceph-chip', text: t.label, attrs: { type: 'button', 'aria-pressed': 'false' } });
     listen(b, 'click', () => { tab = t.id; paint(); });
     tabs.append(b);
   }
+
+  const tabEdge = () => {
+    const more = tabs.scrollWidth - tabs.clientWidth;
+    tabs.classList.toggle('is-end', more > 1 && tabs.scrollLeft >= more - 2);
+  };
+  listen(tabs, 'scroll', tabEdge, { passive: true });
 
   const measure = () => {
     if (!panel.classList.contains('is-on')) {
@@ -161,7 +167,7 @@ export function mountDirectory(root: HTMLElement): { destroy(): void } {
 
   const row = (id: string, name: string, kind: string, color: string, hint: string) => {
     const hot = store.state.selected === id || store.state.focusedSystem === id || store.state.focusedBody === id;
-    const b = el('button', { className: `ceph-dir-row${hot ? ' is-on' : ''}`, attrs: { type: 'button' } }, [
+    const b = el('button', { className: `ceph-dir-row${hot ? ' is-on' : ''}`, attrs: { type: 'button', 'data-id': id } }, [
       el('span', { className: 'ceph-dir-dot', style: { background: color } }),
       el('span', { className: 'ceph-dir-name', text: name }),
       el('span', { className: 'ceph-dir-kind', text: kind }),
@@ -186,8 +192,25 @@ export function mountDirectory(root: HTMLElement): { destroy(): void } {
       if (s.realm === 'spiritual') tab = 'shards';
     }
     const q = search.value.trim().toLowerCase();
+    // The list is rebuilt on every change, and a row that had focus went with
+    // it: choosing an entry with Enter dropped the reader to <body>.
+    const had = document.activeElement instanceof HTMLElement && list.contains(document.activeElement)
+      ? (document.activeElement.dataset.id ?? '') : null;
     list.replaceChildren();
-    [...tabs.children].forEach((c, i) => c.classList.toggle('is-on', TAB[i]!.id === tab));
+    [...tabs.children].forEach((c, i) => {
+      c.classList.toggle('is-on', TAB[i]!.id === tab);
+      c.setAttribute('aria-pressed', String(TAB[i]!.id === tab));
+    });
+    // On a phone the tabs are one scrolling row: keep the chosen one in it
+    // (the Spiritual Realm opens on Shards, eight tabs along).
+    const on = tabs.querySelector<HTMLElement>('.is-on');
+    if (on && tabs.scrollWidth > tabs.clientWidth) {
+      const left = on.offsetLeft - tabs.offsetLeft;
+      if (left < tabs.scrollLeft || left + on.offsetWidth > tabs.scrollLeft + tabs.clientWidth) {
+        tabs.scrollLeft = left - 12;
+      }
+    }
+    tabEdge();
     title.textContent = TAB.find((t) => t.id === tab)?.label ?? 'Directory';
     kicker.textContent = s.scale === 'system' && s.focusedSystem
       ? (COSMERE.systems.find((x) => x.id === s.focusedSystem)?.name ?? 'System')
@@ -219,6 +242,10 @@ export function mountDirectory(root: HTMLElement): { destroy(): void } {
         }
         list.append(jump);
       }
+    }
+    if (had !== null) {
+      const again = had ? [...list.querySelectorAll<HTMLElement>('[data-id]')].find((n) => n.dataset.id === had) : null;
+      (again ?? tabs.querySelector<HTMLElement>('.is-on') ?? search).focus({ preventScroll: true });
     }
   };
 

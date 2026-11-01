@@ -53,6 +53,14 @@
 
 .ceph-reading {
   display: inline-block;
+  /* One line, always. On a phone the pill shared a row with the wordmark and
+     the back button and wrapped into a four-line box that pushed "← Cosmere"
+     off the screen. */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+  flex: 0 1 auto;
   margin-top: 0;
   padding: 3px 9px;
   border-radius: 2px;
@@ -165,6 +173,8 @@
   opacity: 0.85;
 }
 .ceph-time-mark:hover::before { height: 11px; opacity: 1; }
+/* A beat the reader has not reached is not on their playhead. */
+.ceph-time-mark[hidden] { display: none; }
 .ceph-slider {
   width: 100%;
   pointer-events: auto;
@@ -224,7 +234,25 @@
 }
 .ceph-timeline.is-thin {
   padding: 8px 12px;
-  width: min(420px, calc(100% - 32px));
+  /* Wide enough that the year is one line in every era. At 420px the
+     Stormlight date wrapped under its own play button. */
+  width: min(520px, calc(100% - 32px));
+}
+
+/* Centred on a wide screen. On a laptop a centred playhead reaches under the
+   instrument column (at 1280px it shares 52px with it), and the column then
+   has to stop above the playhead: a card under the atlas was left its title
+   bar and nothing else. So the playhead slides right until it clears the
+   column, and never past the right margin. The phone layout is its own. */
+@media (min-width: 901px) {
+  .ceph-timeline {
+    --ceph-tl-half: 320px;
+    left: min(
+      max(50%, calc(var(--ceph-gut) + var(--ceph-col) + 12px + var(--ceph-tl-half))),
+      calc(100% - 16px - var(--ceph-tl-half))
+    );
+  }
+  .ceph-timeline.is-thin { --ceph-tl-half: 260px; }
 }
 .ceph-tools .ceph-btn { pointer-events: auto; }
 .ceph-back {
@@ -367,6 +395,20 @@
   gap: 6px;
   margin-top: 6px;
 }
+/* New this arc: the journal's warm colour on the chip that opens it. */
+.ceph-atlas-chip--new { border-color: color-mix(in srgb, var(--ceph-amber) 55%, transparent); }
+.ceph-atlas-chip--new:hover { border-color: var(--ceph-amber); }
+/* A name with no entry behind it: set like a chip, read like a label. */
+.ceph-tag {
+  display: inline-block;
+  padding: 3px 8px;
+  font-size: 10px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--ceph-text-dim);
+  border: 1px dashed var(--ceph-rule);
+  border-radius: 2px;
+}
 .ceph-wiki {
   display: inline-block;
   margin-top: 12px;
@@ -394,8 +436,27 @@
 .ceph-codex-counts {
   display: flex;
   flex-wrap: wrap;
-  gap: 14px 18px;
+  gap: 6px 10px;
   margin: 8px 0 4px;
+}
+/* The index of the title screen, as a row of ways in. */
+.ceph-codex-count {
+  pointer-events: auto;
+  appearance: none;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  border-radius: 0;
+  cursor: pointer;
+  padding: 3px 4px;
+  transition: border-color 160ms var(--ceph-ease);
+}
+.ceph-codex-count:hover { border-bottom-color: var(--ceph-border-strong); }
+.ceph-codex-count:hover span { color: var(--ceph-text-dim); }
+.ceph-grid.ceph-codex-grid {
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 8px;
+  margin-top: 6px;
 }
 .ceph-meta {
   display: grid;
@@ -411,11 +472,55 @@
   inset: 0;
   z-index: 40;
   display: flex;
-  align-items: center;
+  /* Hung from a fixed top rather than centred. Centred, a panel whose
+     content changes height moved: every keystroke in the Codex grew or
+     shrank the results and slid the search box up and down under the
+     cursor. A full-height panel sits exactly where it did before. */
+  align-items: flex-start;
+  padding-top: max(16px, calc((100vh - min(86vh, 720px)) / 2));
   justify-content: center;
   background: rgba(4, 5, 11, 0.55);
   pointer-events: auto;
 }
+/* Help's controls: the key in its own column, set as a key. */
+.ceph-keys { margin-top: 10px; }
+.ceph-table.ceph-keys th {
+  width: 9.5em;
+  white-space: nowrap;
+  vertical-align: top;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--ceph-text-dim);
+  font-size: 11px;
+}
+.ceph-keys td { color: var(--ceph-text); line-height: 1.5; }
+.ceph-keys kbd {
+  display: inline-block;
+  min-width: 1.7em;
+  padding: 1px 6px;
+  border: 1px solid var(--ceph-border-strong);
+  border-bottom-width: 2px;
+  border-radius: 3px;
+  font-family: var(--ceph-mono);
+  font-size: 10.5px;
+  text-align: center;
+  color: var(--ceph-text);
+  background: rgba(255, 255, 255, 0.03);
+}
+@media (max-width: 900px) {
+  .ceph-table.ceph-keys th { width: auto; white-space: normal; }
+}
+/* Close on the right of the panel's top line; a page's way back on the left. */
+.ceph-modal-head {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
+}
+.ceph-modal-head > :last-child { margin-left: auto; }
+.ceph-modal-back { margin-left: -10px; }
+/* The panel itself takes focus when it opens so Tab starts inside it; it is
+   not a control, and a ring round the whole dialog says nothing. */
+.ceph-root .ceph-modal-card:focus-visible { outline: none; }
 .ceph-modal-card {
   width: min(880px, calc(100% - 32px));
   max-height: min(86vh, 720px);
@@ -455,6 +560,7 @@
   border-bottom: 1px solid var(--ceph-border);
 }
 .ceph-book-list {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -503,6 +609,20 @@
   letter-spacing: 0.02em;
 }
 .ceph-search::placeholder { color: var(--ceph-text-faint); }
+/* The browser's own clear button is a bold white glyph unlike anything else
+   in the chrome. Same job, drawn as a hairline cross in the dim ink. */
+.ceph-search::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 11px;
+  height: 11px;
+  margin-right: 4px;
+  cursor: pointer;
+  background:
+    linear-gradient(45deg, transparent calc(50% - 0.7px), var(--ceph-text-dim) calc(50% - 0.7px), var(--ceph-text-dim) calc(50% + 0.7px), transparent calc(50% + 0.7px)),
+    linear-gradient(-45deg, transparent calc(50% - 0.7px), var(--ceph-text-dim) calc(50% - 0.7px), var(--ceph-text-dim) calc(50% + 0.7px), transparent calc(50% + 0.7px));
+}
+.ceph-search::-webkit-search-cancel-button:hover { filter: brightness(1.5); }
 .ceph-search:focus { border-bottom-color: var(--ceph-cyan); }
 
 .ceph-look-slider {
@@ -615,6 +735,14 @@
     text-indent: 0.22em;
   }
   .ceph-command-sub { flex: 1 1 auto; min-width: 0; }
+  /* The book is what matters; the star says the rest. A spoiler filter that
+     is on outranks a breadcrumb that has already been cut to "Cosmere · …",
+     so the crumb gives way first. */
+  .ceph-topbar-left { gap: 7px; }
+  .ceph-command-sub { flex-shrink: 6; }
+  .ceph-reading { max-width: 34vw; min-width: 4.2em; padding: 3px 7px; }
+  .ceph-reading-verb { display: none; }
+  .ceph-reading-book::before { content: '✦ '; }
   /* Eight tools do not fit across a phone, and a strip that scrolls with no
      sign that it scrolls hides Lore, Help and Share. Fade whichever edge has
      more behind it (hud.ts sets the classes). */
@@ -686,7 +814,10 @@
   animation: none;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 420ms var(--ceph-ease);
+  /* Hidden from Tab as well as from the eye once the fade is done; a
+     transparent top bar was still eleven invisible focus stops. */
+  visibility: hidden;
+  transition: opacity 420ms var(--ceph-ease), visibility 0s linear 420ms;
 }
 
 /* A renderer fault. Every DOM panel keeps working over a black canvas, which

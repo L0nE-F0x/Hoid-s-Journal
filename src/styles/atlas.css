@@ -24,9 +24,10 @@
     padding: 10px 10px 12px;
     -webkit-overflow-scrolling: touch;
   }
-  .ceph-atlas-canvas { touch-action: none; }
   .ceph-atlas-roster { gap: 4px; }
   .ceph-atlas-chip { font-size: 10px; padding: 2px 7px; }
+  /* The sheet already scrolls as a whole on a phone. */
+  .ceph-atlas-roster.is-all { max-height: none; overflow: visible; }
 }
 
 .ceph-atlas-head {
@@ -38,6 +39,11 @@
 }
 .ceph-atlas-title { font-weight: 600; letter-spacing: 0.04em; }
 .ceph-atlas-canvas {
+  /* Tap, hold and drag on the plate are all ours, at every width: a tablet
+     in landscape is a desktop layout with a finger on it. */
+  touch-action: none;
+  -webkit-touch-callout: none;
+  user-select: none;
   display: block;
   width: 100%;
   height: auto;
@@ -78,6 +84,22 @@
   cursor: pointer;
 }
 .ceph-atlas-chip:hover { border-color: var(--ceph-cyan); }
+/* Everyone present is a long list; it scrolls inside the panel rather than
+   pushing the card under it off the screen. */
+.ceph-atlas-roster.is-all {
+  max-height: min(34vh, 300px);
+  overflow-y: auto;
+  align-content: flex-start;
+  scrollbar-width: thin;
+}
+.ceph-atlas-more {
+  width: 100%;
+  text-align: left;
+  padding: 4px 0 2px;
+  font-size: 9.5px;
+  color: var(--ceph-text-dim);
+}
+.ceph-atlas-more::after { left: 0; right: auto; width: 9em; }
 .ceph-atlas-chip.is-on {
   border-color: color-mix(in srgb, var(--ceph-cyan) 52%, transparent);
   background: color-mix(in srgb, var(--ceph-cyan) 9%, transparent);

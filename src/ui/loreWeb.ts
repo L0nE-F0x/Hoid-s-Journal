@@ -47,7 +47,8 @@ const WEB_TYPES: Record<string, { label: string; color: string; soft?: boolean }
 export function mountLoreWeb(root: HTMLElement): { destroy(): void } {
   const canvas = el('canvas', { className: 'ceph-web-canvas' });
   const legend = el('div', { className: 'ceph-panel ceph-web-legend' });
-  const pathEl = el('div', { className: 'ceph-web-path' });
+  // A status region, so the path is read out when it changes, not only drawn.
+  const pathEl = el('div', { className: 'ceph-web-path', attrs: { role: 'status', 'aria-live': 'polite' } });
   const host = el('div', { className: 'ceph-web' }, [canvas, legend, pathEl]);
   root.append(host);
 
@@ -240,6 +241,9 @@ export function mountLoreWeb(root: HTMLElement): { destroy(): void } {
   const paintLegend = () => {
     // On a phone the legend is one line until asked: open, it covered the
     // lower third of the graph it explains (see loreWeb.css).
+    // The head only folds the legend on a phone. On a desktop the legend is
+    // always open and the head is a plain title; as a button it was a Tab
+    // stop that did nothing.
     const head = el('button', {
       className: 'ceph-web-legend-head',
       attrs: { type: 'button', 'aria-expanded': String(legend.classList.contains('is-open')) },
@@ -247,11 +251,12 @@ export function mountLoreWeb(root: HTMLElement): { destroy(): void } {
       el('span', { className: 'ceph-kicker', text: 'Lore Web' }),
       el('span', { className: 'ceph-web-legend-more', text: 'Legend' }),
     ]);
+    const title = el('div', { className: 'ceph-kicker ceph-web-legend-title', text: 'Lore Web' });
     listen(head, 'click', () => {
       legend.classList.toggle('is-open');
       head.setAttribute('aria-expanded', String(legend.classList.contains('is-open')));
     });
-    legend.replaceChildren(head);
+    legend.replaceChildren(title, head);
     legend.append(el('div', {
       className: 'ceph-web-hint',
       text: 'Click a node for its path to Hoid. Drag a node to move it, drag the background to pan, scroll or pinch to zoom. Names appear as you go in.',
@@ -261,7 +266,10 @@ export function mountLoreWeb(root: HTMLElement): { destroy(): void } {
     legend.append(reset);
     for (const [type, meta] of Object.entries(WEB_TYPES)) {
       const off = hide.has(type);
-      const b = el('button', { className: `ceph-web-type${off ? ' is-off' : ''}`, attrs: { type: 'button' } }, [
+      const b = el('button', {
+        className: `ceph-web-type${off ? ' is-off' : ''}`,
+        attrs: { type: 'button', 'aria-pressed': String(!off), title: `Show ${meta.label.toLowerCase()} links` },
+      }, [
         el('span', { className: 'ceph-dir-dot', style: { background: meta.color } }),
         el('span', { text: meta.label }),
       ]);
@@ -342,7 +350,7 @@ export function mountLoreWeb(root: HTMLElement): { destroy(): void } {
    * nodes settles wherever it likes; without this, half the Cosmere ends up
    * off the edge of the canvas and the reader never knows it is there.
    */
-  const fit = () => {
+  const fit = (snap = false) => {
     if (!nodes.length || manual) return;
     let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
     for (const n of nodes) {
@@ -356,9 +364,10 @@ export function mountLoreWeb(root: HTMLElement): { destroy(): void } {
     );
     const target = Math.min(1.5, Math.max(0.30, want));
     // Damped, or the view lurches every time a node drifts past the edge.
-    zoom += (target - zoom) * 0.06;
-    panX += ((minX + maxX) * -0.5 - panX) * 0.06;
-    panY += ((minY + maxY) * -0.5 - panY) * 0.06;
+    const k = snap ? 1 : 0.06;
+    zoom += (target - zoom) * k;
+    panX += ((minX + maxX) * -0.5 - panX) * k;
+    panY += ((minY + maxY) * -0.5 - panY) * k;
   };
 
   const draw = () => {
@@ -459,7 +468,16 @@ export function mountLoreWeb(root: HTMLElement): { destroy(): void } {
   const show = () => {
     const on = store.state.view === 'web' && store.state.shell === 'play';
     host.classList.toggle('is-on', on);
-    if (on) { resize(); rebuild(); zoom = 0.5; panX = 0; panY = 0; manual = false; }
+    if (on) {
+      resize(); rebuild(); zoom = 0.5; panX = 0; panY = 0; manual = false;
+      // Asked for less motion: settle the layout before it is shown, rather
+      // than let five hundred nodes swirl into place and the frame zoom after
+      // them for the first few seconds.
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        for (let i = 0; i < 360; i++) step();
+        fit(true);
+      }
+    }
   };
 
   const pointers = new Map<number, { x: number; y: number }>();

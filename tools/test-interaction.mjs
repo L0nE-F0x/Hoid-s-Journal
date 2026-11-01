@@ -209,6 +209,36 @@ async function run() {
     check('Realms is a panel', (await state(page)).panel === 'realms', (await state(page)).panel);
     await page.keyboard.press('Escape');
     await sleep(150);
+
+    // The keyboard: Space presses the focused button rather than the
+    // playhead, a panel takes focus and keeps Tab inside it, and Esc hands
+    // focus back to the button that opened it.
+    {
+      const playing = (await state(page)).isPlaying;
+      await page.evaluate(() => {
+        [...document.querySelectorAll('.ceph-tools button')].find((b) => /^arcanum$/i.test(b.textContent ?? ''))?.focus();
+      });
+      await page.keyboard.press('Space');
+      await sleep(250);
+      s = await state(page);
+      check('keyboard: Space presses the focused button', s.panel === 'arcanum' && s.isPlaying === playing,
+        `${s.panel}/${s.isPlaying}`);
+      const held = await page.evaluate(() => !!document.activeElement?.closest('[role="dialog"]'));
+      check('keyboard: an opened panel takes focus', held);
+      for (let i = 0; i < 30; i++) await page.keyboard.press('Tab');
+      const kept = await page.evaluate(() => !!document.activeElement?.closest('[role="dialog"]'));
+      check('keyboard: Tab stays inside an open panel', kept);
+      await page.keyboard.press('Escape');
+      await sleep(200);
+      const back = await page.evaluate(() => ({
+        panel: window.__ceph.store.state.panel,
+        focus: document.activeElement?.textContent ?? '',
+      }));
+      check('keyboard: Esc closes it and hands focus back', back.panel === 'none' && /^arcanum$/i.test(back.focus),
+        JSON.stringify(back));
+      await page.evaluate(() => document.activeElement?.blur());
+    }
+
     check('Lore Web opens', await clickLabel(page, '^lore$'));
     await sleep(400);
     check('view is the Lore Web', (await state(page)).view === 'web', (await state(page)).view);
@@ -256,6 +286,11 @@ async function run() {
       const planet = origin.clone().project(a.camera);
       const px = (planet.x * 0.5 + 0.5) * window.innerWidth;
       const py = (-planet.y * 0.5 + 0.5) * window.innerHeight;
+      // Roshar's own disc on screen. A moon passing behind it is inside the
+      // disc, the nearer subject wins the pick, and the click opens Roshar —
+      // which is the picker working, not the moon failing.
+      const far = a.camera.position.distanceTo(origin);
+      const discPx = (1.32 / (far * Math.tan((a.camera.fov * Math.PI) / 360))) * window.innerHeight / 2;
       let best = null;
       for (const id of ['salas', 'nomon', 'mishim']) {
         if (!a.orrery.moonShown(id)) continue;
@@ -272,9 +307,9 @@ async function run() {
         // the frame, and a click there is the panel's, so the selection
         // stayed on Roshar whenever the playhead left a moon behind them.
         const onScreen = x > 8 && x < window.innerWidth - 8
-          && y > 8 && y < window.innerHeight - 8
-          && document.elementFromPoint(x, y)?.id === 'stage';
-        if (onScreen && d > 28 && (!best || d > best.d)) best = { id, x, y, d };
+          && y > 8 && y < window.innerHeight - 8;
+        const clear = document.elementFromPoint(x, y)?.id === 'stage';
+        if (onScreen && clear && d > Math.max(28, discPx + 14) && (!best || d > best.d)) best = { id, x, y, d };
       }
       return best;
     });
@@ -530,6 +565,42 @@ async function run() {
     check('reading companion syncs publication-safe',
       !!synced && s.readProgress.mistborn2 === -1 && s.readProgress.elantris >= 0,
       JSON.stringify({ mb2: s.readProgress.mistborn2, el: s.readProgress.elantris }));
+    // A card is gated on its own book; what it links to must be too. Read as
+    // a Way of Kings reader, no chip on these cards may name an entry gated
+    // on a later arc (Shallan's card used to offer Veil, Roshar's Urithiru).
+    const leaks = await page.evaluate(async () => {
+      const d = await import('/src/data/index.ts');
+      const st = window.__ceph.store;
+      st.set('panel', 'none');
+      const progress = st.state.readProgress;
+      const hiddenLabels = new Set();
+      const seenLabels = new Set();
+      for (const list of [d.COSMERE.characters, d.COSMERE.locations, d.COSMERE.organizations,
+        d.COSMERE.glossary, d.COSMERE.bodies, d.COSMERE.magics, d.COSMERE.shards]) {
+        for (const item of list) {
+          (d.isVisible(item, progress) ? seenLabels : hiddenLabels).add(d.loreLabel(item.id));
+        }
+      }
+      // A name a visible entry also goes by is not a leak.
+      for (const name of seenLabels) hiddenLabels.delete(name);
+      const out = [];
+      for (const id of ['kaladin', 'shallan', 'navani', 'roshar', 'knights-radiant', 'rosharan']) {
+        st.set('selected', id);
+        const card = document.querySelector('.ceph-panel-drawer');
+        const chips = [...(card?.querySelectorAll('.ceph-atlas-chip') ?? [])].map((b) => b.textContent ?? '');
+        for (const text of chips) {
+          const name = text.includes(' — ') ? text.split(' — ').pop() : text;
+          if (hiddenLabels.has(name)) out.push(`${id}: ${name}`);
+        }
+      }
+      st.set('selected', null);
+      // Back to the Journal, where the next check clears the companion.
+      st.set('panel', 'journal');
+      return out;
+    });
+    await sleep(300);
+    check('reading companion: a card links to nothing past the reader',
+      Array.isArray(leaks) && leaks.length === 0, JSON.stringify(leaks));
     const restored = await page.evaluate(() => {
       const sel = document.querySelector('.ceph-modal-card select');
       if (!sel) return false;
@@ -784,6 +855,31 @@ async function run() {
         !back.fault && !back.lost && back.baked && relit > lit * 0.75,
         JSON.stringify({ ...back, before: Math.round(lit), after: Math.round(relit) }));
     }
+    // The atlas plate from the keyboard: arrows step its pins without flying
+    // the camera, Enter goes to the one stepped to.
+    await page.evaluate(() => window.__ceph.store.set('cameraCue', { kind: 'focus', id: 'roshar', scale: 'globe' }));
+    await settle(page);
+    const stepped = await page.evaluate(() => {
+      window.__ceph.store.set('selected', null);
+      const c = document.querySelector('.ceph-atlas-canvas');
+      c?.focus();
+      window.__cephAim = window.__ceph.app.rig.goalTarget.clone();
+      return document.activeElement === c;
+    });
+    await page.keyboard.press('ArrowRight');
+    await page.keyboard.press('ArrowRight');
+    await sleep(150);
+    const pinKey = await page.evaluate(() => ({
+      hovered: window.__ceph.store.state.hovered,
+      still: window.__cephAim.distanceTo(window.__ceph.app.rig.goalTarget) < 1e-6,
+    }));
+    check('keyboard: arrows step the atlas pins, not the camera',
+      stepped && !!pinKey.hovered && pinKey.still, JSON.stringify(pinKey));
+    await page.keyboard.press('Enter');
+    await settle(page);
+    s = await state(page);
+    check('keyboard: Enter on the plate goes to the pin',
+      s.scale === 'surface' && s.focusedLocation === pinKey.hovered, `${s.scale}/${s.focusedLocation}`);
 
     // A phone still leaves the world a band to live in.
     await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 1 });
@@ -837,6 +933,66 @@ async function run() {
       check(`a link to #${hash.slice(0, 32)}… lands: ${want}`, test(s) && !linkErrors.length,
         JSON.stringify({ ...s, aim: Math.round(s.aim), errors: linkErrors.slice(0, 1) }));
       await link.close();
+    }
+
+    // Fingers, not a mouse. CDP touch points, so a pinch is two real touches.
+    // Touch emulation goes on through CDP: `setViewport({ hasTouch })` reloads
+    // the page, and the app with it.
+    const cdp = await page.createCDPSession();
+    await cdp.send('Emulation.setTouchEmulationEnabled', { enabled: true, maxTouchPoints: 5 });
+    const touch = (type, pts) => cdp.send('Input.dispatchTouchEvent', {
+      type, touchPoints: pts.map(([x, y, id]) => ({ x, y, id, radiusX: 4, radiusY: 4, force: 1 })),
+    });
+    /** One finger moves while the other — the second down — stays put, then lifts last-but-one. */
+    const anchoredPinch = async (still, from, to) => {
+      await touch('touchStart', [[...from, 0]]);
+      await sleep(40);
+      await touch('touchStart', [[...from, 0], [...still, 1]]);
+      for (let i = 1; i <= 12; i++) {
+        const t = i / 12;
+        await touch('touchMove', [[from[0] + (to[0] - from[0]) * t, from[1] + (to[1] - from[1]) * t, 0], [...still, 1]]);
+        await sleep(50);
+      }
+      await touch('touchEnd', [[...still, 1]]);
+      await sleep(40);
+      await touch('touchEnd', []);
+    };
+    const reframe = async () => {
+      await page.evaluate(() => {
+        window.__ceph.store.set('cameraCue', { kind: 'focus', id: 'roshar', scale: 'globe' });
+      });
+      await settle(page);
+      await page.evaluate(() => { window.__ceph.store.set('selected', null); window.__ceph.store.set('hovered', null); });
+    };
+    await reframe();
+    let disc = await screenOf(page, "a.orrery.bodyPosition('roshar')");
+    await anchoredPinch([disc.x + 10, disc.y + 10], [disc.x - 30, disc.y - 30], [disc.x - 120, disc.y - 120]);
+    await sleep(900);
+    s = await state(page);
+    check('touch: lifting the still finger of a pinch is not a tap',
+      s.scale === 'globe' && !s.selected, `${s.scale}/${s.selected}`);
+    await reframe();
+    disc = await screenOf(page, "a.orrery.bodyPosition('roshar')");
+    await touch('touchStart', [[disc.x, disc.y, 0]]);
+    await sleep(800);
+    await touch('touchEnd', []);
+    await sleep(400);
+    s = await state(page);
+    check('touch: a long press on the globe opens a card and stays put',
+      s.scale === 'globe' && !!s.selected && !s.hovered, `${s.scale}/${s.selected}/${s.hovered}`);
+    await reframe();
+    const plate = await page.evaluate(() => {
+      const c = document.querySelector('.ceph-atlas-canvas');
+      if (!c) return null;
+      const r = c.getBoundingClientRect();
+      return { x: r.left + r.width * 0.466, y: r.top + r.height * 0.638 };
+    });
+    if (plate) {
+      await anchoredPinch([plate.x, plate.y], [plate.x - 60, plate.y - 20], [plate.x - 140, plate.y - 60]);
+      await sleep(600);
+      s = await state(page);
+      check('touch: a pinch held on an atlas pin is not a tap',
+        s.scale === 'globe' && !s.selected, `${s.scale}/${s.selected}`);
     }
 
     check('no page errors', errors.length === 0, errors.slice(0, 2).join(' | '));

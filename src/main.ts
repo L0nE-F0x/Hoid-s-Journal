@@ -65,17 +65,21 @@ function webgl2Support(): { ok: true } | { ok: false; message: string } {
     return {
       ok: false,
       message:
-        'This needs WebGL2, and this browser offers only WebGL1 — usually a ' +
-        'driver too old for it, or a software fallback standing in for the GPU.',
+        'Hoid’s Journal draws the Cosmere with WebGL2, and this browser offers ' +
+        'only WebGL1 — usually a graphics driver too old for it, or a software ' +
+        'fallback standing in for the GPU. Updating the browser or the graphics ' +
+        'driver normally fixes it.',
     };
   }
 
   return {
     ok: false,
     message:
-      'This needs WebGL2, and this browser is providing no WebGL at all. ' +
-      'Hardware acceleration is switched off, or the GPU process is not ' +
-      'running. In Chrome, chrome://gpu will say which.',
+      'Hoid’s Journal draws the Cosmere with WebGL2, and this browser is ' +
+      'offering no WebGL at all. Usually graphics acceleration is switched ' +
+      'off: turn it on in the browser’s settings (in Chrome, Settings → ' +
+      'System → “Use graphics acceleration when available”), then restart ' +
+      'the browser and reload. chrome://gpu shows what the browser sees.',
   };
 }
 

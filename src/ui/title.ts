@@ -80,7 +80,12 @@ export function mountTitle(root: HTMLElement): { enter(): void; open(): void; de
       el('a', {
         className: 'ceph-title-credit',
         text: `${CREDIT_LABEL} ${CREDIT_NAME}`,
-        attrs: { href: CREDIT_HREF, rel: 'noopener' },
+        // A new tab. In the same tab this link took the reader out of the
+        // app, sky and journal and all, with nothing to say why.
+        attrs: {
+          href: CREDIT_HREF, target: '_blank', rel: 'noopener noreferrer',
+          'aria-label': `${CREDIT_LABEL} ${CREDIT_NAME} (opens in a new tab)`,
+        },
       }),
     ]),
   ]);

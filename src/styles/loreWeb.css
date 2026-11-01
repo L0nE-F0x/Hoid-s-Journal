@@ -45,10 +45,13 @@
   font-size: 12px;
 }
 .ceph-web-type.is-off { opacity: 0.35; }
+/* Sits on the playhead's top edge, which `hud.ts` publishes. It used to be a
+   fixed 118px up, which is inside the timeline at every size the timeline
+   comes in: the one sentence the web exists to say was drawn behind it. */
 .ceph-web-path {
   position: absolute;
   left: 50%;
-  bottom: calc(118px + var(--ceph-safe-bottom));
+  bottom: calc(var(--ceph-timeline-top, 160px) + 6px);
   transform: translateX(-50%);
   max-width: min(720px, calc(100% - 32px));
   text-align: center;
@@ -59,9 +62,10 @@
   text-shadow: 0 0 12px rgba(5,6,13,0.9);
 }
 
-/* The head is a plain kicker on a desktop, where the legend is always open. */
+/* On a desktop the legend is always open and titled by a plain kicker; the
+   fold button is a phone control and is not in the page there at all. */
 .ceph-web-legend-head {
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
@@ -86,7 +90,8 @@
   }
   /* Closed, it is one line and the graph keeps the screen. */
   .ceph-web-legend:not(.is-open) > :not(.ceph-web-legend-head) { display: none; }
-  .ceph-web-legend-head { pointer-events: auto; cursor: pointer; min-height: 28px; }
+  .ceph-web-legend-head { display: flex; pointer-events: auto; cursor: pointer; min-height: 28px; }
+  .ceph-web-legend-title { display: none; }
   .ceph-web-legend-more {
     display: inline;
     font-size: 10px;
@@ -95,6 +100,8 @@
     color: var(--ceph-text-dim);
   }
   .ceph-web-legend-more::after { content: ' ▾'; }
+  /* The closed legend is a one-line pill on the same edge; the path clears it. */
+  .ceph-web-path { bottom: calc(var(--ceph-timeline-top, 160px) + 60px); }
   .ceph-web-legend.is-open .ceph-web-legend-more::after { content: ' ▴'; }
 }
 

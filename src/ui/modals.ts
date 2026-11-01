@@ -19,22 +19,64 @@ import {
 } from '../data/index.ts';
 import { canInstall, promptInstall } from '../core/pwa.ts';
 import { store } from '../core/store.ts';
-import { el, listen } from './dom.ts';
+import { announce, el, keyboardMode, listen } from './dom.ts';
+import { withoutHidden } from './loreCard.ts';
 
+const FOCUSABLE = 'button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+function focusables(scope: HTMLElement): HTMLElement[] {
+  return [...scope.querySelectorAll<HTMLElement>(FOCUSABLE)]
+    .filter((n) => n.getClientRects().length > 0 && getComputedStyle(n).visibility !== 'hidden');
+}
+
+/** What identifies a control across a re-render that rebuilds it. */
+function keyOf(n: Element | null): string | null {
+  if (!(n instanceof HTMLElement)) return null;
+  return n.dataset.key ?? `${n.tagName}|${(n.textContent ?? '').trim().slice(0, 60)}|${n.getAttribute('aria-label') ?? ''}`;
+}
+
+/**
+ * Panels are dialogs. They used to be a div over a scrim: focus stayed on
+ * whatever opened them (so Journal, Arcanum, Settings, Help and Realms were
+ * opened with the keyboard and then had to be found), Tab walked straight out
+ * into the top bar behind the glass, and every re-render — picking a book,
+ * opening a magic — dropped focus to <body>.
+ */
 export function mountModals(root: HTMLElement): { destroy(): void } {
   const host = el('div');
   root.append(host);
   const offs: (() => void)[] = [];
+  let shown: string = 'none';
+  /** The control that opened the panel; focus goes back to it on close. */
+  let opener: HTMLElement | null = null;
+  /** A control a re-render should land on that the previous render did not have. */
+  let landOn: string | null = null;
 
   const render = () => {
-    host.replaceChildren();
     const panel = store.state.panel;
-    if (panel === 'none') return;
+    const was = shown;
+    const active = document.activeElement;
+    const inside = active instanceof HTMLElement && host.contains(active);
+    const key = inside ? keyOf(active) : null;
+    if (was === 'none' && panel !== 'none') {
+      opener = active instanceof HTMLElement && active !== document.body && !inside ? active : null;
+    }
+    host.replaceChildren();
+    shown = panel;
+    if (panel === 'none') {
+      // Back to where the reader was, if they came by keyboard. A mouse user
+      // gets nothing moved under them.
+      if (was !== 'none' && opener?.isConnected && opener.getClientRects().length && keyboardMode()) {
+        opener.focus({ preventScroll: true });
+      }
+      opener = null;
+      return;
+    }
 
-    const card = el('div', { className: 'ceph-panel ceph-modal-card' });
+    const card = el('div', { className: 'ceph-panel ceph-modal-card', attrs: { tabindex: '-1' } });
     const close = el('button', { className: 'ceph-btn', text: 'Close', attrs: { type: 'button' } });
     listen(close, 'click', () => store.set('panel', 'none'));
-    card.append(el('div', { style: { display: 'flex', justifyContent: 'flex-end', marginBottom: '4px' } }, [close]));
+    card.append(el('div', { className: 'ceph-modal-head' }, [close]));
 
     if (panel === 'arcanum') renderArcanum(card);
     else if (panel === 'codex') renderCodex(card);
@@ -43,13 +85,45 @@ export function mountModals(root: HTMLElement): { destroy(): void } {
     else if (panel === 'help') renderHelp(card);
     else if (panel === 'realms') renderRealms(card);
 
-    const modal = el('div', { className: 'ceph-modal' }, [card]);
+    const heading = card.querySelector('h2');
+    if (heading) heading.id = 'ceph-modal-title';
+    const modal = el('div', {
+      className: 'ceph-modal',
+      attrs: { role: 'dialog', 'aria-modal': 'true', ...(heading ? { 'aria-labelledby': 'ceph-modal-title' } : {}) },
+    }, [card]);
     listen(modal, 'click', (e) => {
       if (e.target === modal) store.set('panel', 'none');
     });
+    // Tab goes round the panel, not out of it into the chrome behind the glass.
+    listen(modal, 'keydown', (ev) => {
+      const e = ev as KeyboardEvent;
+      if (e.key !== 'Tab') return;
+      const list = focusables(card);
+      if (!list.length) { e.preventDefault(); card.focus(); return; }
+      const first = list[0]!;
+      const last = list[list.length - 1]!;
+      const at = document.activeElement;
+      if (e.shiftKey && (at === first || at === card || !card.contains(at))) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && (at === last || !card.contains(at))) {
+        e.preventDefault();
+        first.focus();
+      }
+    });
     host.append(modal);
+
+    const want = landOn ?? key;
+    landOn = null;
+    const again = want ? focusables(card).find((n) => keyOf(n) === want) : undefined;
+    if (again) again.focus({ preventScroll: false });
+    else card.focus({ preventScroll: true });
   };
 
+  offs.push(store.on('magicId', (next, prev) => {
+    // Back from a magic's page lands on that magic's tile in the grid.
+    if (!next && prev) landOn = `magic:${prev}`;
+  }));
   offs.push(store.on('panel', render));
   offs.push(store.on('magicId', () => { if (store.state.panel === 'arcanum') render(); }));
   offs.push(store.on('readingNow', () => { if (store.state.panel === 'journal') render(); }));
@@ -76,7 +150,7 @@ function renderArcanum(card: HTMLElement): void {
     const grid = el('div', { className: 'ceph-grid' });
     for (const m of COSMERE.magics) {
       if (!isVisible(m, store.state.readProgress)) continue;
-      const b = el('button', { className: 'ceph-card' }, [
+      const b = el('button', { className: 'ceph-card', attrs: { type: 'button', 'data-key': `magic:${m.id}` } }, [
         el('div', { className: 'ceph-kicker', text: m.world, style: { color: m.color } }),
         el('div', { text: m.name, style: { fontWeight: '600', marginTop: '6px' } }),
         el('div', { text: m.type, style: { color: 'var(--ceph-text-dim)', marginTop: '6px', fontSize: '11px' } }),
@@ -87,16 +161,19 @@ function renderArcanum(card: HTMLElement): void {
     card.append(grid);
     return;
   }
-  const back = el('button', { className: 'ceph-btn', text: '← All systems', style: { marginRight: '8px' } });
+  // Back sits on the panel's own top line, across from Close, rather than on
+  // a row of its own under it.
+  const back = el('button', { className: 'ceph-btn ceph-modal-back', text: '← All systems', attrs: { type: 'button' } });
   listen(back, 'click', () => store.set('magicId', null));
-  card.append(back);
-  card.append(el('div', { className: 'ceph-kicker', text: mag.world, style: { color: mag.color, marginTop: '12px' } }));
+  card.querySelector('.ceph-modal-head')?.prepend(back);
+  card.append(el('div', { className: 'ceph-kicker', text: mag.world, style: { color: mag.color, marginTop: '2px' } }));
   card.append(el('h2', { text: mag.name }));
   card.append(el('span', { className: `ceph-canon ceph-canon--${mag.canon}`, text: mag.canon }));
   card.append(el('p', { className: 'ceph-fact', text: mag.desc }));
   card.append(el('p', { className: 'ceph-fact', text: mag.mechanics }));
   if (mag.bio) card.append(el('p', { className: 'ceph-fact ceph-fact--aside', text: mag.bio }));
-  if (mag.users) card.append(el('p', { className: 'ceph-fact', text: `Users: ${mag.users}` }));
+  const users = withoutHidden(mag.users);
+  if (users) card.append(el('p', { className: 'ceph-fact', text: `Users: ${users}` }));
   if (mag.table) {
     const table = el('table', { className: 'ceph-table' });
     const thead = el('thead');
@@ -198,6 +275,7 @@ function renderCodex(card: HTMLElement): void {
       placeholder: 'Who is Thaidakar? What is a metalmind? Where is Urithiru?',
       value: store.state.searchQuery,
       type: 'search',
+      'aria-label': 'Search the journal',
     },
   }) as HTMLInputElement;
   const filters = el('div', { className: 'ceph-codex-filters' });
@@ -208,6 +286,7 @@ function renderCodex(card: HTMLElement): void {
     [...filters.children].forEach((c, i) => {
       const spec = CODEX_FILTERS[i]!;
       c.classList.toggle('is-on', spec.id === filter);
+      c.setAttribute('aria-pressed', String(spec.id === filter));
     });
   };
 
@@ -226,30 +305,41 @@ function renderCodex(card: HTMLElement): void {
       if (filter === 'all') {
         results.append(el('div', { className: 'ceph-kicker', text: 'Browse' }));
         const counts = el('div', { className: 'ceph-codex-counts' });
-        const rows: [string, number][] = [
-          ['people', COSMERE.characters.length],
-          ['places', COSMERE.locations.length],
-          ['terms', COSMERE.glossary.length],
-          ['orders', COSMERE.organizations.length],
-          ['magics', COSMERE.magics.length],
+        // Each count opens its list. They were set like the title screen's
+        // index and looked like links, and clicking "438 people" did nothing.
+        const rows: [string, number, SearchKind][] = [
+          ['people', COSMERE.characters.length, 'person'],
+          ['places', COSMERE.locations.length, 'place'],
+          ['terms', COSMERE.glossary.length, 'term'],
+          ['orders', COSMERE.organizations.length, 'org'],
+          ['magics', COSMERE.magics.length, 'magic'],
         ];
-        for (const [label, n] of rows) {
-          counts.append(el('div', { className: 'ceph-title-count' }, [
+        for (const [label, n, kind] of rows) {
+          const b = el('button', {
+            className: 'ceph-title-count ceph-codex-count',
+            attrs: { type: 'button', 'aria-label': `Browse ${n} ${label}` },
+          }, [
             el('b', { text: String(n) }),
             el('span', { text: label }),
-          ]));
+          ]);
+          listen(b, 'click', () => { filter = kind; paintFilters(); run(); });
+          counts.append(b);
         }
         results.append(counts);
         results.append(el('div', { className: 'ceph-kicker', text: 'Systems', style: { marginTop: '12px' } }));
+        // A tile per system, not a full-width bar: nineteen bars were most of
+        // a screen to scroll for a list of names.
+        const grid = el('div', { className: 'ceph-grid ceph-codex-grid' });
         for (const sys of COSMERE.systems) {
           if (!systemOnTheMap(sys.id, store.state.readProgress, store.state.era)) continue;
-          const b = el('button', { className: 'ceph-card' }, [
+          const b = el('button', { className: 'ceph-card', attrs: { type: 'button' } }, [
             el('div', { className: 'ceph-kicker', text: 'system' }),
             el('div', { text: sys.name, style: { fontWeight: '600' } }),
           ]);
           listen(b, 'click', () => flyCodexHit(sys.id));
-          results.append(b);
+          grid.append(b);
         }
+        results.append(grid);
         return;
       }
       results.append(el('div', { className: 'ceph-kicker', text: CODEX_FILTERS.find((f) => f.id === filter)?.label ?? '' }));
@@ -328,7 +418,30 @@ function renderCodex(card: HTMLElement): void {
       listen(row, 'click', () => flyCodexHit(h.id));
       results.append(row);
     }
-    if (!hits.length) {
+    // A filter that hides every hit is not "nothing": say which lists have
+    // them, one click away — the directory has done this since the design pass.
+    const elsewhere = !hits.length && filter !== 'all'
+      ? CODEX_FILTERS
+        .filter((f) => f.id !== 'all' && f.id !== filter)
+        .map((f) => ({ ...f, n: searchJournal(q, store.state.readProgress, [f.id as SearchKind], 60).length }))
+        .filter((f) => f.n > 0)
+      : [];
+    const here = CODEX_FILTERS.find((f) => f.id === filter)?.label.toLowerCase() ?? 'entries';
+    announce(hits.length ? `${hits.length === 60 ? 'Sixty or more' : hits.length} matches.`
+      : elsewhere.length ? `No ${here} match. Found in ${elsewhere.map((f) => f.label).join(', ')}.` : 'No matches.');
+    if (elsewhere.length) {
+      results.append(el('div', {
+        text: `No ${here} match “${q}”. Found in:`,
+        style: { color: 'var(--ceph-text-dim)' },
+      }));
+      const jump = el('div', { className: 'ceph-codex-filters' });
+      for (const f of elsewhere) {
+        const b = el('button', { className: 'ceph-chip', text: `${f.label} · ${f.n === 60 ? '60+' : f.n}`, attrs: { type: 'button' } });
+        listen(b, 'click', () => { filter = f.id; paintFilters(); run(); });
+        jump.append(b);
+      }
+      results.append(jump);
+    } else if (!hits.length) {
       results.append(el('div', {
         text: 'Nothing in the journal matches — or it is still spoiler-gated.',
         style: { color: 'var(--ceph-text-dim)' },
@@ -348,12 +461,51 @@ function renderCodex(card: HTMLElement): void {
   run();
 }
 
+/**
+ * The controls as a table rather than one long paragraph of bold letters:
+ * a reader looking for "how do I get to Shadesmar" scans the left column.
+ */
+const KEYS: [string[], string][] = [
+  [['Drag'], 'Orbit the camera. Right-drag or Shift-drag pans.'],
+  [['Scroll', 'Pinch'], 'Zoom.'],
+  [['W', 'A', 'S', 'D', 'Q', 'E'], 'Fly. These never open a panel.'],
+  [['[', ']'], 'Previous and next at this scale: system, world or place.'],
+  [['Space'], 'Play or pause time. On a focused button it presses the button.'],
+  [['1', '–', '6'], 'Jump to an era. Click a gold tick for a named beat.'],
+  [['C'], 'The Cognitive Realm, Shadesmar.'],
+  [['V'], 'The Spiritual Realm.'],
+  [['L'], 'The Lore Web.'],
+  [['M'], 'The galaxy chart.'],
+  [['F'], 'Frame the whole Cosmere.'],
+  [['K', '/'], 'Search the journal.'],
+  [['H', '?'], 'This page.'],
+  [['Esc'], 'Close a panel, leave the Lore Web, or step back out one scale.'],
+  [['Tab'], 'Walk the panels. On an atlas plate the arrow keys step its places and Enter goes there.'],
+  [['Tap', 'Hold'], 'On a phone: tap a world or a plate pin to dive, hold it to open its card where you are.'],
+];
+
+function keyTable(): HTMLElement {
+  const table = el('table', { className: 'ceph-table ceph-keys' });
+  const body = el('tbody');
+  for (const [keys, does] of KEYS) {
+    const cell = el('th', { attrs: { scope: 'row' } });
+    keys.forEach((k, i) => {
+      if (k === '–') { cell.append(' – '); return; }
+      if (i > 0 && keys[i - 1] !== '–') cell.append(' ');
+      cell.append(el('kbd', { text: k }));
+    });
+    body.append(el('tr', {}, [cell, el('td', { text: does })]));
+  }
+  table.append(body);
+  return table;
+}
+
 function renderHelp(card: HTMLElement): void {
   card.append(
     el('div', { className: 'ceph-kicker', text: 'How to read the sky' }),
     el('h2', { text: 'The journal is a map you fly' }),
     el('p', { className: 'ceph-fact', text: 'Hover a world for its name. Click to open the card — the sky stays put. Click the orbit rings, not just the star, to dive in. Click a world for its globe, again for the surface, again for a city plate. Esc walks back out. ☰ hides the directory. Search (K) is the journal: aliases, orders, metals, “who is Thaidakar”.' }),
-    el('p', { className: 'ceph-fact', html: '<b>Drag</b> orbit · <b>scroll</b> or pinch zoom · <b>WASD / QE</b> fly (those keys never open panels) · <b>[ ]</b> previous and next at this scale · <b>Space</b> play time · <b>+/−</b> on the timeline for speed · click a tick for a named beat · <b>1–6</b> eras · <b>C</b> Cognitive · <b>V</b> Spiritual · <b>L</b> Lore Web · <b>M</b> galaxy chart · <b>F</b> frame Cosmere · <b>K</b> or <b>/</b> Search · <b>H</b> this help. Tab walks the panels. On a phone, tap a plate pin to dive and hold it to open the card. Arcanum, Journal, Settings and Share are buttons. Soundtrack lives in Settings.' }),
+    keyTable(),
     el('p', { className: 'ceph-fact', text: 'Roshar and Scadrial atlas plates are Isaac Stewart\'s cartography, credited on the map. Globes are procedural, baked from one recipe per world, so a coast on the plate is the same coast on the sphere. Journal sets where you are in the books; the sky hides what you have not reached. Default is fully read.' }),
     el('p', { className: 'ceph-fact', style: { color: 'var(--ceph-text-dim)' }, text: 'Unofficial fan project. Not affiliated with Dragonsteel or Brandon Sanderson. Cartography by Isaac Stewart.' }),
   );
@@ -372,7 +524,10 @@ function renderRealms(card: HTMLElement): void {
   ];
   for (const r of rows) {
     const on = store.state.realm === r.id;
-    const b = el('button', { className: `ceph-card${on ? ' is-on' : ''}` }, [
+    const b = el('button', {
+      className: `ceph-card${on ? ' is-on' : ''}`,
+      attrs: { type: 'button', 'aria-current': on ? 'true' : undefined },
+    }, [
       el('div', { className: 'ceph-kicker', text: on ? 'you are here' : 'Realm' }),
       el('div', { text: r.title, style: { fontWeight: '600', marginTop: '6px' } }),
       el('div', { text: r.fact, style: { color: 'var(--ceph-text-dim)', marginTop: '6px', fontSize: '12px' } }),
@@ -405,7 +560,11 @@ function renderSpoilers(card: HTMLElement): void {
   );
 
   const now = store.state.readingNow;
-  const pick = el('select', { className: 'ceph-search', style: { marginTop: '14px' } }) as HTMLSelectElement;
+  const pick = el('select', {
+    className: 'ceph-search',
+    attrs: { 'aria-label': 'The book you are reading' },
+    style: { marginTop: '14px' },
+  }) as HTMLSelectElement;
   pick.append(el('option', { text: 'Not tracking a book — show everything', attrs: { value: '' } }));
   for (const book of JOURNAL_BOOKS) {
     const i = bookArcIndex(book.series, book.arc);
@@ -436,10 +595,36 @@ function renderSpoilers(card: HTMLElement): void {
     }
     const fresh = addedThisArc(now);
     if (fresh.length) {
-      const wrap = el('div', { style: { display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '8px' } });
+      // Each is a way into its entry. They were spans dressed as the chips
+      // that open things everywhere else — pointer cursor, cyan hover — and
+      // clicking "Urithiru" did nothing. Resolved by kind and name among the
+      // entries this very arc added, so a later namesake can never answer.
+      const s = seriesById[now.series];
+      const arcId = s?.arcs[now.arc]?.id;
+      const here = (item: { book?: string; arc?: string }) => item.book === now.series && item.arc === arcId;
+      const idFor = (kind: string, name: string): string | undefined => {
+        if (kind === 'world') return COSMERE.bodies.find((b) => b.name === name && here(b))?.id;
+        if (kind === 'person') return COSMERE.characters.find((c) => c.name === name && here(c))?.id;
+        if (kind === 'place') return COSMERE.locations.find((l) => l.name === name && here(l))?.id;
+        if (kind === 'term') return COSMERE.glossary.find((g) => g.term === name && here(g))?.id;
+        if (kind === 'magic') return COSMERE.magics.find((m) => m.name === name && here(m))?.id;
+        if (kind === 'order') return COSMERE.organizations.find((o) => o.name === name && here(o))?.id;
+        return undefined;
+      };
+      const wrap = el('div', { className: 'ceph-see-chips', style: { marginTop: '8px' } });
       for (const row of fresh.slice(0, 24)) {
-        wrap.append(el('span', { className: 'ceph-atlas-chip', text: `✦ ${row.name}`,
-          style: { border: '1px solid var(--ceph-border)', borderRadius: '999px', padding: '2px 8px', fontSize: '10.5px' } }));
+        const id = idFor(row.kind, row.name);
+        if (!id) {
+          wrap.append(el('span', { className: 'ceph-tag', text: `✦ ${row.name}` }));
+          continue;
+        }
+        const b = el('button', {
+          className: 'ceph-atlas-chip ceph-atlas-chip--new',
+          text: `✦ ${row.name}`,
+          attrs: { type: 'button', title: `Open ${row.name} (${row.kind})` },
+        });
+        listen(b, 'click', () => flyCodexHit(id));
+        wrap.append(b);
       }
       card.append(wrap);
     }
@@ -453,9 +638,13 @@ function renderSpoilers(card: HTMLElement): void {
     const read = prog >= i;
     const row = el('button', {
       className: `ceph-book${here ? ' is-on' : ''}${read ? ' is-read' : ''}`,
-      attrs: { type: 'button' },
+      attrs: {
+        type: 'button',
+        'aria-current': here ? 'true' : undefined,
+        'aria-label': `${book.title}${here ? ', reading now' : read ? ', read' : ', not yet read'}`,
+      },
     }, [
-      el('span', { className: 'ceph-book-mark', text: here ? '✦' : read ? '·' : '' }),
+      el('span', { className: 'ceph-book-mark', text: here ? '✦' : read ? '·' : '', attrs: { 'aria-hidden': 'true' } }),
       el('span', { className: 'ceph-book-title', text: book.title }),
     ]);
     listen(row, 'click', () => applyReading(book.series, i));
@@ -470,11 +659,17 @@ function renderSpoilers(card: HTMLElement): void {
   if (!now) clear.disabled = true;
   card.append(el('div', { className: 'ceph-kicker', text: 'Every book', style: { marginTop: '18px' } }));
   card.append(list, clear);
+  // The list scrolls, and it opened at Elantris whichever book you were on:
+  // pick Words of Radiance and the one row that says so was out of sight.
+  requestAnimationFrame(() => {
+    const on = list.querySelector<HTMLElement>('.ceph-book.is-on');
+    if (on) list.scrollTop = Math.max(0, on.offsetTop - (list.clientHeight - on.offsetHeight) / 2);
+  });
 }
 
 
 function renderSettings(card: HTMLElement): void {
-  card.append(el('h2', { text: 'Settings' }));
+  card.append(el('div', { className: 'ceph-kicker', text: 'How the sky is drawn' }), el('h2', { text: 'Settings' }));
   const v = store.state.visual;
   const toggle = (key: keyof typeof v, label: string) => {
     const b = el('button', {

@@ -497,20 +497,73 @@ export class App {
     window.addEventListener('resize', onResize);
     this.disposers.push(() => window.removeEventListener('resize', onResize));
 
+    // A tap is one finger that went down and came up in place. Two things
+    // looked like one and were not:
+    //
+    // - The still finger of a pinch. `pointerDown` held whichever finger
+    //   landed last, so a pinch made by anchoring that finger and moving the
+    //   other ended with it lifting exactly where it went down — a tap, which
+    //   dived the camera into whatever stood under it. Any gesture that ever
+    //   had a second finger down is a pinch to the end, and taps nothing.
+    // - A long press. It was a click. A press held on a world, a pin or a
+    //   person now opens its card and leaves the camera where it is, the way
+    //   a hold on the atlas plate already did.
+    const touches = new Set<number>();
+    let pinched = false;
+    let held = false;
+    let hold = 0;
+    const HOLD_MS = 520;
     const down = (e: PointerEvent) => {
+      // The first finger of a gesture starts it afresh, so a lift the canvas
+      // never heard about cannot leave a ghost finger that makes every later
+      // tap a pinch.
+      if (e.isPrimary) touches.clear();
+      touches.add(e.pointerId);
+      window.clearTimeout(hold);
+      if (touches.size > 1) { pinched = true; return; }
+      pinched = false;
+      held = false;
       this.pointerDown = { x: e.clientX, y: e.clientY, t: performance.now() };
+      if (e.pointerType !== 'touch') return;
+      const at = { x: e.clientX, y: e.clientY };
+      hold = window.setTimeout(() => {
+        if (pinched || store.state.shell !== 'play') return;
+        held = true;
+        this.pickAt(at.x, at.y, false);
+        const id = store.state.hovered;
+        if (id) store.set('selected', id);
+        store.set('hovered', null);
+      }, HOLD_MS);
+    };
+    const lift = (e: PointerEvent): boolean => {
+      touches.delete(e.pointerId);
+      window.clearTimeout(hold);
+      const gesture = pinched || held;
+      if (touches.size === 0) { pinched = false; held = false; }
+      return gesture;
     };
     const up = (e: PointerEvent) => {
+      if (lift(e)) return;
       const dx = e.clientX - this.pointerDown.x;
       const dy = e.clientY - this.pointerDown.y;
       if (Math.hypot(dx, dy) > CLICK_SLOP) return;
       if (store.state.shell !== 'play') return;
       this.pickAt(e.clientX, e.clientY, true);
     };
+    const cancel = (e: PointerEvent) => { lift(e); };
     const move = (e: PointerEvent) => {
       this.lastPointer.x = e.clientX;
       this.lastPointer.y = e.clientY;
       if (store.state.shell !== 'play') return;
+      // A finger has no hover. Picking under a dragging finger lit a tooltip
+      // for whoever the orbit swept past and parked it at the last mouse
+      // position, which on a phone is wherever the previous tap was.
+      if (e.pointerType === 'touch') {
+        if (Math.hypot(e.clientX - this.pointerDown.x, e.clientY - this.pointerDown.y) > CLICK_SLOP) {
+          window.clearTimeout(hold);
+        }
+        return;
+      }
       this.pickAt(e.clientX, e.clientY, false);
     };
     // A lost context leaves every DOM panel working over a black canvas,
@@ -555,10 +608,13 @@ export class App {
 
     this.canvas.addEventListener('pointerdown', down);
     this.canvas.addEventListener('pointerup', up);
+    this.canvas.addEventListener('pointercancel', cancel);
     this.canvas.addEventListener('pointermove', move);
     this.disposers.push(() => {
+      window.clearTimeout(hold);
       this.canvas.removeEventListener('pointerdown', down);
       this.canvas.removeEventListener('pointerup', up);
+      this.canvas.removeEventListener('pointercancel', cancel);
       this.canvas.removeEventListener('pointermove', move);
     });
   }

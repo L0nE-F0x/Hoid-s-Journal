@@ -8,12 +8,25 @@ const NAV_KEYS = new Set([
 ]);
 
 function isTyping(): boolean {
+  // A modal panel owns the keyboard. Arrow keys flew the camera behind the
+  // Codex and, being preventDefault-ed, could not scroll the panel either.
+  if (document.querySelector('[aria-modal="true"]')) return true;
   const node = document.activeElement;
   if (!node) return false;
   const tag = node.tagName;
   return tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' ||
     (node as HTMLElement).isContentEditable === true;
 }
+
+/**
+ * A reader who asked the OS for less motion gets a short glide instead of a
+ * two-second flight, and a title sky that holds still. The opening cinematic
+ * already shortens itself (App.playIntro); flights between scales did not.
+ */
+const lessMotion = typeof window !== 'undefined' && typeof window.matchMedia === 'function'
+  ? window.matchMedia('(prefers-reduced-motion: reduce)')
+  : null;
+const damp = (rate: number): number => (lessMotion?.matches ? Math.max(rate, 10) : rate);
 
 const EPS = 1e-5;
 const MIN_PHI = 0.02;
@@ -321,16 +334,16 @@ export class CameraRig {
   /** Change how far out we stand without touching where we are looking. */
   setDistance(distance: number, damping = 3.2): void {
     this.goalRadius = clamp(distance, this.minRadius, this.maxRadius);
-    this.damping = damping;
-    this.goalDamping = 6.5;
+    this.damping = damp(damping);
+    this.goalDamping = damp(6.5);
   }
 
   flyTo(point: THREE.Vector3, distance: number, damping = 2.2): void {
     this.path = [];
     this.goalTarget.copy(point);
     this.goalRadius = clamp(distance, this.minRadius, this.maxRadius);
-    this.damping = damping;
-    this.goalDamping = 6.5;
+    this.damping = damp(damping);
+    this.goalDamping = damp(6.5);
     this.poke();
   }
 
@@ -389,8 +402,8 @@ export class CameraRig {
     this.goalPhi = last.to.phi;
     this.goalRadius = last.to.radius;
     this.goalTarget.copy(last.to.target);
-    this.damping = 4.2;
-    this.goalDamping = 6.5;
+    this.damping = damp(4.2);
+    this.goalDamping = damp(6.5);
     const done = this.onPathDone;
     this.onPathDone = null;
     done?.();
@@ -440,7 +453,7 @@ export class CameraRig {
     }
 
     this.applyKeys(dt);
-    if (this.autoRotate && !this.dragging && this.idleSeconds > 2.5) {
+    if (this.autoRotate && !lessMotion?.matches && !this.dragging && this.idleSeconds > 2.5) {
       this.goalTheta += this.autoRotateSpeed * dt;
     }
 

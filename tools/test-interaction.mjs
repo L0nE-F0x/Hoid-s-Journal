@@ -690,6 +690,43 @@ async function run() {
     check('UTol and Komashi are a double planet',
       !!pair && pair.apart < 6 && pair.out > 12, JSON.stringify(pair));
 
+    // A mark measured on a Stewart city plate is a place you can click, at
+    // the spot the plate draws it. `on` UVs are 0–1 of the named file and the
+    // atlas stretches the file over its canvas, so the dot is that fraction of
+    // the canvas rect. Read from the data rather than copied here, so a
+    // re-measure moves the click with it. (The Urithiru check above uses a
+    // roster chip; this one is the mouse on the art.)
+    await page.evaluate(() => {
+      window.__ceph.store.set('selected', null);
+      window.__ceph.store.set('year', 1);
+      window.__ceph.store.set('era', 3);
+      window.__ceph.store.set('cameraCue', { kind: 'focus', id: 'elendel', scale: 'city' });
+    });
+    await settle(page);
+    await page.waitForFunction(() => {
+      const s = window.__ceph.store.state;
+      return s.scale === 'city' && s.focusedLocation === 'elendel'
+        && document.querySelector('.ceph-atlas-credit')?.textContent;
+    }, { timeout: 20000, polling: 200 }).catch(() => {});
+    await sleep(800);
+    const plateMark = await page.evaluate(async () => {
+      const { landmarkById } = await import('/src/data/cities.ts');
+      const c = document.querySelector('.ceph-atlas-canvas');
+      const hit = landmarkById['elendel-rebirth']?.on?.find((o) => o.file === 'elendel.jpg');
+      if (!(c instanceof HTMLElement) || !hit) return null;
+      const r = c.getBoundingClientRect();
+      return { x: r.left + r.width * hit.u, y: r.top + r.height * hit.v };
+    });
+    if (plateMark) {
+      await page.mouse.click(plateMark.x, plateMark.y);
+      await sleep(300);
+    }
+    s = await state(page);
+    check('a measured mark on a Stewart city plate is clicked where it is drawn',
+      !!plateMark && s.scale === 'city' && s.selected === 'elendel-rebirth',
+      `${s.scale}/${s.focusedLocation}/${s.selected}`);
+    await page.evaluate(() => window.__ceph.store.set('selected', null));
+
     // A phone still leaves the world a band to live in.
     await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 1 });
     await page.evaluate(() => window.dispatchEvent(new Event('resize')));

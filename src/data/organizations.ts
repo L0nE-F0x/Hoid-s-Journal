@@ -10,6 +10,9 @@ function org(
 }
 
 export const ORGANIZATIONS: Organization[] = [
+  // Words of Radiance card. Thaidakar being Kelsier (Rhythm of War ch. 115),
+  // the Scadrian Ghostbloods (The Lost Metal) and Felt (Wind and Truth) reach
+  // it through gated relations; members are not gated, so they are not here.
   org('ghostbloods', 'The Ghostbloods', '#a3a3a3', 'stormlight', 'secret',
     'A covert worldhopper society after Investiture and the knowledge to use it. Three overlapping diamonds. Its master is called Thaidakar.',
     {
@@ -23,7 +26,7 @@ export const ORGANIZATIONS: Organization[] = [
     'Worldhoppers sworn to watch and not interfere, and to stop others interfering. They are looking for Hoid.',
     {
       aliases: 'the Seventeenth Shard',
-      world: 'Yolen / Cosmere', wiki: 'Seventeenth_Shard',
+      world: 'Silverlight / Cosmere', wiki: 'Seventeenth_Shard',
       members: ['frost', 'galladon', 'demoux', 'baon'],
       see: ['frost', 'hoid'],
       bio: 'Named for the Shard they are not. Galladon, Demoux and Baon are the three who ask after Hoid in the Purelake in The Way of Kings; Frost is of their number, and the Letter in the epigraphs is Hoid writing to him. Their charter is non-intervention; their practice is imperfect.',
@@ -32,7 +35,7 @@ export const ORGANIZATIONS: Organization[] = [
     'Elantrian worldhoppers with a fortress in the Cognitive Realm, who tried to take up Preservation.',
     {
       aliases: 'the Ire',
-      world: 'Sel', wiki: 'Ire', members: ['alonoe', 'riina'],
+      world: 'Sel', wiki: 'Ire', members: ['alonoe'],
       see: ['alonoe', 'elantris-city', 'leras'],
       bio: 'Elantrians who have kept themselves alive for centuries in the Cognitive Realm, drawing on the Dor at a distance, with a fortress at the edge of Scadrial\'s subastral. In Secret History they wait for Leras to die with an orb that would give them the Connection to take Preservation. Kelsier gets to it first. They are not the Seventeenth Shard, and they are not gentle.',
     }),
@@ -264,7 +267,7 @@ export const ORGANIZATIONS: Organization[] = [
   org('malwish', 'The Malwish', '#94a3b8', 'mistborn2', 'nation',
     'Southern Scadrians who survived the Ice Death on the Sovereign\'s medallions, and fly on ettmetal.',
     {
-      members: ['allik', 'jordis', 'admiral-daal', 'dajer', 'aditil', 'leonore'],
+      members: ['allik', 'jordis', 'admiral-daal'],
       aliases: 'Southern Scadrians, south Scadrial, Malwish Consortium',
       arc: 'bom', world: 'Scadrial', wiki: 'Malwish',
       see: ['southern-continent', 'harmonium', 'malwish-medallion', 'allik'],
@@ -314,20 +317,24 @@ export const ORGANIZATIONS: Organization[] = [
       members: ['raoden', 'galladon', 'karata', 'taan', 'adien', 'mareshe'],
       see: ['elantris-city', 'aondor', 'shaod'],
     }),
+  // Coppermind: Night Brigade (tsm 1, 10, 26, 27, 28, 45, epilogue; WoB 12720, 15573).
+  // Sigzil is their quarry, not a member: he surrendered once, then ran (tsm 28).
   org('night-brigade', 'The Night Brigade', '#111827', 'sunlit', 'military',
-    'A force from a Threnodite world, hunting a Dawnshard across the space age. Sigzil ran from them.',
+    'Threnodite mercenaries whose dead keep serving as shades. They have chased Nomad across the cosmere for decades.',
     {
       aliases: 'the Night Brigade',
-      arc: 'sunlit', world: 'Threnody / Canticle', wiki: 'Night_Brigade',
-      members: ['sigzil'],
-      see: ['sigzil', 'dawnshard', 'canticle-world'],
-      bio: 'They want the Dawnshard Sigzil once held. They will take a sunheart, a city, a life. The Charred are what their commander makes of the people who get in the way. Nomad skipped because standing still was a death sentence.',
+      arc: 'sunlit', world: 'Threnody', wiki: 'Night_Brigade',
+      members: ['night-brigade-admiral', 'truth-is-waiting'],
+      see: ['sigzil', 'dawnshard', 'shade', 'threnody'],
+      bio: 'Uniformed, efficient and precise about their destruction; they have wrecked planets without pillaging for the fun of it, and they call Threnodite offshoots cousins. They can find Nomad within days of a Skip. The Dawnshard is long gone from him, but its Connection is not: make a Hemalurgic spike of him and it leads to whoever holds it now. The bounty on his head is their cover.',
     }),
+  // Coppermind: Chorus (tsm 15, 22; WoB 16344).
   org('chorus', 'The Chorus', '#fb923c', 'sunlit', 'species',
-    'The dead of Canticle, a screaming mass of Invested remnants the Cinder King uses as a tool and a threat.',
+    'The shades of the first Threnodites to die on Canticle, kept in a glass drum on every city. They remember, and they make things.',
     {
       arc: 'sunlit', world: 'Canticle', wiki: 'Chorus',
-      see: ['beacon', 'union', 'sunheart'],
+      see: ['chorus-hall', 'beacon', 'shade', 'zellion-threnody'],
+      bio: 'A new city is founded with smoke split off an old one\'s Reliquary. Unlike Threnody\'s shades they claim to remember, they speak as the first settlers, and given leather or metal and a pattern they will hand back a coat or an engine. They say the dead who are not given to the sun join them. Brandon says everyone who dies on Canticle becomes a sunheart instead (WoB 16344).',
     }),
   org('sleepless-order', 'The Sleepless', '#4ade80', 'stormlight', 'species',
     'Dysian Aimians. Hordelings sharing a mind. Guardians of at least one Dawnshard, and of Aimia\'s corpses.',
@@ -337,10 +344,10 @@ export const ORGANIZATIONS: Organization[] = [
       see: ['akinah', 'rysn', 'dawnshard'],
     }),
   org('silverlight-university', 'Silverlight University', '#e2e8f0', 'arcanum', 'guild',
-    'The scholars of a city that is not on a planet. Khriss writes from here. Nazh steals maps for the footnotes.',
+    'The universities of a city that is not on a planet. Khriss helped found one (Word of Brandon 8342); Nazh steals maps for her footnotes.',
     {
       world: 'Cognitive Realm', wiki: 'Silverlight',
-      members: ['khriss', 'nazh'],
+      members: ['khriss'],
       see: ['silverlight', 'khriss', 'nazh'],
     }),
   org('vanrial', 'The Vanrial', '#c4b5fd', 'stormlight', 'guild',

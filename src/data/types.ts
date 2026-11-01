@@ -197,6 +197,12 @@ export interface Shard extends Cited {
   name: string;
   color: string;
   book: string;
+  /**
+   * The card waits for this arc of `book`, as everything else does. The era
+   * rows name Vessels and cannot be gated one by one, so a Shard is gated as
+   * a whole, at the book where its full card becomes true.
+   */
+  arc?: string;
   world: string;
   desc: string;
   bio?: string;

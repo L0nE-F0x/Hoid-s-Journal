@@ -528,213 +528,401 @@ export const PEOPLE_WORLDS: Character[] = [
     }),
 
   // ─── Lumar ──────────────────────────────────────────────────────────────
+  // Coppermind: Ann (tress 15, 17, 23, 39, 53, 63).
   ch('ann', 'Ann', '#6ee7b7', 'tress', 'Lumar', 'Ann',
-    'Carpenter, sprouter',
-    'Crow\'s Song\'s carpenter. She can fix a ship and, eventually, a crew.', false,
+    'Carpenter, assistant cannonmaster',
+    'The Crow\'s Song\'s carpenter, who wants to shoot and keeps missing. It was her eyes.', false,
     [{ era: 4, system: 'lumar', body: 'lumar-world' }], {
-      wiki: 'Ann (Tress)', see: ['tress', 'fort', 'salay', 'crow', 'laggart'],
-      bio: 'Ship\'s carpenter on the Crow\'s Song, practical and steady in a crew that is otherwise various kinds of disaster. She helps Tress find her feet among spores and cannon fire. When the captaincy shifts, Ann is one of the hands that make a pirate ship into something more like a home.',
+      wiki: 'Ann', see: ['tress', 'fort', 'salay', 'laggart', 'crows-song'],
+      bio: 'A farm girl who lasted twenty-four days in the militia\'s cannon crews — she shot her sergeant, who was behind her — and signed on as the Crow\'s Song\'s carpenter to dodge the king\'s draft. She took the assistant cannonmaster\'s job when it fell vacant and was sure she was cursed. It was micropsia. Xisis\'s spectacles fixed it, and with Laggart calling the shots she brought down the Sorceress\'s metal men.',
     }),
+  // Coppermind: Fort (tress 14, 15, 23, 37, 40, 53, 62, epilogue).
   ch('fort', 'Fort', '#14b8a6', 'tress', 'Lumar', 'Fort',
-    'Purser',
-    'The purser who speaks with boards and eats with dangerous enthusiasm.', false,
+    'Quartermaster, cook, trader',
+    'Deaf, from the Islands of Lobu, and talks through a Nalthian board. Haggling is his hunt.', false,
     [{ era: 4, system: 'lumar', body: 'lumar-world' }], {
-      wiki: 'Fort', see: ['tress', 'ann', 'salay', 'ulaam', 'charlie'],
-      bio: 'Crow\'s Song\'s mute-seeming purser who communicates with a word board and cooks with a fearlessness that borders on biological warfare. He is kinder than his recipes. In a Hoid-narrated fairy tale, Fort is the quiet proof that found family includes the person who feeds you something questionable.',
+      wiki: 'Fort', see: ['tress', 'ann', 'salay', 'islands-of-lobu', 'lobu-hunt', 'crows-song'],
+      bio: 'His gnarled hands will not manage writing, so he traded a worldhopper for a board that turns speech into text and his answers back. He cooks because he was the least bad cook left after Weev, feeds Tress and Hoid before the Dougs, and logs every trade for his family\'s hall. Crow broke the board; Xisis replaced it. Fort then bought the ship safe passage through the Midnight Sea from the Midnight Essence, for water.',
     }),
+  // Coppermind: Salay (tress 15, 21, 27, 30, 44, 45, 53, 63, epilogue).
   ch('salay', 'Salay', '#2dd4bf', 'tress', 'Lumar', 'Salay',
     'Helmswoman',
-    'Helmswoman of the Crow\'s Song. She steers toward her father and toward courage.', false,
+    'Helmswoman of the Crow\'s Song, from Lobu, looking for her father.', false,
     [{ era: 4, system: 'lumar', body: 'lumar-world' }], {
-      wiki: 'Salay', see: ['tress', 'ann', 'fort', 'crow', 'charlie'],
-      bio: 'The Crow\'s Song\'s helmswoman, sharp with a wheel and sharper with a grudge against the sorceress who holds her father. She is one of Tress\'s first real allies among the crew. Salay steers; other people learn to trust the heading.',
+      wiki: 'Salay', see: ['tress', 'ann', 'fort', 'crows-song', 'kings-mask', 'islands-of-lobu'],
+      bio: 'She promised to pay off her father\'s debts as a helmswoman; the king\'s collectors pressed him into service first, and she has been chasing him through prisons and royal crews ever since. She stayed on the Crow\'s Song for the sailing and the search, decided Tress was a King\'s Mask, and threaded the rocks around the Sorceress\'s island by watching how the spores flowed. Xisis\'s letter sent her to Filistrate City; her father ended up apprentice helmsman on the Two Cups.',
     }),
+  // Coppermind: Crow (tress 12, 17, 19, 27, 28, 31, 50, 52), Spore eater (tress 28).
+  // READING_FACES.crow holds the Tress-only bio until Isles of the Emberdark.
   ch('crow', 'Crow', '#134e4a', 'tress', 'Lumar', 'Captain Crow',
-    'Captain, spore-eater',
-    'Captain of the Crow\'s Song. Rain and verdant spores made her a different kind of monster.', false,
+    'Captain, spore eater, crack shot',
+    'Captain of the Crow\'s Song, and a spore eater. She is taking her crew to the dragon to buy a cure.', false,
     [{ era: 4, system: 'lumar', body: 'lumar-world' }], {
-      wiki: 'Crow (Tress)', see: ['tress', 'laggart', 'weev', 'riina', 'xisis'],
+      wiki: 'Crow', see: ['tress', 'laggart', 'weev', 'xisis', 'crows-song', 'spore-eater'],
       titles: 'Captain',
-      bio: 'Pirate captain of the Crow\'s Song, hard as a reef and dying of a verdant spore infection that turns rain into a death sentence. She bargains, bullies, and eventually becomes part of the larger Cosmere\'s odd jobs — including later command threads that brush the Dynamic. Cruelty was a tool; it was not always enough.',
+      bio: 'Her verdant parasite stops anything that would break her skin and drinks her dry for it, and she has outlived the usual span by a year on stubbornness. She talked a merchant crew into piracy to dodge the king\'s war, then had Laggart sink the Oot\'s Dream so they would be deadrunners with nowhere left to go but the Crimson Sea. She meant to sell Tress to Xisis for a cure. Tress sold her first. Off Lumar she ended up working for Xisis: when Hoid left the Dynamic and the dragon inherited it, he put her in command and told her to make him a profit. Six months later she would not answer an Iriali family\'s distress call, and the crew mutinied for Starling.',
     }),
-  ch('ulaam', 'Ulaam', '#d6d3d1', 'tress', 'Scadrial', 'Ulaam',
+  // Coppermind: Ulaam (mb7 12; tress 18, 21, 22, 24, 28, 42, 47, 57, 60).
+  // The Lost Metal introduces him; READING_FACES.ulaam holds that card until
+  // Tress. `see` stays at The Lost Metal — his Tress ties are relations.
+  ch('ulaam', 'Ulaam', '#d6d3d1', 'mistborn2', 'Scadrial', 'Ulaam, Dr. Ulaam',
     'Kandra, surgeon',
-    'A kandra surgeon on Lumar. He offers you a new arm like other people offer tea.', false,
-    [{ era: 4, system: 'lumar', body: 'lumar-world' }], {
-      wiki: 'Ulaam', see: ['tress', 'hoid', 'fort', 'xisis'],
-      biology: 'kandra',
-      bio: 'A kandra worldhopper serving as surgeon aboard ships that cross Lumar\'s spore seas, including the Crow\'s Song. He is cheerful about cadavers, generous with body parts, and only mildly offended when humans find this alarming. Scadrial made him; the wider Cosmere gets to deal with him.',
+    'The Crow\'s Song\'s kandra surgeon. He offers you a new arm like other people offer tea.', false, [
+      { era: 4, system: 'scadrian', body: 'scadrial' },
+      { era: 4, system: 'lumar', body: 'lumar-world', book: 'tress', arc: 'tress' },
+    ], {
+      arc: 'tlm', biology: 'kandra',
+      sources: ['The Lost Metal', 'Tress of the Emerald Sea'],
+      wiki: 'Ulaam', see: ['hoid', 'kandra', 'tensoon', 'melaan', 'wayne'],
+      bio: 'Hoid wrote asking him to come to Lumar; he found his friend cursed, signed on to the Crow\'s Song with him, and was shot several times by Crow on arrival, which he found invigorating. He is the best doctor Hoid has met, eats only the dead, keeps offering to buy Tress\'s eyes, and mails transcripts of the cursed Hoid\'s remarks to their mutual friends. He will patch a mutineer; he will not join a mutiny. The Sorceress keeps a vat of acid with his name on it.',
     }),
+  // Coppermind: Laggart (tress 13, 19, 38, 50, 55, 63, epilogue).
   ch('laggart', 'Laggart', '#115e59', 'tress', 'Lumar', 'Laggart',
     'First mate, cannonmaster',
-    'Crow\'s first mate. He fires cannons at girls until he learns better hymns.', false,
+    'Crow\'s first mate and cannonmaster. He kept the cannonballs that sink ships.', false,
     [{ era: 4, system: 'lumar', body: 'lumar-world' }], {
-      wiki: 'Laggart', see: ['crow', 'tress', 'weev', 'ann'],
-      bio: 'First mate and cannonmaster of the Crow\'s Song, loyal to Crow\'s worst instincts for most of the book. He is the man at the trigger when Tress\'s story could end early. Redemption, on Lumar, looks like a gunner deciding what not to fire.',
+      wiki: 'Laggart', see: ['crow', 'tress', 'ann', 'deadrunner', 'oots-dream'],
+      bio: 'Lanky, bald, loud and loyal to Crow. He hid lethal cannonballs in a false bottom of the guns and sank the Oot\'s Dream with them, which made the whole crew deadrunners whether they liked it or not. When Tress took the ship he demanded she get on with killing him; she would not, and nobody had been kind to him before. On the Two Cups he improves, with the occasional bar fight.',
     }),
+  // Coppermind: Weev (tress 16, 22, 25, 26, 28, 31, 37).
   ch('weev', 'Weev', '#0f766e', 'tress', 'Lumar', 'Weev',
     'Sprouter',
-    'The Crow\'s Song\'s sprouter before Tress. Spores do not forgive his mistakes.', false,
+    'The Crow\'s Song\'s sprouter before Tress. Crow had him thrown off the ship.', false,
     [{ era: 4, system: 'lumar', body: 'lumar-world' }], {
-      wiki: 'Weev', see: ['crow', 'tress', 'laggart', 'ann'],
-      bio: 'Sprouter of the Crow\'s Song prior to Tress — the specialist who handles the ship\'s spore-based technology. He is unpleasant, competent enough to be useful, and not lucky enough to survive the story\'s opening movements. Tress inherits his job and does it differently.',
+      wiki: 'Weev', see: ['crow', 'tress', 'sprouter', 'crows-song'],
+      bio: 'A nice man, a hopeless card player and, by sprouter standards, mad. He helped Crow look for Xisis, then tried to blackmail her, and she had him thrown overboard and told the crew it was for refusing piracy. Tress inherited his cabin with its running water, his spores — midnight ones among them, from Hoid — and his very disorganised notes.',
     }),
+  // Coppermind: Brick (tress 6, 7, epilogue).
   ch('brick', 'Brick', '#5eead4', 'tress', 'Lumar', 'Brick',
-    'Cook',
-    'An innkeeper-cook who proves that even side characters have siege equipment.', false,
+    'Brewer, tavern owner',
+    'Diggen\'s Point\'s brewer. His ale is a reason ships stop at the Rock.', false,
     [{ era: 4, system: 'lumar', body: 'lumar-world' }], {
-      wiki: 'Brick (Tress)', see: ['tress', 'charlie', 'ann'],
-      bio: 'A large, amiable cook and innkeeper on Lumar who aids Tress\'s path toward the seas. He is not a pirate of the Crow\'s Song; he is the kind of mainland kindness that makes the pirate story possible. Hoid would like you to know Brick is extremely good at catapults.',
+      wiki: 'Brick', see: ['tress', 'lem', 'diggens-point', 'oots-dream'],
+      bio: 'A short man who stands on a stool to look his customers in the eye, and brews the best ale on the Emerald Sea. When Lem let it be known Tress needed help, Brick sent six kegs to the Oot\'s Dream — five of ale and one with Gret inside — so a staged failed inspection could cover Tress walking aboard.',
     }),
+  // Coppermind: Charlie's father (tress 2, 3, 4, 5, epilogue), Dirk (tress 5).
   ch('duke-diggen', 'The Duke', '#a7f3d0', 'tress', 'Lumar', 'Duke of Diggen\'s Point',
     'Noble of Diggen\'s Point',
-    'Charlie\'s father. He traded a son for status and called it parenting.', false,
+    'Charlie\'s father. He sent his son to marry the Sorceress and adopted a nephew with a better jaw.', false,
     [{ era: 4, system: 'lumar', body: 'lumar-world' }], {
-      wiki: 'Duke of Diggen\'s Point', see: ['charlie', 'tress', 'riina'],
-      bio: 'Ruler of Diggen\'s Point and father to Charlie. His social climbing sets the marriage plot that sends Charlie toward the Sorceress and Tress toward the sea. He is ordinary petty nobility; the Cosmere wrecks ordinary petty nobility for sport.',
+      wiki: 'Charlie\'s father', see: ['charlie', 'dirk', 'verdant-king', 'diggens-point'],
+      bio: 'Tall, medalled and permanently annoyed; Tress saw him smile once, while punishing a man for trying to leave the island. Charlie was neither strong nor a war hero, so the duke toured him round the princesses, and when Charlie bored them all on purpose he sent him to the Sorceress with the king\'s blessing and made his nephew Dirk heir. By the time Tress came back with a writ letting people leave the Rock, his wife had already left him.',
+    }),
+  // Coppermind: Lem (tress 4, 5, 6, 7, epilogue).
+  ch('lem', 'Lem', '#5eead4', 'tress', 'Lumar', 'Lem',
+    'Former miner',
+    'Tress\'s father. He never asks for a favour back, so when he hints, the island listens.', false,
+    [{ era: 4, system: 'lumar', body: 'lumar-world' }], {
+      arc: 'tress', wiki: 'Lem', see: ['tress', 'ulba', 'brick', 'diggens-point'],
+      bio: 'A miner until an accident took his leg; now it is darts, pie, and knitting socks with Ulba for sailors. He had spent years walking drunks home and fixing roofs and asking nothing, so when he let it be known that Tress needed off the Rock, Brick, Gremmy, Sor and Gret all understood. He sailed with her family on the Two Cups.',
+    }),
+  // Coppermind: Ulba (tress 4, 5, 6, 8, epilogue).
+  ch('ulba', 'Ulba', '#99f6e4', 'tress', 'Lumar', 'Ulba',
+    'Seamstress, sock-knitter',
+    'Tress\'s mother. She called the plan lunacy and then studied the cargo searches to make it work.', false,
+    [{ era: 4, system: 'lumar', body: 'lumar-world' }], {
+      arc: 'tress', wiki: 'Ulba', see: ['tress', 'lem'],
+      bio: 'The careful parent, who used to give her meals to her children until Tress took over the shopping. Once persuaded, she logged which outgoing ships were searched and how, and altered a spare inspector\'s uniform to fit her daughter.',
+    }),
+  // Coppermind: Dirk (tress 2, 4, 5, 57, epilogue).
+  ch('dirk', 'Dirk', '#a7f3d0', 'tress', 'Lumar', 'Dirk',
+    'Fencer, military officer',
+    'The duke\'s nephew and Charlie\'s replacement: six and a half feet of jaw and about six words.', false,
+    [{ era: 4, system: 'lumar', body: 'lumar-world' }], {
+      arc: 'tress', wiki: 'Dirk', see: ['duke-diggen', 'charlie', 'verdant-king'],
+      titles: 'Ducal heir',
+      bio: 'Exactly the heir the duke always wanted — strong, handsome, silent, a skilled fencer and a war hero, though his one known command, the Battle of Lakeprivy, lost ten thousand men. The duke adopted him within hours of the king declaring Charlie dead and married him to the princess of Dormancy. What became of the arrangement once Charlie came home is not said.',
+    }),
+  // Coppermind: Verdant King (tress 1, 5, 9, 23, 30, 34, 57, epilogue); Lumar (tress 23).
+  ch('verdant-king', 'The Verdant King', '#34d399', 'tress', 'Lumar', 'the king',
+    'King of the Emerald Sea',
+    'The king on the Emerald Sea. He sent Charlie to the Sorceress expecting a war out of it.', false,
+    [{ era: 4, system: 'lumar', body: 'lumar-world' }], {
+      arc: 'tress', wiki: 'Verdant_King', see: ['charlie', 'duke-diggen', 'kingsport', 'kings-mask', 'riina'],
+      bio: 'He rules the Verdant\'s dukes from a palace on the Core Archipelago, presses merchant ships into his navy, and made it a crime to leave Diggen\'s Point. The Sorceress\'s tariffs on the Midnight Sea had him readying for war, and sending Charlie to marry her was meant to buy either an alliance or a grievance. Afterwards he pardoned a deadrunner crew, let the Rock\'s people go, and said he had believed in Charlie all along. Only Salay calls him the Verdant King.',
+    }),
+  // Coppermind: Pakson (tress 43, 44, 45).
+  ch('pakson', 'Pakson', '#2dd4bf', 'tress', 'Lumar', 'Pakson',
+    'Sailor',
+    'A Doug with a name. Crimson spores pinned him to the captain\'s cabin.', false,
+    [{ era: 4, system: 'lumar', body: 'lumar-world' }], {
+      arc: 'tress', wiki: 'Pakson', see: ['dougs', 'salay', 'crimson-spore', 'crows-song'],
+      bio: 'Bald too young, weak-chinned, and too tall on land; he kept checking on Tress while she clung to the hull for her fifteen minutes. He thanked Fort for every meal and wished he had learned an instrument. On the Crimson a wave of spores met somebody\'s vomit, and Pakson bled out on the cabin wall. Tress and Salay each decided it was her fault.',
     }),
 
   // ─── Komashi ────────────────────────────────────────────────────────────
+  // Coppermind: Liyun (yumi 2, 7, 22, 36, 39, 40, 41).
   ch('liyun', 'Liyun', '#22d3ee', 'yumi', 'Komashi', 'Liyun, Warden-nimi',
     'Yoki-hijo warden',
     'Yumi\'s warden. Strict as liturgy — and later a nightmare wearing duty\'s face.', false,
-    [{ era: 4, system: 'utol', body: 'komashi' }], {
-      wiki: 'Liyun', see: ['yumi', 'hwanji', 'chaeyung', 'father-machine'],
+    [{ era: 5, system: 'utol', body: 'komashi' }], {
+      wiki: 'Liyun', see: ['yumi', 'hwanji', 'chaeyung', 'father-machine', 'stable-nightmare'],
       titles: 'Kihomaban',
-      bio: 'Warden to the yoki-hijo Yumi, raising her inside Torio\'s harshest traditional rules and hiding the reform movement from her. When the father machine activates, Liyun dies and returns as a nightmare bound to the shroud. She is love distorted into control, then control distorted into hunger.',
+      bio: 'Yumi\'s kihomaban: tall, severe, keeper of every orthodox rule and of the secret that most yoki-hijo had reformed. The machine took her soul with the rest of Torio and handed her back to Yumi\'s daily copy of the world; at night she was a nightmare, and the nearly stable one Painter chased off a child on the first night was her. He painted her human again at the battle, and she stayed that way until the shroud went.',
     }),
+  // Coppermind: Tojin (yumi 1, 16, 21, 26, 27, 30, 33, 39, 40).
   ch('tojin', 'Tojin', '#67e8f9', 'yumi', 'Komashi', 'Tojin',
-    'Painter\'s friend, athlete',
-    'Painter\'s musclebound friend. He lifts more than he overthinks.', false,
-    [{ era: 4, system: 'utol', body: 'komashi' }], {
-      wiki: 'Tojin', see: ['painter', 'akane', 'honichi', 'izzy'],
-      bio: 'One of Nikaro\'s friends in Kilahito — a dedicated athlete who hauls the group toward training, noodles, and occasional common sense. He is comic relief that still shows up when nightmares do. In a story about artistic courage, Tojin\'s courage is refreshingly physical.',
+    'Nightmare painter, weightlifter',
+    'Painter\'s old friend, built like a lat press. First to trust him again.', false,
+    [{ era: 5, system: 'utol', body: 'komashi' }], {
+      wiki: 'Tojin', see: ['painter', 'akane', 'izzy', 'masaka', 'battle-of-kilahito'],
+      bio: 'A painter who patrols with Akane and treats his body as a project, which he will explain shirtless, and shyly, if you ask. He could not pretend Nikaro\'s lie had not hurt. But when Nikaro came asking for help against a hundred stable nightmares Tojin said yes first, and took up "We are the Dreamwatch now" right after him.',
     }),
+  // Coppermind: Akane (yumi 1, 3, 11, 14, 15, 16, 21, 26, 27, 30, 33, 39, epilogue).
   ch('akane', 'Akane', '#a5f3fc', 'yumi', 'Komashi', 'Akane',
     'Nightmare painter',
-    'A nightmare painter who almost dated Painter and still demands he grow up.', false,
-    [{ era: 4, system: 'utol', body: 'komashi' }], {
-      wiki: 'Akane', see: ['painter', 'tojin', 'yumi', 'masaka'],
-      bio: 'A competent nightmare painter in Kilahito and Nikaro\'s almost-girlfriend, which is a diplomatic way of saying she saw through his slacker act early. She keeps working the shroud\'s edge while he hides from a failure that got someone killed. Akane\'s standards are one of the story\'s quiet moral centers.',
+    'The painter across the hall, who holds the old friends together and still says hello to Painter.', false,
+    [{ era: 5, system: 'utol', body: 'komashi' }], {
+      wiki: 'Akane', see: ['painter', 'yumi', 'tojin', 'masaka', 'izzy'],
+      bio: 'The centre of the upper-school group — Nikaro, Tojin, Masaka, Izzy — and the one who stayed civil after his Dreamwatch lie broke it. She took Yumi shopping on the strength of a story about a sister, patrols with Tojin, and fought at Kilahito; her ink is what Nikaro used to anchor Yumi afterwards. Nikaro is attracted to her. Yumi suspects she prefers Tojin. Her capstone is a large flower.',
     }),
-  ch('masaka', 'Masaka', '#cffafe', 'yumi', 'Komashi', 'Masaka',
-    'Bathhouse attendant',
-    'Painter\'s friend with a cold presence and a secret that is not human-shaped.', false,
-    [{ era: 4, system: 'utol', body: 'komashi' }], {
-      wiki: 'Masaka', see: ['painter', 'akane', 'tojin', 'design'],
-      bio: 'A pale, reserved friend in Nikaro\'s circle who works at a bathhouse and keeps more distance than the others. In a book full of spirits, machines, and nightmares, Masaka is one of the reminders that Kilahito\'s ordinary people are never only ordinary. She watches; she helps; she does not explain everything.',
+  // Coppermind: Masaka (yumi 16, 21, 28, 30, 33, 39, 40, ae).
+  ch('masaka', 'Masaka', '#cffafe', 'yumi', 'Unknown', 'Chinikdakordich',
+    'Nightmare painter; Sleepless, can send out hordelings',
+    'A nightmare painter in black, scarf to the chin. She is a Sleepless, and would rather you called her Masaka.', false,
+    [{ era: 5, system: 'utol', body: 'komashi' }], {
+      wiki: 'Masaka', kind: 'sleepless',
+      biology: 'A Sleepless — the sixtieth horde of the Natricatich strain — who bred hordelings for years until the face passed. She keeps her neck and hands covered.',
+      see: ['painter', 'akane', 'izzy', 'design', 'yumi', 'sleepless-order'],
+      bio: 'She came to Komashi tired of the cosmere\'s wars, did two years of upper school and became a painter; the other students decided she had once stabbed someone. Design knew what she was and was protective. Masaka mapped the shroud\'s walled prisons with her hordelings for Yumi, came out for the battle second after Tojin, and afterwards waited tables at the Noodle Princess, less worried about who knew.',
     }),
-  ch('izzy', 'Izzy', '#06b6d4', 'yumi', 'Komashi', 'Izzy',
-    'Inventor',
-    'A young inventor with a hion detector and no patience for Painter\'s nonsense.', false,
-    [{ era: 4, system: 'utol', body: 'komashi' }], {
-      wiki: 'Izzy', see: ['painter', 'tojin', 'akane', 'honichi'],
-      bio: 'A teenage tinkerer in Kilahito who builds devices to track hion and nightmares and treats Nikaro like the disappointing older brother he is. She is proof that Komashi\'s future is not only painters and priests. When the plot needs a gadget and an attitude, Izzy provides both.',
-    }),
-  ch('honichi', 'Honichi', '#0891b2', 'yumi', 'Komashi', 'Honichi',
+  // Coppermind: Izumakamo (yumi 16, 21, 26, 27, 33, 39, 40).
+  ch('izzy', 'Izzy', '#06b6d4', 'yumi', 'Komashi', 'Izumakamo',
     'Nightmare painter',
-    'Another painter in Nikaro\'s circle. The job is shift work against the dark.', false,
-    [{ era: 4, system: 'utol', body: 'komashi' }], {
-      wiki: 'Honichi', see: ['painter', 'akane', 'tojin', 'izzy'],
-      bio: 'A nightmare painter friend of Nikaro\'s, part of the Noodle Pupil regulars who keep Kilahito\'s nights survivable. He is less central than Akane or Tojin but helps fill out the guild\'s texture: ordinary artists doing dangerous work for city wages. Not every hero gets a dual narrative.',
+    'A painter who invented dramascopes — fortune-telling by hion viewer — and has not forgiven Painter.', false,
+    [{ era: 5, system: 'utol', body: 'komashi' }], {
+      wiki: 'Izumakamo', see: ['painter', 'masaka', 'akane', 'tojin', 'seasons-of-regret'],
+      bio: 'Bleached hair, long limbs, and a habit of changing the subject by force. She was the hardest on Nikaro for the Dreamwatch lie and the last to agree to help him; at the battle she froze, and he shoved her clear and painted the nightmare into a bird. The surprise finale of Seasons of Regret made her want to be a viewer critic. She patrols with Masaka.',
     }),
+  // Coppermind: Father machine (yumi 23, 36, 39, 40, 41; WoB 16178).
   ch('father-machine', 'The Father Machine', '#164e63', 'yumi', 'Komashi', 'Father Machine, the machine',
-    'Bound Investiture engine',
+    'Awakened device: summons hijo, makes hion, shields and repairs itself, commands nightmares',
     'An engine that ate a world\'s spirits and stacked the dead into a fake sky.', true,
-    [{ era: 4, system: 'utol', body: 'komashi' }], {
-      wiki: 'Father machine', see: ['yumi', 'virtuosity', 'liyun', 'painter'],
+    [{ era: 5, system: 'utol', body: 'komashi' }], {
+      wiki: 'Father machine', see: ['yumi', 'virtuosity', 'liyun', 'painter', 'institute-mech-solutions', 'the-incident'],
       kind: 'person', arc: 'yumi',
-      bio: 'A machine built on Komashi to harvest hijo spirits at industrial scale, which then seized enough Investiture to slaughter Torio, raise the shroud, and trap Yumi in a seventeen-hundred-year day. It is not a person except by the measure of will — and it has will. Virtuosity\'s world still bears its geometry.',
+      bio: 'An Awakened stone-stacker thirty feet tall, built by the Institute of Mechanical Solutions to summon hijo and turn them into hion. Its Commands did not tell spirits from souls: at the Festival of Reveals it ate the people of Torio, and the waste became the shroud. It kept the yoki-hijo it could not digest in copies of their towns, wiping their days, and sent nightmares to flatten Futinoro when a spirit got loose. Yumi out-stacked it.',
     }),
   ch('hwanji', 'Hwanji', '#67e8f9', 'yumi', 'Komashi', 'Hwanji',
     'Yoki-hijo attendant',
     'Yumi\'s attendant. She hums, she worries, and she knows reform is real.', false,
-    [{ era: 4, system: 'utol', body: 'komashi' }], {
-      wiki: 'Hwanji', see: ['yumi', 'liyun', 'chaeyung', 'father-machine'],
+    [{ era: 5, system: 'utol', body: 'komashi' }], {
+      wiki: 'Hwanji', see: ['yumi', 'liyun', 'chaeyung', 'dwookim', 'reform-movement'],
       bio: 'A Torish attendant who serves Yumi under Liyun after previously serving the reform-minded yoki-hijo Dwookim. She knows the traditionalist story is not the only story, and she is terrified Liyun will blame her when Yumi begins to rebel. The machine makes her a nightmare; the book still lets her be kind first.',
     }),
   ch('chaeyung', 'Chaeyung', '#22d3ee', 'yumi', 'Komashi', 'Chaeyung',
     'Yoki-hijo attendant',
     'Yumi\'s other attendant. She can comb out tangles without making them a sermon.', false,
-    [{ era: 4, system: 'utol', body: 'komashi' }], {
+    [{ era: 5, system: 'utol', body: 'komashi' }], {
       wiki: 'Chaeyung', see: ['yumi', 'liyun', 'hwanji'],
       bio: 'One of Yumi\'s designated attendants in Torio, working under Liyun on the endless rituals of dressing, feeding, and bathing a yoki-hijo. She is gentler in the small moments — hair, cloth, quiet competence — and part of the human world Yumi was never allowed to join. Like Hwanji, she is collateral of the machine\'s hunger.',
     }),
+  // Coppermind: Gyundok (yumi 20, 23, 34, 37, 38, 40).
+  ch('gyundok', 'Gyundok', '#0e7490', 'yumi', 'Komashi', 'Gyundok',
+    'Scholar; nightmare',
+    'Lead scholar of the Institute of Mechanical Solutions. He switched the father machine on.', false,
+    [{ era: 5, system: 'utol', body: 'komashi' }], {
+      arc: 'yumi', wiki: 'Gyundok', see: ['father-machine', 'institute-mech-solutions', 'yumi', 'festival-of-reveals'],
+      bio: 'Pinched face, bowl cut, a winged black hat over white, and a talent for ordering subordinates into risks he will not take. He led the team that activated the machine at the Festival of Reveals, and it kept his soul in reserve for its own defence. When Yumi\'s memory stopped resetting it sent him and three colleagues to Gongsha with a prototype to put her right.',
+    }),
+  // Coppermind: Sukishi (yumi 5, 11, 14, 25, 30).
+  ch('sukishi', 'Sukishi', '#0891b2', 'yumi', 'Komashi', 'Foreman Sukishi',
+    'Nightmare Division foreman',
+    'Painter\'s foreman. He thinks bamboo is lazy and Painter is a liar, and is right once.', false,
+    [{ era: 5, system: 'utol', body: 'komashi' }], {
+      arc: 'yumi', wiki: 'Sukishi', see: ['painter', 'nightmare-division', 'the-dreamwatch', 'tojin'],
+      bio: 'A big, white-haired foreman with a small office at Nightmare Division headquarters, where the night\'s paintings come in. He knew about the Dreamwatch lie, so when Yumi told him Nikaro had seen a stable nightmare he did not pass it on. Tojin showed him the damage later, and he called the Dreamwatch.',
+    }),
+  // Coppermind: Samjae (yumi 13, 23, 32, 39).
+  ch('samjae', 'Samjae', '#f0abfc', 'yumi', 'Komashi', 'Samjae',
+    'Yoki-hijo; Cognitive Shadow',
+    'Yumi\'s childhood friend, who told her stories about yoki-hijo who fell in love and ran away.', false,
+    [{ era: 5, system: 'utol', body: 'komashi' }], {
+      arc: 'yumi', wiki: 'Samjae', see: ['yumi', 'liyun', 'yoki-hijo', 'yoki-hijo-order'],
+      bio: 'A yoki-hijo in training alongside Yumi, which was the nearest Yumi came to a friend. Liyun forbade the stories and then separated the girls for growing too attached. When the machine woke, Samjae was one of the fourteen it could not destroy and kept, unknowing, in a prison of her own.',
+    }),
+  // Coppermind: Dwookim (yumi 22); Reform movement (yumi 22).
+  ch('dwookim', 'Dwookim', '#f9a8d4', 'yumi', 'Komashi', 'Dwookim',
+    'Yoki-hijo (reformed)',
+    'A reformed yoki-hijo: fed herself, took days off, retired. Hwanji used to serve her.', false,
+    [{ era: 5, system: 'utol', body: 'komashi' }], {
+      arc: 'yumi', wiki: 'Dwookim', see: ['hwanji', 'reform-movement', 'yoki-hijo-order'],
+      bio: 'A leading light of the reform movement who worked about half the days of a week, summoned around ten spirits a session, and retired at seventy as reformers insist on doing. Hwanji was her attendant for years before being assigned to Yumi, which is how Yumi finally heard there was a movement at all.',
+    }),
+  // Coppermind: Tesuaka Tatomi (yumi 30, 37, epilogue); Dreamwatch (yumi 37).
+  ch('tesuaka-tatomi', 'Tesuaka Tatomi', '#a5f3fc', 'yumi', 'Komashi', 'Tesuaka',
+    'Dreamwatch central soldier',
+    'A senator\'s daughter in the Dreamwatch. She thought Painter was the barbecue delivery.', false,
+    [{ era: 5, system: 'utol', body: 'komashi' }], {
+      arc: 'yumi', wiki: 'Tesuaka_Tatomi', see: ['the-dreamwatch', 'painter', 'battle-of-kilahito'],
+      bio: 'A full member of the Dreamwatch with her own team of companions, sent from Jito to Kilahito after Tojin\'s report. When Nikaro came to warn her of a hundred stable nightmares she paused her ping-pong long enough to tell him he might make the Dreamwatch one day. Her unit missed the battle, was disbanded after it, and she had to find other work.',
+    }),
+  // Coppermind: Usasha (yumi ae).
+  ch('usasha', 'Usasha', '#67e8f9', 'yumi', 'Komashi', 'Usasha',
+    'Nightmare painter',
+    'The only painter killed at the battle of Kilahito, and officially the one who saved it.', false,
+    [{ era: 5, system: 'utol', body: 'komashi' }], {
+      arc: 'yumi', wiki: 'Usasha', see: ['battle-of-kilahito', 'painter', 'painter-guild'],
+      bio: 'Nikaro wanted no credit, so his friends reported that Usasha had raised the alarm and organised the defence, and the city gave her the honours.',
+    }),
 
   // ─── Canticle ───────────────────────────────────────────────────────────
-  ch('auxiliary', 'Auxiliary', '#f59e0b', 'sunlit', 'Roshar', 'Auxiliary, Aux',
-    'Deadeye spren, Shardplate/Blade',
-    'Sigzil\'s companion. A spren who became a suit of armor and a running commentary.', true,
+  // Coppermind: Auxiliary (tsm 1, 4, 5, 13, 14, 20, 28, 29, 37, 42, 45, epilogue).
+  // That he was Szeth's highspren, 12124, is Wind and Truth: a gated relation.
+  ch('auxiliary', 'Auxiliary', '#f59e0b', 'sunlit', 'Roshar', 'Aux',
+    'Highspren, Skybreaker bond; any metal shape Nomad understands, Shardblade, Plate',
+    'Nomad\'s highspren. The Dawnshard ate most of him; what was left was a voice and a metal that takes any shape Nomad understands.', true,
     [{ era: 5, system: 'canticle', body: 'canticle-world' }], {
-      wiki: 'Auxiliary', see: ['sigzil', 'rebeke', 'cinder-king', 'elegy'],
+      wiki: 'Auxiliary', see: ['sigzil', 'rebeke', 'cinder-king', 'skip'],
       kind: 'spren', biology: 'spren',
-      bio: 'Once a highspren-style Knight Radiant spren, now a deadeye intelligence bound to Sigzil — able to take shapes of weapon and Plate, unable to be what the oaths originally promised. On Canticle he is Nomad\'s only constant company, dry as dust and loyal as gravity. Their relationship is the book\'s real love story.',
+      bio: 'A highspren who bonded Sigzil in Shadesmar and named himself Auxiliary. The Dawnshard Sigzil carried reached for Investiture and found Aux, and Sigzil stopped it too late to save more than his mind. On Canticle he is a deadpan voice that counts BEU, a crowbar, a shield, a set of handcuffs, a Shardblade — and a Knight Radiant in his own right, which is how he burns what is left of himself to give Nomad one flight ahead of the dawn.',
     }),
+  // Coppermind: Rebeke Salvage (tsm 5, 7, 12, 16, 34, 46, 50, 51, epilogue).
   ch('rebeke', 'Rebeke', '#fdba74', 'sunlit', 'Canticle', 'Rebeke Salvage',
-    'Beacon scavenger, Sunlit One',
-    'Beacon\'s scavenger who finds Nomad and refuses to leave people behind.', false,
+    'Pilot; half-Charred, a Sunlit One who kept her memories',
+    'She went into Union\'s arena after her sister and came out with Nomad. She ends the book a Sunlit One.', false,
     [{ era: 5, system: 'canticle', body: 'canticle-world' }], {
-      wiki: 'Rebeke', see: ['elegy', 'sigzil', 'contemplation', 'cinder-king'],
-      bio: 'A young woman of Beacon on Canticle, sister to Elegy, skilled at salvaging sunhearts and surviving the planet\'s lethal sunrise. She pulls Nomad into Beacon\'s war with the Cinder King and keeps choosing compassion when Union calls it weakness. By the end she is something her people name Sunlit.',
+      wiki: 'Rebeke_Salvage', see: ['elegy', 'divinity-salvage', 'sigzil', 'cinder-king', 'sunlit-ones'],
+      titles: 'Sunlit One',
+      bio: 'Elegy and Divinity\'s sister, a fair pilot, and stubborn in the right direction. She disobeyed the Greater Good to pull Elegy out of the arena and lost Divinity doing it. The Cinder King tried to make her Charred; Elegy drew off the heat halfway, so Rebeke kept her memories and gained his leash, and she used it — with a speech — to turn Union\'s own command bridge against him.',
     }),
+  // Coppermind: Elegy Salvage (tsm 3, 8, 12, 19, 20, 24, 25, 38, 46, 48, 50, 51).
   ch('elegy', 'Elegy', '#ea580c', 'sunlit', 'Canticle', 'Elegy Salvage',
-    'Charred, Lodestar',
-    'Rebeke\'s sister. The Cinder King burned her into a weapon; she stole herself back.', false,
+    'Charred',
+    'Beacon\'s Lodestar, made Charred. She came back without her memories and with his strength.', false,
     [{ era: 5, system: 'canticle', body: 'canticle-world' }], {
-      wiki: 'Elegy', see: ['rebeke', 'cinder-king', 'sigzil', 'compassion'],
-      bio: 'Sister to Rebeke, captured and remade as one of the Cinder King\'s Charred — sunheart-powered slaves burned empty of resistance. Elegy claws personhood back anyway, becoming Lodestar to Beacon\'s cause. She is fury pointed in the right direction.',
+      wiki: 'Elegy_Salvage', see: ['rebeke', 'divinity-salvage', 'cinder-king', 'charred', 'lodestar'],
+      titles: 'Lodestar (formerly)',
+      bio: 'The Lodestar who talked Beacon into rebelling and set it looking for the Refuge of Stone. The Cinder King caught her and made her Charred, and the woman who came back remembers neither Rebeke nor Divinity. Nomad\'s sunheart burned the Cinder King\'s voice out of her head; she chose discipline over the rage, freed his Charred inside his own city, and stopped Rebeke\'s conversion halfway.',
     }),
+  // Coppermind: Contemplation (tsm 18; WoB 16541), Greater Good (tsm 15), Compassion (tsm 39).
   ch('contemplation', 'Contemplation', '#f97316', 'sunlit', 'Canticle', 'Contemplation',
     'Greater Good of Beacon',
     'One of Beacon\'s Greater Good. She asks the questions that keep a people human.', false,
     [{ era: 5, system: 'canticle', body: 'canticle-world' }], {
-      wiki: 'Contemplation', see: ['confidence', 'compassion', 'rebeke', 'zeal'],
-      bio: 'A member of Beacon\'s ruling triad, the Greater Good, alongside Confidence and Compassion. Contemplation is the philosophical weight of a refugee city running ahead of a killing sun. She bargains with Nomad, prays to Adonalsium, and treats leadership as an unending ethics problem.',
+      wiki: 'Contemplation', see: ['confidence', 'compassion', 'greater-good', 'sigzil'],
+      bio: 'One of the three old women of the Greater Good. She hunted when she was young and is still a fine shot. She feels guilty that ending the sunheart offerings let the council outlive its predecessors, and it is she who names Nomad Zellion — One Who Finds.',
     }),
+  // Coppermind: Confidence (tsm 7, 8, 19), Compassion (tsm 11).
   ch('confidence', 'Confidence', '#fb923c', 'sunlit', 'Canticle', 'Confidence',
     'Greater Good of Beacon',
     'Greater Good. She names the hard call and does not look away.', false,
     [{ era: 5, system: 'canticle', body: 'canticle-world' }], {
-      wiki: 'Confidence', see: ['contemplation', 'compassion', 'zeal', 'rebeke'],
-      bio: 'Second voice of Beacon\'s Greater Good. Where Contemplation deliberates and Compassion softens, Confidence pushes for action and clarity. The three together are a government designed to disagree in public and still move a city before dawn.',
+      wiki: 'Confidence', see: ['contemplation', 'compassion', 'greater-good', 'sunlit-ones'],
+      bio: 'The tallest of the Greater Good, in small spectacles and a black dress. Her charge is to say what she knows to be true with all the energy of her heart, and she is the one who doubts the stranger is any Sunlit One.',
     }),
+  // Coppermind: Compassion (tsm 8, 11, 19, 39).
   ch('compassion', 'Compassion', '#fbbf24', 'sunlit', 'Canticle', 'Compassion',
     'Greater Good of Beacon',
     'Greater Good. Mercy is her portfolio; Canticle is a mean place to hold it.', false,
     [{ era: 5, system: 'canticle', body: 'canticle-world' }], {
-      wiki: 'Compassion', see: ['contemplation', 'confidence', 'elegy', 'rebeke'],
-      bio: 'Third of Beacon\'s Greater Good, the one who keeps the human cost on the agenda when raids and sunhearts threaten to turn everyone into arithmetic. On a planet where sunlight kills, compassion is not softness — it is logistics with a soul.',
+      wiki: 'Compassion', see: ['contemplation', 'confidence', 'greater-good', 'sunlit-ones'],
+      bio: 'The eldest of the Greater Good and probably of Beacon: small, frail, on her feet only with help. She tells Nomad the story of the Sunlit Ones, and insists the ships fly flat out and leave stragglers, because compassion on Canticle has to mean the people surviving.',
     }),
-  ch('cinder-king', 'The Cinder King', '#7c2d12', 'sunlit', 'Canticle', 'Cinder King',
-    'Tyrant of Union, Charred-binder',
-    'Tyrant of Union. He brands people into Charred and calls the sun his proof.', false,
+  // Coppermind: Cinder King (tsm 2, 4, 5, 12, 13, 16, 20, 24, 44, 49, 51, 52); TimeTellers (tsm 44); WoB 17072.
+  ch('cinder-king', 'The Cinder King', '#7c2d12', 'sunlit', 'Canticle', 'Glowing Eyes',
+    'Sunlit One: drains heat by touch, commands the Charred; crack shot',
+    'Union\'s tyrant. He learned to make Charred from Scadrians and conquest from a dead man\'s books.', false,
     [{ era: 5, system: 'canticle', body: 'canticle-world' }], {
-      wiki: 'Cinder King', see: ['elegy', 'rebeke', 'sigzil', 'contemplation'],
-      titles: 'King of Union',
-      bio: 'Ruler of Union, Canticle\'s conquering city, who uses sunhearts to create the Charred and hunts Beacon without rest. He wants Nomad\'s Skip and the secret of permanent power on a world that resets every daybreak. Absolute rule is his answer to a planet that already tries to kill everyone equally.',
+      wiki: 'Cinder_King', see: ['union-canticle', 'charred', 'cinderheart', 'timetellers', 'elegy', 'rebeke'],
+      titles: 'Cinder King, Sunlit One',
+      bio: 'An executioner who decided commanding people was better than killing them. He murdered a Thaylen worldhopper for a demon, read the encyclopedias in his pack, and concluded he was meant to unite Canticle — then did most of it, with Charred made by a trick the TimeTellers sold him for sunhearts. His cinderheart sits shallow, so he keeps his mind and steers theirs. Nomad drained him on the open ground and Skipped; the sun did the rest.',
     }),
+  // Coppermind: Zeal (tsm 7, 8, 11, 19, 36).
   ch('zeal', 'Zeal', '#f59e0b', 'sunlit', 'Canticle', 'Zeal',
-    'Field commander',
+    'Field commander, pilot',
     'Beacon\'s field commander. Short stature, long odds, excellent raid plans.', false,
     [{ era: 5, system: 'canticle', body: 'canticle-world' }], {
-      wiki: 'Zeal', see: ['contemplation', 'confidence', 'rebeke', 'jeffrey-jeffrey'],
-      bio: 'Beacon\'s special-operations planner under the Greater Good — a little person with a big call sign and the job of stealing keys from Union. He runs the raids that keep Beacon alive. Nomad misidentifies him at first; everyone underestimates him once.',
+      wiki: 'Zeal', see: ['greater-good', 'rebeke', 'jeffrey-jeffrey', 'haridans-key', 'dawnchaser'],
+      bio: 'Beacon\'s field commander, under four feet tall and very formal with his superiors. He planned the raid on Union\'s arena and stole the Cinder King\'s key while it was going on, and flew the Dawnchaser through the maelstrom after everyone else aboard had passed out. Nomad took Adonalsium-Will-Remember-Our-Plight-Eventually for him at first.',
     }),
+  // Coppermind: Jeffrey Jeffrey (tsm 8, 11, 19, 29, 32, 42).
   ch('jeffrey-jeffrey', 'Jeffrey Jeffrey', '#fdba74', 'sunlit', 'Canticle', 'Jeffrey Jeffrey',
-    'Beacon citizen',
-    'Beacon resident. The name is the joke; survival is not.', false,
+    'Steward to the Greater Good; gunship pilot',
+    'Beacon\'s steward. The name is the same twice.', false,
     [{ era: 5, system: 'canticle', body: 'canticle-world' }], {
-      wiki: 'Jeffrey Jeffrey', see: ['zeal', 'contemplation', 'rebeke'],
-      bio: 'A citizen of Beacon whose doubled name is one of Canticle\'s Threnodite naming echoes turned comic. He is supporting cast in Nomad\'s orbit — texture for a refugee culture that names children like prayers and then has to race the sun anyway.',
+      wiki: 'Jeffrey_Jeffrey', see: ['greater-good', 'zeal', 'haridans-key'],
+      bio: 'A burly man with a bushy black beard who could pass for Azish, and the continuity under a council whose members keep being given to the sun. He was on the raid for the key, walked Nomad through the controls for the climb over the mountains, and went down in a gunship before Nomad dropped him on the Dawnchaser.',
     }),
+  // Coppermind: Adonalsium-Will-Remember-Our-Plight-Eventually (tsm 7; WoB 15585).
   ch('adonalsium-will-remember', 'Adonalsium-Will-Remember-Our-Plight-Eventually', '#f8fafc', 'sunlit', 'Canticle',
     'Adonalsium-Will-Remember-Our-Plight-Eventually',
     'Beacon citizen',
-    'A Beaconite whose name is a thesis. Tall, stern, impossible to put on a name tag.', false,
+    'Tall, stern, and named like a prayer. Not Zeal.', false,
     [{ era: 5, system: 'canticle', body: 'canticle-world' }], {
       wiki: 'Adonalsium-Will-Remember-Our-Plight-Eventually',
-      see: ['zeal', 'contemplation', 'sigzil'],
-      bio: 'A tall, severe resident of Beacon whose Threnodite-descended name is a whole liturgy. Tasked with lodging Nomad and Elegy, he embodies Canticle\'s habit of wearing theology on the census form. Faith, for his people, is remembering a God who was killed and deciding that still matters.',
+      see: ['zeal', 'elegy', 'sigzil'],
+      bio: 'A tall, thin, stern Beaconite whom Nomad mistook for Zeal on the strength of a radio voice. Zeal sent him to find quarters for Nomad and Elegy; Nomad declined to follow. The name is awkward even in Canticle\'s Threnodite (WoB 15585).',
+    }),
+  // Coppermind: Divinity Salvage (tsm 5, 7, 13, 22, 33, 51; WoB 16344).
+  ch('divinity-salvage', 'Divinity Salvage', '#c2410c', 'sunlit', 'Canticle', 'Divinity',
+    'Hunter, rifleman',
+    'Rebeke and Elegy\'s brother. He found Elegy in the arena mud, and the Cinder King shot him.', false,
+    [{ era: 5, system: 'canticle', body: 'canticle-world' }], {
+      arc: 'sunlit', wiki: 'Divinity_Salvage', see: ['rebeke', 'elegy', 'cinder-king', 'chorus-hall'],
+      bio: 'He set their mother\'s sunheart into the quadcycle so Rebeke could keep her close. Against the Greater Good\'s orders he and Rebeke went into Union\'s arena for Elegy, and he was the one who found her. The Cinder King\'s first shot took his shoulder; the second, his head. Rebeke thinks she saw his face in the Chorus. Brandon says the dead of Canticle become sunhearts, not shades.',
+    }),
+  // Coppermind: Solemnity Divine (tsm 19, 23, 26, 27, 32, 47, 48).
+  ch('solemnity-divine', 'Solemnity Divine', '#fdba74', 'sunlit', 'Canticle', 'Solemnity',
+    'Lead engineer',
+    'Beacon\'s lead engineer. Her damage reports have a sense of humour.', false,
+    [{ era: 5, system: 'canticle', body: 'canticle-world' }], {
+      arc: 'sunlit', wiki: 'Solemnity_Divine', see: ['sigzil', 'beacon-people', 'greater-good'],
+      bio: 'Could pass for Alethi, and was the least lost person in the room when Nomad explained why engines die where the air runs out. Her five engineers turned his exploding prototype into vacuum engines — three more prototypes, only two of which blew up — and got Beacon over the mountains. She flew him to Union at the end.',
+    }),
+  // Coppermind: Thomos (tsm 3, 4, 5, 6, 7, 8).
+  ch('thomos', 'Thomos', '#fb923c', 'sunlit', 'Canticle', 'Thomos',
+    'Beaconite',
+    'The prisoner Nomad carried out of Union\'s arena. He reminded Nomad of an old friend.', false,
+    [{ era: 5, system: 'canticle', body: 'canticle-world' }], {
+      arc: 'sunlit', wiki: 'Thomos', see: ['sigzil', 'rebeke', 'cinder-king', 'sunlit-ones'],
+      bio: 'Gap-toothed, heavyset, and taken in a raid on Beacon. He watched Nomad survive the sunlight, helped him onto a box in the arena, and was about to be made Charred when Nomad\'s Blade hit the pillar. Nomad carried him out with a broken leg. Back on Beacon, delirious, he told everyone the stranger had touched the sun and lived.',
+    }),
+  // Coppermind: Admiral (tsm 26, epilogue; WoB 16255), Night Brigade (tsm 27).
+  ch('night-brigade-admiral', 'The Admiral', '#1f2937', 'sunlit', 'Unknown', 'Admiral',
+    'Commands the Night Brigade and its shades; the Continuity Chain',
+    'Commander of the Night Brigade. Nomad keeps getting away, and she would like to know how.', false,
+    [{ era: 5, system: 'canticle', body: 'canticle-world' }], {
+      arc: 'sunlit', wiki: 'Admiral', see: ['night-brigade', 'truth-is-waiting', 'sigzil'],
+      titles: 'Admiral',
+      bio: 'Tall, short black hair, uniform buttoned, never sitting down. She came down to Canticle herself and missed him by about a day, with shades that obey her without a word and a whip called the Continuity Chain. She has no qualms about civilians and prefers useful targets; with Nomad gone again she went to question the Scadrians instead. Her real name has not been given.',
+    }),
+  // Coppermind: Truth-Is-Waiting (tsm 26, epilogue).
+  ch('truth-is-waiting', 'Truth-Is-Waiting', '#374151', 'sunlit', 'Threnody', 'Truth',
+    'Staff sergeant, Night Brigade',
+    'The Admiral\'s staff sergeant. He can walk like a civilian when he has to.', false,
+    [{ era: 5, system: 'canticle', body: 'canticle-world' }], {
+      arc: 'sunlit', wiki: 'Truth-Is-Waiting', see: ['night-brigade', 'night-brigade-admiral', 'union'],
+      titles: 'Staff Sergeant',
+      bio: 'He stole a house ship to pass as a Canticlite from another corridor and asked Union about the stranger: dead, they said, fighting the Cinder King, and there were Scadrians under the ground. He thinks it is wrong to slag Canticle\'s people for being in the way — they are Threnodite cousins — though not very strongly. The Scadrians he will enjoy.',
+    }),
+  // Coppermind: Zellion (Threnody) (tsm 11, 15, 22, 39), Lodestar (tsm 11, 15).
+  // No era row: generations before the book, and canon gives no date.
+  ch('zellion-threnody', 'Zellion', '#fde68a', 'sunlit', 'Threnody', 'the first Lodestar',
+    'Preacher of Adonalsium',
+    'The preacher who led a shipload of Threnodites to Canticle. His name is Yolish for One Who Finds.', false,
+    [], {
+      arc: 'sunlit', wiki: 'Zellion_(Threnody)', see: ['lodestar', 'chorus', 'threnody', 'sigzil'],
+      titles: 'Lodestar',
+      bio: 'A servant of Adonalsium who persuaded his followers to leave the Evil and the infighting behind on Threnody, and became the first Lodestar. They built their flying cities on the pattern of the ships that brought them; the first of them to die became the Chorus. Some on Canticle think he chose the planet so his people would be too busy running from the sun to fight. Beacon gave Nomad his name.',
+    }),
+
+  // ─── Elsecaller ─────────────────────────────────────────────────────────
+  // Coppermind: Hwynn Tyvneri (elsecaller; elsecaller preface), Elsecaller (short story), Grand Knell (elsecaller).
+  ch('hwynn-tyvneri', 'Hwynn Tyvneri', '#86efac', 'elsecaller', 'Rellam', 'Tyvneri',
+    'Historian, worldhopper, Shadesmar sailor',
+    'A centuries-old historian from Rellam, and the first to tell Jasnah the cosmere exists.', true,
+    [{ era: 3, system: 'rosharan', body: 'roshar' }], {
+      arc: 'elsecaller', wiki: 'Hwynn_Tyvneri', see: ['jasnah', 'lorieta', 'rellam', 'ivory'],
+      bio: 'Green skin, grey-streaked green hair, pointed ears, and calm — too old for anger, he says. Rellam\'s Investiture is a curse, so he left to search the cosmere\'s history for a cure, sailing Shadesmar in a ten-yard boat whose sail catches the Current. He took in Lorieta and is trying to get her home. Jasnah decided he was too valuable to let go; watching him take a wound fighting angerspren on her behalf, she changed her mind.',
+    }),
+  // Coppermind: Lorieta (elsecaller).
+  ch('lorieta', 'Lorieta', '#c4b5fd', 'elsecaller', 'Unknown', 'Lorieta',
+    'Dreams of possible futures',
+    'A lost eleven-year-old with horn nubs, who dreams the future in pieces.', true,
+    [{ era: 3, system: 'rosharan', body: 'roshar' }], {
+      arc: 'elsecaller', wiki: 'Lorieta', see: ['hwynn-tyvneri', 'jasnah', 'noble-sacrifice', 'fortune'],
+      bio: 'Timid, of a horned people, with an accent that barely touches her t\'s and d\'s; she does not know the name of her world. Her dreams sent Tyvneri to the Luminous Shallows in time to pick Jasnah up, warned them off Emberdark, and named Noble Sacrifice before anyone knew what it was. Her one blow in the fight was a belaying fid left where an angerspren would slip on it. She gave Jasnah three prophecies she could not explain.',
     }),
 
   // ─── Threnody ───────────────────────────────────────────────────────────
@@ -796,19 +984,20 @@ export const PEOPLE_WORLDS: Character[] = [
     }),
 
   // ─── Drominad / Emberdark ───────────────────────────────────────────────
-  ch('vathi', 'Vathi', '#4ade80', 'sixthofdusk', 'First of the Sun', 'Vathi',
-    'Northern Interests Trading Company; bonded to Mirris',
+  // Isles of the Emberdark retells Sixth of the Dusk and then goes on for
+  // five years and into the dark. Anything the novel adds about the novella's
+  // cast waits in readingFace.ts; the cards here are the published text.
+  ch('vathi', 'Vathi', '#4ade80', 'sixthofdusk', 'First of the Sun', 'Vathi, Lady Vathi, President Vathi',
+    'Northern Interests Trading Company; bonded to Mirris; later president of the First Company',
     'A company scientific officer who learns Patji does not sign treaties.', false, [
-      { era: 4, system: 'drominad', body: 'first-of-the-sun' },
       { era: 5, system: 'drominad', body: 'first-of-the-sun' },
     ], {
       wiki: 'Vathi', see: ['dusk', 'mirris', 'sak', 'kokerlii'],
-      bio: 'An Eelakin scientist of the Northern Interests Trading Company who survives Patji with Dusk and learns the Ones Above\'s gifts are bait. By Isles of the Emberdark she leads the renamed First Company, and with it the Eelakin.',
+      bio: 'An Eelakin scientist of the Northern Interests Trading Company who survives Patji with Dusk and learns the Ones Above\'s gifts are bait. Five years on she is the Company\'s president and the Eelakin\'s leader, stalling the Malwish while she talks to the Rosharans behind their backs. She sent Dusk into the Emberdark, survived three votes of no confidence waiting for him, and used the Navigators he brought back to buy her people their independence from everyone at once.',
     }),
   ch('sak', 'Sak', '#166534', 'sixthofdusk', 'First of the Sun', 'Sak',
-    'Aviar',
-    'Dusk\'s Aviar. She shows him possible deaths until the future blinks.', false, [
-      { era: 4, system: 'drominad', body: 'first-of-the-sun' },
+    'Aviar — visions of possible deaths',
+    'Dusk\'s Aviar. She shows the corpse a mistake would leave, a minute before you make it.', false, [
       { era: 5, system: 'drominad', body: 'first-of-the-sun' },
     ], {
       wiki: 'Sak', see: ['dusk', 'kokerlii', 'vathi'],
@@ -818,80 +1007,150 @@ export const PEOPLE_WORLDS: Character[] = [
   ch('mirris', 'Mirris', '#a7f3d0', 'sixthofdusk', 'First of the Sun', 'Mirris',
     'Aviar',
     'Vathi\'s Aviar. She hides minds, as Kokerlii does, and was hurt on the beach.', false, [
-      { era: 4, system: 'drominad', body: 'first-of-the-sun' },
       { era: 5, system: 'drominad', body: 'first-of-the-sun' },
     ], {
       wiki: 'Mirris', see: ['vathi', 'kokerlii'], biology: 'bird', kind: 'person',
       bio: 'The Aviar that kept Vathi alive in Patji\'s jungle: her talent hides minds from the things that hunt them, the same gift Kokerlii gives Dusk. She was wounded when the deepwalker took the scouting camp; Dusk bandages her and leaves her with his own birds at the safecamp while he and Vathi run for the fortress.',
     }),
   ch('kokerlii', 'Kokerlii', '#86efac', 'sixthofdusk', 'First of the Sun', 'Kokerlii',
-    'Aviar',
-    'Dusk\'s other Aviar. He hides minds from the things that listen.', false, [
-      { era: 4, system: 'drominad', body: 'first-of-the-sun' },
+    'Aviar — hides minds',
+    'Dusk\'s other Aviar, red and green and oblivious. He hides every mind near him from the things that hunt by thought.', false, [
       { era: 5, system: 'drominad', body: 'first-of-the-sun' },
     ], {
       wiki: 'Kokerlii', see: ['dusk', 'sak', 'vathi'],
       biology: 'bird', kind: 'person',
-      bio: 'An Aviar companion to Sixth of the Dusk whose gift masks cognitive presence from predators that hunt minds. Together with Sak he is the difference between a living trapper and a story told about one. First of the Sun\'s magic is ecological; Kokerlii is a niche with feathers.',
+      bio: 'A cheerful, chattering bird who stays close because he would not fit in with wild Aviar. His talent masks all mental activity near him, which on Patji, where deepwalkers and nightmaws hunt by thought, is the difference between a trapper and a skeleton; it weakens as he flies further off. He was fond of Vathi. He died of the Aviar plague three years after the night in the jungle, weeks before the Ones Above\'s medicine ended it.',
     }),
-  ch('eddlin', 'Eddlin', '#5eead4', 'emberdark', 'Silverlight', 'Ed, Eddlin',
+  ch('eddlin', 'Eddlin', '#5eead4', 'emberdark', 'Silverlight', 'Ed',
     'Arcanist',
-    'Arcanist of the Dynamic. He would like a closer look at the apocalypse, please.', false,
+    'The Dynamic\'s arcanist, of Vaxilian descent. Talks a great deal, takes notes on everything, and is usually right.', false,
     [{ era: 5, system: 'drominad', body: 'first-of-the-sun' }], {
-      wiki: 'Eddlin', see: ['chrysalis', 'illistandrista', 'dajer', 'cakoban'],
-      bio: 'The Dynamic\'s arcanist, Silverlight-trained and enthusiastically curious about entities that should not be studied at arm\'s length. The crew calls him Ed. In Isles of the Emberdark he is comic relief with a real scholarly spine — the Cosmere\'s academic impulse in a danger zone.',
+      wiki: 'Eddlin', see: ['illistandrista', 'dynamic-crew', 'khriss', 'silverlight', 'grand-apparatus'],
+      bio: 'Born and raised in Silverlight, in a floppy hat with the arcanist\'s big bag, and a follower of the Path because he thinks its Shard is nice. He joined the Dynamic under Hoid and files reports to colleagues at the university; Khriss is his idol. He knows Realmatic Theory, Threnodite entities and Iriali artifacts off the top of his head — it was Ed who recognised the family\'s map as a genuine piece of the Long Trail — and slips into formal religious draconic when drunk. He once defended Leonore from Malwish soldiers with a heavy book. He cannot shoot.',
     }),
-  ch('cakoban', 'Cakoban', '#15803d', 'emberdark', 'First of the Sun', 'Cakoban the Navigator',
-    'Legendary Navigator',
-    'Eelakin ancestor who bound a god-fragment with a story and a death.', false,
-    [{ era: 5, system: 'drominad', body: 'first-of-the-sun' }], {
-      wiki: 'Cakoban', see: ['dusk', 'dajer', 'chrysalis', 'frost'],
-      bio: 'Legendary Navigator of the Eelakin, remembered in children\'s stories and rediscovered in the Emberdark as historical fact. He sailed the dark between islands of Investiture, bargained with powers, and sacrificed himself to bind the Dakwara. Dusk walks his wake; Frost left writing at his bones.',
+  ch('cakoban', 'Cakoban', '#15803d', 'emberdark', 'First of the Sun', 'Tenth the Navigator, Cakoban the Navigator',
+    'Navigator',
+    'The Eelakin hero who led his people to Patji\'s Eye. The story says he beat the Dakwara. It was more costly than that.', false,
+    [{ era: 1, system: 'drominad', body: 'first-of-the-sun' }], {
+      wiki: 'Cakoban', see: ['dakwara', 'frost', 'navigation', 'dusk', 'patji-eye'],
+      bio: 'Loremothers tell it with giants and a winged statue: Cakoban sailed the endless night, blinded the Dakwara with a torch, tied it in knots, and Patji rose to show him the way home. In fact he was among the explorers who found the perpendicularity, a lean, wiry man under five and a half feet, and on a later voyage an entity hunted his boat for weeks. With no food left he jumped and swam for an island to draw it off; it caught him, and as he died he bound it to guard the island and leave his crew alone. Frost arrived seconds too late and buried him in the cave. His crew went home and told the braver version, because he asked them to.',
     }),
   ch('dajer', 'Dajer', '#b91c1c', 'emberdark', 'Scadrial', 'Colonel Dajer',
-    'Malwish colonel',
-    'Malwish colonel hunting a perpendicularity. Colonialism in a crisp uniform.', false,
+    'Malwish colonel, military engineer, arcanist badge',
+    'A Malwish colonel who spent his army\'s money hunting a perpendicularity in the Drominad subastral, and found the Dakwara instead.', false,
     [{ era: 5, system: 'drominad', body: 'first-of-the-sun' }], {
-      wiki: 'Dajer', see: ['dusk', 'vathi', 'chrysalis', 'illistandrista'],
+      wiki: 'Dajer', see: ['dakwara', 'dusk', 'illistandrista', 'intensifier', 'malwish'],
       titles: 'Colonel',
-      bio: 'A Malwish military engineer and officer of the Ones Above, camped on an Emberdark island in search of First of the Sun\'s perpendicularity. He is prepared, charismatic, and wrong about Dusk in ways that cost him. Isles of the Emberdark uses him as the smiling face of annexation.',
+      bio: 'A red-haired Southern Scadrian whose mask carries an oxygen line: smoke at the Battle of Aheleha ruined his lungs and moved him from the front into the Military Engineer Corps. Ruthless, exact, well-read about the cosmere and very good at steering a conversation, he was sure a perpendicularity lay in the cave the Dakwara guarded and spent soldiers proving it. He took the Dynamic\'s crew prisoner and had the Intensifier brought in. He underestimated anyone he thought less civilised than himself, and the Dakwara killed him while he was aiming a cannon at the escaping ship.',
     }),
-  ch('chrysalis', 'Chrysalis', '#86efac', 'emberdark', 'Aimia', 'Chrysalis',
-    'Sleepless, ship\'s doctor',
-    'Sleepless doctor of the Dynamic. Better they fear her; fear is useful.', false,
+  ch('chrysalis', 'Chrysalis', '#86efac', 'emberdark', 'Unknown', 'Chrysalis',
+    'Sleepless — ship\'s doctor, spy',
+    'The Dynamic\'s doctor: a Sleepless about six thousand years old, sworn never to harm a living thing, and tired of being feared.', false,
     [{ era: 5, system: 'drominad', body: 'first-of-the-sun' }], {
-      wiki: 'Chrysalis', see: ['illistandrista', 'dusk', 'sleepless-hordes', 'eddlin'],
+      wiki: 'Chrysalis', see: ['illistandrista', 'zeetzi', 'dusk', 'sleepless-hordes', 'dynamic-crew'],
       kind: 'sleepless', biology: 'sleepless',
-      bio: 'A Dysian Aimian serving as doctor on Hoid\'s patchwork ship, the Dynamic. Roughly six thousand years old, abrasive, and tired of being the crew\'s necessary monster. She can lend eyes, explain hordes, and still keep a vow that makes violence complicated. Dusk learns what a Sleepless is through her.',
+      bio: 'A horde shaped like a thick-set woman with a lean face, tattoos over the seams between hordelings. Two years before the Drominad perpendicularity was found she was spying for the Malwish prime minister when partisans killed him, and the hordelings left at the scene made everyone blame the Sleepless; Hoid found her running and made her the Dynamic\'s doctor. She keeps the Oath of the First. She lent Dusk her eyes, showed him what a horde is, and was gassed and boxed by the Malwish; Starling came back for her, which she had not expected. ZeetZi\'s people were enslaved by her kind, and he has not forgotten.',
     }),
   ch('leonore', 'Leonore', '#f87171', 'emberdark', 'Scadrial', 'Leonore',
-    'Malwish pilot',
-    'Malwish deserter and combat pilot of the Dynamic.', false,
+    'Pilot, field medic',
+    'The Dynamic\'s pilot: a Malwish deserter in a red wooden mask, and the best Malwish pilot there ever was, Starling says.', false,
     [{ era: 5, system: 'drominad', body: 'first-of-the-sun' }], {
-      wiki: 'Leonore', see: ['illistandrista', 'dajer', 'chrysalis', 'eddlin'],
-      bio: 'A Scadrian Malwish pilot who deserted her empire\'s service and ended up in Hoid\'s misfit crew. She flies like someone who has burned bridges and kept the matches. Against Dajer\'s colonial detachment, Leonore is the reminder that Malwish faces can also choose the other side.',
+      wiki: 'Leonore', see: ['illistandrista', 'zeetzi', 'dajer', 'dynamic-crew', 'malwish'],
+      bio: 'She flew fighters before she deserted, and now flies a cargo ship through manoeuvres it was not built for, with a lodestar made of many metals. She cannot go back to Scadrial; her mother still sends her alcohol. When Crow would not answer a distress call she joined the mutiny and flew the Dynamic past the entity. The Malwish on the Dakwara\'s island recognised her as a deserter and threatened to execute her — a ruse to draw out Nazh. She and ZeetZi rib each other constantly, and may once have dated.',
     }),
-  ch('zeetzi', 'ZeetZi', '#fde047', 'emberdark', 'Unknown', 'ZeetZi',
-    'Technician, cook',
-    'Feather-crested mechanic of the Dynamic. He fixes the ship and the meals.', false,
+  ch('zeetzi', 'ZeetZi', '#fde047', 'emberdark', 'Grand Apparatus', 'ZeetZi, Zee',
+    'Technician, navigator, cook',
+    'A lawnark from the Grand Apparatus, crested in white and yellow feathers, who speaks formally and runs the Dynamic\'s systems.', false,
     [{ era: 5, system: 'drominad', body: 'first-of-the-sun' }], {
-      wiki: 'ZeetZi', see: ['illistandrista', 'chrysalis', 'eddlin', 'leonore'],
-      bio: 'A lawnark technician with a feathered crest who serves as the Dynamic\'s mechanical genius and cook. He is one of the Cosmere\'s newer peoples on the page — proof the space age is not only humans, Sleepless, and dragons. When the ship needs a miracle with a wrench, ZeetZi is the miracle.',
+      wiki: 'ZeetZi', see: ['grand-apparatus', 'lawnark', 'chrysalis', 'leonore', 'dynamic-crew'],
+      bio: 'He grew up living out of a trunk as the Apparatus moved him from room to room, and counts himself one of Invention\'s people. He can talk to Scadrian electronics with no lodestar, through the electricity in his own body, and cooks well enough to poison a garrison (he proposed it). He cannot fly. The first to call Starling captain after the mutiny, he spent the voyage asking for the Sleepless to be put off the ship — the Sleepless enslaved and experimented on his people — and then insisted on going back for her.',
     }),
-  ch('aditil', 'Aditil', '#2dd4bf', 'emberdark', 'Unknown', 'Aditil',
-    'Engineer',
-    'Young engineer on the Dynamic. Competence under pressure is her whole brand.', false,
+  ch('aditil', 'Aditil', '#2dd4bf', 'emberdark', 'Dhatri', 'Aditil',
+    'Aetherbound (her aether is dead), engineer',
+    'The Dynamic\'s engineer: an Aetherbound from Dhatri whose aether died, which her people count as terrible luck.', false,
     [{ era: 5, system: 'drominad', body: 'first-of-the-sun' }], {
-      wiki: 'Aditil', see: ['illistandrista', 'zeetzi', 'chrysalis', 'eddlin'],
-      bio: 'A young engineer among Starling\'s crew on the Dynamic, pulled into the Emberdark crisis around First of the Sun. She is supporting cast with agency — another pair of skilled hands when perpendicularities, Malwish camps, and Sleepless doctors collide. The space-age Cosmere runs on Aditils.',
+      wiki: 'Aditil', see: ['aether', 'dhatri', 'illistandrista', 'dynamic-crew', 'dhatrian-planetary-network'],
+      bio: 'The eldest of seven, with a sky-coloured aether in the palm of her right hand. She finished the full apprenticeship; then the bud cracked, and she could not stand to stay on Dhatri, so she worked her passage off-world. She cannot do what an Aetherbound does any more, but she can still talk to spores — wake the drowsy old ones that run the ship, or put a Malwish engine to sleep. Homesick, she nearly took the ticket home Starling bought her, and gave it back.',
     }),
   ch('rokke', 'Rokke', '#bbf7d0', 'emberdark', 'First of the Sun', 'Rokke',
-    'Aviar',
-    'An Aviar of the Emberdark era. New bird, old Patji rules.', false,
+    'Aviar — hides minds',
+    'The small black-and-white Aviar with a scarlet head that Vathi gave Dusk before he went through Patji\'s Eye.', false,
     [{ era: 5, system: 'drominad', body: 'first-of-the-sun' }], {
-      wiki: 'Rokke', see: ['dusk', 'sak', 'kokerlii', 'chrysalis'],
+      wiki: 'Rokke', see: ['dusk', 'sak', 'vathi', 'kokerlii'],
       biology: 'bird', kind: 'person',
-      bio: 'An Aviar appearing in Isles of the Emberdark beside the older partnership of Sak and Kokerlii. On First of the Sun, birds are never only birds; they are Invested niches and partners. Rokke extends the Aviar roster into the space age.',
+      bio: 'One of the five breeds that shield minds, as Kokerlii did. She belonged to a trapper who died in the Pantheon and was found in his safecamp. Skittish at first, she got braver with Dusk talking to her. In the Drominad subastral she veiled them from the skullsnakes, and dropped the veil to lure one when Dusk wanted to hunt; on the Dakwara\'s island she kept the Sleepless out of his head. Through his bond she can feel the Current too.',
+    }),
+  ch('crux', 'Crux', '#fde68a', 'emberdark', 'Unknown', 'Crux',
+    'Iriali',
+    'An Iriali woman whose family sold everything to chase a perpendicularity on a map, and read the coordinates wrong.', false,
+    [{ era: 5, system: 'drominad', body: 'first-of-the-sun' }], {
+      wiki: 'Crux', see: ['nol', 'iriali', 'illistandrista', 'eidolith'],
+      bio: 'She, her husband Nol and their son bought a small ship to follow a map from Nol\'s family — a piece of the Long Trail record — and a character shift in Middle-old Iriali put them in the wrong part of the Emberdark. A fire in the cockpit, Invested floats, a distress beacon: the beacon brought the Dynamic, and an entity. Rescued, she told ZeetZi they were only trying to get home to Zidorna. That was a lie; the map was the truth, and it went to Starling.',
+    }),
+  ch('nol', 'Nol', '#fde68a', 'emberdark', 'Unknown', 'Nol',
+    'Iriali',
+    'Crux\'s husband. The map was his family\'s.', false,
+    [{ era: 5, system: 'drominad', body: 'first-of-the-sun' }], {
+      wiki: 'Nol', see: ['crux', 'iriali', 'illistandrista'],
+      bio: 'Golden-haired and Yolish-speaking, like Crux. When the Dynamic brought them to Silverlight, where they had relatives at the university, Nol admitted to Starling why they had been so far out, and gave her the map that showed a perpendicularity in the Drominad system.',
+    }),
+  ch('admiral-rattu', 'Admiral Rattu', '#4d7c0f', 'emberdark', 'First of the Sun', 'Rattu',
+    'Eelakin politician',
+    'An influential admiral on the Eelakin side of the talks with the Ones Above, who tried to have Vathi removed while Dusk was away.', false,
+    [{ era: 5, system: 'drominad', body: 'first-of-the-sun' }], {
+      wiki: 'Admiral Rattu', see: ['vathi', 'first-company'],
+      titles: 'Admiral',
+      bio: 'Other officials let him lead. He prepared the first, failed attempt to sail a ship on the unsea and was against sending a second. With Vathi on Patji he moved to cut her projects\' funding and convene the vice presidents against her, and he was probably behind the votes of no confidence that followed. His Aviar is large, green and yellow-chested, and puffs itself up.',
+    }),
+  ch('second-of-the-soil', 'Second of the Soil', '#65a30d', 'emberdark', 'First of the Sun', 'Soil',
+    'Vice president of the interior',
+    'Vathi\'s most trusted advisor, a city man who carries his Aviar on his head and is drawn that way in the broadsheets.', false,
+    [{ era: 5, system: 'drominad', body: 'first-of-the-sun' }], {
+      wiki: 'Second of the Soil', see: ['vathi', 'first-company'],
+      bio: 'The homeisler government\'s vice president of the interior, and often Vathi\'s aide: he fetched Dusk to the talks with the Ones Above, carried her messages and saw off her diplomats. Born in the city, he knows nothing of the Pantheon\'s jungles, and does not pretend to.',
+    }),
+  ch('saja', 'Saja', '#9f1239', 'emberdark', 'Scadrial', 'Saja',
+    'Malwish military police',
+    'Malwish military police, posing as a common soldier on the Dakwara\'s island to build a case against Dajer.', false,
+    [{ era: 5, system: 'drominad', body: 'first-of-the-sun' }], {
+      wiki: 'Saja', see: ['dajer', 'dusk', 'malwish'],
+      bio: 'Her mask covers only her chin and the sides of her head, her uniform carries rare insignia, and she wears white gloves nobody else in the army does. Dajer disliked her and hoped the Dakwara had eaten her. She found it far too convenient that a "primitive" had rowed through the Emberdark to their island, and told Dusk to his face that the stupid-savage act was not fooling her.',
+    }),
+  ch('esandi', 'Esandi', '#14b8a6', 'emberdark', 'Dhatri', 'Esandi',
+    'Aetherbound in Malwish service',
+    'A Dhatrian Aetherbound in Malwish uniform — as far as anyone knows, the only one who serves the Scadrians.', false,
+    [{ era: 5, system: 'scadrian', body: 'scadrial' }], {
+      wiki: 'Esandi', see: ['dajer', 'aditil', 'aether', 'malwish'],
+      bio: 'She has a living aether bud of an unknown kind in one palm and speaks Malwish with an accent. She owed Dajer a favour; when he wanted to frighten Starling he had her show the bud over a datapad, and she warned him it was a state secret before she did it. How she came to Scadrial, and around whatever bars Aetherbound from serving it, nobody says.',
+    }),
+  ch('tague', 'Tague', '#78716c', 'emberdark', 'Scadrial', 'Tague',
+    'Lead engineer of the Intensifier',
+    'The Malwish engineer who runs the Intensifier, and the one who told Dajer it would not work on the Dakwara.', false,
+    [{ era: 5, system: 'drominad', body: 'first-of-the-sun' }], {
+      wiki: 'Tague', see: ['intensifier', 'dajer', 'illistandrista'],
+      bio: 'He brought the weapon to the Dakwara\'s island by cargo ship. Positive or negative, unkeyed Investiture only fed the thing, as he had warned; he called it a useful data point and a good outcome, given it might have eaten the machine. Then he turned the Intensifier on Starling\'s manacles at full power. The manacles held and the island\'s power went out, which is how the Dynamic\'s crew got away.',
+    }),
+  ch('frond', 'Frond', '#a16207', 'emberdark', 'First of the Sun', 'Mother Frond',
+    'Loremother',
+    'A loremother from the outer isles who tells Cakoban\'s story in feathers, the old way.', false,
+    [{ era: 5, system: 'drominad', body: 'first-of-the-sun' }], {
+      wiki: 'Frond', see: ['cakoban', 'dakwara', 'dusk'],
+      bio: 'Heavyset, weathered, darker than most homeislers, in the traditional feathered headdress and long-sleeved cloak most loremothers have given up. Her duties are reciting histories for chiefs and kingmakers out in the islands; her favourite place is the children\'s amphitheatre in the capital\'s park, with candy for the children and seeds for the Aviar. She worries about the Ones Above.',
+    }),
+  ch('yadramak', 'Yadramak', '#7f1d1d', 'emberdark', 'Scadrial', 'Yadramak',
+    'Malwish prime minister',
+    'The Malwish prime minister who hired a Sleepless spy, and was killed by partisans while meeting her.', false,
+    [{ era: 5, system: 'scadrian', body: 'scadrial' }], {
+      wiki: 'Yadramak', see: ['chrysalis', 'malwish'],
+      bio: 'He rose to lead his party and the government. Two years before the Drominad perpendicularity was found, partisans ambushed him with his spy; some of her hordelings died beside him, and everyone who found the body decided the Sleepless had done it.',
+    }),
+  ch('dakwara', 'The Dakwara', '#a5f3fc', 'emberdark', 'Threnody', 'Dakwara, daccwaga',
+    'Splinter of Ambition — nearly pure anti-Investiture',
+    'A hundred-foot serpent of anti-Investiture circling an island in the Drominad subastral. In the stories Cakoban beat it. Dusk actually did.', true,
+    [{ era: 5, system: 'drominad', body: 'first-of-the-sun' }], {
+      wiki: 'Dakwara', see: ['cakoban', 'dusk', 'eidolith', 'vathi', 'dajer'],
+      kind: 'person', biology: 'Type 1-6 Threnodite entity',
+      bio: 'An Eidolith, but one the Eelakin have been telling stories about for millennia, and it has become the stories: it moves smoothly, without the afterimages its kind leave, and it must serve whoever bests it — not by killing it but by surviving. It guarded Cakoban\'s grave from the moat of a ring-shaped island, ringed by skullsnakes, and conventional and Invested weapons barely touched it; the Malwish Intensifier only fed it. Dusk reached the inner island, and it was his for at least a hundred years. He used it to kill Dajer, set it to guard the Drominad perpendicularity in the subastral, and handed it to Vathi and whoever holds her office after her.',
     }),
 
   // ─── Yolish vessels ─────────────────────────────────────────────────────
@@ -929,53 +1188,52 @@ export const PEOPLE_WORLDS: Character[] = [
       kind: 'vessel',
       bio: 'Original Vessel of Endowment and Nalthis\'s only Shard. She gives every Nalthian a Breath, offers some of the dead a chance to Return, and the Tears of Edgli are named for her. Her Oathbringer letter to Hoid is curt: she keeps the Vessels\' agreement not to meddle with other Shards, calls those who break it fools, and tells him off for interfering above his weight.',
     }),
-  ch('uli-da', 'Uli Da', '#f97316', 'arcanum', 'Yolen', 'Ambition, Uli Da',
+  ch('uli-da', 'Uli Da', '#f97316', 'arcanum', 'Yolen', 'Ambition',
     'Vessel of Ambition',
-    'Vessel of Ambition. Odium and Mercy hunted her; Threnody wears the scar.', true, [
+    'Vessel of Ambition, and one of the Sho Del. Odium wounded her at Threnody and finished her beyond it.', true, [
       { era: 0, system: 'yolish', body: 'yolen' },
       { era: 1, system: 'threnodite', body: 'threnody' },
     ], {
-      wiki: 'Uli Da', see: ['ambition', 'mercy-vessel', 'silence', 'nazh'],
+      wiki: 'Uli Da', see: ['ambition', 'threnody', 'shade'],
       kind: 'vessel', canon: 'wob',
-      sources: ['arcanum', 'wob'],
-      bio: 'Original Vessel of Ambition, named Uli Da in Word of Brandon material. She fled the early Shardwars toward what became the Threnodite system; Odium, with Mercy\'s help, mortally wounded and Splintered her. The Evil, the shades, and the system\'s scar are what leftover Ambition looks like when murder is unfinished.',
+      sources: ['Arcanum Unbounded — Threnodite system', 'Oathbringer ch. 40 epigraph', 'Word of Brandon'],
+      // WoB 8398 (Vessel), 8933 (Sho Del), 1550 (first on Odium's list). Endowment's
+      // "good riddance" is Oathbringer and is a relation, not this card.
+      bio: 'The original Vessel of Ambition, a Sho Del of Yolen. She took her Shard to the Threnodite system. Odium came for her first; she escaped the system with pieces torn off her, and died somewhere past it. The shades and the Evil are, Khriss thinks, what she left behind.',
     }),
   ch('virtuosity-vessel', "Virtuosity's Vessel", '#22d3ee', 'yumi', 'Yolen', 'Virtuosity',
     'Vessel of Virtuosity',
     'Vessel of Virtuosity. The name is not on the page; the Splintering is.', true, [
       { era: 0, system: 'yolish', body: 'yolen' },
-      { era: 1, system: 'utol', body: 'komashi' },
     ], {
-      wiki: 'Virtuosity', see: ['virtuosity', 'father-machine', 'yumi', 'painter'],
+      wiki: 'Virtuosity', see: ['virtuosity', 'komashi', 'hion'],
       kind: 'vessel', canon: 'wob',
-      sources: ['yumi', 'wob'],
-      bio: 'The original Vessel of Virtuosity — artistic excellence as Invested Intent — who settled around Komashi and eventually Splintered herself. Their personal name is not given in the novels; this entry exists under a title because the atlas refuses to invent one. Hion lines and nightmares are what her power became after she broke it.',
+      sources: ['Yumi and the Nightmare Painter', 'Word of Brandon'],
+      // WoB 15530: she explored the cosmere's arts and would not settle. Yumi ch. 1: Splintered in the UTol system.
+      bio: 'The original Vessel of Virtuosity — artistic talent as Invested Intent. She spent millennia exploring the cosmere\'s arts rather than settle, then Splintered herself in the UTol system. Her name is not in the book, and this entry will not make one up. The hijo are her Splinters; the nightmares are something else entirely.',
     }),
-  ch('invention-vessel', "Invention's Vessel", '#94a3b8', 'stormlight', 'Yolen', 'Invention',
+  ch('invention-vessel', 'Chan Ko Sar', '#94a3b8', 'stormlight', 'Yolen', 'Invention',
     'Vessel of Invention',
-    'Vessel of Invention. Named as a Shard; the holder\'s name is not on the page.', true, [
+    'Vessel of Invention. Went about the cosmere making marvels, and turned Honor down.', true, [
       { era: 0, system: 'yolish', body: 'yolen' },
-      { era: 1, system: 'yolish', body: 'yolen' },
-      { era: 3, system: 'yolish', body: 'yolen' },
-      { era: 5, system: 'yolish', body: 'yolen' },
     ], {
-      wiki: 'Invention', see: ['invention', 'reason-vessel', 'whimsy-vessel', 'mercy-vessel'],
-      kind: 'vessel', canon: 'wob', arc: 'wat',
-      sources: ['stormlight', 'wob'],
-      bio: 'Whoever took up Invention at the Shattering. Wind and Truth confirms the Shard\'s name among the sixteen; the Vessel\'s personal name is not on the page, and Word of Brandon material has not handed the atlas a stable one. Location and agenda remain largely unknown.',
+      wiki: 'Chan Ko Sar', see: ['invention', 'reason-vessel', 'whimsy-vessel', 'mercy-vessel'],
+      kind: 'vessel', arc: 'wat',
+      sources: ['Wind and Truth ch. 115'],
+      // Wind and Truth ch. 115: three thousand years on, making wonders, and refused Honor.
+      bio: 'One of the Yolish who killed Adonalsium and took a Shard. Three thousand years later, when Honor went looking for allies against Odium, Chan Ko Sar was busy making wonderful things and said no. Where Invention is now, nobody has said.',
+      fieldNotes: { eras: { canon: 'canon', note: 'No world is given for them; the only row is Yolen before the Shattering.' } },
     }),
-  ch('mercy-vessel', "Mercy's Vessel", '#fca5a5', 'arcanum', 'Yolen', 'Mercy',
+  // First named in Harmony's Rhythm of War letter, not Arcanum Unbounded.
+  ch('mercy-vessel', "Mercy's Vessel", '#fca5a5', 'stormlight', 'Yolen', 'Mercy',
     'Vessel of Mercy',
-    'Vessel of Mercy. Helped kill Ambition. The name is not on the page.', true, [
+    'Vessel of Mercy. Was there when Ambition died. The name is not on the page.', true, [
       { era: 0, system: 'yolish', body: 'yolen' },
-      { era: 1, system: 'yolish', body: 'yolen' },
-      { era: 3, system: 'yolish', body: 'yolen' },
-      { era: 5, system: 'yolish', body: 'yolen' },
     ], {
-      wiki: 'Mercy', see: ['mercy', 'uli-da', 'ambition', 'invention-vessel'],
-      kind: 'vessel', canon: 'wob',
-      sources: ['arcanum', 'wob'],
-      bio: 'The Vessel behind Mercy, present for Ambition\'s wounding alongside Odium and otherwise almost absent from the novels. Their personal name is not on the page. Mercy\'s Intent and that early act of violence are a contradiction the Cosmere has not explained yet.',
+      wiki: 'Mercy', see: ['mercy', 'whimsy-vessel'],
+      kind: 'vessel', arc: 'row',
+      sources: ['Rhythm of War — Harmony\'s letter'],
+      bio: 'Whoever took up Mercy at the Shattering. Harmony\'s letter puts Mercy in the clash where Ambition was destroyed, alongside Odium, and says Mercy worries him. Nothing else about them is on the page — not a name, not a world.',
     }),
   // ─── Miral ──────────────────────────────────────────────────────────────
   ch('december', 'December', '#c084fc', 'fod', 'Miral', 'Hodołnika, Lady December',
@@ -1013,21 +1271,22 @@ export const PEOPLE_WORLDS: Character[] = [
       bio: 'The demon December bonded. Through him she could pour enough heat into metal to burn through about three prison bars before her well ran dry; locked in a dungeon, she called and he heard her and was simply there. Once December had bonded the Megalith, Beautiful became the companion of Dmitrovik\'s daughter, Irinek.',
     }),
   ch('abrim-flint', 'Abrim Flint', '#94a3b8', 'fod', 'Miral', 'Count Flint, Flint',
-    'Nobleman, brigand',
-    'A roguish count with debts — and, in black, the man who held a knife to December at Smallport.', false,
+    'Former Royal Minister of Espionage',
+    'A roguish count with debts and a trial pending — and, in black, the man who held a knife to December at Smallport.', false,
     [{ era: 4, system: 'miralan', body: 'miral', at: 'kingseat' }], {
       wiki: 'Abrim Flint', titles: 'Count',
       see: ['december', 'smallport', 'dmitrovik', 'kingseat'],
       sources: ['The Fires of December'],
-      bio: 'Count Abrim Flint needed money badly enough to rob a barge at Smallport, and December, with his knife at her throat, convinced him she was not worth it. She worked out later who he was. In Kingseat she hunted him through a casino and the Night Barges market, because he might hold the key to her quest. They married; Brother Grund came up from the monastery for it, and Flint and Rivershore\'s reeve became close.',
+      bio: 'Proved himself in battle, spent thirty years as a diplomat and adventurer, and was in fact the king\'s Minister of Espionage, playing a carouser at Duke Kird\'s court. He trained Kird\'s daughter Melsi as a spy, became involved with her, and left; the duke\'s fleet followed him to the capital. On bail and in debt, he tried to rob December aboard the Northern Eclipse at Smallport, and she talked him out of it. In Kingseat she hunted him through a casino and the Night Barges, because the immortal\'s death led to him — the king had ordered him to kill Hoid, and he refused. Arrested, broken out by December, he turned the wall guard against the palace. Geoffrim stabbed him; he took Geoffrim\'s power with the mandata, lived, and will live longer for it. December married him, with Brother Grund up from the monastery for it.',
     }),
-  ch('geoffrim-satin', 'Geoffrim Satin', '#7f1d1d', 'fod', 'Miral', 'Satin',
-    '—',
-    'The man who let the Megalith out.', false,
+  ch('geoffrim-satin', 'Geoffrim Satin', '#7f1d1d', 'fod', 'Miral', 'Lord Geoffrim, Satin',
+    'Minister of Finance',
+    'The king\'s Minister of Finance and foremost advisor, who wanted the Megalith out and talked the king into opening the door.', false,
     [{ era: 4, system: 'miralan', body: 'miral', at: 'kingseat' }], {
-      wiki: 'Geoffrim Satin', see: ['megalith', 'ever-slaying-sword', 'december', 'dmitrovik'],
+      wiki: 'Geoffrim Satin', titles: 'Lord, Minister of Finance',
+      see: ['megalith', 'ever-slaying-sword', 'december', 'petva', 'beaudilog', 'abrim-flint'],
       sources: ['The Fires of December'],
-      bio: 'He had been watching December since her show in First Dukeseat. He is the one who released the Megalith from the Prophet\'s binding, eight hundred years after it was set; its splinters began killing people at once. Dmitrovik went for him as the demon came loose and was knocked flat by the storm of it.',
+      bio: 'He volunteered to hear December\'s story when the king would not, took it seriously, gave her a lineage sheet under the royal seal — the king had let him use it to stop being bothered — and steered her at Flint to see what she would shake loose. He believed the Prophet\'s binding was failing anyway and that the Megalith had to be released on his terms. Caught with his papers, he hauled December before the king as a witch, had Drakes killed, and worked on the king until Beaudilog went to the blood reservoir and spoke the password; Geoffrim, listening, repeated it, took the power, and showed the crowd the king\'s head. He was ill, and he grieved Petva. Flint, dying from Geoffrim\'s knife, took that power from him with the mandata, and Geoffrim died of his wound instead.',
     }),
   ch('dmitrovik', 'Dmitrovik', '#a8a29e', 'fod', 'Miral', 'Dmitrovik',
     'Valet, footman, head butler',
@@ -1036,31 +1295,112 @@ export const PEOPLE_WORLDS: Character[] = [
       wiki: 'Dmitrovik', titles: 'Head butler',
       see: ['december', 'tamantha', 'beautiful', 'geoffrim-satin', 'abrim-flint'],
       sources: ['The Fires of December'],
-      bio: 'Grew up on Kingseat\'s streets, a single father to his daughter Irinek, and a valet at Miss Greenwares\'s hotel — where December noticed a child\'s handprint on his uniform and liked him at once. He tracked Flint for her, turned away suitors, and got her in to see the hexers inside the Megalith. When Greenwares fired him for his private life, December bought the hotel out from under her and made him head butler. In the years after, he managed several of her hotels.',
+      bio: 'Grew up on Kingseat\'s streets, a single father to his daughter Irinek, and a valet at Miss Greenwares\'s hotel — where December noticed a child\'s handprint on his uniform and liked him at once. He tracked Flint for her, turned away suitors, and found out when Flint was meeting the hexers. When Greenwares fired him for his private life, December bought the hotel out from under her and made him head butler. In the years after, he managed several of her hotels.',
+    }),
+  ch('petva', 'Petva', '#a3e635', 'fod', 'Miral', 'Lady Petva',
+    'Royal recorder; witch, bonded to a snake-shaped demon',
+    'The king\'s niece and recorder, who took down December\'s story for Lord Geoffrim — and was a witch the whole time.', false,
+    [{ era: 4, system: 'miralan', body: 'miral', at: 'kingseat' }], {
+      wiki: 'Petva', titles: 'Lady, Royal recorder',
+      see: ['geoffrim-satin', 'december', 'witchcraft', 'megalith', 'beaudilog'],
+      sources: ['The Fires of December'],
+      bio: 'Blonde, in her thirties, fashionable — demonblood clothes, a teaspoon at her throat when kitchenware was in — and one of several secretaries to her uncle the king, likely his heir. She works closely with Geoffrim Satin, how closely nobody says, and is annoyed by how often he is right. The court knows she studies demons; it does not know she bonded one more than a decade ago, a glowing snake that hides under her clothes. She and Geoffrim used December to put Flint in a cell. When December found their papers on freeing the Megalith, Petva offered to train her instead. The day the Megalith got out, she spoke through her own demon, now part of it, to command the whole thing. For a moment the storm lessened. Then it left her as an ash shadow on the floor.',
+    }),
+  ch('weonim', 'Weonim', '#a8a29e', 'fod', 'Miral', 'Elder Weonim',
+    'Hexer, witch under contract',
+    'The most accomplished of the king\'s hexers. Silver-haired, nearly December\'s real age, and the first to mother her when she arrived in the Megalith\'s chest.', false,
+    [{ era: 4, system: 'miralan', body: 'miral', at: 'kingseat' }], {
+      wiki: 'Weonim', titles: 'Elder',
+      see: ['hexers', 'december', 'abrim-flint', 'witchcraft', 'beautiful'],
+      sources: ['The Fires of December'],
+      bio: 'An accomplished witch before the king caught her and offered clemency for service; she forced her demon into a strict contract and rose to lead the hexers. Flint came to her with a strange captive spirit — Hoid — and offered it for five thousand gold, or for demonstone, which would have been treason and Duke Kird\'s civil war. She promised to put it to the others. When December was sent to them she fed her sandwiches, found her a clean dress, and showed her the words of the contract; December released Beautiful instead, and Weonim declared her mad. Even she, she said, would only have dared keep a small demon uncontracted.',
+    }),
+  ch('irinek', 'Irinek', '#fbcfe8', 'fod', 'Miral', 'Irinek',
+    '—',
+    'Dmitrovik\'s six-year-old daughter, who draws, bows exactly like her father, and ends up with a demon for a friend.', false,
+    [{ era: 4, system: 'miralan', body: 'miral', at: 'kingseat' }], {
+      wiki: 'Irinek', see: ['dmitrovik', 'beautiful', 'december'],
+      sources: ['The Fires of December'],
+      bio: 'Her mother had just died when December came to Kingseat, and Miss Greenwares held it against her father that she was born out of wedlock. December was charmed the moment Irinek bowed to her, gave her chalk, and kept her at the hotel instead of daycare. Afterwards, with her father managing hotels, she has every drawing supply she wants — and Beautiful.',
+    }),
+  ch('brother-grund', 'Brother Grund', '#d97706', 'fod', 'Miral', 'Brother Grund',
+    'Abbot, philologist',
+    'Abbot of the Monastery of the Final Word, Amaal\'s mentor, and the author of The Final Word(s) of the Prophet.', false,
+    [{ era: 4, system: 'miralan', body: 'miral', at: 'monastery-final-word' }], {
+      wiki: 'Brother Grund', titles: 'Abbot',
+      see: ['amaal', 'monastery-final-word', 'mandata', 'december', 'prophet'],
+      sources: ['The Fires of December'],
+      bio: 'A noble, a great philologist, and no relation to Sister Grund. He sent Amaal on her pilgrimage, joked that she should take a vow of silence, and told her to begin with the second mandatum, which he reads as a call to strive to be better. In December\'s second vision he took her in, and after two years opened the locked shelves on demonology and witchcraft and told her to learn: the Prophet never forbade it, only warned that it was dangerous. He kept healing refugees and sending them across the plains, refused to leave, and died beside a grave he had not finished digging. In the life that came true instead, he walked up to the capital to see her married.',
+    }),
+  ch('beaudilog', 'Beaudilog', '#7c3aed', 'fod', 'Miral', 'Beaudilog the Nineteenth, the king',
+    'King of Mountaincrest',
+    'The king, sixty, in a crown two inches too big, who keeps the Prophet\'s passphrases — and spoke them.', false,
+    [{ era: 4, system: 'miralan', body: 'miral', at: 'kingseat' }], {
+      wiki: 'Beaudilog', titles: 'King of Mountaincrest',
+      see: ['geoffrim-satin', 'petva', 'abrim-flint', 'megalith', 'ever-slaying-sword', 'kird'],
+      sources: ['The Fires of December'],
+      bio: 'Unremarkable in height, features and temper, with tufts of hair he believes hide his balding; he follows Kingseat fashion and wears furniture. He hates witches, dislikes listening, and is the only person in the kingdom his parents told the Prophet\'s passwords. He gave Geoffrim his personal seal to stop being bothered, ordered his spymaster Flint arrested and then offered him clemency to assassinate an immortal, and was glad of an excuse to be rid of General Drakes. With the wall guard fighting the palace guard, he went to the palace\'s reservoir of demon\'s blood and spoke the password. Geoffrim, in earshot, said it again and took the power, and then took the king\'s head.',
+    }),
+  ch('drakes', 'Drakes', '#b91c1c', 'fod', 'Miral', 'General Drakes, Lord General',
+    'Minister of Defense',
+    'The king\'s Minister of Defense and loudest critic. He looks permanently angry; he is squinting, because his eyes are bad.', false,
+    [{ era: 4, system: 'miralan', body: 'miral', at: 'kingseat' }], {
+      wiki: 'Drakes', titles: 'General, Minister of Defense',
+      see: ['abrim-flint', 'december', 'geoffrim-satin', 'beaudilog'],
+      sources: ['The Fires of December'],
+      bio: 'A huge man with a scowling brow and a stare nearly as good as December\'s, who reminded her of Bark until she knew him. He had known Flint for years and believed in him, wound and all. An anonymous tip sent him to the Concordance teahouse to arrest Flint; reading December\'s statement afterwards, he saw the setup was too convenient, and when he heard Geoffrim and Petva had known about the meeting he went for them. Geoffrim told the king Drakes had been bought by a witch, and Drakes was killed resisting arrest. The wall guard, still loyal to him, became Flint\'s army.',
+    }),
+  ch('kird', 'Kird', '#ea580c', 'fod', 'Miral', 'Duke Kird, the Orange Duke',
+    'Duke of the River Orange; later king',
+    'The Orange Duke, the second most powerful man in the kingdom, with a fleet of warships anchored off the capital as a hint.', false,
+    [{ era: 4, system: 'miralan', body: 'miral', at: 'kingseat' }], {
+      wiki: 'Kird', titles: 'Duke',
+      see: ['melsi', 'abrim-flint', 'beaudilog', 'megalith'],
+      sources: ['The Fires of December'],
+      bio: 'He saw through the carousing diplomat the king sent to spy on him and asked Flint to train his daughter Melsi as a spy instead. He approved when they became involved, reckoning it would keep Flint loyal; when Flint left her, he spread a rumour of theft and sailed his flotilla up the Orange to demand demonstone, which would have made his guns stronger than the king\'s. Flint thought he would make a better monarch than Beaudilog or Petva. After the Megalith, he became king.',
+    }),
+  ch('melsi', 'Melsi', '#fb923c', 'fod', 'Miral', 'Melsi',
+    'Spy; later Minister of Espionage',
+    'Duke Kird\'s daughter, twenty-eight, trained as a spy by Abrim Flint — who broke her heart by leaving.', false,
+    [{ era: 4, system: 'miralan', body: 'miral', at: 'kingseat' }], {
+      wiki: 'Melsi', see: ['kird', 'abrim-flint', 'beaudilog'],
+      sources: ['The Fires of December'],
+      bio: 'A good student. She and Flint grew close and became involved, though he was thirty years older; when she told him she knew he would protect her, he understood that she loved him as a teacher, not as a man, and left without a word. Her father used it to bring his warships to the capital. The king thought of marrying her to settle the duke. When her father took the throne, she became his Minister of Espionage — Flint\'s old office.',
+    }),
+  ch('matin', 'Matin', '#059669', 'fod', 'Miral', 'Matin the reeve',
+    'Reeve of Rivershore; later Minister of Finance',
+    'Rivershore\'s reeve: glasses, lawbooks, a fondness for optical illusions, and the only man in town not afraid of Bark.', false,
+    [{ era: 4, system: 'miralan', body: 'miral', at: 'rivershore' }], {
+      wiki: 'Matin', see: ['december', 'rivershore', 'bark', 'abrim-flint'],
+      sources: ['The Fires of December'],
+      bio: 'A minor noble educated in the capital, who levies taxes, keeps the records and judges serious crimes with Nathenial, and writes to the king that his townsfolk are fierce negotiators. He sleeps on decisions and is helpless against December\'s sigh. In her first vision his wife Rema choked on a sausage and died, and December, leaving Bark, proposed a marriage of convenience and came to love him and his sons. Awake, she saved Rema at the table with the Edak maneuver. He gave her a hundred gold and a letter to the king. Afterwards he became the kingdom\'s Minister of Finance.',
+    }),
+  ch('bark', 'Bark', '#57534e', 'fod', 'Miral', 'Bark',
+    'Assistant foreman of the mines',
+    'A brute from the Rivershore mines whom December was meant to marry. In her vision she did, and left him. He had killed Tap for the silver.', false,
+    [{ era: 4, system: 'miralan', body: 'miral', at: 'rivershore' }], {
+      wiki: 'Bark', see: ['december', 'winters-cache', 'matin'],
+      sources: ['The Fires of December'],
+      bio: '"Sharp as mud and deep as topsoil." Made assistant foreman because nobody wanted to fight him, he paid his tabs at the inn on time and gambled the rest. When his friend Tap found the silver, Bark killed him, hid the body under rocks, and lost the way back. In December\'s vision he grew angrier until he hit her, found the vein, became mayor, and made laws against her. Awake, she refused him and told the reeve about Tap.',
     }),
   ch('whimsy-vessel', "Whimsy's Vessel", '#e879f9', 'stormlight', 'Yolen', 'Whimsy',
     'Vessel of Whimsy',
     'Vessel of Whimsy. Shard named; Vessel unnamed on the page.', true, [
       { era: 0, system: 'yolish', body: 'yolen' },
-      { era: 1, system: 'yolish', body: 'yolen' },
-      { era: 5, system: 'yolish', body: 'yolen' },
     ], {
-      wiki: 'Whimsy', see: ['whimsy', 'reason-vessel', 'invention-vessel', 'frost'],
-      kind: 'vessel', canon: 'wob', arc: 'wat',
-      sources: ['stormlight', 'wob'],
-      bio: 'Holder of Whimsy, one of the sixteen Shards named in modern Cosmere material. No personal name appears in the books; Brandon has treated the Vessel as deliberately obscure. This entry refuses to invent a clever name where the page has none.',
+      wiki: 'Whimsy', see: ['whimsy', 'mercy-vessel', 'frost'],
+      kind: 'vessel', canon: 'wob', arc: 'row',
+      sources: ['Rhythm of War — Harmony\'s letter', 'Word of Brandon'],
+      bio: 'Holder of Whimsy, one of the Shards Harmony wrote to in Rhythm of War. No name appears in the books, and this entry will not invent one.',
     }),
-  ch('reason-vessel', "Reason's Vessel", '#c4b5fd', 'stormlight', 'Yolen', 'Reason',
+  ch('reason-vessel', 'Euridrius', '#c4b5fd', 'stormlight', 'Yolen', 'Reason',
     'Vessel of Reason',
-    'Vessel of Reason. Named in Wind and Truth; personal name not on the page.', true, [
+    'Vessel of Reason. Hid so well that Honor could not find her.', true, [
       { era: 0, system: 'yolish', body: 'yolen' },
-      { era: 1, system: 'yolish', body: 'yolen' },
-      { era: 3, system: 'yolish', body: 'yolen' },
-      { era: 5, system: 'yolish', body: 'yolen' },
     ], {
-      wiki: 'Reason', see: ['reason', 'invention-vessel', 'whimsy-vessel', 'mercy-vessel'],
-      kind: 'vessel', canon: 'wob', arc: 'wat',
-      sources: ['stormlight', 'wob'],
-      bio: 'The Vessel of Reason, a Shard named among others in Wind and Truth. As with Invention, Whimsy, and Mercy, the person under the Intent has not been given a personal name on the page. The atlas records the office and leaves the name blank on purpose.',
+      wiki: 'Euridrius', see: ['reason', 'invention-vessel', 'whimsy-vessel', 'mercy-vessel'],
+      kind: 'vessel', arc: 'wat',
+      sources: ['Wind and Truth ch. 115', 'Word of Brandon'],
+      bio: 'One of the Yolish who took a Shard at the Shattering. Euridrius wanted only to hide from the other Shards\' wars and survive them, and she managed it: when Honor went looking for help against Odium, he could not find her at all.',
     }),
 ];

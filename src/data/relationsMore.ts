@@ -237,6 +237,44 @@ export const RELATIONS_MORE: Relation[] = [
   { a: { kind: 'character', id: 'tanavast' }, b: { kind: 'character', id: 'koravellium' }, type: 'romance', label: 'Partners once', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'rayse' }, b: { kind: 'character', id: 'hoid' }, type: 'rival', label: 'Ancient enmity', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'lord-ruler' }, b: { kind: 'shard', id: 'preservation' }, type: 'bond', label: 'Sliver of Infinity', book: 'mistborn1', canon: C },
+  // Secret History ch. 6:4: he takes up Preservation as Leras dies, and hands it to Vin.
+  { a: { kind: 'character', id: 'kelsier' }, b: { kind: 'shard', id: 'preservation' }, type: 'vessel', label: 'Held it, briefly', book: 'secrethistory', canon: C },
+
+  // --- Shards: who killed whom, who wrote to whom ------------------------
+  // Each is a later book than the Shard card it touches, which is why it is
+  // here and not in shards.ts.
+  // Arcanum Unbounded (Selish system); The Way of Kings ch. 22 epigraph;
+  // Wind and Truth ch. 113 (set against each other, then killed).
+  { a: { kind: 'shard', id: 'odium' }, b: { kind: 'shard', id: 'devotion' }, type: 'rival', label: 'Splintered her, with Dominion', book: 'arcanum', canon: C },
+  { a: { kind: 'shard', id: 'odium' }, b: { kind: 'shard', id: 'dominion' }, type: 'rival', label: 'Splintered him, with Devotion', book: 'arcanum', canon: C },
+  // Arcanum Unbounded (Threnodite system).
+  { a: { kind: 'shard', id: 'odium' }, b: { kind: 'shard', id: 'ambition' }, type: 'rival', label: 'Tore her apart', book: 'arcanum', canon: C },
+  // Rhythm of War ch. 27 epigraph: "where Ambition, Mercy, and Odium clashed".
+  { a: { kind: 'shard', id: 'mercy' }, b: { kind: 'shard', id: 'ambition' }, type: 'rival', label: 'Clashed where she died', book: 'stormlight', arc: 'row', canon: C },
+  // Harmony's letter, Rhythm of War chs. 22–25 epigraphs.
+  { a: { kind: 'character', id: 'sazed' }, b: { kind: 'shard', id: 'mercy' }, type: 'rival', label: '"Mercy worries me"', book: 'stormlight', arc: 'row', canon: C },
+  { a: { kind: 'character', id: 'sazed' }, b: { kind: 'shard', id: 'valor' }, type: 'ally', label: 'Found her reasonable', book: 'stormlight', arc: 'row', canon: C },
+  { a: { kind: 'character', id: 'sazed' }, b: { kind: 'shard', id: 'invention' }, type: 'ally', label: 'One exchange, then silence', book: 'stormlight', arc: 'row', canon: C },
+  { a: { kind: 'character', id: 'sazed' }, b: { kind: 'shard', id: 'whimsy' }, type: 'ally', label: 'Not terribly useful', book: 'stormlight', arc: 'row', canon: C },
+  { a: { kind: 'character', id: 'sazed' }, b: { kind: 'shard', id: 'endowment' }, type: 'ally', label: 'At least she answered', book: 'stormlight', arc: 'row', canon: C },
+  // Endowment's letter, Oathbringer chs. 33–41 epigraphs ("Dearest Cephandrius").
+  { a: { kind: 'character', id: 'hoid' }, b: { kind: 'shard', id: 'endowment' }, type: 'rival', label: '"Dearest Cephandrius" — and no help', book: 'stormlight', arc: 'oathbringer', canon: C },
+  // Oathbringer ch. 40 epigraph: "As for Uli Da … Good riddance."
+  { a: { kind: 'character', id: 'edgli' }, b: { kind: 'character', id: 'uli-da' }, type: 'rival', label: '"Good riddance"', book: 'stormlight', arc: 'oathbringer', canon: C },
+  // Endowment's Wind and Truth letter (chs. 62–65 epigraphs).
+  { a: { kind: 'shard', id: 'valor' }, b: { kind: 'shard', id: 'endowment' }, type: 'ally', label: 'Asked her help; got it at a distance', book: 'stormlight', arc: 'wat', canon: C },
+  // Wind and Truth ch. 115.
+  { a: { kind: 'character', id: 'tanavast' }, b: { kind: 'shard', id: 'valor' }, type: 'ally', label: 'Looked for her; never found her', book: 'stormlight', arc: 'wat', canon: C },
+  { a: { kind: 'character', id: 'tanavast' }, b: { kind: 'character', id: 'invention-vessel' }, type: 'rival', label: 'Turned down his call for help', book: 'stormlight', arc: 'wat', canon: C },
+  { a: { kind: 'character', id: 'invention-vessel' }, b: { kind: 'shard', id: 'invention' }, type: 'vessel', label: 'Holds Invention', book: 'stormlight', arc: 'wat', canon: C },
+  { a: { kind: 'character', id: 'reason-vessel' }, b: { kind: 'shard', id: 'reason' }, type: 'vessel', label: 'Holds Reason', book: 'stormlight', arc: 'wat', canon: C },
+  // Isles of the Emberdark ch. 42 (its people call themselves Invention's); ch. 25 (built before the Shattering).
+  { a: { kind: 'shard', id: 'invention' }, b: { kind: 'body', id: 'grand-apparatus' }, type: 'ally', label: 'Its people call themselves Invention\'s', book: 'emberdark', canon: C },
+  // The Lost Metal ch. 19.
+  // The Lost Metal chs. 18–19, 66, 69.
+  // Oathbringer chs. 46–50 epigraphs: Patji's letter, and the Obrodai avatar taught to dislike him.
+  { a: { kind: 'character', id: 'hoid' }, b: { kind: 'shard', id: 'autonomy' }, type: 'rival', label: 'Her avatars told him to stay away', book: 'stormlight', arc: 'oathbringer', canon: C },
+  { a: { kind: 'shard', id: 'autonomy' }, b: { kind: 'body', id: 'obrodai-world' }, type: 'ally', label: 'Raising a new avatar there', book: 'stormlight', arc: 'oathbringer', canon: C },
 
   // --- Scadrial Era 2 ---------------------------------------------------
   { a: { kind: 'character', id: 'wax' }, b: { kind: 'character', id: 'telsin' }, type: 'family', label: 'Siblings', book: 'mistborn2', canon: C },
@@ -345,9 +383,9 @@ export const RELATIONS_MORE: Relation[] = [
   { a: { kind: 'character', id: 'ais' }, b: { kind: 'character', id: 'sharezan' }, type: 'rival', label: 'Hunting him', book: 'whitesand', canon: C },
   { a: { kind: 'character', id: 'khriss' }, b: { kind: 'character', id: 'gevalden' }, type: 'romance', label: 'Betrothed', book: 'whitesand', canon: C },
   { a: { kind: 'character', id: 'elorin' }, b: { kind: 'character', id: 'kenton' }, type: 'rival', label: 'Betrayed the Diem', book: 'whitesand', arc: 'ws3', canon: C },
-  { a: { kind: 'character', id: 'galladon' }, b: { kind: 'character', id: 'demoux' }, type: 'ally', label: 'Seventeenth Shard', book: 'stormlight', canon: C },
-  { a: { kind: 'character', id: 'demoux' }, b: { kind: 'character', id: 'baon' }, type: 'ally', label: 'Seventeenth Shard', book: 'stormlight', canon: C },
-  { a: { kind: 'character', id: 'baon' }, b: { kind: 'character', id: 'galladon' }, type: 'ally', label: 'Seventeenth Shard', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'galladon' }, b: { kind: 'character', id: 'demoux' }, type: 'ally', label: 'Seventeenth Shard', book: 'stormlight', canon: W },
+  { a: { kind: 'character', id: 'demoux' }, b: { kind: 'character', id: 'baon' }, type: 'ally', label: 'Seventeenth Shard', book: 'stormlight', canon: W },
+  { a: { kind: 'character', id: 'baon' }, b: { kind: 'character', id: 'galladon' }, type: 'ally', label: 'Seventeenth Shard', book: 'stormlight', canon: W },
   // --- Taldain / shorts / secret projects -------------------------------
   { a: { kind: 'character', id: 'kenton' }, b: { kind: 'character', id: 'baon' }, type: 'ally', label: 'Diem & guard', book: 'whitesand', canon: C },
   { a: { kind: 'character', id: 'kenton' }, b: { kind: 'character', id: 'khriss' }, type: 'ally', label: 'Dayside politics', book: 'whitesand', canon: C },
@@ -363,10 +401,109 @@ export const RELATIONS_MORE: Relation[] = [
   { a: { kind: 'character', id: 'tress' }, b: { kind: 'character', id: 'xisis' }, type: 'rival', label: 'Bargained under the sea', book: 'tress', canon: C },
   { a: { kind: 'character', id: 'tress' }, b: { kind: 'character', id: 'riina' }, type: 'rival', label: 'Broke the curse', book: 'tress', canon: C },
   { a: { kind: 'character', id: 'charlie' }, b: { kind: 'character', id: 'riina' }, type: 'rival', label: 'Her curse', book: 'tress', canon: C },
-  { a: { kind: 'character', id: 'hoid' }, b: { kind: 'character', id: 'riina' }, type: 'rival', label: 'Ire trouble', book: 'tress', canon: C },
+  { a: { kind: 'character', id: 'hoid' }, b: { kind: 'character', id: 'riina' }, type: 'rival', label: 'The bet: break her curse, become Elantrian', book: 'tress', canon: C },
+  // Riina is one of the Ire and an Elantrian, but that is Tress's news, so it
+  // is a sentence here rather than a name on the older orders' rosters.
+  { a: { kind: 'character', id: 'riina' }, b: { kind: 'org', id: 'the-ire' }, type: 'bond', label: 'One of the Ire', book: 'tress', canon: C },
+  { a: { kind: 'character', id: 'riina' }, b: { kind: 'org', id: 'elantrians' }, type: 'bond', label: 'An Elantrian', book: 'tress', canon: C },
   { a: { kind: 'character', id: 'nikli' }, b: { kind: 'character', id: 'sleepless-hordes' }, type: 'family', label: 'One of the Sleepless', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'sigzil' }, b: { kind: 'org', id: 'night-brigade' }, type: 'rival', label: 'Hunted by them', book: 'sunlit', canon: C },
   { a: { kind: 'character', id: 'design' }, b: { kind: 'character', id: 'pattern' }, type: 'ally', label: 'Fellow Cryptics', book: 'stormlight', canon: C },
+
+  // --- Tress of the Emerald Sea -------------------------------------------
+  // Coppermind: Crow, Xisisrefliel, Riina, Ulaam, Charlie, Charlie's father, Dirk, Lem,
+  // Ulba, Brick, Laggart, Weev, Verdant King, Crow's Song, Hoid (tress 5–64, epilogue).
+  { a: { kind: 'character', id: 'tress' }, b: { kind: 'character', id: 'crow' }, type: 'rival', label: 'Traded her to the dragon', book: 'tress', arc: 'tress', canon: C },
+  { a: { kind: 'character', id: 'crow' }, b: { kind: 'character', id: 'xisis' }, type: 'ally', label: 'His servant now', book: 'tress', arc: 'tress', canon: C },
+  { a: { kind: 'character', id: 'crow' }, b: { kind: 'character', id: 'laggart' }, type: 'ally', label: 'Captain & first mate', book: 'tress', arc: 'tress', canon: C },
+  { a: { kind: 'character', id: 'crow' }, b: { kind: 'character', id: 'weev' }, type: 'rival', label: 'Had him thrown overboard', book: 'tress', arc: 'tress', canon: C },
+  { a: { kind: 'character', id: 'tress' }, b: { kind: 'character', id: 'laggart' }, type: 'ally', label: 'Spared him', book: 'tress', arc: 'tress', canon: C },
+  { a: { kind: 'character', id: 'tress' }, b: { kind: 'character', id: 'salay' }, type: 'ally', label: 'Found her father', book: 'tress', arc: 'tress', canon: C },
+  { a: { kind: 'character', id: 'tress' }, b: { kind: 'character', id: 'ulaam' }, type: 'ally', label: 'Ship\'s surgeon', book: 'tress', arc: 'tress', canon: C },
+  { a: { kind: 'character', id: 'tress' }, b: { kind: 'character', id: 'lem' }, type: 'family', label: 'Daughter & father', book: 'tress', arc: 'tress', canon: C },
+  { a: { kind: 'character', id: 'tress' }, b: { kind: 'character', id: 'ulba' }, type: 'family', label: 'Daughter & mother', book: 'tress', arc: 'tress', canon: C },
+  { a: { kind: 'character', id: 'lem' }, b: { kind: 'character', id: 'ulba' }, type: 'romance', label: 'Married', book: 'tress', arc: 'tress', canon: C },
+  { a: { kind: 'character', id: 'tress' }, b: { kind: 'character', id: 'brick' }, type: 'ally', label: 'Got her off the Rock', book: 'tress', arc: 'tress', canon: C },
+  { a: { kind: 'character', id: 'charlie' }, b: { kind: 'character', id: 'duke-diggen' }, type: 'family', label: 'Son & father', book: 'tress', arc: 'tress', canon: C },
+  { a: { kind: 'character', id: 'duke-diggen' }, b: { kind: 'character', id: 'dirk' }, type: 'family', label: 'Uncle & adopted heir', book: 'tress', arc: 'tress', canon: C },
+  { a: { kind: 'character', id: 'charlie' }, b: { kind: 'character', id: 'dirk' }, type: 'family', label: 'Cousins', book: 'tress', arc: 'tress', canon: C },
+  { a: { kind: 'character', id: 'verdant-king' }, b: { kind: 'character', id: 'charlie' }, type: 'rival', label: 'Sent him to the Sorceress', book: 'tress', arc: 'tress', canon: C },
+  { a: { kind: 'character', id: 'hoid' }, b: { kind: 'character', id: 'charlie' }, type: 'mentor', label: 'Rewrote his curse', book: 'tress', arc: 'tress', canon: C },
+  { a: { kind: 'character', id: 'hoid' }, b: { kind: 'character', id: 'ulaam' }, type: 'ally', label: 'Old friends', book: 'tress', arc: 'tress', canon: C },
+  { a: { kind: 'character', id: 'ulaam' }, b: { kind: 'character', id: 'riina' }, type: 'rival', label: 'She keeps acid for him', book: 'tress', arc: 'tress', canon: C },
+  { a: { kind: 'character', id: 'xisis' }, b: { kind: 'character', id: 'riina' }, type: 'rival', label: 'The one being he fears', book: 'tress', arc: 'tress', canon: C },
+  { a: { kind: 'character', id: 'tress' }, b: { kind: 'org', id: 'crows-song' }, type: 'bond', label: 'Sprouter, then captain', book: 'tress', arc: 'tress', canon: C },
+  { a: { kind: 'character', id: 'crow' }, b: { kind: 'org', id: 'crows-song' }, type: 'bond', label: 'Captain, until the dragon', book: 'tress', arc: 'tress', canon: C },
+  // Gated: Hoid wins the bet and becomes an Elantrian on Lumar (tress 64). His
+  // card stays as it is; this is the sentence that says so.
+  { a: { kind: 'character', id: 'hoid' }, b: { kind: 'org', id: 'elantrians' }, type: 'bond', label: 'Became one on Lumar', book: 'tress', arc: 'tress', canon: C },
+  // Gated on Wind and Truth (sa5 147): Hoid regrows from the largest living piece of himself.
+  { a: { kind: 'character', id: 'ulaam' }, b: { kind: 'character', id: 'hoid' }, type: 'ally', label: 'Kept a culture of his cells', book: 'stormlight', arc: 'wat', canon: C },
+
+  // --- Yumi and the Nightmare Painter -------------------------------------
+  // Coppermind: Nikaro, Akane, Izumakamo, Masaka, Yumi, Liyun, Design, Gyundok, Father machine (yumi 2–41, ae).
+  { a: { kind: 'character', id: 'painter' }, b: { kind: 'character', id: 'akane' }, type: 'ally', label: 'Friends, then not, then again', book: 'yumi', arc: 'yumi', canon: C },
+  { a: { kind: 'character', id: 'painter' }, b: { kind: 'character', id: 'tojin' }, type: 'ally', label: 'First to trust him again', book: 'yumi', arc: 'yumi', canon: C },
+  { a: { kind: 'character', id: 'painter' }, b: { kind: 'character', id: 'masaka' }, type: 'ally', label: 'Upper-school friends', book: 'yumi', arc: 'yumi', canon: C },
+  { a: { kind: 'character', id: 'painter' }, b: { kind: 'character', id: 'izzy' }, type: 'ally', label: 'Upper-school friends', book: 'yumi', arc: 'yumi', canon: C },
+  { a: { kind: 'character', id: 'akane' }, b: { kind: 'character', id: 'tojin' }, type: 'ally', label: 'Patrol partners', book: 'yumi', arc: 'yumi', canon: C },
+  { a: { kind: 'character', id: 'masaka' }, b: { kind: 'character', id: 'izzy' }, type: 'ally', label: 'Patrol partners', book: 'yumi', arc: 'yumi', canon: C },
+  { a: { kind: 'character', id: 'yumi' }, b: { kind: 'character', id: 'liyun' }, type: 'mentor', label: 'Yoki-hijo & warden', book: 'yumi', arc: 'yumi', canon: C },
+  { a: { kind: 'character', id: 'yumi' }, b: { kind: 'character', id: 'hwanji' }, type: 'ally', label: 'Attendant', book: 'yumi', arc: 'yumi', canon: C },
+  { a: { kind: 'character', id: 'yumi' }, b: { kind: 'character', id: 'chaeyung' }, type: 'ally', label: 'Attendant', book: 'yumi', arc: 'yumi', canon: C },
+  { a: { kind: 'character', id: 'yumi' }, b: { kind: 'character', id: 'akane' }, type: 'ally', label: 'Took her shopping', book: 'yumi', arc: 'yumi', canon: C },
+  { a: { kind: 'character', id: 'yumi' }, b: { kind: 'character', id: 'masaka' }, type: 'ally', label: 'Kept her secret', book: 'yumi', arc: 'yumi', canon: C },
+  { a: { kind: 'character', id: 'yumi' }, b: { kind: 'character', id: 'samjae' }, type: 'ally', label: 'Girlhood friends, separated', book: 'yumi', arc: 'yumi', canon: C },
+  { a: { kind: 'character', id: 'liyun' }, b: { kind: 'character', id: 'father-machine' }, type: 'rival', label: 'Made her a nightmare', book: 'yumi', arc: 'yumi', canon: C },
+  { a: { kind: 'character', id: 'gyundok' }, b: { kind: 'character', id: 'father-machine' }, type: 'ally', label: 'Built it, then served it', book: 'yumi', arc: 'yumi', canon: C },
+  { a: { kind: 'character', id: 'yumi' }, b: { kind: 'character', id: 'father-machine' }, type: 'rival', label: 'Out-stacked it', book: 'yumi', arc: 'yumi', canon: C },
+  { a: { kind: 'character', id: 'painter' }, b: { kind: 'org', id: 'the-dreamwatch' }, type: 'rival', label: 'Turned down; then the battle cry', book: 'yumi', arc: 'yumi', canon: C },
+  { a: { kind: 'character', id: 'painter' }, b: { kind: 'org', id: 'painter-guild' }, type: 'bond', label: 'Nightmare painter', book: 'yumi', arc: 'yumi', canon: C },
+  { a: { kind: 'character', id: 'yumi' }, b: { kind: 'org', id: 'yoki-hijo-order' }, type: 'bond', label: 'Yoki-hijo', book: 'yumi', arc: 'yumi', canon: C },
+  // Gated: Yumi facts about Stormlight people (Hoid page; Design; yumi 5, 17, 21, 33, 39, ae).
+  { a: { kind: 'character', id: 'hoid' }, b: { kind: 'body', id: 'komashi' }, type: 'ally', label: 'Frozen there, as a coatrack', book: 'yumi', arc: 'yumi', canon: C },
+  { a: { kind: 'character', id: 'hoid' }, b: { kind: 'character', id: 'yumi' }, type: 'ally', label: 'Felt her through a Connection', book: 'yumi', arc: 'yumi', canon: C },
+  { a: { kind: 'character', id: 'design' }, b: { kind: 'character', id: 'masaka' }, type: 'ally', label: 'Knows she is Sleepless', book: 'yumi', arc: 'yumi', canon: C },
+  { a: { kind: 'character', id: 'design' }, b: { kind: 'character', id: 'painter' }, type: 'ally', label: 'His noodle shop', book: 'yumi', arc: 'yumi', canon: C },
+  { a: { kind: 'character', id: 'masaka' }, b: { kind: 'org', id: 'sleepless-order' }, type: 'bond', label: 'Sixtieth horde, Natricatich strain', book: 'yumi', arc: 'yumi', canon: C },
+
+  // --- The Sunlit Man -----------------------------------------------------
+  // Coppermind: Rebeke/Elegy/Divinity Salvage, Cinder King, Greater Good, Contemplation,
+  // Night Brigade, Admiral, Truth-Is-Waiting, TimeTellers, Thomos (tsm 5–52, epilogue).
+  { a: { kind: 'character', id: 'rebeke' }, b: { kind: 'character', id: 'elegy' }, type: 'family', label: 'Sisters', book: 'sunlit', arc: 'sunlit', canon: C },
+  { a: { kind: 'character', id: 'rebeke' }, b: { kind: 'character', id: 'divinity-salvage' }, type: 'family', label: 'Sister & brother', book: 'sunlit', arc: 'sunlit', canon: C },
+  { a: { kind: 'character', id: 'elegy' }, b: { kind: 'character', id: 'divinity-salvage' }, type: 'family', label: 'Sister & brother', book: 'sunlit', arc: 'sunlit', canon: C },
+  { a: { kind: 'character', id: 'rebeke' }, b: { kind: 'character', id: 'sigzil' }, type: 'ally', label: 'Out of the arena together', book: 'sunlit', arc: 'sunlit', canon: C },
+  { a: { kind: 'character', id: 'elegy' }, b: { kind: 'character', id: 'cinder-king' }, type: 'rival', label: 'Made her Charred', book: 'sunlit', arc: 'sunlit', canon: C },
+  { a: { kind: 'character', id: 'rebeke' }, b: { kind: 'character', id: 'cinder-king' }, type: 'rival', label: 'Took his city off him', book: 'sunlit', arc: 'sunlit', canon: C },
+  { a: { kind: 'character', id: 'sigzil' }, b: { kind: 'character', id: 'cinder-king' }, type: 'rival', label: 'Left him for the sun', book: 'sunlit', arc: 'sunlit', canon: C },
+  { a: { kind: 'character', id: 'cinder-king' }, b: { kind: 'character', id: 'divinity-salvage' }, type: 'rival', label: 'Shot him in the arena', book: 'sunlit', arc: 'sunlit', canon: C },
+  { a: { kind: 'character', id: 'contemplation' }, b: { kind: 'character', id: 'sigzil' }, type: 'ally', label: 'Named him Zellion', book: 'sunlit', arc: 'sunlit', canon: C },
+  { a: { kind: 'character', id: 'solemnity-divine' }, b: { kind: 'character', id: 'sigzil' }, type: 'ally', label: 'Built his engines', book: 'sunlit', arc: 'sunlit', canon: C },
+  { a: { kind: 'character', id: 'sigzil' }, b: { kind: 'character', id: 'thomos' }, type: 'ally', label: 'Carried him out', book: 'sunlit', arc: 'sunlit', canon: C },
+  { a: { kind: 'character', id: 'compassion' }, b: { kind: 'org', id: 'greater-good' }, type: 'bond', label: 'Eldest member', book: 'sunlit', arc: 'sunlit', canon: C },
+  { a: { kind: 'character', id: 'confidence' }, b: { kind: 'org', id: 'greater-good' }, type: 'bond', label: 'Member', book: 'sunlit', arc: 'sunlit', canon: C },
+  { a: { kind: 'character', id: 'contemplation' }, b: { kind: 'org', id: 'greater-good' }, type: 'bond', label: 'Member', book: 'sunlit', arc: 'sunlit', canon: C },
+  { a: { kind: 'character', id: 'zeal' }, b: { kind: 'org', id: 'greater-good' }, type: 'ally', label: 'Their field commander', book: 'sunlit', arc: 'sunlit', canon: C },
+  { a: { kind: 'character', id: 'jeffrey-jeffrey' }, b: { kind: 'org', id: 'greater-good' }, type: 'ally', label: 'Their steward', book: 'sunlit', arc: 'sunlit', canon: C },
+  { a: { kind: 'character', id: 'night-brigade-admiral' }, b: { kind: 'org', id: 'night-brigade' }, type: 'bond', label: 'Commander', book: 'sunlit', arc: 'sunlit', canon: C },
+  { a: { kind: 'character', id: 'truth-is-waiting' }, b: { kind: 'org', id: 'night-brigade' }, type: 'bond', label: 'Staff sergeant', book: 'sunlit', arc: 'sunlit', canon: C },
+  { a: { kind: 'character', id: 'cinder-king' }, b: { kind: 'org', id: 'timetellers' }, type: 'ally', label: 'Sunhearts for secrets', book: 'sunlit', arc: 'sunlit', canon: C },
+  { a: { kind: 'character', id: 'sigzil' }, b: { kind: 'org', id: 'timetellers' }, type: 'rival', label: 'Asylum refused, sunheart taken', book: 'sunlit', arc: 'sunlit', canon: C },
+  { a: { kind: 'character', id: 'cinder-king' }, b: { kind: 'org', id: 'union-canticle' }, type: 'bond', label: 'Built it, lost it', book: 'sunlit', arc: 'sunlit', canon: C },
+  // Gated: Hoid on Canticle is an illusion along Sigzil's Connection (tsm 10); the
+  // Dawnshard he carried (tsm 11, 20) is named Exist only in Wind and Truth.
+  { a: { kind: 'character', id: 'hoid' }, b: { kind: 'character', id: 'sigzil' }, type: 'mentor', label: 'An apology, by Connection', book: 'sunlit', arc: 'sunlit', canon: C },
+  { a: { kind: 'character', id: 'sigzil' }, b: { kind: 'dawnshard', id: 'dawnshard-exist' }, type: 'bond', label: 'Carried it, then passed it on', book: 'sunlit', arc: 'sunlit', canon: C },
+  // Gated on Wind and Truth (sa5 135, 147): Aux was Szeth's highspren, 12124.
+
+  // --- Elsecaller ---------------------------------------------------------
+  // Coppermind: Hwynn Tyvneri, Lorieta, Elsecaller (short story).
+  { a: { kind: 'character', id: 'jasnah' }, b: { kind: 'character', id: 'hwynn-tyvneri' }, type: 'mentor', label: 'Told her the cosmere exists', book: 'elsecaller', arc: 'elsecaller', canon: C },
+  { a: { kind: 'character', id: 'hwynn-tyvneri' }, b: { kind: 'character', id: 'lorieta' }, type: 'family', label: 'Taking her home', book: 'elsecaller', arc: 'elsecaller', canon: C },
+  { a: { kind: 'character', id: 'jasnah' }, b: { kind: 'character', id: 'lorieta' }, type: 'ally', label: 'Three prophecies', book: 'elsecaller', arc: 'elsecaller', canon: C },
+  { a: { kind: 'character', id: 'jasnah' }, b: { kind: 'character', id: 'hoid' }, type: 'ally', label: 'He admits to other worlds', book: 'elsecaller', arc: 'elsecaller', canon: C },
+  { a: { kind: 'character', id: 'hwynn-tyvneri' }, b: { kind: 'body', id: 'rellam' }, type: 'ally', label: 'Homeworld', book: 'elsecaller', arc: 'elsecaller', canon: C },
 
   // --- Org membership edges ---------------------------------------------
   { a: { kind: 'character', id: 'shallan' }, b: { kind: 'org', id: 'ghostbloods' }, type: 'ally', label: 'Joined as Veil', book: 'stormlight', canon: C },
@@ -374,6 +511,10 @@ export const RELATIONS_MORE: Relation[] = [
   { a: { kind: 'character', id: 'felt' }, b: { kind: 'org', id: 'ghostbloods' }, type: 'bond', label: 'Ghostblood agent on Roshar', book: 'stormlight', arc: 'wat', canon: C },
   { a: { kind: 'character', id: 'mraize' }, b: { kind: 'org', id: 'ghostbloods' }, type: 'bond', label: 'Roshar cell', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'frost' }, b: { kind: 'org', id: 'seventeenth-shard' }, type: 'bond', label: 'Of their number', book: 'stormlight', canon: C },
+  // Same letter: "following a false trail I left for them".
+  { a: { kind: 'character', id: 'hoid' }, b: { kind: 'org', id: 'seventeenth-shard' }, type: 'rival', label: 'Left them a false trail', book: 'stormlight', canon: C },
+  // WoB 8134: she was Seventeenth Shard before she was a Ghostblood.
+  { a: { kind: 'character', id: 'iyatil' }, b: { kind: 'org', id: 'seventeenth-shard' }, type: 'ally', label: 'A member, once', book: 'stormlight', arc: 'wor', canon: W },
   { a: { kind: 'character', id: 'gavilar' }, b: { kind: 'org', id: 'sons-of-honor' }, type: 'bond', label: 'Secret society', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'telsin' }, b: { kind: 'org', id: 'the-set' }, type: 'bond', label: 'Set leadership', book: 'mistborn2', canon: C },
   { a: { kind: 'character', id: 'sazed' }, b: { kind: 'org', id: 'keepers' }, type: 'bond', label: 'Terris Keeper', book: 'mistborn1', canon: C },
@@ -393,18 +534,83 @@ export const RELATIONS_MORE: Relation[] = [
   { a: { kind: 'character', id: 'silence' }, b: { kind: 'body', id: 'threnody' }, type: 'ally', label: 'Forests of Hell', book: 'shadowsforsilence', canon: C },
   { a: { kind: 'character', id: 'raoden' }, b: { kind: 'body', id: 'sel' }, type: 'ally', label: 'Arelon', book: 'elantris', canon: C },
   { a: { kind: 'character', id: 'vasher' }, b: { kind: 'body', id: 'nalthis' }, type: 'ally', label: 'Origin world', book: 'warbreaker', canon: C },
-  { a: { kind: 'character', id: 'hoid' }, b: { kind: 'dawnshard', id: 'dawnshard-change' }, type: 'bond', label: 'Held a Dawnshard once', book: 'core', canon: W },
+  // He held Exist, not Change (The Sunlit Man ch. 21; Wind and Truth ch. 146).
+  { a: { kind: 'character', id: 'hoid' }, b: { kind: 'dawnshard', id: 'dawnshard-exist' }, type: 'bond', label: 'Bore it for millennia', book: 'sunlit', canon: C },
+  // Wind and Truth Interlude 15: their Dawnshards nearly pulled them together; they agreed never to meet again.
+  { a: { kind: 'character', id: 'hoid' }, b: { kind: 'character', id: 'rysn' }, type: 'ally', label: 'Two Dawnshards in one room', book: 'stormlight', arc: 'wat', canon: C },
+  // --- Drominad / Emberdark ---------------------------------------------
+  // Isles of the Emberdark. Every sentence here waits for that book, even
+  // where one end is a Sixth of the Dusk or a Tress character.
+  { a: { kind: 'character', id: 'dusk' }, b: { kind: 'character', id: 'rokke' }, type: 'bond', label: 'Vathi\'s gift', book: 'emberdark', canon: C },
+  { a: { kind: 'character', id: 'dusk' }, b: { kind: 'character', id: 'illistandrista' }, type: 'ally', label: 'Her Navigator', book: 'emberdark', canon: C },
+  { a: { kind: 'character', id: 'dusk' }, b: { kind: 'character', id: 'dakwara' }, type: 'rival', label: 'Bested it; it serves him', book: 'emberdark', canon: C },
+  { a: { kind: 'character', id: 'dusk' }, b: { kind: 'character', id: 'chrysalis' }, type: 'ally', label: 'Saw through her eyes', book: 'emberdark', canon: C },
+  { a: { kind: 'character', id: 'dusk' }, b: { kind: 'character', id: 'dajer' }, type: 'rival', label: 'Prisoner, and liar', book: 'emberdark', canon: C },
+  { a: { kind: 'character', id: 'dusk' }, b: { kind: 'character', id: 'cakoban' }, type: 'ally', label: 'Navigators, millennia apart', book: 'emberdark', canon: C },
+  { a: { kind: 'character', id: 'dusk' }, b: { kind: 'org', id: 'first-company' }, type: 'ally', label: 'Trained its Navigators', book: 'emberdark', canon: C },
+  { a: { kind: 'character', id: 'vathi' }, b: { kind: 'org', id: 'first-company' }, type: 'bond', label: 'President', book: 'emberdark', canon: C },
+  { a: { kind: 'character', id: 'vathi' }, b: { kind: 'character', id: 'dakwara' }, type: 'ally', label: 'Hers, by office', book: 'emberdark', canon: C },
+  { a: { kind: 'character', id: 'vathi' }, b: { kind: 'character', id: 'xisis' }, type: 'ally', label: 'A deal for the Navigators', book: 'emberdark', canon: C },
+  { a: { kind: 'character', id: 'vathi' }, b: { kind: 'character', id: 'admiral-rattu' }, type: 'rival', label: 'Votes of no confidence', book: 'emberdark', canon: C },
+  { a: { kind: 'character', id: 'vathi' }, b: { kind: 'character', id: 'second-of-the-soil' }, type: 'ally', label: 'Her vice president', book: 'emberdark', canon: C },
+  { a: { kind: 'character', id: 'cakoban' }, b: { kind: 'character', id: 'frost' }, type: 'ally', label: 'Frost buried him', book: 'emberdark', canon: C },
+  { a: { kind: 'character', id: 'cakoban' }, b: { kind: 'character', id: 'dakwara' }, type: 'rival', label: 'Bound it as he died', book: 'emberdark', canon: C },
+  { a: { kind: 'character', id: 'dajer' }, b: { kind: 'character', id: 'dakwara' }, type: 'rival', label: 'Killed by it', book: 'emberdark', canon: C },
+  { a: { kind: 'character', id: 'dajer' }, b: { kind: 'character', id: 'illistandrista' }, type: 'rival', label: 'Her captor', book: 'emberdark', canon: C },
+  { a: { kind: 'character', id: 'dajer' }, b: { kind: 'character', id: 'saja' }, type: 'rival', label: 'She was building a case', book: 'emberdark', canon: C },
+  { a: { kind: 'character', id: 'dajer' }, b: { kind: 'character', id: 'esandi' }, type: 'ally', label: 'She owed him a favour', book: 'emberdark', canon: C },
+  { a: { kind: 'character', id: 'illistandrista' }, b: { kind: 'character', id: 'xisis' }, type: 'rival', label: 'Bargained for the Dynamic', book: 'emberdark', canon: C },
+  { a: { kind: 'character', id: 'illistandrista' }, b: { kind: 'character', id: 'crow' }, type: 'rival', label: 'Mutiny', book: 'emberdark', canon: C },
+  { a: { kind: 'character', id: 'illistandrista' }, b: { kind: 'character', id: 'chrysalis' }, type: 'ally', label: 'Went back for her', book: 'emberdark', canon: C },
+  { a: { kind: 'character', id: 'illistandrista' }, b: { kind: 'character', id: 'crux' }, type: 'ally', label: 'A rescue, and a map', book: 'emberdark', canon: C },
+  { a: { kind: 'character', id: 'crux' }, b: { kind: 'character', id: 'nol' }, type: 'romance', label: 'Married', book: 'emberdark', canon: C },
+  { a: { kind: 'character', id: 'chrysalis' }, b: { kind: 'character', id: 'zeetzi' }, type: 'rival', label: 'Her kind enslaved his', book: 'emberdark', canon: C },
+  { a: { kind: 'character', id: 'chrysalis' }, b: { kind: 'character', id: 'yadramak' }, type: 'ally', label: 'His spy', book: 'emberdark', canon: C },
+  { a: { kind: 'character', id: 'leonore' }, b: { kind: 'character', id: 'zeetzi' }, type: 'ally', label: 'Close friends, maybe more', book: 'emberdark', canon: C },
+  { a: { kind: 'character', id: 'nazh' }, b: { kind: 'character', id: 'dajer' }, type: 'rival', label: 'The shade prison', book: 'emberdark', canon: C },
+  { a: { kind: 'character', id: 'crow' }, b: { kind: 'character', id: 'xisis' }, type: 'ally', label: 'His captain', book: 'emberdark', canon: C },
+  { a: { kind: 'character', id: 'hoid' }, b: { kind: 'character', id: 'chrysalis' }, type: 'ally', label: 'Gave her a berth', book: 'emberdark', canon: C },
+  { a: { kind: 'character', id: 'hoid' }, b: { kind: 'org', id: 'dynamic-crew' }, type: 'ally', label: 'Picked the crew, then left', book: 'emberdark', canon: C },
+  { a: { kind: 'character', id: 'crow' }, b: { kind: 'org', id: 'dynamic-crew' }, type: 'rival', label: 'Captain until the mutiny', book: 'emberdark', canon: C },
+  { a: { kind: 'character', id: 'nazh' }, b: { kind: 'org', id: 'dynamic-crew' }, type: 'ally', label: 'Ship security, as a shade', book: 'emberdark', canon: C },
+  { a: { kind: 'character', id: 'dusk' }, b: { kind: 'org', id: 'dynamic-crew' }, type: 'ally', label: 'Signed on as Navigator', book: 'emberdark', canon: C },
+  { a: { kind: 'character', id: 'xisis' }, b: { kind: 'org', id: 'dynamic-crew' }, type: 'ally', label: 'Inherited it with its debts', book: 'emberdark', canon: C },
+  { a: { kind: 'character', id: 'dajer' }, b: { kind: 'org', id: 'malwish-planetary-guard' }, type: 'bond', label: 'Colonel', book: 'emberdark', canon: C },
+  { a: { kind: 'character', id: 'leonore' }, b: { kind: 'org', id: 'malwish' }, type: 'rival', label: 'Deserted their army', book: 'emberdark', canon: C },
   // --- Miral --------------------------------------------------------------
   { a: { kind: 'character', id: 'december' }, b: { kind: 'character', id: 'beautiful' }, type: 'bond', label: 'Zuhel bond', book: 'fod', canon: C },
   { a: { kind: 'character', id: 'december' }, b: { kind: 'character', id: 'abrim-flint' }, type: 'romance', label: 'Married', book: 'fod', canon: C },
   { a: { kind: 'character', id: 'december' }, b: { kind: 'character', id: 'amaal' }, type: 'ally', label: 'Upriver together', book: 'fod', canon: C },
   { a: { kind: 'character', id: 'december' }, b: { kind: 'character', id: 'tamantha' }, type: 'ally', label: 'Lady & lady\'s maid', book: 'fod', canon: C },
   { a: { kind: 'character', id: 'december' }, b: { kind: 'character', id: 'dmitrovik' }, type: 'ally', label: 'Her head butler', book: 'fod', canon: C },
-  { a: { kind: 'character', id: 'december' }, b: { kind: 'character', id: 'geoffrim-satin' }, type: 'rival', label: 'He freed the Megalith', book: 'fod', canon: C },
+  { a: { kind: 'character', id: 'december' }, b: { kind: 'character', id: 'geoffrim-satin' }, type: 'rival', label: 'He wanted the Megalith out', book: 'fod', canon: C },
   { a: { kind: 'character', id: 'december' }, b: { kind: 'character', id: 'hoid' }, type: 'mentor', label: 'Two visions', book: 'fod', canon: C },
   { a: { kind: 'character', id: 'december' }, b: { kind: 'character', id: 'vasher' }, type: 'ally', label: 'A plea across worlds', book: 'fod', canon: C },
   { a: { kind: 'character', id: 'december' }, b: { kind: 'body', id: 'miral' }, type: 'ally', label: 'Rivershore to Kingseat', book: 'fod', canon: C },
   { a: { kind: 'character', id: 'vasher' }, b: { kind: 'body', id: 'miral' }, type: 'ally', label: 'The Prophet', book: 'fod', canon: C },
   { a: { kind: 'character', id: 'hoid' }, b: { kind: 'shard', id: 'valor' }, type: 'rival', label: 'Her trap in Kingseat', book: 'fod', canon: C },
   { a: { kind: 'character', id: 'amaal' }, b: { kind: 'org', id: 'order-of-three-mandata' }, type: 'ally', label: 'Member', book: 'fod', canon: C },
+  { a: { kind: 'character', id: 'petva' }, b: { kind: 'character', id: 'geoffrim-satin' }, type: 'ally', label: 'Partners in the plot', book: 'fod', canon: C },
+  { a: { kind: 'character', id: 'petva' }, b: { kind: 'character', id: 'beaudilog' }, type: 'family', label: 'Niece & uncle', book: 'fod', canon: C },
+  { a: { kind: 'character', id: 'petva' }, b: { kind: 'character', id: 'december' }, type: 'rival', label: 'Used her, then offered to train her', book: 'fod', canon: C },
+  { a: { kind: 'character', id: 'beaudilog' }, b: { kind: 'character', id: 'geoffrim-satin' }, type: 'rival', label: 'Killed by his advisor', book: 'fod', canon: C },
+  { a: { kind: 'character', id: 'beaudilog' }, b: { kind: 'character', id: 'abrim-flint' }, type: 'rival', label: 'His spymaster, then his prisoner', book: 'fod', canon: C },
+  { a: { kind: 'character', id: 'abrim-flint' }, b: { kind: 'character', id: 'geoffrim-satin' }, type: 'rival', label: 'Took his power', book: 'fod', canon: C },
+  { a: { kind: 'character', id: 'abrim-flint' }, b: { kind: 'character', id: 'melsi' }, type: 'mentor', label: 'Trained her as a spy', book: 'fod', canon: C },
+  { a: { kind: 'character', id: 'abrim-flint' }, b: { kind: 'character', id: 'drakes' }, type: 'ally', label: 'Old friends; Drakes arrested him', book: 'fod', canon: C },
+  { a: { kind: 'character', id: 'abrim-flint' }, b: { kind: 'character', id: 'weonim' }, type: 'rival', label: 'Tried to sell her Hoid', book: 'fod', canon: C },
+  { a: { kind: 'character', id: 'kird' }, b: { kind: 'character', id: 'melsi' }, type: 'family', label: 'Father & daughter', book: 'fod', canon: C },
+  { a: { kind: 'character', id: 'kird' }, b: { kind: 'character', id: 'beaudilog' }, type: 'rival', label: 'Warships off the capital', book: 'fod', canon: C },
+  { a: { kind: 'character', id: 'weonim' }, b: { kind: 'character', id: 'december' }, type: 'ally', label: 'Mothered her', book: 'fod', canon: C },
+  { a: { kind: 'character', id: 'irinek' }, b: { kind: 'character', id: 'dmitrovik' }, type: 'family', label: 'Daughter & father', book: 'fod', canon: C },
+  { a: { kind: 'character', id: 'irinek' }, b: { kind: 'character', id: 'beautiful' }, type: 'ally', label: 'Her demon friend', book: 'fod', canon: C },
+  { a: { kind: 'character', id: 'brother-grund' }, b: { kind: 'character', id: 'amaal' }, type: 'mentor', label: 'Abbot & priest', book: 'fod', canon: C },
+  { a: { kind: 'character', id: 'brother-grund' }, b: { kind: 'character', id: 'december' }, type: 'mentor', label: 'Opened the locked library', book: 'fod', canon: C },
+  { a: { kind: 'character', id: 'drakes' }, b: { kind: 'character', id: 'geoffrim-satin' }, type: 'rival', label: 'Killed on his word', book: 'fod', canon: C },
+  { a: { kind: 'character', id: 'drakes' }, b: { kind: 'character', id: 'december' }, type: 'ally', label: 'Saw the setup', book: 'fod', canon: C },
+  { a: { kind: 'character', id: 'matin' }, b: { kind: 'character', id: 'december' }, type: 'romance', label: 'Married, in her first life', book: 'fod', canon: C },
+  { a: { kind: 'character', id: 'bark' }, b: { kind: 'character', id: 'december' }, type: 'rival', label: 'Married, in her first life', book: 'fod', canon: C },
+  { a: { kind: 'character', id: 'matin' }, b: { kind: 'character', id: 'bark' }, type: 'rival', label: 'Not afraid of him', book: 'fod', canon: C },
+  { a: { kind: 'character', id: 'weonim' }, b: { kind: 'org', id: 'hexers' }, type: 'bond', label: 'Elder', book: 'fod', canon: C },
+  { a: { kind: 'character', id: 'hoid' }, b: { kind: 'location', id: 'valors-temple' }, type: 'rival', label: 'Burned in it, twice', book: 'fod', canon: C },
 ];

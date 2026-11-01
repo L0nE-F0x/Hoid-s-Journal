@@ -8,8 +8,9 @@ function eraMinFromBook(book: string): number {
   if (book === 'core') return 0;
   if (book === 'mistborn1' || book === 'secrethistory') return 2;
   if (book === 'mistborn2') return 3;
-  if (book === 'tress' || book === 'yumi' || book === 'fod') return 4;
-  if (book === 'sunlit' || book === 'sixthofdusk' || book === 'emberdark') return 5;
+  if (book === 'tress' || book === 'fod') return 4;
+  // Yumi is after The Sunlit Man (WoB 16524); Sixth of the Dusk after Mistborn Era 3.
+  if (book === 'sunlit' || book === 'yumi' || book === 'sixthofdusk' || book === 'emberdark') return 5;
   return 1;
 }
 
@@ -186,21 +187,29 @@ export const LOCATIONS: Location[] = [
   loc('forests-of-hell', 'Forests of Hell', 'threnody', 'shadowsforsilence', 0.50, 0.52, '#78716c', 'forest',
     'Where the Simple Rules are the only law that matters.',
     { region: 'The Forests', bio: 'Forest over nearly all of the smaller continent, full of shades. Three Simple Rules — kindle no flame, shed no blood, do not run at night — are the only protection anyone has, along with silver, which is why silver is money here. The refugees from the Homeland named it for Hell; their grandchildren live in it.' }),
-  loc('diggens-point', "Diggen's Point", 'lumar-world', 'tress', 0.18, 0.48, '#6ee7b7', 'rock',
-    'The rock Tress left. The Emerald Sea begins here.',
-    { region: 'Emerald Sea', bio: 'The rock Tress grew up on and was not supposed to leave: a small island society with a duke, a window-washer\'s daughter and a rule that people stay where they were born. She left anyway, on the least seaworthy reasoning in the Cosmere.' }),
+  // Coppermind: Diggen's Point (tress 1, 2, 6, epilogue); Lunagree (tress 1) — fifty
+  // to sixty miles from the Verdant Lunagree, so it sits beside that pin.
+  loc('diggens-point', "Diggen's Point", 'lumar-world', 'tress', 0.405, 0.46, '#6ee7b7', 'rock',
+    'The rock Tress left. Fifty miles from the Verdant Lunagree, and illegal to leave.',
+    { region: 'Emerald Sea', aliases: 'the Rock, Diggen\'s Island', wiki: "Diggen's_Point",
+      see: ['tress', 'charlie', 'duke-diggen', 'brick', 'spore-fall-verdant'],
+      bio: 'Black saltstone shaped like an old man\'s crooked finger. The air is salty enough to kill the spores, the smog is from the pumps on the aquifer, and food comes from compost vats or trade. The king\'s law said nobody born here could leave; Tress came back with a writ that let them, and a stipend for anyone who stays twenty years.' }),
   loc('emerald-sea', 'Emerald Sea', 'lumar-world', 'tress', 0.40, 0.50, '#34d399', 'sea',
     'Verdant aether spores. Do not get them wet.',
-    { region: 'Emerald Sea', bio: 'The verdant sea: twelve feet of green spore-dust you can walk a ship across, under a geostationary moon that rains more of it. Get verdant spores wet and vines grow through whatever is nearest, which on a ship is usually a person.' }),
+    { region: 'Emerald Sea', aliases: 'Verdant Sea', bio: 'The verdant sea, a few hundred yards deep at most, under a geostationary moon that rains more of it. Get verdant spores wet and vines grow through whatever is nearest, which on a ship is usually a person. During a stilling you can walk across it, carefully.' }),
   loc('beacon', 'Beacon', 'canticle-world', 'sunlit', 0.30, 0.50, '#f59e0b', 'city',
     'A hover-city racing the dawn.',
-    { region: 'The Corridor', bio: 'A hover-city running west, always west, ahead of a sunrise that would burn it to slag. Beacon is the refugee city: fewer engines than Union, fewer sunhearts, and a governing council that argues about ethics while the light comes up behind them.' }),
+    // Coppermind: Beacon (tsm 7, 13, 15, 20, 22, 23, 45).
+    { region: 'The Corridor', see: ['beacon-people', 'greater-good', 'chorus-hall'], bio: 'A city of linked ships that broke away from Union and would not go back — fewer than a hundred and thirty-five people by the end. Three old women in black, the Greater Good, run it; a Lodestar navigates. Its sunhearts come from volunteers, the old and the sick, not from prisoners.' }),
   loc('kilahito', 'Kilahito', 'komashi', 'yumi', 0.62, 0.48, '#22d3ee', 'city',
     'City of painters, nightmares, and hion lines.',
     { region: 'Komashi', bio: 'A city of hion lines, nightmare painters and a permanent night the machine made. Painters work shifts against things that come out of the dark and are banished with ink; everyone else gets on with a life lit in magenta and cyan.' }),
-  loc('torio', 'Torio', 'komashi', 'yumi', 0.38, 0.52, '#e879f9', 'village',
-    'The machine-kept village of the yoki-hijo.',
-    { region: 'Komashi', bio: 'The village the machine keeps for its yoki-hijo: a full household of servants, a ritual schedule, and a girl who is told she is chosen and is in fact a battery. Yumi grew up here believing every day of it.' }),
+  // Coppermind: Torio (yumi 2, 4, 22, 34, 38, 39, 40). Torio and Nagadan are both
+  // under fifty miles across and a few miles apart, so Torio sits west of Kilahito.
+  loc('torio', 'Torio', 'komashi', 'yumi', 0.600, 0.490, '#e879f9', 'village',
+    'The kingdom the machine ate. Its yoki-hijo still live there, in copies the machine keeps.',
+    { region: 'Torio', see: ['yumi', 'liyun', 'torio-city', 'gongsha-town', 'father-machine', 'reform-movement'],
+      bio: 'A kingdom under fifty miles across, built round steamwells on ground the hijo kept hot, with a queen in Torio City and yoki-hijo travelling the villages to stack for the tools people needed. The machine\'s first day killed all of it but the nomads at the edges and the fourteen yoki-hijo it could not destroy. For seventeen centuries it kept them in copies of their towns, inside the shroud, a few miles from where Kilahito grew.' }),
   loc('tathingdwen', 'Tathingdwen', 'scadrial', 'mistborn1', 0.658, 0.130, '#a3e635', 'city',
     'Terris homeland in the far north of the Final Empire.', {
       region: 'Terris Dominance',
@@ -215,12 +224,13 @@ export const LOCATIONS: Location[] = [
   loc('pahn-kahl', 'Pahn Kahl', 'nalthis', 'warbreaker', 0.66, 0.72, '#67e8f9', 'land',
     'A people of Hallandren\'s lowlands, long under the Court of Gods.',
     { region: 'Pahn Kahl', bio: 'A people inside Hallandren who are not Hallandren, have their own religion nobody bothers to learn, and have spent generations being administrative furniture. Bluefingers ran a war plot out of that invisibility, which is the point the book is making.' }),
+  // Coppermind: Crimson Sea (tress 5, 23, 35), Aether spores (tress 35, 38).
   loc('crimson-sea', 'Crimson Sea', 'lumar-world', 'tress', 0.62, 0.42, '#f43f5e', 'sea',
-    'Roseite aether. Beautiful, and lethal when wet.',
-    { region: 'Crimson Sea', bio: 'Roseite spores, which grow crystal when wet — reefs, cages, and a slow pink death for anyone who bleeds on the deck. The Crimson is beautiful from a distance and a graveyard from close up.' }),
+    'Crimson spores. Random rain, needle coral, and a dragon.',
+    { region: 'Crimson Sea', aliases: 'the domain of the dragon', see: ['crimson-spore', 'xisis-palace'], bio: 'Crimson spores grow needle-sharp red coral when wet, and the Crimson\'s rainlines go wherever they please, so the rain maps every other sea relies on are useless here. Mountains wall the far side; the only practical way to the Midnight Sea runs through it. Sailors call it the domain of the dragon.' }),
   loc('midnight-sea', 'Midnight Sea', 'lumar-world', 'tress', 0.78, 0.55, '#312e81', 'sea',
     'Midnight Essence. The Sorceress\'s domain.',
-    { region: 'Midnight Sea', bio: 'Midnight Essence: spores that grow into shapeless black creatures that mimic and obey. It is the Sorceress\'s sea because she is the only one who wants it, and she wants it because of what she can make out of it.' }),
+    { region: 'Midnight Sea', bio: 'Midnight spores, which rain turns into Midnight Essence: shapeless black creatures that mimic and, given water, obey. The sea runs warm from the sun on all that black, is ringed by mountains, and in practice can only be reached through the Crimson. It is the Sorceress\'s because she is the only one who wants it.' }),
   loc('arelon', 'Arelon', 'sel', 'elantris', 0.40, 0.50, '#a78bfa', 'land',
     'The kingdom Elantris once ruled from, now run from Kae.',
     { region: 'Arelon', bio: 'The kingdom Elantris used to run and now merely haunts. After the Reod its nobility invented itself out of merchants in a decade, and its politics are a study in how quickly people rebuild a hierarchy when the gods stop answering.' }),
@@ -231,8 +241,9 @@ export const LOCATIONS: Location[] = [
     'The night-locked half. Cities of electric light under a dark sky.',
     { region: 'Darkside', bio: 'The half that never sees the sun; its star is dim and hidden behind a ring of dust. The Dynasty rules most of it, speaks Dynastic, and has guns and explosives that Dayside does not. Khriss is from here.' }),
   loc('union', 'Union', 'canticle-world', 'sunlit', 0.55, 0.48, '#fb923c', 'city',
-    'The Cinder King\'s moving city, harvesting sunhearts ahead of the dawn.',
-    { region: 'The Corridor', bio: 'The Cinder King\'s city, larger and faster than Beacon and fed by prospector camps that harvest sunhearts out of ground the dawn is about to take. Union works because someone else is being spent, which is the Cinder King\'s entire economic model.' }),
+    'The Cinder King\'s capital, built out of every city he took.',
+    // Coppermind: Union (tsm 3, 12, 15, 51).
+    { region: 'The Corridor', see: ['union-canticle', 'cinder-king', 'cinder-kings-palace'], bio: 'Thousands of small ships flying forty feet up, locked together and rearranged as needed — into an arena, for instance. Prisoners are left for the sun and their sunhearts dug back up by prospectors behind the maelstrom; metal comes from the iron fields. When Rebeke talked its command bridge round, Union flew off and left its king on the ground.' }),
   loc('lastport', 'Lastport', 'threnody', 'shadowsforsilence', 0.42, 0.58, '#a8a29e', 'port',
     'The strongest of the Fortress Towns. It put a fortune on Chesterton Divide.',
     { region: 'The Forests', bio: 'A fortified town by the Forests and the most powerful city on the continent. Theopolis takes the White Fox\'s corpses here to be paid; Chesterton Divide murdered its governor, which is why his bounty could supply a waystop for a year.' }),
@@ -313,33 +324,42 @@ export const LOCATIONS: Location[] = [
     { region: 'Fallen World', bio: 'The land the first Forescouts left to explore the Forests. Then the Evil came and killed almost everyone; the survivors fled across the sea to the forests they had named for Hell. Nobody who saw it is left to describe it, and Silence\'s grandmother swore the Forescouts would go back and defeat the Evil.' }),
 
   loc('sapphire-sea', 'Sapphire Sea', 'lumar-world', 'tress', 0.28, 0.55, '#38bdf8', 'sea',
-    'Zephyr spores. They make air, and they make it violently.',
-    { region: 'Sapphire Sea', bio: 'Zephyr spores, which make air — a great deal of it, very quickly, in whatever direction the water reached first. Useful for a ship\'s guns and fatal for a ship\'s hull.' }),
-  loc('sunlight-sea', 'Sunlight Sea', 'lumar-world', 'tress', 0.52, 0.62, '#fbbf24', 'sea',
-    'Sunlight spores. Fire waiting for water.',
-    { region: 'Sunlight Sea', bio: 'Sunlight spores: fire, waiting for water. A rain squall over the Sunlight Sea is an event the whole of Lumar can see.' }),
+    'Zephyr spores. One of the safer seas.',
+    // Coppermind: Sapphire Sea (tress 15, 28, 30, 45).
+    { region: 'Sapphire Sea', aliases: 'Zephyr Sea', see: ['zephyr', 'islands-of-lobu'], bio: 'Zephyr spores, which turn to air when wet — Lumar\'s gunpowder, and harmless enough that the Sapphire is one of the safer seas. The Islands of Lobu are here, and the Zephyr Islands, known for pottery.' }),
+  // Coppermind: Lumar (tress 2, 40). The book shows a sea of gold spores and never
+  // names it; "Sunlight Sea" is the obvious guess, not a name on the page.
+  loc('sunlight-sea', 'The gold sea', 'lumar-world', 'tress', 0.52, 0.62, '#fbbf24', 'sea',
+    'Gold spores, almost certainly sunlight. The book shows the sea and never names it.',
+    { region: 'Lumar', aliases: 'Sunlight Sea', see: ['sunlight-aether'],
+      fieldNotes: { name: { canon: 'speculation', note: 'Unnamed on the page. Coppermind assumes a Sunlight Sea because sunlight aether exists.' } },
+      bio: 'Sunlight spores give light and heat when wet, which is why ovens and flares are built round them. Somewhere on Lumar a whole sea of them glitters gold; the book lets you see it and declines to say what it is called.' }),
 
   loc('sori', 'Sori', 'first-of-the-sun', 'sixthofdusk', 0.58, 0.44, '#a3e635', 'island',
     'One of the Pantheon islands. Safer than Patji. Everything is.',
     { region: 'The Pantheon', bio: 'One of the Pantheon islands. Safer than Patji, which is a comparison rather than a recommendation: everything in the Pantheon is arranged to kill trespassers, and the Eelakin only trespass on purpose.' }),
 
   // Thin worlds: names a reread actually reaches for. Placement is ours.
-  loc('torio-steamwell', 'Torio steamwell', 'komashi', 'yumi', 0.36, 0.54, '#e879f9', 'home',
-    'Yumi stacked stones beside the steam, and the spirits came.',
-    { region: 'Komashi', bio: 'The steamwell beside Torio where Yumi stacked stones until the spirits came. The ritual is real, the spirits are real, and what the ritual is actually for is the thing nobody in the village has ever been told.' }),
-  loc('dreamwatch', 'Dreamwatch', 'komashi', 'yumi', 0.64, 0.46, '#22d3ee', 'keep',
-    'Kilahito\'s painter corps. Nightmares stop at their wall, most nights.',
-    { region: 'Komashi', bio: 'Kilahito\'s painter corps, who hold the line against nightmares with brush and ink and a hierarchy Painter is not doing well in. Most nights the wall holds. The nights it does not are the reason there is a corps.' }),
+  // Coppermind: Steamwell (yumi 2, 4).
+  loc('torio-steamwell', 'Steamwells', 'komashi', 'yumi', 0.594, 0.498, '#e879f9', 'home',
+    'Geysers at the centre of every Torish village. Rings of bronze trays carry the water home.',
+    { region: 'Torio', aliases: 'steamwell', wiki: 'Steamwell', see: ['torio', 'hijo'],
+      bio: 'The hijo heat the ground and push water up through the steamwells; Torish villages are built round them, with concentric bronze trays to catch each eruption and clouds overhead for shade. People call the water a gift from below.' }),
   loc('the-shroud', 'The Shroud', 'komashi', 'yumi', 0.50, 0.22, '#111827', 'storm',
     'The darkness the machine made of the sky. Hion cuts it; nothing else does.',
-    { region: 'Komashi', bio: 'The dark the machine drew across Komashi\'s sky. Hion lines cut through it and nothing else does; under it a whole civilisation has grown up without ever having seen the sun or believed there was one.' }),
+    { region: 'Komashi', bio: 'The dark the machine drew across Komashi\'s sky: the waste of the souls it ate, rained down until it covered the planet. Hion lines hold it off and a yoki-hijo\'s stacking pushes it back; under it a whole civilisation has grown up without ever having seen the sun.' }),
 
-  loc('the-refuge', 'The Refuge', 'canticle-world', 'sunlit', 0.58, 0.62, '#fde68a', 'keep',
-    'A cavern of the old world, under the killing sun. The Cinder King\'s prize.',
-    { region: 'Canticle', bio: 'A cavern of the old world, from before Canticle\'s people took to the sky, buried under ground the sun now kills. Everyone on the planet wants it, because a place that does not have to run is the only future anyone can imagine.' }),
+  // Coppermind: Scadrian research facility (tsm 1, 11, 43, 44, 45), Refuge of Stone (tsm 8, 11, 15).
+  // The Refuge itself is a myth; this is the door Beacon took for it.
+  loc('the-refuge', 'The Scadrian research facility', 'canticle-world', 'sunlit', 0.58, 0.62, '#fde68a', 'keep',
+    'The door Beacon took for the Refuge of Stone. Behind it was a buried Scadrian research ship.',
+    { region: 'Canticle', aliases: 'the Refuge, the door', wiki: 'Scadrian_research_facility',
+      see: ['refuge-of-stone', 'timetellers', 'haridans-key', 'cinder-king'],
+      bio: 'Three decks under a metal disc two feet below the crust near the equator, with a gun that fires through rock, an Awakened steelmind and enough Dor to fill Nomad\'s Skip. The Cinder King traded here. Nomad got in on the Silverlight refugee codes, was refused on Beacon\'s behalf, and left with an overcharged sunheart and his Blade out.' }),
+  // Coppermind: Canticle (tsm 8, 12, 15, 19, 28).
   loc('the-corridor', 'The Corridor', 'canticle-world', 'sunlit', 0.42, 0.50, '#fb923c', 'land',
-    'The sun-scoured path the hover-cities race. Dawn on one side, night on the other.',
-    { region: 'The Corridor', bio: 'The strip of survivable ground between the dawn that melts the crust and the night that freezes it. Every city on Canticle lives in it and every city on Canticle is moving, permanently, at the speed of its own sunrise.' }),
+    'A latitude. Every city on Canticle flies its own.',
+    { region: 'The Corridor', aliases: 'corridors', see: ['hover-city', 'great-maelstrom'], bio: 'About fifty cities fly parallel corridors in the dark between the fire-storm that follows sunset and the dawn ahead, at the pace of a slow planet. Union held nearly every habitable one. Beacon, forced south, met mountains that run into space.' }),
 
   loc('the-crossroads', 'Silence\'s waystop', 'threnody', 'shadowsforsilence', 0.48, 0.56, '#a8a29e', 'home',
     'Silence Montane\'s inn in the Forests. Three rings of silver, pigs, and a shrine nobody opens.',
@@ -477,26 +497,11 @@ export const LOCATIONS: Location[] = [
     {
       region: 'UTol',
       bio: 'UTol is a principal Sho Del world — four-armed, Invested, and originally of Yolen, where they fought humans in a war nobody now living saw. What any of that looks like from the ground has not been put on the page.', canon: 'wob', sources: ['Word of Brandon'] }),
-  loc('obrodai-claim', "Autonomy's claim", 'obrodai-world', 'mistborn2', 0.500, 0.500, '#db2777', 'land',
-    'A world Autonomy has claimed, where a new avatar of her is beginning to manifest.',
-    {
-      region: 'Obrodai',
-      bio: 'In a letter, Patji — another of Autonomy\'s avatars — warns Hoid not to come back to Obrodai: Autonomy has claimed the world, a new avatar is manifesting there, and as a precaution it has been taught to dislike him. Nothing else about Obrodai is known, including where on it anything is; this pin means only "the world".', arc: 'tlm', canon: 'wob', sources: ['Word of Brandon (Patji\'s letter to Hoid)'] }),
+
   loc('vathi-camp', 'The company camp', 'first-of-the-sun', 'sixthofdusk', 0.560, 0.520, '#fbbf24', 'home',
     'The Northern Interests Trading Company\'s fortress on Patji: soldiers, scientists, two ironhulls.', {
       region: 'The Pantheon',
       bio: 'The company\'s foothold on Patji: a fortress on the far side of the island with soldiers, scientists, merchants and two ironhulls against the deepwalkers, and a machine from the Ones Above that was only ever opened. The smaller scouting camp on the near shore did not survive its deepwalker.', arc: 'sixthofdusk' }),
-  loc('longroad', 'The Long Road', 'canticle-world', 'sunlit', 0.500, 0.560, '#fb923c', 'land',
-    'The track every hover-city runs, always west, always just ahead of the sun.',
-    { region: 'The Corridor', bio: 'The track the hover-cities run: west, always west, at a pace set by the planet\'s rotation and not negotiable. Stop for a day and the day catches you.' }),
-  loc('gakalfen', 'Gakalfen', 'komashi', 'yumi', 0.540, 0.560, '#22d3ee', 'city',
-    'A Komashi city on the hion lines. The machine keeps it lit and the nightmares keep it awake.',
-    {
-      region: 'Komashi',
-      bio: 'A Komashi city strung on the hion lines, lit by the machine and kept awake by what the machine\'s leftovers turn into after dark. Kilahito is not unique; it is simply the one with the painters.', canon: 'wob', sources: ['Yumi and the Nightmare Painter'] }),
-  loc('lumar-rocks', 'The Rock', 'lumar-world', 'tress', 0.24, 0.44, '#9c8d78', 'rock',
-    'One of the few outcrops above the spore seas, and therefore a whole society.',
-    { region: 'Lumar', bio: 'One of the few outcrops standing above the spore seas, and therefore an entire society — everything Lumar\'s people have, they have because a rock happened to be there. The seas are not land and cannot be farmed; the rocks are all there is.' }),
 
   // Miral — our continent, the book's order. Kingseat at the summit, then
   // downriver on the Violet: Smallport three days below it, First Dukeseat the
@@ -510,6 +515,14 @@ export const LOCATIONS: Location[] = [
     'The capital at the summit, grown up around the Megalith\'s corpse. The rivers start at its heart.', {
       region: 'Mountaincrest', wiki: 'Kingseat', see: ['megalith', 'ever-slaying-sword', 'hexers', 'mountaincrest'],
       bio: 'The Megalith has lain against the mountain for eight hundred years and the city grew up around it; the body is as large as the city. Hexers live in a village inside its chest cavity and chisel demonstone out of it for the king. Clothes made from its blood are the fashion Dukeseat cannot match, and Valor\'s temple here is the one that set Hoid on fire — twice.' }),
+  loc('valors-temple', "Valor's temple", 'miral', 'fod', 0.507, 0.326, '#fbbf24', 'fire',
+    'Valor\'s hidden temple in Kingseat: relics, stained glass of the Prophet, murals of the worlds she visited. Anyone not of the clergy who steps inside is burned, body and soul.', {
+      region: 'Mountaincrest', aliases: "Valor's chapel, the secret temple", wiki: "Valor's_temple", see: ['kingseat', 'hoid', 'amaal', 'prophet', 'valor'],
+      bio: 'She built it herself, one of several temples to her on the planet, and famous precisely because nobody may see inside. Amaal, as a priest, prayed there on her pilgrimage. Hoid snuck in the day he reached the capital and burned to a crisp; his soul kept regenerating until he could smother the fire and make himself a body. After the Megalith he went in again, put the fire out faster, kept his memories, and still had to trick Amaal into describing the murals for him.' }),
+  loc('night-barges', 'The Night Barges', 'miral', 'fod', 0.493, 0.337, '#e879f9', 'port',
+    'River barges moored together over a small lake of demon\'s blood: half shops, half bars and dance floors, lit from beneath, for the rich only.', {
+      region: 'Mountaincrest', wiki: 'Night_Barges', see: ['kingseat', 'abrim-flint', 'december', 'megalith'],
+      bio: 'Captains buy permits to moor; gangplanks join the hulls, the crowd flows through the shopping barges and pools at the drinking ones, and bouncers keep the wrong sort in a queue. The barges are painted Demon Bright and the blood underneath lights them from below. Abrim Flint spent his bail evenings here near barges seventeen and eighteen, conning women. December came looking for him.' }),
   loc('smallport', 'Smallport', 'miral', 'fod', 0.510, 0.405, '#a78bfa', 'city',
     'Three days below Kingseat on the Violet, and the last midsized town before the capital\'s suburbs. Not small.', {
       region: 'Mountaincrest', wiki: 'Smallport', see: ['kingseat', 'abrim-flint'],
@@ -540,7 +553,7 @@ export const PERPS: Perpendicularity[] = [
   { id: 'well-of-ascension-perp', name: 'The Well of Ascension', body: 'scadrial', book: 'mistborn1',
     fact: 'Preservation\'s pool beneath Kredik Shaw. Used, then collapsed.', at: 'luthadel',
     eraMin: 2, eraMax: 2, canon: C, sources: ['Mistborn Era 1'] },
-  { id: 'harmony-pool', name: "Harmony's Perpendicularity", body: 'scadrial', book: 'mistborn2',
+  { id: 'harmony-pool', name: "Harmony's Perpendicularity", body: 'scadrial', book: 'mistborn2', arc: 'tlm',
     // Not in Elendel. The Lost Metal puts it somewhere in the south, watched
     // closely by the Malwish; nothing places it closer than that, so no `at`.
     fact: 'Harmony\'s own pool, somewhere in the far south of Scadrial.',
@@ -563,9 +576,11 @@ export const PERPS: Perpendicularity[] = [
     fact: 'Odium\'s perpendicularity, sealed in a cavern under the Shattered Plains inside the remnants of the fourth moon. Retribution\'s now.',
     aliases: 'Odium\'s Perpendicularity, Retribution\'s Perpendicularity',
     eraMin: 1, canon: C, sources: ['Wind and Truth'] },
-  { id: 'tears-of-edgli-perp', name: 'Tears of Edgli', body: 'nalthis', book: 'warbreaker',
-    fact: 'Flowers whose dye is Endowment\'s Investiture made pigment.', at: 'tears-of-edgli',
-    eraMin: 1, canon: C, sources: ['Warbreaker'] },
+  // The flowers are not the crossing; they drink what wells up from it (WoB 9833).
+  { id: 'tears-of-edgli-perp', name: "Endowment's Perpendicularity", body: 'nalthis', book: 'warbreaker',
+    fact: 'Somewhere in Hallandren. The Tears of Edgli take their colour from the Investiture that wells up from it.', at: 'tears-of-edgli',
+    aliases: 'Tears of Edgli',
+    eraMin: 1, canon: W, sources: ['Warbreaker', 'Word of Brandon 9833'] },
   { id: 'patjis-eye-perp', name: "Patji's Eye", body: 'first-of-the-sun', book: 'arcanum',
     fact: 'A perpendicularity on the island Patji, where Aviar gain their talents.', at: 'patji',
     eraMin: 1, canon: C, sources: ['Arcanum Unbounded — Drominad', 'Isles of the Emberdark'] },
@@ -575,9 +590,11 @@ export const PERPS: Perpendicularity[] = [
   { id: 'dominion-pool', name: 'Sel\'s second perpendicularity', body: 'sel', book: 'elantris',
     fact: 'Brandon has said Sel has a second perpendicularity. Where it is, and whose, the books have not said.',
     eraMin: 1, canon: W, sources: ['Word of Brandon'] },
-  { id: 'silverlight-nexus', name: 'The Silverlight Nexus', body: 'yolen', book: 'arcanum',
-    fact: 'The crossing that made a city possible where no world is. Khriss came through it and stayed.',
-    eraMin: 1, canon: W, sources: ['Arcanum Unbounded', 'Word of Brandon'] },
+  // The name is Word of Brandon 16603 (2024); everything else is Isles of the Emberdark ch. 30.
+  { id: 'silverlight-nexus', name: 'The Silverlight Nexus', body: 'yolen', book: 'emberdark',
+    fact: 'Silverlight\'s perpendicularity: a frosty white sun hanging under the city, the size of the city, the largest crossing in the cosmere. It opens on three places in the Physical Realm, and one is the greatstar of Yolen. Its pull slows time: a day in Silverlight is ten outside.',
+    aliases: 'the Nexus',
+    eraMin: 1, canon: C, sources: ['Isles of the Emberdark ch. 30', 'Word of Brandon 16603'] },
   { id: 'miral-perp', name: "Miral's Perpendicularity", body: 'miral', book: 'fod',
     fact: 'A natural perpendicularity, unusually irregular and attuned to no Shard. It is why so few people come to Miral, and why it is hard when they do.',
     aliases: 'the Mirali perpendicularity',

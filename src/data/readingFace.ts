@@ -1363,6 +1363,8 @@ export const READING_FACES: Record<string, ReadingFace> = {
   // Sixth of the Dusk, before Isles of the Emberdark tells what came after.
   vathi: {
     early: {
+      aliases: 'Vathi',
+      abilities: 'Northern Interests Trading Company; bonded to Mirris',
       fact: 'A company noblewoman with an Aviar locator, lost on Patji.',
       bio: 'An educated Eelakin woman of the Northern Interests Trading Company, there more for science than profit. A deepwalker wipes out her scouting party on Patji; she survives the jungle well enough that Dusk thinks he is tracking an apprentice. At Patji\'s Eye she works out where Aviar get their talents, and back at the fortress she and Dusk recognise the Ones Above\'s gifts as a trap.',
     },
@@ -1535,6 +1537,27 @@ export const READING_FACES: Record<string, ReadingFace> = {
       { book: 'mistborn2', arc: 'tlm', published: true },
     ],
   },
+  // Hoid is core: his card is on screen before any book. The published card
+  // has Oathbringer's spren, Rhythm of War's refused Shard and The Sunlit
+  // Man's Dawnshard in it, so it waits for The Sunlit Man.
+  hoid: {
+    early: {
+      fact: 'A storyteller who is always somewhere important, and never says why.',
+      abilities: 'Storytelling, disguise',
+      aliases: 'Hoid',
+      bio: 'A beggar in bandages, an informant with bad eyes, a fool at court: he wears whatever face a place needs, and his stories are never only stories. He is older than he looks, and he does not explain.',
+    },
+    steps: [
+      {
+        book: 'stormlight', arc: 'twok',
+        fact: 'The King\'s Wit, who is neither Alethi nor a fool.',
+        abilities: 'Storytelling, disguise, a great deal of knowledge',
+        aliases: 'Wit, Hoid, Roamer',
+        bio: 'On Roshar he is the King\'s Wit, paid to insult lighteyes, and never quite answers what he is. He says he came to chase an old acquaintance and spends most of his time hiding from him. Sigzil was his apprentice, once.',
+      },
+      { book: 'sunlit', arc: 'sunlit', published: true },
+    ],
+  },
   sigzil: {
     early: {
       fact: 'Hoid\'s apprentice, keeping Bridge Four\'s accounts.',
@@ -1551,6 +1574,77 @@ export const READING_FACES: Record<string, ReadingFace> = {
         bio: 'Bridge Four\'s Azish Worldsinger and Hoid\'s apprentice. In Wind and Truth he commands the Windrunners holding Narak: he watches Moash kill Leyten and his spren, and to save his own honorspren, Vienta, from Moash\'s knife he renounces his oaths. On the Night of Sorrows Wit gives him the Dawnshard Exist and pushes him into Shadesmar, and he leaves Roshar with an Iriali caravan.',
       },
       { book: 'sunlit', arc: 'sunlit', published: true },
+    ],
+  },
+  // Coppermind: Design (sa3 98, sa4 80; yumi 5, 17, 21, 32, 33, ae; WoB 10746).
+  // Komashi, the noodle shop and the disguise are Yumi's.
+  design: {
+    early: {
+      fact: 'Hoid\'s Cryptic. She spoils his endings on purpose.',
+      abilities: 'Cryptic, Lightweaver bond',
+      aliases: 'Design',
+      bio: 'The Cryptic Hoid found in Kholinar, near where Elhokar died, and bonded himself. She plays his flute without lips, considers surprises dumb, and told Kaladin how the Dog and the Dragon ends before Hoid could.',
+    },
+    steps: [
+      { book: 'yumi', arc: 'yumi', published: true },
+    ],
+  },
+  // Isles of the Emberdark is Sixth of the Dusk retold and carried on five
+  // years. The novella's cast keep the novella's card until it is read.
+  dusk: {
+    early: {
+      fact: 'A man of Patji facing a sky full of other worlds.',
+      abilities: 'Trapper, Aviar-bonded',
+      aliases: 'Dusk',
+      bio: 'A trapper of the Pantheon who trusts Aviar more than people and wants Patji left alone. Then the Company comes with Vathi and a machine from the Ones Above, and he has to decide whether First of the Sun can stay as it is in a cosmere that has already noticed it.',
+    },
+    steps: [
+      { book: 'emberdark', arc: 'emberdark', published: true },
+    ],
+  },
+  kokerlii: {
+    early: {
+      bio: 'A cheerful, chattering bird who stays close because he would not fit in with wild Aviar. His talent masks all mental activity near him, which on Patji, where deepwalkers and nightmaws hunt by thought, is the difference between a trapper and a skeleton; it weakens as he flies further off.',
+    },
+    steps: [
+      { book: 'emberdark', arc: 'emberdark', published: true },
+    ],
+  },
+  nazh: {
+    early: {
+      abilities: 'Worldhopper, mapmaker',
+      bio: 'Khriss\'s long-suffering Threnodite agent: map thief, annotator, and professional complainer. If a chart in your edition has dry sarcasm in the margins, that is Nazh earning his keep.',
+    },
+    steps: [
+      { book: 'emberdark', arc: 'emberdark', published: true },
+    ],
+  },
+  frost: {
+    early: {
+      bio: 'Oldest dragon still corresponding with Hoid — mentor, critic, and Seventeenth Shard voice for non-intervention. He watches the Cosmere tilt toward war and still prefers letters to cataclysm.',
+    },
+    steps: [
+      { book: 'emberdark', arc: 'emberdark', published: true },
+    ],
+  },
+  crow: {
+    early: {
+      bio: 'Her verdant parasite stops anything that would break her skin and drinks her dry for it, and she has outlived the usual span by a year on stubbornness. She talked a merchant crew into piracy to dodge the king\'s war, then had Laggart sink the Oot\'s Dream so they would be deadrunners with nowhere left to go but the Crimson Sea. She meant to sell Tress to Xisis for a cure. Tress sold her first.',
+    },
+    steps: [
+      { book: 'emberdark', arc: 'emberdark', published: true },
+    ],
+  },
+  // Coppermind: Ulaam (mb7 12). The Lost Metal gives him one scene; Tress gives him a ship.
+  ulaam: {
+    early: {
+      fact: 'A kandra. He and TenSoon took MeLaan aside about Wayne.',
+      abilities: 'Kandra',
+      aliases: 'Ulaam',
+      bio: 'A kandra on Scadrial who, with TenSoon, warned MeLaan about her relationship with Wayne. That is the whole of what The Lost Metal says about him.',
+    },
+    steps: [
+      { book: 'tress', arc: 'tress', published: true },
     ],
   },
   rysn: {

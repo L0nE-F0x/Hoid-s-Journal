@@ -39,7 +39,7 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   nazh: {
     wiki: 'Nazrilof',
     see: ['khriss', 'threnody', 'silverlight'],
-    bio: 'Khriss\'s long-suffering Threnodite agent: map thief, annotator, and professional complainer. If a chart in your edition has dry sarcasm in the margins, that is Nazh earning his keep.',
+    bio: 'Khriss\'s long-suffering Threnodite agent: map thief, annotator, and professional complainer. If a chart in your edition has dry sarcasm in the margins, that is Nazh earning his keep. Somewhere before the space age he died and came back a shade, and he keeps the Dynamic\'s security for Starling — which is why the Malwish on the Dakwara\'s island had a shade prison ready for him.',
   },
   galladon: {
     wiki: 'Galladon',
@@ -48,7 +48,7 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   sigzil: {
     wiki: 'Sigzil',
-    see: ['hoid', 'auxiliary', 'kaladin', 'night-brigade'],
+    see: ['hoid', 'kaladin', 'bridge-four'],
     bio: 'Bridge Four\'s Azish Worldsinger and Hoid\'s apprentice. In Wind and Truth he commands the Windrunners holding Narak: he watches Moash kill Leyten and his spren, and to save his own honorspren, Vienta, from Moash\'s knife he renounces his oaths. On the Night of Sorrows, with Retribution coming for him, Wit gives Sigzil the Dawnshard Exist and pushes him into Shadesmar, and he leaves Roshar with an Iriali caravan. He becomes the man called Nomad: bonded to Szeth\'s old highspren, Aux, hunted across the stars by the Night Brigade, and learning that skipping is not the same as escaping.',
   },
   vasher: {
@@ -223,23 +223,23 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   yumi: {
     wiki: 'Yumi',
-    see: ['painter', 'yoki-hijo', 'father-machine'],
-    bio: 'A yoki-hijo stacked into sainthood by ritual until a machine\'s lie and a painter\'s honesty unmake the shroud. She and Painter share bodies, nightmares, and a love story that has to survive the end of her world\'s favourite story about her.',
+    see: ['painter', 'liyun', 'father-machine', 'yoki-hijo', 'torio', 'samjae'],
+    bio: 'A yoki-hijo of Torio, born under a falling star and raised by Liyun inside the strictest form of the tradition; her record is thirty-seven spirits at once. When the father machine woke it ate her people and could not eat her, so it kept her in a copy of her old life and wiped each day, for one thousand seven hundred and sixty-three years. A spirit Connected her to Painter; she remembered, learned to paint, and took the spirits back from the machine stone by stone. She is a Cognitive Shadow now, anchored with painter\'s ink, and runs the Noodle Princess with him.',
   },
   painter: {
     wiki: 'Nikaro',
-    see: ['yumi', 'bamboo-painting', 'hion'],
-    bio: 'Nikaro of Kilahito — nightmare painter, professional fraud, and the ordinary man Yumi\'s miracle lands on. He learns to tell the truth with a bamboo pen and to stack stones when stacking souls is required.',
+    see: ['yumi', 'akane', 'tojin', 'the-dreamwatch', 'bamboo-painting', 'battle-of-kilahito'],
+    bio: 'The best artist of his year, who failed the Dreamwatch, told his friends he had got in, and has painted nothing but bamboo since. A spirit Connected him to Yumi: he learned to stack stones in her body, she learned to paint in his. At the battle of Kilahito he worked out that a nightmare painted as the person it used to be stays that way, and painted Gongsha Town back one face at a time.',
   },
   tress: {
     wiki: 'Tress',
-    see: ['charlie', 'hoid', 'xisis', 'verdant'],
-    bio: 'A sprouter\'s daughter who sails spore seas to rescue her love and accidentally becomes the kind of captain pirates negotiate with. Practical, soft-hearted, and terrifying once she understands the spores.',
+    see: ['charlie', 'hoid', 'crow', 'crows-song', 'xisis', 'two-cups'],
+    bio: 'Born Glorf on Diggen\'s Point and called Tress for her hair. She washed the duke\'s windows, traded pies to sailors for cups, and fell for his son. When the Sorceress took Charlie she conned her way off a rock nobody is allowed to leave, became the Crow\'s Song\'s sprouter to make herself useful, sold her captain to a dragon, and sailed the ship into the Midnight Sea.',
   },
   charlie: {
     wiki: 'Charlie',
-    see: ['tress', 'hoid', 'riina'],
-    bio: 'A duke\'s son cursed into a rat and a foil for Hoid\'s storytelling. He is the reason Tress leaves the Rock — and the proof that curses are just another kind of unfinished negotiation.',
+    see: ['tress', 'hoid', 'riina', 'duke-diggen', 'dirk', 'sorceress-curse'],
+    bio: 'The duke\'s son, who bored a year of princesses on purpose and sent Tress a cup after every rejection. His father sent him to marry the Sorceress instead. She made him a rat whose curse would break only if he brought Tress to her to be cursed, and he spent the book trying to stop Tress reaching the island — as Huck, on her shoulder. Hoid rewrote the terms: bring her home, and write her a verse.',
   },
   shai: {
     wiki: 'Wan_ShaiLu',
@@ -254,7 +254,7 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   dusk: {
     wiki: 'Sixth_of_the_Dusk',
     see: ['vathi', 'aviar', 'patji-eye'],
-    bio: 'A trapper of the Pantheon islands who trusts Aviar more than people. Vathi and the ones above force him to decide whether First of the Sun stays isolated or joins a Cosmere that has already noticed Patji.',
+    bio: 'A trapper of the Pantheon, a man who says little, trusts Aviar more than people, and serves Patji as priest while treating it as a father trying to kill him. He wanted the island left alone. Then the Company came, and Vathi with it, and the Ones Above\'s machine turned out to be a trap, and he decided the Eelakin had to modernise before they were taken. Five years on, with Kokerlii dead and his people outmatched, he paddled a canoe through Patji\'s Eye into the Emberdark with Sak and Rokke. Patji made him a Navigator. He bluffed the Malwish on the Dakwara\'s island, bested the Dakwara, and brought Starling\'s crew back to the perpendicularity; after six months training the first Navigators, he signed on with the Dynamic.',
   },
   mraize: {
     wiki: 'Mraize',
@@ -274,12 +274,13 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   design: {
     wiki: 'Design',
     see: ['hoid', 'cryptic', 'yolen'],
-    bio: 'Hoid\'s Cryptic on Roshar — dry, curious, and unimpressed by her bondmate\'s theatrics. She is proof he finally entered a Nahel bond, with all the oath-shaped complications that implies.',
+    // Published face (Yumi). Stormlight readers get READING_FACES.design.early.
+    bio: 'The Cryptic Hoid found in Kholinar near where Elhokar died, and bonded himself. She spoils his endings on purpose and thinks surprises are dumb unless they are pranks. Off Roshar she wears a wireframe Lightweaving of a striking Nagadan woman — she does not see herself as female, she just likes the shape. When Hoid froze on Komashi she founded the Noodle Pupil, stood him in a corner for coats, spotted Masaka for a Sleepless, stretched Painter\'s Connection, and willed the shop to him and Yumi when they left.',
   },
   riina: {
     wiki: 'Riina',
-    see: ['the-ire', 'tress', 'hoid'],
-    bio: 'An Ire sorceress who curses Charlie and underestimates a sprouter. Elantrian tools, Cognitive Realm politics, and a grudging exit when Tress and Hoid ruin her afternoon.',
+    see: ['the-ire', 'tress', 'hoid', 'sorceress-curse', 'riina-tower', 'sorceress-island'],
+    bio: 'She picked Lumar because nothing on it could stop her. Over the years her metal soldiers, Midnight Essence and tariffs on the Midnight Sea made her the Sorceress, and anyone who reached her island left cursed — in rhyme, told every term, and unable to say any of them. She turned Charlie into a rat and took Hoid\'s bet: a curse now, Elantrian status if he broke it. When he walked back into her ship cured, she weighed the odds and left the planet.',
   },
   nikli: {
     wiki: 'Nikli',
@@ -403,8 +404,8 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   frost: {
     wiki: 'Frost',
-    see: ['hoid', 'seventeenth-shard', 'illistandrista', 'yolen'],
-    bio: 'Oldest dragon still corresponding with Hoid — mentor, critic, and Seventeenth Shard voice for non-intervention. He raises Starling, watches the Cosmere tilt toward war, and still prefers letters to cataclysm.',
+    see: ['hoid', 'seventeenth-shard', 'yolen'],
+    bio: 'Oldest dragon still corresponding with Hoid — mentor, critic, and Seventeenth Shard voice for non-intervention. He watches the Cosmere tilt toward war and still prefers letters to cataclysm. He raised his niece Starling after her parents died, taught her to feel for mortals, and let her apprentice herself to Hoid though he feared what Hoid attracts. Millennia earlier he reached Cakoban seconds too late in the Drominad subastral and buried him. By the space age he has been missing for years and most think him dead. Starling does not.',
   },
   koravellium: {
     wiki: 'Koravellium_Avast',
@@ -413,13 +414,13 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   xisis: {
     wiki: 'Xisisrefliel',
-    see: ['tress', 'crimson-spore', 'lumar-world', 'aether'],
-    bio: 'A dragon under Lumar\'s Crimson Sea, trading favours for servants and studying aethers with proprietary calm. Tress bargains with him; Hoid would rather not.',
+    see: ['tress', 'crow', 'xisis-palace', 'crimson-sea', 'spore-eater', 'riina'],
+    bio: 'Xisis researches the seafloor under the spore seas — how the spores decompose, what that does to the seethe — and takes servants in trade for boons. Crow came to buy a cure with Tress. Tress offered Crow instead, argued that a servant who will never stop trying to leave is a bad buy, and won; she took three small boons for her friends. There is precisely one being on Lumar he fears, and it is the Sorceress.',
   },
   illistandrista: {
     wiki: 'Illistandrista',
-    see: ['frost', 'hoid', 'emberdark'],
-    bio: 'Starling — Frost\'s niece, Hoid\'s apprentice, captain into the Emberdark. Young for a dragon, cuffed into human form, looking for a perpendicularity and for family the Cosmere has misplaced.',
+    see: ['frost', 'hoid', 'dynamic-crew', 'xisis', 'dusk', 'emberdark'],
+    bio: 'Leucistic in both forms: white scales and silver dragonsteel, or a pale young woman with white hair and eyes. Frost raised her on Yolen. At about seventy-five she defied her elders on a point of conscience, and they bound her powers with manacles that turn her own Investiture against her and exiled her until she learns her lesson — which is why Hoid took her as an apprentice and put her aboard the Dynamic as his lieutenant. When he left, Xisis took the ship and gave it to Crow; when Crow would not answer a distress call, Starling led the mutiny, then bargained the crew\'s future out of Xisis against finding the Drominad perpendicularity. Taken by the Malwish on the Dakwara\'s island, she let Dajer turn the Intensifier on her manacles, felt her wings come back, and held the manacles shut herself so the overload would black out the island and her crew could run. The ship is hers now and the crew are partners, and they have promised to get the manacles off. She believes her uncle is alive.',
   },
   hoid: {
     wiki: 'Hoid',

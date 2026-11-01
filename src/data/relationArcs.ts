@@ -129,6 +129,9 @@ export const RELATION_ARCS: { a: string; b: string; arc: string }[] = [
   { a: 'kaladin', b: 'ishar', arc: 'wat' },
   { a: 'kaladin', b: 'heralds', arc: 'wat' },
   { a: 'kaladin', b: 'jezrien', arc: 'wat' },
+  // Thaidakar is Kelsier from Rhythm of War ch. 115.
+  { a: 'mraize', b: 'kelsier', arc: 'row' },
+  { a: 'iyatil', b: 'kelsier', arc: 'row' },
   // Mistborn — the ascensions are the last book, not the first
   { a: 'vin', b: 'preservation', arc: 'hoa' },
   { a: 'vin', b: 'elend', arc: 'woa' },

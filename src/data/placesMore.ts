@@ -6,8 +6,9 @@ function eraMinFromBook(book: string): number {
   if (book === 'core') return 0;
   if (book === 'mistborn1' || book === 'secrethistory') return 2;
   if (book === 'mistborn2') return 3;
-  if (book === 'tress' || book === 'yumi' || book === 'fod') return 4;
-  if (book === 'sunlit' || book === 'sixthofdusk' || book === 'emberdark') return 5;
+  if (book === 'tress' || book === 'fod') return 4;
+  // Yumi is after The Sunlit Man (WoB 16524); Sixth of the Dusk after Mistborn Era 3.
+  if (book === 'sunlit' || book === 'yumi' || book === 'sixthofdusk' || book === 'emberdark') return 5;
   return 1;
 }
 
@@ -480,55 +481,95 @@ export const PLACES_MORE: Location[] = [
     'Lesser Dayside states along Lossand\'s edge — trade partners when the Kerztian roads close.', {
       region: 'Dayside',
       bio: 'Denka, Seevis and Tallon: smaller nations on Dayside\'s eastern and north-eastern coast, walled off from Kerzta and Lossand by the eastern range.', see: ['lossand', 'kerzt'] }),
-  loc('roseite-sea', 'Roseite Sea', 'lumar-world', 'tress', 0.58, 0.38, '#fb7185', 'sea',
-    'Another name sailors give the Crimson\'s roseite aether — coral-spores that grow into reefs and cages.', {
-      region: 'Crimson Sea',
-      bio: 'What sailors call the Crimson when they are being precise about what is in it. Roseite grows into coral and cages, and a ship caught in a roseite bloom is not salvaged so much as excavated.', see: ['crimson-sea'], wiki: 'Crimson_Sea' }),
-  loc('sorceress-island', 'The Sorceress\'s Island', 'lumar-world', 'tress', 0.82, 0.56, '#312e81', 'island',
-    'Riina\'s domain in the Midnight Sea. Curses for trespassers; worse for people she finds interesting.', {
-      region: 'Midnight Sea', see: ['midnight-sea'], wiki: 'Riina', bio: 'An Elantrian exile with a tower, a board of living pieces, and no patience for moons that misbehave.' }),
-  loc('riina-tower', 'Riina\'s Tower', 'lumar-world', 'tress', 0.835, 0.55, '#6366f1', 'tower',
-    'The Sorceress\'s seat. Midnight Essence at the foundations; paperwork of doom upstairs.', {
-      region: 'Midnight Sea',
-      bio: 'The Sorceress\'s seat, founded on Midnight Essence and administered with a great deal of paperwork. Tress goes there to buy her husband back and finds a curse, a bureaucracy and a considerably older story underneath.', see: ['sorceress-island', 'midnight-sea'], wiki: 'Riina' }),
+  // Coppermind: Rose Sea (tress 10, 15, 23, 42). Its own sea, bordering the Emerald —
+  // not another name for the Crimson.
+  loc('roseite-sea', 'Rose Sea', 'lumar-world', 'tress', 0.50, 0.40, '#fb7185', 'sea',
+    'Roseite spores. Inhabited, unlike the Crimson next door.', {
+      region: 'Rose Sea', aliases: 'Roseite Sea',
+      bio: 'The sea under the roseite moon, where spores set into crystal when wet. Ann and Fort have both sailed it, and people live there; nothing is said about who rules it.', see: ['roseite', 'emerald-sea'], wiki: 'Rose_Sea' }),
+  // Coppermind: Sorceress's island (tress 5, 13, 23, 43, 46, 59, 62, 64). Near the Crimson border.
+  loc('sorceress-island', 'The Sorceress\'s Island', 'lumar-world', 'tress', 0.76, 0.52, '#312e81', 'island',
+    'A small, suspiciously circular island near the Crimson border. Curses for anyone who reaches it.', {
+      region: 'Midnight Sea', see: ['riina', 'riina-tower', 'midnight-sea', 'sorceress-curse'], wiki: 'Sorceress\'s_island',
+      bio: 'Barely any trees, rock spikes under the spores to tear open ships, Awakened metal soldiers on the shore and Midnight Essence in the water. The tower\'s walls are a single sheet of silver, so the only way in is the front door, and it opens from inside.' }),
+  // Coppermind: Sorceress's tower (tress 46, 54, 57, 59, 60, 64).
+  loc('riina-tower', 'The Sorceress\'s Tower', 'lumar-world', 'tress', 0.765, 0.515, '#6366f1', 'tower',
+    'A rocket standing on its tail, which the locals took for a tower. Silver walls, a red carpet, and a computer called Seslo.', {
+      region: 'Midnight Sea', aliases: 'Riina\'s Tower, Seslo',
+      bio: 'Riina\'s spaceship, set down with its booster out of sight. Inside it looks like an office or a hospital, aons carved down the halls, and at the top is a bridge where she watches Lumar through hidden cameras — including the one in Fort\'s board. Hoid\'s curse could only break if he came back in here. She flew it off the planet.', see: ['riina', 'sorceress-island', 'hoid'], wiki: 'Sorceress\'s_tower' }),
   loc('spore-fall-verdant', 'Verdant Lunagree', 'lumar-world', 'tress', 0.42, 0.45, '#34d399', 'storm',
     'Where the verdant moon rains spores into the Emerald Sea. Stay dry. Stay drier than that.', {
       region: 'Emerald Sea',
       bio: 'The lunagree of the verdant moon: a column of falling spores, straight down out of a moon that never moves, feeding the sea it stands over. Sailing under one is survivable only if nothing on board is damp.', see: ['emerald-sea'], wiki: 'Lunagree' }),
+  // Coppermind: Lunagree (tress 1), Riina (tress 35, 46).
   loc('midnight-lunagree', 'Midnight Lunagree', 'lumar-world', 'tress', 0.8, 0.52, '#1e1b4b', 'storm',
-    'Sporefall of Midnight Essence. The Sorceress prefers neighbours who cannot breathe her weather.', {
+    'Sporefall of the midnight moon. Wet, these spores become Midnight Essence.', {
       region: 'Midnight Sea',
-      bio: 'The sporefall of Midnight Essence, and the reason the Sorceress\'s neighbours are so few. She prefers weather her visitors cannot breathe.', see: ['midnight-sea', 'sorceress-island'] }),
-  loc('cinder-kings-palace', 'Cinder King\'s Palace', 'canticle-world', 'sunlit', 0.56, 0.47, '#fb923c', 'crown',
-    'The seat on Union where the Cinder King mounts sunhearts and calls it stewardship.', {
+      bio: 'The midnight moon\'s sporefall. Rain on midnight spores makes Midnight Essence; the Sorceress arranged a steady supply of water so that what the sea grew would serve her.', see: ['midnight-sea', 'sorceress-island', 'midnight-essence'] }),
+  // Coppermind: Kingsport (tress 2, 7, 19, 21), Core Archipelago (tress 4, 7, 8, 21, 30, 42).
+  // Beside `emerald-sea`; the book gives "in the Emerald Sea, far from the Rock".
+  loc('kingsport', 'Kingsport', 'lumar-world', 'tress', 0.44, 0.53, '#6ee7b7', 'port',
+    'The king\'s port, on the Core Archipelago as far as anyone can tell. Reports of deadrunners end up here.', {
+      arc: 'tress', region: 'Emerald Sea', aliases: 'Core Archipelago, the king\'s island', wiki: 'Kingsport',
+      see: ['verdant-king', 'emerald-sea', 'diggens-point'],
+      bio: 'The Core Archipelago is an island chain in the Emerald Sea, a long way from Diggen\'s Point, with islands Huck says run forty miles across. The king\'s palace is on one of them and Kingsport is presumably it. Tress meant to come here and beg the king for Charlie\'s ransom. She joined a pirate crew instead.' }),
+  // Coppermind: Islands of Lobu (tress 15, 40), Sapphire Sea (tress 15, 30, 45). Beside `sapphire-sea`.
+  loc('islands-of-lobu', 'Islands of Lobu', 'lumar-world', 'tress', 0.27, 0.57, '#38bdf8', 'island',
+    'Fort and Salay\'s islands in the Sapphire Sea, where everyone chooses a hunt.', {
+      arc: 'tress', region: 'Sapphire Sea', wiki: 'Islands_of_Lobu',
+      see: ['fort', 'salay', 'lobu-hunt', 'sapphire-sea'],
+      bio: 'A group of islands in the Sapphire Sea, home to a dark-skinned, curly-haired people who take pride in a good hunt and have stretched the word over trading, baking and planning weddings. Letters boasting of the best hunts hang in the family halls.' }),
+  // Coppermind: Xisisrefliel (tress 31, 50, 51), Lunagree (tress 46, 50); WoB 16142.
+  // Beside `crimson-sea` — the palace is by the Crimson Lunagree, the sea's centre.
+  loc('xisis-palace', 'Xisis\'s palace', 'lumar-world', 'tress', 0.625, 0.415, '#f43f5e', 'keep',
+    'Tunnels of crimson spores on the floor of the Crimson Sea, near the lunagree. The dragon opens one if you write first.', {
+      arc: 'tress', region: 'Crimson Sea', aliases: 'the domain of the dragon', wiki: 'Xisisrefliel',
+      see: ['xisis', 'crow', 'crimson-sea', 'spore-eater'],
+      bio: 'Xisis has lived down here for centuries, studying how spores rot on the seafloor and what that does to the seethe. Being near the Crimson Lunagree is enough to ask for an audience: Crow threw a letter into the spores and a tunnel opened. In the great chamber at the end, Tress and Crow each offered the dragon the other.' }),
+  // Coppermind: Union (tsm 50), Cinder King (tsm 48), Elegy Salvage (tsm 50). There is no palace;
+  // the id is kept so links hold.
+  loc('cinder-kings-palace', 'The Hall of Burning', 'canticle-world', 'sunlit', 0.56, 0.47, '#fb923c', 'fire',
+    'Under Union\'s heart ship: a hall of hundreds of sunhearts, one Charred on guard, and the room where Charred are made.', {
+      region: 'The Corridor', aliases: 'Hall of Burning',
+      bio: 'A bare metal stair leads down to it. At the end of the hall a machine still uses a spear to put the cinderheart in. The Cinder King sent Rebeke here; Elegy arrived too late to stop it starting and in time to stop it halfway.', see: ['union', 'charred', 'cinderheart', 'rebeke'], wiki: 'Union' }),
+  // Coppermind: Chorus (tsm 22). The Reliquary in the book is Beacon's, so it sits on that pin.
+  loc('chorus-hall', 'The Reliquary', 'canticle-world', 'sunlit', 0.306, 0.508, '#f59e0b', 'drum',
+    'A glass drum with an open top at the centre of Beacon, holding its share of the Chorus.', {
       region: 'The Corridor',
-      bio: 'The seat aboard Union where the Cinder King mounts harvested sunhearts on his walls and calls it stewardship. He brands people into Charred, binds the Chorus, and has an answer for every objection.', see: ['union', 'beacon'], wiki: 'Cinder_King' }),
-  loc('prospector-camps', 'Prospector Camps', 'canticle-world', 'sunlit', 0.35, 0.55, '#fde68a', 'village',
-    'Temporary digs ahead of the dawn, harvesting sunhearts before the heat takes the ground back.', {
-      region: 'The Corridor',
-      bio: 'Temporary digs set down behind the cities and ahead of the dawn, pulling sunhearts out of ground that has hours left. The crews are told the margins are generous and the margins are not.', see: ['the-corridor', 'beacon'] }),
-  loc('chorus-hall', 'The Chorus', 'canticle-world', 'sunlit', 0.57, 0.5, '#f59e0b', 'drum',
-    'Union\'s gathered voices of the dead-that-still-advise. Nomad heard them; he did not love them.', {
-      region: 'The Corridor',
-      bio: 'Where Union keeps the Chorus: the gathered dead of Canticle, screaming and advising at once, used by the Cinder King as counsel and as threat. Nomad heard them and did not love them, which is the mildest possible summary.', see: ['union'], wiki: 'Chorus' }),
-  loc('beacon-engine', 'Beacon\'s Engines', 'canticle-world', 'sunlit', 0.295, 0.505, '#fbbf24', 'fire',
-    'The machinery that keeps Beacon one step ahead of sunrise. Fail once and the city is ash.', {
-      region: 'The Corridor',
-      bio: 'The machinery that keeps Beacon a step ahead of sunrise, kept running by people who know exactly what one failure costs. It is the most important room on the planet and it is held together with salvage.', see: ['beacon', 'longroad'] }),
-  loc('hion-line-network', 'Hion Lines', 'komashi', 'yumi', 0.55, 0.48, '#22d3ee', 'canal',
-    'Twin lines of cold light that cut the Shroud and power every city that still pretends to be awake.', {
-      region: 'Komashi', see: ['kilahito', 'the-shroud'], wiki: 'Hion', bio: 'Cyan and magenta. Without them the nightmares have no border and the cities have no excuse.' }),
-  loc('painter-district', 'Painter District', 'komashi', 'yumi', 0.63, 0.47, '#67e8f9', 'scroll',
-    'Kilahito wards where nightmare painters keep shifts and count their stable jobs in ink.', {
-      region: 'Komashi',
-      bio: 'The Kilahito wards where nightmare painters keep their shifts and measure their status in stable contracts. Painter has none, which is most of his problem and all of his freedom.', see: ['kilahito', 'dreamwatch'], wiki: 'Nightmare_painter' }),
-  loc('father-machine-site', 'The Father Machine', 'komashi', 'yumi', 0.5, 0.5, '#e879f9', 'keep',
-    'The device that ate Torio\'s sky and remade a world into hion and hunger.', {
-      region: 'Komashi', see: ['torio', 'the-shroud'], wiki: 'Father_machine', bio: 'Built to contact the spirits. It bound them instead, and wore their world as a mask.' }),
-  loc('yoki-hijo-shrine', 'Yoki-hijo Shrine', 'komashi', 'yumi', 0.37, 0.51, '#f0abfc', 'bell',
-    'Ritual ground where yoki-hijo stacked stones and bargained with spirits before the machine won.', {
-      region: 'Komashi',
-      bio: 'Ritual ground where yoki-hijo stacked stones and bargained with spirits for the things a town needed, back when that was still what the ritual did. The machine took over the arrangement and left the ceremony in place.', see: ['torio', 'torio-steamwell'], wiki: 'Yoki-hijo' }),
+      bio: 'Every Canticle city carries one on its largest ship. Hand the shades leather or metal and a pattern and they make a coat or an engine; ask them where they came from and they will tell you they were the first to die here. Rebeke thought she saw Divinity in it.', see: ['chorus', 'beacon', 'divinity-salvage'], wiki: 'Chorus' }),
+  // Coppermind: Hion (yumi 1, 3, 5, 21, 39).
+  loc('hion-line-network', 'Hion Lines', 'komashi', 'yumi', 0.628, 0.474, '#22d3ee', 'canal',
+    'Cyan and magenta lines that hold the shroud off a city.', {
+      region: 'Komashi', see: ['kilahito', 'the-shroud', 'hion-term'], wiki: 'Hion',
+      bio: 'Primary lines a few inches thick hang twenty feet over the main streets; thinner ones wind into the poorer quarters. They grow from stubs where Torish villages used to stand, and Nagadan stretches them between cities, onto farms, and once, into space.' }),
+  // Coppermind: Father machine (yumi 39, 40, 41). It stands in Torio City's exhibit hall.
+  loc('father-machine-site', 'The Father Machine', 'komashi', 'yumi', 0.608, 0.470, '#e879f9', 'keep',
+    'The device that ate Torio\'s people and remade a world into hion and hunger.', {
+      region: 'Torio', see: ['torio-city', 'father-machine', 'the-shroud'], wiki: 'Father_machine',
+      bio: 'Thirty feet of Awakened machine with hundreds of legs, in the exhibit hall of Torio City, behind a shield nobody could cross. By the end almost none of its original parts were left; it had rebuilt itself out of smoke. Yumi stole the spirits out from under it with towers of stone.' }),
+  // Coppermind: Komashi (yumi 2), Gongsha Town (yumi 13, 18, 23).
+  loc('yoki-hijo-shrine', 'Place of Ritual', 'komashi', 'yumi', 0.600, 0.500, '#f0abfc', 'bell',
+    'The warm ground where a yoki-hijo stacks stones and the town watches.', {
+      region: 'Torio', aliases: 'kimomakkin, Yoki-hijo Shrine',
+      bio: 'Kimomakkin are the warmer spots near a steamwell that yoki-hijo use. In Gongsha it is fenced, east of the orchard, with an untraditional shrine among the fruit trees.', see: ['torio', 'torio-steamwell', 'yoki-hijo', 'gongsha-town'], wiki: 'Yoki-hijo' }),
+  // Coppermind: Torio City (yumi 2, 20, 33, 34, 40, ae). Ruins west of Kilahito, comparable size.
+  loc('torio-city', 'Torio City', 'komashi', 'yumi', 0.608, 0.478, '#e879f9', 'city',
+    'Torio\'s capital: red roofs, fountains, stone dragons, and the exhibit hall where the machine was switched on. Ruins now, west of Kilahito.', {
+      arc: 'yumi', region: 'Torio', wiki: 'Torio_City',
+      see: ['torio', 'father-machine-site', 'festival-of-reveals', 'institute-mech-solutions'],
+      bio: 'Seat of the queen and of the university the villages trusted. After the Festival of Reveals it went to ruin under the shroud. When the shroud lifted, Nagadan found seeds of the old plants preserved here and bred crops for a world with a sun again.' }),
+  // Coppermind: Futinoro (yumi 7, 36); Incident (yumi 23, 36). Placement inside Nagadan is ours.
+  loc('futinoro', 'Futinoro', 'komashi', 'yumi', 0.632, 0.496, '#334155', 'city',
+    'A Nagadan city destroyed by several dozen stable nightmares, thirty years before the battle of Kilahito.', {
+      arc: 'yumi', region: 'Nagadan', wiki: 'Futinoro',
+      see: ['the-incident', 'father-machine', 'liyun', 'stable-nightmare'],
+      bio: 'Nagadan remembers it as what happens when painters are not vigilant. Liyun, who was there, says the machine sent the nightmares on purpose: spirits had got loose and reached the people of Futinoro, and a city that knew the truth could not be allowed to keep it.' }),
+  // Coppermind: Gongsha Town (yumi 6, 12, 13, 18, 20, 23); Kilahito (yumi 34: five miles from Yumi's prison).
+  loc('gongsha-town', 'Gongsha Town', 'komashi', 'yumi', 0.614, 0.460, '#f0abfc', 'village',
+    'A Torish village of about a hundred homes, and the copy the machine kept Yumi in once Painter was Connected to her.', {
+      arc: 'yumi', region: 'Torio', wiki: 'Gongsha_Town',
+      see: ['yumi', 'liyun', 'gyundok', 'yoki-hijo-shrine', 'torio'],
+      bio: 'A steamwell in the middle, a cold spring in the low western hills for ritual baths, an orchard of a hundred floating trees to the south, the Place of Ritual to the east. For centuries Yumi relived one day in Ihosen; Connected to Painter, she stayed in Gongsha, and the machine had to send scholars to deal with her.' }),
   loc('patjis-eye', 'Patji\'s Eye', 'first-of-the-sun', 'sixthofdusk', 0.53, 0.51, '#22d3ee', 'lake',
     'A still lake near the top of Patji, where juvenile Aviar gather to eat.', {
       region: 'The Pantheon', see: ['patji'], wiki: 'Patji\'s_Eye', eraMin: 1, bio: 'The lake near Patji\'s peak where juvenile Aviar from every island come to eat the fruit of the Patji\'s Finger trees around it. Vathi works out that a parasite in that fruit is what gives them their talents.' }),

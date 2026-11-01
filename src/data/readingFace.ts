@@ -136,6 +136,87 @@ export const READING_FACES: Record<string, ReadingFace> = {
       { book: 'stormlight', arc: 'oathbringer', published: true },
     ],
   },
+  // Wind and Truth rewrote the Shinovar cast. Each face stops at the book
+  // that earns the next sentence; the published card is the whole story.
+  szeth: {
+    early: {
+      fact: 'The Assassin in White: a Shin Truthless who kills for whoever holds his Oathstone.',
+      abilities: 'Windrunner Honorblade',
+      aliases: 'Szeth-son-son-Vallano, Truthless, the Assassin in White',
+      bio: 'A Shin exile made Truthless, bound to obey whoever holds his Oathstone. With an Honorblade that lets him Lash himself across a room, he killed King Gavilar on the night of the treaty, and he goes on killing for each new master. He believes his people named him Truthless for a reason.',
+    },
+    steps: [
+      {
+        book: 'stormlight', arc: 'wor',
+        fact: 'Truthless no longer, and dead once. Nale brought him back with a black sword.',
+        abilities: 'Nightblood',
+        aliases: 'Szeth-son-son-Vallano, Truthless, the Assassin in White',
+        bio: 'The Assassin in White, who killed King Gavilar and went on to kill rulers across Roshar for a master he would not name. Kaladin killed him in the sky over the Shattered Plains. Nale brought him back, handed him a sentient black sword, and offered him a law to follow instead of a stone.',
+      },
+      {
+        book: 'stormlight', arc: 'oathbringer',
+        fact: 'A Skybreaker sworn to follow the will of Dalinar Kholin, and then to cleanse Shinovar.',
+        abilities: 'Skybreaker Radiant, Nightblood',
+        aliases: 'Szeth-son-son-Vallano, the Assassin in White',
+        bio: 'The Assassin in White, revived by Nale and carrying Nightblood. He joined the Skybreakers, and at Thaylen Field chose to follow Dalinar, the man he had once tried to kill. His Third Ideal binds him to Dalinar\'s will; his Fourth, he says, will be to cleanse the Shin of the false leaders who made him Truthless.',
+      },
+      { book: 'stormlight', arc: 'wat', published: true },
+    ],
+  },
+  ishar: {
+    early: {
+      fact: 'One of the ten Heralds of the Almighty, and one of the nine who walked away.',
+      abilities: 'Herald · Honorblade',
+      aliases: 'Ishar',
+      bio: 'One of the ten Heralds who held back the Desolations, and one of the nine who left their Blades in the stone at Aharietiam and left Taln to hold alone.',
+    },
+    steps: [
+      {
+        book: 'stormlight', arc: 'oathbringer',
+        fact: 'Tezim, the god-priest conquering Tukar, is Ishar, and he is mad.',
+        abilities: 'Herald · patron of the Bondsmiths',
+        aliases: 'Tezim, Ishi\'Elin',
+        bio: 'Herald of the Bondsmiths. In the present day he rules Tukar as Tezim, a god-priest at war with Emul over Sesemalex Dar. The Stormfather says he curses him at night even as he names himself a god, and that he seeks death: his own, perhaps everyone\'s. Nale still trusts him above every other Herald.',
+      },
+      {
+        book: 'stormlight', arc: 'row',
+        fact: 'The mad Herald of Tukar, who nearly took Dalinar\'s bond to the Stormfather.',
+        abilities: 'Herald · Bondsmith Honorblade',
+        aliases: 'Tezim, Ishi\'Elin, Herald of Luck',
+        bio: 'Herald of the Bondsmiths, ruling Tukar as Tezim. He has been dragging Radiant spren into the Physical Realm to see how long they last, and cutting them open when they do not. When Dalinar comes for him, he pins five Windrunners to the ground and drains them, opens Honor\'s Perpendicularity, and almost takes Dalinar\'s bond and his place in the contest, until Szeth cuts the Connection with Nightblood. He wants to join the Shards and be the Almighty reborn.',
+      },
+      { book: 'stormlight', arc: 'wat', published: true },
+    ],
+  },
+  nale: {
+    early: {
+      fact: 'Nalan, Herald of Justice: one of the nine who walked away at Aharietiam.',
+      abilities: 'Herald · Honorblade',
+      aliases: 'Nalan\'Elin, Nale',
+      bio: 'One of the ten Heralds who held back the Desolations, and one of the nine who left their Blades in the stone at Aharietiam.',
+    },
+    steps: [
+      {
+        book: 'stormlight', arc: 'wor',
+        fact: 'A Herald who never stopped working. He brings Szeth back from the dead.',
+        abilities: 'Herald · Honorblade',
+        aliases: 'Nin, Nalan\'Elin, Herald of Justice',
+        bio: 'Nalan, Herald of Justice. Unlike the others he is still at work in the world, and it is the work of a judge without mercy. As Nin he brings Szeth back from the dead, hands him a black sword, and offers him the law.',
+      },
+      { book: 'stormlight', arc: 'wat', published: true },
+    ],
+  },
+  neturo: {
+    early: {
+      fact: 'Szeth\'s father: a Shin shepherd who taught him to add to the world, not subtract.',
+      abilities: 'Shepherd · bore the Bondsmith Honorblade',
+      aliases: 'Neturo, Szeth\'s father',
+      bio: 'A shepherd whose teaching Szeth carried through every year he was Truthless: the best and truest duty of a person is to create, and not destroy. Szeth stopped calling himself Szeth-son-Neturo so as not to shame the name. When Ishar summons his Honorblade, Szeth knows it for the Blade his father carried, and learns that Neturo is dead.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'wat', published: true },
+    ],
+  },
   vin: {
     early: {
       fact: 'A skaa thief Kelsier is teaching to be Mistborn.',

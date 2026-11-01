@@ -13,6 +13,25 @@ export const RELATIONS_MORE: Relation[] = [
   { a: { kind: 'character', id: 'lirin' }, b: { kind: 'character', id: 'hesina' }, type: 'romance', label: 'Married', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'kaladin' }, b: { kind: 'character', id: 'syl' }, type: 'bond', label: 'Windrunner bond', book: 'stormlight', canon: C },
 
+  // --- Shinovar (Wind and Truth). Arcs live in relationArcs.ts ------------
+  { a: { kind: 'character', id: 'szeth' }, b: { kind: 'character', id: 'neturo' }, type: 'family', label: 'Son & father', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'szeth' }, b: { kind: 'character', id: 'zeenid' }, type: 'family', label: 'Son & mother', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'szeth' }, b: { kind: 'character', id: 'elid' }, type: 'family', label: 'Brother & sister', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'neturo' }, b: { kind: 'character', id: 'zeenid' }, type: 'romance', label: 'Married, then apart', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'neturo' }, b: { kind: 'character', id: 'elid' }, type: 'family', label: 'Father & daughter', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'zeenid' }, b: { kind: 'character', id: 'elid' }, type: 'family', label: 'Mother & daughter', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'neturo' }, b: { kind: 'character', id: 'sivi' }, type: 'romance', label: 'Lovers', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'ishar' }, b: { kind: 'character', id: 'szeth' }, type: 'mentor', label: 'The Voice that groomed him to be a Herald', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'ishar' }, b: { kind: 'character', id: 'neturo' }, type: 'rival', label: 'Made him a human Fused', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'ishar' }, b: { kind: 'character', id: 'sivi' }, type: 'rival', label: 'She would not bow to him', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'pozen' }, b: { kind: 'character', id: 'szeth' }, type: 'mentor', label: 'First teacher, then judge', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'moss-son-farrier' }, b: { kind: 'character', id: 'szeth' }, type: 'ally', label: 'His friend among the Honorbearers', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'szeth' }, b: { kind: 'character', id: 'tuko' }, type: 'rival', label: 'Killed him for Jezrien\'s Blade', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'szeth' }, b: { kind: 'character', id: 'auxiliary' }, type: 'bond', label: 'Skybreaker & highspren, until the Fifth Ideal', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'kaladin' }, b: { kind: 'character', id: 'ishar' }, type: 'ally', label: 'Swore the Fifth Ideal to him', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'kaladin' }, b: { kind: 'org', id: 'heralds' }, type: 'ally', label: 'Took Jezrien\'s place', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'kaladin' }, b: { kind: 'character', id: 'jezrien' }, type: 'ally', label: 'Herald in his place', book: 'stormlight', canon: C },
+
   // --- Shallan family ---------------------------------------------------
   { a: { kind: 'character', id: 'shallan' }, b: { kind: 'character', id: 'lin-davar' }, type: 'family', label: 'Daughter & father', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'shallan' }, b: { kind: 'character', id: 'helaran' }, type: 'family', label: 'Sister & brother', book: 'stormlight', canon: C },

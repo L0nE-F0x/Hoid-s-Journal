@@ -9,8 +9,8 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   kaladin: {
     wiki: 'Kaladin',
-    see: ['syl', 'bridge-four', 'tien', 'dalinar', 'moash'],
-    bio: 'A darkeyed surgeon\'s son who becomes a slave, a bridgeman, and the first Windrunner of the new Radiance. Depression and the weight of everyone he failed nearly break the Fourth Ideal; Syl and Bridge Four keep pulling him back into the sky. By Wind and Truth he is more than a soldier — he is the man who keeps choosing to protect anyway.',
+    see: ['syl', 'bridge-four', 'tien', 'szeth', 'ishar', 'heralds'],
+    bio: 'A darkeyed surgeon\'s son who became a slave, a bridgeman, and the first Windrunner of the new Radiance. Depression and the weight of everyone he failed nearly broke him more than once; Syl, Bridge Four and Teft kept dragging him back into the sky, and after Rhythm of War he turned his father\'s training on minds instead of bodies. In Wind and Truth he goes to Shinovar with Szeth to help a mad Herald, swears the Fifth Ideal to Ishar himself, and on Stormfall takes Jezrien\'s place in a reforged Oathpact. His body is left behind, and Szeth buries it. He is the Herald of Second Chances now.',
   },
   shallan: {
     wiki: 'Shallan',
@@ -73,8 +73,8 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   szeth: {
     wiki: 'Szeth',
-    see: ['nightblood', 'nale', 'kaladin', 'shin-shamans'],
-    bio: 'Truthless of Shinovar, Assassin in White, Skybreaker, and finally a man who chooses his own Ideal. He carries Nightblood, the guilt of kings, and a progress through oaths that is somehow both legalistic and raw.',
+    see: ['nightblood', 'kaladin', 'ishar', 'shin-shamans', 'truthless'],
+    bio: 'Szeth-son-Neturo: Truthless of Shinovar, the Assassin in White, Skybreaker. He went home with Kaladin to cleanse Shinovar and found that the Voice which had guided him since childhood was Ishar, and that the Honorbearers he had to beat included his own father and sister, remade as Ishar\'s Fused. He swore the Fifth Ideal and broke his bond with his highspren in the same breath, then freed them all with Nightblood; the sword ate his right arm. Ishar wanted him for a Herald. Kaladin took the place instead, and Szeth buried his body. Years on, he is married to the Shin historian who wrote the Knights of Wind and Truth down.',
   },
   sazed: {
     wiki: 'Sazed',
@@ -333,8 +333,8 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   nale: {
     wiki: 'Nale',
-    see: ['szeth', 'skybreakers', 'heralds', 'ishar'],
-    bio: 'Herald of Justice and the only one who never abandoned the Skybreakers. He hunts nascent Radiants under Ishar\'s bad advice, bonds a highspren, and remains the most legally dangerous immortal on Roshar.',
+    see: ['szeth', 'skybreakers', 'heralds', 'ishar', 'kaladin'],
+    bio: 'Nalan\'Elin, Herald of Justice, born on Ashyn at his uncle Makibak\'s side. For a thousand years he hunted every Surgebinder outside his own Skybreakers, because Ishar told him the return of the Radiants would bring a Desolation. In Shinovar Kaladin broke through his rationalisations and he fell apart in horror at what he had become; his highspren left him. He helped Szeth and Kaladin reach Ishar, and on Stormfall he laid the Honorblades in the circle that remade the Oathpact.',
   },
   taln: {
     wiki: 'Talenel',
@@ -343,8 +343,8 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   ishar: {
     wiki: 'Ishar',
-    see: ['heralds', 'bondsmiths', 'nale', 'dalinar'],
-    bio: 'Herald who would be a god of bonds. His experiments tear spren and men apart; his madness wears the mask of priesthood. Dalinar\'s confrontation with him is Bondsmith against Bondsmith unbound.',
+    see: ['heralds', 'bondsmiths', 'nale', 'szeth'],
+    bio: 'The Herald who Connected the others to Honor and bound the Oathpact. Long before, on Ashyn, Odium tricked him first into the experiments with the Surges that ruined that world. A thousand years before the True Desolation he took a fraction of the Well of Control and Connected himself to Shinovar like a god: he spoke in Shin heads as the Voice, groomed Szeth for decades to replace a Herald, drove the spren out of the land, and remade the Honorbearers as human Fused. On Stormfall Kaladin swore his Fifth Ideal to him and forced Odium\'s power out. Ishar then reforged the Oathpact, and made Kaladin a Herald.',
   },
   gavilar: {
     wiki: 'Gavilar_Kholin',

@@ -382,6 +382,8 @@ export interface Perpendicularity extends Cited {
   name: string;
   body: string;
   book: string;
+  /** First book that reveals this door. Absent means the start of `book`. */
+  arc?: string;
   fact: string;
   aliases?: string;
   /** Location id it sits at, when the geography is known. */

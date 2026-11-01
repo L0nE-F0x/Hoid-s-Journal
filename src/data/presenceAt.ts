@@ -63,6 +63,16 @@ export const PRESENCE_AT: Record<string, PlaceBeat[]> = {
     { era: 3, at: 'urithiru', arc: 'row' },
   ],
   sigzil: [{ era: 3, at: 'urithiru', arc: 'wor' }],
+  // Shinovar, as Wind and Truth tells it.
+  szeth: [{ era: 3, at: 'shinovar', arc: 'wat' }],
+  neturo: [{ era: 3, at: 'shinovar', arc: 'wat' }],
+  elid: [{ era: 3, at: 'shinovar', arc: 'wat' }],
+  zeenid: [{ era: 3, at: 'shinovar', arc: 'wat' }],
+  sivi: [{ era: 3, at: 'shinovar', arc: 'wat' }],
+  pozen: [{ era: 3, at: 'shinovar', arc: 'wat' }],
+  'moss-son-farrier': [{ era: 3, at: 'shinovar', arc: 'wat' }],
+  rit: [{ era: 3, at: 'shinovar', arc: 'wat' }],
+  tuko: [{ era: 3, at: 'shinovar', arc: 'wat' }],
   galladon: [
     { era: 1, at: 'elantris-city' },
     { era: 3, at: 'purelake', book: 'stormlight', arc: 'twok' },

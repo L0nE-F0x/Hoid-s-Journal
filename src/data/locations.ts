@@ -547,12 +547,21 @@ export const PERPS: Perpendicularity[] = [
   { id: 'elantris-pool-perp', name: 'The Pool of Elantris', body: 'sel', book: 'elantris',
     fact: 'Devotion\'s perpendicularity in the mountains above Elantris.', at: 'elantris-city',
     eraMin: 1, canon: C, sources: ['Elantris'] },
+  // Gone when Cultivation left Roshar at the end of Wind and Truth, so the
+  // door closes with era 3 rather than standing open in the Mistborn years.
   { id: 'cultivation-pool', name: "Cultivation's Perpendicularity", body: 'roshar', book: 'stormlight',
-    fact: 'The Horneater Peaks\' thermal oceans. A stable transit.', at: 'horneater-peaks',
-    eraMin: 1, canon: C, sources: ['The Stormlight Archive'] },
-  { id: 'honors-perp', name: "Honor's Perpendicularity", body: 'roshar', book: 'stormlight',
+    fact: 'The Pool of the Horneater Peaks: the only stable perpendicularity on Roshar, and the way most worldhoppers arrive.', at: 'horneater-peaks',
+    aliases: 'the Pool, the water of life',
+    eraMin: 1, eraMax: 3, canon: C, sources: ['Words of Radiance', 'Oathbringer', 'Wind and Truth'] },
+  { id: 'honors-perp', name: "Honor's Perpendicularity", body: 'roshar', book: 'stormlight', arc: 'oathbringer',
     fact: 'Opened by Dalinar at Thaylen Field; not a stable geographic pool.', at: 'thaylen-city',
     eraMin: 3, eraMax: 3, canon: C, sources: ['Oathbringer'] },
+  // No `at`: the pins draw a door at any place a perpendicularity names, and
+  // that glyph would tell a first reader there is something under the Plains.
+  { id: 'well-of-control-perp', name: 'The Well of Control', body: 'roshar', book: 'stormlight', arc: 'wat',
+    fact: 'Odium\'s perpendicularity, sealed in a cavern under the Shattered Plains inside the remnants of the fourth moon. Retribution\'s now.',
+    aliases: 'Odium\'s Perpendicularity, Retribution\'s Perpendicularity',
+    eraMin: 1, canon: C, sources: ['Wind and Truth'] },
   { id: 'tears-of-edgli-perp', name: 'Tears of Edgli', body: 'nalthis', book: 'warbreaker',
     fact: 'Flowers whose dye is Endowment\'s Investiture made pigment.', at: 'tears-of-edgli',
     eraMin: 1, canon: C, sources: ['Warbreaker'] },

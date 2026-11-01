@@ -34,9 +34,9 @@ export const CHARACTERS: Character[] = [
     'Mistborn, Splinter of Preservation',
     'Ascended to become the vessel of Preservation.', false,
     [{ era: 2, system: 'scadrian', body: 'scadrial' }]),
-  ch('kaladin', 'Kaladin', '#22d3ee', 'stormlight', 'Roshar', 'Stormblessed',
-    'Windrunner Radiant',
-    'A former surgeon turned leader of the Knights Radiant.', false, [
+  ch('kaladin', 'Kaladin', '#22d3ee', 'stormlight', 'Roshar', 'Stormblessed, Kal, Herald of Second Chances, Herald of the Wind',
+    'Windrunner of the Fifth Ideal · Herald',
+    'Surgeon\'s son, bridgeman, Windrunner, and since Stormfall the Herald in Jezrien\'s place.', false, [
       { era: 3, system: 'rosharan', body: 'roshar' },
       { era: 5, system: 'rosharan', body: 'roshar' },
     ]),
@@ -120,9 +120,9 @@ export const CHARACTERS: Character[] = [
     'A thief who metabolizes food directly into Stormlight.', false, [
       { era: 3, system: 'rosharan', body: 'roshar' },
     ]),
-  ch('szeth', 'Szeth', '#e2e8f0', 'stormlight', 'Roshar', 'Truthless, the Assassin in White',
-    'Skybreaker Radiant, Nightblood',
-    'Shin exile who reshaped Roshar\'s politics with a single Blade.', false, [
+  ch('szeth', 'Szeth', '#e2e8f0', 'stormlight', 'Roshar', 'Szeth-son-Neturo, Szeth-son-son-Vallano, Truthless, the Assassin in White',
+    'Skybreaker of the Fifth Ideal (bond broken) · Nightblood',
+    'The Assassin in White, who went home and cut his family free of a Herald.', false, [
       { era: 3, system: 'rosharan', body: 'roshar' },
     ]),
   ch('sazed', 'Sazed', '#a3e635', 'mistborn1', 'Scadrial', 'Harmony',
@@ -374,9 +374,9 @@ export const CHARACTERS: Character[] = [
     'Tower-spren, half Honor and half Cultivation. Navani woke them.', true, [
       { era: 3, system: 'rosharan', body: 'roshar' },
     ], { arc: 'row', kind: 'spren', wiki: 'Sibling' }),
-  ch('nale', 'Nale', '#0f172a', 'stormlight', 'Roshar', 'Nin, Herald of Justice',
-    'Herald of the Skybreakers',
-    'The only Herald still trying to keep an oath. It is not going well.', true, [
+  ch('nale', 'Nale', '#0f172a', 'stormlight', 'Roshar', 'Nalan\'Elin, Nin, Nakku, Darkness, Herald of Justice',
+    'Herald · Skybreaker of the Fifth Ideal',
+    'Herald of Justice. A thousand years of killing Radiants on Ishar\'s word, and then he broke.', true, [
       { era: 3, system: 'rosharan', body: 'roshar' },
     ], { kind: 'herald', wiki: 'Nale' }),
   ch('taln', 'Taln', '#7f1d1d', 'stormlight', 'Roshar', 'Talenelat, Stonesinew',
@@ -384,9 +384,9 @@ export const CHARACTERS: Character[] = [
     'He held Braize alone for four thousand years. Then he broke, and did not.', true, [
       { era: 3, system: 'rosharan', body: 'roshar' },
     ], { kind: 'herald', wiki: 'Talenel' }),
-  ch('ishar', 'Ishar', '#ca8a04', 'stormlight', 'Roshar', 'Tukiri, Herald of Luck',
-    'Herald of the Bondsmiths',
-    'Mad god-priest of Tukar. The Oathpact was his idea.', true, [
+  ch('ishar', 'Ishar', '#ca8a04', 'stormlight', 'Roshar', 'Ishi\'Elin, Ishu-son-God, Tezim, Tashi, the Voice, Herald of Luck',
+    'Herald · Bondsmith Honorblade · a fraction of the Well of Control',
+    'The Herald who bound the Oathpact, and the Voice that ruled Shinovar.', true, [
       { era: 3, system: 'rosharan', body: 'roshar' },
     ], { kind: 'herald', wiki: 'Ishar' }),
   ch('gavilar', 'Gavilar Kholin', '#1d4ed8', 'stormlight', 'Roshar', 'King of Alethkar',

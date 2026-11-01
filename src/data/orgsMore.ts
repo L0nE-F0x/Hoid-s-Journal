@@ -112,6 +112,17 @@ export const ORGS_MORE: Organization[] = [
       members: ['szeth'],
       see: ['szeth', 'honorblade', 'truthless'],
     }),
+  org('honorbearers', 'The Honorbearers', '#f5f5f4', 'stormlight', 'order',
+    'Shinovar\'s keepers of the Honorblades: one Stone Shaman to each Blade, each over a monastery, and the highest authority the Shin have.',
+    {
+      arc: 'wat',
+      world: 'Roshar', wiki: 'Honorbearer',
+      aliases: 'Honorbearer, the Sacred Truth',
+      sources: ['Wind and Truth'],
+      members: ['neturo', 'elid', 'sivi', 'pozen', 'moss-son-farrier', 'rit', 'tuko', 'szeth'],
+      see: ['monastery-of-truth', 'honorblade', 'human-fused', 'ishar', 'shin-shamans'],
+      bio: 'When the Heralds walked away they left their Blades in Shinovar and taught the Shin that the Voidbringers would return. The Shin made keeping them a sacred trust and built ten monasteries to do it. A candidate trains with every Blade and must beat the bearer they would replace; the Bondsmith alone is elected. In Szeth\'s day the Elsecaller, Pozen, decides who rises. Ishar corrupted them: all but Sivi let him make them human Fused. Szeth freed them with Nightblood on Stormfall, and the reforged Oathpact took the Blades back. There are presumably no Honorbearers now.',
+    }),
   org('thaylen-guilds', 'Thaylen guilds', '#22d3ee', 'stormlight', 'guild',
     'Merchant houses and naval money that keep Thaylenah rich between storms. Rysn\'s career starts in their ledgers.',
     {

@@ -562,6 +562,42 @@ async function run() {
     check('reading companion syncs publication-safe',
       !!synced && s.readProgress.mistborn2 === -1 && s.readProgress.elantris >= 0,
       JSON.stringify({ mb2: s.readProgress.mistborn2, el: s.readProgress.elantris }));
+    // A card is gated on its own book; what it links to must be too. Read as
+    // a Way of Kings reader, no chip on these cards may name an entry gated
+    // on a later arc (Shallan's card used to offer Veil, Roshar's Urithiru).
+    const leaks = await page.evaluate(async () => {
+      const d = await import('/src/data/index.ts');
+      const st = window.__ceph.store;
+      st.set('panel', 'none');
+      const progress = st.state.readProgress;
+      const hiddenLabels = new Set();
+      const seenLabels = new Set();
+      for (const list of [d.COSMERE.characters, d.COSMERE.locations, d.COSMERE.organizations,
+        d.COSMERE.glossary, d.COSMERE.bodies, d.COSMERE.magics, d.COSMERE.shards]) {
+        for (const item of list) {
+          (d.isVisible(item, progress) ? seenLabels : hiddenLabels).add(d.loreLabel(item.id));
+        }
+      }
+      // A name a visible entry also goes by is not a leak.
+      for (const name of seenLabels) hiddenLabels.delete(name);
+      const out = [];
+      for (const id of ['kaladin', 'shallan', 'navani', 'roshar', 'knights-radiant', 'rosharan']) {
+        st.set('selected', id);
+        const card = document.querySelector('.ceph-panel-drawer');
+        const chips = [...(card?.querySelectorAll('.ceph-atlas-chip') ?? [])].map((b) => b.textContent ?? '');
+        for (const text of chips) {
+          const name = text.includes(' — ') ? text.split(' — ').pop() : text;
+          if (hiddenLabels.has(name)) out.push(`${id}: ${name}`);
+        }
+      }
+      st.set('selected', null);
+      // Back to the Journal, where the next check clears the companion.
+      st.set('panel', 'journal');
+      return out;
+    });
+    await sleep(300);
+    check('reading companion: a card links to nothing past the reader',
+      Array.isArray(leaks) && leaks.length === 0, JSON.stringify(leaks));
     const restored = await page.evaluate(() => {
       const sel = document.querySelector('.ceph-modal-card select');
       if (!sel) return false;

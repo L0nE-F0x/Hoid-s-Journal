@@ -25,6 +25,64 @@ import {
 import { store } from '../core/store.ts';
 import { el, listen } from './dom.ts';
 
+/**
+ * Whether the reader may see an entry the card links to. A card is gated on
+ * its own book, but what it links to was not: See also, an order's members,
+ * a world's Shards and magic, a system's planets all rendered whatever the
+ * data listed, so a Way of Kings reader's Shallan card offered "Veil" and
+ * Roshar's offered Urithiru. Each link now passes the same gate its entry
+ * does everywhere else (directory, Codex, Lore Web): `isVisible` at the
+ * current reading progress.
+ */
+function canSee(id: string): boolean {
+  const hit = loreById(id);
+  if (!hit) return false;
+  return isVisible(hit.obj as { book?: string; arc?: string }, store.state.readProgress);
+}
+
+/** A comma list of names, without the ones that name a place not yet reached. */
+function seenNames(list: string | undefined, body: string): string | undefined {
+  if (!list) return list;
+  const kept = list.split(',').map((n) => n.trim()).filter((name) => {
+    const place = COSMERE.locations.find((l) => l.body === body && l.name.toLowerCase() === name.toLowerCase());
+    return !place || isVisible(place, store.state.readProgress);
+  });
+  return kept.join(', ');
+}
+
+/**
+ * A free-text roll of people ("Knights Radiant — Kaladin, Shallan, … Lift,
+ * Venli") without the names of anyone the reader has not met yet. Only
+ * whole names of characters gated past the current progress are taken out.
+ */
+export function withoutHidden(text: string | undefined): string | undefined {
+  if (!text) return text;
+  let out = text;
+  const progress = store.state.readProgress;
+  const shown = COSMERE.characters.filter((c) => isVisible(c, progress)).map((c) => c.name);
+  const hidden = COSMERE.characters
+    .filter((c) => c.name.length > 2 && !isVisible(c, progress))
+    .map((c) => c.name)
+    // A hidden name inside a visible one ("Adolin" in "Adolin Kholin") is not theirs to take.
+    .filter((name) => !shown.some((v) => v !== name && v.includes(name)))
+    .sort((a, b) => b.length - a.length);
+  for (const name of hidden) {
+    if (!out.includes(name)) continue;
+    const esc = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    out = out
+      .replace(new RegExp(`,\\s*\\b${esc}\\b(\\s*\\([^)]*\\))?`, 'g'), '')
+      .replace(new RegExp(`\\b${esc}\\b(\\s*\\([^)]*\\))?\\s*,\\s*`, 'g'), '')
+      .replace(new RegExp(`\\b${esc}\\b(\\s*\\([^)]*\\))?`, 'g'), '');
+  }
+  return out.replace(/\s+—\s*$/, '').trim() || undefined;
+}
+
+/** True while a character's card is still an early face from readingFace.ts. */
+function earlyFace(c: { fact: string; bio?: string; aliases?: string; abilities?: string },
+  face: { fact: string; bio?: string; aliases?: string; abilities?: string }): boolean {
+  return face.fact !== c.fact || face.bio !== c.bio || face.aliases !== c.aliases || face.abilities !== c.abilities;
+}
+
 function field(label: string, value: string | undefined | null): HTMLElement | null {
   if (!value || value === '—' || value === 'None') return null;
   return el('div', { className: 'ceph-field' }, [
@@ -40,7 +98,7 @@ function field(label: string, value: string | undefined | null): HTMLElement | n
  * the Shard or the Arcanum page it stands for.
  */
 function refField(label: string, ids: string[] | undefined): HTMLElement | null {
-  const refs = relatedRefs(ids);
+  const refs = relatedRefs(ids).filter((r) => canSee(r.id));
   if (!refs.length) return null;
   const chips = el('div', { className: 'ceph-see-chips' });
   for (const r of refs) {
@@ -111,7 +169,7 @@ function openId(id: string): void {
 }
 
 function seeRow(ids: string[] | undefined, extra: { id: string; label: string }[] = []): HTMLElement | null {
-  const refs = [...relatedRefs(ids), ...extra.filter((e) => !ids?.includes(e.id))];
+  const refs = [...relatedRefs(ids), ...extra.filter((e) => !ids?.includes(e.id))].filter((r) => canSee(r.id));
   if (!refs.length) return null;
   const wrap = el('div', { className: 'ceph-see' });
   wrap.append(el('div', { className: 'ceph-field-label', text: 'See also' }));
@@ -165,7 +223,7 @@ function fillFromHit(host: HTMLElement, hit: LoreHit): void {
     grid.append(refField('Magic', b.magic) ?? '');
     for (const [k, v] of [
       ['Species', b.species.join(', ')],
-      ['Places', b.locations],
+      ['Places', seenNames(b.locations, b.id)],
       ['Sources', b.sources.join(' · ')],
       ['Local date', worldDate(b.system, era)],
     ] as [string, string | undefined | null][]) {
@@ -220,9 +278,9 @@ function fillFromHit(host: HTMLElement, hit: LoreHit): void {
   }
   if (hit.kind === 'system') {
     const sys = hit.obj;
-    const worlds = COSMERE.bodies.filter((b) => b.system === sys.id && b.kind !== 'gas-giant');
-    const giants = COSMERE.bodies.filter((b) => b.system === sys.id && b.kind === 'gas-giant');
-    const belts = COSMERE.belts.filter((b) => b.system === sys.id);
+    const worlds = COSMERE.bodies.filter((b) => b.system === sys.id && b.kind !== 'gas-giant' && canSee(b.id));
+    const giants = COSMERE.bodies.filter((b) => b.system === sys.id && b.kind === 'gas-giant' && canSee(b.id));
+    const belts = COSMERE.belts.filter((b) => b.system === sys.id && canSee(b.id));
     // Orbit rings are drawn in the Physical Realm only. Over in Shadesmar a
     // world is a bead ocean and there is no ring to aim at, so the hint has to
     // point at what is actually on the screen.
@@ -263,7 +321,8 @@ function fillFromHit(host: HTMLElement, hit: LoreHit): void {
   }
   if (hit.kind === 'location') {
     const l = hit.obj;
-    const perp = perpAt(l.id);
+    const door = perpAt(l.id);
+    const perp = door && canSee(door.id) ? door : undefined;
     host.append(headOf(bodyById[l.body]?.name ?? l.body, l.name, l.color));
     host.append(factBlock(l.desc)!);
     host.append(factBlock(l.bio, true) ?? '');
@@ -311,7 +370,7 @@ function fillFromHit(host: HTMLElement, hit: LoreHit): void {
     host.append(headOf(o.kind, o.name, o.color, o.canon));
     host.append(factBlock(o.fact)!);
     host.append(factBlock(o.bio, true) ?? '');
-    const memberIds = (o.members ?? []).filter((mid) => loreById(mid));
+    const memberIds = (o.members ?? []).filter((mid) => canSee(mid));
     host.append(fields([
       ['World', o.world],
       ['People', memberIds.length ? memberIds.map((mid) => loreLabel(mid)).join(', ') : null],
@@ -330,7 +389,7 @@ function fillFromHit(host: HTMLElement, hit: LoreHit): void {
     host.append(fields([
       ['Shard', mag.shard],
       ['Type', mag.type],
-      ['Users', mag.users],
+      ['Users', withoutHidden(mag.users)],
     ]));
     host.append(seeRow(mag.see) ?? '');
     const go = el('button', { className: 'ceph-btn ceph-btn--primary', text: 'Open in the Arcanum', style: { marginTop: '14px' } });
@@ -402,9 +461,11 @@ function fillFromHit(host: HTMLElement, hit: LoreHit): void {
       return places.length ? `${eraName}: ${places.join(', ')}` : `${eraName}: ${world}`;
     }).filter(Boolean).join(' → ');
     const orgs = orgsForCharacter(c.id, store.state.readProgress);
+    // Titles are the published card's, and carry no arc of their own. While
+    // the card is still an early face, they wait with the rest of it.
     host.append(fields([
       ['Aliases', face.aliases],
-      ['Titles', c.titles],
+      ['Titles', earlyFace(c, face) ? null : c.titles],
       ['Abilities', face.abilities],
       ['This era', here],
       ['Where they have been', trail || null],
@@ -412,13 +473,15 @@ function fillFromHit(host: HTMLElement, hit: LoreHit): void {
     ]));
     host.append(seeRow(c.see, orgs.map((o) => ({ id: o.id, label: o.name }))) ?? '');
     host.append(wikiLink(c.wiki) ?? '');
-    const rels = relationsFor(c.id, store.state.readProgress);
+    const rels = relationsFor(c.id, store.state.readProgress)
+      .filter((r) => canSee(r.a.id === c.id ? r.b.id : r.a.id));
     if (rels.length) {
       const wrap = el('div', { className: 'ceph-see' });
       wrap.append(el('div', { className: 'ceph-field-label', text: 'Connections' }));
       const chips = el('div', { className: 'ceph-see-chips' });
       for (const r of rels) {
         const other = r.a.id === c.id ? r.b : r.a;
+        if (!canSee(other.id)) continue;
         const b = el('button', {
           className: 'ceph-atlas-chip',
           text: `${r.label} — ${loreLabel(other.id)}`,

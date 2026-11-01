@@ -20,6 +20,7 @@ import {
 import { canInstall, promptInstall } from '../core/pwa.ts';
 import { store } from '../core/store.ts';
 import { announce, el, keyboardMode, listen } from './dom.ts';
+import { withoutHidden } from './loreCard.ts';
 
 const FOCUSABLE = 'button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
@@ -169,7 +170,8 @@ function renderArcanum(card: HTMLElement): void {
   card.append(el('p', { className: 'ceph-fact', text: mag.desc }));
   card.append(el('p', { className: 'ceph-fact', text: mag.mechanics }));
   if (mag.bio) card.append(el('p', { className: 'ceph-fact ceph-fact--aside', text: mag.bio }));
-  if (mag.users) card.append(el('p', { className: 'ceph-fact', text: `Users: ${mag.users}` }));
+  const users = withoutHidden(mag.users);
+  if (users) card.append(el('p', { className: 'ceph-fact', text: `Users: ${users}` }));
   if (mag.table) {
     const table = el('table', { className: 'ceph-table' });
     const thead = el('thead');

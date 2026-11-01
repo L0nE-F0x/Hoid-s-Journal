@@ -232,7 +232,25 @@
 }
 .ceph-timeline.is-thin {
   padding: 8px 12px;
-  width: min(420px, calc(100% - 32px));
+  /* Wide enough that the year is one line in every era. At 420px the
+     Stormlight date wrapped under its own play button. */
+  width: min(520px, calc(100% - 32px));
+}
+
+/* Centred on a wide screen. On a laptop a centred playhead reaches under the
+   instrument column (at 1280px it shares 52px with it), and the column then
+   has to stop above the playhead: a card under the atlas was left its title
+   bar and nothing else. So the playhead slides right until it clears the
+   column, and never past the right margin. The phone layout is its own. */
+@media (min-width: 901px) {
+  .ceph-timeline {
+    --ceph-tl-half: 320px;
+    left: min(
+      max(50%, calc(var(--ceph-gut) + var(--ceph-col) + 12px + var(--ceph-tl-half))),
+      calc(100% - 16px - var(--ceph-tl-half))
+    );
+  }
+  .ceph-timeline.is-thin { --ceph-tl-half: 260px; }
 }
 .ceph-tools .ceph-btn { pointer-events: auto; }
 .ceph-back {

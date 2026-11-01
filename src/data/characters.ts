@@ -230,7 +230,7 @@ export const CHARACTERS: Character[] = [
     'Thaylen merchant who became something the Sleepless could not refuse.', false, [
       { era: 3, system: 'rosharan', body: 'roshar' },
     ]),
-  ch('eshonai', 'Eshonai', '#4ade80', 'stormlight', 'Roshar', 'Last Listener',
+  ch('eshonai', 'Eshonai', '#4ade80', 'stormlight', 'Roshar', 'The Explorer',
     'Stormform, then Willshaper in death',
     'The sister who tried to save her people from a song.', false, [
       { era: 3, system: 'rosharan', body: 'roshar' },
@@ -315,7 +315,7 @@ export const CHARACTERS: Character[] = [
     'A spren who learned to walk off Roshar. She has opinions about hats.', true, [
       { era: 3, system: 'rosharan', body: 'roshar' },
       { era: 4, system: 'utol', body: 'komashi' },
-    ], { kind: 'spren', wiki: 'Design' }),
+    ], { arc: 'oathbringer', kind: 'spren', wiki: 'Design' }),
   ch('riina', 'Riina', '#a78bfa', 'tress', 'Sel', 'The Sorceress',
     'Elantrian, aether-wise',
     'An Ire-adjacent Elantrian on Lumar, cursing sailors from a midnight tower.', false, [
@@ -326,7 +326,8 @@ export const CHARACTERS: Character[] = [
     'Sleepless, hordeling swarm',
     'A Sleepless who tried to keep a Dawnshard off the board, and failed kindly.', false, [
       { era: 3, system: 'rosharan', body: 'roshar' },
-    ]),
+    ], { arc: 'dawnshard' }),
+
   ch('nightblood', 'Nightblood', '#111827', 'warbreaker', 'Nalthis', 'Sword-nimi',
     'Awakened sword, Destroy Evil',
     'A thousand Breaths in a blade. Vasher\'s, then Szeth\'s. It wants to help.', true, [
@@ -358,7 +359,7 @@ export const CHARACTERS: Character[] = [
     'Inkspren, Elsecaller bond',
     'Jasnah\'s spren. Logic first, the Physical Realm second.', true, [
       { era: 3, system: 'rosharan', body: 'roshar' },
-    ], { kind: 'spren', wiki: 'Ivory' }),
+    ], { arc: 'wor', kind: 'spren', wiki: 'Ivory' }),
   ch('stormfather', 'The Stormfather', '#1e3a8a', 'stormlight', 'Roshar', 'Rider of Storms',
     'Spren of the highstorm · Bondsmith spren · Honor\'s memories',
     'The highstorm given a mind, and Tanavast\'s memory. Retribution unmade him on Stormfall.', true, [
@@ -381,7 +382,7 @@ export const CHARACTERS: Character[] = [
     ], { kind: 'herald', wiki: 'Nale' }),
   ch('taln', 'Taln', '#7f1d1d', 'stormlight', 'Roshar', 'Talenelat\'Elin, Talenel, Stonesinew, Tuk, Talmut',
     'Herald of War',
-    'He held Braize alone for four thousand years. Then he broke, and did not.', true, [
+    'He held Braize alone for four thousand years and never broke. His mind did.', true, [
       { era: 3, system: 'rosharan', body: 'roshar' },
     ], { kind: 'herald', wiki: 'Talenel' }),
   ch('ishar', 'Ishar', '#ca8a04', 'stormlight', 'Roshar', 'Ishi\'Elin, Ishu-son-God, Tezim, Tashi, the Voice, Herald of Luck',
@@ -519,11 +520,11 @@ CHARACTERS.push(
     { canon: 'wob', sources: ['Isles of the Emberdark', 'Word of Brandon'] }),
 
   {
-    id: 'arclo', name: 'Arclo', color: '#86efac', book: 'stormlight', arc: 'row',
-    origin: 'Aimia', aliases: 'the librarian', kind: 'sleepless',
+    id: 'arclo', name: 'Arclo', color: '#86efac', book: 'stormlight', arc: 'edgedancer', wiki: 'Arclomedarian',
+    origin: 'Aimia', aliases: 'Arclomedarian', kind: 'sleepless',
     abilities: 'Distributed mind · hivebody · deep Cosmere knowledge',
     biology: 'A Dysian Aimian: one mind carried by thousands of cremling-like creatures, which can be assembled into a human shape or dispersed entirely. Losing a few is an inconvenience, not a death.',
-    fact: 'A Sleepless who posed as a librarian in the Palanaeum. Knows far more about the Cosmere than he volunteers, and volunteers more than most of his kind.',
+    fact: 'A Sleepless who sits on the porch of a Yeddaw orphanage and talks philosophy with Lift. Knows far more about the Cosmere than he volunteers, and volunteers more than most of his kind.',
     cognitive: false,
     canon: 'canon', sources: ['Rhythm of War', 'The Stormlight Archive'],
     eras: [
@@ -535,7 +536,7 @@ CHARACTERS.push(
     ],
   },
   {
-    id: 'sleepless-hordes', name: 'The Sleepless', color: '#4ade80', book: 'stormlight',
+    id: 'sleepless-hordes', name: 'The Sleepless', color: '#4ade80', book: 'stormlight', arc: 'dawnshard',
     origin: 'Aimia', aliases: 'Dysian Aimians', kind: 'sleepless',
     abilities: 'Hivemind · shape-building · centuries of patience',
     biology: 'Each Sleepless is a collective of thousands of hordelings, bred for tasks — eyes, hands, memory. They build bodies the way a person builds a tool, and they have been building them since before the Recreance.',

@@ -35,7 +35,6 @@ const W = 'wob' as const;
 export const RELATIONS: Relation[] = [
   { a: { kind: 'character', id: 'kaladin' }, b: { kind: 'shard', id: 'honor' }, type: 'bond', label: 'Windrunner', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'dalinar' }, b: { kind: 'shard', id: 'honor' }, type: 'bond', label: 'Bondsmith', book: 'stormlight', canon: C },
-  { a: { kind: 'character', id: 'jasnah' }, b: { kind: 'shard', id: 'cultivation' }, type: 'bond', label: 'Elsecaller', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'vin' }, b: { kind: 'shard', id: 'preservation' }, type: 'vessel', label: 'Held Preservation', book: 'mistborn1', canon: C },
   { a: { kind: 'character', id: 'sazed' }, b: { kind: 'shard', id: 'preservation' }, type: 'vessel', label: 'Harmony', book: 'mistborn1', canon: C },
   { a: { kind: 'character', id: 'sazed' }, b: { kind: 'shard', id: 'ruin' }, type: 'vessel', label: 'Harmony', book: 'mistborn1', canon: C },
@@ -94,6 +93,6 @@ export const RELATIONS: Relation[] = [
   { a: { kind: 'character', id: 'vambrakastram' }, b: { kind: 'character', id: 'frost' }, type: 'ally', label: 'Both of Yolen', book: 'core', canon: W },
   { a: { kind: 'character', id: 'arclo' }, b: { kind: 'character', id: 'sleepless-hordes' }, type: 'family', label: 'One of them', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'sleepless-hordes' }, b: { kind: 'dawnshard', id: 'dawnshard-change' }, type: 'ally', label: 'Guarded it at Akinah', book: 'stormlight', canon: C },
-  { a: { kind: 'character', id: 'arclo' }, b: { kind: 'character', id: 'lift' }, type: 'ally', label: 'Talked philosophy in the Palanaeum', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'arclo' }, b: { kind: 'character', id: 'lift' }, type: 'ally', label: 'Talked philosophy on an orphanage porch in Yeddaw', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'rysn' }, b: { kind: 'dawnshard', id: 'dawnshard-change' }, type: 'bond', label: 'Bears it', book: 'stormlight', canon: C },
 ];

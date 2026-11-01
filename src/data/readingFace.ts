@@ -876,6 +876,71 @@ export const READING_FACES: Record<string, ReadingFace> = {
       { book: 'stormlight', arc: 'wat', published: true },
     ],
   },
+  teft: {
+    early: {
+      abilities: 'Bridgeman · Bridge Four',
+      bio: 'An older bridgeman who knows more about what is happening to Kaladin than he lets on, and becomes Bridge Four\'s sergeant.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'wor', abilities: 'Windrunner squire', bio: 'Bridge Four\'s sergeant, raised among the Envisagers, who wanted the Radiants back. He trains the squires and keeps them standing.' },
+      { book: 'stormlight', arc: 'oathbringer', bio: 'Bridge Four\'s sergeant, raised among the Envisagers, fighting a firemoss habit he cannot put down. At the end of Oathbringer he speaks his Ideals and bonds the honorspren Phendorana.' },
+      { book: 'stormlight', arc: 'row', published: true },
+    ],
+  },
+  rock: {
+    early: {
+      fact: 'Bridge Four\'s Horneater cook, who will not fight.',
+      abilities: 'Cook · Bridge Four',
+      bio: 'Numuhukumakiaki\'aialunamor: a huge Horneater cook on Bridge Four who sees spren nobody else sees and will not fight. His caste forbids it.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'oathbringer', bio: 'Numuhukumakiaki\'aialunamor, Horneater cook of Bridge Four, who sees spren when others cannot and will not fight. At Thaylen Field he takes up a bow at last, and kills Amaram.' },
+      { book: 'stormlight', arc: 'row', published: true },
+    ],
+  },
+  eshonai: {
+    early: {
+      fact: 'A Parshendi Shardbearer on the Shattered Plains.',
+      abilities: 'Shardbearer',
+      aliases: 'Eshonai',
+      bio: 'A Parshendi Shardbearer in silver Plate, seven feet tall in it, who fights the Alethi on the plateaus.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'wor', fact: 'The listener general who wanted to explore, and took stormform to save her people.', abilities: 'Shardbearer · stormform', bio: 'A listener general and Shardbearer who wanted to explore the world more than fight for it. To save her people she took the new form her sister found, and stormform took her.' },
+      { book: 'stormlight', arc: 'row', published: true },
+    ],
+  },
+  lopen: {
+    early: {
+      fact: 'One-armed Herdazian on Bridge Four, with a cousin for every occasion.',
+      abilities: 'Bridgeman · Bridge Four',
+      bio: 'A one-armed Herdazian on Bridge Four with an endless supply of cousins, nicknames and opinions, who refers to himself as the Lopen.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'wor', fact: 'Herdazian, one-armed, then two.', abilities: 'Windrunner squire · Bridge Four', bio: 'A Herdazian on Bridge Four with cousins for every occasion. When he learns to drink in Stormlight, he grows his arm back.' },
+      { book: 'stormlight', arc: 'oathbringer', published: true },
+    ],
+  },
+  syl: {
+    early: {
+      fact: 'A windspren who follows a slave around, and becomes more of a person every day.',
+      abilities: 'Spren',
+      bio: 'A small spren of the wind who takes an interest in a slave on a bridge crew, and becomes more of a person the longer she stays. She does not know what she is, and the not knowing frightens her.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'wor', fact: 'Kaladin\'s spren. Ancient, loyal, and still learning what a joke is.', abilities: 'Honorspren, Windrunner bond', bio: 'An honorspren bonded to Kaladin. She dies when he breaks his oaths, and comes back when he remembers why he wanted to be good.' },
+      { book: 'stormlight', arc: 'wat', published: true },
+    ],
+  },
+  gavilar: {
+    early: {
+      bio: 'King of Alethkar, who unified the princedoms with his brother Dalinar, and was assassinated by the Assassin in White on the night he signed a treaty with the Parshendi. He left his brother a message, written in his own blood.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'oathbringer', bio: 'King of Alethkar, who unified the princedoms with Dalinar as his knife and, in secret, was one of the Sons of Honor, trying to bring back the Heralds. Szeth killed him on the night of the treaty.' },
+      { book: 'stormlight', arc: 'wat', published: true },
+    ],
+  },
   neturo: {
     early: {
       fact: 'Szeth\'s father: a Shin shepherd who taught him to add to the world, not subtract.',

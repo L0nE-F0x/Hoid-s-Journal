@@ -168,11 +168,11 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   teft: {
     wiki: 'Teft',
-    see: ['kaladin', 'bridge-four', 'firemoss', 'windrunners'],
-    bio: 'A firemoss addict who takes the First Ideal seriously enough to drag Bridge Four into Radiance with him. He dies in Urithiru buying Kaladin time — a sergeant\'s death, and a Windrunner\'s.',
+    see: ['kaladin', 'bridge-four'],
+    bio: 'Bridge Four\'s sergeant, raised among the Envisagers who wanted the Radiants back, and a firemoss addict who takes the First Ideal seriously enough to drag Bridge Four into Radiance with him. He bonds Phendorana. In the occupation of Urithiru he dies fighting Moash to shield the helpless Radiants: a sergeant\'s death, and a Windrunner\'s.',
   },
   rock: {
-    wiki: 'Rock_(Roshar)',
+    wiki: 'Lunamor',
     see: ['kaladin', 'bridge-four', 'horneaters'],
     bio: 'Numuhukumakiaki\'aialunamor — Horneater cook, bridgepuller, and the man who sees spren when others cannot. He feeds Bridge Four until the war asks him to kill, then goes home carrying scars stewardship cannot wash off.',
   },
@@ -183,8 +183,8 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   eshonai: {
     wiki: 'Eshonai',
-    see: ['venli', 'stormform', 'listener'],
-    bio: 'Listener Shardbearer and general who wanted exploration more than war, then became stormform\'s first tragedy. Her death is the Everstorm\'s birth-cry; her sister inherits both the guilt and the chance to choose differently.',
+    see: ['venli', 'listener'],
+    bio: 'A listener general and Shardbearer who wanted to explore the world more than fight for it. To save her people she took stormform, and it took her; her sister inherits both the guilt and the chance to choose differently. In her last moments she bonded Timbre.',
   },
   siri: {
     wiki: 'Siri',
@@ -293,8 +293,8 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   lopen: {
     wiki: 'Lopen',
-    see: ['kaladin', 'bridge-four', 'windrunners'],
-    bio: 'Herazanian one-armed Windrunner who collects cousins, nicknames, and the Second Ideal with equal enthusiasm. He grows the arm back and never grows out of being Bridge Four\'s best morale officer.',
+    see: ['kaladin', 'bridge-four'],
+    bio: 'A one-armed Herdazian on Bridge Four who collects cousins, nicknames and opinions. He grows the arm back with Stormlight, swears the Windrunner Ideals with the honorspren Rua, and never grows out of being Bridge Four\'s best morale officer.',
   },
   baon: {
     wiki: 'Baon',
@@ -303,8 +303,8 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   syl: {
     wiki: 'Sylphrena',
-    see: ['kaladin', 'honorspren', 'windrunners'],
-    bio: 'An honorspren who defied Lasting Integrity to bond Kaladin. She dies when he breaks, returns when he remembers why he wanted to be good, and remains the wind\'s opinion about what honour is for.',
+    see: ['kaladin'],
+    bio: 'An honorspren, one of the Stormfather\'s first children, born in the Godforge, who defied Lasting Integrity to bond Kaladin. She dies when he breaks and returns when he remembers why he wanted to be good. In Wind and Truth she feels despair for the first time, and when the Stormfather is destroyed she stands with Kaladin as he takes Jezrien\'s place: the spren of a Herald.',
   },
   pattern: {
     wiki: 'Pattern',
@@ -348,8 +348,8 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   gavilar: {
     wiki: 'Gavilar_Kholin',
-    see: ['dalinar', 'navani', 'sons-of-honor', 'szeth'],
-    bio: 'King of Alethkar who unified a kingdom and secretly chased immortality through Voidlight and old oaths. Szeth kills him on the night he would have made the wrong kind of history — and still almost did.',
+    see: ['dalinar', 'navani', 'szeth', 'elhokar'],
+    bio: 'King of Alethkar, who unified the princedoms with Dalinar as his knife. In secret he was a Son of Honor, harvesting Voidlight with Vasher\'s help and working the Stormfather for the Words that would make him a Herald, meaning to give in on Braize and come back with every death. Szeth killed him on the night of the treaty. In Wind and Truth, Dalinar finally accepts that his brother was not the man he thought.',
   },
   sadeas: {
     wiki: 'Torol_Sadeas',

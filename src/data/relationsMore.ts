@@ -89,6 +89,13 @@ export const RELATIONS_MORE: Relation[] = [
   { a: { kind: 'character', id: 'lift' }, b: { kind: 'character', id: 'gavinor' }, type: 'ally', label: 'Taught him a secret handshake', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'dieno' }, b: { kind: 'character', id: 'sheler' }, type: 'rival', label: 'Let his victims choose', book: 'stormlight', canon: C },
 
+  // --- Memberships that wait for their book --------------------------------
+  { a: { kind: 'character', id: 'teft' }, b: { kind: 'org', id: 'windrunners' }, type: 'ally', label: 'Windrunner', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'lopen' }, b: { kind: 'org', id: 'windrunners' }, type: 'ally', label: 'Windrunner', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'sigzil' }, b: { kind: 'org', id: 'windrunners' }, type: 'ally', label: 'Windrunner', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'rlain' }, b: { kind: 'org', id: 'truthwatchers' }, type: 'ally', label: 'Truthwatcher', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'navani' }, b: { kind: 'org', id: 'bondsmiths' }, type: 'ally', label: 'Bondsmith of the Sibling', book: 'stormlight', canon: C },
+
   // --- Shallan family ---------------------------------------------------
   { a: { kind: 'character', id: 'shallan' }, b: { kind: 'character', id: 'lin-davar' }, type: 'family', label: 'Daughter & father', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'shallan' }, b: { kind: 'character', id: 'helaran' }, type: 'family', label: 'Sister & brother', book: 'stormlight', canon: C },
@@ -98,7 +105,7 @@ export const RELATIONS_MORE: Relation[] = [
   { a: { kind: 'character', id: 'shallan' }, b: { kind: 'character', id: 'mraize' }, type: 'rival', label: 'Her Ghostblood handler', book: 'stormlight', canon: C },
 
   // --- Kholin extended --------------------------------------------------
-  { a: { kind: 'character', id: 'dalinar' }, b: { kind: 'character', id: 'evi' }, type: 'romance', label: 'Married (widow)', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'dalinar' }, b: { kind: 'character', id: 'evi' }, type: 'romance', label: 'Widowed', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'dalinar' }, b: { kind: 'character', id: 'gavilar' }, type: 'family', label: 'Brothers', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'gavilar' }, b: { kind: 'character', id: 'navani' }, type: 'romance', label: 'Married', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'gavilar' }, b: { kind: 'character', id: 'elhokar' }, type: 'family', label: 'Father & son', book: 'stormlight', canon: C },
@@ -239,7 +246,7 @@ export const RELATIONS_MORE: Relation[] = [
   // --- Org membership edges ---------------------------------------------
   { a: { kind: 'character', id: 'shallan' }, b: { kind: 'org', id: 'ghostbloods' }, type: 'ally', label: 'Joined as Veil', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'mraize' }, b: { kind: 'org', id: 'ghostbloods' }, type: 'bond', label: 'Roshar cell', book: 'stormlight', canon: C },
-  { a: { kind: 'character', id: 'frost' }, b: { kind: 'org', id: 'seventeenth-shard' }, type: 'bond', label: 'Leads / speaks for', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'frost' }, b: { kind: 'org', id: 'seventeenth-shard' }, type: 'bond', label: 'Of their number', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'gavilar' }, b: { kind: 'org', id: 'sons-of-honor' }, type: 'bond', label: 'Secret society', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'telsin' }, b: { kind: 'org', id: 'the-set' }, type: 'bond', label: 'Set leadership', book: 'mistborn2', canon: C },
   { a: { kind: 'character', id: 'sazed' }, b: { kind: 'org', id: 'keepers' }, type: 'bond', label: 'Terris Keeper', book: 'mistborn1', canon: C },

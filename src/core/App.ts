@@ -13,7 +13,8 @@ import { SPIRITUAL_RADIUS, Spiritual } from '../render/Spiritual.ts';
 import { Shadesmar } from '../render/Shadesmar.ts';
 import { Starfield } from '../render/Starfield.ts';
 import { EventFx } from '../render/EventFx.ts';
-import { forgetPlates, planetPlates, readPlateBytes, PLATE_SMALL, seedFromId } from '../render/planetBake.ts';
+import { forgetPlates, planetPlates, platesReady, readPlateBytes, warmPlateProgram, PLATE_SMALL, seedFromId } from '../render/planetBake.ts';
+import { compileAsync } from '../render/compile.ts';
 import { rebakeAll } from '../render/skyBake.ts';
 
 const FOV = 52;
@@ -89,6 +90,7 @@ export class App {
   private yearTick = Math.round(yearToSlider(store.state.year) * 1000);
   private warmQueue: { kind: string; seed: number; cognitive: boolean }[] = [];
   private lastWarm = 0;
+  private warming: Promise<void> | null = null;
 
   constructor(canvas: HTMLCanvasElement, opts: { onHoverAnchor?: (p: { x: number; y: number } | null) => void } = {}) {
     this.canvas = canvas;
@@ -175,7 +177,7 @@ export class App {
     }));
     this.rig.setInsets(store.state.insets);
     this.applyQuality();
-    this.warmUp();
+    void this.warmUp();
     this.queuePlateWarm();
   }
 
@@ -208,23 +210,45 @@ export class App {
   }
 
   /**
-   * Compile every Realm's materials before the reader can ask for one.
+   * Compile every Realm's materials before the reader can ask for one, and
+   * the planet baker with them, without blocking the main thread.
    *
    * Shadesmar and the Spiritual Realm are hidden groups, so Three skips them
    * when it compiles the first frame — and then the press of C or V pays for
    * three new shader programs in the middle of a camera flight. On this
    * machine that stall was long enough to swallow the whole transition.
+   *
+   * This used to compile with no render target bound, which builds the
+   * canvas's sRGB variant of every program; the scene only ever draws into
+   * the post chain's linear buffer, so all of that work was thrown away and
+   * the C/V stall was still there. `compileAsync` binds a target. See
+   * `render/compile.ts`.
+   *
+   * Resolves when both are linked, or after `limit` ms — a driver that never
+   * reports completion must not hold the boot screen up for ever; the frame
+   * that needs a program will wait for it the old way.
    */
-  private warmUp(): void {
+  warmUp(limit = 20000): Promise<void> {
+    if (this.warming) return this.warming;
     const groups = [this.shadesmar.group, this.spiritual.group];
     const was = groups.map((g) => g.visible);
     for (const g of groups) g.visible = true;
+    let scene: Promise<void>;
     try {
-      this.renderer.compile(this.scene, this.camera);
-    } catch {
+      scene = compileAsync(this.renderer, this.scene, this.camera);
+    } catch (err) {
       // A driver that will not pre-compile is not a reason to refuse to boot.
+      console.warn('[cephandrius] shader warm-up skipped:', err);
+      scene = Promise.resolve();
+    } finally {
+      groups.forEach((g, i) => { g.visible = was[i]!; });
     }
-    groups.forEach((g, i) => { g.visible = was[i]!; });
+    const plates = warmPlateProgram(this.renderer).catch(() => undefined);
+    let timer = 0;
+    const timeout = new Promise<void>((resolve) => { timer = window.setTimeout(resolve, limit); });
+    this.warming = Promise.race([Promise.all([scene, plates]).then(() => undefined), timeout])
+      .finally(() => window.clearTimeout(timer));
+    return this.warming;
   }
 
   /**
@@ -243,7 +267,8 @@ export class App {
     forgetPlates();
     this.orrery.forgetPlates();
     this.queuePlateWarm();
-    this.warmUp();
+    this.warming = null;
+    void this.warmUp();
     this.resize();
     this.start();
   }
@@ -930,7 +955,7 @@ export class App {
     store.state.viewHeading = this.rig.heading;
 
     if (
-      this.warmQueue.length && !s.cinematic && s.shell === 'play'
+      this.warmQueue.length && platesReady() && !s.cinematic && s.shell === 'play'
       && dt < 0.017 && t - this.lastWarm > 0.08
     ) {
       this.lastWarm = t;

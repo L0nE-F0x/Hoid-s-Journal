@@ -23,7 +23,7 @@ import sporeVert from '../shaders/spore.vert';
 import sporeFrag from '../shaders/spore.frag';
 import beltVert from '../shaders/belt.vert';
 import beltFrag from '../shaders/belt.frag';
-import { PLATE_LARGE, PLATE_SMALL, planetPlates, seedFromId } from './planetBake.ts';
+import { PLATE_LARGE, PLATE_SMALL, planetPlates, platesReady, seedFromId } from './planetBake.ts';
 import { rewriteLine } from './lines.ts';
 
 const _off = new THREE.Vector3();
@@ -578,6 +578,8 @@ export class Orrery {
           uCraters: { value: moon.parent === 'lumar-world' ? 0.15 : 0.8 },
           uGlow: { value: moon.parent === 'lumar-world' ? 0.22 : 0.0 },
           uDetail: { value: 1 },
+          // Always zero; keeps the noise octaves rolled. See noise.glsl.
+          uOctaveZero: { value: 0 },
         },
         vertexShader: planetVert,
         fragmentShader: moonFrag,
@@ -777,7 +779,9 @@ export class Orrery {
     const flipped = biome !== this.lastBiome || shadesmar !== this.lastCognitive;
     this.lastBiome = biome;
     this.lastCognitive = shadesmar;
-    let budget = flipped ? 4 : 2;
+    // Nothing until the baker has linked: a bake before that blocks the main
+    // thread on the compile (see `warmPlateProgram`). Worlds wear the stand-in.
+    let budget = !platesReady() ? 0 : flipped ? 4 : 2;
     // The world you are looking at cannot wait its turn behind ten gas giants.
     const queue = [...this.bodyNodes.values()].sort((a, b) => {
       const ax = a.body.id === visual.focusedBody ? 0 : a.body.system === visual.focusedSystem ? 1 : 2;

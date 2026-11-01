@@ -128,6 +128,12 @@ async function main(): Promise<void> {
     );
     return;
   }
+  // The shader programs link in the driver while this waits, rather than in
+  // the middle of the first frame with the main thread held — the planet
+  // baker alone was four seconds of a frozen boot screen on an integrated
+  // GPU. The boot plate stays up and keeps animating until they are done.
+  setBoot(0.85, 'Lighting the systems');
+  await app.warmUp();
   app.start();
 
   // Handle for the capture / interaction harnesses in tools/. Not a public API.

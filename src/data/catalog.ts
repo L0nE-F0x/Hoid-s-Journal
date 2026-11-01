@@ -32,6 +32,10 @@ export const SERIES: Series[] = [
     { id: 'wat', label: 'Wind and Truth' },
   ]},
   { id: 'elsecaller', title: 'Elsecaller', single: true, arcs: [{ id: 'elsecaller', label: 'Elsecaller' }] },
+  // The other Stormlight Lost Tales story: the same 2024 Story Deck, the same
+  // 2025 double book. Set during Words of Radiance, like Elsecaller.
+  { id: 'kinglopen', title: 'King Lopen the First of Alethkar', single: true,
+    arcs: [{ id: 'kinglopen', label: 'King Lopen the First of Alethkar' }] },
   { id: 'arcanum', title: 'Arcanum Unbounded', single: true, arcs: [{ id: 'arcanum', label: 'Arcanum Unbounded: The Cosmere Collection' }] },
   { id: 'shadowsforsilence', title: 'Shadows for Silence in the Forests of Hell', single: true,
     arcs: [{ id: 'shadowsforsilence', label: 'Shadows for Silence in the Forests of Hell' }] },
@@ -74,6 +78,7 @@ export const JOURNAL_BOOKS: { series: string; arc: string; title: string }[] = [
   { series: 'stormlight', arc: 'row', title: 'Rhythm of War' },
   { series: 'stormlight', arc: 'wat', title: 'Wind and Truth' },
   { series: 'elsecaller', arc: 'elsecaller', title: 'Elsecaller' },
+  { series: 'kinglopen', arc: 'kinglopen', title: 'King Lopen the First of Alethkar' },
   { series: 'whitesand', arc: 'ws1', title: 'White Sand, Volume 1' },
   { series: 'whitesand', arc: 'ws2', title: 'White Sand, Volume 2' },
   { series: 'whitesand', arc: 'ws3', title: 'White Sand, Volume 3' },
@@ -90,7 +95,7 @@ export const JOURNAL_BOOKS: { series: string; arc: string; title: string }[] = [
 export const PUB_ORDER = [
   'elantris', 'mistborn1', 'warbreaker', 'stormlight', 'mistborn2',
   'eleventhmetal', 'emperorssoul', 'shadowsforsilence', 'sixthofdusk', 'whitesand',
-  'secrethistory', 'arcanum', 'tress', 'yumi', 'sunlit', 'elsecaller', 'emberdark',
+  'secrethistory', 'arcanum', 'tress', 'yumi', 'sunlit', 'elsecaller', 'kinglopen', 'emberdark',
   'fod',
 ];
 

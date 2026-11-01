@@ -23,6 +23,7 @@ export const ORGS_MORE: Organization[] = [
     'Scholars who predict highstorms with charts the devout call almost blasphemous. Armies march on their numbers anyway.',
     {
       world: 'Roshar', wiki: 'Stormwarden',
+      members: ['matain', 'elthebar', 'dukar'],
       see: ['highstorm', 'vorinism', 'navani'],
     }),
   org('vorin-church', 'Vorin Church', '#818cf8', 'stormlight', 'church',

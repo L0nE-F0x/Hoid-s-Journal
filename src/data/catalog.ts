@@ -99,6 +99,55 @@ export const PUB_ORDER = [
   'fod',
 ];
 
+/**
+ * Every book in the order it was first published, with the year. `PUB_ORDER`
+ * above is by series, and a series spans decades: The Alloy of Law (2011) and
+ * The Lost Metal (2022) are one entry there, so "everything published before
+ * The Emperor's Soul" counted all of Mistborn Era 2 as read. Publication-safe
+ * progress reads this list instead.
+ *
+ * Within a series the arcs must be in this order for progress (one index per
+ * series) to mean "read up to here". Allomancer Jak (2014) is the exception:
+ * it sits after The Lost Metal in `mistborn2`, so it only counts once The
+ * Lost Metal has; it is a tale told inside the Basin and reveals nothing.
+ */
+export const PUB_BOOKS: { series: string; arc: string; year: number }[] = [
+  { series: 'elantris', arc: 'elantris', year: 2005 },
+  { series: 'mistborn1', arc: 'tfe', year: 2006 },
+  { series: 'elantris', arc: 'hope', year: 2006 },
+  { series: 'mistborn1', arc: 'woa', year: 2007 },
+  { series: 'mistborn1', arc: 'hoa', year: 2008 },
+  { series: 'warbreaker', arc: 'warbreaker', year: 2009 },
+  { series: 'stormlight', arc: 'twok', year: 2010 },
+  { series: 'mistborn2', arc: 'aol', year: 2011 },
+  { series: 'eleventhmetal', arc: 'eleventhmetal', year: 2011 },
+  { series: 'emperorssoul', arc: 'emperorssoul', year: 2012 },
+  { series: 'shadowsforsilence', arc: 'shadowsforsilence', year: 2013 },
+  { series: 'sixthofdusk', arc: 'sixthofdusk', year: 2014 },
+  { series: 'stormlight', arc: 'wor', year: 2014 },
+  { series: 'mistborn2', arc: 'sos', year: 2015 },
+  { series: 'mistborn2', arc: 'bom', year: 2016 },
+  { series: 'secrethistory', arc: 'secrethistory', year: 2016 },
+  { series: 'whitesand', arc: 'ws1', year: 2016 },
+  { series: 'stormlight', arc: 'edgedancer', year: 2016 },
+  { series: 'arcanum', arc: 'arcanum', year: 2016 },
+  { series: 'stormlight', arc: 'oathbringer', year: 2017 },
+  { series: 'whitesand', arc: 'ws2', year: 2018 },
+  { series: 'whitesand', arc: 'ws3', year: 2019 },
+  { series: 'stormlight', arc: 'dawnshard', year: 2020 },
+  { series: 'stormlight', arc: 'row', year: 2020 },
+  { series: 'mistborn2', arc: 'tlm', year: 2022 },
+  { series: 'mistborn2', arc: 'jak', year: 2022 },
+  { series: 'tress', arc: 'tress', year: 2023 },
+  { series: 'yumi', arc: 'yumi', year: 2023 },
+  { series: 'sunlit', arc: 'sunlit', year: 2023 },
+  { series: 'stormlight', arc: 'wat', year: 2024 },
+  { series: 'elsecaller', arc: 'elsecaller', year: 2024 },
+  { series: 'kinglopen', arc: 'kinglopen', year: 2024 },
+  { series: 'emberdark', arc: 'emberdark', year: 2025 },
+  { series: 'fod', arc: 'fod', year: 2026 },
+];
+
 export const ERAS: Era[] = [
   {
     id: 0, name: 'Pre-Shattering', start: -8000,

@@ -270,6 +270,30 @@ for (const c of C.characters) {
   }
 }
 
+// --- publication order ----------------------------------------------------
+// Publication-safe progress reads PUB_BOOKS. Every arc must be there once, or
+// a book falls back to the coarse series rule and leaks a whole later series.
+{
+  const listed = new Map();
+  for (const b of D.PUB_BOOKS) {
+    const k = `${b.series}:${b.arc}`;
+    if (listed.has(k)) fail(`PUB_BOOKS lists ${k} twice`);
+    listed.set(k, true);
+    if (!D.seriesById[b.series]?.arcs.some((a) => a.id === b.arc)) fail(`PUB_BOOKS names ${k}, which no series has`);
+  }
+  for (const s of C.series ?? []) {
+    for (const a of s.arcs) if (!listed.has(`${s.id}:${a.id}`)) fail(`PUB_BOOKS is missing ${s.id}:${a.id}`);
+  }
+  // The cases the coarse rule got wrong, pinned.
+  const at = (series, arc) => D.publicationSafeProgress({ series, arc: D.seriesById[series].arcs.findIndex((x) => x.id === arc) });
+  const es = at('emperorssoul', 'emperorssoul');
+  if (es.mistborn2 !== 0) fail(`reading The Emperor's Soul should know only The Alloy of Law of Era 2 (got ${es.mistborn2})`);
+  const twok = at('stormlight', 'twok');
+  if (twok.mistborn2 !== -1) fail(`reading The Way of Kings should know nothing of Era 2 (got ${twok.mistborn2})`);
+  const edge = at('stormlight', 'edgedancer');
+  if (edge.mistborn2 !== 2 || edge.whitesand !== 0) fail(`reading Edgedancer: Era 2 through Bands, White Sand volume 1 (got ${edge.mistborn2}, ${edge.whitesand})`);
+}
+
 // --- depth, reported but not fatal -------------------------------------------
 const pct = (n, d) => `${n}/${d}`;
 const noBio = C.locations.filter((l) => !l.bio).length;

@@ -1,4 +1,4 @@
-import { BELTS, BODIES, ERAS, JOURNAL_BOOKS, MOONS, PUB_ORDER, SERIES, SYSTEMS, TIMELINE_NOTE, WORLD_EPOCHS } from './catalog.ts';
+import { BELTS, BODIES, ERAS, JOURNAL_BOOKS, MOONS, PUB_BOOKS, PUB_ORDER, SERIES, SYSTEMS, TIMELINE_NOTE, WORLD_EPOCHS } from './catalog.ts';
 import { COSMERE_EVENTS } from './events.ts';
 import { CHARACTERS as CHARACTERS_CORE } from './characters.ts';
 import { CITY_PLATES, cityById, landmarkById } from './cities.ts';
@@ -29,6 +29,7 @@ import type {
 } from './types.ts';
 
 export { CITY_PLATES, cityById, landmarkById };
+export { PUB_BOOKS };
 export { ARC_NOTES, arcNoteFor };
 export { COSMERE_EVENTS, JOURNAL_BOOKS };
 export { DAWNSHARDS, HUBS, ROUTES, dawnshardById, hubById };
@@ -165,6 +166,31 @@ export type ReadingNow = { series: string; arc: number } | null;
  */
 export function publicationSafeProgress(now: ReadingNow): Record<string, number> {
   if (!now) return fullProgress();
+  const book = seriesById[now.series]?.arcs[now.arc]?.id;
+  const here = PUB_BOOKS.findIndex((b) => b.series === now.series && b.arc === book);
+  if (here < 0) return seriesSafeProgress(now);
+  const order = new Map(PUB_BOOKS.map((b, i) => [`${b.series}:${b.arc}`, i]));
+  const p: Record<string, number> = {};
+  for (const s of SERIES) {
+    if (s.id === now.series) {
+      p[s.id] = Math.max(-1, Math.min(s.arcs.length - 1, now.arc));
+      continue;
+    }
+    // Read up to the last arc of an unbroken run published before this book.
+    let upTo = -1;
+    for (let i = 0; i < s.arcs.length; i++) {
+      const at = order.get(`${s.id}:${s.arcs[i]!.id}`);
+      if (at === undefined) { upTo = s.arcs.length - 1; break; } // not listed: treat as old news
+      if (at >= here) break;
+      upTo = i;
+    }
+    p[s.id] = upTo;
+  }
+  return p;
+}
+
+/** The old, coarser rule: whole series before this one. Only for a book `PUB_BOOKS` lacks. */
+function seriesSafeProgress(now: { series: string; arc: number }): Record<string, number> {
   const here = PUB_ORDER.indexOf(now.series);
   if (here < 0) return fullProgress();
   const p: Record<string, number> = {};

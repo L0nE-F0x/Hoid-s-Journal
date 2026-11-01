@@ -256,6 +256,11 @@ async function run() {
       const planet = origin.clone().project(a.camera);
       const px = (planet.x * 0.5 + 0.5) * window.innerWidth;
       const py = (-planet.y * 0.5 + 0.5) * window.innerHeight;
+      // Roshar's own disc on screen. A moon passing behind it is inside the
+      // disc, the nearer subject wins the pick, and the click opens Roshar —
+      // which is the picker working, not the moon failing.
+      const far = a.camera.position.distanceTo(origin);
+      const discPx = (1.32 / (far * Math.tan((a.camera.fov * Math.PI) / 360))) * window.innerHeight / 2;
       let best = null;
       for (const id of ['salas', 'nomon', 'mishim']) {
         if (!a.orrery.moonShown(id)) continue;
@@ -270,7 +275,8 @@ async function run() {
         // viewport reports whatever was selected before.
         const onScreen = x > 8 && x < window.innerWidth - 8
           && y > 8 && y < window.innerHeight - 8;
-        if (onScreen && d > 28 && (!best || d > best.d)) best = { id, x, y, d };
+        const clear = document.elementFromPoint(x, y)?.id === 'stage';
+        if (onScreen && clear && d > Math.max(28, discPx + 14) && (!best || d > best.d)) best = { id, x, y, d };
       }
       return best;
     });

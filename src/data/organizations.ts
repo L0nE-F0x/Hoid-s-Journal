@@ -11,13 +11,13 @@ function org(
 
 export const ORGANIZATIONS: Organization[] = [
   org('ghostbloods', 'The Ghostbloods', '#a3a3a3', 'stormlight', 'secret',
-    'A covert worldhopper society after Investiture and the knowledge to use it. Three overlapping diamonds. Thaidakar runs it from Scadrial.',
+    'A covert worldhopper society after Investiture and the knowledge to use it. Three overlapping diamonds. Its master is called Thaidakar.',
     {
       aliases: 'Ghostblood',
       arc: 'wor', world: 'Roshar / Scadrial', wiki: 'Ghostbloods',
       members: ['kelsier', 'mraize', 'iyatil', 'felt', 'shallan', 'shai', 'kaise', 'twinsoul', 'dlavil', 'darkwater'],
-      see: ['kelsier', 'mraize', 'seventeenth-shard', 'the-set'],
-      bio: 'Founded by Kelsier after his death, operating on Roshar as a cell under Mraize and Iyatil while the Survivor himself cannot leave the Scadrian system as a Cognitive Shadow. They want a way to move Investiture off-world. Shallan joined, then left. The Lost Metal makes the Scadrian end of the same organisation explicit.',
+      see: ['mraize', 'iyatil', 'thaidakar', 'seventeenth-shard'],
+      bio: 'A society of worldhoppers working on Roshar as a cell under Mraize and Iyatil, who answer to a master called Thaidakar. They want a way to move Investiture off-world, and they collect secrets and people to get it. Shallan joined, then left.',
     }),
   org('seventeenth-shard', 'The Seventeenth Shard', '#e0f2fe', 'stormlight', 'secret',
     'Worldhoppers who observe and do not intervene. Frost writes their letters. They hunt Hoid anyway.',

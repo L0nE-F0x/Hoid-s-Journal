@@ -222,7 +222,8 @@ export const ORGS_MORE: Organization[] = [
     {
       world: 'Miral', wiki: 'Witchcraft#Hexers_and_Contracts',
       aliases: 'hexer, the king\'s covenant with witches',
-      see: ['witchcraft', 'megalith', 'kingseat', 'mirali-demons'],
+      members: ['weonim'],
+      see: ['witchcraft', 'megalith', 'kingseat', 'mirali-demons', 'weonim'],
       bio: 'The king\'s covenant with witches lets a captured witch work instead of die, provided they contract their demon — a spoken Command that shrinks it to a dim, silent marble and keeps it from eating them. Kingseat depends on them for wards, carrier demons and demonstone, and pays them almost nothing: slaves in all but name, living in a village inside the Megalith itself. When the Megalith got out there were nineteen of them — thirteen women, five men, and one who preferred to be called neither.',
       sources: ['The Fires of December'],
     }),

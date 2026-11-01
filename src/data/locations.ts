@@ -511,6 +511,14 @@ export const LOCATIONS: Location[] = [
     'The capital at the summit, grown up around the Megalith\'s corpse. The rivers start at its heart.', {
       region: 'Mountaincrest', wiki: 'Kingseat', see: ['megalith', 'ever-slaying-sword', 'hexers', 'mountaincrest'],
       bio: 'The Megalith has lain against the mountain for eight hundred years and the city grew up around it; the body is as large as the city. Hexers live in a village inside its chest cavity and chisel demonstone out of it for the king. Clothes made from its blood are the fashion Dukeseat cannot match, and Valor\'s temple here is the one that set Hoid on fire — twice.' }),
+  loc('valors-temple', "Valor's temple", 'miral', 'fod', 0.507, 0.326, '#fbbf24', 'fire',
+    'Valor\'s hidden temple in Kingseat: relics, stained glass of the Prophet, murals of the worlds she visited. Anyone not of the clergy who steps inside is burned, body and soul.', {
+      region: 'Mountaincrest', aliases: "Valor's chapel, the secret temple", wiki: "Valor's_temple", see: ['kingseat', 'hoid', 'amaal', 'prophet', 'valor'],
+      bio: 'She built it herself, one of several temples to her on the planet, and famous precisely because nobody may see inside. Amaal, as a priest, prayed there on her pilgrimage. Hoid snuck in the day he reached the capital and burned to a crisp; his soul kept regenerating until he could smother the fire and make himself a body. After the Megalith he went in again, put the fire out faster, kept his memories, and still had to trick Amaal into describing the murals for him.' }),
+  loc('night-barges', 'The Night Barges', 'miral', 'fod', 0.493, 0.337, '#e879f9', 'port',
+    'River barges moored together over a small lake of demon\'s blood: half shops, half bars and dance floors, lit from beneath, for the rich only.', {
+      region: 'Mountaincrest', wiki: 'Night_Barges', see: ['kingseat', 'abrim-flint', 'december', 'megalith'],
+      bio: 'Captains buy permits to moor; gangplanks join the hulls, the crowd flows through the shopping barges and pools at the drinking ones, and bouncers keep the wrong sort in a queue. The barges are painted Demon Bright and the blood underneath lights them from below. Abrim Flint spent his bail evenings here near barges seventeen and eighteen, conning women. December came looking for him.' }),
   loc('smallport', 'Smallport', 'miral', 'fod', 0.510, 0.405, '#a78bfa', 'city',
     'Three days below Kingseat on the Violet, and the last midsized town before the capital\'s suburbs. Not small.', {
       region: 'Mountaincrest', wiki: 'Smallport', see: ['kingseat', 'abrim-flint'],

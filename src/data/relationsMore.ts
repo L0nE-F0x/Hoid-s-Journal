@@ -68,6 +68,18 @@ export const RELATIONS_MORE: Relation[] = [
   { a: { kind: 'character', id: 'melishi' }, b: { kind: 'character', id: 'sibling' }, type: 'bond', label: 'Bondsmith & spren', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'garith' }, b: { kind: 'character', id: 'shmone' }, type: 'romance', label: 'Lovers across the war', book: 'stormlight', canon: C },
 
+  // --- Narak (Wind and Truth) ------------------------------------------
+  { a: { kind: 'character', id: 'sigzil' }, b: { kind: 'character', id: 'vienta' }, type: 'bond', label: 'Windrunner bond, renounced to save her', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'sigzil' }, b: { kind: 'dawnshard', id: 'dawnshard-exist' }, type: 'bond', label: 'Given Exist by Wit', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'moash' }, b: { kind: 'character', id: 'leyten' }, type: 'rival', label: 'Killed him and Ethenia', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'moash' }, b: { kind: 'character', id: 'teft' }, type: 'rival', label: 'Killed him in Urithiru', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'battar' }, b: { kind: 'character', id: 'moash' }, type: 'rival', label: 'Gave him crystal eyes', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'thude' }, b: { kind: 'character', id: 'bila' }, type: 'romance', label: 'Mates and warpair', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'el-fused' }, b: { kind: 'character', id: 'jezrien' }, type: 'rival', label: 'Killed by him once; freed his soul', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'thude' }, b: { kind: 'character', id: 'el-fused' }, type: 'rival', label: 'Held him to the treaty', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'thundercloud' }, b: { kind: 'org', id: 'listeners' }, type: 'ally', label: 'Chasmfiend allies', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'dami' }, b: { kind: 'org', id: 'stonewards' }, type: 'ally', label: 'Stoneward of the Fourth Ideal', book: 'stormlight', canon: C },
+
   // --- Shallan family ---------------------------------------------------
   { a: { kind: 'character', id: 'shallan' }, b: { kind: 'character', id: 'lin-davar' }, type: 'family', label: 'Daughter & father', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'shallan' }, b: { kind: 'character', id: 'helaran' }, type: 'family', label: 'Sister & brother', book: 'stormlight', canon: C },

@@ -25,7 +25,7 @@ export const RELATION_ARCS: { a: string; b: string; arc: string }[] = [
   { a: 'sleepless-hordes', b: 'dawnshard-change', arc: 'dawnshard' },
   { a: 'rysn', b: 'nikli', arc: 'dawnshard' },
   { a: 'navani', b: 'sibling', arc: 'row' },
-  { a: 'venli', b: 'timbre', arc: 'row' },
+  { a: 'venli', b: 'timbre', arc: 'oathbringer' },
   // Szeth: Kaladin meets him in Words of Radiance, which is also where Nale
   // revives him and hands him Nightblood; Edgedancer shows him a Skybreaker.
   { a: 'kaladin', b: 'szeth', arc: 'wor' },
@@ -53,6 +53,20 @@ export const RELATION_ARCS: { a: string; b: string; arc: string }[] = [
   { a: 'shallan', b: 'ghostbloods', arc: 'wor' },
   { a: 'shallan', b: 'pattern', arc: 'wor' },
   { a: 'mraize', b: 'ghostbloods', arc: 'wor' },
+  // Narak
+  { a: 'sigzil', b: 'vienta', arc: 'wat' },
+  { a: 'sigzil', b: 'dawnshard-exist', arc: 'wat' },
+  { a: 'moash', b: 'leyten', arc: 'wat' },
+  { a: 'moash', b: 'teft', arc: 'row' },
+  { a: 'battar', b: 'moash', arc: 'wat' },
+  { a: 'thude', b: 'bila', arc: 'wor' },
+  { a: 'el-fused', b: 'jezrien', arc: 'wat' },
+  { a: 'thude', b: 'el-fused', arc: 'wat' },
+  { a: 'thundercloud', b: 'listeners', arc: 'wat' },
+  { a: 'dami', b: 'stonewards', arc: 'wat' },
+  { a: 'kaladin', b: 'moash', arc: 'wor' },
+  { a: 'moash', b: 'jezrien', arc: 'oathbringer' },
+  { a: 'venli', b: 'leshwi', arc: 'row' },
   // Azimir
   { a: 'shalash', b: 'taln', arc: 'oathbringer' },
   { a: 'shalash', b: 'jezrien', arc: 'wat' },

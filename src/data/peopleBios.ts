@@ -49,7 +49,7 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   sigzil: {
     wiki: 'Sigzil',
     see: ['hoid', 'auxiliary', 'kaladin', 'night-brigade'],
-    bio: 'Bridge Four\'s azish Worldsinger, Hoid\'s former apprentice, and later the man called Nomad. He held a Dawnshard long enough for the Night Brigade to hunt him across the stars, bonded the highspren Aux, and learned that skipping is not the same as escaping.',
+    bio: 'Bridge Four\'s Azish Worldsinger and Hoid\'s apprentice. In Wind and Truth he commands the Windrunners holding Narak: he watches Moash kill Leyten and his spren, and to save his own honorspren, Vienta, from Moash\'s knife he renounces his oaths. On the Night of Sorrows, with Retribution coming for him, Wit gives Sigzil the Dawnshard Exist and pushes him into Shadesmar, and he leaves Roshar with an Iriali caravan. He becomes the man called Nomad: bonded to Szeth\'s old highspren, Aux, hunted across the stars by the Night Brigade, and learning that skipping is not the same as escaping.',
   },
   vasher: {
     wiki: 'Vasher',
@@ -148,8 +148,8 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   venli: {
     wiki: 'Venli',
-    see: ['timbre', 'eshonai', 'odium', 'willshapers'],
-    bio: 'Listener scholar who bargained toward stormform, lost her sister to it, and then took a different spren entirely. As a Willshaper and Voice, she tries to build a singer future that is neither slavery nor Odium\'s script.',
+    see: ['eshonai', 'listeners', 'thude'],
+    bio: 'A listener scholar who bargained her people toward stormform, lost her sister to it, and then took a different spren entirely: a Willshaper, the Last Listener, Raboniel\'s Voice. In Wind and Truth she goes home to Narak and what is left of the listeners, with their new chasmfiend allies and Leshwi looking for a place outside Odium. Under the plateau she finds the Well of Control. When the contest begins the listeners hold Narak by treaty with Jasnah, and El withdraws. After Stormfall Retribution lets them take Warlight, and Venli tells her people they will take in anyone who will listen for peace.',
   },
   taravangian: {
     wiki: 'Taravangian',
@@ -159,7 +159,7 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   moash: {
     wiki: 'Moash',
     see: ['kaladin', 'odium', 'jezrien'],
-    bio: 'Bridge Four\'s friend who chooses vengeance over the Ideal, kills a Herald, and takes Vyre\'s name under Odium. He is the warning Kaladin cannot stop replaying: protection without mercy curdles.',
+    bio: 'Bridge Four\'s friend who chose vengeance over the Ideal, killed Elhokar and a Herald, and took Vyre\'s name under Odium. In Rhythm of War he kills Teft. In Wind and Truth, blinded, he lets Odium and the Herald Battar drive crystal spikes into his eyes so that he sees Investiture as light; on the Shattered Plains he kills Leyten and his spren, and comes close to Vienta. He is the warning Kaladin cannot stop replaying: protection without mercy curdles.',
   },
   rlain: {
     wiki: 'Rlain',

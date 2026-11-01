@@ -165,7 +165,9 @@ export const READING_FACES: Record<string, ReadingFace> = {
       bio: 'One of Kaladin\'s bridge crew, and the one whose grievance has a name and a throne attached to it.',
     },
     steps: [
-      { book: 'stormlight', arc: 'oathbringer', published: true },
+      { book: 'stormlight', arc: 'oathbringer', bio: 'Bridge Four\'s friend who chose vengeance over the Ideal: he killed Elhokar in Kholinar, went over to the singers, and on Odium\'s orders killed the Herald Jezrien with a Fused knife.' },
+      { book: 'stormlight', arc: 'row', bio: 'Bridge Four\'s friend who chose vengeance over the Ideal, killed Elhokar and a Herald, and took the name Vyre under Odium. In the occupation of Urithiru he kills Teft.' },
+      { book: 'stormlight', arc: 'wat', published: true },
     ],
   },
   jezrien: {
@@ -396,7 +398,8 @@ export const READING_FACES: Record<string, ReadingFace> = {
       bio: 'Thick-bodied, curly-haired and neat, the bridgeman who looks after the crew\'s gear.',
     },
     steps: [
-      { book: 'stormlight', arc: 'row', published: true },
+      { book: 'stormlight', arc: 'row', bio: 'Survives a wounded crawl across the Plains and becomes the crew\'s practical gear-head — straps, plates, and the unglamorous work that keeps Windrunners alive after the oaths fade.' },
+      { book: 'stormlight', arc: 'wat', published: true },
     ],
   },
   peet: {
@@ -755,6 +758,66 @@ export const READING_FACES: Record<string, ReadingFace> = {
       { book: 'stormlight', arc: 'wat', published: true },
     ],
   },
+  venli: {
+    early: {
+      fact: 'Eshonai\'s sister: a listener scholar who found one old form and wants more.',
+      abilities: 'Listener scholar',
+      aliases: 'Venli',
+      bio: 'A listener scholar, Eshonai\'s younger sister, who found warform and keeps pushing her people toward the old forms of power, and toward the gods who gave them.',
+    },
+    steps: [
+      {
+        book: 'stormlight', arc: 'oathbringer',
+        fact: 'Odium\'s envoy, carrying a spren she is not supposed to have.',
+        abilities: 'Envoy · Willshaper (secretly)',
+        aliases: 'Venli',
+        bio: 'The listener who brought her people stormform, and lost her sister to it. Odium keeps her as his envoy to the waking singers, but a small lightspren, Timbre, has found her, and at the end of Oathbringer she swears an Ideal.',
+      },
+      {
+        book: 'stormlight', arc: 'row',
+        fact: 'The sister who chose a different song.',
+        abilities: 'Willshaper Radiant',
+        aliases: 'Last Listener',
+        bio: 'Listener scholar who bargained toward stormform, lost her sister to it, and then took a different spren entirely. As a Willshaper and Raboniel\'s Voice in occupied Urithiru, she tries to build a singer future that is neither slavery nor Odium\'s script.',
+      },
+      { book: 'stormlight', arc: 'wat', published: true },
+    ],
+  },
+  leshwi: {
+    early: {
+      fact: 'A Heavenly One of the Fused, and Moash\'s commander.',
+      bio: 'A Heavenly One of the Fused, who takes Moash into her service in occupied Alethkar and prefers a fight to a slaughter.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'row', bio: 'A Heavenly One of the Fused who prefers contested duels to slaughter. Spares and spars with Kaladin, sponsors Venli\'s dangerous double life, and treats honor as something even Odium\'s immortals can choose.' },
+      { book: 'stormlight', arc: 'wat', published: true },
+    ],
+  },
+  'el-fused': {
+    early: {
+      bio: 'A Fused stripped of his title and his rhythms for insisting that humans should not be killed but reconditioned. At each rebirth he removes his carapace and replaces it with metal.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'wat', published: true },
+    ],
+  },
+  thude: {
+    early: {
+      abilities: 'Listener warrior · warpair with Bila',
+      bio: 'One of Eshonai\'s warriors, Bila\'s mate and warpair. When the listeners were ordered into stormform he refused, and fled into the chasms with seventeen hundred others; he became a voice for the remnant Venli tries to save.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'wat', published: true },
+    ],
+  },
+  battar: {
+    early: {
+      bio: 'Herald of Counsel and Wisdom, patron of the Elsecallers. In the present age she works in Kharbranth as the ardent Dova, helping Taravangian\'s Diagram track the Death Rattles.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'wat', published: true },
+    ],
+  },
   neturo: {
     early: {
       fact: 'Szeth\'s father: a Shin shepherd who taught him to add to the world, not subtract.',
@@ -814,6 +877,13 @@ export const READING_FACES: Record<string, ReadingFace> = {
       bio: 'An Azish man who apprenticed to Hoid and then to a bridge crew. He writes down what the others survive.',
     },
     steps: [
+      {
+        book: 'stormlight', arc: 'wat',
+        fact: 'Windrunner at Narak, then the bearer of a Dawnshard.',
+        abilities: 'Windrunner (oaths renounced) · the Dawnshard Exist',
+        aliases: 'Sigzil',
+        bio: 'Bridge Four\'s Azish Worldsinger and Hoid\'s apprentice. In Wind and Truth he commands the Windrunners holding Narak: he watches Moash kill Leyten and his spren, and to save his own honorspren, Vienta, from Moash\'s knife he renounces his oaths. On the Night of Sorrows Wit gives him the Dawnshard Exist and pushes him into Shadesmar, and he leaves Roshar with an Iriali caravan.',
+      },
       { book: 'sunlit', arc: 'sunlit', published: true },
     ],
   },

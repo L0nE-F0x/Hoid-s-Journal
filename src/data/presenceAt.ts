@@ -59,12 +59,20 @@ export const PRESENCE_AT: Record<string, PlaceBeat[]> = {
   venli: [
     { era: 3, at: 'narak', arc: 'wor' },
     { era: 3, at: 'urithiru', arc: 'row' },
+    { era: 3, at: 'narak', arc: 'wat' },
   ],
   taravangian: [
     { era: 3, at: 'kharbranth', arc: 'twok' },
     { era: 3, at: 'urithiru', arc: 'oathbringer' },
   ],
-  sigzil: [{ era: 3, at: 'urithiru', arc: 'wor' }],
+  sigzil: [
+    { era: 3, at: 'urithiru', arc: 'wor' },
+    { era: 3, at: 'narak', arc: 'wat' },
+  ],
+  thude: [{ era: 3, at: 'narak', arc: 'wat' }],
+  bila: [{ era: 3, at: 'narak', arc: 'wat' }],
+  thundercloud: [{ era: 3, at: 'narak', arc: 'wat' }],
+  dami: [{ era: 3, at: 'narak', arc: 'wat' }],
   // Azimir: Yanagawn from his crowning, the defenders from the siege.
   yanagawn: [{ era: 3, at: 'azimir', arc: 'wor' }],
   'zarb-kushkam': [{ era: 3, at: 'azimir', arc: 'wat' }],

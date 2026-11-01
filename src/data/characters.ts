@@ -197,7 +197,7 @@ export const CHARACTERS: Character[] = [
     'Willshaper Radiant',
     'The sister who chose a different song.', false, [
       { era: 3, system: 'rosharan', body: 'roshar' },
-    ]),
+    ], { arc: 'wor' }),
   ch('taravangian', 'Taravangian', '#f87171', 'stormlight', 'Roshar', 'Odium, Retribution',
     'Vessel of Odium, then Retribution',
     'The man who would save the world by destroying it.', false, [

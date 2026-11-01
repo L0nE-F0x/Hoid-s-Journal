@@ -294,26 +294,47 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
       ctx.stroke();
     }
 
-    const placed: { x0: number; y0: number; x1: number; y1: number }[] = [];
+    // A name goes right of its dot, or left, above or below — whichever is
+    // first clear of the frame, of the names already set, and of every other
+    // dot. It used to try the right only and avoid only other names, so a
+    // place near the right edge lost its name and a name could sit on a
+    // neighbour's dot. The hot one (selected, hovered, focused) is set first
+    // and always gets a name, overlapping if it has to.
+    type Box = { x0: number; y0: number; x1: number; y1: number };
+    const overlaps = (a: Box, b: Box) => a.x0 < b.x1 && a.x1 > b.x0 && a.y0 < b.y1 && a.y1 > b.y0;
+    const dots = rows.map((r) => {
+      const p = at(r.u, r.v);
+      const rad = isHot(r.id) ? 12 : 8;
+      return { id: r.id, box: { x0: p.x - rad, y0: p.y - rad, x1: p.x + rad, y1: p.y + rad } };
+    });
+    const placed: Box[] = [];
     const ordered = [...rows].sort((a, b) => Number(isHot(b.id)) - Number(isHot(a.id)));
     for (const loc of ordered) {
       const hot = isHot(loc.id);
       ctx.font = `${hot ? 700 : 600} 22px Inter, ui-sans-serif, sans-serif`;
       const w = ctx.measureText(loc.name).width;
       const spot = at(loc.u, loc.v);
-      const x = spot.x + (hot ? 26 : 14);
-      const y = spot.y;
-      const box = { x0: x - 4, y0: y - 13, x1: x + w + 4, y1: y + 13 };
-      if (box.x1 > W || box.y0 < 0 || box.y1 > H) continue;
-      if (placed.some((r) => box.x0 < r.x1 && box.x1 > r.x0 && box.y0 < r.y1 && box.y1 > r.y0)) continue;
-      placed.push(box);
-      ctx.textAlign = 'left';
+      const side = hot ? 26 : 14;
+      const rise = hot ? 32 : 22;
+      const spots: { x: number; y: number; align: CanvasTextAlign; box: Box }[] = [
+        { x: spot.x + side, y: spot.y, align: 'left', box: { x0: spot.x + side - 4, y0: spot.y - 13, x1: spot.x + side + w + 4, y1: spot.y + 13 } },
+        { x: spot.x - side, y: spot.y, align: 'right', box: { x0: spot.x - side - w - 4, y0: spot.y - 13, x1: spot.x - side + 4, y1: spot.y + 13 } },
+        { x: spot.x, y: spot.y - rise, align: 'center', box: { x0: spot.x - w / 2 - 4, y0: spot.y - rise - 13, x1: spot.x + w / 2 + 4, y1: spot.y - rise + 13 } },
+        { x: spot.x, y: spot.y + rise, align: 'center', box: { x0: spot.x - w / 2 - 4, y0: spot.y + rise - 13, x1: spot.x + w / 2 + 4, y1: spot.y + rise + 13 } },
+      ];
+      const inFrame = spots.filter((c) => c.box.x0 >= 0 && c.box.x1 <= W && c.box.y0 >= 0 && c.box.y1 <= H);
+      const clear = inFrame.find((c) => !placed.some((r) => overlaps(c.box, r))
+        && !dots.some((d) => d.id !== loc.id && overlaps(c.box, d.box)));
+      const pick = clear ?? (hot ? inFrame[0] ?? spots[0] : undefined);
+      if (!pick) continue;
+      placed.push(pick.box);
+      ctx.textAlign = pick.align;
       ctx.textBaseline = 'middle';
       ctx.lineWidth = 4;
       ctx.strokeStyle = 'rgba(5,6,13,0.85)';
-      ctx.strokeText(loc.name, x, y);
+      ctx.strokeText(loc.name, pick.x, pick.y);
       ctx.fillStyle = hot ? '#eaf4ff' : '#dce6f5';
-      ctx.fillText(loc.name, x, y);
+      ctx.fillText(loc.name, pick.x, pick.y);
     }
   };
 

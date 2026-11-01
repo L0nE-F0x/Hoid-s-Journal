@@ -881,6 +881,41 @@ async function run() {
     check('keyboard: Enter on the plate goes to the pin',
       s.scale === 'surface' && s.focusedLocation === pinKey.hovered, `${s.scale}/${s.focusedLocation}`);
 
+    // Thaylen City, Narak, Fadrex, Urteau and New Seran used to show their
+    // Stewart art with nothing on it. Their marks are measured the same way:
+    // click the Gemstone Reserve where the Thaylen survey prints it, and its
+    // card has to open, not just the selection change.
+    await page.evaluate(() => {
+      window.__ceph.store.set('selected', null);
+      window.__ceph.store.set('cameraCue', { kind: 'focus', id: 'thaylen-city', scale: 'city' });
+    });
+    await settle(page);
+    await page.waitForFunction(() => {
+      const st = window.__ceph.store.state;
+      return st.scale === 'city' && st.focusedLocation === 'thaylen-city'
+        && document.querySelector('.ceph-atlas-credit')?.textContent;
+    }, { timeout: 20000, polling: 200 }).catch(() => {});
+    await sleep(800);
+    const thaylenMark = await page.evaluate(async () => {
+      const { landmarkById } = await import('/src/data/cities.ts');
+      const c = document.querySelector('.ceph-atlas-canvas');
+      const hit = landmarkById['thaylen-gemstone-reserve']?.on?.find((o) => o.file === 'thaylen_city.jpg');
+      if (!(c instanceof HTMLElement) || !hit) return null;
+      const r = c.getBoundingClientRect();
+      return { x: r.left + r.width * hit.u, y: r.top + r.height * hit.v };
+    });
+    if (thaylenMark) {
+      await page.mouse.click(thaylenMark.x, thaylenMark.y);
+      await sleep(400);
+    }
+    s = await state(page);
+    const thaylenCard = await page.evaluate(() => document.querySelector('.ceph-panel-drawer h2')?.textContent ?? '');
+    check('a mark on a newly measured city plate opens its card',
+      !!thaylenMark && s.scale === 'city' && s.focusedLocation === 'thaylen-city'
+        && s.selected === 'thaylen-gemstone-reserve' && thaylenCard === 'Gemstone Reserve',
+      `${s.scale}/${s.focusedLocation}/${s.selected}/${thaylenCard}`);
+    await page.evaluate(() => window.__ceph.store.set('selected', null));
+
     // A phone still leaves the world a band to live in.
     await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 1 });
     await page.evaluate(() => window.dispatchEvent(new Event('resize')));

@@ -37,10 +37,10 @@ export const PLACES_MORE: Location[] = [
   loc('ironsway', 'Ironsway', 'roshar', 'stormlight', 0.595, 0.625, '#94a3b8', 'city',
     'Largest town in Bavland — taverns, transient miners, and the place Took dragged Szeth to show him off.', {
       bio: 'A mining town in Bavland with more taverns than reasons to be there. Took bought Szeth as a curiosity and paraded him through it, which is how the deadliest man on Roshar spent a stretch of his life being someone\'s dinner-party trick.', arc: 'twok', region: 'Bavland', see: ['bavland', 'jah-keved'], wiki: 'Ironsway' }),
-  loc('silnasen', 'Silnasen', 'roshar', 'stormlight', 0.61, 0.7, '#fca5a5', 'city',
+  loc('silnasen', 'Silnasen', 'roshar', 'stormlight', 0.594, 0.626, '#fca5a5', 'city',
     'A Jah Keved city of the southern marches, caught between Veden succession and Alethi ambition.', {
       bio: 'A city of Jah Keved\'s southern marches, close enough to Alethkar to be a bargaining chip and far enough from Vedenar to be forgotten in a succession war. Lift passed through on her way south and stole from it, which is her usual arrangement with cities.', region: 'Jah Keved', see: ['jah-keved', 'vedenar'], wiki: 'Silnasen' }),
-  loc('valath', 'Valath', 'roshar', 'stormlight', 0.65, 0.61, '#f87171', 'city',
+  loc('valath', 'Valath', 'roshar', 'stormlight', 0.648, 0.513, '#f87171', 'city',
     'Northern Jah Keved city, and a name Vorin maps still bother to print.', {
       bio: 'A northern Veden city that survives on Vorin maps mostly by having survived. It changed hands during the succession war without anyone outside the kingdom noticing.', region: 'Jah Keved', see: ['jah-keved'], wiki: 'Valath' }),
   loc('bornwater', 'Bornwater', 'roshar', 'stormlight', 0.45, 0.5, '#67e8f9', 'village',
@@ -58,7 +58,7 @@ export const PLACES_MORE: Location[] = [
   loc('thaylen-field', 'Thaylen Field', 'roshar', 'stormlight', 0.605, 0.85, '#4ade80', 'grass',
     'The plain outside Thaylen City where a god was stood down and a perpendicularity forced open.', {
       bio: 'The plain outside Thaylen City where the coalition lost, and then did not. Dalinar refused Odium\'s claim on him in front of both armies, the Stormfather and Honor\'s own remnant, and forced open a perpendicularity that healed the wounded and burned the Thrill out of the sky. It is where the True Desolation stopped being a rout.', arc: 'oathbringer', region: 'Thaylenah', see: ['thaylen-city', 'thaylenah'], wiki: 'Battle_of_Thaylen_Field' }),
-  loc('klna', 'Klna', 'roshar', 'stormlight', 0.595, 0.87, '#86efac', 'port',
+  loc('klna', 'Klna', 'roshar', 'stormlight', 0.638, 0.837, '#86efac', 'port',
     'Thaylen shipyards. Where the Wandersail was refitted before Rysn sailed west.', {
       bio: 'The Thaylen shipyards, where a merchant fleet is built to survive a coast that is trying to kill it. The Wandersail was refitted here before Rysn took it west, which is the last time anyone sailed for Aimia on purpose and came back.', arc: 'dawnshard', region: 'Thaylenah', see: ['thaylenah', 'akinah'], wiki: 'Klna' }),
   loc('steinel', 'Steinel', 'scadrial', 'mistborn2', 0.575, 0.332, '#94a3b8', 'city',
@@ -84,23 +84,23 @@ export const PLACES_MORE: Location[] = [
     'Ancient Silver Kingdom whose bones Azir still sits on. The Oathgate remembers the older name.', {
       region: 'Makabak',
       bio: 'One of the ten Silver Kingdoms of the Heraldic Epochs, and the ground Azir is built on. Its Oathgate still answers to the older name, which is one of the few pieces of evidence the modern empire has that it is standing on something.', see: ['azimir', 'makabak'], wiki: 'Makabakam' }),
-  loc('tu-bayla', 'Tu Bayla', 'roshar', 'stormlight', 0.4, 0.56, '#a3e635', 'land',
+  loc('tu-bayla', 'Tu Bayla', 'roshar', 'stormlight', 0.537, 0.518, '#a3e635', 'land',
     'A small nation east of Babatharnam, more often crossed than visited.', {
       region: 'Tu Bayla',
       bio: 'A small nation east of Babatharnam, on the road between the Purelake and the western coast. It is crossed constantly and visited rarely, which is most of what can be said about it.', see: ['babatharnam', 'purelake'], wiki: 'Tu_Bayla' }),
-  loc('triax', 'Triax', 'roshar', 'stormlight', 0.455, 0.62, '#86efac', 'land',
+  loc('triax', 'Triax', 'roshar', 'stormlight', 0.568, 0.663, '#86efac', 'land',
     'Between the Purelake and the southern kingdoms. Easy to miss on a map, harder to hold.', {
       region: 'Triax',
       bio: 'A stretch between the Purelake and the southern kingdoms that has been claimed by several of them and held by none for long. Easy to miss on a map and harder to hold in practice.', see: ['purelake', 'marabethia'], wiki: 'Triax' }),
-  loc('alm', 'Alm', 'roshar', 'stormlight', 0.3, 0.62, '#f9a8d4', 'land',
+  loc('alm', 'Alm', 'roshar', 'stormlight', 0.263, 0.651, '#f9a8d4', 'land',
     'A Makabaki state on Azir\'s fringe. Sigzil listed it among the places that still send delegates.', {
       region: 'Makabak',
       bio: 'A Makabaki state on Azir\'s fringe that still sends delegates and still files essays. Sigzil listed it among the places a Worldsinger is expected to know the songs of, which is the closest thing it has to fame.', see: ['azir', 'liafor'], wiki: 'Alm' }),
-  loc('desh', 'Desh', 'roshar', 'stormlight', 0.31, 0.58, '#fda4af', 'land',
+  loc('desh', 'Desh', 'roshar', 'stormlight', 0.318, 0.558, '#fda4af', 'land',
     'Another Makabaki neighbour of Azir, folded into the empire\'s paperwork more than its armies.', {
       region: 'Makabak',
       bio: 'An Azish neighbour absorbed more by paperwork than by conquest. Desh pays what Azimir asks and argues about the arithmetic afterwards, in writing, at length.', see: ['azir', 'steen'], wiki: 'Desh' }),
-  loc('yezier', 'Yezier', 'roshar', 'stormlight', 0.32, 0.7, '#fdba74', 'land',
+  loc('yezier', 'Yezier', 'roshar', 'stormlight', 0.305, 0.627, '#fdba74', 'land',
     'Makabaki kingdom southwest of Azir, often named in the same breath as Emul and Tashikk.', {
       region: 'Makabak',
       bio: 'A Makabaki kingdom southwest of Azir, named in the same breath as Emul and Tashikk because it sits between them and has spent centuries trying not to be. Its princess turns up in the Azish court when the coalition needs a quorum.', see: ['emul', 'azir'], wiki: 'Yezier' }),
@@ -116,7 +116,7 @@ export const PLACES_MORE: Location[] = [
     'Silver Kingdom of the west-central plains. Panatham keeps its Oathgate.', {
       region: 'Sela Tales',
       bio: 'A Silver Kingdom of the west-central plains, gone for four thousand years, remembered because Panatham still stands on its Oathgate. The Radiants rebuilding the network had to explain to the modern occupants what the platform in the middle of their city was for.', see: ['panatham'], wiki: 'Sela_Tales' }),
-  loc('bavland', 'Bavland', 'roshar', 'stormlight', 0.6, 0.62, '#a8a29e', 'land',
+  loc('bavland', 'Bavland', 'roshar', 'stormlight', 0.598, 0.567, '#a8a29e', 'land',
     'Mining country in Jah Keved. Szeth was dumped here after Shinovar decided it was done with him.', {
       bio: 'Mining country on Jah Keved\'s western edge, poor, cold and nobody\'s priority. Shinovar sent Szeth here after deciding he was Truthless and no longer their problem, and Bavland is where a man with an Honorblade spent years being bought and sold by people who had no idea.', arc: 'twok', region: 'Jah Keved', see: ['jah-keved', 'shinovar'], wiki: 'Bavland' }),
   loc('longbrow-mountains', 'The Longbrow Mountains', 'roshar', 'stormlight', 0.72, 0.36, '#fdba74', 'peak',
@@ -130,15 +130,15 @@ export const PLACES_MORE: Location[] = [
   loc('sea-of-spears', 'Sea of Spears', 'roshar', 'stormlight', 0.82, 0.68, '#38bdf8', 'sea',
     'Waters off the Unclaimed Hills and the Plains. Named for the rock spires that stab up through the surf.', {
       bio: 'The waters off the Unclaimed Hills, named for the rock spires that come up through the surf like a rank of raised weapons. No fleet uses it willingly and no chart of it is trusted twice.', region: 'Unclaimed Hills', see: ['shattered-plains', 'unclaimed-hills'], wiki: 'Sea_of_Spears' }),
-  loc('tarat-sea', 'Sea of Tarat', 'roshar', 'stormlight', 0.56, 0.78, '#67e8f9', 'sea',
+  loc('tarat-sea', 'Sea of Tarat', 'roshar', 'stormlight', 0.607, 0.712, '#67e8f9', 'sea',
     'The sea Kharbranth clings to. Bells carry across it when the storms are kind.', {
       region: 'Tarat Sea',
       bio: 'The sea Kharbranth clings to, sheltered enough for a lagoon city and open enough to trade with everyone. On a still day the bells carry all the way across it, which is how the City of Bells got the name and keeps it.', see: ['kharbranth', 'thaylenah'], wiki: 'Tarat' }),
-  loc('steamwater-ocean', 'Steamwater Ocean', 'roshar', 'stormlight', 0.5, 0.32, '#7dd3fc', 'sea',
+  loc('steamwater-ocean', 'Steamwater Ocean', 'roshar', 'stormlight', 0.818, 0.194, '#7dd3fc', 'sea',
     'Northern ocean above the Purelake latitudes, warm where the peaks bleed heat into it.', {
       region: 'Steamwater Ocean',
       bio: 'The northern ocean above the Purelake latitudes, warm where the Horneater Peaks bleed heat into it and warmer still where nobody has gone to check. Reshi traders cross it; Thaylen ones respect it and go around.', see: ['purelake', 'reshi-isles'], wiki: 'Steamwater_Ocean' }),
-  loc('reshi-sea', 'Reshi Sea', 'roshar', 'stormlight', 0.52, 0.24, '#4ade80', 'sea',
+  loc('reshi-sea', 'Reshi Sea', 'roshar', 'stormlight', 0.491, 0.332, '#4ade80', 'sea',
     'Shallow seas of the Reshi Isles, where islands walk and greatshells decide the borders.', {
       region: 'Reshi Isles',
       bio: 'The shallow water the Reshi Isles wander through. Charting it is a matter of opinion, since the islands are alive and have their own views about where the borders go this season.', see: ['reshi-isles', 'rit-vo-ma'], wiki: 'Reshi_Sea' }),
@@ -591,7 +591,7 @@ export const PLACES_MORE: Location[] = [
     'Seas around Aimia\'s husks. Larkins hunted here until there was nothing left to hunt for.', {
       region: 'Aimia',
       bio: 'The seas around Aimia\'s husks, where the larkin were hunted until there was nothing left to hunt, and where the shipping charts simply stop. What defends the islands reaches this far out.', see: ['aimia', 'akinah'] }),
-  loc('cultivation-valley-approaches', 'Approaches to the Valley', 'roshar', 'stormlight', 0.66, 0.545, '#4ade80', 'forest',
+  loc('cultivation-valley-approaches', 'Approaches to the Valley', 'roshar', 'stormlight', 0.457, 0.667, '#4ade80', 'forest',
     'Forest roads to the Nightwatcher. Pilgrims mark them; few mark the walk back the same way.', {
       region: 'The Valley',
       bio: 'The forest roads that pilgrims take to the Nightwatcher. They mark the way in carefully; very few of them mark the way out the same, because the boon and the curse together tend to change what a person thinks the road was for.', arc: 'oathbringer', see: ['the-valley', 'horneater-peaks'] }),
@@ -623,7 +623,7 @@ export const PLACES_MORE: Location[] = [
     'Shoreline under the god-priest\'s war. Tezim\'s banners; someone else\'s soul behind them.', {
       region: 'Tukar',
       bio: 'The shoreline under Tezim\'s war: a god-priest\'s banners over a country run by a Herald who lost his mind four thousand years ago and has been giving orders ever since. Ishar\'s coast, and someone else\'s soul behind the crown.', see: ['tukar', 'emul'] }),
-  loc('marat-roads', 'Marat Trade Roads', 'roshar', 'stormlight', 0.735, 0.58, '#f59e0b', 'land',
+  loc('marat-roads', 'Marat Trade Roads', 'roshar', 'stormlight', 0.465, 0.780, '#f59e0b', 'land',
     'Caravan routes across Marat that fed Alethkar\'s wars and fled them in the same season.', {
       region: 'Marat',
       bio: 'The caravan routes across Marat that fed Alethkar\'s wars, and that the same caravans fled along when the Fused took the country in a season. Trade roads are an excellent way to move an army, which is why Marat had no chance.', see: ['marat', 'alethkar'] }),

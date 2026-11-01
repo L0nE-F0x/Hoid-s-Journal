@@ -173,6 +173,8 @@
   opacity: 0.85;
 }
 .ceph-time-mark:hover::before { height: 11px; opacity: 1; }
+/* A beat the reader has not reached is not on their playhead. */
+.ceph-time-mark[hidden] { display: none; }
 .ceph-slider {
   width: 100%;
   pointer-events: auto;

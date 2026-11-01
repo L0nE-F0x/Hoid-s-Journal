@@ -4,6 +4,7 @@ import {
   bodyById,
   cityById,
   eraAt,
+  isVisible,
   loreById,
   loreLabel,
   seriesById,
@@ -20,6 +21,18 @@ import { fillLoreCard } from './loreCard.ts';
 import '../styles/hud.css';
 
 const TIME_RATES = [0.25, 1, 4, 16, 64];
+
+/**
+ * Whether the reader may see a named beat. The ticks and the ticker named
+ * the Catacendre and the Contest of Champions to a reader on their first
+ * Mistborn. An event that carries a `book` (and `arc`) waits for it the way
+ * every other entry does; one without is common knowledge. The fields are
+ * read defensively so this works the moment the data grows them.
+ */
+function beatVisible(ev: (typeof COSMERE_EVENTS)[number], progress: Record<string, number>): boolean {
+  const gate = ev as unknown as { book?: string; arc?: string };
+  return !gate.book || isVisible(gate, progress);
+}
 
 
 
@@ -100,6 +113,10 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): {
   });
   const ticker = el('div', { className: 'ceph-ticker', text: COSMERE.eras[0]!.event });
   const marks = el('div', { className: 'ceph-time-marks' });
+  const markFor: { ev: (typeof COSMERE_EVENTS)[number]; m: HTMLButtonElement }[] = [];
+  const paintMarks = () => {
+    for (const { ev, m } of markFor) m.hidden = !beatVisible(ev, store.state.readProgress);
+  };
   for (const ev of COSMERE_EVENTS) {
     const u = yearToSlider(ev.year);
     const m = el('button', {
@@ -114,6 +131,7 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): {
       store.set('skyEvent', ev.id);
     });
     marks.append(m);
+    markFor.push({ ev, m });
   }
   const timeline = el('div', { className: 'ceph-panel ceph-timeline' }, [
     el('div', { className: 'ceph-timeline-top' }, [play, yearEl, speed, btnTimeMin]),
@@ -248,6 +266,7 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): {
     const approx = era.canon !== 'canon' ? ' ≈' : '';
     yearEl.textContent = (local ?? era.realDate) + approx;
     const near = COSMERE_EVENTS.reduce((best, ev) => {
+      if (!beatVisible(ev, s.readProgress)) return best;
       const d = Math.abs(ev.year - s.year);
       if (!best || d < best.d) return { ev, d };
       return best;
@@ -356,6 +375,7 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): {
     }),
     listen(readingLabel, 'click', () => store.set('panel', 'journal')),
     store.on('readingNow', refreshReading),
+    store.on('readProgress', () => { paintMarks(); refreshTime(); }),
     listen(window, 'resize', () => measure()),
     store.on('cinematic', (on) => { skip.classList.toggle('is-on', on); refreshScale(); }),
     store.on('fault', (msg) => {
@@ -391,6 +411,7 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): {
     }),
   ];
 
+  paintMarks();
   refreshTime();
   refreshScale();
   refreshReading();

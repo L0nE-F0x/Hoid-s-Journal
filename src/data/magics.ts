@@ -77,7 +77,9 @@ export const MAGICS: Magic[] = [
     },
   },
   {
-    id: 'hemalurgy', name: 'Hemalurgy', world: 'Scadrial', book: 'mistborn1', shard: 'Ruin',
+    // The art, its Shard and what it made (kandra, koloss) are The Hero of
+    // Ages; The Final Empire has Inquisitors with spikes and no word for it.
+    id: 'hemalurgy', name: 'Hemalurgy', world: 'Scadrial', book: 'mistborn1', arc: 'hoa', shard: 'Ruin',
     aliases: 'Hemalurgic, spike, spikes',
     color: '#71717a', type: 'End-negative · Bind-point spikes',
     desc: 'A bloody art: a metal spike driven through one person steals an attribute, and placed in another grants it — at a loss.',
@@ -134,7 +136,9 @@ export const MAGICS: Magic[] = [
     },
   },
   {
-    id: 'voidbinding', name: 'Voidbinding', world: 'Roshar', book: 'stormlight', shard: 'Odium',
+    // Named on The Way of Kings' endsheet, but every line here — the Fused,
+    // Voidlight, the Everstorm — is Oathbringer's (Coppermind: Fused, Voidlight).
+    id: 'voidbinding', name: 'Voidbinding', world: 'Roshar', book: 'stormlight', arc: 'oathbringer', shard: 'Odium',
     color: '#ef4444', type: 'Odium-granted · Voidlight',
     desc: 'Odium\'s counterpart to Surgebinding, named in the Ars Arcanum and almost unknown: power from Odium, fed by Voidlight.',
     mechanics: 'The Fused, souls of ancient singers reborn into singer bodies with each Everstorm, each brand wielding one Surge by Voidlight.',

@@ -271,6 +271,12 @@ export interface Magic extends Cited {
   name: string;
   world: string;
   book: string;
+  /**
+   * The card waits for this arc of `book`, as a Shard's does, when the whole
+   * of it is a later book's: Hemalurgy is named in The Hero of Ages, not in
+   * The Final Empire that its series starts with.
+   */
+  arc?: string;
   shard: string;
   color: string;
   type: string;

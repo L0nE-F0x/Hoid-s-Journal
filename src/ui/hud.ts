@@ -159,8 +159,15 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): { destroy
     const now = store.state.readingNow;
     if (!now) { readingLabel.style.display = 'none'; return; }
     const s = seriesById[now.series];
+    const book = s?.arcs[now.arc]?.label ?? s?.title ?? now.series;
     readingLabel.style.display = '';
-    readingLabel.textContent = `✦ reading · ${s?.arcs[now.arc]?.label ?? s?.title ?? now.series}`;
+    // The verb is its own span so a phone can drop it and keep the book.
+    readingLabel.replaceChildren(
+      el('span', { className: 'ceph-reading-verb', text: '✦ reading · ' }),
+      el('span', { className: 'ceph-reading-book', text: book }),
+    );
+    readingLabel.title = `Reading ${book} — open the Journal`;
+    readingLabel.setAttribute('aria-label', `Reading ${book}. Open the Journal`);
     measure();
   };
 

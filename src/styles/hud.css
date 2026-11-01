@@ -53,6 +53,14 @@
 
 .ceph-reading {
   display: inline-block;
+  /* One line, always. On a phone the pill shared a row with the wordmark and
+     the back button and wrapped into a four-line box that pushed "← Cosmere"
+     off the screen. */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+  flex: 0 1 auto;
   margin-top: 0;
   padding: 3px 9px;
   border-radius: 2px;
@@ -615,6 +623,14 @@
     text-indent: 0.22em;
   }
   .ceph-command-sub { flex: 1 1 auto; min-width: 0; }
+  /* The book is what matters; the star says the rest. A spoiler filter that
+     is on outranks a breadcrumb that has already been cut to "Cosmere · …",
+     so the crumb gives way first. */
+  .ceph-topbar-left { gap: 7px; }
+  .ceph-command-sub { flex-shrink: 6; }
+  .ceph-reading { max-width: 34vw; min-width: 4.2em; padding: 3px 7px; }
+  .ceph-reading-verb { display: none; }
+  .ceph-reading-book::before { content: '✦ '; }
   /* Eight tools do not fit across a phone, and a strip that scrolls with no
      sign that it scrolls hides Lore, Help and Share. Fade whichever edge has
      more behind it (hud.ts sets the classes). */

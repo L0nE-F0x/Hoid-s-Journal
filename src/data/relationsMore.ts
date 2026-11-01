@@ -96,6 +96,12 @@ export const RELATIONS_MORE: Relation[] = [
   { a: { kind: 'character', id: 'rlain' }, b: { kind: 'org', id: 'truthwatchers' }, type: 'ally', label: 'Truthwatcher', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'navani' }, b: { kind: 'org', id: 'bondsmiths' }, type: 'ally', label: 'Bondsmith of the Sibling', book: 'stormlight', canon: C },
 
+  { a: { kind: 'character', id: 'rlain' }, b: { kind: 'character', id: 'tumi' }, type: 'bond', label: 'Truthwatcher bond', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'leyten' }, b: { kind: 'character', id: 'ethenia' }, type: 'bond', label: 'Windrunner bond', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'makibak' }, b: { kind: 'character', id: 'nale' }, type: 'family', label: 'Uncle & nephew', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'dreder' }, b: { kind: 'character', id: 'chana' }, type: 'ally', label: 'Sent with her to kill Shallan', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'zora' }, b: { kind: 'character', id: 'mraize' }, type: 'ally', label: 'Left in charge', book: 'stormlight', canon: C },
+
   // --- Shallan family ---------------------------------------------------
   { a: { kind: 'character', id: 'shallan' }, b: { kind: 'character', id: 'lin-davar' }, type: 'family', label: 'Daughter & father', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'shallan' }, b: { kind: 'character', id: 'helaran' }, type: 'family', label: 'Sister & brother', book: 'stormlight', canon: C },

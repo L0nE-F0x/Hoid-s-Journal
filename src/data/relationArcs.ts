@@ -88,6 +88,11 @@ export const RELATION_ARCS: { a: string; b: string; arc: string }[] = [
   { a: 'sigzil', b: 'windrunners', arc: 'oathbringer' },
   { a: 'rlain', b: 'truthwatchers', arc: 'row' },
   { a: 'navani', b: 'bondsmiths', arc: 'row' },
+  { a: 'rlain', b: 'tumi', arc: 'row' },
+  { a: 'leyten', b: 'ethenia', arc: 'wat' },
+  { a: 'makibak', b: 'nale', arc: 'wat' },
+  { a: 'dreder', b: 'chana', arc: 'wat' },
+  { a: 'zora', b: 'mraize', arc: 'wat' },
   // Azimir
   { a: 'shalash', b: 'taln', arc: 'oathbringer' },
   { a: 'shalash', b: 'jezrien', arc: 'wat' },

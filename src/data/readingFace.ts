@@ -941,6 +941,16 @@ export const READING_FACES: Record<string, ReadingFace> = {
       { book: 'stormlight', arc: 'wat', published: true },
     ],
   },
+  dreder: {
+    early: {
+      fact: 'A man who knew Shallan\'s mother.',
+      abilities: 'Unknown',
+      bio: 'An associate of Shallan\'s mother, named in a letter Shallan finds among her father\'s things.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'wat', published: true },
+    ],
+  },
   neturo: {
     early: {
       fact: 'Szeth\'s father: a Shin shepherd who taught him to add to the world, not subtract.',

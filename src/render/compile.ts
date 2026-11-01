@@ -28,9 +28,15 @@ export function compileAsync(
   const target = new THREE.WebGLRenderTarget(1, 1);
   const prev = renderer.getRenderTarget();
   renderer.setRenderTarget(target);
-  let pending: Promise<unknown>;
+  // Without the extension there is nothing to poll: Three would warn that it
+  // is missing and then wait on timers for programs it cannot ask about. Start
+  // the compile and let the first draw that needs a program wait for it, as
+  // it always has on those browsers (and on CI's SwiftShader).
+  const parallel = renderer.extensions.has('KHR_parallel_shader_compile');
+  let pending: Promise<unknown> = Promise.resolve();
   try {
-    pending = renderer.compileAsync(scene, camera);
+    if (parallel) pending = renderer.compileAsync(scene, camera);
+    else renderer.compile(scene, camera);
   } finally {
     renderer.setRenderTarget(prev);
     target.dispose();

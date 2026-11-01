@@ -57,7 +57,10 @@ export const RELATION_ARCS: { a: string; b: string; arc: string }[] = [
   { a: 'mraize', b: 'ghostbloods', arc: 'wor' },
   // Narak
   { a: 'sigzil', b: 'vienta', arc: 'wat' },
-  { a: 'sigzil', b: 'dawnshard-exist', arc: 'wat' },
+  // Sigzil–Exist and Jasnah–Hoid are not here: each pair has a second
+  // relation in another series (The Sunlit Man, Elsecaller), and an arc in
+  // this table is stamped on every relation between the pair. Their arcs sit
+  // on the relations themselves in relationsMore.ts.
   { a: 'moash', b: 'leyten', arc: 'wat' },
   { a: 'moash', b: 'teft', arc: 'row' },
   { a: 'battar', b: 'moash', arc: 'wat' },
@@ -70,7 +73,6 @@ export const RELATION_ARCS: { a: string; b: string; arc: string }[] = [
   { a: 'moash', b: 'jezrien', arc: 'oathbringer' },
   { a: 'venli', b: 'leshwi', arc: 'row' },
   // Thaylen City and the Heralds
-  { a: 'jasnah', b: 'hoid', arc: 'row' },
   { a: 'jasnah', b: 'taravangian', arc: 'wat' },
   { a: 'fen', b: 'taravangian', arc: 'wat' },
   { a: 'kalak', b: 'restares', arc: 'row' },

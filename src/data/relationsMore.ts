@@ -70,7 +70,7 @@ export const RELATIONS_MORE: Relation[] = [
 
   // --- Narak (Wind and Truth) ------------------------------------------
   { a: { kind: 'character', id: 'sigzil' }, b: { kind: 'character', id: 'vienta' }, type: 'bond', label: 'Windrunner bond, renounced to save her', book: 'stormlight', canon: C },
-  { a: { kind: 'character', id: 'sigzil' }, b: { kind: 'dawnshard', id: 'dawnshard-exist' }, type: 'bond', label: 'Given Exist by Wit', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'sigzil' }, b: { kind: 'dawnshard', id: 'dawnshard-exist' }, type: 'bond', label: 'Given Exist by Wit', book: 'stormlight', arc: 'wat', canon: C },
   { a: { kind: 'character', id: 'moash' }, b: { kind: 'character', id: 'leyten' }, type: 'rival', label: 'Killed him and Ethenia', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'moash' }, b: { kind: 'character', id: 'teft' }, type: 'rival', label: 'Killed him in Urithiru', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'battar' }, b: { kind: 'character', id: 'moash' }, type: 'rival', label: 'Gave him crystal eyes', book: 'stormlight', canon: C },
@@ -81,7 +81,9 @@ export const RELATIONS_MORE: Relation[] = [
   { a: { kind: 'character', id: 'dami' }, b: { kind: 'org', id: 'stonewards' }, type: 'ally', label: 'Stoneward of the Fourth Ideal', book: 'stormlight', canon: C },
 
   // --- Thaylen City and the Heralds (Wind and Truth) ------------------
-  { a: { kind: 'character', id: 'jasnah' }, b: { kind: 'character', id: 'hoid' }, type: 'romance', label: 'Lovers, until her letter', book: 'stormlight', canon: C },
+  // Lovers is Rhythm of War; the letter that ends it is Wind and Truth, and
+  // lives on Jasnah's Wind and Truth card.
+  { a: { kind: 'character', id: 'jasnah' }, b: { kind: 'character', id: 'hoid' }, type: 'romance', label: 'Lovers', book: 'stormlight', arc: 'row', canon: C },
   { a: { kind: 'character', id: 'jasnah' }, b: { kind: 'character', id: 'taravangian' }, type: 'rival', label: 'Debated him for Thaylenah, and lost', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'fen' }, b: { kind: 'character', id: 'taravangian' }, type: 'ally', label: 'Signed Thaylenah over to him', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'kalak' }, b: { kind: 'character', id: 'restares' }, type: 'ally', label: 'The same man', book: 'stormlight', canon: C },

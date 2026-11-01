@@ -369,7 +369,7 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
         const b = el('button', {
           className: `ceph-chip${i === plateLayer ? ' is-on' : ''}`,
           text: row.name,
-          attrs: { type: 'button' },
+          attrs: { type: 'button', 'aria-pressed': String(i === plateLayer) },
         });
         listen(b, 'click', () => { plateLayer = i; refresh(); });
         layersEl.append(b);

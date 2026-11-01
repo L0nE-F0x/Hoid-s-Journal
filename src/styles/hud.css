@@ -720,7 +720,10 @@
   animation: none;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 420ms var(--ceph-ease);
+  /* Hidden from Tab as well as from the eye once the fade is done; a
+     transparent top bar was still eleven invisible focus stops. */
+  visibility: hidden;
+  transition: opacity 420ms var(--ceph-ease), visibility 0s linear 420ms;
 }
 
 /* A renderer fault. Every DOM panel keeps working over a black canvas, which

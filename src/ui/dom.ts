@@ -27,7 +27,12 @@ export function el<K extends keyof HTMLElementTagNameMap>(
       node.setAttribute(k, v === true ? '' : String(v));
     }
   }
-  if (tag === 'button' && opts.attrs?.title && !node.getAttribute('aria-label')) {
+  // An icon button (☰, ×, −, ▾, a bare tick) is named by its title. A button
+  // with a word on it is named by the word, and the title stays a tooltip:
+  // naming "Arcanum" as "Magic systems" meant a voice user saying "click
+  // Arcanum" got nothing, and a screen reader never heard the word on screen.
+  if (tag === 'button' && opts.attrs?.title && !node.getAttribute('aria-label')
+    && !/[A-Za-z]{2}/.test(opts.text ?? '')) {
     node.setAttribute('aria-label', String(opts.attrs.title));
   }
   if (opts.style) Object.assign(node.style, opts.style);
@@ -84,3 +89,25 @@ if (typeof window !== 'undefined') {
   window.addEventListener('pointerdown', () => { lastWasKey = false; }, true);
 }
 export function keyboardMode(): boolean { return lastWasKey; }
+
+/**
+ * One polite live region for the whole interface. The sky is a canvas, so a
+ * card that opens because a planet was clicked, a search that found nine
+ * things, a link copied to the clipboard — none of it was said to anyone who
+ * could not see it.
+ */
+let liveRegion: HTMLElement | null = null;
+let liveTimer = 0;
+export function announce(text: string): void {
+  if (typeof document === 'undefined' || !text) return;
+  if (!liveRegion) {
+    liveRegion = el('div', { className: 'ceph-sr-only', attrs: { role: 'status', 'aria-live': 'polite' } });
+    document.body.append(liveRegion);
+  }
+  // Cleared first and set a beat later, so the same words twice are still
+  // read twice, and a burst of changes reads only the last.
+  window.clearTimeout(liveTimer);
+  liveRegion.textContent = '';
+  const region = liveRegion;
+  liveTimer = window.setTimeout(() => { region.textContent = text; }, 120);
+}

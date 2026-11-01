@@ -102,7 +102,7 @@ export function mountDirectory(root: HTMLElement): { destroy(): void } {
   let lastRealm = store.state.realm;
   const search = el('input', {
     className: 'ceph-search ceph-dir-search',
-    attrs: { placeholder: 'Find a world, person, shard…', type: 'search' },
+    attrs: { placeholder: 'Find a world, person, shard…', type: 'search', 'aria-label': 'Find in the directory' },
   }) as HTMLInputElement;
   const tabs = el('div', { className: 'ceph-dir-tabs' });
   const list = el('div', { className: 'ceph-dir-list' });
@@ -139,7 +139,7 @@ export function mountDirectory(root: HTMLElement): { destroy(): void } {
     { id: 'dawnshards', label: 'Dawnshards' },
   ];
   for (const t of TAB) {
-    const b = el('button', { className: 'ceph-chip', text: t.label, attrs: { type: 'button' } });
+    const b = el('button', { className: 'ceph-chip', text: t.label, attrs: { type: 'button', 'aria-pressed': 'false' } });
     listen(b, 'click', () => { tab = t.id; paint(); });
     tabs.append(b);
   }
@@ -191,7 +191,10 @@ export function mountDirectory(root: HTMLElement): { destroy(): void } {
     const had = document.activeElement instanceof HTMLElement && list.contains(document.activeElement)
       ? (document.activeElement.dataset.id ?? '') : null;
     list.replaceChildren();
-    [...tabs.children].forEach((c, i) => c.classList.toggle('is-on', TAB[i]!.id === tab));
+    [...tabs.children].forEach((c, i) => {
+      c.classList.toggle('is-on', TAB[i]!.id === tab);
+      c.setAttribute('aria-pressed', String(TAB[i]!.id === tab));
+    });
     title.textContent = TAB.find((t) => t.id === tab)?.label ?? 'Directory';
     kicker.textContent = s.scale === 'system' && s.focusedSystem
       ? (COSMERE.systems.find((x) => x.id === s.focusedSystem)?.name ?? 'System')

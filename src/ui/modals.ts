@@ -19,7 +19,7 @@ import {
 } from '../data/index.ts';
 import { canInstall, promptInstall } from '../core/pwa.ts';
 import { store } from '../core/store.ts';
-import { el, keyboardMode, listen } from './dom.ts';
+import { announce, el, keyboardMode, listen } from './dom.ts';
 
 const FOCUSABLE = 'button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
@@ -271,6 +271,7 @@ function renderCodex(card: HTMLElement): void {
       placeholder: 'Who is Thaidakar? What is a metalmind? Where is Urithiru?',
       value: store.state.searchQuery,
       type: 'search',
+      'aria-label': 'Search the journal',
     },
   }) as HTMLInputElement;
   const filters = el('div', { className: 'ceph-codex-filters' });
@@ -281,6 +282,7 @@ function renderCodex(card: HTMLElement): void {
     [...filters.children].forEach((c, i) => {
       const spec = CODEX_FILTERS[i]!;
       c.classList.toggle('is-on', spec.id === filter);
+      c.setAttribute('aria-pressed', String(spec.id === filter));
     });
   };
 
@@ -401,6 +403,7 @@ function renderCodex(card: HTMLElement): void {
       listen(row, 'click', () => flyCodexHit(h.id));
       results.append(row);
     }
+    announce(hits.length ? `${hits.length === 60 ? 'Sixty or more' : hits.length} matches.` : 'No matches.');
     if (!hits.length) {
       results.append(el('div', {
         text: 'Nothing in the journal matches — or it is still spoiler-gated.',
@@ -445,7 +448,10 @@ function renderRealms(card: HTMLElement): void {
   ];
   for (const r of rows) {
     const on = store.state.realm === r.id;
-    const b = el('button', { className: `ceph-card${on ? ' is-on' : ''}` }, [
+    const b = el('button', {
+      className: `ceph-card${on ? ' is-on' : ''}`,
+      attrs: { type: 'button', 'aria-current': on ? 'true' : undefined },
+    }, [
       el('div', { className: 'ceph-kicker', text: on ? 'you are here' : 'Realm' }),
       el('div', { text: r.title, style: { fontWeight: '600', marginTop: '6px' } }),
       el('div', { text: r.fact, style: { color: 'var(--ceph-text-dim)', marginTop: '6px', fontSize: '12px' } }),
@@ -478,7 +484,11 @@ function renderSpoilers(card: HTMLElement): void {
   );
 
   const now = store.state.readingNow;
-  const pick = el('select', { className: 'ceph-search', style: { marginTop: '14px' } }) as HTMLSelectElement;
+  const pick = el('select', {
+    className: 'ceph-search',
+    attrs: { 'aria-label': 'The book you are reading' },
+    style: { marginTop: '14px' },
+  }) as HTMLSelectElement;
   pick.append(el('option', { text: 'Not tracking a book — show everything', attrs: { value: '' } }));
   for (const book of JOURNAL_BOOKS) {
     const i = bookArcIndex(book.series, book.arc);
@@ -526,9 +536,13 @@ function renderSpoilers(card: HTMLElement): void {
     const read = prog >= i;
     const row = el('button', {
       className: `ceph-book${here ? ' is-on' : ''}${read ? ' is-read' : ''}`,
-      attrs: { type: 'button' },
+      attrs: {
+        type: 'button',
+        'aria-current': here ? 'true' : undefined,
+        'aria-label': `${book.title}${here ? ', reading now' : read ? ', read' : ', not yet read'}`,
+      },
     }, [
-      el('span', { className: 'ceph-book-mark', text: here ? '✦' : read ? '·' : '' }),
+      el('span', { className: 'ceph-book-mark', text: here ? '✦' : read ? '·' : '', attrs: { 'aria-hidden': 'true' } }),
       el('span', { className: 'ceph-book-title', text: book.title }),
     ]);
     listen(row, 'click', () => applyReading(book.series, i));

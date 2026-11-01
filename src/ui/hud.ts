@@ -15,7 +15,7 @@ import { store } from '../core/store.ts';
 import { copyShareLink } from '../core/urlState.ts';
 import { BRAND_TAGLINE, BRAND_WORDMARK } from './brand.ts';
 import { atlasIsOpen } from './atlas.ts';
-import { el, listen } from './dom.ts';
+import { announce, el, listen } from './dom.ts';
 import { fillLoreCard } from './loreCard.ts';
 import '../styles/hud.css';
 
@@ -28,7 +28,11 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): {
   lowLayer: HTMLElement;
   destroy(): void;
 } {
-  const word = el('button', { className: 'ceph-wordmark', text: BRAND_WORDMARK, attrs: { type: 'button', title: BRAND_TAGLINE } });
+  const word = el('button', {
+    className: 'ceph-wordmark',
+    text: BRAND_WORDMARK,
+    attrs: { type: 'button', title: BRAND_TAGLINE, 'aria-label': 'Hoid’s Journal — back to the title' },
+  });
   const scaleLabel = el('div', { className: 'ceph-command-sub', text: 'Cosmere · Physical' });
   const readingLabel = el('button', { className: 'ceph-reading', text: '', attrs: { type: 'button', title: 'Reading companion' } });
   readingLabel.style.display = 'none';
@@ -40,19 +44,24 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): {
   const back = el('button', {
     className: 'ceph-btn ceph-back',
     text: '← Cosmere',
-    attrs: { type: 'button', title: 'Frame the whole Cosmere (F)' },
+    attrs: { type: 'button', title: 'Frame the whole Cosmere (F)', 'aria-label': 'Back to the Cosmere' },
   });
 
-  const mkTool = (label: string, title: string) =>
-    el('button', { className: 'ceph-btn', text: label, attrs: { type: 'button', title } });
+  // Panel buttons open a dialog and say whether it is open; Lore toggles a view.
+  const mkTool = (label: string, title: string, dialog = true) =>
+    el('button', {
+      className: 'ceph-btn',
+      text: label,
+      attrs: { type: 'button', title, ...(dialog ? { 'aria-haspopup': 'dialog', 'aria-expanded': 'false' } : {}) },
+    });
   const btnCodex = mkTool('Search', 'Search the journal (K /)');
   const btnArc = mkTool('Arcanum', 'Magic systems');
   const btnSpoil = mkTool('Journal', 'Reading progress');
   const btnRealm = mkTool('Realms', 'Physical / Cognitive / Spiritual (C / V)');
   const btnLook = mkTool('Settings', 'Display settings');
   const btnHelp = mkTool('Help', 'How to read the sky (H)');
-  const btnShare = mkTool('Share', 'Copy a link to this view');
-  const btnWeb = mkTool('Lore', 'Lore Web — six degrees of Hoid (L)');
+  const btnShare = mkTool('Share', 'Copy a link to this view', false);
+  const btnWeb = mkTool('Lore', 'Lore Web — six degrees of Hoid (L)', false);
   const tools = el('div', { className: 'ceph-tools' }, [btnCodex, btnArc, btnSpoil, btnRealm, btnLook, btnWeb, btnHelp, btnShare]);
 
   const topbar = el('div', { className: 'ceph-panel ceph-topbar' }, [
@@ -62,11 +71,18 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): {
 
   const play = el('button', { className: 'ceph-play', text: '❚❚', attrs: { type: 'button', title: 'Play / pause time' } });
   const yearEl = el('div', { className: 'ceph-year', text: COSMERE.eras[0]!.realDate });
-  const slider = el('input', { className: 'ceph-slider', attrs: { type: 'range', min: '0', max: '1000', value: '500' } });
+  const slider = el('input', {
+    className: 'ceph-slider',
+    attrs: { type: 'range', min: '0', max: '1000', value: '500', 'aria-label': 'Playhead' },
+  });
   const eraRow = el('div', { className: 'ceph-era-row' });
   const eraShort = ['Pre', 'Post', 'MB1', 'SA', 'MB2', 'Far'];
   for (const era of COSMERE.eras) {
-    const b = el('button', { className: 'ceph-chip', text: eraShort[era.id] ?? String(era.id), attrs: { type: 'button', title: era.name } });
+    const b = el('button', {
+      className: 'ceph-chip',
+      text: eraShort[era.id] ?? String(era.id),
+      attrs: { type: 'button', title: era.name, 'aria-pressed': 'false' },
+    });
     listen(b, 'click', () => {
       store.set('year', era.start + 1);
       store.set('era', era.id);
@@ -119,7 +135,7 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): {
   const faultReload = el('button', {
     className: 'ceph-btn ceph-btn--primary', text: 'Reload', attrs: { type: 'button' },
   });
-  const fault = el('div', { className: 'ceph-panel ceph-fault' }, [
+  const fault = el('div', { className: 'ceph-panel ceph-fault', attrs: { role: 'alert' } }, [
     el('div', { className: 'ceph-kicker', text: 'The sky stopped drawing' }),
     faultText,
     faultReload,
@@ -209,6 +225,13 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): {
     timeline.classList.toggle('is-thin', !s.chrome.timeline);
     btnTimeMin.textContent = s.chrome.timeline ? '▾' : '▴';
     btnTimeMin.title = s.chrome.timeline ? 'Minimise timeline' : 'Expand timeline';
+    btnTimeMin.setAttribute('aria-label', btnTimeMin.title);
+    btnDir.setAttribute('aria-pressed', String(s.chrome.directory));
+    for (const [b, id] of [[btnCodex, 'codex'], [btnArc, 'arcanum'], [btnSpoil, 'journal'],
+      [btnLook, 'settings'], [btnHelp, 'help'], [btnRealm, 'realms']] as const) {
+      b.setAttribute('aria-expanded', String(s.panel === id));
+    }
+    btnWeb.setAttribute('aria-pressed', String(s.view === 'web'));
     btnCodex.classList.toggle('is-on', s.panel === 'codex');
     btnArc.classList.toggle('is-on', s.panel === 'arcanum');
     btnSpoil.classList.toggle('is-on', s.panel === 'journal');
@@ -232,10 +255,17 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): {
     ticker.textContent = near && near.d < 40 ? near.ev.name + ' — ' + near.ev.fact : era.event;
     slider.value = String(Math.round(yearToSlider(s.year) * 1000));
     play.textContent = s.isPlaying ? '❚❚' : '▶';
+    play.setAttribute('aria-label', s.isPlaying ? 'Pause time' : 'Play time');
+    slider.setAttribute('aria-valuetext', yearEl.textContent ?? '');
     rateEl.textContent = `${s.timeRate}×`;
-    [...eraRow.children].forEach((c, i) => c.classList.toggle('is-on', i === s.era));
+    [...eraRow.children].forEach((c, i) => {
+      c.classList.toggle('is-on', i === s.era);
+      c.setAttribute('aria-pressed', String(i === s.era));
+    });
   };
 
+  /** The entry last read out, so a re-render of the same card is not. */
+  let spoken: string | null = null;
   const refreshDrawer = () => {
     // Hover is a tooltip. The card opens only on a click, so the sky does not jump.
     const id = store.state.selected;
@@ -247,7 +277,7 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): {
     const shown = !!hit && !crowded;
     // The directory gives up half the column while a card is open.
     document.documentElement.classList.toggle('ceph-card-open', shown);
-    if (!shown) { drawer.style.display = 'none'; measure(); return; }
+    if (!shown) { spoken = null; drawer.style.display = 'none'; measure(); return; }
     drawer.style.display = '';
     drawer.replaceChildren();
     const close = el('button', {
@@ -259,7 +289,10 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): {
     listen(close, 'click', () => { store.set('selected', null); store.set('hovered', null); });
     drawer.append(close);
     fillLoreCard(drawer, id);
-    drawer.setAttribute('aria-label', `${drawer.querySelector('h2')?.textContent ?? 'Entry'} — card`);
+    const name = drawer.querySelector('h2')?.textContent ?? 'Entry';
+    drawer.setAttribute('aria-label', `${name} — card`);
+    if (id !== spoken) announce(`${name}. Card open.`);
+    spoken = id;
     // A phone shows the head and the gist first (hud.css), so the world the
     // card is about is still on screen. Every new card starts that way.
     drawer.classList.remove('is-open');
@@ -296,6 +329,7 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): {
     listen(btnShare, 'click', async () => {
       const ok = await copyShareLink();
       btnShare.textContent = ok ? 'Copied' : 'Share';
+      announce(ok ? 'Link to this view copied.' : 'Could not copy the link.');
       setTimeout(() => { btnShare.textContent = 'Share'; }, 1400);
     }),
     listen(btnWeb, 'click', () => store.set('view', store.state.view === 'web' ? 'sky' : 'web')),

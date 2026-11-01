@@ -241,6 +241,9 @@ export function mountLoreWeb(root: HTMLElement): { destroy(): void } {
   const paintLegend = () => {
     // On a phone the legend is one line until asked: open, it covered the
     // lower third of the graph it explains (see loreWeb.css).
+    // The head only folds the legend on a phone. On a desktop the legend is
+    // always open and the head is a plain title; as a button it was a Tab
+    // stop that did nothing.
     const head = el('button', {
       className: 'ceph-web-legend-head',
       attrs: { type: 'button', 'aria-expanded': String(legend.classList.contains('is-open')) },
@@ -248,11 +251,12 @@ export function mountLoreWeb(root: HTMLElement): { destroy(): void } {
       el('span', { className: 'ceph-kicker', text: 'Lore Web' }),
       el('span', { className: 'ceph-web-legend-more', text: 'Legend' }),
     ]);
+    const title = el('div', { className: 'ceph-kicker ceph-web-legend-title', text: 'Lore Web' });
     listen(head, 'click', () => {
       legend.classList.toggle('is-open');
       head.setAttribute('aria-expanded', String(legend.classList.contains('is-open')));
     });
-    legend.replaceChildren(head);
+    legend.replaceChildren(title, head);
     legend.append(el('div', {
       className: 'ceph-web-hint',
       text: 'Click a node for its path to Hoid. Drag a node to move it, drag the background to pan, scroll or pinch to zoom. Names appear as you go in.',
@@ -262,7 +266,10 @@ export function mountLoreWeb(root: HTMLElement): { destroy(): void } {
     legend.append(reset);
     for (const [type, meta] of Object.entries(WEB_TYPES)) {
       const off = hide.has(type);
-      const b = el('button', { className: `ceph-web-type${off ? ' is-off' : ''}`, attrs: { type: 'button' } }, [
+      const b = el('button', {
+        className: `ceph-web-type${off ? ' is-off' : ''}`,
+        attrs: { type: 'button', 'aria-pressed': String(!off), title: `Show ${meta.label.toLowerCase()} links` },
+      }, [
         el('span', { className: 'ceph-dir-dot', style: { background: meta.color } }),
         el('span', { text: meta.label }),
       ]);

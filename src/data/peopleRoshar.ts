@@ -210,12 +210,28 @@ export const PEOPLE_ROSHAR: Character[] = [
       bio: 'An ashspren bonded to Malata of the Diagram. Ashspren still resent humanity for the Recreance; Spark\'s answer is to help Taravangian\'s faction weaponize Division without waiting on Dalinar\'s conscience.',
     }),
   ch('the-wind', 'The Wind', '#7dd3fc', 'stormlight', 'Roshar',
-    'Wind, the Wind',
-    'Ancient spren · voice older than the storm',
-    'Old spren of Roshar\'s wind; speaks again in the contest\'s age.', true, R15, {
+    'the Wind',
+    'Ancient spren · made with the planet',
+    'One of Roshar\'s three oldest spren. She chose Kaladin.', true, R15, {
       kind: 'spren', arc: 'wat', wiki: 'Wind',
-      see: ['kaladin', 'stormfather', 'tanavast', 'syl'],
-      bio: 'One of Roshar\'s eldest spren, a voice of wind that predates the modern highstorm\'s mind. In Wind and Truth she speaks to Kaladin and others as old agreements unravel and Honor\'s remnants are remade.',
+      see: ['kaladin', 'stormfather', 'syl', 'the-stone', 'the-night'],
+      bio: 'One of three spren Adonalsium made with Roshar itself, with the Stone and the Night. Human worship of the Stormfather diminished her. In Wind and Truth she guides Kaladin through Shinovar, prepares a champion to protect the spren, accepts his Fifth Ideal, and asks the Heralds to reforge the Oathpact so that Retribution cannot take the spren as Odium took the Unmade.',
+    }),
+  ch('the-stone', 'The Stone', '#a8a29e', 'stormlight', 'Roshar',
+    'the Stone',
+    'Ancient spren · made with the planet',
+    'One of Roshar\'s three oldest spren, who remembers when singers shaped stone without oaths.', true, R15, {
+      kind: 'spren', arc: 'wat', wiki: 'Stone',
+      see: ['the-wind', 'the-night', 'venli'],
+      bio: 'An ancient spren Adonalsium made with the planet, with the Wind and the Night. The Stone has no mortal sense of time and calls old things recent; it remembers when singers could mould it without being Radiant, and sings of that past, as Venli hears in Urithiru. The future, it says, is the Wind\'s business.',
+    }),
+  ch('the-night', 'The Night', '#1e1b4b', 'stormlight', 'Roshar',
+    'the Night',
+    'Ancient spren · made with the planet · once a Bondsmith spren',
+    'The third of Roshar\'s oldest spren: the one nobody loved, who left.', true, R15, {
+      kind: 'spren', arc: 'wat', wiki: 'Night',
+      see: ['the-wind', 'the-stone', 'nightwatcher', 'cultivation'],
+      bio: 'An ancient spren made with Roshar, the Wind and the Stone, whose work was to shroud, or perhaps to nurture, the singers. Her song was part of why Cultivation stayed on Roshar at all. She was once one of the three Bondsmith spren. Few people ever loved her or spoke of her, the singers took her siblings for gods instead, and in the end the Night left Roshar.',
     }),
   ch('ulim', 'Ulim', '#a3e635', 'stormlight', 'Roshar',
     'Ulim',
@@ -408,11 +424,11 @@ export const PEOPLE_ROSHAR: Character[] = [
     }),
   ch('gavinor', 'Gavinor Kholin', '#60a5fa', 'stormlight', 'Roshar',
     'Gav',
-    'Heir to Alethkar',
-    'Elhokar\'s son; a child wearing a kingdom\'s grief.', false, R3, {
+    'Shardbearer (Oathbringer) · Odium\'s champion',
+    'Elhokar\'s son, raised in a vision to be Odium\'s champion against his grandfather.', false, R3, {
       kind: 'person', arc: 'oathbringer', wiki: 'Gavinor', titles: 'Prince of Alethkar',
-      see: ['elhokar', 'aesudan', 'dalinar', 'drehy'],
-      bio: 'Son of Elhokar and Aesudan. Rescued from fallen Kholinar and raised amid Radiants and war councils, a small boy whose name is a political weapon and a reminder of what Moash took.',
+      see: ['elhokar', 'aesudan', 'dalinar', 'navani', 'lift'],
+      bio: 'Elhokar and Aesudan\'s son, rescued from fallen Kholinar, Jasnah\'s heir, and a small boy afraid of spren after what was done to him in the palace. In Wind and Truth he follows Lift to spy on Dalinar and is pulled into the Spiritual Realm with him; Odium takes him into a vision that lasts twenty years in an hour and raises him to hate his grandfather. He comes out grown, carrying Oathbringer, as Odium\'s champion. Dalinar will not kill him, and dies shielding him from the wind.',
     }),
   ch('tien', 'Tien', '#fde68a', 'stormlight', 'Roshar',
     'Tien',
@@ -1184,9 +1200,9 @@ export const PEOPLE_ROSHAR: Character[] = [
   ch('tanavast', 'Tanavast', '#1d4ed8', 'stormlight', 'Yolen',
     'Honor, Tanavast',
     'Former Vessel of Honor',
-    'Vessel of Honor; his death still storms Roshar.', true, R13, {
+    'The Vessel of Honor: a Yolish tanner who became Roshar\'s Almighty, and broke his own oaths for love.', true, R13, {
       kind: 'vessel', arc: 'wat', wiki: 'Tanavast', titles: 'Vessel of Honor',
       see: ['stormfather', 'dalinar', 'rayse', 'koravellium'],
-      bio: 'Original Vessel of Honor. Loved Roshar, bound Odium with oaths, and eventually died leaving a Cognitive Shadow tangled with the Stormfather. Wind and Truth digs into how Honor broke — and what remains to be reforged.',
+      bio: 'The original Vessel of Honor. On Yolen he was a tanner, who once made a belt for Rayse, his rival then and ever after, and he believed Adonalsium had to be Shattered for its own good, a choice he later called terrible. On Roshar he came to think of himself as God, and to care more for oaths than for what they meant. He loved Koravellium Avast, and being with her broke his oaths. Odium killed him; a half-finished Cognitive Shadow of him merged with the Stormfather, and in Wind and Truth Dalinar walks through his memories.',
     }),
 ];

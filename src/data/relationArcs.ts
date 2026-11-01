@@ -20,7 +20,7 @@ export const RELATION_ARCS: { a: string; b: string; arc: string }[] = [
   { a: 'taravangian', b: 'dalinar', arc: 'oathbringer' },
   { a: 'taravangian', b: 'odium', arc: 'wat' },
   { a: 'taravangian', b: 'honor', arc: 'wat' },
-  { a: 'koravellium', b: 'taravangian', arc: 'wat' },
+  { a: 'koravellium', b: 'taravangian', arc: 'row' },
   { a: 'rysn', b: 'dawnshard-change', arc: 'dawnshard' },
   { a: 'sleepless-hordes', b: 'dawnshard-change', arc: 'dawnshard' },
   { a: 'rysn', b: 'nikli', arc: 'dawnshard' },
@@ -33,6 +33,13 @@ export const RELATION_ARCS: { a: string; b: string; arc: string }[] = [
   { a: 'nale', b: 'szeth', arc: 'edgedancer' },
   // Adolin kills Sadeas at the end of Words of Radiance (ch. 89)
   { a: 'adolin', b: 'sadeas', arc: 'wor' },
+  // The contest
+  { a: 'gavinor', b: 'dalinar', arc: 'wat' },
+  { a: 'taravangian', b: 'gavinor', arc: 'wat' },
+  { a: 'navani', b: 'gavinor', arc: 'oathbringer' },
+  { a: 'taravangian', b: 'stormfather', arc: 'wat' },
+  { a: 'tanavast', b: 'rayse', arc: 'wat' },
+  { a: 'the-wind', b: 'kaladin', arc: 'wat' },
   // Azimir
   { a: 'shalash', b: 'taln', arc: 'oathbringer' },
   { a: 'shalash', b: 'jezrien', arc: 'wat' },

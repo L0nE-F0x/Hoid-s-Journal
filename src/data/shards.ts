@@ -35,12 +35,16 @@ export const SHARDS: Shard[] = [
       whole(5, 'Bavadin', 'Taldain'),
     ]),
   line('cultivation', 'Cultivation', '#4ade80', 'stormlight', 'Roshar',
-    'The Shard of growth and change. Paired with Honor on Roshar; currently in hiding after Wind and Truth.',
-    ['The Stormlight Archive'], [
+    'The Shard of growth and change, Honor\'s counterpart on Roshar.',
+    ['The Stormlight Archive', 'Rhythm of War', 'Wind and Truth'], [
+      // No arc on a Shard or its rows yet: everything before era 4 is
+      // written so a Way of Kings reader can read it. Her name is Rhythm of
+      // War's; that she left Roshar is Wind and Truth's.
       whole(0, '—', 'Yolen (pre-Shattering)'),
-      whole(1, 'Koravellium Avast', 'Roshar'), whole(2, 'Koravellium Avast', 'Roshar'),
-      whole(3, 'Koravellium Avast', 'Roshar'), whole(4, 'Koravellium Avast', 'In hiding'),
-      whole(5, 'Koravellium Avast', 'In hiding'),
+      whole(1, 'Unnamed', 'Roshar'), whole(2, 'Unnamed', 'Roshar'),
+      whole(3, 'Unnamed', 'Roshar'),
+      whole(4, 'Koravellium Avast', 'Gone from Roshar'),
+      whole(5, 'Koravellium Avast', 'Gone from Roshar'),
     ]),
   line('devotion', 'Devotion', '#a78bfa', 'elantris', 'Sel',
     'Splintered by Odium. Its power, with Dominion, became the Dor — trapped in the Cognitive Realm and geographically anchored.',
@@ -64,11 +68,12 @@ export const SHARDS: Shard[] = [
       whole(3, 'Edgli', 'Nalthis'), whole(4, 'Edgli', 'Nalthis'), whole(5, 'Edgli', 'Nalthis'),
     ]),
   line('honor', 'Honor', '#38bdf8', 'stormlight', 'Roshar',
-    'The Shard of bonds and oaths. Splintered after Tanavast\'s death; taken up with Odium as Retribution in Wind and Truth.',
+    'The Shard of oaths and bonds, the Almighty of the Vorin church. He is dead, and his visions still come in the storms.',
     ['The Stormlight Archive', 'Wind and Truth'], [
+      // Era 3 is the default year and says only what The Way of Kings says.
       whole(0, '—', 'Yolen (pre-Shattering)'),
-      whole(1, 'Tanavast', 'Roshar'), whole(2, 'Tanavast', 'Roshar'),
-      splintered(3, 'Roshar', 'Tanavast (dead) / Stormfather'),
+      whole(1, 'The Almighty', 'Roshar'), whole(2, 'The Almighty', 'Roshar'),
+      splintered(3, 'Roshar', 'None: the Almighty is dead'),
       merged(4, 'Taravangian (Retribution)', 'Roshar'),
       merged(5, 'Taravangian (Retribution)', 'Roshar'),
     ]),
@@ -87,11 +92,12 @@ export const SHARDS: Shard[] = [
       whole(3, 'Unknown', 'Unknown'), whole(4, 'Unknown', 'Unknown'), whole(5, 'Unknown', 'Unknown'),
     ]),
   line('odium', 'Odium', '#ef4444', 'stormlight', 'Braize / Roshar',
-    'Hatred unbound. Rayse held it until Dalinar\'s contest; Taravangian then took Odium and Honor together as Retribution.',
-    ['The Stormlight Archive', 'Wind and Truth'], [
+    'Hatred: the god who killed the Almighty, and whose Voidbringers the Desolations were fought against.',
+    ['The Stormlight Archive', 'Oathbringer', 'Rhythm of War', 'Wind and Truth'], [
+      // Rayse is named in Oathbringer and dies in Rhythm of War; era 3 waits.
       whole(0, '—', 'Yolen (pre-Shattering)'),
-      whole(1, 'Rayse', 'Braize'), whole(2, 'Rayse', 'Braize'),
-      whole(3, 'Rayse → Taravangian', 'Roshar'),
+      whole(1, 'Odium', 'Braize'), whole(2, 'Odium', 'Braize'),
+      whole(3, 'Odium', 'Braize / Roshar'),
       merged(4, 'Taravangian (Retribution)', 'Roshar'),
       merged(5, 'Taravangian (Retribution)', 'Roshar'),
     ]),

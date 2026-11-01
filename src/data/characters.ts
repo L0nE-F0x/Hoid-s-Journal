@@ -174,8 +174,8 @@ export const CHARACTERS: Character[] = [
     'Harmony\'s agent in a changing world.', false,
     [{ era: 4, system: 'scadrian', body: 'scadrial' }]),
   ch('dalinar', 'Dalinar', '#1d4ed8', 'stormlight', 'Roshar', 'Blackthorn, Bondsmith',
-    'Bondsmith Radiant',
-    'Highprince, then Bondsmith, then the man who refused Odium.', false, [
+    'Bondsmith Radiant · briefly Vessel of Honor',
+    'Highprince, Bondsmith, for a moment the Vessel of Honor, and the man who gave it up.', false, [
       { era: 3, system: 'rosharan', body: 'roshar' },
     ]),
   ch('adolin', 'Adolin Kholin', '#eab308', 'stormlight', 'Roshar', 'Adolin',
@@ -360,8 +360,8 @@ export const CHARACTERS: Character[] = [
       { era: 3, system: 'rosharan', body: 'roshar' },
     ], { kind: 'spren', wiki: 'Ivory' }),
   ch('stormfather', 'The Stormfather', '#1e3a8a', 'stormlight', 'Roshar', 'Rider of Storms',
-    'Cognitive Shadow of Honor, Bondsmith spren',
-    'The highstorm given a mind. Dalinar\'s bond, and Tanavast\'s last voice.', true, [
+    'Spren of the highstorm · Bondsmith spren · Honor\'s memories',
+    'The highstorm given a mind, and Tanavast\'s memory. Retribution unmade him on Stormfall.', true, [
       { era: 3, system: 'rosharan', body: 'roshar' },
     ], { kind: 'spren', wiki: 'Stormfather' }),
   ch('nightwatcher', 'The Nightwatcher', '#166534', 'stormlight', 'Roshar', 'Nightwatcher',
@@ -479,7 +479,7 @@ CHARACTERS.push(
   drake('koravellium', 'Koravellium Avast', '#4ade80', 'stormlight', 'Cultivation · Kor · Slammer',
     'Vessel of Cultivation · future sight · boons and curses · spren-making',
     'A dragon considered heretical on Yolen for refusing the worship her kind expected. Prefers human form with mortals. Immortal twice over — once by birth, once by Shard.',
-    'The dragon behind Cultivation. She helped Shatter Adonalsium, and she spent millennia engineering the ascension of Taravangian. Also called She Who Brings the Dews at Dawn.',
+    'The dragon behind Cultivation. She helped Shatter Adonalsium, and she engineered the ascension of Taravangian. Also called She Who Brings the Dews at Dawn.',
     [{ era: 0, system: 'yolish', body: 'yolen' }, ...ALL_ERAS('rosharan', 'roshar').slice(1)],
     { arc: 'row', sources: ['The Stormlight Archive', 'Word of Brandon'] }),
 

@@ -129,7 +129,7 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   dalinar: {
     wiki: 'Dalinar_Kholin',
     see: ['navani', 'stormfather', 'evi', 'adolin', 'honor'],
-    bio: 'The Blackthorn who burned a city, forgot his wife by Cultivation\'s knife, and rebuilt himself into a Bondsmith. He refounds the Knights Radiant, renounces conquest, and eventually yields Honor\'s power rather than become another tyrant wearing a god.',
+    bio: 'The Blackthorn who burned the Rift, gave his memory of his wife to the Old Magic, and rebuilt himself into a Bondsmith and the man who refounded the Knights Radiant. In Wind and Truth he walks Honor\'s past in the Spiritual Realm, then meets Odium\'s champion on top of Urithiru: Gavinor, grown up in a vision and taught to hate him. He will not kill the boy. He takes up Honor, finds it wants only war on Odium, and renounces his oaths instead, buying Roshar time with his life. He dies shielding Gavinor from the wind, and Taravangian takes up what he let go.',
   },
   adolin: {
     wiki: 'Adolin_Kholin',
@@ -144,7 +144,7 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   navani: {
     wiki: 'Navani_Kholin',
     see: ['dalinar', 'sibling', 'fabrial', 'gavilar'],
-    bio: 'Artifabrian queen who turns grief into scholarship and scholarship into Towerlight. She bonds the Sibling, outmanoeuvres Raboniel in the weaponisation of anti-Light, and proves that engineering is a Radiant Calling.',
+    bio: 'Gavilar\'s widow and Dalinar\'s wife, an artifabrian who turned grief into scholarship and scholarship into Towerlight. She bonded the Sibling and out-thought Raboniel. In Wind and Truth she walks Roshar\'s history with Dalinar in the Spiritual Realm, one of the few humans who can find its pure tones, and comes back believing she has Gavinor; Taravangian has left her a sleeping copy. When Dalinar dies she has the Sibling seal Urithiru in crystal against Retribution, and sleeps inside it.',
   },
   venli: {
     wiki: 'Venli',
@@ -154,7 +154,7 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   taravangian: {
     wiki: 'Taravangian',
     see: ['diagram', 'odium', 'retribution', 'cultivation'],
-    bio: 'King of Kharbranth who built the Diagram on one brilliant day and a hospital of Death Rattles. He murders his way into Odium\'s Shard, takes Honor as well, and becomes Retribution — the disaster Cultivation thought she could aim.',
+    bio: 'King of Kharbranth, whose Diagram was written on the one day he woke brilliant. At the end of Rhythm of War he killed Rayse with Nightblood and took up Odium. In Wind and Truth he keeps every contract by its letter: he raises Gavinor in a vision to be his champion, and when Dalinar gives up Honor he takes that too and becomes Retribution, among the most Invested beings in the cosmere and no longer bound to Roshar\'s system. He destroys the Stormfather, folds the highstorm into the Everstorm, and goes to ground before the other Shards can move. Kharbranth, which he seemed to drown, is safe in a copy he built in the Spiritual Realm.',
   },
   moash: {
     wiki: 'Moash',
@@ -318,8 +318,8 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   stormfather: {
     wiki: 'Stormfather',
-    see: ['dalinar', 'honor', 'highstorm', 'tanavast'],
-    bio: 'A Cognitive Shadow of Honor\'s power fused with an ancient spren, sender of highstorms and binder of Bondsmiths. He remembers Tanavast, distrusts humans, and still kneels into a bond with Dalinar.',
+    see: ['dalinar', 'highstorm', 'honorspren'],
+    bio: 'A spren of the highstorm, first made an avatar of Honor and later merged with a half-finished Cognitive Shadow of Tanavast, so that he carries Honor\'s memories. He made the modern honorspren, stopped after the Recreance, and then made ten more. He bonded Dalinar as a Bondsmith, and in Wind and Truth showed him Honor\'s history. On Stormfall, Retribution destroyed him.',
   },
   nightwatcher: {
     wiki: 'Nightwatcher',
@@ -329,7 +329,7 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   sibling: {
     wiki: 'Sibling',
     see: ['navani', 'urithiru', 'towerlight', 'bondsmiths'],
-    bio: 'The third Bondsmith spren, soul of Urithiru. Wounded by the Recreance\'s aftershocks and Raboniel\'s occupation, it bonds Navani and relearns how to trust a human with the tower\'s veins.',
+    bio: 'The third Bondsmith spren, soul of Urithiru, child of Honor and Cultivation. Wounded by the Recreance\'s aftershocks and Raboniel\'s occupation, they bond Navani and relearn how to trust a human with the tower\'s veins. When Dalinar dies on Stormfall, the Sibling and Navani seal the tower in crystal that even a Shard cannot break, and both fall into a coma; inside, the fabrials still run.',
   },
   nale: {
     wiki: 'Nale',
@@ -409,7 +409,7 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   koravellium: {
     wiki: 'Koravellium_Avast',
     see: ['cultivation', 'taravangian', 'nightwatcher', 'honor'],
-    bio: 'Dragon Vessel of Cultivation. She prunes Dalinar, gambles on Taravangian, and withdraws when Retribution crowns itself — gardening on a scale that makes mortals into hedging shears.',
+    bio: 'Dragon Vessel of Cultivation, a heretic on Yolen for refusing to be worshipped, who helped Shatter Adonalsium because she believes no one god can rule everyone. She and Tanavast loved each other, against his oaths. She prunes Dalinar\'s memories and gambles on Taravangian with a boon that makes him Odium; when he becomes Retribution she leaves Roshar, and her perpendicularity vanishes behind her.',
   },
   xisis: {
     wiki: 'Xisisrefliel',

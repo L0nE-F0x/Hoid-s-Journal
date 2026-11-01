@@ -78,6 +78,20 @@ export const READING_FACES: Record<string, ReadingFace> = {
         aliases: 'Blackthorn, Bondsmith',
         bio: 'The Blackthorn, who spent a life being the knife and then tried to put it down. He bonds the Stormfather on the Shattered Plains.',
       },
+      {
+        book: 'stormlight', arc: 'oathbringer',
+        fact: 'Bondsmith, refounder of the Radiants, and the man who refused Odium at Thaylen Field.',
+        abilities: 'Bondsmith Radiant',
+        aliases: 'Blackthorn, Bondsmith',
+        bio: 'The Blackthorn who burned the Rift and asked the Nightwatcher to take the pain of it; she took his memory of Evi. It comes back. At Thaylen Field he takes responsibility for what he did instead of letting Odium have it, opens Honor\'s perpendicularity, and unites the Radiants he has refounded.',
+      },
+      {
+        book: 'stormlight', arc: 'row',
+        fact: 'Bondsmith, and Honor\'s champion in a contest with Odium.',
+        abilities: 'Bondsmith Radiant',
+        aliases: 'Blackthorn, Bondsmith',
+        bio: 'The Blackthorn turned Bondsmith, learning what his bond can do: he moves Urithiru across Shadesmar, opens perpendicularities, and faces Ishar. At the end of Rhythm of War he signs a contract with Odium. In ten days, a contest of champions.',
+      },
       { book: 'stormlight', arc: 'wat', published: true },
     ],
   },
@@ -100,17 +114,32 @@ export const READING_FACES: Record<string, ReadingFace> = {
       bio: 'The king\'s widow, designing fabrials the ardents call improper and the armies quietly use.',
     },
     steps: [
-      { book: 'stormlight', arc: 'row', published: true },
+      { book: 'stormlight', arc: 'row', bio: 'Artifabrian queen who turns grief into scholarship and scholarship into Towerlight. She bonds the Sibling, outmanoeuvres Raboniel in the weaponisation of anti-Light, and proves that engineering is a Radiant Calling.' },
+      { book: 'stormlight', arc: 'wat', published: true },
     ],
   },
   taravangian: {
     early: {
-      fact: 'King of Kharbranth. A hospital, a Diagram, and a mind that will not hold still.',
-      abilities: 'The Diagram',
-      aliases: 'Vargo',
-      bio: 'King of Kharbranth, who keeps a hospital of the dying and writes down what they say. On his brilliant days he is the most frightening man in Roshar. On the others he weeps, and means it.',
+      fact: 'King of Kharbranth: a kindly old man with a hospital.',
+      abilities: 'King of Kharbranth',
+      aliases: 'Taravangian',
+      bio: 'The elderly king of Kharbranth, who keeps free hospitals for the sick and dying and is thought kind and a little slow. He is also, though nobody knows it, the master who holds Szeth\'s Oathstone.',
     },
     steps: [
+      {
+        book: 'stormlight', arc: 'wor',
+        fact: 'King of Kharbranth. A hospital, a Diagram, and a mind that will not hold still.',
+        abilities: 'The Diagram',
+        aliases: 'Vargo',
+        bio: 'King of Kharbranth, who keeps a hospital of the dying and writes down what they say. On his brilliant days he is the most frightening man in Roshar. On the others he weeps, and means it.',
+      },
+      {
+        book: 'stormlight', arc: 'row',
+        fact: 'The king of Kharbranth who killed a god and took his place.',
+        abilities: 'The Diagram · Vessel of Odium',
+        aliases: 'Vargo, Odium',
+        bio: 'King of Kharbranth and author of the Diagram, which he wrote on the one day he woke brilliant. He betrayed Dalinar\'s coalition, and at the end of Rhythm of War killed Rayse with Nightblood and took up Odium himself: the ascension Cultivation\'s boon had arranged.',
+      },
       { book: 'stormlight', arc: 'wat', published: true },
     ],
   },
@@ -567,6 +596,50 @@ export const READING_FACES: Record<string, ReadingFace> = {
     },
     steps: [
       { book: 'stormlight', arc: 'wor', published: true },
+    ],
+  },
+  gavinor: {
+    early: {
+      fact: 'Elhokar\'s son: a child wearing a kingdom\'s grief.',
+      abilities: 'Heir to Alethkar',
+      aliases: 'Gav',
+      bio: 'Son of Elhokar and Aesudan, rescued from fallen Kholinar and raised among Radiants and war councils: a small boy whose name is a political weapon, frightened of spren after what was done to him in the palace, and a reminder of what Moash took.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'wat', published: true },
+    ],
+  },
+  stormfather: {
+    early: {
+      fact: 'The spirit of the highstorm, sworn by across Alethkar.',
+      abilities: 'Spren of the highstorm',
+      aliases: 'Stormfather',
+      bio: 'The spirit of the highstorm in Alethi oaths and legend. Whether he is more than a figure of speech is not a question most people think to ask.',
+    },
+    steps: [
+      {
+        book: 'stormlight', arc: 'wor',
+        fact: 'The highstorm given a mind. He lets Dalinar Kholin bond him.',
+        abilities: 'Spren of the highstorm · Bondsmith spren',
+        aliases: 'Rider of Storms',
+        bio: 'The highstorm given a mind, the Rider of Storms to the listeners, and the carrier of Dalinar\'s visions all along. He has watched the Radiants betray their spren once, and at the end of Words of Radiance he lets Dalinar bond him anyway.',
+      },
+      { book: 'stormlight', arc: 'wat', published: true },
+    ],
+  },
+  sibling: {
+    early: {},
+    steps: [
+      { book: 'stormlight', arc: 'row', bio: 'The third Bondsmith spren, soul of Urithiru. Wounded by the Recreance\'s aftershocks and Raboniel\'s occupation, it bonds Navani and relearns how to trust a human with the tower\'s veins.' },
+      { book: 'stormlight', arc: 'wat', published: true },
+    ],
+  },
+  koravellium: {
+    early: {
+      bio: 'Dragon Vessel of Cultivation. She prunes Dalinar\'s memories, and gambles on Taravangian: the boon she once gave him is what makes him Odium.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'wat', published: true },
     ],
   },
   neturo: {

@@ -49,6 +49,16 @@ export const RELATIONS_MORE: Relation[] = [
   { a: { kind: 'character', id: 'shalash' }, b: { kind: 'character', id: 'taln' }, type: 'ally', label: 'Stays at his side', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'shalash' }, b: { kind: 'character', id: 'jezrien' }, type: 'family', label: 'Daughter & father', book: 'stormlight', canon: C },
 
+  // --- The contest (Wind and Truth) -------------------------------------
+  { a: { kind: 'character', id: 'gavinor' }, b: { kind: 'character', id: 'dalinar' }, type: 'rival', label: 'Odium\'s champion against him', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'taravangian' }, b: { kind: 'character', id: 'gavinor' }, type: 'mentor', label: 'Raised him in a vision to be his champion', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'navani' }, b: { kind: 'character', id: 'gavinor' }, type: 'family', label: 'Grandmother & grandson', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'taravangian' }, b: { kind: 'character', id: 'stormfather' }, type: 'rival', label: 'Destroyed him on Stormfall', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'tanavast' }, b: { kind: 'character', id: 'rayse' }, type: 'rival', label: 'Rivals since Yolen', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'the-wind' }, b: { kind: 'character', id: 'kaladin' }, type: 'bond', label: 'Accepted his Fifth Ideal', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'the-wind' }, b: { kind: 'character', id: 'the-stone' }, type: 'family', label: 'Made with the planet', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'the-wind' }, b: { kind: 'character', id: 'the-night' }, type: 'family', label: 'Made with the planet', book: 'stormlight', canon: C },
+
   // --- Shallan family ---------------------------------------------------
   { a: { kind: 'character', id: 'shallan' }, b: { kind: 'character', id: 'lin-davar' }, type: 'family', label: 'Daughter & father', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'shallan' }, b: { kind: 'character', id: 'helaran' }, type: 'family', label: 'Sister & brother', book: 'stormlight', canon: C },

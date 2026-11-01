@@ -12,6 +12,25 @@
 # network tab and tells a crawler the page exists. Unmatched paths now fall
 # through to Netlify's 404 handling, which serves 404.html.
 
+# Netlify does not let a specific rule override a general one: every rule that
+# matches a path applies, and a header two of them set does not resolve to the
+# more specific value. So no header below is set by two rules that can match
+# one path —
+# in particular Cache-Control never goes on `/*`. `.github/scripts/smoke-dist.mjs`
+# serves dist/ with these rules and fails if that ever changes.
+
+# The shell is revalidated on every load. This is Netlify's default for HTML
+# already; it is written down so nobody has to know that.
+[[headers]]
+  for = "/"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
 # Hashed build output never changes under its own name.
 [[headers]]
   for = "/assets/*"
@@ -37,15 +56,35 @@
   [headers.values]
     Cache-Control = "public, max-age=0, must-revalidate"
 
+# Netlify sends `.webmanifest` as application/octet-stream unless told.
 [[headers]]
   for = "/manifest.webmanifest"
   [headers.values]
     Cache-Control = "public, max-age=3600"
+    Content-Type = "application/manifest+json; charset=utf-8"
 
+# Content-Security-Policy, measured against what the build actually does:
+#   script-src 'self'   one module entry and its chunks; no inline script, no
+#                       eval. The JSON-LD block is data, not script, and CSP
+#                       does not govern it.
+#   style-src           the boot screen and 404.html carry inline <style> and
+#                       style="" attributes; everything else is a hashed file.
+#   img-src data:       postprocessing's SMAA ships its two lookup textures as
+#                       data:image/png. blob: is for a canvas export or a baked
+#                       texture handed to an <img>; nothing uses it yet.
+#   worker-src blob:    the service worker is 'self'; blob: lets a module
+#                       worker inlined by Vite run without another deploy.
+#   media-src 'self'    the soundtrack.
+#   connect-src 'self'  the worker's own fetches. Nothing leaves the origin.
+# No fonts are fetched from anywhere; font-src stays at 'self'.
 [[headers]]
   for = "/*"
   [headers.values]
+    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self'; connect-src 'self'; font-src 'self'; worker-src 'self' blob:; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
     X-Frame-Options = "SAMEORIGIN"
-    Permissions-Policy = "geolocation=(), camera=(), microphone=(), interest-cohort=()"
+    Cross-Origin-Opener-Policy = "same-origin"
+    # `interest-cohort` was FLoC, withdrawn in 2022; it opted out of nothing.
+    # `browsing-topics` is the API that replaced it.
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()"

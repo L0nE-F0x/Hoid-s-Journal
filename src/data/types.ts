@@ -379,6 +379,7 @@ export type CityKind =
   | 'narak'
   | 'luthadel'
   | 'fadrex'
+  | 'urteau'
   | 'elendel'
   | 'elantris'
   | 'ttelir'

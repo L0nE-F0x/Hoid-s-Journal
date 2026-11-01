@@ -189,6 +189,32 @@ export const CITY_PLATES: CityPlate[] = [
         { book: 'mistborn1', arc: 'hoa', on: [{ file: 'fadrex.jpg', u: 0.754, v: 0.206 }] }),
     ],
   },
+  // Five of the survey's places have something on record. The White Streets,
+  // the Interchange Building, Old City Square, the Canton of Orthodoxy and
+  // Westlane Brook are names on the map and nothing more, so they get no dot:
+  // a mark with nothing to say when it is clicked is not worth the click.
+  {
+    id: 'urteau',
+    kind: 'urteau',
+    kicker: 'Northern Dominance',
+    landmarks: [
+      mark('urteau-canton-inquisition', 'urteau', 'Canton of Inquisition', 0.669, 0.430, '#f87171',
+        'The third of the Lord Ruler\'s storage caverns lies beneath it, round the lake that once filled the city\'s canals. Spook ran through the fires to Sazed\'s mechanism and let the water back in.',
+        { book: 'mistborn1', arc: 'hoa', on: [{ file: 'urteau.jpg', u: 0.669, v: 0.430 }] }),
+      mark('urteau-marketpit', 'urteau', 'Market Pit', 0.626, 0.628, '#fde68a',
+        'The widest of the dry canals, once room for three boats abreast, now the main street. The Citizen burned his executions beside it and spoke to the crowd from it.',
+        { book: 'mistborn1', arc: 'hoa', on: [{ file: 'urteau.jpg', u: 0.626, v: 0.628 }] }),
+      mark('urteau-citizens-home', 'urteau', 'The Citizen\'s Home', 0.560, 0.288, '#60a5fa',
+        'Quellion\'s house. Spook kept slipping in to hear the Citizen\'s plans, and to watch his sister Beldre.',
+        { book: 'mistborn1', arc: 'hoa', on: [{ file: 'urteau.jpg', u: 0.560, v: 0.288 }] }),
+      mark('urteau-harrows', 'urteau', 'The Harrows', 0.423, 0.694, '#a8a29e',
+        'When the Harrows were new, Durn\'s men pulled the old locks from their mouth. Before Spook flooded the canals Durn put them back, so the people living there would not be swept away.',
+        { book: 'mistborn1', arc: 'hoa', on: [{ file: 'urteau.jpg', u: 0.423, v: 0.694 }] }),
+      mark('urteau-fedre-aqueduct', 'urteau', 'Lord Fedre\'s Aqueduct', 0.719, 0.238, '#38bdf8',
+        'Named for an eighth-century canal architect, an infamous scoundrel fond of cats and canals. Sazed carried his book in a metalmind and thought him a genius.',
+        { book: 'mistborn1', arc: 'hoa', on: [{ file: 'urteau.jpg', u: 0.719, v: 0.238 }] }),
+    ],
+  },
   {
     id: 'elendel',
     kind: 'elendel',

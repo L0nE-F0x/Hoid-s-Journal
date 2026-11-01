@@ -437,7 +437,12 @@
   inset: 0;
   z-index: 40;
   display: flex;
-  align-items: center;
+  /* Hung from a fixed top rather than centred. Centred, a panel whose
+     content changes height moved: every keystroke in the Codex grew or
+     shrank the results and slid the search box up and down under the
+     cursor. A full-height panel sits exactly where it did before. */
+  align-items: flex-start;
+  padding-top: max(16px, calc((100vh - min(86vh, 720px)) / 2));
   justify-content: center;
   background: rgba(4, 5, 11, 0.55);
   pointer-events: auto;

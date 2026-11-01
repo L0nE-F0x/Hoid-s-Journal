@@ -884,7 +884,9 @@ async function run() {
     // Thaylen City, Narak, Fadrex, Urteau and New Seran used to show their
     // Stewart art with nothing on it. Their marks are measured the same way:
     // click the Gemstone Reserve where the Thaylen survey prints it, and its
-    // card has to open, not just the selection change.
+    // card has to open, not just the selection change. The survey is 1.53:1,
+    // so the atlas letterboxes it inside its 2:1 canvas; the click follows
+    // the same rule rather than assuming the plate fills the frame.
     await page.evaluate(() => {
       window.__ceph.store.set('selected', null);
       window.__ceph.store.set('cameraCue', { kind: 'focus', id: 'thaylen-city', scale: 'city' });
@@ -900,9 +902,21 @@ async function run() {
       const { landmarkById } = await import('/src/data/cities.ts');
       const c = document.querySelector('.ceph-atlas-canvas');
       const hit = landmarkById['thaylen-gemstone-reserve']?.on?.find((o) => o.file === 'thaylen_city.jpg');
-      if (!(c instanceof HTMLElement) || !hit) return null;
+      if (!(c instanceof HTMLCanvasElement) || !hit) return null;
+      const img = new Image();
+      img.src = '/maps/thaylen_city.jpg';
+      await img.decode();
+      // atlas.ts drawPlate: within 15% of the canvas's shape a plate fills
+      // it, otherwise it is fitted at its own aspect and centred.
+      const ratio = (img.naturalWidth / img.naturalHeight) / (c.width / c.height);
+      const full = ratio > 0.85 && ratio < 1 / 0.85;
+      const w = full ? 1 : Math.min(1, ratio);
+      const h = full ? 1 : Math.min(1, 1 / ratio);
       const r = c.getBoundingClientRect();
-      return { x: r.left + r.width * hit.u, y: r.top + r.height * hit.v };
+      return {
+        x: r.left + r.width * ((1 - w) / 2 + hit.u * w),
+        y: r.top + r.height * ((1 - h) / 2 + hit.v * h),
+      };
     });
     if (thaylenMark) {
       await page.mouse.click(thaylenMark.x, thaylenMark.y);

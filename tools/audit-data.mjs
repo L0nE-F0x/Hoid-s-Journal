@@ -279,7 +279,10 @@ if (noRegion) note(`locations without a region: ${pct(noRegion, C.locations.leng
 const noCat = C.glossary.filter((g) => !g.category).length;
 if (noCat) note(`glossary terms with no category (the Codex chips skip them): ${pct(noCat, C.glossary.length)}`);
 const noMembers = C.organizations.filter((o) => !o.members?.length).length;
-if (noMembers) note(`organizations with no members: ${pct(noMembers, C.organizations.length)}`);
+if (noMembers) {
+  note(`organizations with no members: ${pct(noMembers, C.organizations.length)}`);
+  note(`    ${C.organizations.filter((o) => !o.members?.length).map((o) => o.id).join(', ')}`);
+}
 
 // Counted the way the web builds it: hand-written relations, org rosters,
 // home world, and `see[]` in either direction. A person with none of those

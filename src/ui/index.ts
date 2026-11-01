@@ -78,7 +78,14 @@ export function mountUI(root: HTMLElement): UIHandles {
       (e.target as HTMLElement).blur();
       return;
     }
+    // Ctrl+F, Ctrl+L, Cmd+K belong to the browser and the OS. Without this
+    // Ctrl+F framed the Cosmere and Ctrl+L opened the Lore Web on the way to
+    // the browser's own find and address bar.
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
     const k = e.key.toLowerCase();
+    const target = e.target instanceof HTMLElement ? e.target : null;
+    // Typing a letter in a <select> picks an option; it is not a shortcut.
+    if (target instanceof HTMLSelectElement && k !== 'escape') return;
     if (k === 'escape') {
       if (store.state.panel !== 'none') { store.set('panel', 'none'); return; }
       if (store.state.view === 'web') { store.set('view', 'sky'); return; }
@@ -92,6 +99,12 @@ export function mountUI(root: HTMLElement): UIHandles {
       return;
     }
     if (k === ' ') {
+      // Space presses the focused button. The playhead toggle used to take
+      // it first and cancel the press, so no button could be pressed with
+      // Space at all — the keyboard's own way of clicking.
+      if (target?.closest('button, a[href], summary, [role="button"]')) return;
+      // In an open panel Space scrolls it, as it would any page.
+      if (store.state.panel !== 'none' && !store.state.cinematic) return;
       e.preventDefault();
       if (store.state.cinematic) {
         store.set('cameraCue', { kind: 'skip-cinematic' });
@@ -102,6 +115,9 @@ export function mountUI(root: HTMLElement): UIHandles {
       return;
     }
     if (store.state.shell !== 'play') return;
+    // With a panel open the sky is behind glass: C, V, the era keys and the
+    // rest no longer reach through it. Help and Search still switch panels.
+    if (store.state.panel !== 'none' && !['h', '?', 'k', '/'].includes(k)) return;
     // WASD / QE fly the camera. Never steal them for panels.
     if ('wasdqe'.includes(k)) return;
     if (k === 'c') store.set('realm', store.state.realm === 'cognitive' ? 'physical' : 'cognitive');

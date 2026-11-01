@@ -209,6 +209,36 @@ async function run() {
     check('Realms is a panel', (await state(page)).panel === 'realms', (await state(page)).panel);
     await page.keyboard.press('Escape');
     await sleep(150);
+
+    // The keyboard: Space presses the focused button rather than the
+    // playhead, a panel takes focus and keeps Tab inside it, and Esc hands
+    // focus back to the button that opened it.
+    {
+      const playing = (await state(page)).isPlaying;
+      await page.evaluate(() => {
+        [...document.querySelectorAll('.ceph-tools button')].find((b) => /^arcanum$/i.test(b.textContent ?? ''))?.focus();
+      });
+      await page.keyboard.press('Space');
+      await sleep(250);
+      s = await state(page);
+      check('keyboard: Space presses the focused button', s.panel === 'arcanum' && s.isPlaying === playing,
+        `${s.panel}/${s.isPlaying}`);
+      const held = await page.evaluate(() => !!document.activeElement?.closest('[role="dialog"]'));
+      check('keyboard: an opened panel takes focus', held);
+      for (let i = 0; i < 30; i++) await page.keyboard.press('Tab');
+      const kept = await page.evaluate(() => !!document.activeElement?.closest('[role="dialog"]'));
+      check('keyboard: Tab stays inside an open panel', kept);
+      await page.keyboard.press('Escape');
+      await sleep(200);
+      const back = await page.evaluate(() => ({
+        panel: window.__ceph.store.state.panel,
+        focus: document.activeElement?.textContent ?? '',
+      }));
+      check('keyboard: Esc closes it and hands focus back', back.panel === 'none' && /^arcanum$/i.test(back.focus),
+        JSON.stringify(back));
+      await page.evaluate(() => document.activeElement?.blur());
+    }
+
     check('Lore Web opens', await clickLabel(page, '^lore$'));
     await sleep(400);
     check('view is the Lore Web', (await state(page)).view === 'web', (await state(page)).view);

@@ -8,6 +8,9 @@ const NAV_KEYS = new Set([
 ]);
 
 function isTyping(): boolean {
+  // A modal panel owns the keyboard. Arrow keys flew the camera behind the
+  // Codex and, being preventDefault-ed, could not scroll the panel either.
+  if (document.querySelector('[aria-modal="true"]')) return true;
   const node = document.activeElement;
   if (!node) return false;
   const tag = node.tagName;

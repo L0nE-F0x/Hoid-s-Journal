@@ -398,41 +398,33 @@ export const PLACES_MORE: Location[] = [
   loc('ladrian-mansion', 'Ladrian Mansion', 'scadrial', 'mistborn2', 0.551, 0.297, '#d6a44c', 'home',
     'House Ladrian\'s seat in Elendel. Wax came home to ledgers and left for bullets.', {
       bio: 'House Ladrian\'s seat in Elendel, and the ledgers Wax inherited along with a house in debt and a title he had not expected. Tillaume ran it, and tried to blow Wax up in it.', arc: 'aol', eraMaps: ['basin'], region: 'Elendel', see: ['elendel', 'house-ladrian', 'tillaume'], wiki: 'Ladrian_mansion' }),
-  loc('teoin', 'Teoin', 'sel', 'elantris', 0.21, 0.27, '#818cf8', 'crown',
+  loc('teoin', 'Teoras', 'sel', 'elantris', 0.21, 0.27, '#818cf8', 'crown',
     'Capital of Teod. Sarene\'s home port, and the kingdom\'s answer to Fjorden\'s sermons.', {
       region: 'Teod',
-      bio: 'Teod\'s capital and home port, and the kingdom\'s standing answer to Fjordell sermons: a fleet, a treasury and a royal family that has read the theology and declined it.', see: ['teod'], wiki: 'Teoin' }),
+      bio: 'Teod\'s capital: a forest-ringed seaport with the largest Korathi temple in the kingdom, and the city the Elantrians reach in time to break Fjorden\'s invasion.', see: ['teod'], wiki: 'Teoras', aliases: 'Teoin (first edition)' }),
   loc('widor', 'Widor', 'sel', 'elantris', 0.7, 0.36, '#ef4444', 'crown',
     'Capital of Fjorden and seat of Shu-Dereth\'s Wyrn. Gyorns leave from here; countries fall after.', {
       region: 'Fjorden',
       bio: 'Fjorden\'s capital and Wyrn\'s seat, where the gyorns are appointed and the next conversion is planned. Countries do not usually notice they are being taken until someone from Widor has already been living in their capital for a year.', see: ['fjorden', 'dakhor'], wiki: 'Widor' }),
-  loc('iseid', 'Iseid', 'sel', 'elantris', 0.43, 0.48, '#c4b5fd', 'city',
-    'Arelish city beyond Kae\'s shadow. The Shaod did not only strike the capital\'s walls.', {
-      region: 'Arelon',
-      bio: 'An Arelish city well beyond Kae, and a reminder that the Shaod does not take people only at the capital. Anyone, anywhere in Arelon, can go to sleep whole and wake up Elantrian.', see: ['arelon', 'kae'], wiki: 'Iseid' }),
   loc('hraggen', 'Hraggen', 'sel', 'elantris', 0.64, 0.4, '#f87171', 'land',
-    'Fjordell province, thoroughly Derethi and sure of it.', {
+    'Small nation long under Fjorden. Its cooks are famous across Sel.', {
       region: 'Fjorden',
       bio: 'A Fjordell province, entirely Derethi and entirely certain about it. The certainty is the export.', see: ['fjorden'], wiki: 'Hraggen' }),
   loc('jaador', 'Jaador', 'sel', 'elantris', 0.66, 0.48, '#fb7185', 'land',
     'Nation under Fjorden\'s heel. Another conversion counted in Wyrn\'s ledgers.', {
       region: 'Opelon',
-      bio: 'A nation under Fjorden\'s heel, counted in Wyrn\'s ledgers as a conversion rather than a conquest, which is the distinction Shu-Dereth exists to maintain.', see: ['fjorden', 'svorden'], wiki: 'Jaador' }),
+      bio: 'A landlocked nation of JinDo descent, annexed by the Fjordell Empire and Derethi by decree. Its chefs are among the best in the world, its wine is blue, and the syre Sarene fences with was born here.', see: ['fjorden', 'svorden'], wiki: 'Jaador' }),
   loc('dzhamar', 'Dzhamar', 'sel', 'emperorssoul', 0.76, 0.58, '#a78bfa', 'land',
     'Homeland of the Bloodsealers. Stamps that use blood instead of ink, and debts that collect themselves.', {
       region: 'Dzhamar',
-      bio: 'Homeland of the Bloodsealers, whose stamps use blood instead of ink and whose creations are made of other people\'s bones. It is Forgery\'s ugly cousin, and the Rose Empire hires it anyway when a debt needs collecting.', see: ['rose-empire', 'maipon'], wiki: 'Dzhamar' }),
+      bio: 'A swampy region of the Rose Empire, homeland of the pale, red-eyed Bloodsealers. Other nations think the art sinister; the Grands hire it anyway. Dzhamarians and their neighbours the Strikers loathe each other.', see: ['rose-empire', 'maipon'], wiki: 'Dzhamar' }),
   loc('mulladil', 'Mulla\'dil', 'sel', 'emperorssoul', 0.74, 0.6, '#c084fc', 'land',
     'Mountain homeland of the Strikers — Grands\' bodyguards, and Shai\'s least favourite neighbours.', {
       region: 'Mulla\'dil',
-      bio: 'The mountain homeland of the Strikers, who serve the Grands of the Rose Empire as bodyguards and are very good at it. Shai has been caught by them before and does not intend to discuss it.', see: ['rose-empire', 'dzhamar'], wiki: 'Mulla\'dil' }),
+      bio: 'An annexed mountain nation whose people the Grands renamed Strikers and hire as guards and soldiers; they keep their own language and find Dzhamar\'s Bloodsealing revolting. Zu is one.', see: ['rose-empire', 'dzhamar'], wiki: 'Mulla\'dil' }),
   loc('imperial-seat', 'The Imperial Seat', 'sel', 'emperorssoul', 0.8, 0.6, '#f472b6', 'crown',
     'Capital of the Rose Empire, where an emperor can be replaced by a well-written soul.', {
-      region: 'Rose Empire', see: ['rose-empire'], wiki: 'Rose_Empire', bio: 'The Arbiter\'s courts, the Grands\' factions, and a Forger in a cell who was the only person awake.' }),
-  loc('farcoast', 'Farcoast', 'sel', 'emperorssoul', 0.86, 0.64, '#fb7185', 'land',
-    'Rose Empire province on the edge of the maps Shai grew up hearing about.', {
-      region: 'Rose Empire',
-      bio: 'A Rose Empire province out at the edge of the maps Shai grew up hearing about — far enough that the court\'s factional weather arrives late and distorted.', see: ['rose-empire'], wiki: 'Farcoast' }),
+      region: 'Rose Empire', see: ['rose-empire'], wiki: 'Imperial_Seat', bio: 'The Arbiter\'s courts, the Grands\' factions, and a Forger in a cell who was the only person awake.' }),
   loc('lake-alonoe', 'Lake Alonoe', 'sel', 'elantris', 0.45, 0.4, '#67e8f9', 'lake',
     'Lake of Arelon near Elantris. Aonic geography written in water.', {
       region: 'Arelon',
@@ -445,14 +437,10 @@ export const PLACES_MORE: Location[] = [
     'Fjordell name for the continent Opelon. Same land; different sermons.', {
       region: 'Opelon',
       bio: 'What Fjorden calls Opelon. Same rock, same coastline, different sermons — and which name a map uses tells you who drew it.', see: ['fjorden', 'opelon'], wiki: 'Sycla' }),
-  loc('elantris-mountains', 'The Mountains of Elantris', 'sel', 'elantris', 0.44, 0.36, '#cbd5e1', 'peak',
-    'Range above Elantris holding Devotion\'s pool. Pilgrims climbed; the city below shone.', {
+  loc('elantris-mountains', 'The Atad Mountains', 'sel', 'elantris', 0.5, 0.45, '#cbd5e1', 'peak',
+    'Arelon\'s eastern wall. Their curve is in every Aon.', {
       region: 'Arelon',
-      bio: 'The range above Elantris, holding the pool that is Devotion\'s perpendicularity. Pilgrims climbed to it while the city below still shone; worldhoppers use it for something else entirely.', see: ['elantris-city'], wiki: 'Elantris_(city)' }),
-  loc('rain', 'Rain', 'sel', 'emperorssoul', 0.82, 0.66, '#38bdf8', 'land',
-    'Rose Empire faction-land of the Rain party — one of the Grands\' political weather systems.', {
-      region: 'Rose Empire',
-      bio: 'One of the Rose Empire\'s factions, which function less like parties than like weather systems moving across the court. Shai\'s problem in The Emperor\'s Soul is not the forgery; it is which faction wants the Emperor awake.', see: ['rose-empire', 'imperial-seat'], wiki: 'Rose_Empire' }),
+      bio: 'The range along Arelon\'s border with Fjorden, called the Dathreki by the Fjordell, which for centuries kept Fjorden\'s armies out. Its curve is the right-hand stroke of Aon Aon, and the pool that dissolves Elantrians lies up the switchbacks south-east of the city.', see: ['elantris-city'], wiki: 'Atad_Mountains', aliases: 'Dathreki Mountains' }),
   loc('bevalis', 'Bevalis', 'nalthis', 'warbreaker', 0.47, 0.26, '#e2e8f0', 'crown',
     'Capital of Idris: a mountain-valley town of a few thousand, thatched cottages and mud roads.', {
       region: 'Idris',
@@ -480,35 +468,35 @@ export const PLACES_MORE: Location[] = [
   loc('diem-site', 'The Diem', 'taldain', 'whitesand', 0.415, 0.475, '#fbbf24', 'tower',
     'Sand master fortress-guild in Kezare. Floors for ranks, and a roof that did not save them.', {
       region: 'Lossand',
-      bio: 'The sand masters\' fortress-guild in Kezare, with a floor for each rank and an income from the sand trade. It was attacked and gutted, and what is left is Kenton arguing that an order of eight survivors is still an order.', see: ['kezare', 'lossand'], wiki: 'Diem' }),
+      bio: 'A single block of white sandstone on Kezare\'s outskirts, older than the sand masters and impossible to wear down. It has no stairs; the upper floors were reachable only by mastery until Kenton ordered ladders. The Diem it houses is in debt, disliked, and about to be voted out of existence.', see: ['kezare', 'lossand'], wiki: 'Diem' }),
   loc('deep-sand', 'Deep Sand', 'taldain', 'whitesand', 0.35, 0.55, '#fde68a', 'land',
     'True desert beyond Lossand\'s settled rim. Sandlings hunt there; water is a rumour.', {
       region: 'Dayside',
-      bio: 'True desert past Lossand\'s settled rim, where the sandlings hunt, water is a rumour and a sand master\'s power runs out at exactly the moment it is needed. Crossing it is a thing people survive rather than do.', see: ['lossand', 'dayside'], wiki: 'Deep_Sand' }),
-  loc('kerzt', 'Kerzt', 'taldain', 'whitesand', 0.28, 0.42, '#f59e0b', 'land',
+      bio: 'The uninhabited deep sand east of Lossand, where sandlings grow large enough to be hunted from tonks. Raagent goes hunting there to avoid Kenton.', see: ['lossand', 'dayside'], wiki: 'Deep_Sand' }),
+  loc('kerzt', 'Kerzta', 'taldain', 'whitesand', 0.28, 0.42, '#f59e0b', 'land',
     'Dayside nation of the Kerztian people, often at odds with Lossand over sand and faith.', {
       region: 'Dayside',
-      bio: 'The Dayside nation of the Kerztian people, whose faith holds sand mastery to be an abomination and whose roads Lossand depends on. The two have a border, a trade relationship and a permanent theological grievance.', see: ['lossand', 'dayside'], wiki: 'Kerztian' }),
-  loc('lonzare', 'Lonzare', 'taldain', 'whitesand', 0.74, 0.48, '#818cf8', 'city',
-    'Darkside capital of electric light — where night is weather and dynamos are theology.', {
-      region: 'Darkside',
-      bio: 'The Darkside capital, where night is simply the weather and the dynamos are close enough to theology. Everything Dayside thinks is impossible is municipal infrastructure here.', see: ['darkside'], wiki: 'Lonzare' }),
+      bio: 'The Dayside nation west of Lossand, capital Ker Kedasha, whose king is chosen every fifty years. Its Ker\'reen priests call sand mastery heresy, the two nations have fought over it before, and the A\'kar\'s popularity is rising.', see: ['lossand', 'dayside'], wiki: 'Kerzta' }),
+  loc('kerla', 'The Kerla', 'taldain', 'whitesand', 0.34, 0.44, '#d9f99d', 'land',
+    'Not desert, by Dayside reckoning: shallow sand over dorim vines. The Diem meets here.', {
+      region: 'Dayside', wiki: 'Kerla', see: ['kerzt', 'diem-site', 'diem'],
+      bio: 'Dayside ground where the sand is only moderately deep and dorim vines run close beneath it, so life is plentiful and sandlings stay small. Most of Kerzta is Kerla. The Diem trains and holds its ceremonies here, and it was at an advancement ceremony in the Kerla that the Kerztians massacred it.' }),
+  loc('lonzare', 'Lonzare', 'taldain', 'whitesand', 0.425, 0.485, '#818cf8', 'city',
+    'Kezare\'s Darksider quarter, which the Dynasty would rather nobody knew about.', {
+      region: 'Lossand',
+      bio: 'The Darksider quarter of Kezare. Its existence surprises Khriss\'s party, since the Dynasty hides how much traffic crosses to Dayside. Khriss meets Loaten here, and first sees the Lord Beggar.', see: ['kezare', 'darkside'], wiki: 'Lonzare' }),
   loc('nortallon', 'Nor\'Tallon', 'taldain', 'whitesand', 0.7, 0.42, '#6366f1', 'land',
-    'A Darkside nation beyond Lossand\'s sun. Guns come from here; Dayside still calls them blasphemy.', {
+    'Capital of Tallon, in the mountains on Dayside\'s eastern side.', {
       region: 'Darkside',
       bio: 'A Darkside nation beyond the reach of Lossand\'s sun, and where the guns come from. Dayside calls them blasphemy and buys them anyway, which is the shape of most of the two hemispheres\' dealings.', see: ['darkside', 'lonzare'], wiki: 'Nor\'Tallon' }),
   loc('dayside-mountains', 'The Dayside Mountains', 'taldain', 'whitesand', 0.36, 0.38, '#a8a29e', 'peak',
     'Range dividing portions of Dayside. Shadow is precious; so is the pass.', {
       region: 'Dayside',
-      bio: 'The range that divides parts of Dayside, where shadow is a resource and a pass is worth a war. Under a sun that never moves, shade is real estate.', see: ['dayside', 'lossand'] }),
+      bio: 'The range on Dayside\'s eastern side that separates the Rim Kingdoms from Kerzta and Lossand. Nor\'Tallon sits in it.', see: ['dayside', 'lossand'] }),
   loc('rim-kingdom', 'The Rim Kingdoms', 'taldain', 'whitesand', 0.3, 0.48, '#fdba74', 'land',
     'Lesser Dayside states along Lossand\'s edge — trade partners when the Kerztian roads close.', {
       region: 'Dayside',
-      bio: 'The lesser Dayside states along Lossand\'s edge, useful trade partners whenever the Kerztian roads close, which is often enough to keep them in business.', see: ['lossand', 'kerzt'] }),
-  loc('a-kar', 'A\'Kar', 'taldain', 'whitesand', 0.27, 0.4, '#ef4444', 'keep',
-    'Kerztian high priest\'s seat of faith. Lossand hears the sermons as threats, usually correctly.', {
-      region: 'Kerzt',
-      bio: 'The seat of the Kerztian high priest, from which the sermons against sand mastery are issued. Lossand hears them as threats, and has generally been right to.', see: ['kerzt'], wiki: 'A\'Kar' }),
+      bio: 'Denka, Seevis and Tallon: smaller nations on Dayside\'s eastern and north-eastern coast, walled off from Kerzta and Lossand by the eastern range.', see: ['lossand', 'kerzt'] }),
   loc('roseite-sea', 'Roseite Sea', 'lumar-world', 'tress', 0.58, 0.38, '#fb7185', 'sea',
     'Another name sailors give the Crimson\'s roseite aether — coral-spores that grow into reefs and cages.', {
       region: 'Crimson Sea',

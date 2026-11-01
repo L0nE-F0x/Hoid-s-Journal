@@ -549,13 +549,151 @@ export const READING_FACES: Record<string, ReadingFace> = {
     },
     steps: [{ book: 'emberdark', arc: 'emberdark', published: true }],
   },
+  // Sel's two dead Vessels are named by a Way of Kings epigraph; their Shards
+  // and the Dor come from Arcanum Unbounded.
+  aona: {
+    early: {
+      fact: 'One of two Shardholders who settled on Sel. Rayse left both dead.',
+      abilities: 'Shardholder',
+      aliases: 'Aona',
+      bio: 'Aona and Skai made their home on Sel together. After Rayse\'s visit both were dead, and what they held was Splintered.',
+    },
+    steps: [{ book: 'arcanum', arc: 'arcanum', published: true }],
+  },
+  skai: {
+    early: {
+      fact: 'One of two Shardholders who settled on Sel. Rayse left both dead.',
+      abilities: 'Shardholder',
+      aliases: 'Skai',
+      bio: 'Skai and Aona made their home on Sel together. After Rayse\'s visit both were dead, and what they held was Splintered.',
+    },
+    steps: [{ book: 'arcanum', arc: 'arcanum', published: true }],
+  },
+  galladon: {
+    early: {
+      fact: 'A Dula farmer a few months into Elantris, and Raoden\'s first friend there.',
+      aliases: 'Galladon',
+      bio: 'A Dula farmer whose father was an Elantrian, so he knows the fallen city better than most. He trades thirty days of guidance for Raoden\'s food, grumbles through every hopeful plan, and keeps helping anyway — with his father\'s books, a garden, and a better head for AonDor than he admits.',
+    },
+    steps: [{ book: 'stormlight', arc: 'twok', published: true }],
+  },
+  dashe: {
+    early: {
+      fact: 'Karata\'s second-in-command, keeping the city\'s children safe.',
+      abilities: 'Elantrian',
+      bio: 'Karata\'s second in fallen Elantris, who helps keep the children\'s Roost safe and leads an unsanctioned raid on Aanden\'s gang. He brings Raoden word that Hrathen has been "healed" of the Shaod.',
+    },
+    steps: [{ book: 'elantris', arc: 'hope', published: true }],
+  },
+  // White Sand is three volumes, and Taldain is first seen off-world in
+  // Secret History.
+  khriss: {
+    early: {
+      fact: 'A Darkside duchess on Dayside to learn how her fiancé died.',
+      aliases: 'Khrissalla, Khriss',
+      abilities: 'Scholar',
+      bio: 'Duchess Khrissalla of Elis, a university scholar from Darkside, crosses the terminal storm to Dayside with Baon, Cynder and Acron after Prince Gevalden is reported dead there. She wants the sand mages he went looking for, and she writes everything down.',
+    },
+    steps: [
+      {
+        book: 'secrethistory', arc: 'secrethistory',
+        fact: 'A worldhopping scholar.',
+        abilities: 'Worldhopper, scholar',
+        bio: 'Khriss, now travelling the cosmere with Nazh. Kelsier finds the pair in Scadrial\'s Cognitive Realm, come to see what the death of a Shard looks like.',
+      },
+      { book: 'arcanum', arc: 'arcanum', published: true },
+    ],
+  },
+  baon: {
+    early: {
+      fact: 'Khriss\'s bodyguard on Dayside: pistols, a goatee, and opinions.',
+      aliases: 'Baon',
+      abilities: 'Soldier, bodyguard',
+      bio: 'A Darkside soldier Khriss hires to guard her crossing to Dayside. Perceptive, blunt and very good with a pistol, he keeps the expedition alive through Kerztian ambushes and Lossandin politics.',
+    },
+    steps: [
+      {
+        book: 'whitesand', arc: 'ws2',
+        fact: 'Khriss\'s bodyguard, and the Dynasty\'s agent.',
+        abilities: 'Soldier, Dynasty agent',
+        bio: 'A Darkside soldier guarding Khriss on Dayside. When she recognises Elisian officer\'s pistols, he admits he killed Captain Deral and was sent by the Dynasty, and walks out.',
+      },
+      {
+        book: 'whitesand', arc: 'ws3',
+        fact: 'Khriss\'s guard and the Dynasty\'s agent — and, it turns out, a sand master.',
+        abilities: 'Soldier, Dynasty agent, sand master',
+        bio: 'Sent to judge whether sand masters threaten the Dynasty, he reports that they do not, since sand needs Dayside\'s sun, and takes his post with Khriss back. On the voyage home he passes the sand master\'s test with a massive release of power.',
+      },
+      { book: 'stormlight', arc: 'twok', published: true },
+    ],
+  },
+  sharezan: {
+    early: {
+      fact: 'Lossand\'s crime lord. Ais is sure he is the Lord Beggar.',
+      aliases: 'Sharezan',
+      abilities: 'Crime lord',
+      bio: 'A crime lord running drug dens in Kezare, and the man Senior Trackt Ais has sworn to catch. His men kill six trackts in one raid, he walls a whole family into a closet, and he writes Ais letters about hers. She believes he is Nilto.',
+    },
+    steps: [{ book: 'whitesand', arc: 'ws3', published: true }],
+  },
+  elorin: {
+    early: {
+      fact: 'Praxton\'s undermastrell, who let Kenton run the Mastrell\'s Path.',
+      aliases: 'Undermastrell Elorin',
+      abilities: 'Sand master, undermastrell',
+      bio: 'Undermastrell and assistant to Lord Mastrell Praxton. He reluctantly sponsors Kenton\'s run of the Mastrell\'s Path, worries over him through it, and urges him to stay away from the advancement ceremony.',
+    },
+    steps: [
+      {
+        book: 'whitesand', arc: 'ws2',
+        fact: 'Back from the Kerla with his power burned out — he says.',
+        bio: 'Praxton\'s old undermastrell. He says he survived the Kerla by overmastering until his power was gone, and Kenton takes him back as an assistant.',
+      },
+      { book: 'whitesand', arc: 'ws3', published: true },
+    ],
+  },
+  gevalden: {
+    early: {
+      fact: 'Khriss\'s betrothed. She crosses a planet to learn how he died.',
+      aliases: 'Gevin, Prince Gevalden',
+      abilities: 'Darkside prince',
+      bio: 'A prince of Elis and Khrissalla\'s fiancé, who went to Dayside chasing the sand mages of Darkside children\'s stories and was reported shot dead by Dynasty assassins. Khriss\'s expedition is grief disguised as research.',
+    },
+    steps: [{ book: 'whitesand', arc: 'ws3', published: true }],
+  },
+  nilto: {
+    early: {
+      fact: 'Lord Beggar of Kezare. Ais thinks Sharezan wears his face.',
+      aliases: 'Lord Beggar',
+      abilities: 'Lord Beggar',
+      bio: 'The Lord Beggar of Kezare, face disfigured and wrapped, and a friend of the Darksider Loaten. Ais is certain he is the crime lord Sharezan.',
+    },
+    steps: [{ book: 'whitesand', arc: 'ws3', published: true }],
+  },
+  aarik: {
+    early: {
+      fact: 'Kenton\'s oldest friend, home from Darkside with a cape and a father who disowned him.',
+      aliases: 'Aarik',
+      abilities: 'Swordsman',
+      bio: 'Kenton\'s childhood friend, disowned by his father, Lord General Raagent, and gone to Darkside for three years for reasons he only hints at. He turns up at the Diem the day after Kenton becomes acting Lord Mastrell: sceptical, lazy-seeming, and quick with a sword.',
+    },
+    steps: [{ book: 'whitesand', arc: 'ws3', published: true }],
+  },
+  acron: {
+    early: {
+      fact: 'Khriss\'s nervous anthropologist.',
+      abilities: 'Darksider scholar',
+      bio: 'A Darkside professor of anthropology on Khriss\'s expedition, nervous and bookish.',
+    },
+    steps: [{ book: 'whitesand', arc: 'ws3', published: true }],
+  },
   // Elantris and The Emperor's Soul do not know where these two end up. The
   // Lost Metal does.
   shai: {
     early: {
       aliases: 'Wan ShaiLu',
       abilities: 'Forger',
-      bio: 'A Forger who rewrites objects — and herself — with stamps and research. Imprisoned to restore an emperor\'s soul, she walks out having forged a life the court cannot quite revoke.',
+      bio: 'A MaiPon Forger, among the best alive, caught in the Rose Palace after the Imperial Fool swapped her fake Moon Scepter for the real one and gave her up. Facing execution, she is offered a deal: Forge a new soul for the comatose Emperor Ashravan within his hundred days of mourning. She carries five Essence Marks that took eight years to make, writes him a soul with no backdoors in it, and walks out.',
     },
     steps: [
       { book: 'mistborn2', arc: 'tlm', published: true },

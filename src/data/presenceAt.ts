@@ -91,7 +91,7 @@ export const PRESENCE_AT: Record<string, PlaceBeat[]> = {
     { era: 2, at: 'ttelir' },
     { era: 3, at: 'kholinar', book: 'stormlight', arc: 'oathbringer' },
   ],
-  kenton: [{ era: 2, at: 'kezare' }],
+  kenton: [{ era: 1, at: 'kezare' }],
   yumi: [{ era: 4, at: 'torio' }],
   painter: [{ era: 4, at: 'kilahito' }],
   silence: [{ era: 2, at: 'forests-of-hell' }],

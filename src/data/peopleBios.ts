@@ -33,7 +33,7 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   khriss: {
     wiki: 'Khrissalla',
-    see: ['nazh', 'silverlight', 'taldain', 'sand-mastery'],
+    see: ['baon', 'gevalden', 'kenton', 'taldain', 'sand-mastery', 'nazh'],
     bio: 'Duchess Khrissalla of Taldain, the Cosmere\'s foremost arcanist and the voice behind the Ars Arcanum essays. She studies Investiture the way generals study maps, sends Nazh to steal the footnotes, and knows more about your planet than your priests do.',
   },
   nazh: {
@@ -43,8 +43,8 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   galladon: {
     wiki: 'Galladon',
-    see: ['raoden', 'elantris-city', 'seventeenth-shard'],
-    bio: 'A Dula Elantrian who taught Raoden how to live in a broken city, then later walks Roshar under another name for the Seventeenth Shard. Dry humour, citrus obsession, and more Cosmere mileage than he admits.',
+    see: ['raoden', 'karata', 'elantris-city', 'seventeenth-shard'],
+    bio: 'A Dula Elantrian who taught Raoden how to live in a broken city, then left Sel with the Seventeenth Shard. On Roshar, with Baon and Demoux, he hunts for Hoid; a Purelake fisherman knows him as Grump. Pessimistic, practical, and better travelled than he admits.',
   },
   sigzil: {
     wiki: 'Sigzil',
@@ -243,8 +243,8 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   shai: {
     wiki: 'Wan_ShaiLu',
-    see: ['forgery', 'rose-empire', 'essence-mark', 'ghostbloods', 'marasi'],
-    bio: 'A Forger who rewrites objects — and herself — with stamps and research. Imprisoned to restore an emperor\'s soul, she walks out having forged a life the court cannot quite revoke. Long afterwards, unable to go home to Sel, she is a Ghostblood on Scadrial called Moonlight, carrying soulstamps that make a door in any wall or mend what is broken. Under Bilming she stamps her own past to become an Elantrian and holds a wall so Marasi can get through — and no longer remembers who Marasi is.',
+    see: ['gaotona', 'ashravan', 'frava', 'han-shuxen', 'forgery', 'ghostbloods'],
+    bio: 'A MaiPon Forger, among the best alive, caught in the Rose Palace after the Imperial Fool swapped her fake Moon Scepter for the real one and gave her up. Facing execution, she is offered a deal: Forge a new soul for the comatose Emperor Ashravan within his hundred days of mourning. She carries five Essence Marks that took eight years to make, writes him a soul with no backdoors in it, and walks out. Long afterwards, unable to go home to Sel, she is a Ghostblood on Scadrial called Moonlight; under Bilming she stamps her own past to become an Elantrian and holds a wall so Marasi can get through — and no longer remembers who Marasi is.',
   },
   silence: {
     wiki: 'Silence_Montane',
@@ -298,7 +298,7 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   baon: {
     wiki: 'Baon',
-    see: ['kenton', 'khriss', 'seventeenth-shard'],
+    see: ['kenton', 'khriss', 'cynder', 'acron', 'seventeenth-shard'],
     bio: 'A Darksider warrior who guards scholars across Taldain and later across the Cosmere. One of the three Seventeenth Shard agents asking after Hoid on Roshar — loyalty as a profession.',
   },
   syl: {
@@ -389,7 +389,7 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   dilaf: {
     wiki: 'Dilaf',
     see: ['hrathen', 'dakhor', 'shu-dereth'],
-    bio: 'A Dakhor gragdet wearing the mask of an Arelene priest. Hatred of Elantris outruns even Wyrn\'s strategy; Hrathen dies stopping him.',
+    bio: 'Hrathen\'s zealous arteth in Kae — in truth the gragdet of Dakhor, his body remade to pass as Arelene. He hates Elantris because the woman he loved died despite Elantrian help. He leads the massacres in Kae and Teoras; Hrathen kills him, and dies of it.',
   },
   breeze: {
     wiki: 'Breeze',

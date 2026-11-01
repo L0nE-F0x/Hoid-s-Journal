@@ -290,7 +290,7 @@ export const ORGANIZATIONS: Organization[] = [
     'The Sand Masters of Lossand. A profession, a building, a caste, and a political problem.',
     {
       world: 'Taldain', wiki: 'Diem',
-      members: ['kenton'],
+      members: ['kenton', 'praxton', 'elorin', 'dirin', 'drile'],
       see: ['kenton', 'kezare', 'sand-mastery'],
     }),
   org('shu-dereth', 'Shu-Dereth', '#ef4444', 'elantris', 'church',
@@ -302,12 +302,12 @@ export const ORGANIZATIONS: Organization[] = [
     }),
   org('shu-korath', 'Shu-Korath', '#818cf8', 'elantris', 'church',
     'The Korathi religion of Teod and Arelon: love, and a god who is not a gyorn.',
-    { world: 'Sel', wiki: 'Shu-Korath', members: ['sarene'], see: ['teod', 'sarene'] }),
+    { world: 'Sel', wiki: 'Shu-Korath', members: ['sarene', 'omin', 'seinalan'], see: ['teod', 'sarene'] }),
   org('elantrians', 'The Elantrians', '#a78bfa', 'elantris', 'order',
     'The Shaod takes you. Then you are a god, or — during the Reod — a corpse that walks.',
     {
       world: 'Sel', wiki: 'Elantrian',
-      members: ['raoden', 'galladon', 'riina'],
+      members: ['raoden', 'galladon', 'karata', 'taan', 'adien', 'mareshe'],
       see: ['elantris-city', 'aondor', 'shaod'],
     }),
   org('night-brigade', 'The Night Brigade', '#111827', 'sunlit', 'military',

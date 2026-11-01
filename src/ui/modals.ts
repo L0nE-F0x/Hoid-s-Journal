@@ -76,7 +76,7 @@ export function mountModals(root: HTMLElement): { destroy(): void } {
     const card = el('div', { className: 'ceph-panel ceph-modal-card', attrs: { tabindex: '-1' } });
     const close = el('button', { className: 'ceph-btn', text: 'Close', attrs: { type: 'button' } });
     listen(close, 'click', () => store.set('panel', 'none'));
-    card.append(el('div', { style: { display: 'flex', justifyContent: 'flex-end', marginBottom: '4px' } }, [close]));
+    card.append(el('div', { className: 'ceph-modal-head' }, [close]));
 
     if (panel === 'arcanum') renderArcanum(card);
     else if (panel === 'codex') renderCodex(card);
@@ -161,10 +161,12 @@ function renderArcanum(card: HTMLElement): void {
     card.append(grid);
     return;
   }
-  const back = el('button', { className: 'ceph-btn', text: '← All systems', style: { marginRight: '8px' } });
+  // Back sits on the panel's own top line, across from Close, rather than on
+  // a row of its own under it.
+  const back = el('button', { className: 'ceph-btn ceph-modal-back', text: '← All systems', attrs: { type: 'button' } });
   listen(back, 'click', () => store.set('magicId', null));
-  card.append(back);
-  card.append(el('div', { className: 'ceph-kicker', text: mag.world, style: { color: mag.color, marginTop: '12px' } }));
+  card.querySelector('.ceph-modal-head')?.prepend(back);
+  card.append(el('div', { className: 'ceph-kicker', text: mag.world, style: { color: mag.color, marginTop: '2px' } }));
   card.append(el('h2', { text: mag.name }));
   card.append(el('span', { className: `ceph-canon ceph-canon--${mag.canon}`, text: mag.canon }));
   card.append(el('p', { className: 'ceph-fact', text: mag.desc }));
@@ -628,7 +630,7 @@ function renderSpoilers(card: HTMLElement): void {
 
 
 function renderSettings(card: HTMLElement): void {
-  card.append(el('h2', { text: 'Settings' }));
+  card.append(el('div', { className: 'ceph-kicker', text: 'How the sky is drawn' }), el('h2', { text: 'Settings' }));
   const v = store.state.visual;
   const toggle = (key: keyof typeof v, label: string) => {
     const b = el('button', {

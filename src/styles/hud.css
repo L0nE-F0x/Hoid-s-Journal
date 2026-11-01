@@ -482,6 +482,14 @@
   background: rgba(4, 5, 11, 0.55);
   pointer-events: auto;
 }
+/* Close on the right of the panel's top line; a page's way back on the left. */
+.ceph-modal-head {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
+}
+.ceph-modal-head > :last-child { margin-left: auto; }
+.ceph-modal-back { margin-left: -10px; }
 /* The panel itself takes focus when it opens so Tab starts inside it; it is
    not a control, and a ring round the whole dialog says nothing. */
 .ceph-root .ceph-modal-card:focus-visible { outline: none; }

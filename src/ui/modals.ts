@@ -461,12 +461,51 @@ function renderCodex(card: HTMLElement): void {
   run();
 }
 
+/**
+ * The controls as a table rather than one long paragraph of bold letters:
+ * a reader looking for "how do I get to Shadesmar" scans the left column.
+ */
+const KEYS: [string[], string][] = [
+  [['Drag'], 'Orbit the camera. Right-drag or Shift-drag pans.'],
+  [['Scroll', 'Pinch'], 'Zoom.'],
+  [['W', 'A', 'S', 'D', 'Q', 'E'], 'Fly. These never open a panel.'],
+  [['[', ']'], 'Previous and next at this scale: system, world or place.'],
+  [['Space'], 'Play or pause time. On a focused button it presses the button.'],
+  [['1', '–', '6'], 'Jump to an era. Click a gold tick for a named beat.'],
+  [['C'], 'The Cognitive Realm, Shadesmar.'],
+  [['V'], 'The Spiritual Realm.'],
+  [['L'], 'The Lore Web.'],
+  [['M'], 'The galaxy chart.'],
+  [['F'], 'Frame the whole Cosmere.'],
+  [['K', '/'], 'Search the journal.'],
+  [['H', '?'], 'This page.'],
+  [['Esc'], 'Close a panel, leave the Lore Web, or step back out one scale.'],
+  [['Tab'], 'Walk the panels. On an atlas plate the arrow keys step its places and Enter goes there.'],
+  [['Tap', 'Hold'], 'On a phone: tap a world or a plate pin to dive, hold it to open its card where you are.'],
+];
+
+function keyTable(): HTMLElement {
+  const table = el('table', { className: 'ceph-table ceph-keys' });
+  const body = el('tbody');
+  for (const [keys, does] of KEYS) {
+    const cell = el('th', { attrs: { scope: 'row' } });
+    keys.forEach((k, i) => {
+      if (k === '–') { cell.append(' – '); return; }
+      if (i > 0 && keys[i - 1] !== '–') cell.append(' ');
+      cell.append(el('kbd', { text: k }));
+    });
+    body.append(el('tr', {}, [cell, el('td', { text: does })]));
+  }
+  table.append(body);
+  return table;
+}
+
 function renderHelp(card: HTMLElement): void {
   card.append(
     el('div', { className: 'ceph-kicker', text: 'How to read the sky' }),
     el('h2', { text: 'The journal is a map you fly' }),
     el('p', { className: 'ceph-fact', text: 'Hover a world for its name. Click to open the card — the sky stays put. Click the orbit rings, not just the star, to dive in. Click a world for its globe, again for the surface, again for a city plate. Esc walks back out. ☰ hides the directory. Search (K) is the journal: aliases, orders, metals, “who is Thaidakar”.' }),
-    el('p', { className: 'ceph-fact', html: '<b>Drag</b> orbit · <b>scroll</b> or pinch zoom · <b>WASD / QE</b> fly (those keys never open panels) · <b>[ ]</b> previous and next at this scale · <b>Space</b> play time · <b>+/−</b> on the timeline for speed · click a tick for a named beat · <b>1–6</b> eras · <b>C</b> Cognitive · <b>V</b> Spiritual · <b>L</b> Lore Web · <b>M</b> galaxy chart · <b>F</b> frame Cosmere · <b>K</b> or <b>/</b> Search · <b>H</b> this help. Tab walks the panels. On a phone, tap a plate pin to dive and hold it to open the card. Arcanum, Journal, Settings and Share are buttons. Soundtrack lives in Settings.' }),
+    keyTable(),
     el('p', { className: 'ceph-fact', text: 'Roshar and Scadrial atlas plates are Isaac Stewart\'s cartography, credited on the map. Globes are procedural, baked from one recipe per world, so a coast on the plate is the same coast on the sphere. Journal sets where you are in the books; the sky hides what you have not reached. Default is fully read.' }),
     el('p', { className: 'ceph-fact', style: { color: 'var(--ceph-text-dim)' }, text: 'Unofficial fan project. Not affiliated with Dragonsteel or Brandon Sanderson. Cartography by Isaac Stewart.' }),
   );

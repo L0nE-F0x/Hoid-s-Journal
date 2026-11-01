@@ -482,6 +482,34 @@
   background: rgba(4, 5, 11, 0.55);
   pointer-events: auto;
 }
+/* Help's controls: the key in its own column, set as a key. */
+.ceph-keys { margin-top: 10px; }
+.ceph-table.ceph-keys th {
+  width: 9.5em;
+  white-space: nowrap;
+  vertical-align: top;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--ceph-text-dim);
+  font-size: 11px;
+}
+.ceph-keys td { color: var(--ceph-text); line-height: 1.5; }
+.ceph-keys kbd {
+  display: inline-block;
+  min-width: 1.7em;
+  padding: 1px 6px;
+  border: 1px solid var(--ceph-border-strong);
+  border-bottom-width: 2px;
+  border-radius: 3px;
+  font-family: var(--ceph-mono);
+  font-size: 10.5px;
+  text-align: center;
+  color: var(--ceph-text);
+  background: rgba(255, 255, 255, 0.03);
+}
+@media (max-width: 900px) {
+  .ceph-table.ceph-keys th { width: auto; white-space: normal; }
+}
 /* Close on the right of the panel's top line; a page's way back on the left. */
 .ceph-modal-head {
   display: flex;

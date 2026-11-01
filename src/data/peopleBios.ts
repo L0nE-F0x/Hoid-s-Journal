@@ -300,7 +300,7 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   baon: {
     wiki: 'Baon',
     see: ['kenton', 'khriss', 'cynder', 'acron', 'seventeenth-shard'],
-    bio: 'A Darksider warrior who guards scholars across Taldain and later across the Cosmere. One of the three Seventeenth Shard agents asking after Hoid on Roshar — loyalty as a profession.',
+    bio: 'A Darkside soldier who guards Khriss on Dayside, sent by the Dynasty to judge whether sand masters threaten it. He reports that they do not, since sand needs Dayside\'s sun, takes his post with Khriss back, and on the voyage home passes the sand master\'s test with a massive release of power. Later he guards scholars across the Cosmere: one of the three Seventeenth Shard agents asking after Hoid on Roshar — loyalty as a profession.',
   },
   syl: {
     wiki: 'Sylphrena',

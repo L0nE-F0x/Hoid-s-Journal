@@ -984,9 +984,10 @@ export const READING_FACES: Record<string, ReadingFace> = {
       { book: 'mistborn1', arc: 'hoa', published: true },
     ],
   },
-  // Thaidakar is a Rhythm of War reveal and Secret History a later series
-  // in publication order, so the Stormlight step comes first and Secret
-  // History, the fuller story, publishes the card.
+  // Secret History (January 2016) came out four years before Rhythm of War,
+  // and the last step a reader has reached wins. With Secret History as the
+  // published step, a reader who had just finished it was told he is
+  // Thaidakar. The Shadow is Secret History's; Thaidakar waits for Rhythm of War.
   kelsier: {
     early: {
       fact: 'The Survivor of Hathsin, building a crew to kill a god.',
@@ -996,13 +997,13 @@ export const READING_FACES: Record<string, ReadingFace> = {
     },
     steps: [
       {
-        book: 'stormlight', arc: 'row',
-        fact: 'The Survivor of Hathsin — and Thaidakar of the Ghostbloods.',
+        book: 'secrethistory', arc: 'secrethistory',
+        fact: 'The Survivor of Hathsin, who refused to finish dying.',
         abilities: 'Mistborn, Cognitive Shadow',
-        aliases: 'Survivor, Survivor of Hathsin, Thaidakar, Lord of Scars',
-        bio: 'A half-skaa Mistborn who walked into the Pits of Hathsin and walked out a religion. He died at the Lord Ruler\'s hand, and the Ghostbloods\' Thaidakar turns out to be the same man. He cannot easily leave the Scadrian system.',
+        aliases: 'Survivor, Survivor of Hathsin',
+        bio: 'A half-skaa Mistborn who walked into the Pits of Hathsin and walked out a religion. He died at the Lord Ruler\'s hand and refused to finish dying: he held Preservation for a moment, haunted the Cognitive Realm through the Final Empire\'s last days, and outlasted it.',
       },
-      { book: 'secrethistory', arc: 'secrethistory', published: true },
+      { book: 'stormlight', arc: 'row', published: true },
     ],
   },
   // ── Mistborn Era 1: cards whose published text is a later book's ─────────
@@ -1446,13 +1447,11 @@ export const READING_FACES: Record<string, ReadingFace> = {
         abilities: 'Soldier, Dynasty agent',
         bio: 'A Darkside soldier guarding Khriss on Dayside. When she recognises Elisian officer\'s pistols, he admits he killed Captain Deral and was sent by the Dynasty, and walks out.',
       },
-      {
-        book: 'whitesand', arc: 'ws3',
-        fact: 'Khriss\'s guard and the Dynasty\'s agent — and, it turns out, a sand master.',
-        abilities: 'Soldier, Dynasty agent, sand master',
-        bio: 'Sent to judge whether sand masters threaten the Dynasty, he reports that they do not, since sand needs Dayside\'s sun, and takes his post with Khriss back. On the voyage home he passes the sand master\'s test with a massive release of power.',
-      },
-      { book: 'stormlight', arc: 'twok', published: true },
+      // The published card was gated on The Way of Kings (his cameo there),
+      // which every White Sand reader has already read: Volume 1 readers were
+      // told he is the Dynasty's agent and a sand master. Volume 3 publishes
+      // it now, and the Volume 3 face's account is folded into the bio.
+      { book: 'whitesand', arc: 'ws3', published: true },
     ],
   },
   sharezan: {
@@ -1565,15 +1564,16 @@ export const READING_FACES: Record<string, ReadingFace> = {
       aliases: 'Sigzil',
       bio: 'An Azish man who apprenticed to Hoid and then to a bridge crew. He writes down what the others survive.',
     },
+    // The Sunlit Man (2023) came out a year before Wind and Truth. With
+    // Sunlit as the published step, its readers got Narak, Vienta, the Night
+    // of Sorrows and Szeth's old highspren. Sunlit tells who Nomad is; Wind
+    // and Truth tells how he got there. (Auxiliary, Coppermind: tsm 20, 28; sa5 147.)
     steps: [
       {
-        book: 'stormlight', arc: 'wat',
-        fact: 'Windrunner at Narak, then the bearer of a Dawnshard.',
-        abilities: 'Windrunner (oaths renounced) · the Dawnshard Exist',
-        aliases: 'Sigzil',
-        bio: 'Bridge Four\'s Azish Worldsinger and Hoid\'s apprentice. In Wind and Truth he commands the Windrunners holding Narak: he watches Moash kill Leyten and his spren, and to save his own honorspren, Vienta, from Moash\'s knife he renounces his oaths. On the Night of Sorrows Wit gives him the Dawnshard Exist and pushes him into Shadesmar, and he leaves Roshar with an Iriali caravan.',
+        book: 'sunlit', arc: 'sunlit',
+        bio: 'Bridge Four\'s Azish Worldsinger and Hoid\'s apprentice. He becomes the man called Nomad: bonded to a highspren, Aux, hunted across the stars by the Night Brigade, and learning that skipping is not the same as escaping.',
       },
-      { book: 'sunlit', arc: 'sunlit', published: true },
+      { book: 'stormlight', arc: 'wat', published: true },
     ],
   },
   // Coppermind: Design (sa3 98, sa4 80; yumi 5, 17, 21, 32, 33, ae; WoB 10746).

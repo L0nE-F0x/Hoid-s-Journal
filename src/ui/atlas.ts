@@ -68,6 +68,8 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
   const title = el('div', { className: 'ceph-atlas-title', text: 'Surface scan' });
   const kicker = el('div', { className: 'ceph-kicker', text: 'Cartography' });
   const roster = el('div', { className: 'ceph-atlas-roster' });
+  /** Outside the roster, so "Show fewer" stays put while the list scrolls. */
+  const rosterMore = el('div', { className: 'ceph-atlas-more-row' });
   const credit = el('div', { className: 'ceph-atlas-credit', text: '' });
   const layersEl = el('div', { className: 'ceph-atlas-layers' });
   const panel = el('div', { className: 'ceph-panel ceph-atlas' }, [
@@ -76,6 +78,7 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
     layersEl,
     credit,
     roster,
+    rosterMore,
   ]);
   let plateLayer = 0;
   let plateKey = '';
@@ -273,9 +276,21 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
     }
   };
 
+  /**
+   * Whether the roster shows everyone present or the first eighteen. It used
+   * to end in "+161 more in Directory", and the directory is the one panel
+   * that is never up while the atlas is: the rest of Roshar's cast was a
+   * pointer to somewhere you could not go from here.
+   */
+  let rosterAll = false;
+  let rosterOf: string | null = null;
   const composeRoster = () => {
     const s = store.state;
+    const moreHadFocus = document.activeElement instanceof HTMLElement
+      && document.activeElement.classList.contains('ceph-atlas-more');
     roster.replaceChildren();
+    rosterMore.replaceChildren();
+    if (s.focusedBody !== rosterOf) { rosterOf = s.focusedBody; rosterAll = false; }
     if (!s.focusedBody) return;
     const plate = s.scale === 'city' && s.focusedLocation ? cityById[s.focusedLocation] : undefined;
     if (plate) {
@@ -298,7 +313,8 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
       ...people.filter((c) => isFeaturedPerson(c.id)),
       ...people.filter((c) => !isFeaturedPerson(c.id)),
     ];
-    const shown = rosterPeople.slice(0, 18);
+    const shown = rosterAll ? rosterPeople : rosterPeople.slice(0, 18);
+    roster.classList.toggle('is-all', rosterAll);
     if (shown.length) {
       roster.append(el('div', { className: 'ceph-kicker', text: 'Present this era', style: { width: '100%' } }));
     }
@@ -312,12 +328,19 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
       listen(chip, 'click', () => store.set('selected', c.id));
       roster.append(chip);
     }
-    if (rosterPeople.length > shown.length) {
-      roster.append(el('div', {
-        className: 'ceph-kicker',
-        text: `+${rosterPeople.length - shown.length} more in Directory`,
-        style: { width: '100%' },
-      }));
+    if (rosterPeople.length > 18) {
+      const more = el('button', {
+        className: 'ceph-btn ceph-atlas-more',
+        text: rosterAll ? 'Show fewer' : `+${rosterPeople.length - 18} more · show all`,
+        attrs: { type: 'button', 'aria-expanded': String(rosterAll) },
+      });
+      listen(more, 'click', () => {
+        rosterAll = !rosterAll;
+        composeRoster();
+        measure();
+      });
+      rosterMore.append(more);
+      if (moreHadFocus) more.focus({ preventScroll: true });
     }
   };
 

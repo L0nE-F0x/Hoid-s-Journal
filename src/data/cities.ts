@@ -77,9 +77,12 @@ export const CITY_PLATES: CityPlate[] = [
       mark('thaylen-oathgate-mark', 'thaylen-city', 'Oathgate', 0.867, 0.183, '#a78bfa',
         'Thalath\'s Oathgate, on the Royal Ward\'s level by the sea cliffs. Thaylens kept it as a sculpture garden and called it a portal of worlds; Kaladin and Shallan unlocked it.',
         { entry: 'oathgate-thar', book: 'stormlight', arc: 'oathbringer', on: [{ file: 'thaylen_city.jpg', u: 0.867, v: 0.183 }] }),
-      mark('thaylen-ancient-ward', 'thaylen-city', 'Ancient Ward', 0.661, 0.447, '#e2e8f0',
+      // Inside the ward's west wall under the "A", not between the two words:
+      // the atlas writes a name to the right of its dot, and from the middle
+      // of the ward "Ancient Ward" ran over the Talenelat and palace dots.
+      mark('thaylen-ancient-ward', 'thaylen-city', 'Ancient Ward', 0.591, 0.451, '#e2e8f0',
         'The oldest quarter: stone, raised a little above the rest, its streets laid out in a cymatic pattern. In the Heraldic Epochs this was the whole city.',
-        { book: 'stormlight', arc: 'oathbringer', on: [{ file: 'thaylen_city.jpg', u: 0.661, v: 0.447 }] }),
+        { book: 'stormlight', arc: 'oathbringer', on: [{ file: 'thaylen_city.jpg', u: 0.591, v: 0.451 }] }),
       mark('thaylen-low-ward', 'thaylen-city', 'Low Ward', 0.560, 0.378, '#a8a29e',
         'Shops and government offices, with the city wall along its west side. The wall was broken in the battle; Jasnah filled the gap with Soulcast metal.',
         { book: 'stormlight', arc: 'oathbringer', on: [{ file: 'thaylen_city.jpg', u: 0.560, v: 0.378 }] }),

@@ -96,6 +96,33 @@
       }
       #boot-label.error { color: #ff8f7a; letter-spacing: 0.08em; text-transform: none; max-width: 46ch; text-align: center; line-height: 1.6; }
       @keyframes boot-spin { to { transform: rotate(360deg); } }
+
+      /* Without JavaScript the boot screen would say "Opening the journal"
+         for ever. This says what the page is instead, disclaimer and all. */
+      #noscript {
+        position: fixed; inset: 0; z-index: 10000; overflow: auto; display: flex;
+        padding: 32px 16px; text-align: center;
+        background: radial-gradient(ellipse at 50% 44%, #0a0d1c 0%, #05060c 70%);
+      }
+      #noscript > div {
+        margin: auto; max-width: 62ch;
+        display: flex; flex-direction: column; align-items: center; gap: 16px;
+      }
+      #noscript img {
+        width: 72px; height: 72px;
+        -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 46%, rgba(0,0,0,0.55) 60%, transparent 72%);
+        mask-image: radial-gradient(circle at 50% 50%, #000 46%, rgba(0,0,0,0.55) 60%, transparent 72%);
+      }
+      #noscript h1 {
+        margin: 0; font-weight: 400; line-height: 1.16;
+        font-family: ui-serif, 'Iowan Old Style', 'Palatino Linotype', Palatino,
+          Georgia, 'Liberation Serif', 'Times New Roman', serif;
+        font-size: clamp(19px, 4.1vw, 38px);
+        letter-spacing: 0.28em; text-indent: 0.28em; text-transform: uppercase; color: #f2ece0;
+      }
+      #noscript p { margin: 0; max-width: 46ch; font-size: 15px; line-height: 1.62; color: #cdd4e4; }
+      #noscript p.need { font-size: 12.5px; color: #d9b25f; }
+      #noscript p.fine { max-width: 62ch; font-size: 11px; color: rgba(151, 160, 180, 0.86); }
       @media (prefers-reduced-motion: reduce) {
         #boot, #boot-fill { transition: none; }
         #boot-mark, #boot-title { animation: none; }
@@ -123,6 +150,17 @@
       <div id="boot-track"><div id="boot-fill"></div></div>
       <div id="boot-label">Opening the journal</div>
     </div>
+    <noscript>
+      <div id="noscript">
+        <div>
+          <img src="./logo.jpg" alt="" width="72" height="72" />
+          <h1>Hoid’s Journal</h1>
+          <p>An unofficial, spoiler-aware atlas of Brandon Sanderson’s Cosmere: every published world, from Roshar to Scadrial, in one sky. Fly the systems. Walk the Physical, Cognitive and Spiritual Realms. Keep a reading journal that will not spoil you.</p>
+          <p class="need">The journal is drawn live in your browser, so it needs JavaScript and WebGL2. Switch JavaScript on and reload.</p>
+          <p class="fine">Hoid’s Journal is an unofficial, non-profit fan project. It is not affiliated with, endorsed by, or sponsored by Dragonsteel Entertainment or Brandon Sanderson. All Cosmere characters, planets, lore, and related intellectual property are the exclusive trademarks and copyrights of Dragonsteel Entertainment, LLC. World maps and city plates by Isaac Stewart; used here with credit, in an unofficial fan work.</p>
+        </div>
+      </div>
+    </noscript>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

@@ -23,6 +23,7 @@ import '../styles/atlas.css';
 
 const W = 800;
 const H = 400;
+const lessMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 /** How much of the world map a local scan covers, in UV. */
 const LOCAL_U = 0.20;
 const LOCAL_V = 0.20;
@@ -327,7 +328,9 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
     if (!ctx) return;
     ctx.drawImage(mapLayer, 0, 0);
 
-    if (s.focusedBody === 'roshar' && s.realm === 'physical' && s.scale !== 'city') {
+    // The highstorm crossing the plate is decoration that never stops; it
+    // stands down for a reader who asked for less motion.
+    if (s.focusedBody === 'roshar' && s.realm === 'physical' && s.scale !== 'city' && !lessMotion.matches) {
       const t = (performance.now() / 1000) * 0.022;
       const x = ((0.5 - (t % 1) + 1) % 1) * W;
       const g = ctx.createLinearGradient(x - 28, 0, x + 28, 0);
@@ -568,7 +571,7 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
   let raf = 0;
   const loop = () => {
     raf = requestAnimationFrame(loop);
-    if (store.state.focusedBody === 'roshar' && panel.classList.contains('is-on')) paint();
+    if (store.state.focusedBody === 'roshar' && panel.classList.contains('is-on') && !lessMotion.matches) paint();
   };
   loop();
   refresh();

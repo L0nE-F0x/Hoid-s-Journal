@@ -350,7 +350,7 @@ export function mountLoreWeb(root: HTMLElement): { destroy(): void } {
    * nodes settles wherever it likes; without this, half the Cosmere ends up
    * off the edge of the canvas and the reader never knows it is there.
    */
-  const fit = () => {
+  const fit = (snap = false) => {
     if (!nodes.length || manual) return;
     let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
     for (const n of nodes) {
@@ -364,9 +364,10 @@ export function mountLoreWeb(root: HTMLElement): { destroy(): void } {
     );
     const target = Math.min(1.5, Math.max(0.30, want));
     // Damped, or the view lurches every time a node drifts past the edge.
-    zoom += (target - zoom) * 0.06;
-    panX += ((minX + maxX) * -0.5 - panX) * 0.06;
-    panY += ((minY + maxY) * -0.5 - panY) * 0.06;
+    const k = snap ? 1 : 0.06;
+    zoom += (target - zoom) * k;
+    panX += ((minX + maxX) * -0.5 - panX) * k;
+    panY += ((minY + maxY) * -0.5 - panY) * k;
   };
 
   const draw = () => {
@@ -467,7 +468,16 @@ export function mountLoreWeb(root: HTMLElement): { destroy(): void } {
   const show = () => {
     const on = store.state.view === 'web' && store.state.shell === 'play';
     host.classList.toggle('is-on', on);
-    if (on) { resize(); rebuild(); zoom = 0.5; panX = 0; panY = 0; manual = false; }
+    if (on) {
+      resize(); rebuild(); zoom = 0.5; panX = 0; panY = 0; manual = false;
+      // Asked for less motion: settle the layout before it is shown, rather
+      // than let five hundred nodes swirl into place and the frame zoom after
+      // them for the first few seconds.
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        for (let i = 0; i < 360; i++) step();
+        fit(true);
+      }
+    }
   };
 
   const pointers = new Map<number, { x: number; y: number }>();

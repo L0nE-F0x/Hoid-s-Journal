@@ -24,7 +24,6 @@
     padding: 10px 10px 12px;
     -webkit-overflow-scrolling: touch;
   }
-  .ceph-atlas-canvas { touch-action: none; }
   .ceph-atlas-roster { gap: 4px; }
   .ceph-atlas-chip { font-size: 10px; padding: 2px 7px; }
 }
@@ -38,6 +37,11 @@
 }
 .ceph-atlas-title { font-weight: 600; letter-spacing: 0.04em; }
 .ceph-atlas-canvas {
+  /* Tap, hold and drag on the plate are all ours, at every width: a tablet
+     in landscape is a desktop layout with a finger on it. */
+  touch-action: none;
+  -webkit-touch-callout: none;
+  user-select: none;
   display: block;
   width: 100%;
   height: auto;

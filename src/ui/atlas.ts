@@ -427,16 +427,32 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
   let pointer: { x: number; y: number; id: number } | null = null;
   let hold = 0;
   let held = false;
+  /**
+   * Every finger on the plate, not just the first. A second finger used to
+   * replace the first as "the" pointer, so a pinch whose second finger stayed
+   * still ended in a tap on whatever pin was under it — or its hold timer
+   * opened a card. A gesture that ever had two fingers down taps nothing.
+   */
+  const down = new Set<number>();
+  let pinched = false;
+  const release = (id: number) => {
+    down.delete(id);
+    window.clearTimeout(hold);
+    if (down.size === 0) pinched = false;
+  };
   const offs = [
     listen(canvas, 'pointerdown', (e) => {
       const ev = e as PointerEvent;
       if (ev.pointerType === 'mouse' && ev.button !== 0) return;
+      if (ev.isPrimary) down.clear();
+      down.add(ev.pointerId);
+      window.clearTimeout(hold);
+      if (down.size > 1) { pinched = true; pointer = null; return; }
       pointer = { x: ev.clientX, y: ev.clientY, id: ev.pointerId };
       held = false;
-      window.clearTimeout(hold);
       hold = window.setTimeout(() => {
+        if (!pointer || pinched) return;
         held = true;
-        if (!pointer) return;
         hitTest({ clientX: pointer.x, clientY: pointer.y }, false);
         const id = store.state.hovered;
         if (id) store.set('selected', id);
@@ -444,14 +460,26 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
     }),
     listen(canvas, 'pointerup', (e) => {
       const ev = e as PointerEvent;
-      window.clearTimeout(hold);
-      if (!pointer || ev.pointerId !== pointer.id) return;
+      const wasPinched = pinched;
+      release(ev.pointerId);
+      if (wasPinched || !pointer || ev.pointerId !== pointer.id) return;
       const moved = Math.hypot(ev.clientX - pointer.x, ev.clientY - pointer.y);
       const wasHeld = held;
       pointer = null;
       held = false;
       if (wasHeld || moved > 12) return;
       hitTest(ev, true);
+    }),
+    // The browser took the gesture (a scroll, a system swipe). Without this
+    // the hold timer outlived the finger and opened a card a beat later.
+    listen(canvas, 'pointercancel', (e) => {
+      release((e as PointerEvent).pointerId);
+      pointer = null;
+      held = false;
+    }),
+    // A long press on a plate is ours; the image callout is not wanted.
+    listen(canvas, 'contextmenu', (e) => {
+      if ((e as PointerEvent).pointerType !== 'mouse') e.preventDefault();
     }),
     listen(canvas, 'pointermove', (e) => {
       const ev = e as PointerEvent;

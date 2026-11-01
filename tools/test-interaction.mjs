@@ -714,6 +714,66 @@ async function run() {
       !!tools && tools.overflow === 'auto' && tools.pointer !== 'none',
       JSON.stringify(tools));
 
+    // Fingers, not a mouse. CDP touch points, so a pinch is two real touches.
+    // Touch emulation goes on through CDP: `setViewport({ hasTouch })` reloads
+    // the page, and the app with it.
+    const cdp = await page.createCDPSession();
+    await cdp.send('Emulation.setTouchEmulationEnabled', { enabled: true, maxTouchPoints: 5 });
+    const touch = (type, pts) => cdp.send('Input.dispatchTouchEvent', {
+      type, touchPoints: pts.map(([x, y, id]) => ({ x, y, id, radiusX: 4, radiusY: 4, force: 1 })),
+    });
+    /** One finger moves while the other — the second down — stays put, then lifts last-but-one. */
+    const anchoredPinch = async (still, from, to) => {
+      await touch('touchStart', [[...from, 0]]);
+      await sleep(40);
+      await touch('touchStart', [[...from, 0], [...still, 1]]);
+      for (let i = 1; i <= 12; i++) {
+        const t = i / 12;
+        await touch('touchMove', [[from[0] + (to[0] - from[0]) * t, from[1] + (to[1] - from[1]) * t, 0], [...still, 1]]);
+        await sleep(50);
+      }
+      await touch('touchEnd', [[...still, 1]]);
+      await sleep(40);
+      await touch('touchEnd', []);
+    };
+    const reframe = async () => {
+      await page.evaluate(() => {
+        window.__ceph.store.set('cameraCue', { kind: 'focus', id: 'roshar', scale: 'globe' });
+      });
+      await settle(page);
+      await page.evaluate(() => { window.__ceph.store.set('selected', null); window.__ceph.store.set('hovered', null); });
+    };
+    await reframe();
+    let disc = await screenOf(page, "a.orrery.bodyPosition('roshar')");
+    await anchoredPinch([disc.x + 10, disc.y + 10], [disc.x - 30, disc.y - 30], [disc.x - 120, disc.y - 120]);
+    await sleep(900);
+    s = await state(page);
+    check('touch: lifting the still finger of a pinch is not a tap',
+      s.scale === 'globe' && !s.selected, `${s.scale}/${s.selected}`);
+    await reframe();
+    disc = await screenOf(page, "a.orrery.bodyPosition('roshar')");
+    await touch('touchStart', [[disc.x, disc.y, 0]]);
+    await sleep(800);
+    await touch('touchEnd', []);
+    await sleep(400);
+    s = await state(page);
+    check('touch: a long press on the globe opens a card and stays put',
+      s.scale === 'globe' && !!s.selected && !s.hovered, `${s.scale}/${s.selected}/${s.hovered}`);
+    await reframe();
+    const plate = await page.evaluate(() => {
+      const c = document.querySelector('.ceph-atlas-canvas');
+      if (!c) return null;
+      const r = c.getBoundingClientRect();
+      return { x: r.left + r.width * 0.466, y: r.top + r.height * 0.638 };
+    });
+    if (plate) {
+      await anchoredPinch([plate.x, plate.y], [plate.x - 60, plate.y - 20], [plate.x - 140, plate.y - 60]);
+      await sleep(600);
+      s = await state(page);
+      check('touch: a pinch held on an atlas pin is not a tap',
+        s.scale === 'globe' && !s.selected, `${s.scale}/${s.selected}`);
+    }
+
     check('no page errors', errors.length === 0, errors.slice(0, 2).join(' | '));
   } finally {
     await browser.close();

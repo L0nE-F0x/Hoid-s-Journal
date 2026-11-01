@@ -13,7 +13,8 @@ import { SPIRITUAL_RADIUS, Spiritual } from '../render/Spiritual.ts';
 import { Shadesmar } from '../render/Shadesmar.ts';
 import { Starfield } from '../render/Starfield.ts';
 import { EventFx } from '../render/EventFx.ts';
-import { planetPlates, readPlateBytes, PLATE_SMALL, seedFromId } from '../render/planetBake.ts';
+import { forgetPlates, planetPlates, readPlateBytes, PLATE_SMALL, seedFromId } from '../render/planetBake.ts';
+import { rebakeAll } from '../render/skyBake.ts';
 
 const FOV = 52;
 const CLICK_SLOP = 12;
@@ -224,6 +225,27 @@ export class App {
       // A driver that will not pre-compile is not a reason to refuse to boot.
     }
     groups.forEach((g, i) => { g.visible = was[i]!; });
+  }
+
+  /**
+   * Rebuild what a lost context took with it, once Three has re-initialised
+   * itself on the restored one (its own listener runs before ours).
+   *
+   * Three re-uploads everything it has a source for: geometry, canvases, data
+   * textures, shader programs. What it cannot bring back is anything that was
+   * only ever drawn on the GPU — the sky, the Spiritual field, Shadesmar's
+   * glass and every world's plates. The fixed bakes are redrawn into the same
+   * targets; the world plates are forgotten and come back through the same
+   * budgeted path they took at boot, so the restore is not one long stall.
+   */
+  private recoverContext(): void {
+    rebakeAll(this.renderer);
+    forgetPlates();
+    this.orrery.forgetPlates();
+    this.queuePlateWarm();
+    this.warmUp();
+    this.resize();
+    this.start();
   }
 
   start(): void {
@@ -458,22 +480,41 @@ export class App {
       this.pickAt(e.clientX, e.clientY, false);
     };
     // A lost context leaves every DOM panel working over a black canvas,
-    // which reads as "the app is fine, the Cosmere is missing". Say so.
+    // which reads as "the app is fine, the Cosmere is missing". Say so, and
+    // then try to come back without one.
+    //
+    // A hybrid laptop loses the context whenever the driver switches GPUs or
+    // resets, and Chrome hands it back if the loss was `preventDefault`ed.
+    // This used to stop the loop for good and ask for a reload, which meant a
+    // black sky after every GPU switch. Now the restore rebuilds what the old
+    // context took with it. If the browser never gives the context back — it
+    // stops doing that for a page that has lost too many — the message says
+    // to reload, and the panel's button does it.
+    let giveUp = 0;
     const lost = (e: Event) => {
       e.preventDefault();
       this.running = false;
       cancelAnimationFrame(this.raf);
-      store.set('fault', 'The graphics context was lost. Reload to bring the sky back.');
+      store.set('fault', 'The graphics driver reset. Bringing the sky back…');
+      window.clearTimeout(giveUp);
+      giveUp = window.setTimeout(() => {
+        store.set('fault', 'The graphics driver reset and has not come back. Reload to bring the sky back.');
+      }, 8000);
     };
     const restored = () => {
-      // Everything baked lives in render targets that the driver has thrown
-      // away. Rebuilding them in place is a larger machine than this needs;
-      // a reload is honest and takes a second.
-      store.set('fault', 'The graphics context came back. Reload to rebuild the sky.');
+      window.clearTimeout(giveUp);
+      try {
+        this.recoverContext();
+        store.set('fault', null);
+      } catch (err) {
+        console.error('[cephandrius] could not rebuild after a context restore:', err);
+        store.set('fault', 'The graphics driver came back, but the sky could not be rebuilt. Reload to bring it back.');
+      }
     };
     this.canvas.addEventListener('webglcontextlost', lost);
     this.canvas.addEventListener('webglcontextrestored', restored);
     this.disposers.push(() => {
+      window.clearTimeout(giveUp);
       this.canvas.removeEventListener('webglcontextlost', lost);
       this.canvas.removeEventListener('webglcontextrestored', restored);
     });

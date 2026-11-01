@@ -4,6 +4,7 @@ import { LineGeometry } from 'three/examples/jsm/lines/LineGeometry.js';
 import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial.js';
 import { COSMERE, ROUTES, onTheMap, systemExtent, systemOnTheMap } from '../data/index.ts';
 import seaBakeFrag from '../shaders/seaBake.frag';
+import { drawQuad, onContextRestored } from './skyBake.ts';
 import bakeVert from '../shaders/planetBake.vert';
 import shadesmarVert from '../shaders/shadesmar.vert';
 import shadesmarFrag from '../shaders/shadesmar.frag';
@@ -298,18 +299,6 @@ export class Shadesmar {
 
 /** The glass itself, as a swatch that meets itself on both axes. */
 function bakeGlassSwatch(renderer: THREE.WebGLRenderer): THREE.Texture {
-  const mat = new THREE.ShaderMaterial({
-    uniforms: {},
-    vertexShader: bakeVert,
-    fragmentShader: seaBakeFrag,
-    depthTest: false,
-    depthWrite: false,
-  });
-  const quad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), mat);
-  quad.frustumCulled = false;
-  const scene = new THREE.Scene();
-  scene.add(quad);
-  const cam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
   const rt = new THREE.WebGLRenderTarget(512, 512, {
     minFilter: THREE.LinearMipmapLinearFilter,
     magFilter: THREE.LinearFilter,
@@ -321,11 +310,17 @@ function bakeGlassSwatch(renderer: THREE.WebGLRenderer): THREE.Texture {
     type: THREE.UnsignedByteType,
   });
   rt.texture.anisotropy = 4;
-  const prev = renderer.getRenderTarget();
-  renderer.setRenderTarget(rt);
-  renderer.render(scene, cam);
-  renderer.setRenderTarget(prev);
-  quad.geometry.dispose();
-  mat.dispose();
+  const bake = (r: THREE.WebGLRenderer): void => {
+    const mat = new THREE.ShaderMaterial({
+      uniforms: {},
+      vertexShader: bakeVert,
+      fragmentShader: seaBakeFrag,
+      depthTest: false,
+      depthWrite: false,
+    });
+    drawQuad(r, mat, [[rt, () => {}]]);
+  };
+  bake(renderer);
+  onContextRestored(bake);
   return rt.texture;
 }

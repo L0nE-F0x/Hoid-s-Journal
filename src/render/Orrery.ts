@@ -699,6 +699,21 @@ export class Orrery {
     this.spinLock = spin;
   }
 
+  /**
+   * Unbind every world's plates after a lost context comes back. Each world
+   * wears the neutral stand-in until `update` asks for its plate again on the
+   * usual per-frame budget, nearest world first.
+   */
+  forgetPlates(): void {
+    const blank = this.blankPlate();
+    for (const node of this.bodyNodes.values()) {
+      node.skin = '';
+      node.mat.uniforms.uAlbedo.value = blank;
+      node.mat.uniforms.uData.value = blank;
+    }
+    this.detailed = null;
+  }
+
   /** Shader sample counts. Mesh LOD is per-body in `update`, not a global swap. */
   setQuality(band: 'high' | 'medium' | 'low'): void {
     this.band = band;

@@ -726,6 +726,60 @@ async function run() {
       !!plateMark && s.scale === 'city' && s.selected === 'elendel-rebirth',
       `${s.scale}/${s.focusedLocation}/${s.selected}`);
     await page.evaluate(() => window.__ceph.store.set('selected', null));
+    // A lost WebGL context must come back as the same sky, not stay black.
+    // A hybrid laptop loses it on every GPU switch; the app used to stop for
+    // good and ask for a reload. Measure the middle of the frame, where the
+    // world is, before the loss and after the restore.
+    {
+      await page.evaluate(() => window.__ceph.store.set('cameraCue', { kind: 'focus', id: 'roshar', scale: 'globe' }));
+      await settle(page);
+      const brightness = async () => {
+        const c = await freeCentre(page);
+        const shot = await page.screenshot({
+          type: 'png', encoding: 'base64',
+          clip: { x: c.x - 120, y: c.y - 120, width: 240, height: 240 },
+        });
+        return page.evaluate(async (b64) => {
+          const img = new Image();
+          img.src = `data:image/png;base64,${b64}`;
+          await img.decode();
+          const cv = document.createElement('canvas');
+          cv.width = 60; cv.height = 60;
+          const g = cv.getContext('2d');
+          g.drawImage(img, 0, 0, 60, 60);
+          const d = g.getImageData(0, 0, 60, 60).data;
+          let sum = 0;
+          for (let i = 0; i < d.length; i += 4) sum += (d[i] + d[i + 1] + d[i + 2]) / 3;
+          return sum / (d.length / 4);
+        }, shot);
+      };
+      const lit = await brightness();
+      await page.evaluate(() => window.__ceph.app.renderer.forceContextLoss());
+      await sleep(600);
+      const down = await page.evaluate(() => ({
+        fault: window.__ceph.store.state.fault, frame: window.__ceph.app.frameCount,
+      }));
+      await sleep(400);
+      const still = await page.evaluate(() => window.__ceph.app.frameCount);
+      check('a lost context says so and stops drawing',
+        !!down.fault && still === down.frame, JSON.stringify({ ...down, still }));
+      await page.evaluate(() => window.__ceph.app.renderer.forceContextRestore());
+      await sleep(slowRenderer ? 6000 : 1500);
+      await settle(page);
+      const back = await page.evaluate(() => {
+        const a = window.__ceph.app;
+        const albedo = a.orrery.bodyNodes.get('roshar').mat.uniforms.uAlbedo.value;
+        return {
+          fault: window.__ceph.store.state.fault,
+          lost: a.renderer.getContext().isContextLost(),
+          baked: !!albedo.isRenderTargetTexture,
+        };
+      });
+      const relit = await brightness();
+      check('a restored context brings the sky back without a reload',
+        !back.fault && !back.lost && back.baked && relit > lit * 0.75,
+        JSON.stringify({ ...back, before: Math.round(lit), after: Math.round(relit) }));
+    }
 
     // A phone still leaves the world a band to live in.
     await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 1 });

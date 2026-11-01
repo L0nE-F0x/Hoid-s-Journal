@@ -199,6 +199,19 @@ function evict(): void {
 }
 
 /**
+ * Drop every plate after the WebGL context has been lost and restored.
+ *
+ * Their contents went with the old context, and re-baking a hundred pairs in
+ * the frame the driver comes back is exactly the kind of spike that loses it
+ * again. So they are forgotten instead — not disposed, since their GL objects
+ * belonged to a context that no longer exists — and each world asks for its
+ * plate again through the same budgeted path it used at boot.
+ */
+export function forgetPlates(): void {
+  cache.clear();
+}
+
+/**
  * Plates for one world. Cached: a realm flip or a Catacendre swap re-asks for
  * a different key, never a re-bake of one it already has.
  */

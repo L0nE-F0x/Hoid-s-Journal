@@ -219,6 +219,13 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
       }
       return rows;
     }
+    // A place's u/v is measured on the first plate of its world and era
+    // (roshar_full, final_empire, scadrial_full). The other layers — the
+    // Final Empire endpaper, the Elendel Basin, the starchart — are different
+    // drawings at different scales, and the same numbers put Luthadel in the
+    // margin of one and in the sea of another. They show the art and no pins,
+    // the way an unmeasured city layer already does.
+    if (plateMode === 'world' && plateLayer > 0) return [];
     return visibleLocations().map((l) => ({ id: l.id, name: l.name, u: l.u, v: l.v, color: l.color }));
   };
 
@@ -423,12 +430,16 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
       kicker.textContent = official ? 'Cartography' : 'Cartography';
       title.textContent = s.realm === 'cognitive' ? `${body.name} · Shadesmar` : body.name;
     }
+    const firstLayer = layerRows[0]?.name;
+    credit.textContent = !official ? ''
+      : plateLayer > 0 && s.scale !== 'city' && firstLayer
+        ? `${MAP_CREDIT} · places are marked on the ${firstLayer} plate`
+        : MAP_CREDIT;
+    composeMap();
     const n = pinRows().length;
     canvas.setAttribute('aria-label', n
       ? `${kicker.textContent}: ${title.textContent}. ${n} marked ${n === 1 ? 'place' : 'places'}; arrow keys step through them, Enter goes there.`
       : `${kicker.textContent}: ${title.textContent}`);
-    credit.textContent = official ? MAP_CREDIT : '';
-    composeMap();
     composePins();
     composeRoster();
     paint();

@@ -63,7 +63,7 @@ export const CITY_PLATES: CityPlate[] = [
         { entry: 'kharbranth-palanaeum', book: 'stormlight' }),
       mark('kharbranth-conclave', 'kharbranth', 'The Conclave', 0.38, 0.32, '#c4b5fd',
         'Where the king and the ardents rule, high above the docks.',
-        { book: 'stormlight', on: [{ file: 'kharbranth.jpg', u: 0.50, v: 0.32 }] }),
+        { book: 'stormlight', on: [{ file: 'kharbranth.jpg', u: 0.466, v: 0.246 }] }),
     ],
   },
   {

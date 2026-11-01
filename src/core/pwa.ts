@@ -11,6 +11,17 @@ interface InstallPromptEvent extends Event {
 let deferred: InstallPromptEvent | null = null;
 let notify: (() => void) | null = null;
 
+/** The first visit was not controlled, so the worker never saw this build's
+ *  files go by. Name them, so the next visit can open offline. */
+function cacheThisBuild(worker: ServiceWorker | null): void {
+  const urls = new Set<string>();
+  for (const e of performance.getEntriesByType('resource')) urls.add(e.name);
+  for (const s of document.querySelectorAll<HTMLScriptElement>('script[src]')) urls.add(s.src);
+  for (const l of document.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"], link[rel="modulepreload"]')) urls.add(l.href);
+  const build = [...urls].filter((u) => new URL(u, location.href).pathname.includes('/assets/'));
+  if (build.length) worker?.postMessage({ type: 'cache-build', urls: build });
+}
+
 export function connectPwa(onChange?: () => void): void {
   notify = onChange ?? null;
 
@@ -24,7 +35,15 @@ export function connectPwa(onChange?: () => void): void {
     notify?.();
   });
 
-  if (!import.meta.env.PROD || !('serviceWorker' in navigator)) return;
+  if (!('serviceWorker' in navigator)) return;
+  if (!import.meta.env.PROD) {
+    // A worker left by `vite preview` on this origin would sit in front of
+    // the dev server and serve yesterday's build.
+    navigator.serviceWorker.getRegistrations()
+      .then((regs) => regs.forEach((r) => void r.unregister()))
+      .catch(() => undefined);
+    return;
+  }
   // Reload when a new worker takes a tab that already had one. The first
   // install has no controller yet, and reloading then would loop boot.
   if (navigator.serviceWorker.controller) {
@@ -38,7 +57,9 @@ export function connectPwa(onChange?: () => void): void {
   const register = () => {
     navigator.serviceWorker.register(`${import.meta.env.BASE_URL}sw.js`, {
       scope: import.meta.env.BASE_URL,
+      updateViaCache: 'none',
     }).catch((err) => console.warn('[cephandrius] offline shell unavailable:', err));
+    navigator.serviceWorker.ready.then((reg) => cacheThisBuild(reg.active)).catch(() => undefined);
   };
   // The app boots behind a dynamic import, so `load` has usually already gone.
   if (document.readyState === 'complete') register();

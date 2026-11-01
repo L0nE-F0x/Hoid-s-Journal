@@ -355,10 +355,13 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
     if (s.focusedBody !== rosterOf) { rosterOf = s.focusedBody; rosterAll = false; }
     if (!s.focusedBody) return;
     const plate = s.scale === 'city' && s.focusedLocation ? cityById[s.focusedLocation] : undefined;
-    if (plate) {
+    // Only the marks the reader has reached, and no heading over none of
+    // them: a Words of Radiance reader at Thaylen City got "On this plate" and
+    // nothing under it.
+    const marks = plate ? plate.landmarks.filter((m) => isVisible(m, s.readProgress)) : [];
+    if (marks.length) {
       roster.append(el('div', { className: 'ceph-kicker', text: 'On this plate', style: { width: '100%' } }));
-      for (const m of plate.landmarks) {
-        if (!isVisible(m, s.readProgress)) continue;
+      for (const m of marks) {
         const chip = el('button', {
           className: `ceph-atlas-chip${s.selected === (m.entry ?? m.id) ? ' is-on' : ''}`,
           text: m.name,

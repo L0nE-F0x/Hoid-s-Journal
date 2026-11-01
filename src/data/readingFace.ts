@@ -176,6 +176,153 @@ export const READING_FACES: Record<string, ReadingFace> = {
       { book: 'stormlight', arc: 'wor', published: true },
     ],
   },
+  melaan: {
+    early: {
+      fact: 'A young kandra who believed TenSoon when the Homeland did not.',
+      abilities: 'Kandra, Seventh Generation',
+      aliases: 'MeLaan',
+      bio: 'A Seventh Generation kandra in the Homeland. At TenSoon\'s trial she offered to help him escape and believed him when he said Vin had inherited the First Contract; when KanPaar seized the Homeland, she fetched the keys and freed the First Generation.',
+    },
+    steps: [
+      {
+        book: 'mistborn2', arc: 'sos',
+        fact: 'Harmony\'s agent in a changing world.',
+        aliases: 'Milan',
+        bio: 'A Seventh Generation kandra who backed TenSoon at his trial in the Homeland and freed the First Generation when KanPaar turned on them. Three centuries later she is Harmony\'s hands in Elendel, introduces herself to Wax at a party as "Milan", and wears Governor Innate\'s bones in front of a riot.',
+      },
+      { book: 'mistborn2', arc: 'tlm', published: true },
+    ],
+  },
+  wax: {
+    early: {
+      aliases: 'Wax, Lord Ladrian',
+      bio: 'A Coinshot and a Skimmer who spent twenty years as a lawman in the Roughs and came home to Elendel when his uncle died, to run a house sliding into debt. Lessie died in Bloody Tan\'s lair by Wax\'s own bullet. Five months later the Vanishers rob a wedding he is attending, and he stops pretending he is finished.',
+    },
+    steps: [
+      {
+        book: 'mistborn2', arc: 'sos',
+        aliases: 'Wax, Lord Ladrian, Asinthew',
+        bio: 'A Coinshot and a Skimmer who spent twenty years as a lawman in the Roughs, came home to Elendel when his uncle died, and found his uncle was Mister Suit. Hunting Bleeder, he hears Harmony through an earring and learns that Lessie was a kandra.',
+      },
+      {
+        book: 'mistborn2', arc: 'bom',
+        aliases: 'Wax, Lord Ladrian, Asinthew',
+        bio: 'A Coinshot and a Skimmer who spent twenty years as a lawman in the Roughs, came home to Elendel when his uncle died, and found his uncle was Mister Suit. Harmony speaks to him through an earring; Lessie turned out to be a kandra; he marries Steris, and his sister shoots him at the Sovereign\'s temple.',
+      },
+      { book: 'mistborn2', arc: 'tlm', published: true },
+    ],
+  },
+  wayne: {
+    early: {
+      aliases: 'Wayne',
+      bio: 'A Slider and a Bloodmaker with a hat for every accent. He rode with Wax in the Roughs, followed him to Elendel, and treats theft as trading as long as he leaves something in exchange.',
+    },
+    steps: [
+      {
+        book: 'mistborn2', arc: 'sos',
+        bio: 'A Slider and a Bloodmaker with a hat for every accent, who shot Allriandre Durkel\'s father in a robbery at sixteen and has brought her money every month since. He rode with Wax in the Roughs, followed him to Elendel, and treats theft as trading as long as he leaves something in exchange.',
+      },
+      { book: 'mistborn2', arc: 'tlm', published: true },
+    ],
+  },
+  marasi: {
+    early: {
+      fact: 'A law student, a Pulser, and Steris\'s half-sister.',
+      aliases: 'Marasi',
+      bio: 'Lord Harms\'s illegitimate daughter and Steris\'s half-sister, raised in the Outer Estates, who came to the city to study legal justice and criminal behaviour and had read every report about Wax and Wayne before she met them. She can slow time around herself, which her family considered useless; she is also a very good shot.',
+    },
+    steps: [
+      {
+        book: 'mistborn2', arc: 'sos',
+        aliases: 'Marasi',
+        bio: 'Lord Harms\'s illegitimate daughter and Steris\'s half-sister, who studied legal justice and criminal behaviour and then went to work for Aradel as a constable and crime analyst. She works the Bleeder case from inside the constabulary, and argues with Reddi about how to talk to witnesses.',
+      },
+      {
+        book: 'mistborn2', arc: 'bom',
+        bio: 'Lord Harms\'s illegitimate daughter and Steris\'s half-sister, and a constable under Aradel and then Reddi. Sent after ReLuur\'s missing spike, she freed Allik from a Set cage, and at the Sovereign\'s temple she took up the Bands of Mourning and turned the fight.',
+      },
+      { book: 'mistborn2', arc: 'tlm', published: true },
+    ],
+  },
+  steris: {
+    early: {
+      aliases: 'Steris',
+      bio: 'A woman who weaponises notebooks: she memorises social rules because they do not come to her, and keeps a contingency for every occasion. Her engagement to Wax is a contract her father negotiates, and she is the hostage the Vanishers choose at the Yomen-Ostlin wedding.',
+    },
+    steps: [
+      {
+        book: 'mistborn2', arc: 'bom',
+        bio: 'A woman who weaponises notebooks: she memorises social rules because they do not come to her, and keeps a contingency for every occasion. Her marriage to Wax began as a contract and became the partnership that keeps House Ladrian solvent and alive.',
+      },
+      { book: 'mistborn2', arc: 'tlm', published: true },
+    ],
+  },
+  telsin: {
+    early: {
+      fact: 'Wax\'s sister, who was supposed to have died with their uncle.',
+      aliases: 'Telsin',
+      abilities: 'Unrevealed',
+      bio: 'Wax\'s sister, who stayed in the Village when he left and was supposed to have died in the same carriage accident as their uncle Edwarn. When Wax confronts Edwarn, Edwarn tells him she is alive, the Set has her, and she is as good as dead if Wax kills him.',
+    },
+    steps: [
+      {
+        book: 'mistborn2', arc: 'bom',
+        fact: 'Wax\'s sister, and the Set\'s Lady Sequence.',
+        aliases: 'Lady Sequence',
+        abilities: 'Hemalurgist',
+        bio: 'Wax\'s sister, who stayed in the Village when he left and joined the Set as a young woman, bringing their uncle in for his money. She faked her death with Edwarn and played the Set\'s captive to control her brother; at the Sovereign\'s temple she shot him three times and took MeLaan\'s spikes. Wayne shot her on the skimmer and let her go.',
+      },
+      { book: 'mistborn2', arc: 'tlm', published: true },
+    ],
+  },
+  'edwarn-ladrian': {
+    early: {
+      bio: 'Wax\'s uncle, and the reason Wax came home: a carriage accident that Edwarn staged. As Mister Suit he paid the Vanishers, drained House Tekiel through the insurance companies the robberies broke, and moved the Ladrian money into the Set\'s accounts. He had raised his son Hinston to take the house and settled for Wax when disease took the boy.',
+    },
+    steps: [
+      { book: 'mistborn2', arc: 'bom', published: true },
+    ],
+  },
+  'gave-entrone': {
+    early: {
+      fact: 'A New Seran lord and amateur archaeologist with a name in ReLuur\'s notebook.',
+      abilities: 'Noble',
+      bio: 'A New Seran lord in textiles with an amateur\'s interest in archaeology, and one of the names in ReLuur\'s notebook of people connected to the Bands of Mourning. At Kelesina Shores\' party he insulted Wax to end the conversation, and when that failed he insulted Steris.',
+    },
+    steps: [
+      { book: 'mistborn2', arc: 'tlm', published: true },
+    ],
+  },
+  allik: {
+    early: {
+      bio: 'A twenty-two-year-old crewman of the airship Brunstell, which crashed near Dulsing while searching for the Sovereign\'s temple. Marasi and MeLaan found him in a Set cage; he flew them to the temple in a stolen skimmer and nearly froze when the Set took his heating medallion. Like every Malwish he wears a mask, and he gave his old cracked one to Marasi when the Brunstell went home.',
+    },
+    steps: [
+      { book: 'mistborn2', arc: 'tlm', published: true },
+    ],
+  },
+  // Elantris and The Emperor's Soul do not know where these two end up. The
+  // Lost Metal does.
+  shai: {
+    early: {
+      aliases: 'Wan ShaiLu',
+      abilities: 'Forger',
+      bio: 'A Forger who rewrites objects — and herself — with stamps and research. Imprisoned to restore an emperor\'s soul, she walks out having forged a life the court cannot quite revoke.',
+    },
+    steps: [
+      { book: 'mistborn2', arc: 'tlm', published: true },
+    ],
+  },
+  kaise: {
+    early: {
+      aliases: 'Kaise',
+      abilities: 'Child',
+      bio: 'Young daughter of Kiin and Daora, notable for a vocabulary that outruns her age and a habit of saying the quiet part loud. She and her brother Daorn orbit Sarene\'s stay in Kae with comic clarity. In a book about broken cities, Kaise is unbroken attention.',
+    },
+    steps: [
+      { book: 'mistborn2', arc: 'tlm', published: true },
+    ],
+  },
   sigzil: {
     early: {
       fact: 'Hoid\'s apprentice, keeping Bridge Four\'s accounts.',

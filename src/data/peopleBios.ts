@@ -19,8 +19,8 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   wax: {
     wiki: 'Waxillium_Ladrian',
-    see: ['wayne', 'steris', 'marasi', 'telsin', 'harmony'],
-    bio: 'Twinborn lawman of the Roughs dragged back to Elendel as Lord Ladrian. Steelpushes and ironpulls define his fights; Steris and Wayne define his life. He spends Era 2 learning that Harmony\'s quiet is not the same as Harmony\'s help, and that family can be the Set.',
+    see: ['wayne', 'steris', 'marasi', 'telsin', 'harmony', 'house-ladrian', 'weathering'],
+    bio: 'A Coinshot and a Skimmer who spent twenty years as a lawman in the Roughs, came home to Elendel when his uncle died, and found his uncle was Mister Suit. Harmony speaks to him through an earring MeLaan gave him; Lessie turned out to be a kandra; his sister shot him at the Sovereign\'s temple. By The Lost Metal he is a senator, a husband and a father, and Harmony\'s Sword — and he climbs the Shaw in Bilming to cut Telsin off from Autonomy, while Wayne goes out to sea with the bomb.',
   },
   jasnah: {
     wiki: 'Jasnah_Kholin',
@@ -109,22 +109,22 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   wayne: {
     wiki: 'Wayne',
     see: ['wax', 'marasi', 'harmonium'],
-    bio: 'A Slider with a hat for every accent and a guilt for every grave. He speed-bubbles through Wax\'s disasters, loves Marasi without winning her, and dies buying Scadrial time with a bomb only he could place.',
+    bio: 'A Slider and a Bloodmaker with a hat for every accent, who shot a man named Durkel in a robbery at sixteen and has paid his daughter every month since. He rode with Wax in the Roughs, followed him to Elendel, joined the constabulary and partnered Marasi for six years. In The Lost Metal he pushes Wax off the Bilming warship, wraps the bomb in a speed bubble with duralumin and bendalloy burning together, and dies in the biggest explosion anyone has ever made. Harmony told him so.',
   },
   marasi: {
     wiki: 'Marasi_Colms',
     see: ['wax', 'wayne', 'steris', 'malwish'],
-    bio: 'Steris\'s illegitimate sister, constable, Pulser, and the scholar who actually finishes the political work Wax starts with bullets. She grows from admiring the Roughs into shaping Elendel\'s future — including a trip into the god-metal underbelly of the Cosmere.',
+    bio: 'Lord Harms\'s illegitimate daughter and Steris\'s half-sister, raised in the Outer Estates, who came to the city to study legal justice and criminal behaviour and had read every report about Wax and Wayne before she met them. Aradel hired her as a constable; at the Sovereign\'s temple she took up the Bands of Mourning and turned the fight. In The Lost Metal the Ghostbloods recruit her and she turns them down because she could not share what she learned. Two years later she is leaving for the Malwish Consortium as an ambassador, and planning to run for governor.',
   },
   steris: {
     wiki: 'Steris_Harms',
     see: ['wax', 'marasi', 'house-ladrian'],
-    bio: 'A woman who weaponises notebooks. Marriage to Wax begins as ledger-alliance and becomes the partnership that keeps House Ladrian solvent and alive; her contingency plans save as many lives as his Pushing.',
+    bio: 'A woman who weaponises notebooks: she memorises social rules because they do not come to her, and keeps a contingency for every occasion. Her marriage to Wax began as a contract and became the partnership that keeps House Ladrian solvent and alive. When the bomb came for Elendel she ran the evacuation of the docks herself, and the governor made her the city\'s Disaster Preparations Officer.',
   },
   melaan: {
     wiki: 'MeLaan',
     see: ['tensoon', 'wax', 'kandra', 'wayne'],
-    bio: 'A Sixth Generation kandra comfortable in any body and few boundaries. She spies for Harmony, flirts with disaster, and gives Wayne a goodbye that is pure MeLaan — honest, theatrical, and kind.',
+    bio: 'A Seventh Generation kandra raised by TenSoon, who backed him at his trial in the Homeland and freed the First Generation when KanPaar turned on them. Three centuries later she is Harmony\'s hands in Elendel, introduces herself to Wax at a party as "Milan", and wears Governor Innate\'s bones in front of a riot. After six years with Wayne she asked Harmony for a mission off-world — the first kandra to go — and left him for Shadesmar.',
   },
   dalinar: {
     wiki: 'Dalinar_Kholin',
@@ -243,8 +243,8 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   shai: {
     wiki: 'Wan_ShaiLu',
-    see: ['forgery', 'rose-empire', 'essence-mark'],
-    bio: 'A Forger who rewrites objects — and herself — with stamps and research. Imprisoned to restore an emperor\'s soul, she walks out having forged a life the court cannot quite revoke.',
+    see: ['forgery', 'rose-empire', 'essence-mark', 'ghostbloods', 'marasi'],
+    bio: 'A Forger who rewrites objects — and herself — with stamps and research. Imprisoned to restore an emperor\'s soul, she walks out having forged a life the court cannot quite revoke. Long afterwards, unable to go home to Sel, she is a Ghostblood on Scadrial called Moonlight, carrying soulstamps that make a door in any wall or mend what is broken. Under Bilming she stamps her own past to become an Elantrian and holds a wall so Marasi can get through — and no longer remembers who Marasi is.',
   },
   silence: {
     wiki: 'Silence_Montane',
@@ -374,7 +374,7 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   telsin: {
     wiki: 'Telsin_Ladrian',
     see: ['wax', 'trell', 'the-set'],
-    bio: 'Wax\'s sister and a high operative of the Set under Trell\'s influence. Ambition plus Autonomy\'s religion turns family into opposing command structures; their reunion is a firefight.',
+    bio: 'Wax\'s sister, who stayed in the Village when he left, joined the Set as a young woman and brought their uncle in for his money. She faked her death with Edwarn and played the Set\'s captive to control her brother; at the Sovereign\'s temple she shot him three times and took MeLaan\'s spikes. As the Key she persuaded Autonomy to let her prove Scadrial could be conquered, and built Bilming to do it. When Harmony cut her Connection on the roof of the Shaw, Autonomy left her, and she died with "You have proven yourselves. For now." scratched into her own arm.',
   },
   blushweaver: {
     wiki: 'Blushweaver',

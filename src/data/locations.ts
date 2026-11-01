@@ -128,26 +128,34 @@ export const LOCATIONS: Location[] = [
     'Northern Dominance capital; a city of drained canals.', {
       region: 'Northern Dominance',
       bio: 'Capital of the Northern Dominance, built on canals that its own rebels drained rather than let a nobleman\'s water flow. Spook came here after the Collapse and found a city run by a demagogue, a nest of Ministry holdouts, and a hidden storage cavern under a burning street.', arc: 'hoa', eraMaps: ['ash'] }),
-  loc('elendel', 'Elendel', 'scadrial', 'mistborn2', 0.515, 0.328, '#d6a44c', 'city',
+  // Basin pins are on `scadrial_full.png`, which marks no towns. They are
+  // measured on the Basin survey (`elendel_basin.png`) and carried across:
+  // Elendel is the hub the rail lines radiate from on both plates, and one
+  // world-plate pixel is about 9.4 survey pixels (checked against the Tyrian
+  // Sea's south shore, the Bilming peninsula and the Faleast spur).
+  loc('elendel', 'Elendel', 'scadrial', 'mistborn2', 0.556, 0.293, '#d6a44c', 'city',
     'Harmony\'s great city in the Basin, built where the old empire died.', {
       region: 'Elendel Basin',
-      bio: 'Harmony\'s city, laid out by Sazed himself on ground where the old world ended, with eight octants and a canal ring and a constitution nobody has read recently. Four hundred years on it is rich, complacent, and quietly run by the houses; Wax came back to it for a funeral and stayed for the trouble.', eraMaps: ['basin'] }),
-  loc('bilming', 'Bilming', 'scadrial', 'mistborn2', 0.438, 0.348, '#64748b', 'port',
-    'Industrial port of the western Basin.', {
+      bio: 'The largest city in the Basin and, Brandon has said, in the Cosmere — named by Spook for Elend, and built at the mouth of the Irongate where it runs into Hammondar Bay. Its octants, canals and senate are run, quietly, by the great houses. Wax estimates millions live here; he came back to it when his uncle died and stayed for the trouble.', eraMaps: ['basin'], wiki: 'Elendel' }),
+  loc('bilming', 'Bilming', 'scadrial', 'mistborn2', 0.533, 0.299, '#64748b', 'port',
+    'The other great city of the Basin, across the water from Elendel.', {
       region: 'Elendel Basin',
-      bio: 'The Basin\'s industrial port on the western coast, all shipyards and smokestacks and civic resentment of Elendel. By The Lost Metal it is the Set\'s own city in everything but name, with a bomb in it and Autonomy\'s avatar in the harbour.', arc: 'tlm', eraMaps: ['basin'] }),
-  loc('new-seran', 'New Seran', 'scadrial', 'mistborn2', 0.655, 0.392, '#e8b86d', 'city',
-    'Southern city of canals and conspiracy.', {
+      bio: 'One of the Outer Cities, and with New Seran one of the two that count, on a hooked peninsula across the bay from Elendel. Since the south was found it has grown skyscrapers and suburbs and a grievance. By The Lost Metal its mayor is the Set\'s ally, its tallest tower is the Set\'s headquarters, and under its streets the Set is building a bomb.', arc: 'tlm', eraMaps: ['basin'], wiki: 'Bilming' }),
+  // New Seran is off the bottom of the Basin survey: "the very southern edge of
+  // the basin, on the rail line through the Seran Range". The pin is where that
+  // line leaves the survey, which is as close as the plates allow.
+  loc('new-seran', 'New Seran', 'scadrial', 'mistborn2', 0.607, 0.336, '#e8b86d', 'city',
+    'A terraced Outer City on the Basin\'s southern edge.', {
       region: 'Elendel Basin',
-      bio: 'A southern Basin city of stepped canals and old money, far enough from Elendel to keep its own secrets and close enough to sell them. Wax and Steris came for a wedding and found a Set operation running out of the hills above it.', arc: 'bom', eraMaps: ['basin'] }),
-  loc('doxonar', 'Doxonar', 'scadrial', 'mistborn2', 0.505, 0.350, '#94a3b8', 'home',
-    'A Basin town on the southern rail lines beyond Elendel.', {
+      bio: 'Built across a dozen enormous flat stone terraces with streams dropping from one to the next and gondolas strung a hundred feet up, at the southern edge of the Basin where the line runs through the Seran Range. It is one of the two Outer Cities with real political weight. Wax, Steris, Wayne, Marasi and MeLaan came here on ReLuur\'s trail and found Lady Kelesina and the Set waiting.', arc: 'bom', eraMaps: ['basin'], wiki: 'New_Seran' }),
+  loc('doxonar', 'Doxonar', 'scadrial', 'mistborn2', 0.556, 0.304, '#94a3b8', 'home',
+    'A Basin city just south of Elendel, named for Dockson.', {
       region: 'Elendel Basin',
-      bio: 'A Basin town on the southern rail lines, named for a man who died holding a gate in a city that no longer exists. Most Basin towns are named for somebody from the Final Empire; most of them have forgotten which somebody.', arc: 'bom', eraMaps: ['basin'] }),
-  loc('dryport', 'Dryport', 'scadrial', 'mistborn2', 0.575, 0.312, '#38bdf8', 'port',
-    'On the route between Elendel and the northern Roughs.', {
+      bio: 'A city of the Basin just south of Elendel on the rail lines, and one of the places named for the crew: this one for Dockson. House Tekiel shipped freight toward it in the Vanishers\' year.', arc: 'aol', eraMaps: ['basin'], wiki: 'Doxonar' }),
+  loc('dryport', 'Dryport', 'scadrial', 'mistborn2', 0.561, 0.291, '#38bdf8', 'port',
+    'A town on Elendel\'s doorstep with its own branch line.', {
       region: 'Elendel Basin',
-      bio: 'A stop on the route between Elendel and the northern Roughs, where the rails end and the dust begins. Everyone passing between Basin law and no law at all goes through somewhere like it.', eraMaps: ['basin'] }),
+      bio: 'A town just east of Elendel on the Irongate, with a dedicated branch of the Basin railway. Wax boarded a train here at the end of the Vanishers case, having read his uncle\'s whereabouts out of Miles\'s coded notes. Not to be confused with Drypost, up the line toward the Roughs.', arc: 'aol', eraMaps: ['basin'], wiki: 'Dryport' }),
 
   // Other worlds — first-pass original pins
   loc('elantris-city', 'Elantris', 'sel', 'elantris', 0.46, 0.42, '#a78bfa', 'city',
@@ -197,10 +205,10 @@ export const LOCATIONS: Location[] = [
     'Terris homeland in the far north of the Final Empire.', {
       region: 'Terris Dominance',
       bio: 'The Terris capital in the far north, and the administrative centre of a people the Lord Ruler had spent a thousand years breeding into stewards. The Synod met here in secret; so did the Keepers, with a thousand years of copperminds between them and the fire.', eraMaps: ['ash'] }),
-  loc('the-roughs', 'The Roughs', 'scadrial', 'mistborn2', 0.585, 0.275, '#a8a29e', 'land',
+  loc('the-roughs', 'The Roughs', 'scadrial', 'mistborn2', 0.600, 0.240, '#a8a29e', 'land',
     'Lawless frontier beyond the Elendel Basin. Wax\'s old hunting ground.', {
       region: 'The Roughs',
-      bio: 'The frontier outside the Basin: mining camps, cattle, rail spurs and no law that arrives faster than a week. Wax spent twenty years out here as a lawman because it was honest work and because Elendel had a house and a title waiting that he did not want.', eraMaps: ['basin'] }),
+      bio: 'The frontier outside the Basin, north and south: mining camps, ghost towns, one railway into the north and no law that arrives faster than a week. Wax spent twenty years out here as a lawman, most of them in Weathering; Miles kept the law in True Madil, and Jon Deadfinger in Far Dorest.', eraMaps: ['basin'], wiki: 'Roughs' }),
   loc('hallandren', 'Hallandren', 'nalthis', 'warbreaker', 0.50, 0.545, '#f472b6', 'land',
     'The colour-drenched kingdom of the Returned and the God King.',
     { region: 'Hallandren', bio: 'The kingdom of the Returned, the God King and the BioChromatic economy, sitting on the coast that Idris thinks it stole. Its priests are bureaucrats, its gods are a week from dying at all times, and its army is a standing threat nobody in it actually wants to use.' }),
@@ -266,11 +274,11 @@ export const LOCATIONS: Location[] = [
     {
       region: 'Southern Dominance',
       bio: 'A southern skaa town Vin and Elend emptied in the last year of the ash, walking its people north ahead of the mists and the falling sky. It is the small human end of a world ending: a town that packed up and left.', arc: 'hoa', eraMaps: ['ash'] }),
-  loc('weathering', 'Weathering', 'scadrial', 'mistborn2', 0.455, 0.205, '#e8b86d', 'home',
+  loc('weathering', 'Weathering', 'scadrial', 'mistborn2', 0.549, 0.234, '#e8b86d', 'home',
     'A Roughs township. Wax kept the peace here before the city called him back.',
     {
       region: 'The Roughs',
-      bio: 'A Roughs township where Waxillium Ladrian kept the peace, buried Lessie, and decided he was finished. Elendel called him home three weeks later.', arc: 'aol', eraMaps: ['basin'] }),
+      bio: 'A town of about fifteen hundred on a grass plain in the Northern Roughs, at the western end of the only railway into the north. When Wax and Wayne first rode in, half of it belonged to the outlaw Granite Joe; once Joe was dead, Wax made himself its lawman, and it took six years for anyone to give him the papers.', arc: 'aol', eraMaps: ['basin'], wiki: 'Weathering' }),
   loc('southern-continent', 'Southern Continent', 'scadrial', 'mistborn2', 0.530, 0.680, '#94a3b8', 'land',
     'The Malwish south: its own civilisation, and its own technology.',
     {
@@ -418,16 +426,14 @@ export const LOCATIONS: Location[] = [
     'The Hill of a Thousand Spires, and the Well underneath it.', {
       region: 'Luthadel',
       bio: 'The Hill of a Thousand Spires: the Lord Ruler\'s palace, black and needled and built over the Well of Ascension. Vin fought the Lord Ruler here and learned what a Sliver is; a thousand years earlier Rashek had taken the Well\'s power in the same spot and remade the world with it.', eraMaps: ['ash'] }),
-  loc('statlin', 'Statlin City', 'scadrial', 'mistborn2', 0.540, 0.300, '#e8b86d', 'city',
-    'A Basin city on the rail lines, far enough out to have its own opinions.',
+  // Ironstand is on the line from Elendel to New Seran, which runs south-east
+  // past Doriel on the Basin survey; the survey does not mark the town, so the
+  // pin sits on that line rather than at a measured dot.
+  loc('ironstand', 'Ironstand', 'scadrial', 'mistborn2', 0.582, 0.316, '#a8a29e', 'home',
+    'A Basin town on the line to New Seran, where the train stopped after the Nightstreet Gang.',
     {
       region: 'Elendel Basin',
-      bio: 'A Basin city out along the rail lines, far enough from Elendel to have opinions about Elendel and near enough to be ignored for having them. The Basin\'s political problem in miniature.', arc: 'bom', eraMaps: ['basin'] }),
-  loc('ironstand', 'Ironstand', 'scadrial', 'mistborn2', 0.620, 0.255, '#a8a29e', 'home',
-    'A Roughs town. There are a dozen like it and Wax has been shot at in most.',
-    {
-      region: 'The Roughs',
-      bio: 'A Roughs town of a few hundred people, a rail siding and a saloon. There are a dozen like it and Wax has been shot at in most of them, which he would tell you is the job and not a complaint.', arc: 'aol', eraMaps: ['basin'] }),
+      bio: 'A town on the rail line between Elendel and New Seran. The Nightstreet Gang boarded Wax\'s train just before it, on Kelesina Shores\' orders, to keep him away from Telsin\'s trail; afterwards the train stopped here, the town doctor dug out what needed digging, and Ironstand\'s constables took the bandits.', arc: 'bom', eraMaps: ['basin'], wiki: 'Ironstand' }),
 
   // --- Sel ---------------------------------------------------------------
   loc('svorden', 'Svorden', 'sel', 'elantris', 0.720, 0.500, '#ef4444', 'city',
@@ -472,10 +478,10 @@ export const LOCATIONS: Location[] = [
       region: 'UTol',
       bio: 'UTol is a principal Sho Del world — four-armed, Invested, and originally of Yolen, where they fought humans in a war nobody now living saw. What any of that looks like from the ground has not been put on the page.', canon: 'wob', sources: ['Word of Brandon'] }),
   loc('obrodai-claim', "Autonomy's claim", 'obrodai-world', 'mistborn2', 0.500, 0.500, '#db2777', 'land',
-    'A world Autonomy took and put an avatar on. The avatar took a name of her own.',
+    'A world Autonomy has claimed, where a new avatar of her is beginning to manifest.',
     {
       region: 'Obrodai',
-      bio: 'A world Autonomy took and put an avatar on, the way she has taken others. The avatar chose a name of her own, which is the part of the arrangement Autonomy keeps discovering she did not fully think through.', arc: 'tlm', sources: ['The Lost Metal'] }),
+      bio: 'In a letter, Patji — another of Autonomy\'s avatars — warns Hoid not to come back to Obrodai: Autonomy has claimed the world, a new avatar is manifesting there, and as a precaution it has been taught to dislike him. Nothing else about Obrodai is known, including where on it anything is; this pin means only "the world".', arc: 'tlm', canon: 'wob', sources: ['Word of Brandon (Patji\'s letter to Hoid)'] }),
   loc('suluko', 'Suluko', 'first-of-the-sun', 'sixthofdusk', 0.470, 0.520, '#a3e635', 'island',
     'A Pantheon island. Less lethal than Patji, which is not the same as safe.', {
       region: 'The Pantheon',
@@ -542,8 +548,10 @@ export const PERPS: Perpendicularity[] = [
     fact: 'Preservation\'s pool beneath Kredik Shaw. Used, then collapsed.', at: 'luthadel',
     eraMin: 2, eraMax: 2, canon: C, sources: ['Mistborn Era 1'] },
   { id: 'harmony-pool', name: "Harmony's Perpendicularity", body: 'scadrial', book: 'mistborn2',
-    fact: 'The surviving Scadrian pool after the Catacendre.', at: 'elendel',
-    eraMin: 3, canon: C, sources: ['Mistborn Era 2'] },
+    // Not in Elendel. The Lost Metal puts it somewhere in the south, watched
+    // closely by the Malwish; nothing places it closer than that, so no `at`.
+    fact: 'Harmony\'s own pool, somewhere in the far south of Scadrial.',
+    eraMin: 3, canon: C, sources: ['The Lost Metal'] },
   { id: 'elantris-pool-perp', name: 'The Pool of Elantris', body: 'sel', book: 'elantris',
     fact: 'Devotion\'s perpendicularity in the mountains above Elantris.', at: 'elantris-city',
     eraMin: 1, canon: C, sources: ['Elantris'] },

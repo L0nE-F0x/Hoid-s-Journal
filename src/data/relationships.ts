@@ -66,7 +66,7 @@ export const RELATIONS: Relation[] = [
   { a: { kind: 'character', id: 'kaladin' }, b: { kind: 'character', id: 'lopen' }, type: 'ally', label: 'Bridge Four', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'wax' }, b: { kind: 'character', id: 'wayne' }, type: 'ally', label: 'Partners', book: 'mistborn2', canon: C },
   { a: { kind: 'character', id: 'wax' }, b: { kind: 'character', id: 'steris' }, type: 'romance', label: 'Married', book: 'mistborn2', canon: C },
-  { a: { kind: 'character', id: 'wax' }, b: { kind: 'character', id: 'marasi' }, type: 'ally', label: 'Constabulary', book: 'mistborn2', canon: C },
+  { a: { kind: 'character', id: 'wax' }, b: { kind: 'character', id: 'marasi' }, type: 'ally', label: 'Allies since the Vanishers', book: 'mistborn2', canon: C },
   { a: { kind: 'character', id: 'sazed' }, b: { kind: 'character', id: 'kelsier' }, type: 'ally', label: "Survivor's crew", book: 'mistborn1', canon: C },
   { a: { kind: 'character', id: 'marsh' }, b: { kind: 'shard', id: 'ruin' }, type: 'bond', label: 'Hemalurgically bound', book: 'mistborn1', canon: C },
   { a: { kind: 'character', id: 'hoid' }, b: { kind: 'character', id: 'kelsier' }, type: 'rival', label: 'Wary acquaintances', book: 'secrethistory', canon: C },

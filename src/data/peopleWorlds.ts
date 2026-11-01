@@ -323,12 +323,15 @@ export const PEOPLE_WORLDS: Character[] = [
       wiki: 'Daora', see: ['kiin', 'lukel', 'adien', 'kaise', 'daorn', 'sarene'],
       bio: 'Wife to Kiin, mother to Kaise and Daorn, and mother to Adien from a former marriage. Her household in Kae becomes Sarene\'s refuge and Raoden\'s conspiracy\'s dining room. Daora manages brilliant, difficult children and a husband with a pirate past as if that were a normal Tuesday.',
     }),
-  ch('kaise', 'Kaise', '#f0abfc', 'elantris', 'Sel', 'Kaise',
-    'Child',
-    'Kiin and Daora\'s daughter. Small, sharp-tongued, and never fooled.', false,
-    [{ era: 1, system: 'selish', body: 'sel' }], {
-      wiki: 'Kaise', see: ['daora', 'kiin', 'daorn', 'lukel', 'sarene'],
-      bio: 'Young daughter of Kiin and Daora, notable for a vocabulary that outruns her age and a habit of saying the quiet part loud. She and her brother Daorn orbit Sarene\'s stay in Kae with comic clarity. In a book about broken cities, Kaise is unbroken attention.',
+  ch('kaise', 'Kaise', '#f0abfc', 'elantris', 'Sel', 'Kaise, Codenames Are Stupid, Codenames',
+    'Linguist, worldhopper; bonded to the seon Dao',
+    'Kiin and Daora\'s daughter. Small, sharp-tongued, and never fooled.', false, [
+      { era: 1, system: 'selish', body: 'sel' },
+      // The Lost Metal: grown, a Ghostblood in the Bilming safehouse.
+      { era: 4, system: 'scadrian', body: 'scadrial', book: 'mistborn2', arc: 'tlm' },
+    ], {
+      wiki: 'Kaise', see: ['daora', 'kiin', 'daorn', 'lukel', 'sarene', 'ghostbloods'],
+      bio: 'Young daughter of Kiin and Daora, notable for a vocabulary that outruns her age and a habit of saying the quiet part loud. She and her brother Daorn orbit Sarene\'s stay in Kae with comic clarity. Grown, she turns up on Scadrial as a Ghostblood with the codename Codenames Are Stupid, keeping the Bilming cell\'s records and messages with her seon Dao and a terrier called Lily. She learns languages the slow way, because doing it through Connection is cheating, and it is her seon that puts Marasi in front of Kelsier.',
     }),
   ch('daorn', 'Daorn', '#e9d5ff', 'elantris', 'Sel', 'Daorn',
     'Child',

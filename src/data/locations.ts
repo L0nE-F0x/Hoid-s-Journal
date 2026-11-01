@@ -112,19 +112,19 @@ export const LOCATIONS: Location[] = [
       bio: 'Capital of the Silver Kingdom of Sela Tales and an Oathgate city. The kingdom is gone; the platform is not, and the Radiants who rebuilt the network had to argue their way into a city that had forgotten what it was standing on.', arc: 'wor' }),
 
   // Scadrial — Final Empire
-  loc('luthadel', 'Luthadel', 'scadrial', 'mistborn1', 0.620, 0.519, '#d6a44c', 'city',
+  loc('luthadel', 'Luthadel', 'scadrial', 'mistborn1', 0.508, 0.386, '#d6a44c', 'city',
     'Capital of the Final Empire and seat of the Lord Ruler. Kredik Shaw at its heart.', {
       region: 'Central Dominance',
       bio: 'The Lord Ruler\'s capital: the spires of Kredik Shaw at the centre, the keeps of the ten Great Houses around it, and skaa slums breathing ash underneath. It is the only city he allows a wall. Kelsier\'s crew mean to take it down from the inside.', eraMaps: ['ash'] }),
-  loc('pits-of-hathsin', 'The Pits of Hathsin', 'scadrial', 'mistborn1', 0.583, 0.428, '#a8a29e', 'crystal',
+  loc('pits-of-hathsin', 'The Pits of Hathsin', 'scadrial', 'mistborn1', 0.371, 0.363, '#a8a29e', 'crystal',
     'The Lord Ruler\'s secret atium farm.', {
       region: 'Central Dominance',
       bio: 'Crystal caverns where atium grows, worked by skaa prisoners who must find a geode a week or be beaten to death, and guarded so that the empire\'s economy can rest on the secret. Kelsier was sent here to die and Snapped instead. Days before the Lord Ruler fell he came back, freed the prisoners and shattered the crystals.', eraMaps: ['ash'] }),
-  loc('fadrex', 'Fadrex City', 'scadrial', 'mistborn1', 0.430, 0.483, '#f59e0b', 'keep',
+  loc('fadrex', 'Fadrex City', 'scadrial', 'mistborn1', 0.273, 0.302, '#f59e0b', 'keep',
     'A city among rock shelves in the Western Dominance: Cett\'s capital, then Yomen\'s.', {
       region: 'Western Dominance',
       bio: 'A trade city built into red rock shelves, easier to defend than Tremredare. Cett made it his capital after the Collapse and lost it to the obligator Aradan Yomen while he was away at Luthadel. Elend besieged it for the Lord Ruler\'s last storage cache, and the siege ended in an alliance.', arc: 'hoa', eraMaps: ['ash'] }),
-  loc('urteau', 'Urteau', 'scadrial', 'mistborn1', 0.737, 0.408, '#60a5fa', 'canal',
+  loc('urteau', 'Urteau', 'scadrial', 'mistborn1', 0.601, 0.231, '#60a5fa', 'canal',
     'Northern Dominance capital; a city of dry canals.', {
       region: 'Northern Dominance',
       bio: 'Capital of the Northern Dominance and House Venture\'s home city, crossed by canals that have been dry for a century — the Lord Ruler drained them into a hidden lake in his storage cache. Spook came here after the Collapse and found the Citizen burning noblemen.', arc: 'hoa', eraMaps: ['ash'] }),
@@ -201,7 +201,7 @@ export const LOCATIONS: Location[] = [
   loc('torio', 'Torio', 'komashi', 'yumi', 0.38, 0.52, '#e879f9', 'village',
     'The machine-kept village of the yoki-hijo.',
     { region: 'Komashi', bio: 'The village the machine keeps for its yoki-hijo: a full household of servants, a ritual schedule, and a girl who is told she is chosen and is in fact a battery. Yumi grew up here believing every day of it.' }),
-  loc('tathingdwen', 'Tathingdwen', 'scadrial', 'mistborn1', 0.658, 0.127, '#a3e635', 'city',
+  loc('tathingdwen', 'Tathingdwen', 'scadrial', 'mistborn1', 0.488, 0.096, '#a3e635', 'city',
     'Terris homeland in the far north of the Final Empire.', {
       region: 'Terris Dominance',
       bio: 'The Terris capital in the far north, and the administrative centre of a people the Lord Ruler spent a thousand years breeding into stewards.', eraMaps: ['ash'] }),
@@ -265,11 +265,11 @@ export const LOCATIONS: Location[] = [
     'Western land of the Most Ancient and its living, moving vines.',
     { region: 'Babatharnam', bio: 'A western land ruled by the Most Ancient, whose age is the point, and grown over with a living vinework that rearranges the streets. Babath is where Rysn learned that trade is mostly patience and that a country can be both welcoming and entirely unreadable.' }),
 
-  loc('conventical-of-seran', 'Conventical of Seran', 'scadrial', 'mistborn1', 0.796, 0.873, '#9333ea', 'keep',
+  loc('conventical-of-seran', 'Conventical of Seran', 'scadrial', 'mistborn1', 0.493, 0.514, '#9333ea', 'keep',
     'A Canton of Inquisition fortress in the Eastern Dominance, where Inquisitors were made.', {
       region: 'Eastern Dominance',
       bio: 'A windowless, steel-plated fortress in a hidden crater far south of Luthadel, where the Lord Ruler made his Inquisitors. Marsh led Sazed in after the Inquisition had gone; in a cave beneath it Sazed found Kwaan\'s confession carved in steel.', arc: 'woa', eraMaps: ['ash'] }),
-  loc('vetitan', 'Vetitan', 'scadrial', 'mistborn1', 0.567, 0.670, '#a8a29e', 'city',
+  loc('vetitan', 'Vetitan', 'scadrial', 'mistborn1', 0.439, 0.633, '#a8a29e', 'city',
     'A Southern Dominance town that Fatren held together, and then marched out with Elend.',
     {
       region: 'Southern Dominance',
@@ -417,12 +417,12 @@ export const LOCATIONS: Location[] = [
     { region: 'Shinovar', bio: 'The Misted Mountains: the wall that takes the highstorms apart before they reach Shinovar\'s soil. They are why the grass there does not hide, and why the Shin have stayed where they are for four thousand years.' }),
 
   // --- Scadrial ----------------------------------------------------------
-  loc('terris', 'The Terris Dominance', 'scadrial', 'mistborn1', 0.488, 0.122, '#a3e635', 'land',
+  loc('terris', 'The Terris Dominance', 'scadrial', 'mistborn1', 0.500, 0.120, '#a3e635', 'land',
     'The far north, and the Keepers who copied everything the Lord Ruler tried to burn.',
     {
       region: 'Terris Dominance',
       bio: 'The far north: mountains, cold, and a people the Lord Ruler bred into stewards and servants. The Keepers among them copy every religion and history the Lord Ruler tried to erase into copperminds; Sazed is one.', eraMaps: ['ash'] }),
-  loc('kredik-shaw', 'Kredik Shaw', 'scadrial', 'mistborn1', 0.620, 0.515, '#cbd5e1', 'keep',
+  loc('kredik-shaw', 'Kredik Shaw', 'scadrial', 'mistborn1', 0.509, 0.383, '#cbd5e1', 'keep',
     'The Hill of a Thousand Spires: the Lord Ruler\'s palace at the heart of Luthadel.', {
       region: 'Luthadel',
       bio: 'The Lord Ruler\'s palace, black and needled, with no wall of its own; stand near it and you feel his Soothing. Kelsier and Vin broke in for a logbook and barely got out. After Kelsier died, Vin went back in and killed the Lord Ruler there.', eraMaps: ['ash'] }),

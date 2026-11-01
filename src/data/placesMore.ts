@@ -228,88 +228,86 @@ export const PLACES_MORE: Location[] = [
     'Honorspren fleets that patrol toward Lasting Integrity. Not every spren ship wants passengers.', {
       region: 'Shadesmar',
       bio: 'Honorspren vessels patrolling the approaches to Lasting Integrity, crewed by spren with opinions about who deserves passage. After the Recreance those opinions hardened into policy, and the policy is mostly \'no\'.', arc: 'row', realm: 'cognitive', see: ['lasting-integrity'] }),
-  loc('dominance-of-the-center', 'Central Dominance', 'scadrial', 'mistborn1', 0.669, 0.579, '#d6a44c', 'land',
+  loc('dominance-of-the-center', 'Central Dominance', 'scadrial', 'mistborn1', 0.508, 0.4, '#d6a44c', 'land',
     'Heart of the Final Empire, with Luthadel at its centre.', {
       region: 'Central Dominance',
       bio: 'The heart of the Final Empire: Luthadel at its centre, the Pits of Hathsin and the Arguois caverns in the hills to the north, and Lake Tyrian to the west.', eraMaps: ['ash'], see: ['luthadel', 'pits-of-hathsin'], wiki: 'Central_Dominance' }),
-  loc('northern-dominance', 'Northern Dominance', 'scadrial', 'mistborn1', 0.781, 0.334, '#60a5fa', 'land',
+  loc('northern-dominance', 'Northern Dominance', 'scadrial', 'mistborn1', 0.58, 0.25, '#60a5fa', 'land',
     'Urteau\'s country, with the Ashmount Kalling.', {
       region: 'Northern Dominance',
       bio: 'The Dominance north-east of Luthadel, ruled from Urteau, House Venture\'s home city. Its one Ashmount is Kalling.', eraMaps: ['ash'], see: ['urteau'], wiki: 'Northern_Dominance' }),
-  loc('western-dominance', 'Western Dominance', 'scadrial', 'mistborn1', 0.391, 0.270, '#f59e0b', 'land',
+  loc('western-dominance', 'Western Dominance', 'scadrial', 'mistborn1', 0.28, 0.32, '#f59e0b', 'land',
     'Cett\'s country after the Collapse.', {
       region: 'Western Dominance',
       bio: 'Cett\'s country after the Collapse, ruled from Fadrex City because its rocks made it easier to defend than Tremredare. Yomen took it from him while he was away at Luthadel.', arc: 'hoa', eraMaps: ['ash'], see: ['fadrex'], wiki: 'Western_Dominance' }),
-  loc('southern-dominance', 'Southern Dominance', 'scadrial', 'mistborn1', 0.405, 0.608, '#a8a29e', 'land',
+  loc('southern-dominance', 'Southern Dominance', 'scadrial', 'mistborn1', 0.45, 0.58, '#a8a29e', 'land',
     'The south of the empire, down to the Southern Sea.', {
       region: 'Southern Dominance',
       bio: 'The south of the Final Empire, down to the Southern Sea, with two Ashmounts, Zerinah and Doriel. Vetitan and Lekal City are here.', arc: 'hoa', eraMaps: ['ash'], see: ['vetitan', 'ashmount-zerinah', 'ashmount-doriel'], wiki: 'Southern_Dominance' }),
-  loc('eastern-dominance', 'Eastern Dominance', 'scadrial', 'mistborn1', 0.781, 0.785, '#94a3b8', 'land',
+  loc('eastern-dominance', 'Eastern Dominance', 'scadrial', 'mistborn1', 0.68, 0.4, '#94a3b8', 'land',
     'The Final Empire\'s south-eastern reaches.', {
       region: 'Eastern Dominance',
       bio: 'The south-eastern reaches of the Final Empire, out toward the Crescent Dominance, with the Ashmount Faleast on their western side.', eraMaps: ['ash'], see: ['dominance-of-the-center'], wiki: 'Eastern_Dominance' }),
-  loc('farmost-dominance', 'Farmost Dominance', 'scadrial', 'mistborn1', 0.254, 0.257, '#78716c', 'land',
+  loc('farmost-dominance', 'Farmost Dominance', 'scadrial', 'mistborn1', 0.35, 0.2, '#78716c', 'land',
     'The empire\'s far western edge, behind the mountains.', {
       region: 'Farmost Dominance',
       bio: 'The far western edge of the Final Empire: a strip of coast beyond the mountains west of the Western Dominance.', eraMaps: ['ash'], wiki: 'Farmost_Dominance' }),
-  loc('keep-venture', 'Keep Venture', 'scadrial', 'mistborn1', 0.6246, 0.5148, '#d6a44c', 'keep',
+  loc('keep-venture', 'Keep Venture', 'scadrial', 'mistborn1', 0.512, 0.378, '#d6a44c', 'keep',
     'House Venture\'s keep in Luthadel. Elend grew up inside its politics.', {
       bio: 'The grandest keep in Luthadel and House Venture\'s seat: a vast hall of stained glass showing the Lord Ruler and the Deepness. Straff ran it as a study in cruelty; his son Elend read forbidden books at its balls.', eraMaps: ['ash'], region: 'Luthadel', see: ['luthadel', 'straff-venture', 'elend'], wiki: 'Keep_Venture' }),
-  loc('keep-lekal', 'Keep Lekal', 'scadrial', 'mistborn1', 0.6246, 0.5238, '#e8b86d', 'keep',
+  loc('keep-lekal', 'Keep Lekal', 'scadrial', 'mistborn1', 0.5, 0.395, '#e8b86d', 'keep',
     'House Lekal\'s keep: the best stained glass in Luthadel, and walls meant for war.', {
       bio: 'House Lekal\'s keep, near Keep Venture and walled, unusually, for defence. Its stained glass is the finest in Luthadel and its pyramid-shaped ballroom stands on five platforms.', eraMaps: ['ash'], region: 'Luthadel', see: ['luthadel', 'jastes-lekal'], wiki: 'Keep_Lekal' }),
-  loc('keep-erikeller', 'Keep Erikeller', 'scadrial', 'mistborn1', 0.6156, 0.5193, '#a8a29e', 'keep',
+  loc('keep-erikeller', 'Keep Erikeller', 'scadrial', 'mistborn1', 0.52, 0.39, '#a8a29e', 'keep',
     'House Erikeller\'s keep, on the west bank of the Channerel.', {
       bio: 'Seat of House Erikeller, sixth of Luthadel\'s ten Great Houses: weapon-makers, known for their dueling canes and for the Mistborn they produce. The keep stands on the western side of the River Channerel.', eraMaps: ['ash'], region: 'Luthadel', see: ['luthadel'], wiki: 'Keep_Erikeller' }),
-  loc('keep-hasting', 'Keep Hasting', 'scadrial', 'mistborn1', 0.6156, 0.5148, '#fbbf24', 'keep',
+  loc('keep-hasting', 'Keep Hasting', 'scadrial', 'mistborn1', 0.495, 0.375, '#fbbf24', 'keep',
     'House Hasting\'s seat: a great tower ringed by six more.', {
       bio: 'A great tower ringed by six smaller ones, joined by walltop walkways, with the ballroom at the very top reached by skaa-worked lifts. House Hasting is second only to Venture.', eraMaps: ['ash'], region: 'Luthadel', see: ['luthadel', 'telden-hasting'], wiki: 'Keep_Hasting' }),
-  loc('keep-tekiel', 'Keep Tekiel', 'scadrial', 'mistborn1', 0.6246, 0.5193, '#94a3b8', 'keep',
+  loc('keep-tekiel', 'Keep Tekiel', 'scadrial', 'mistborn1', 0.515, 0.4, '#94a3b8', 'keep',
     'House Tekiel\'s keep in Luthadel, where Kelsier left a dead Entrone in the gardens.', {
       bio: 'House Tekiel\'s keep in Luthadel: fourth of the Great Houses and an ally of House Entrone. Kelsier left Charrs Entrone\'s body in its gardens to start the houses killing each other.', eraMaps: ['ash'], region: 'Luthadel', see: ['luthadel', 'charrs-entrone'], wiki: 'Keep_Tekiel' }),
-  loc('fellise', 'Fellise', 'scadrial', 'mistborn1', 0.607, 0.520, '#c4b5fd', 'city',
+  loc('fellise', 'Fellise', 'scadrial', 'mistborn1', 0.47, 0.41, '#c4b5fd', 'city',
     'A city just outside Luthadel where Vin lived as Valette Renoux.', {
       region: 'Central Dominance',
       bio: 'A small city just outside Luthadel where "Lord Renoux" kept his mansion, and where Vin lived as Valette Renoux — a country noblewoman with a made-up family, learning to be someone in rooms she could have killed.', arc: 'tfe', eraMaps: ['ash'], see: ['luthadel', 'lord-renoux'], wiki: 'Fellise' }),
-  loc('holstep', 'Holstep', 'scadrial', 'mistborn1', 0.618, 0.441, '#a8a29e', 'city',
+  loc('holstep', 'Holstep', 'scadrial', 'mistborn1', 0.56, 0.35, '#a8a29e', 'city',
     'The town whose garrison Yeden\'s army took — and then lost everything on the way back.', {
       region: 'Central Dominance',
       bio: 'A town north of Luthadel along the canals. Yeden\'s army took its garrison in a night raid and was wiped out on the march back by the Valtroux garrison; his head was left on a spear by the road.', arc: 'tfe', eraMaps: ['ash'], see: ['luthadel', 'yeden'], wiki: 'Holstep' }),
-  // No plate marks the Homeland: it is "in the same mountain range as the
-  // Arguois caverns and the Pits of Hathsin", so the pin sits in that range.
-  loc('kandra-homeland', 'The Kandra Homeland', 'scadrial', 'mistborn1', 0.616, 0.412, '#a3e635', 'keep',
+  loc('kandra-homeland', 'The Kandra Homeland', 'scadrial', 'mistborn1', 0.365, 0.37, '#a3e635', 'keep',
     'The kandra\'s hidden city, in the hills between Hathsin and the Arguois caverns.', {
       region: 'Central Dominance', arc: 'hoa', eraMaps: ['ash'], see: ['pits-of-hathsin', 'arguois-caverns', 'tensoon', 'kanpaar'], wiki: 'Kandra_Homeland',
       bio: 'The kandra\'s caverns, in the same mountains as the Arguois caverns and the Pits of Hathsin, where the First Generation sit in judgment in the Trustwarren. TenSoon was tried here, KanPaar\'s Seconds seized it, and under its floor lay the Trust.' }),
-  loc('well-of-ascension', 'The Well of Ascension', 'scadrial', 'mistborn1', 0.620, 0.510, '#e0f2fe', 'crystal',
+  loc('well-of-ascension', 'The Well of Ascension', 'scadrial', 'mistborn1', 0.51, 0.38, '#e0f2fe', 'crystal',
     'The pool beneath Kredik Shaw. Power enough to remake the world — or free what was trapped there.', {
       region: 'Luthadel', arc: 'woa', eraMaps: ['ash'], see: ['kredik-shaw', 'luthadel'], wiki: 'Well_of_Ascension',
       bio: 'A pool of power that fills every thousand years, hidden under Kredik Shaw. Rashek took it and kept it. Vin took it and let it go, which is what the thing trapped in it had wanted all along.' }),
-  loc('arguois-caverns', 'Arguois Caverns', 'scadrial', 'mistborn1', 0.641, 0.421, '#78716c', 'rock',
+  loc('arguois-caverns', 'Arguois Caverns', 'scadrial', 'mistborn1', 0.48, 0.34, '#78716c', 'rock',
     'Caves north of Luthadel where Kelsier\'s skaa army hid and trained.', {
       region: 'Central Dominance',
       bio: 'A cave system north of Luthadel, between the city and the Pits, reached through three rends in the ground. The skaa rebellion hid and trained an army of seven thousand there, and the Lord Ruler never managed to raid it.', eraMaps: ['ash'], see: ['luthadel', 'yeden', 'ham'], wiki: 'Arguois_Caverns' }),
-  loc('ashmount-tyrian', 'Ashmount Tyrian', 'scadrial', 'mistborn1', 0.554, 0.479, '#ef4444', 'fire',
+  loc('ashmount-tyrian', 'Ashmount Tyrian', 'scadrial', 'mistborn1', 0.42, 0.42, '#ef4444', 'fire',
     'The Ashmount in Lake Tyrian, just west of Luthadel.', {
       region: 'Central Dominance',
       bio: 'One of the Ashmounts whose ash falls on the Final Empire every day, standing in the middle of Lake Tyrian just west of Luthadel.', eraMaps: ['ash'], see: ['dominance-of-the-center'], wiki: 'Ashmounts' }),
-  loc('ashmount-zerinah', 'Ashmount Zerinah', 'scadrial', 'mistborn1', 0.474, 0.643, '#f97316', 'fire',
+  loc('ashmount-zerinah', 'Ashmount Zerinah', 'scadrial', 'mistborn1', 0.6, 0.45, '#f97316', 'fire',
     'One of the Southern Dominance\'s two Ashmounts, south-west of Luthadel.', {
       region: 'Southern Dominance',
       bio: 'An Ashmount of the Southern Dominance, south-west of Luthadel near the Southern Sea.', eraMaps: ['ash'], wiki: 'Ashmounts' }),
-  loc('ashmount-doriel', 'Ashmount Doriel', 'scadrial', 'mistborn1', 0.574, 0.775, '#dc2626', 'fire',
+  loc('ashmount-doriel', 'Ashmount Doriel', 'scadrial', 'mistborn1', 0.38, 0.5, '#dc2626', 'fire',
     'The Ashmount by the Southern Sea, south-south-west of Luthadel.', {
       region: 'Southern Dominance',
       bio: 'The second Ashmount of the Southern Dominance, near the coast of the Southern Sea, south-south-west of Luthadel.', eraMaps: ['ash'], wiki: 'Ashmounts' }),
-  loc('ashmount-torinost', 'Ashmount Torinost', 'scadrial', 'mistborn1', 0.549, 0.280, '#b91c1c', 'fire',
+  loc('ashmount-torinost', 'Ashmount Torinost', 'scadrial', 'mistborn1', 0.55, 0.3, '#b91c1c', 'fire',
     'A Western Dominance Ashmount, north-north-west of Luthadel.', {
       region: 'Western Dominance',
       bio: 'One of the Western Dominance\'s two Ashmounts, with Morag, standing north-north-west of Luthadel.', eraMaps: ['ash'], wiki: 'Ashmounts' }),
-  loc('river-channerel', 'River Channerel', 'scadrial', 'mistborn1', 0.593, 0.566, '#64748b', 'canal',
+  loc('river-channerel', 'River Channerel', 'scadrial', 'mistborn1', 0.5, 0.42, '#64748b', 'canal',
     'The river through Luthadel, south to Austrex and the Southern Sea.', {
       region: 'Central Dominance',
       bio: 'The great river of the Final Empire\'s heartland: down out of the north past Tathingdwen, through Luthadel, and on south past Austrex to the Southern Sea.', eraMaps: ['ash'], see: ['luthadel', 'austrex'], wiki: 'River_Channerel' }),
-  loc('austrex', 'Austrex', 'scadrial', 'mistborn1', 0.547, 0.613, '#94a3b8', 'city',
+  loc('austrex', 'Austrex', 'scadrial', 'mistborn1', 0.48, 0.55, '#94a3b8', 'city',
     'A city of the Southern Dominance on the River Channerel, south of Luthadel.', {
       region: 'Southern Dominance',
       bio: 'A city on the River Channerel south of Luthadel, where the river and the canals meet on their way to the Southern Sea.', eraMaps: ['ash'], see: ['southern-dominance', 'river-channerel'], wiki: 'Austrex' }),
@@ -656,23 +654,23 @@ export const PLACES_MORE: Location[] = [
     'Half-submerged holy sites the Purelakers still fish around. The water is the congregation.', {
       region: 'The Purelake',
       bio: 'Half-drowned holy sites the Purelakers fish around without much ceremony. Whatever was worshipped here predates Vorinism; the lake has covered it to the knee and the congregation has adapted.', see: ['purelake', 'bornwater'] }),
-  loc('luthadel-gates', 'Luthadel Gates', 'scadrial', 'mistborn1', 0.6291, 0.5193, '#78716c', 'keep',
+  loc('luthadel-gates', 'Luthadel Gates', 'scadrial', 'mistborn1', 0.505, 0.392, '#78716c', 'keep',
     'Eight gates named for the metals, in the only city wall the Lord Ruler permitted.', {
       region: 'Luthadel',
       bio: 'Eight gates, named for the metals, spaced around the only city wall the Lord Ruler permitted. The wall was always more a symbol than a defence.', eraMaps: ['ash'], see: ['luthadel'] }),
-  loc('skaa-slums-luthadel', 'Luthadel Skaa Slums', 'scadrial', 'mistborn1', 0.6201, 0.5238, '#57534e', 'village',
+  loc('skaa-slums-luthadel', 'Luthadel Skaa Slums', 'scadrial', 'mistborn1', 0.502, 0.398, '#57534e', 'village',
     'The districts where Luthadel\'s skaa live, and its thieving crews work.', {
       region: 'Luthadel',
       bio: 'The districts where Luthadel\'s skaa live and die: ash in the air, mists at night that nobody walks in, and a thieving crew in more cellars than the obligators know about. Camon\'s crew worked out of here, and Kelsier recruited from it.', eraMaps: ['ash'], see: ['luthadel', 'camon'], wiki: 'Luthadel' }),
-  loc('urteau-canals', 'Urteau Canals', 'scadrial', 'mistborn1', 0.741, 0.413, '#38bdf8', 'canal',
+  loc('urteau-canals', 'Urteau Canals', 'scadrial', 'mistborn1', 0.605, 0.235, '#38bdf8', 'canal',
     'Urteau\'s streetslots: canals dry for a hundred years.', {
       region: 'Northern Dominance',
       bio: 'Urteau\'s streetslots: canals dry for a hundred years and paved with ash, the Marketpit the widest of them. Spook ended the Citizen\'s rule by opening Sazed\'s mechanism and letting the cache\'s water back in.', arc: 'hoa', eraMaps: ['ash'], see: ['urteau', 'spook', 'quellion'], wiki: 'Urteau' }),
-  loc('fadrex-caves', 'The Fadrex cache', 'scadrial', 'mistborn1', 0.434, 0.488, '#a8a29e', 'rock',
+  loc('fadrex-caves', 'The Fadrex cache', 'scadrial', 'mistborn1', 0.27, 0.31, '#a8a29e', 'rock',
     'The Lord Ruler\'s last storage cache, under Fadrex City.', {
       region: 'Western Dominance',
       bio: 'The last of the Lord Ruler\'s storage caches lies under Fadrex. Its plate offers no metal and no map, only a circle with a dot and an apology: he had found nothing that could stop the thing, and he had hidden its body well.', arc: 'hoa', eraMaps: ['ash'], see: ['fadrex', 'storage-cavern-luthadel'], wiki: 'Storage_cavern' }),
-  loc('storage-cavern-luthadel', 'Luthadel Storage Cavern', 'scadrial', 'mistborn1', 0.6156, 0.5238, '#cbd5e1', 'keep',
+  loc('storage-cavern-luthadel', 'Luthadel Storage Cavern', 'scadrial', 'mistborn1', 0.515, 0.385, '#cbd5e1', 'keep',
     'The Lord Ruler\'s hidden supply cache under Kredik Shaw.', {
       region: 'Central Dominance',
       bio: 'The first of the Lord Ruler\'s hidden caches to be found, under Kredik Shaw: food, water, and a plate of inscribed metal. The plates were the point.', arc: 'woa', eraMaps: ['ash'], see: ['luthadel', 'kredik-shaw'], wiki: 'Storage_cavern' }),

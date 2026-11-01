@@ -265,20 +265,32 @@ export function systemOnTheMap(
  */
 export const CATACENDRE_YEAR = -1;
 
-export function scadrialIsBasin(era: number, year?: number): boolean {
+/**
+ * The remade world is the ending of The Hero of Ages. A reader who has not
+ * finished it keeps the Final Empire on every map, whatever the playhead says;
+ * without `progress` (the harness, fully read) the playhead alone decides.
+ */
+export function catacendreRevealed(progress?: Record<string, number>): boolean {
+  return !progress || isVisible({ book: 'mistborn1', arc: 'hoa' }, progress);
+}
+
+export function scadrialIsBasin(era: number, year?: number, progress?: Record<string, number>): boolean {
   if (era < 2) return true;
+  if (!catacendreRevealed(progress)) return false;
   if (year === undefined) return era >= 3;
   return year >= CATACENDRE_YEAR;
 }
 
-export function locationsOn(bodyId: string, era?: number, year?: number): Location[] {
+export function locationsOn(
+  bodyId: string, era?: number, year?: number, progress?: Record<string, number>,
+): Location[] {
   return LOCATIONS.filter((l) => {
     if (l.body !== bodyId) return false;
     if (era !== undefined && !inEra(l, era)) return false;
     if (!l.eraMaps || era === undefined) return true;
     if (bodyId === 'scadrial') {
       if (era < 2) return false;
-      return scadrialIsBasin(era, year)
+      return scadrialIsBasin(era, year, progress)
         ? l.eraMaps.includes('basin')
         : l.eraMaps.includes('ash');
     }
@@ -315,10 +327,10 @@ export function addedThisArc(
  * a crop of the same world map the globe is using.
  */
 export function canEnterCity(
-  loc: Location, era?: number, realm?: string, year?: number,
+  loc: Location, era?: number, realm?: string, year?: number, progress?: Record<string, number>,
 ): boolean {
   if (loc.realm === 'cognitive' || realm === 'cognitive' || realm === 'spiritual') return false;
-  if (era !== undefined && loc.eraMaps && !locationsOn(loc.body, era, year).some((l) => l.id === loc.id)) {
+  if (era !== undefined && loc.eraMaps && !locationsOn(loc.body, era, year, progress).some((l) => l.id === loc.id)) {
     return false;
   }
   if (cityById[loc.id]) return true;
@@ -330,9 +342,11 @@ export function perpAt(locationId: string): Perpendicularity | undefined {
   return PERPS.find((p) => p.at === locationId);
 }
 
-export function scadrialBiome(era: number, year?: number): 'scadrial-ash' | 'scadrial-basin' {
+export function scadrialBiome(
+  era: number, year?: number, progress?: Record<string, number>,
+): 'scadrial-ash' | 'scadrial-basin' {
   if (era < 2) return 'scadrial-basin';
-  return scadrialIsBasin(era, year) ? 'scadrial-basin' : 'scadrial-ash';
+  return scadrialIsBasin(era, year, progress) ? 'scadrial-basin' : 'scadrial-ash';
 }
 
 function rowVisible(ch: Character, row: CharacterEra, progress: Record<string, number>): boolean {

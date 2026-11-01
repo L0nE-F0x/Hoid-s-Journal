@@ -35,8 +35,8 @@ const _world = new THREE.Vector3();
 const _up = new THREE.Vector3(0, 1, 0);
 
 /** Which recipe a world wears at this point in its history. */
-function biomeOf(body: Body, era: number, year?: number) {
-  return body.id === 'scadrial' ? scadrialBiome(era, year) : body.biome;
+function biomeOf(body: Body, era: number, year?: number, progress?: Record<string, number>) {
+  return body.id === 'scadrial' ? scadrialBiome(era, year, progress) : body.biome;
 }
 
 export interface PickHit {
@@ -750,6 +750,8 @@ export class Orrery {
     focusedBody: string | null;
     cameraDistance: number;
     cameraPos: THREE.Vector3;
+    /** Reading progress: the Catacendre swap waits for The Hero of Ages. */
+    progress?: Record<string, number>;
   }): void {
     const shadesmar = realm === 'cognitive';
     const cognitive = shadesmar ? 1 : 0;
@@ -775,7 +777,7 @@ export class Orrery {
     // Era and Realm both repaint worlds: the Catacendre is a map swap with a
     // sky to match, and Shadesmar is the same landmass read the other way.
     // Rebinding every albedo in one frame stalls, so spend a small budget.
-    const biome = scadrialBiome(era, year);
+    const biome = scadrialBiome(era, year, visual.progress);
     const flipped = biome !== this.lastBiome || shadesmar !== this.lastCognitive;
     this.lastBiome = biome;
     this.lastCognitive = shadesmar;
@@ -789,7 +791,7 @@ export class Orrery {
       return ax - bx;
     });
     for (const node of queue) {
-      const kind = biomeOf(node.body, era, year);
+      const kind = biomeOf(node.body, era, year, visual.progress);
       const want = node.body.id === this.detailed ? PLATE_LARGE : PLATE_SMALL;
       const skin = `${kind}:${shadesmar}:${want}`;
       if (node.skin === skin) continue;
@@ -860,7 +862,7 @@ export class Orrery {
       // Clouds are seven noise evals, twice. A Cosmere-scale marble does not pay it.
       u.uClouds.value = (shadesmar || visual.scale === 'cosmere' || !showBody)
         ? 0
-        : recipeFor(biomeOf(node.body, era, year)).clouds;
+        : recipeFor(biomeOf(node.body, era, year, visual.progress)).clouds;
 
       const a = node.atmoMat.uniforms;
       a.uCentre.value.copy(_world);

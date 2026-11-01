@@ -46,7 +46,7 @@ function cycleSky(dir: 1 | -1): void {
     return;
   }
   if (s.focusedBody) {
-    const ids = locationsOn(s.focusedBody, s.era, s.year)
+    const ids = locationsOn(s.focusedBody, s.era, s.year, s.readProgress)
       .filter((l) => onTheMap(l, s.readProgress, s.era) && l.realm !== 'cognitive')
       .map((l) => l.id);
     const id = wrap(ids, s.focusedLocation);

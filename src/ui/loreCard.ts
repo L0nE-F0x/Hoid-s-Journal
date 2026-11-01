@@ -338,7 +338,7 @@ function fillFromHit(host: HTMLElement, hit: LoreHit): void {
     if (perp) host.append(factBlock(perp.fact) ?? '');
     host.append(seeRow(l.see) ?? '');
     host.append(wikiLink(l.wiki) ?? '');
-    if (canEnterCity(l, era, store.state.realm, store.state.year) && store.state.scale !== 'city') {
+    if (canEnterCity(l, era, store.state.realm, store.state.year, store.state.readProgress) && store.state.scale !== 'city') {
       const go = el('button', {
         className: 'ceph-btn ceph-btn--primary',
         text: cityById[l.id] ? 'Open the city plate' : 'Look closer',

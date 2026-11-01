@@ -139,6 +139,7 @@ export class App {
       showOrbits: true, showMoons: true, showAtmospheres: true, showNebula: true, nebula: 1,
       scale: 'cosmere', focusedSystem: null, focusedBody: null, cameraDistance: 260,
       cameraPos: this.camera.position,
+      progress: store.state.readProgress,
     });
 
     this.disposers.push(store.on('cameraCue', (cue) => {
@@ -772,7 +773,7 @@ export class App {
       if (!loc) return;
       const dive = s.focusedLocation === loc.id
         && (s.scale === 'surface' || s.scale === 'city')
-        && canEnterCity(loc, s.era, s.realm, s.year);
+        && canEnterCity(loc, s.era, s.realm, s.year, s.readProgress);
       this.focusLocation(loc.id, loc.body, dive ? 'city' : 'surface');
       return;
     }
@@ -1013,6 +1014,7 @@ export class App {
       focusedBody: s.focusedBody,
       cameraDistance: this.rig.distance,
       cameraPos: this.camera.position,
+      progress: store.state.readProgress,
     });
     this.trackFocus(s.scale, s.focusedBody, s.focusedLocation, s.cinematic);
 

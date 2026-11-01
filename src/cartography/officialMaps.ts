@@ -36,8 +36,10 @@ function load(file: string, onReady: () => void): HTMLImageElement | null {
   return null;
 }
 
-export function worldMapFile(bodyId: string, era: number, cognitive: boolean, layer = 0, year?: number): string | null {
-  const layers = worldMapLayers(bodyId, era, cognitive, year);
+export function worldMapFile(
+  bodyId: string, era: number, cognitive: boolean, layer = 0, year?: number, progress?: Record<string, number>,
+): string | null {
+  const layers = worldMapLayers(bodyId, era, cognitive, year, progress);
   if (!layers.length) return null;
   return layers[Math.min(layer, layers.length - 1)]!.file;
 }
@@ -82,14 +84,16 @@ export function cityMapFile(locationId: string, layer = 0): string | null {
   return layers[Math.min(layer, layers.length - 1)]!.file;
 }
 
-export function worldMapLayers(bodyId: string, era: number, cognitive: boolean, year?: number): MapLayer[] {
+export function worldMapLayers(
+  bodyId: string, era: number, cognitive: boolean, year?: number, progress?: Record<string, number>,
+): MapLayer[] {
   if (bodyId === 'roshar') {
     return cognitive
       ? [{ name: 'Shadesmar', file: 'Shadesmar_full.jpg' }]
       : [{ name: 'Roshar', file: 'roshar_full.jpg' }];
   }
   if (bodyId === 'scadrial' && !cognitive) {
-    return scadrialIsBasin(era, year)
+    return scadrialIsBasin(era, year, progress)
       ? [
           { name: 'World', file: 'scadrial_full.png' },
           { name: 'Basin', file: 'elendel_basin.png' },

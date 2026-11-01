@@ -32,8 +32,8 @@ export const ORGANIZATIONS: Organization[] = [
     'Elantrian worldhoppers who built a fortress in Sel\'s Cognitive Realm and once tried to take up a Shard.',
     {
       aliases: 'the Ire',
-      world: 'Sel', wiki: 'Ire', members: ['riina'],
-      see: ['elantris-city', 'riina', 'silverlight'],
+      world: 'Sel', wiki: 'Ire',
+      see: ['elantris-city', 'silverlight'],
       bio: 'They have kept themselves alive for centuries in Shadesmar, drawing on the Dor at a distance. In Secret History they try to claim Preservation as it passes. Riina, the Sorceress of Lumar, is Ire-adjacent. They are not the Seventeenth Shard, and they are not gentle.',
     }),
   org('bridge-four', 'Bridge Four', '#22d3ee', 'stormlight', 'military',
@@ -229,7 +229,7 @@ export const ORGANIZATIONS: Organization[] = [
   org('malwish', 'The Malwish', '#94a3b8', 'mistborn2', 'nation',
     'Southern Scadrians who survived the ice with the Lord Mistborn\'s gift, and built a civilisation out of ettmetal.',
     {
-      members: ['allik', 'jordis', 'dajer', 'aditil', 'leonore'],
+      members: ['allik', 'jordis'],
       aliases: 'Southern Scadrians, south Scadrial',
       arc: 'bom', world: 'Scadrial', wiki: 'Malwish',
       see: ['southern-continent', 'harmonium', 'allik'],
@@ -276,7 +276,7 @@ export const ORGANIZATIONS: Organization[] = [
     'The Shaod takes you. Then you are a god, or — during the Reod — a corpse that walks.',
     {
       world: 'Sel', wiki: 'Elantrian',
-      members: ['raoden', 'galladon', 'riina'],
+      members: ['raoden', 'galladon'],
       see: ['elantris-city', 'aondor', 'shaod'],
     }),
   org('night-brigade', 'The Night Brigade', '#111827', 'sunlit', 'military',

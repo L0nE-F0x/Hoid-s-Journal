@@ -57,7 +57,7 @@ export const ORGS_MORE: Organization[] = [
   org('southern-scadrial', 'Southern Scadrial', '#f97316', 'mistborn2', 'nation',
     'The peoples below the equator who survived ice with medallions, ettmetal and the Sovereign\'s myths. Malwish masks are the face the north meets first.',
     {
-      members: ['allik', 'jordis', 'dajer'],
+      members: ['allik', 'jordis'],
       arc: 'bom', world: 'Scadrial', wiki: 'Southern_Scadrians',
       see: ['malwish', 'ettmetal', 'malwish-medallion', 'kelsier'],
       bio: 'Not a single state so much as a civilisation the Catacendre almost erased. Airships, masks and unsealed metalminds — and a religious memory of Kelsier that Elendel is not ready for.',

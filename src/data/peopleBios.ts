@@ -48,7 +48,7 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   sigzil: {
     wiki: 'Sigzil',
-    see: ['hoid', 'auxiliary', 'kaladin', 'night-brigade'],
+    see: ['hoid', 'kaladin', 'bridge-four'],
     bio: 'Bridge Four\'s azish Worldsinger, Hoid\'s former apprentice, and later the man called Nomad. He held a Dawnshard long enough for the Night Brigade to hunt him across the stars, bonded the highspren Aux, and learned that skipping is not the same as escaping.',
   },
   vasher: {

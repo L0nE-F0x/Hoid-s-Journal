@@ -156,6 +156,10 @@ export const RELATIONS_MORE: Relation[] = [
   { a: { kind: 'character', id: 'tress' }, b: { kind: 'character', id: 'riina' }, type: 'rival', label: 'Broke the curse', book: 'tress', canon: C },
   { a: { kind: 'character', id: 'charlie' }, b: { kind: 'character', id: 'riina' }, type: 'rival', label: 'Her curse', book: 'tress', canon: C },
   { a: { kind: 'character', id: 'hoid' }, b: { kind: 'character', id: 'riina' }, type: 'rival', label: 'Ire trouble', book: 'tress', canon: C },
+  // Riina is one of the Ire and an Elantrian, but that is Tress's news, so it
+  // is a sentence here rather than a name on the older orders' rosters.
+  { a: { kind: 'character', id: 'riina' }, b: { kind: 'org', id: 'the-ire' }, type: 'bond', label: 'One of the Ire', book: 'tress', canon: C },
+  { a: { kind: 'character', id: 'riina' }, b: { kind: 'org', id: 'elantrians' }, type: 'bond', label: 'An Elantrian', book: 'tress', canon: C },
   { a: { kind: 'character', id: 'nikli' }, b: { kind: 'character', id: 'sleepless-hordes' }, type: 'family', label: 'One of the Sleepless', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'sigzil' }, b: { kind: 'org', id: 'night-brigade' }, type: 'rival', label: 'Hunted by them', book: 'sunlit', canon: C },
   { a: { kind: 'character', id: 'design' }, b: { kind: 'character', id: 'pattern' }, type: 'ally', label: 'Fellow Cryptics', book: 'stormlight', canon: C },

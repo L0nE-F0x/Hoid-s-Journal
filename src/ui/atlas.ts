@@ -382,8 +382,12 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
       ? visibleLocations().find((l) => l.id === s.focusedLocation)
       : undefined;
     const basin = s.year >= CATACENDRE_YEAR ? 'basin' : 'ash';
+    // Which plate set this is. The layer chosen within it is not part of the
+    // key: it was, so choosing a layer changed the key, and a changed key
+    // resets the layer to the first — the first click on a city's second
+    // layer put it straight back.
     const key = s.scale === 'city'
-      ? `c:${s.focusedLocation}:${plateLayer}`
+      ? `c:${s.focusedLocation}`
       : `w:${s.focusedBody}:${s.era}:${basin}:${s.realm}`;
     if (key !== plateKey) { plateKey = key; plateLayer = 0; }
     const layerRows = s.scale === 'city' && loc

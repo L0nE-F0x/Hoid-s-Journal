@@ -3,6 +3,7 @@ import { cityMapFile, cityMapLayers, getOfficialMap, MAP_CREDIT, worldMapFile, w
 import { bakePlanetMap, seedFromId } from '../cartography/planetMap.ts';
 import { plateTint } from '../cartography/recipes.ts';
 import {
+  COSMERE,
   bodyById,
   canEnterCity,
   charactersOnBody,
@@ -378,8 +379,15 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
     // chips exist parks it on top of them.
     const body = bodyById[s.focusedBody];
     if (!body) return;
+    // A city plate is the city's whatever the playhead says about the world
+    // map under it. Luthadel opened with the playhead past the Catacendre is
+    // not on the basin map, so this came back empty and the city plate was
+    // drawn under "Scadrial" with the basin's World / Basin / Starchart chips.
     const loc = s.focusedLocation
       ? visibleLocations().find((l) => l.id === s.focusedLocation)
+        ?? (s.scale === 'city'
+          ? COSMERE.locations.find((l) => l.id === s.focusedLocation && isVisible(l, s.readProgress))
+          : undefined)
       : undefined;
     const basin = s.year >= CATACENDRE_YEAR ? 'basin' : 'ash';
     // Which plate set this is. The layer chosen within it is not part of the

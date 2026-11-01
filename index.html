@@ -6,6 +6,7 @@
     <title>Hoid’s Journal</title>
     <meta name="description" content="Hoid’s Journal: an unofficial, spoiler-aware, nested atlas of Brandon Sanderson’s Cosmere. Fly the systems, walk the Realms, and keep a journal that will not spoil you." />
     <meta name="theme-color" content="#05060c" />
+    <meta name="application-name" content="Hoid’s Journal" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -17,11 +18,13 @@
     <link rel="canonical" href="%SITE_URL%/" />
 
     <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_US" />
     <meta property="og:site_name" content="Hoid’s Journal" />
     <meta property="og:url" content="%SITE_URL%/" />
     <meta property="og:title" content="Hoid’s Journal" />
     <meta property="og:description" content="An unofficial nested atlas of the Cosmere. Fly the systems. Walk the Realms. Keep a journal that will not spoil you." />
     <meta property="og:image" content="%SITE_URL%/og.jpg" />
+    <meta property="og:image:type" content="image/jpeg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="Hoid’s Journal. An unofficial nested atlas of the Cosmere." />
@@ -31,6 +34,34 @@
     <meta name="twitter:description" content="An unofficial nested atlas of the Cosmere." />
     <meta name="twitter:image" content="%SITE_URL%/og.jpg" />
     <meta name="twitter:image:alt" content="Hoid’s Journal over a live Roshar." />
+
+    <!-- What the page is, for search. The copyright notice is the title
+         screen's disclaimer (`DISCLAIMER` in src/ui/brand.ts), word for word;
+         change both together. This is a data block, not script, so the CSP's
+         script-src does not apply to it. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Hoid’s Journal",
+        "url": "%SITE_URL%/",
+        "image": "%SITE_URL%/og.jpg",
+        "description": "An unofficial, spoiler-aware, nested atlas of Brandon Sanderson’s Cosmere. Fly the systems, walk the three Realms, and keep a reading journal that will not spoil you.",
+        "applicationCategory": "ReferenceApplication",
+        "operatingSystem": "Any",
+        "browserRequirements": "Requires JavaScript and WebGL2",
+        "inLanguage": "en",
+        "isAccessibleForFree": true,
+        "genre": "Fan work",
+        "about": {
+          "@type": "CreativeWorkSeries",
+          "name": "The Cosmere",
+          "author": { "@type": "Person", "name": "Brandon Sanderson" }
+        },
+        "creator": { "@type": "Organization", "name": "ApexForge", "url": "https://ame-apexforge.org/" },
+        "copyrightNotice": "Hoid’s Journal is an unofficial, non-profit fan project. It is not affiliated with, endorsed by, or sponsored by Dragonsteel Entertainment or Brandon Sanderson. All Cosmere characters, planets, lore, and related intellectual property are the exclusive trademarks and copyrights of Dragonsteel Entertainment, LLC. World maps and city plates by Isaac Stewart; used here with credit, in an unofficial fan work."
+      }
+    </script>
     <style>
       :root { color-scheme: dark; }
       * { box-sizing: border-box; }

@@ -240,6 +240,28 @@ export const CITY_PLATES: CityPlate[] = [
         { book: 'mistborn2', arc: 'sos', on: [{ file: 'elendel_lost_metal.jpeg', u: 0.937, v: 0.507 }] }),
     ],
   },
+  // The plate's cursive labels, read at four times size. Uptown, Downtown
+  // and one more legible label have nothing on record beyond the map, so
+  // they get no dot.
+  {
+    id: 'new-seran',
+    kind: 'newseran',
+    kicker: 'Outer City',
+    landmarks: [
+      mark('new-seran-shores-mansion', 'new-seran', 'Shores Mansion', 0.208, 0.151, '#e8b86d',
+        'Lady Kelesina\'s house, built and decorated to look like a keep from before the Catacendre. Wax and Steris came to her party here; she was working with the Set.',
+        { book: 'mistborn2', arc: 'bom', on: [{ file: 'new_seran.png', u: 0.208, v: 0.151 }] }),
+      mark('new-seran-copper-gate', 'new-seran', 'Copper Gate Hotel', 0.103, 0.309, '#d6a44c',
+        'Aunt Gin\'s hotel. Wax\'s party took the whole top floor, and Wax tore open the windows she had painted shut against the wind.',
+        { book: 'mistborn2', arc: 'bom', on: [{ file: 'new_seran.png', u: 0.103, v: 0.309 }] }),
+      mark('new-seran-cemetery', 'new-seran', 'Seran New District Cemetery', 0.640, 0.360, '#a8a29e',
+        'The city pays it to bury the unidentified, and it has the worst grave robbing in town. ReLuur\'s spike went into its mass grave; Wayne and Marasi came looking for it and were ambushed.',
+        { book: 'mistborn2', arc: 'bom', on: [{ file: 'new_seran.png', u: 0.640, v: 0.360 }] }),
+      mark('new-seran-river', 'new-seran', 'Seran River', 0.800, 0.369, '#67e8f9',
+        'Streams cross every terrace and drop to the next; the water finds its way back to the river, and the river runs on toward Elendel.',
+        { book: 'mistborn2', arc: 'bom', on: [{ file: 'new_seran.png', u: 0.800, v: 0.369 }] }),
+    ],
+  },
   {
     id: 'elantris-city',
     kind: 'elantris',

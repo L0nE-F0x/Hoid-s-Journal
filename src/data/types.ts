@@ -381,6 +381,7 @@ export type CityKind =
   | 'fadrex'
   | 'urteau'
   | 'elendel'
+  | 'newseran'
   | 'elantris'
   | 'ttelir'
   | 'kilahito'

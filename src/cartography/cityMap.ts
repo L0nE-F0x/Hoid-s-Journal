@@ -529,6 +529,8 @@ const PLANS: Record<CityKind, Plan> = {
   // No wall by the Lord Ruler's order; canals for streets.
   urteau: { pal: SCADRIAL, grid: { cols: 10, rows: 6, tilt: -0.08 }, citadel: 'none', water: 'canals', outskirts: 20 },
   elendel: { pal: SCADRIAL, grid: { cols: 12, rows: 8, tilt: 0.06 }, citadel: 'tower', water: 'canals', outskirts: 22 },
+  // Terraces stepping down to a river.
+  newseran: { pal: SCADRIAL, grid: { cols: 8, rows: 7, tilt: 0.04 }, citadel: 'terraces', water: 'river', outskirts: 12 },
   elantris: { pal: SELISH, radial: { rings: 5, spokes: 4, wall: true, gates: 4 }, citadel: 'tower', water: 'none', outskirts: 34 },
   ttelir: { pal: NALTHIS, grid: { cols: 9, rows: 6, tilt: -0.05 }, citadel: 'keep', water: 'bay', outskirts: 18 },
   kilahito: { pal: KOMASHI, lattice: true, grid: { cols: 8, rows: 5, tilt: 0 }, citadel: 'none', water: 'none' },

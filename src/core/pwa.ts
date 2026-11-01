@@ -2,6 +2,7 @@
  * Offline shell and install prompt. Both are no-ops in dev: a stale service
  * worker in front of the dev server is a bad afternoon.
  */
+import { store } from './store.ts';
 
 interface InstallPromptEvent extends Event {
   prompt(): Promise<void>;
@@ -10,6 +11,39 @@ interface InstallPromptEvent extends Event {
 
 let deferred: InstallPromptEvent | null = null;
 let notify: (() => void) | null = null;
+
+/** When this tab last reloaded for a new worker. Per tab, so sessionStorage. */
+const RELOAD_KEY = 'ceph-sw-reload';
+const RELOAD_GAP_MS = 60_000;
+
+function reloadedRecently(): boolean {
+  try {
+    return Date.now() - Number(sessionStorage.getItem(RELOAD_KEY) ?? 0) < RELOAD_GAP_MS;
+  } catch {
+    return true; // no storage, no way to prove it is not a loop: do not reload
+  }
+}
+
+/**
+ * A new worker has taken this tab. Reload only while that costs the reader
+ * nothing.
+ *
+ * On the boot screen or the title, the reload is the point: it swaps a shell
+ * an old worker served for the new one. In play it is not — the hash keeps
+ * the camera's target, but the open card, the panel, the Lore Web and the
+ * cinematic already watched are gone, and the reader is back on the title.
+ * The running page needs nothing more from the network that the new worker
+ * cannot serve, and the next visit gets the new shell anyway, because
+ * navigations are network-first.
+ *
+ * At most once a minute per tab, so two workers swapping places during a
+ * deploy cannot bounce it.
+ */
+function onNewWorker(): void {
+  if (store.state.shell === 'play' || reloadedRecently()) return;
+  try { sessionStorage.setItem(RELOAD_KEY, String(Date.now())); } catch { return; }
+  window.location.reload();
+}
 
 /** The first visit was not controlled, so the worker never saw this build's
  *  files go by. Name them, so the next visit can open offline. */
@@ -44,15 +78,9 @@ export function connectPwa(onChange?: () => void): void {
       .catch(() => undefined);
     return;
   }
-  // Reload when a new worker takes a tab that already had one. The first
-  // install has no controller yet, and reloading then would loop boot.
+  // The first install has no controller yet; reloading then would loop boot.
   if (navigator.serviceWorker.controller) {
-    let reloading = false;
-    navigator.serviceWorker.addEventListener('controllerchange', () => {
-      if (reloading) return;
-      reloading = true;
-      window.location.reload();
-    });
+    navigator.serviceWorker.addEventListener('controllerchange', onNewWorker);
   }
   const register = () => {
     navigator.serviceWorker.register(`${import.meta.env.BASE_URL}sw.js`, {

@@ -9,7 +9,10 @@ function ch(
   extra: Partial<Character> = {},
 ): Character {
   return {
-    id, name, color, book, origin, aliases, abilities, fact, cognitive, eras,
+    id, name, color, book, origin, aliases, abilities, fact, cognitive,
+    // Each person gets their own rows: index.ts writes presence beats into
+    // them, and the shared E1/E2-style constants must not move everyone at once.
+    eras: eras.map((row) => ({ ...row })),
     canon: extra.canon ?? C,
     sources: extra.sources ?? [book],
     ...extra,

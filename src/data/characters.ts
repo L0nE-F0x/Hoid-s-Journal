@@ -9,7 +9,7 @@ function ch(
   eras: Character['eras'],
   extra: Partial<Character> = {},
 ): Character {
-  return { id, name, color, book, origin, aliases, abilities, fact, cognitive, eras, canon: C, sources: [book], ...extra };
+  return { id, name, color, book, origin, aliases, abilities, fact, cognitive, eras: eras.map((row) => ({ ...row })), canon: C, sources: [book], ...extra };
 }
 
 export const CHARACTERS: Character[] = [
@@ -468,7 +468,7 @@ function drake(
 ): Character {
   return {
     id, name, color, book, origin: 'Yolen', aliases, abilities, fact,
-    cognitive: true, eras, kind: 'dragon', biology,
+    cognitive: true, eras: eras.map((row) => ({ ...row })), kind: 'dragon', biology,
     canon: 'canon', sources: [book], ...extra,
   };
 }

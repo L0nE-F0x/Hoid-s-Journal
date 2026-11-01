@@ -2,13 +2,15 @@ import type { Character } from './types.ts';
 
 const C = 'canon' as const;
 
+// Rows are copied per person: index.ts writes presence beats into them, and
+// E1, E2 and KANDRA below are shared, so mutating one would move everyone.
 function ch(
   id: string, name: string, color: string, book: string, origin: string,
   aliases: string, abilities: string, fact: string, cognitive: boolean,
   eras: Character['eras'],
   extra: Partial<Character> = {},
 ): Character {
-  return { id, name, color, book, origin, aliases, abilities, fact, cognitive, eras, canon: extra.canon ?? C, sources: extra.sources ?? [book], ...extra };
+  return { id, name, color, book, origin, aliases, abilities, fact, cognitive, eras: eras.map((row) => ({ ...row })), canon: extra.canon ?? C, sources: extra.sources ?? [book], ...extra };
 }
 
 const E1: Character['eras'] = [{ era: 2, system: 'scadrian', body: 'scadrial' }];

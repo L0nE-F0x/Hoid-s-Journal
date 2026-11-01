@@ -272,7 +272,8 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
     if (!ctx) return;
     ctx.clearRect(0, 0, W, H);
     const rows = pinRows();
-    const isHot = (id: string) => s.selected === id || s.hovered === id || s.focusedLocation === id;
+    const isHot = (id: string) => s.selected === id || s.hovered === id || s.focusedLocation === id
+      || (!!landmarkById[id]?.entry && s.selected === landmarkById[id]!.entry);
 
     for (const loc of rows) {
       const { x: px, y: py } = at(loc.u, loc.v);
@@ -338,8 +339,9 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
       for (const m of plate.landmarks) {
         if (!isVisible(m, s.readProgress)) continue;
         const chip = el('button', {
-          className: `ceph-atlas-chip${s.selected === m.id ? ' is-on' : ''}`,
+          className: `ceph-atlas-chip${s.selected === (m.entry ?? m.id) ? ' is-on' : ''}`,
           text: m.name,
+          attrs: { type: 'button' },
           style: { borderColor: m.color },
         });
         // A mark that names a place with its own pin on the globe hands over
@@ -507,7 +509,11 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
     const s = store.state;
     const landmark = landmarkById[id];
     if (landmark) {
-      store.set('selected', landmark.id);
+      // The dot and its chip in "On this plate" are the same mark and open the
+      // same card: the place it names when it names one (`entry`), the mark's
+      // own note otherwise. The dot used to open the note and the chip the
+      // place, so one click on the plate and one under it disagreed.
+      store.set('selected', landmark.entry ?? landmark.id);
       return;
     }
     const loc = visibleLocations().find((l) => l.id === id);

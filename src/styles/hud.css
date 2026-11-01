@@ -393,6 +393,20 @@
   gap: 6px;
   margin-top: 6px;
 }
+/* New this arc: the journal's warm colour on the chip that opens it. */
+.ceph-atlas-chip--new { border-color: color-mix(in srgb, var(--ceph-amber) 55%, transparent); }
+.ceph-atlas-chip--new:hover { border-color: var(--ceph-amber); }
+/* A name with no entry behind it: set like a chip, read like a label. */
+.ceph-tag {
+  display: inline-block;
+  padding: 3px 8px;
+  font-size: 10px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--ceph-text-dim);
+  border: 1px dashed var(--ceph-rule);
+  border-radius: 2px;
+}
 .ceph-wiki {
   display: inline-block;
   margin-top: 12px;
@@ -466,6 +480,9 @@
   background: rgba(4, 5, 11, 0.55);
   pointer-events: auto;
 }
+/* The panel itself takes focus when it opens so Tab starts inside it; it is
+   not a control, and a ring round the whole dialog says nothing. */
+.ceph-root .ceph-modal-card:focus-visible { outline: none; }
 .ceph-modal-card {
   width: min(880px, calc(100% - 32px));
   max-height: min(86vh, 720px);
@@ -505,6 +522,7 @@
   border-bottom: 1px solid var(--ceph-border);
 }
 .ceph-book-list {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 2px;

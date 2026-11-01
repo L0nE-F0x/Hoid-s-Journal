@@ -554,10 +554,36 @@ function renderSpoilers(card: HTMLElement): void {
     }
     const fresh = addedThisArc(now);
     if (fresh.length) {
-      const wrap = el('div', { style: { display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '8px' } });
+      // Each is a way into its entry. They were spans dressed as the chips
+      // that open things everywhere else — pointer cursor, cyan hover — and
+      // clicking "Urithiru" did nothing. Resolved by kind and name among the
+      // entries this very arc added, so a later namesake can never answer.
+      const s = seriesById[now.series];
+      const arcId = s?.arcs[now.arc]?.id;
+      const here = (item: { book?: string; arc?: string }) => item.book === now.series && item.arc === arcId;
+      const idFor = (kind: string, name: string): string | undefined => {
+        if (kind === 'world') return COSMERE.bodies.find((b) => b.name === name && here(b))?.id;
+        if (kind === 'person') return COSMERE.characters.find((c) => c.name === name && here(c))?.id;
+        if (kind === 'place') return COSMERE.locations.find((l) => l.name === name && here(l))?.id;
+        if (kind === 'term') return COSMERE.glossary.find((g) => g.term === name && here(g))?.id;
+        if (kind === 'magic') return COSMERE.magics.find((m) => m.name === name && here(m))?.id;
+        if (kind === 'order') return COSMERE.organizations.find((o) => o.name === name && here(o))?.id;
+        return undefined;
+      };
+      const wrap = el('div', { className: 'ceph-see-chips', style: { marginTop: '8px' } });
       for (const row of fresh.slice(0, 24)) {
-        wrap.append(el('span', { className: 'ceph-atlas-chip', text: `✦ ${row.name}`,
-          style: { border: '1px solid var(--ceph-border)', borderRadius: '999px', padding: '2px 8px', fontSize: '10.5px' } }));
+        const id = idFor(row.kind, row.name);
+        if (!id) {
+          wrap.append(el('span', { className: 'ceph-tag', text: `✦ ${row.name}` }));
+          continue;
+        }
+        const b = el('button', {
+          className: 'ceph-atlas-chip ceph-atlas-chip--new',
+          text: `✦ ${row.name}`,
+          attrs: { type: 'button', title: `Open ${row.name} (${row.kind})` },
+        });
+        listen(b, 'click', () => flyCodexHit(id));
+        wrap.append(b);
       }
       card.append(wrap);
     }
@@ -592,6 +618,12 @@ function renderSpoilers(card: HTMLElement): void {
   if (!now) clear.disabled = true;
   card.append(el('div', { className: 'ceph-kicker', text: 'Every book', style: { marginTop: '18px' } }));
   card.append(list, clear);
+  // The list scrolls, and it opened at Elantris whichever book you were on:
+  // pick Words of Radiance and the one row that says so was out of sight.
+  requestAnimationFrame(() => {
+    const on = list.querySelector<HTMLElement>('.ceph-book.is-on');
+    if (on) list.scrollTop = Math.max(0, on.offsetTop - (list.clientHeight - on.offsetHeight) / 2);
+  });
 }
 
 

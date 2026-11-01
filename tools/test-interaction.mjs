@@ -766,11 +766,13 @@ async function run() {
       !!pair && pair.apart < 6 && pair.out > 12, JSON.stringify(pair));
 
     // A mark measured on a Stewart city plate is a place you can click, at
-    // the spot the plate draws it. `on` UVs are 0–1 of the named file and the
-    // atlas stretches the file over its canvas, so the dot is that fraction of
-    // the canvas rect. Read from the data rather than copied here, so a
-    // re-measure moves the click with it. (The Urithiru check above uses a
-    // roster chip; this one is the mouse on the art.)
+    // the spot the plate draws it. `on` UVs are 0–1 of the named file, and
+    // the atlas fits the file into its 2:1 canvas the way drawPlate does:
+    // within 15% of that shape it fills the canvas, otherwise it is centred
+    // at its own aspect (the Elendel survey is 1.32:1, so it is). The dot is
+    // that fraction of the fitted rect. Read from the data rather than copied
+    // here, so a re-measure moves the click with it. (The Urithiru check
+    // above uses a roster chip; this one is the mouse on the art.)
     await page.evaluate(() => {
       window.__ceph.store.set('selected', null);
       window.__ceph.store.set('year', 1);
@@ -788,9 +790,19 @@ async function run() {
       const { landmarkById } = await import('/src/data/cities.ts');
       const c = document.querySelector('.ceph-atlas-canvas');
       const hit = landmarkById['elendel-rebirth']?.on?.find((o) => o.file === 'elendel.jpg');
-      if (!(c instanceof HTMLElement) || !hit) return null;
+      if (!(c instanceof HTMLCanvasElement) || !hit) return null;
+      const img = new Image();
+      img.src = '/maps/elendel.jpg';
+      await img.decode();
+      const ratio = (img.naturalWidth / img.naturalHeight) / (c.width / c.height);
+      const full = ratio > 0.85 && ratio < 1 / 0.85;
+      const w = full ? 1 : Math.min(1, ratio);
+      const h = full ? 1 : Math.min(1, 1 / ratio);
       const r = c.getBoundingClientRect();
-      return { x: r.left + r.width * hit.u, y: r.top + r.height * hit.v };
+      return {
+        x: r.left + r.width * ((1 - w) / 2 + hit.u * w),
+        y: r.top + r.height * ((1 - h) / 2 + hit.v * h),
+      };
     });
     if (plateMark) {
       await page.mouse.click(plateMark.x, plateMark.y);

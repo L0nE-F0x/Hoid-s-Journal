@@ -57,8 +57,22 @@ export const READING_FACES: Record<string, ReadingFace> = {
         book: 'stormlight', arc: 'wor',
         fact: 'A Lightweaver, still deciding which of her faces is the real one.',
         abilities: 'Lightweaver Radiant',
+        aliases: 'Veil',
+        bio: 'Jasnah\'s ward, then a Lightweaver bonded to a Cryptic. On the Shattered Plains she walks into the Ghostbloods as Veil and is betrothed to Adolin Kholin, and at last she remembers what happened in her father\'s house.',
+      },
+      {
+        book: 'stormlight', arc: 'oathbringer',
+        fact: 'A Lightweaver, Adolin\'s wife, and more than one person in one head.',
+        abilities: 'Lightweaver Radiant',
         aliases: 'Veil, Radiant',
-        bio: 'Jasnah\'s ward, then a Lightweaver. Veil and Radiant are the names she uses when Shallan is not enough.',
+        bio: 'A Lightweaver bonded to Pattern, married to Adolin in Urithiru. Veil and Radiant are the names she uses when Shallan is not enough. She faces Re-Shephir in the tower, and crosses Shadesmar from Kholinar to Thaylen City.',
+      },
+      {
+        book: 'stormlight', arc: 'row',
+        fact: 'A Lightweaver hunting Restares for the Ghostbloods, and her own past.',
+        abilities: 'Lightweaver Radiant',
+        aliases: 'Veil, Radiant',
+        bio: 'A Lightweaver with three names, working Mraize\'s errands to get at the Ghostbloods. Radiant poisons Ialai; Shallan goes to Lasting Integrity after Restares, and finally remembers Testament, the first Cryptic she bonded and killed. Under Veil and Radiant waits a self she calls Formless.',
       },
       { book: 'stormlight', arc: 'wat', published: true },
     ],
@@ -639,6 +653,105 @@ export const READING_FACES: Record<string, ReadingFace> = {
       bio: 'Dragon Vessel of Cultivation. She prunes Dalinar\'s memories, and gambles on Taravangian: the boon she once gave him is what makes him Odium.',
     },
     steps: [
+      { book: 'stormlight', arc: 'wat', published: true },
+    ],
+  },
+  renarin: {
+    early: {
+      fact: 'Dalinar\'s younger son, kept from the battlefield by a blood weakness.',
+      abilities: 'Prince of House Kholin',
+      aliases: 'Renarin',
+      bio: 'Dalinar\'s younger son, quiet and bespectacled, with the seizures the Alethi call the blood weakness. He wants to be a soldier like his brother and is not allowed to be.',
+    },
+    steps: [
+      {
+        book: 'stormlight', arc: 'wor',
+        fact: 'Dalinar\'s younger son, and a Truthwatcher.',
+        abilities: 'Truthwatcher Radiant',
+        aliases: 'Renarin',
+        bio: 'Dalinar\'s younger son, kept from war by his seizures, who turns out at the end of Words of Radiance to have bonded a spren of his own: a Truthwatcher, the first of the new order.',
+      },
+      {
+        book: 'stormlight', arc: 'oathbringer',
+        fact: 'Sees what should not be seen.',
+        abilities: 'Truthwatcher (corrupted)',
+        aliases: 'Renarin',
+        bio: 'Dalinar\'s younger son, a Truthwatcher whose spren Glys was Enlightened by Sja-anat, so that he sees possible futures, which no Truthwatcher should. At Thaylen Field he stands against a thunderclast.',
+      },
+      { book: 'stormlight', arc: 'wat', published: true },
+    ],
+  },
+  rlain: {
+    early: {
+      fact: 'Shen, the parshman on Bridge Four.',
+      abilities: 'Bridgeman',
+      aliases: 'Shen',
+      bio: 'The parshman slave assigned to Bridge Four. Shen hardly speaks, carries his share of the bridge, and Kaladin is not sure what to do with him.',
+    },
+    steps: [
+      {
+        book: 'stormlight', arc: 'wor',
+        fact: 'A listener spy on Bridge Four, who chose the bridge.',
+        abilities: 'Listener · Bridge Four',
+        aliases: 'Shen',
+        bio: 'Shen is Rlain, a listener left among the Alethi as a spy, who chose Bridge Four over his people\'s war. When Eshonai\'s people take stormform he is the last listener in the warcamps.',
+      },
+      {
+        book: 'stormlight', arc: 'row',
+        fact: 'Bridge Four\'s singer, and a Truthwatcher.',
+        abilities: 'Truthwatcher (corrupted) · Listener',
+        aliases: 'Shen',
+        bio: 'A listener who chose Bridge Four, and who could not draw Stormlight with them. In the occupation of Urithiru he bonds Tumi, a mistspren Enlightened by Sja-anat, and becomes a Truthwatcher.',
+      },
+      { book: 'stormlight', arc: 'wat', published: true },
+    ],
+  },
+  pattern: {
+    early: {
+      bio: 'A Cryptic who loves lies, and wants to understand them. He bonds Shallan, and hums whenever the truth is about to hurt productively.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'row', published: true },
+    ],
+  },
+  mraize: {
+    early: {
+      fact: 'Shallan\'s would-be master. A hunter who collects worlds like trophies.',
+      abilities: 'Ghostblood, worldhopper',
+      aliases: 'Mraize',
+      bio: 'Ghostblood handler on Roshar: hunter, collector, and teacher of ugly lessons. He recruits Shallan as Veil, answers to his babsk Iyatil and to Thaidakar, and keeps trophies from more worlds than one on his walls.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'wat', published: true },
+    ],
+  },
+  iyatil: {
+    early: {
+      bio: 'A masked worldhopper among the Ghostbloods who outranks Mraize on Roshar and is his babsk. She is not from Roshar, and she does not show her face.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'wat', published: true },
+    ],
+  },
+  'ba-ado-mishram': {
+    early: {
+      fact: 'One of the Unmade, who once Connected the singers to forms of power.',
+      aliases: 'BAM, Mishram, Ba-Ado-Mishram',
+      bio: 'One of the Unmade, a highprincess of the enemy in the Desolations. During the False Desolation she Connected herself to the singers and gave them forms of power and Voidlight, in a way the Radiants never understood.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'row', fact: 'Connected the singers in the False Desolation; her sealing helped cause the Recreance.', aliases: 'BAM, Mishram, Ba-Ado-Mishram', bio: 'Most dangerous of the Unmade. During the False Desolation she Connected to the singers and granted them forms of power and Voidlight almost as a Shard would. Melishi and the Radiants sealed her in a gemstone; the shock to Connection helped kill spren bonds and push the Recreance.' },
+      { book: 'stormlight', arc: 'wat', published: true },
+    ],
+  },
+  melishi: {
+    early: {
+      fact: 'A Bondsmith of the old Knights Radiant.',
+      abilities: 'Bondsmith',
+      bio: 'A Bondsmith of the old Knights Radiant, named in the records the new Radiants study.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'row', fact: 'The Bondsmith who sealed Ba-Ado-Mishram.', abilities: 'Bondsmith (the Sibling)', bio: 'A Bondsmith of the Recreance\'s generation, bonded to the Sibling, who captured Ba-Ado-Mishram in a gemstone.' },
       { book: 'stormlight', arc: 'wat', published: true },
     ],
   },

@@ -59,13 +59,22 @@ export const RELATIONS_MORE: Relation[] = [
   { a: { kind: 'character', id: 'the-wind' }, b: { kind: 'character', id: 'the-stone' }, type: 'family', label: 'Made with the planet', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'the-wind' }, b: { kind: 'character', id: 'the-night' }, type: 'family', label: 'Made with the planet', book: 'stormlight', canon: C },
 
+  // --- The Spiritual Realm (Wind and Truth) -----------------------------
+  { a: { kind: 'character', id: 'shallan' }, b: { kind: 'character', id: 'chana' }, type: 'family', label: 'Daughter & mother', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'shallan' }, b: { kind: 'character', id: 'iyatil' }, type: 'rival', label: 'Killed her in the Spiritual Realm', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'renarin' }, b: { kind: 'character', id: 'ba-ado-mishram' }, type: 'ally', label: 'Broke her prison', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'rlain' }, b: { kind: 'character', id: 'ba-ado-mishram' }, type: 'ally', label: 'Freed her, and stood in her way', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'melishi' }, b: { kind: 'character', id: 'ba-ado-mishram' }, type: 'rival', label: 'Trapped her in a heliodor', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'melishi' }, b: { kind: 'character', id: 'sibling' }, type: 'bond', label: 'Bondsmith & spren', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'garith' }, b: { kind: 'character', id: 'shmone' }, type: 'romance', label: 'Lovers across the war', book: 'stormlight', canon: C },
+
   // --- Shallan family ---------------------------------------------------
   { a: { kind: 'character', id: 'shallan' }, b: { kind: 'character', id: 'lin-davar' }, type: 'family', label: 'Daughter & father', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'shallan' }, b: { kind: 'character', id: 'helaran' }, type: 'family', label: 'Sister & brother', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'helaran' }, b: { kind: 'character', id: 'lin-davar' }, type: 'family', label: 'Son & father', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'shallan' }, b: { kind: 'character', id: 'pattern' }, type: 'bond', label: 'Lightweaver bond', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'shallan' }, b: { kind: 'character', id: 'jasnah' }, type: 'mentor', label: 'Ward & mistress', book: 'stormlight', canon: C },
-  { a: { kind: 'character', id: 'shallan' }, b: { kind: 'character', id: 'mraize' }, type: 'rival', label: 'Ghostblood fallout', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'shallan' }, b: { kind: 'character', id: 'mraize' }, type: 'rival', label: 'Her Ghostblood handler', book: 'stormlight', canon: C },
 
   // --- Kholin extended --------------------------------------------------
   { a: { kind: 'character', id: 'dalinar' }, b: { kind: 'character', id: 'evi' }, type: 'romance', label: 'Married (widow)', book: 'stormlight', canon: C },
@@ -207,7 +216,7 @@ export const RELATIONS_MORE: Relation[] = [
   { a: { kind: 'character', id: 'design' }, b: { kind: 'character', id: 'pattern' }, type: 'ally', label: 'Fellow Cryptics', book: 'stormlight', canon: C },
 
   // --- Org membership edges ---------------------------------------------
-  { a: { kind: 'character', id: 'shallan' }, b: { kind: 'org', id: 'ghostbloods' }, type: 'ally', label: 'Joined, then left', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'shallan' }, b: { kind: 'org', id: 'ghostbloods' }, type: 'ally', label: 'Joined as Veil', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'mraize' }, b: { kind: 'org', id: 'ghostbloods' }, type: 'bond', label: 'Roshar cell', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'frost' }, b: { kind: 'org', id: 'seventeenth-shard' }, type: 'bond', label: 'Leads / speaks for', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'gavilar' }, b: { kind: 'org', id: 'sons-of-honor' }, type: 'bond', label: 'Secret society', book: 'stormlight', canon: C },

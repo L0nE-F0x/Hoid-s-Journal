@@ -14,8 +14,8 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   shallan: {
     wiki: 'Shallan',
-    see: ['pattern', 'adolin', 'jasnah', 'mraize', 'veil'],
-    bio: 'A Lightweaver who survived her family by fracturing herself into Veil and Radiant, then had to reclaim the truths those masks were hiding. Scholar, spy, murderer of a Cryptic\'s last knight, and eventually someone who can live with the whole story. Her art is not decoration; it is how she makes reality sit still long enough to face it.',
+    see: ['jasnah', 'adolin', 'lin-davar', 'helaran'],
+    bio: 'A Lightweaver who survived her family by splitting into Veil and Radiant, and then had to take back what those masks were holding: that the first Cryptic she bonded, Testament, was the one she killed, and that the mother she killed at eleven was the Herald Chanarach, sent with a Skybreaker to kill her, who hesitated. In Wind and Truth she hunts the Ghostbloods through the Spiritual Realm with Renarin and Rlain, and refuses the self she calls Formless. The Formless she finally stabs is Iyatil in disguise; she kills Mraize too, and Radiant folds back into her. She ends the book stranded in Shadesmar, where Cultivation\'s Perpendicularity has vanished, bargaining with Thaidakar for a seon that can reach Adolin.',
   },
   wax: {
     wiki: 'Waxillium_Ladrian',
@@ -138,8 +138,8 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   renarin: {
     wiki: 'Renarin_Kholin',
-    see: ['glys', 'dalinar', 'adolin', 'truthwatchers'],
-    bio: 'The son who did not fit Alethi war culture, bonded an Enlightened mistspren, and sees futures Odium would rather stay blank. His Truthwatcher visions are a side channel in the war — quiet, stigmatised, and decisive.',
+    see: ['dalinar', 'adolin', 'elhokar', 'kholin'],
+    bio: 'Dalinar\'s younger son, who never fit Alethi war culture: quiet, epileptic, and bonded to Glys, a mistspren Enlightened by Sja-anat, so that he sees futures Odium would rather keep. In Wind and Truth he and Rlain hunt Ba-Ado-Mishram\'s prison through the Spiritual Realm and choose to break it open rather than seal her away again. After his father dies he refuses the crown of Urithiru and asks Jasnah to help him build a representative government instead.',
   },
   navani: {
     wiki: 'Navani_Kholin',
@@ -163,8 +163,8 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   rlain: {
     wiki: 'Rlain',
-    see: ['renarin', 'bridge-four', 'listener', 'timbre'],
-    bio: 'Listener spy who becomes Bridge Four\'s bridge, then a Truthwatcher with an Enlightened spren of his own. He stands between human and singer camps when both sides want simpler enemies.',
+    see: ['kaladin', 'bridge-four', 'teft'],
+    bio: 'A listener spy who became Bridge Four\'s own, and then, in the occupation of Urithiru, a Truthwatcher bonded to the Enlightened mistspren Tumi. In Wind and Truth he goes into the Spiritual Realm after Ba-Ado-Mishram with Renarin and Shallan, argues that hating all humans for Melishi\'s betrayal is exactly what Odium wants, and convinces Renarin that they must free her. When she strikes at Renarin, Rlain steps between them. He and Renarin are together.',
   },
   teft: {
     wiki: 'Teft',
@@ -258,13 +258,13 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   },
   mraize: {
     wiki: 'Mraize',
-    see: ['iyatil', 'shallan', 'ghostbloods', 'kelsier'],
-    bio: 'Ghostblood handler on Roshar: hunter, collector, and teacher of ugly lessons. He recruits Shallan, answers to Iyatil, and ultimately to Thaidakar — trophies on his wall, strings on everyone else.',
+    see: ['shallan', 'iyatil', 'ghostbloods', 'thaidakar'],
+    bio: 'Betd, called Mraize: a Thaylen-born Ghostblood, hunter and collector, Shallan\'s handler, answering to Iyatil and to Thaidakar. He bonded an Enlightened Cryptic of his own and learned to Lightweave. In Wind and Truth he hunts Ba-Ado-Mishram\'s prison through the Spiritual Realm with Iyatil wearing the face of Shallan\'s Formless. Shallan kills them both; Mraize dies breathing in Stormlight, trying to heal from a knife that will not let him.',
   },
   iyatil: {
     wiki: 'Iyatil',
-    see: ['mraize', 'ghostbloods', 'kelsier'],
-    bio: 'A masked Southern Scadrian Ghostblood who outranks Mraize on Roshar. Hunting Investiture and worldhoppers with equal professionalism, she is the Set\'s cousin in method and Kelsier\'s hand in another system.',
+    see: ['mraize', 'ghostbloods', 'thaidakar'],
+    bio: 'A masked Ghostblood of Southern Scadrian blood, from Silverlight, who outranks Mraize on Roshar and is his babsk. In Wind and Truth she follows Dalinar into the Spiritual Realm wearing a Lightweaving of Shallan\'s Formless. Shallan drives an anti-Stormlight knife into her eye; when Iyatil tries to heal, the two Lights destroy her.',
   },
   felt: {
     wiki: 'Felt',
@@ -309,7 +309,7 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   pattern: {
     wiki: 'Pattern',
     see: ['shallan', 'cryptic', 'lightweavers'],
-    bio: 'A Cryptic who loves lies that become true. He bonds Shallan, survives her attempted murder of him in childhood memory, and keeps humming whenever the truth is about to hurt productively.',
+    bio: 'A Cryptic who loves lies that become true. He bonds Shallan knowing she killed the Cryptic before him, and keeps humming whenever the truth is about to hurt productively.',
   },
   ivory: {
     wiki: 'Ivory',

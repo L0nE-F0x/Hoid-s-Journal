@@ -11,13 +11,13 @@ function org(
 
 export const ORGANIZATIONS: Organization[] = [
   org('ghostbloods', 'The Ghostbloods', '#a3a3a3', 'stormlight', 'secret',
-    'A covert worldhopper society after Investiture and the knowledge to use it. Three overlapping diamonds. Thaidakar runs it from Scadrial.',
+    'A secret society marked by three overlapping diamonds, after Investiture and the knowledge to use it. Its master is called Thaidakar.',
     {
       aliases: 'Ghostblood',
-      arc: 'wor', world: 'Roshar / Scadrial', wiki: 'Ghostbloods',
-      members: ['kelsier', 'mraize', 'iyatil', 'felt', 'shallan'],
-      see: ['kelsier', 'mraize', 'seventeenth-shard', 'the-set'],
-      bio: 'Founded by Kelsier after his death, operating on Roshar as a cell under Mraize and Iyatil while the Survivor himself cannot leave the Scadrian system as a Cognitive Shadow. They want a way to move Investiture off-world. Shallan joined, then left. The Lost Metal makes the Scadrian end of the same organisation explicit.',
+      arc: 'wor', world: 'Roshar', wiki: 'Ghostbloods',
+      members: ['mraize', 'iyatil', 'shallan'],
+      see: ['mraize', 'thaidakar', 'sons-of-honor'],
+      bio: 'On Roshar they work through Mraize and his babsk Iyatil, and set themselves against the Sons of Honor. They want a way to carry Stormlight off-world through Shadesmar, and the Oathgates to do it. Shallan joins them as Veil to get at them from the inside. Who Thaidakar is, and what the society is for, is a question for other books than this one.',
     }),
   org('seventeenth-shard', 'The Seventeenth Shard', '#e0f2fe', 'stormlight', 'secret',
     'Worldhoppers who observe and do not intervene. Frost writes their letters. They hunt Hoid anyway.',

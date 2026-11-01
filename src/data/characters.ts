@@ -42,7 +42,7 @@ export const CHARACTERS: Character[] = [
     ]),
   ch('shallan', 'Shallan', '#f472b6', 'stormlight', 'Roshar', 'Veil, Radiant',
     'Lightweaver Radiant',
-    'A brilliant scholar grappling with deeply suppressed trauma.', false, [
+    'Lightweaver, scholar, Adolin\'s wife, and the daughter of the Herald she killed at eleven.', false, [
       { era: 3, system: 'rosharan', body: 'roshar' },
       { era: 5, system: 'rosharan', body: 'roshar' },
     ]),
@@ -293,17 +293,17 @@ export const CHARACTERS: Character[] = [
       { era: 4, system: 'drominad', body: 'first-of-the-sun' },
       { era: 5, system: 'drominad', body: 'first-of-the-sun' },
     ]),
-  ch('mraize', 'Mraize', '#a3a3a3', 'stormlight', 'Unknown', 'Mraize',
-    'Ghostblood, worldhopper',
+  ch('mraize', 'Mraize', '#a3a3a3', 'stormlight', 'Thaylenah', 'Mraize, Betd',
+    'Ghostblood · Lightweaver (Enlightened Cryptic)',
     'Shallan\'s would-be master. A hunter who collects worlds like trophies.', false, [
       { era: 3, system: 'rosharan', body: 'roshar' },
-    ]),
-  ch('iyatil', 'Iyatil', '#fb923c', 'stormlight', 'Scadrial (south)', 'Iyatil',
+    ], { arc: 'wor' }),
+  ch('iyatil', 'Iyatil', '#fb923c', 'stormlight', 'Silverlight', 'Iyatil',
     'Ghostblood, mask, worldhopper',
-    'Mraize\'s master. The mask is Malwish; the errand is Thaidakar\'s.', false, [
+    'Mraize\'s babsk, a masked worldhopper among the Ghostbloods.', false, [
       { era: 3, system: 'rosharan', body: 'roshar' },
       { era: 4, system: 'scadrian', body: 'scadrial' },
-    ]),
+    ], { arc: 'wor' }),
   ch('felt', 'Felt', '#64748b', 'mistborn1', 'Scadrial', 'Felt',
     'Worldhopper, lookout',
     'House Venture\'s spy, later a scout on the Shattered Plains. Still looking.', false, [

@@ -86,6 +86,34 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
   let basinPhase = '';
   /** What composeMap actually drew, so the pins use the same coordinate space. */
   let plateMode: 'official' | 'plan' | 'crop' | 'world' = 'world';
+  /**
+   * Where the plate sits on the canvas, as fractions of it. A pin's u/v is
+   * 0–1 on its own file, so it lands at `x + u·w`, `y + v·h`.
+   */
+  let fit = { x: 0, y: 0, w: 1, h: 1 };
+
+  /**
+   * Draw a raster at its own shape. Every plate used to be stretched over
+   * the 2:1 canvas, and most of them are not 2:1: Urithiru, Kholinar and the
+   * Scadrian world map are portrait and came out squashed to a third of
+   * their height. A plate within 15% of the canvas's shape (Roshar and
+   * Shadesmar at 1.72) still fills it, as it always has; anything further
+   * off is letterboxed, and the pins follow it.
+   */
+  const drawPlate = (ctx: CanvasRenderingContext2D, img: CanvasImageSource & { width: number; height: number }) => {
+    const iw = (img as HTMLImageElement).naturalWidth || img.width;
+    const ih = (img as HTMLImageElement).naturalHeight || img.height;
+    const ratio = iw / ih / (W / H);
+    if (!iw || !ih || (ratio > 0.85 && ratio < 1 / 0.85)) {
+      fit = { x: 0, y: 0, w: 1, h: 1 };
+      ctx.drawImage(img, 0, 0, W, H);
+      return;
+    }
+    const w = ratio < 1 ? ratio : 1;
+    const h = ratio < 1 ? 1 : 1 / ratio;
+    fit = { x: (1 - w) / 2, y: (1 - h) / 2, w, h };
+    ctx.drawImage(img, fit.x * W, fit.y * H, fit.w * W, fit.h * H);
+  };
   root.append(panel);
 
   // The map and the pins are each composed once per change and blitted every
@@ -164,11 +192,12 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
     const ctx = mapLayer.getContext('2d');
     if (!ctx) return;
     ctx.clearRect(0, 0, W, H);
+    fit = { x: 0, y: 0, w: 1, h: 1 };
     if (s.scale === 'city' && s.focusedLocation) {
       const raster = getOfficialMap(cityMapFile(s.focusedLocation, plateLayer), () => { composeMap(); composePins(); paint(); });
       if (raster) {
         plateMode = 'official';
-        ctx.drawImage(raster, 0, 0, W, H);
+        drawPlate(ctx, raster);
         return;
       }
       const plate = bakeCityMap(s.focusedLocation, W, H);
@@ -184,8 +213,11 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
     }
     plateMode = 'world';
     const map = worldMap();
-    if (map) ctx.drawImage(map, 0, 0, W, H);
+    if (map) drawPlate(ctx, map);
   };
+
+  /** A pin's place on the canvas, in canvas pixels. */
+  const at = (u: number, v: number) => ({ x: (fit.x + u * fit.w) * W, y: (fit.y + v * fit.h) * H });
 
   const pinRows = (): { id: string; name: string; u: number; v: number; color: string }[] => {
     const s = store.state;
@@ -243,8 +275,7 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
     const isHot = (id: string) => s.selected === id || s.hovered === id || s.focusedLocation === id;
 
     for (const loc of rows) {
-      const px = loc.u * W;
-      const py = loc.v * H;
+      const { x: px, y: py } = at(loc.u, loc.v);
       const hot = isHot(loc.id);
       if (hot) {
         ctx.beginPath();
@@ -268,8 +299,9 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
       const hot = isHot(loc.id);
       ctx.font = `${hot ? 700 : 600} 22px Inter, ui-sans-serif, sans-serif`;
       const w = ctx.measureText(loc.name).width;
-      const x = loc.u * W + (hot ? 26 : 14);
-      const y = loc.v * H;
+      const spot = at(loc.u, loc.v);
+      const x = spot.x + (hot ? 26 : 14);
+      const y = spot.y;
       const box = { x0: x - 4, y0: y - 13, x1: x + w + 4, y1: y + 13 };
       if (box.x1 > W || box.y0 < 0 || box.y1 > H) continue;
       if (placed.some((r) => box.x0 < r.x1 && box.x1 > r.x0 && box.y0 < r.y1 && box.y1 > r.y0)) continue;
@@ -357,13 +389,15 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
     const s = store.state;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
+    // A letterboxed plate leaves margins, and the last frame would show in them.
+    ctx.clearRect(0, 0, W, H);
     ctx.drawImage(mapLayer, 0, 0);
 
     // The highstorm crossing the plate is decoration that never stops; it
     // stands down for a reader who asked for less motion.
     if (s.focusedBody === 'roshar' && s.realm === 'physical' && s.scale !== 'city' && !lessMotion.matches) {
       const t = (performance.now() / 1000) * 0.022;
-      const x = ((0.5 - (t % 1) + 1) % 1) * W;
+      const x = (fit.x + ((0.5 - (t % 1) + 1) % 1) * fit.w) * W;
       const g = ctx.createLinearGradient(x - 28, 0, x + 28, 0);
       g.addColorStop(0, 'rgba(94,231,255,0)');
       g.addColorStop(0.5, 'rgba(186,230,255,0.45)');
@@ -454,7 +488,9 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
     const limit = coarse ? 0.09 : 0.045;
     let best: { id: string; d: number } | null = null;
     for (const row of pinRows()) {
-      const d = Math.hypot(row.u - u, row.v - v);
+      // Measured on the canvas, so a letterboxed plate's pins are as easy to
+      // hit as a full one's.
+      const d = Math.hypot(fit.x + row.u * fit.w - u, fit.y + row.v * fit.h - v);
       if (d < limit && (!best || d < best.d)) best = { id: row.id, d };
     }
     if (!best) {

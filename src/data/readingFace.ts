@@ -496,6 +496,59 @@ export const READING_FACES: Record<string, ReadingFace> = {
       { book: 'mistborn2', arc: 'tlm', published: true },
     ],
   },
+  // Warbreaker does not know where these go next. Roshar does.
+  vasher: {
+    early: {
+      fact: 'A Returned in T\'Telir with a black sword that talks, trying to stop a war he once started.',
+      aliases: 'Kalad the Usurper, Peacegiver the Blessed, Warbreaker the Peaceful, Tax',
+      abilities: 'Returned, Awakener, Nightblood\'s co-creator',
+      bio: 'One of the Five Scholars, who helped Shashara make Nightblood and then killed her with it. As Kalad he built the Phantoms and started the Manywar; as Peacegiver he ended it. Three hundred years later he is in T\'Telir with Awakened rope and cloth, trying to keep Hallandren from marching on Idris.',
+    },
+    steps: [{ book: 'stormlight', arc: 'wor', published: true }],
+  },
+  azure: {
+    early: {
+      fact: 'Idris\'s eldest princess, raised to marry the God King and then kept at home.',
+      aliases: 'Princess of Idris',
+      abilities: 'Awakener, Royal Locks',
+      bio: 'Vivenna of Idris, trained all her life for a marriage her father gave to Siri instead. She follows her sister to T\'Telir, inherits Lemex\'s Breath, is used by Denth, and ends up on the streets with her hair sold. Vasher teaches her to Awaken; when the war is stopped she leaves Idris to travel with him.',
+    },
+    steps: [{ book: 'stormlight', arc: 'oathbringer', published: true }],
+  },
+  nightblood: {
+    early: {
+      fact: 'A thousand Breaths in a black sword, Commanded to destroy evil. It wants to help.',
+      aliases: 'Nightblood',
+      abilities: 'Awakened sword (Type IV), Destroy Evil',
+      bio: 'Shashara and Vasher Awakened it from steel with a thousand Breaths and the Command "Destroy evil", without considering that a sword would not know what evil is. Drawn, it drinks its wielder\'s Breath; sheathed, it chatters, tempts the greedy and sickens the good. It still thinks Shashara is alive.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'wor', aliases: 'Nightblood' },
+      { book: 'stormlight', arc: 'oathbringer', published: true },
+    ],
+  },
+  edgli: {
+    early: {
+      fact: 'Vessel of Endowment. The voice the Returned hear before they come back.',
+      bio: 'The Vessel of Endowment and the only Shard on Nalthis. She gives every Nalthian a Breath, offers the dead a chance to Return without pressing them, and the Tears of Edgli are named for her.',
+    },
+    steps: [{ book: 'stormlight', arc: 'oathbringer', published: true }],
+  },
+  // Sixth of the Dusk, before Isles of the Emberdark tells what came after.
+  vathi: {
+    early: {
+      fact: 'A company noblewoman with an Aviar locator, lost on Patji.',
+      bio: 'An educated Eelakin woman of the Northern Interests Trading Company, there more for science than profit. A deepwalker wipes out her scouting party on Patji; she survives the jungle well enough that Dusk thinks he is tracking an apprentice. At Patji\'s Eye she works out where Aviar get their talents, and back at the fortress she and Dusk recognise the Ones Above\'s gifts as a trap.',
+    },
+    steps: [{ book: 'emberdark', arc: 'emberdark', published: true }],
+  },
+  sak: {
+    early: {
+      fact: 'Dusk\'s other bird. Not an Aviar species, and she bestows a talent anyway.',
+      bio: 'A black mainland bird with a damaged wing that Dusk raised on Patji, where she gained a talent nobody had seen: visions of the bonded person\'s corpse wherever death is waiting. Dusk kept her secret. When the company opens the Ones Above\'s machine, she sees the whole island die.',
+    },
+    steps: [{ book: 'emberdark', arc: 'emberdark', published: true }],
+  },
   // Elantris and The Emperor's Soul do not know where these two end up. The
   // Lost Metal does.
   shai: {

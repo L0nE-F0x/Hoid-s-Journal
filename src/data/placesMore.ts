@@ -456,13 +456,13 @@ export const PLACES_MORE: Location[] = [
       region: 'Rose Empire',
       bio: 'One of the Rose Empire\'s factions, which function less like parties than like weather systems moving across the court. Shai\'s problem in The Emperor\'s Soul is not the forgery; it is which faction wants the Emperor awake.', see: ['rose-empire', 'imperial-seat'], wiki: 'Rose_Empire' }),
   loc('bevalis', 'Bevalis', 'nalthis', 'warbreaker', 0.47, 0.26, '#e2e8f0', 'crown',
-    'Capital of Idris. Grey clothes, high halls, and a king trading his daughter for a peace that would not hold.', {
+    'Capital of Idris: a mountain-valley town of a few thousand, thatched cottages and mud roads.', {
       region: 'Idris',
       bio: 'Idris\'s capital: grey stone, high halls, and a king who traded a daughter for a peace he knew would not hold. Dedelin sent Siri because Vivenna was the one he could not bear to lose, which is the sort of arithmetic Idris does not admit to doing.', see: ['idris'], wiki: 'Bevalis' }),
-  loc('inner-sea-nalthis', 'The Inner Sea', 'nalthis', 'warbreaker', 0.56, 0.5, '#67e8f9', 'sea',
-    'Sea between Idris\'s highlands and Hallandren\'s low jungles. Trade and invasion use the same water.', {
+  loc('inner-sea-nalthis', 'The Bright Sea', 'nalthis', 'warbreaker', 0.56, 0.5, '#67e8f9', 'sea',
+    'The landlocked sea T\'Telir is built against. Idrians call it the Inner Sea.', {
       region: 'Nalthis',
-      bio: 'The water between Idris\'s highlands and Hallandren\'s jungles. Trade uses it, and so would an invasion; the two kingdoms have spent twenty years pretending the second is unthinkable while building for it.', see: ['hallandren', 'idris'], wiki: 'Inner_Sea' }),
+      bio: 'A large inland sea east of Hallandren, which controls a third of its coast. T\'Telir sits in a bay on it and Tedradel lies across it; the Chedesh once sailed it west to find the valley. Idris, which has no coast, calls it the Inner Sea.', see: ['hallandren', 'idris'], wiki: 'Bright_Sea', aliases: 'Inner Sea' }),
   loc('highlands-idris', 'Idrian Highlands', 'nalthis', 'warbreaker', 0.48, 0.22, '#cbd5e1', 'peak',
     'Cold mountains of Austrism. Colour is sin; Breath is theology; Hallandren is downhill.', {
       region: 'Idris',
@@ -470,19 +470,15 @@ export const PLACES_MORE: Location[] = [
   loc('tedradel', 'Tedradel', 'nalthis', 'warbreaker', 0.7, 0.48, '#f9a8d4', 'land',
     'Nation across the water that trades with Hallandren and stays politely unabsorbed.', {
       region: 'Nalthis',
-      bio: 'A nation across the water that trades with Hallandren, hears the sermons, and remains politely unabsorbed. Being useful and unthreatening has kept it that way.', see: ['hallandren'], wiki: 'Tedradel' }),
-  loc('huth', 'Huth', 'nalthis', 'warbreaker', 0.4, 0.4, '#a8a29e', 'land',
+      bio: 'A kingdom across the Bright Sea from Hallandren. It fought Hanald in the Manywar and still thinks little of Hallandren, though its traders crowd T\'Telir. It gets on well with Idris, and General Yarda thinks it might fight again if Idris is attacked.', see: ['hallandren'], wiki: 'Tedradel' }),
+  loc('huth', 'Huth', 'nalthis', 'warbreaker', 0.45, 0.21, '#a8a29e', 'land',
     'Vanished kingdom of the Manywar. Pahn Kahl remembers; Hallandren paved it over.', {
       region: 'Nalthis',
-      bio: 'One of the kingdoms the Manywar ended. Vasher and Shashara built Nightblood in that war and Huth is one of the answers to what it cost; Hallandren is built over where it used to be.', see: ['pahn-kahl', 'hallandren'], wiki: 'Huth' }),
-  loc('kuth', 'Kuth', 'nalthis', 'warbreaker', 0.38, 0.45, '#78716c', 'land',
+      bio: 'A kingdom north of the Idrian mountains that Hanald invaded in the Manywar and that did not survive it — "destroyed by little drips of color", Hoid says. At the end of Warbreaker a tyrant is trying to restore Kuth and Huth, with Yesteel\'s help.', see: ['pahn-kahl', 'hallandren'], wiki: 'Huth' }),
+  loc('kuth', 'Kuth', 'nalthis', 'warbreaker', 0.53, 0.21, '#78716c', 'land',
     'Sister-kingdom to Huth, also erased by the Manywar\'s arithmetic.', {
       region: 'Nalthis',
-      bio: 'Huth\'s sister-kingdom, erased by the same arithmetic. The Manywar is why Hallandren exists and why the Returned are treated as a military asset rather than a religious one.', see: ['huth', 'hallandren'], wiki: 'Kuth' }),
-  loc('pahn-kahl-lowlands', 'Pahn Kahl Lowlands', 'nalthis', 'warbreaker', 0.65, 0.7, '#5eead4', 'grass',
-    'Floodplains and canals of the Pahn Kahl. Quiet work until the revolt stops being quiet.', {
-      region: 'Pahn Kahl',
-      bio: 'The floodplains and canals the Pahn Kahl work, quietly, inside a kingdom that does not think of them as a people. Quiet is a strategy until it stops being one.', see: ['pahn-kahl', 'ttelir'], wiki: 'Pahn_Kahl' }),
+      bio: 'A kingdom north of the Idrian mountains that Hanald invaded in the Manywar and that did not survive it — "destroyed by little drips of color", Hoid says. At the end of Warbreaker a tyrant is trying to restore Kuth and Huth, with Yesteel\'s help.', see: ['huth', 'hallandren'], wiki: 'Kuth' }),
   loc('diem-site', 'The Diem', 'taldain', 'whitesand', 0.415, 0.475, '#fbbf24', 'tower',
     'Sand master fortress-guild in Kezare. Floors for ranks, and a roof that did not save them.', {
       region: 'Lossand',
@@ -564,29 +560,17 @@ export const PLACES_MORE: Location[] = [
     'Ritual ground where yoki-hijo stacked stones and bargained with spirits before the machine won.', {
       region: 'Komashi',
       bio: 'Ritual ground where yoki-hijo stacked stones and bargained with spirits for the things a town needed, back when that was still what the ritual did. The machine took over the arrangement and left the ceremony in place.', see: ['torio', 'torio-steamwell'], wiki: 'Yoki-hijo' }),
-  loc('forests-hell-name', 'Hell', 'threnody', 'shadowsforsilence', 0.52, 0.53, '#0f1a10', 'forest',
-    'What Homeland folk call the Forests when the Simple Rules feel like theology instead of advice.', {
-      region: 'The Forests',
-      bio: 'What Homeland folk call the Forests when the Simple Rules stop sounding like practical advice and start sounding like theology. The name has stuck hard enough that outsiders use it as a place name.', see: ['forests-of-hell', 'the-homeland'], wiki: 'Forests_of_Hell' }),
-  loc('silver-waystop', 'Silver Waystops', 'threnody', 'shadowsforsilence', 0.46, 0.55, '#e2e8f0', 'home',
-    'Homeland inns that keep silver handy and questions quieter. Silence\'s Crossroads is the famous one.', {
-      region: 'The Homeland',
-      bio: 'Inns on the Forest roads that keep silver in the walls, salt at the threshold and their questions to themselves. Silence\'s Crossroads is the famous one, and the famous one is famous for what happened at it.', see: ['the-crossroads', 'lastport'] }),
-  loc('shades-boundary', 'The Shade Line', 'threnody', 'shadowsforsilence', 0.48, 0.5, '#44403c', 'land',
-    'Where settled Threnody admits the Forests begin. The shades do not respect the signage.', {
-      region: 'The Forests',
-      bio: 'The line where settled Threnody admits the Forests begin: marked, patrolled, and treated by the shades as a suggestion. Everything about the boundary is for the living\'s benefit.', see: ['the-homeland', 'forests-of-hell'] }),
   loc('patjis-eye', 'Patji\'s Eye', 'first-of-the-sun', 'sixthofdusk', 0.53, 0.51, '#22d3ee', 'lake',
-    'Lake at Patji\'s heart — a perpendicularity wearing the shape of still water.', {
-      region: 'The Pantheon', see: ['patji'], wiki: 'Patji\'s_Eye', eraMin: 1, bio: 'Aviar drink power here. Trappers die for approaches. Patji does not care which.' }),
+    'A still lake near the top of Patji, where juvenile Aviar gather to eat.', {
+      region: 'The Pantheon', see: ['patji'], wiki: 'Patji\'s_Eye', eraMin: 1, bio: 'The lake near Patji\'s peak where juvenile Aviar from every island come to eat the fruit of the Patji\'s Finger trees around it. Vathi works out that a parasite in that fruit is what gives them their talents.' }),
   loc('pantheon', 'The Pantheon', 'first-of-the-sun', 'sixthofdusk', 0.5, 0.48, '#4ade80', 'island',
     'Archipelago of god-islands. Patji is Father; the rest are merely lethal.', {
       region: 'The Pantheon',
-      bio: 'An archipelago of god-islands, each named for a deity and each an ecosystem specifically hostile to visitors. The aviar come from here — birds that bond a person and grant a talent while quietly taking something in exchange — and the Eelakin have made a profession out of surviving the collection.', see: ['patji', 'sori', 'suluko'], wiki: 'Pantheon', eraMin: 1 }),
-  loc('eelakin-traps', 'Patji\'s Trails', 'first-of-the-sun', 'sixthofdusk', 0.51, 0.49, '#86efac', 'forest',
+      bio: 'An archipelago of god-islands, islands the Eelakin hold to be gods, with the trappers as their priests, and each an ecosystem specifically hostile to visitors. The Aviar come from here, and the Eelakin have made a profession out of surviving the collection.', see: ['patji', 'sori'], wiki: 'Pantheon', eraMin: 1 }),
+  loc('eelakin-traps', 'Dusk\'s safecamps', 'first-of-the-sun', 'sixthofdusk', 0.51, 0.49, '#86efac', 'forest',
     'Traplines and false paths Sixth of the Dusk maintained. The island rearranges the rest.', {
       region: 'The Pantheon',
-      bio: 'The traplines and deliberately false paths Sixth of the Dusk maintained on Patji. The traps are half the job; the other half is that the island rearranges everything else while you are not looking.', see: ['patji', 'patjis-eye'], eraMin: 1 }),
+      bio: 'The shelters Dusk keeps on Patji, one built into a gurratree, ringed with traps for rival trappers and topped with nesting boxes for the Aviar he raises to sell.', see: ['patji', 'patjis-eye'], eraMin: 1 }),
   loc('shattering-site', 'Site of the Shattering', 'yolen', 'core', 0.5, 0.48, '#fef3c7', 'crystal',
     'Wherever on Yolen the Vessels killed Adonalsium. The planet has not forgotten the geometry.', {
       region: 'Yolen',

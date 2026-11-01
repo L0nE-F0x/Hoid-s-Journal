@@ -279,13 +279,13 @@ export const ORGANIZATIONS: Organization[] = [
     {
       aliases: 'the Court of Gods',
       world: 'Nalthis', wiki: 'Court_of_Gods',
-      members: ['susebron', 'lightsong', 'blushweaver'],
+      members: ['susebron', 'lightsong', 'blushweaver', 'allmother', 'hopefinder', 'mercystar', 'stillmark', 'calmseer'],
       see: ['ttelir', 'returned', 'breath'],
     }),
   org('pahn-kahl-plot', 'The Pahn Kahl', '#67e8f9', 'warbreaker', 'nation',
     'A people of Hallandren\'s lowlands. Bluefingers tried to start a war so they could have a country.',
     {
-      members: ['bluefingers'], world: 'Nalthis', wiki: 'Pahn_Kahl', see: ['pahn-kahl', 'susebron', 'lightsong'] }),
+      members: ['bluefingers', 'tonk-fah', 'vahr'], world: 'Nalthis', wiki: 'Pahn_Kahl', see: ['pahn-kahl', 'susebron', 'lightsong'] }),
   org('diem', 'The Diem', '#fbbf24', 'whitesand', 'order',
     'The Sand Masters of Lossand. A profession, a building, a caste, and a political problem.',
     {

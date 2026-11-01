@@ -98,17 +98,17 @@ export const CHARACTERS: Character[] = [
       { era: 3, system: 'rosharan', body: 'roshar' },
       { era: 5, system: 'canticle', body: 'canticle-world' },
     ]),
-  ch('vasher', 'Vasher', '#a78bfa', 'warbreaker', 'Nalthis', 'Zahel, Kalad',
-    'Returned, Awakener, Nightblood\'s creator',
-    'Worldhopper hiding as an ardent on Roshar.', false, [
+  ch('vasher', 'Vasher', '#a78bfa', 'warbreaker', 'Nalthis', 'Kalad the Usurper, Peacegiver the Blessed, Warbreaker the Peaceful, Tax, Zahel',
+    'Returned, Awakener, Nightblood\'s co-creator',
+    'Kalad, Peacegiver, Warbreaker — and on Roshar, an ardent called Zahel.', false, [
       { era: 2, system: 'nalthian', body: 'nalthis' },
-      { era: 3, system: 'rosharan', body: 'roshar' },
+      { era: 3, system: 'rosharan', body: 'roshar', book: 'stormlight', arc: 'wor' },
     ]),
-  ch('azure', 'Azure', '#38bdf8', 'warbreaker', 'Nalthis', 'Vivenna',
-    'Awakener, royal of Idris',
-    'Vasher\'s partner; later the Wall Guard\'s commander in Kholinar.', false, [
+  ch('azure', 'Vivenna', '#38bdf8', 'warbreaker', 'Nalthis', 'Azure, Princess of Idris',
+    'Awakener, Royal Locks',
+    'Idris\'s eldest princess; later, as Azure, the Wall Guard\'s commander in Kholinar.', false, [
       { era: 2, system: 'nalthian', body: 'nalthis' },
-      { era: 3, system: 'rosharan', body: 'roshar' },
+      { era: 3, system: 'rosharan', body: 'roshar', book: 'stormlight', arc: 'oathbringer' },
     ]),
   ch('demoux', 'Demoux', '#64748b', 'mistborn1', 'Scadrial', 'Thinker',
     'Seer (atium Misting), worldhopper',
@@ -242,8 +242,8 @@ export const CHARACTERS: Character[] = [
     'The sister who tried to save her people from a song.', false, [
       { era: 3, system: 'rosharan', body: 'roshar' },
     ]),
-  ch('siri', 'Siri', '#f9a8d4', 'warbreaker', 'Nalthis', 'Vessel of Austrism\'s joke',
-    'Queen of Hallandren',
+  ch('siri', 'Siri', '#f9a8d4', 'warbreaker', 'Nalthis', 'Sisirinah, Vessel',
+    'Royal Locks',
     'The youngest daughter sent to marry a god.', false,
     [{ era: 2, system: 'nalthian', body: 'nalthis' }]),
   ch('susebron', 'Susebron', '#e879f9', 'warbreaker', 'Nalthis', 'God King',
@@ -252,7 +252,7 @@ export const CHARACTERS: Character[] = [
     [{ era: 2, system: 'nalthian', body: 'nalthis' }]),
   ch('lightsong', 'Lightsong', '#fb7185', 'warbreaker', 'Nalthis', 'Lightsong the Bold',
     'Returned',
-    'The god who did not believe in his own divinity — and died proving it.', true,
+    'The god who did not believe in his own divinity — until he found what he had Returned to do.', true,
     [{ era: 2, system: 'nalthian', body: 'nalthis' }]),
   ch('raoden', 'Raoden', '#a78bfa', 'elantris', 'Sel', 'Spirit',
     'Elantrian',
@@ -293,8 +293,8 @@ export const CHARACTERS: Character[] = [
       // The Lost Metal: a Ghostblood on Scadrial, working against Trell as Moonlight.
       { era: 4, system: 'scadrian', body: 'scadrial', book: 'mistborn2', arc: 'tlm' },
     ]),
-  ch('silence', 'Silence Montane', '#78716c', 'shadowsforsilence', 'Threnody', 'Silence',
-    'Shade-wise innkeeper',
+  ch('silence', 'Silence Montane', '#78716c', 'shadowsforsilence', 'Threnody', 'White Fox, Silence Forescout',
+    'Bounty hunter, waystop keeper',
     'She keeps the Simple Rules. The Forests do not.', false,
     [{ era: 2, system: 'threnodite', body: 'threnody' }]),
   ch('dusk', 'Sixth of the Dusk', '#4ade80', 'sixthofdusk', 'First of the Sun', 'Dusk',
@@ -341,7 +341,7 @@ export const CHARACTERS: Character[] = [
     'Awakened sword, Destroy Evil',
     'A thousand Breaths in a blade. Vasher\'s, then Szeth\'s. It wants to help.', true, [
       { era: 2, system: 'nalthian', body: 'nalthis' },
-      { era: 3, system: 'rosharan', body: 'roshar' },
+      { era: 3, system: 'rosharan', body: 'roshar', book: 'stormlight', arc: 'wor' },
     ]),
   ch('lopen', 'Lopen', '#fbbf24', 'stormlight', 'Roshar', 'The Lopen',
     'Windrunner Radiant',
@@ -436,7 +436,7 @@ export const CHARACTERS: Character[] = [
     ]),
   ch('denth', 'Denth', '#64748b', 'warbreaker', 'Nalthis', 'VaraTreledees',
     'Returned, mercenary',
-    'Vasher\'s brother, once. A smile that hid a thousand Breaths of hurt.', false, [
+    'Shashara\'s brother, once Vasher\'s friend. He is the better swordsman, and it does not save him.', false, [
       { era: 2, system: 'nalthian', body: 'nalthis' },
     ]),
   ch('dilaf', 'Dilaf', '#dc2626', 'elantris', 'Sel', 'Gragdet',

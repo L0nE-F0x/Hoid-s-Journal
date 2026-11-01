@@ -60,7 +60,7 @@ export const GLOSSARY: GlossaryTerm[] = [
   t('aon', 'Aon', 'elantris', 'A glyph of AonDor. Each is a map of Arelon; the Chasm Line had to be added.', ['Elantris'], { category: 'magic' }),
   t('soulstamp', 'Soulstamp', 'emperorssoul', 'A carved Forgery that rewrites an object\'s or person\'s history into a plausible lie.', ["The Emperor's Soul"], { category: 'object' }),
   t('shade', 'Shade', 'shadowsforsilence', 'A Threnodite Cognitive Shadow. Blood, fire, and running at night draw them.', ['Shadows for Silence'], { category: 'creature' }),
-  t('aviar-term', 'Aviar', 'sixthofdusk', 'Pantheon birds that grant a talent after visiting Patji\'s Eye.', ['Sixth of the Dusk'], { category: 'creature' }),
+  t('aviar-term', 'Aviar', 'sixthofdusk', 'Birds that gain a talent on Patji, from a parasite in the fruit around Patji\'s Eye, and share it with the person they bond.', ['Sixth of the Dusk'], { category: 'creature' }),
   t('aether-spore', 'Aether spores', 'tress', 'Twelve colours of symbiotic aether raining from Lumar\'s moons. Water is the trigger.', ['Tress of the Emerald Sea'], { category: 'object' }),
   t('hion-term', 'Hion', 'yumi', 'Virtuosity\'s Splintered light: cyan and magenta lines that power Komashi.', ['Yumi and the Nightmare Painter'], { category: 'magic' }),
   t('nightmare', 'Nightmare (Komashi)', 'yumi', 'A painter-banished spirit, born of Virtuosity\'s Splinters and the machine\'s hunger.', ['Yumi and the Nightmare Painter'], { category: 'creature' }),
@@ -77,7 +77,7 @@ export const GLOSSARY: GlossaryTerm[] = [
   t('mistborn-term', 'Mistborn', 'mistborn1', 'An Allomancer who can burn every metal, not just one. Rare, noble-born, and feared.', ['The Final Empire'], { category: 'magic' }),
   t('koloss', 'Koloss', 'mistborn1', 'Blue-skinned giants of rage who grow until their skin tears and their hearts give out; the Lord Ruler keeps garrisons of them.', ['The Final Empire'], { category: 'creature' }),
   t('inquisitor', 'Steel Inquisitor', 'mistborn1', 'A human rewritten with spikes through the eyes: the Lord Ruler\'s hunters, who see without them and do not die when they should.', ['The Final Empire'], { category: 'creature' }),
-  t('heightenings', 'Heightenings', 'warbreaker', 'Thresholds of Breath. Perfect pitch, perfect colour, instinctive Awakening, and at the Tenth a Returned\'s aura.', ['Warbreaker'], { category: 'magic' }),
+  t('heightenings', 'Heightenings', 'warbreaker', 'Thresholds of Breath, from aura recognition at fifty Breaths to the Tenth at fifty thousand. A Returned\'s divine Breath counts as the Fifth on its own; only the God Kings have reached the Tenth.', ['Warbreaker'], { category: 'magic' }),
   t('essence-mark', 'Essence Mark', 'emperorssoul', 'A soulstamp keyed to a person, temporarily rewriting who they are. It unravels if the lie is too far from the soul.', ["The Emperor's Soul"], { category: 'object' }),
 
   // --- Realmatics, the vocabulary a reread actually reaches for -----------

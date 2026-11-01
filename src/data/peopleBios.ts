@@ -59,7 +59,7 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   azure: {
     wiki: 'Vivenna',
     see: ['vasher', 'siri', 'nightblood'],
-    bio: 'Vivenna of Idris, who lost her betrothal, her hair dye, and her certainties, then gained Breath, a Shardblade that is not a spren, and the name Azure. She hunts Vasher across worlds with a soldier\'s pragmatism and a princess\'s unfinished business.',
+    bio: 'Vivenna of Idris, who lost her betrothal, her hair, and her certainties, then gained Breath, a Shardblade that is not a spren, and the name Azure. She hunts Vasher across worlds with a soldier\'s pragmatism and a princess\'s unfinished business.',
   },
   demoux: {
     wiki: 'Demoux',
@@ -249,7 +249,7 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   silence: {
     wiki: 'Silence_Montane',
     see: ['william-ann', 'shade', 'simple-rules'],
-    bio: 'A Forests innkeeper who harvests shades with silver and silence. She keeps her daughter alive through debt, lies, and the Simple Rules — a horror story told from the hunter\'s side of the counter.',
+    bio: 'Proprietor of a waystop in the Forests of Hell and, secretly, the White Fox, the bounty hunter every storyteller in the Forests has a tale about. She takes Chesterton Divide\'s bounty to keep the waystop out of Theopolis\'s hands; it costs William Ann a hand and very nearly both their lives. Her grandmother\'s shade, locked in the shrine, settles Theopolis.',
   },
   dusk: {
     wiki: 'Sixth_of_the_Dusk',
@@ -287,8 +287,8 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
     bio: 'A Sleepless guardian who wears a human role beside Rysn until the Dawnshard secret forces honesty. Hordelings, guilt, and an ancient mandate to keep Change from becoming a weapon.',
   },
   nightblood: {
-    wiki: 'Nightblood_(Roshar)',
-    see: ['vasher', 'szeth', 'type-iv', 'command'],
+    wiki: 'Nightblood',
+    see: ['vasher', 'shashara', 'type-iv', 'command'],
     bio: 'A Type IV BioChromatic entity in sword form, Commanded to destroy evil and permanently confused about the definition. It vaporizes what it judges, chatters like a child, and has changed hands from Vasher to Szeth without getting any better at philosophy.',
   },
   lopen: {
@@ -384,7 +384,7 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   denth: {
     wiki: 'Denth',
     see: ['vasher', 'azure', 'nightblood'],
-    bio: 'A Returned mercenary who smiles while steering Vivenna into catastrophe. Old comrade to Vasher, on the other side of the Manywar\'s leftovers — until the smile cracks.',
+    bio: 'A Returned mercenary, and one of the Five Scholars, who smiles while steering Vivenna into the war Bluefingers is paying for. He took Vasher\'s side in the Manywar and has hated him since Vasher killed his sister Shashara with Nightblood. He is the better swordsman; Vasher wins their last duel with a trick.',
   },
   dilaf: {
     wiki: 'Dilaf',

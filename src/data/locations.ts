@@ -180,12 +180,12 @@ export const LOCATIONS: Location[] = [
     'Dayside capital on the lossand, home of the Diem.',
     { region: 'Lossand', bio: 'The Dayside capital, on the lossand, where the Taishin govern by trade and the Diem stands over it all — until the massacre. Kenton spends White Sand trying to keep a guild alive in a city that has decided it can afford not to.' }),
   loc('patji', 'Patji', 'first-of-the-sun', 'sixthofdusk', 0.52, 0.50, '#4ade80', 'island',
-    'The Father island of the Pantheon. Patji\'s Eye is a perpendicularity.', {
+    'The Father island of the Pantheon, and the most lethal of them.', {
       region: 'The Pantheon',
-      bio: 'The Father island: the largest and most lethal of the Pantheon, where every plant, animal and rock is trying something. Patji\'s Eye is a perpendicularity at its heart, and Patji itself is — by Word of Brandon and by the way the island behaves — rather more than an island.', eraMin: 1 }),
+      bio: 'The Father island: the largest and most lethal of the Pantheon, where every plant, animal and rock is trying something. Juvenile Aviar from every island come to the lake near its peak, and the trappers who work it rarely live long.', eraMin: 1 }),
   loc('forests-of-hell', 'Forests of Hell', 'threnody', 'shadowsforsilence', 0.50, 0.52, '#78716c', 'forest',
     'Where the Simple Rules are the only law that matters.',
-    { region: 'The Forests', bio: 'Woodland where breaking one of three Simple Rules — kindle no flame, shed no blood, run at night from nothing — calls a shade out of the dark to take you. The rules are not superstition and they are not negotiable, and Threnody\'s settlers have organised an entire economy of silver, salt and caution around them.' }),
+    { region: 'The Forests', bio: 'Forest over nearly all of the smaller continent, full of shades. Three Simple Rules — kindle no flame, shed no blood, do not run at night — are the only protection anyone has, along with silver, which is why silver is money here. The refugees from the Homeland named it for Hell; their grandchildren live in it.' }),
   loc('diggens-point', "Diggen's Point", 'lumar-world', 'tress', 0.18, 0.48, '#6ee7b7', 'rock',
     'The rock Tress left. The Emerald Sea begins here.',
     { region: 'Emerald Sea', bio: 'The rock Tress grew up on and was not supposed to leave: a small island society with a duke, a window-washer\'s daughter and a rule that people stay where they were born. She left anyway, on the least seaworthy reasoning in the Cosmere.' }),
@@ -234,8 +234,8 @@ export const LOCATIONS: Location[] = [
     'The Cinder King\'s moving city, harvesting sunhearts ahead of the dawn.',
     { region: 'The Corridor', bio: 'The Cinder King\'s city, larger and faster than Beacon and fed by prospector camps that harvest sunhearts out of ground the dawn is about to take. Union works because someone else is being spent, which is the Cinder King\'s entire economic model.' }),
   loc('lastport', 'Lastport', 'threnody', 'shadowsforsilence', 0.42, 0.58, '#a8a29e', 'port',
-    'A Homeland town on the edge of the Forests.',
-    { region: 'The Homeland', bio: 'A Homeland town on the Forests\' edge, where the trade from inside the trees comes out and the people who go in are outfitted. Everyone here knows the Rules; not everyone here has kept them.' }),
+    'The strongest of the Fortress Towns. It put a fortune on Chesterton Divide.',
+    { region: 'The Forests', bio: 'A fortified town by the Forests and the most powerful city on the continent. Theopolis takes the White Fox\'s corpses here to be paid; Chesterton Divide murdered its governor, which is why his bounty could supply a waystop for a year.' }),
 
   // Second pass: regions a reread actually reaches for. Names are canon, the
   // UVs are ours — placement is relative, not an Isaac Stewart tracing.
@@ -309,8 +309,8 @@ export const LOCATIONS: Location[] = [
     { region: 'Lossand', bio: 'The Dayside nation of the sand, governed by the Taishin — a council of trade interests that holds together because none of them can afford the alternative. The Diem was one of the seats, which is why its destruction was a constitutional crisis as well as a massacre.' }),
 
   loc('the-homeland', 'The Homeland', 'threnody', 'shadowsforsilence', 0.44, 0.46, '#a8a29e', 'land',
-    'Settled Threnody, safely outside the Forests. It does not feel safe.',
-    { region: 'The Homeland', bio: 'Settled Threnody, outside the Forests, where the shades are supposed to be someone else\'s problem. It does not feel safe because it is not: the Forests are a boundary the shades observe out of habit rather than law.' }),
+    'Where Threnody\'s people came from, across the ocean on the Fallen World. The Evil took it.',
+    { region: 'Fallen World', bio: 'The land the first Forescouts left to explore the Forests. Then the Evil came and killed almost everyone; the survivors fled across the sea to the forests they had named for Hell. Nobody who saw it is left to describe it, and Silence\'s grandmother swore the Forescouts would go back and defeat the Evil.' }),
 
   loc('sapphire-sea', 'Sapphire Sea', 'lumar-world', 'tress', 0.28, 0.55, '#38bdf8', 'sea',
     'Zephyr spores. They make air, and they make it violently.',
@@ -341,12 +341,12 @@ export const LOCATIONS: Location[] = [
     'The sun-scoured path the hover-cities race. Dawn on one side, night on the other.',
     { region: 'The Corridor', bio: 'The strip of survivable ground between the dawn that melts the crust and the night that freezes it. Every city on Canticle lives in it and every city on Canticle is moving, permanently, at the speed of its own sunrise.' }),
 
-  loc('the-crossroads', 'The Crossroads', 'threnody', 'shadowsforsilence', 0.48, 0.56, '#a8a29e', 'home',
-    'Silence Montane\'s waystop. Fire, blood, and running are all against the Rules.',
-    { region: 'The Forests', bio: 'Silence Montane\'s waystop, deep enough into the Forests that every guest is a risk and every night is a negotiation with the Rules. Silence runs it, keeps silver in the doorframes, and hunts bounties on the side because a waystop does not pay for two children.' }),
-  loc('the-fort', 'The Fort', 'threnody', 'shadowsforsilence', 0.40, 0.44, '#78716c', 'keep',
-    'A Homeland fort on the Forests\' edge. Safer than the trees. Not safe.',
-    { region: 'The Homeland', bio: 'A Homeland fort on the Forests\' edge: walls, silver, and a garrison whose job is less to fight than to be somewhere the shades will not bother coming. Safer than the trees. Not safe.' }),
+  loc('the-crossroads', 'Silence\'s waystop', 'threnody', 'shadowsforsilence', 0.48, 0.56, '#a8a29e', 'home',
+    'Silence Montane\'s inn in the Forests. Three rings of silver, pigs, and a shrine nobody opens.',
+    { region: 'The Forests', bio: 'Neutral ground on the Forest roads, rumoured to be guarded by the shade of Silence\'s husband. Silence runs it with William Ann, Sebruki and old Dob, rings it with three circles of silver, and pays for the silver by hunting the criminals who stop for venison. Her grandmother\'s shade is locked in the shrine to the God Beyond.' }),
+  loc('the-fort', 'The forts', 'threnody', 'shadowsforsilence', 0.40, 0.44, '#78716c', 'keep',
+    'The Fortress Towns: safe from the Forests, and home to the fortfolk who tax the roads.',
+    { region: 'The Homeland', bio: 'Where the fortfolk live: towns safe enough that their people dress well, look away from the trees and get careless with the Simple Rules. They claim the roads, tax whoever lives beside them, promise to maintain them and do not, and post the bounties hunters bring in. Lastport and Bastion Hill are two of them.' }),
 
   loc('homeisles', 'The Homeisles', 'first-of-the-sun', 'sixthofdusk', 0.28, 0.62, '#86efac', 'island',
     'The Eelakin islands, away from the Pantheon. Traps are for Patji; this is home.',
@@ -482,14 +482,10 @@ export const LOCATIONS: Location[] = [
     {
       region: 'Obrodai',
       bio: 'In a letter, Patji — another of Autonomy\'s avatars — warns Hoid not to come back to Obrodai: Autonomy has claimed the world, a new avatar is manifesting there, and as a precaution it has been taught to dislike him. Nothing else about Obrodai is known, including where on it anything is; this pin means only "the world".', arc: 'tlm', canon: 'wob', sources: ['Word of Brandon (Patji\'s letter to Hoid)'] }),
-  loc('suluko', 'Suluko', 'first-of-the-sun', 'sixthofdusk', 0.470, 0.520, '#a3e635', 'island',
-    'A Pantheon island. Less lethal than Patji, which is not the same as safe.', {
-      region: 'The Pantheon',
-      bio: 'A Pantheon island less lethal than Patji, which is the local way of saying a trapper might get a season out of it. The aviar are the reason anyone bothers.', eraMin: 1 }),
   loc('vathi-camp', 'The company camp', 'first-of-the-sun', 'sixthofdusk', 0.560, 0.520, '#fbbf24', 'home',
-    'Off-worlders came to survey the Pantheon. The islands surveyed them back.', {
+    'The Northern Interests Trading Company\'s fortress on Patji: soldiers, scientists, two ironhulls.', {
       region: 'The Pantheon',
-      bio: 'The company camp: off-worlders and mainlanders who came to survey the Pantheon for development and found that the Pantheon surveys back. Vathi wanted to modernise the islands; Dusk wanted them left alone; the machines they brought wanted something else entirely.', arc: 'sixthofdusk' }),
+      bio: 'The company\'s foothold on Patji: a fortress on the far side of the island with soldiers, scientists, merchants and two ironhulls against the deepwalkers, and a machine from the Ones Above that was only ever opened. The smaller scouting camp on the near shore did not survive its deepwalker.', arc: 'sixthofdusk' }),
   loc('longroad', 'The Long Road', 'canticle-world', 'sunlit', 0.500, 0.560, '#fb923c', 'land',
     'The track every hover-city runs, always west, always just ahead of the sun.',
     { region: 'The Corridor', bio: 'The track the hover-cities run: west, always west, at a pace set by the planet\'s rotation and not negotiable. Stop for a day and the day catches you.' }),
@@ -498,9 +494,6 @@ export const LOCATIONS: Location[] = [
     {
       region: 'Komashi',
       bio: 'A Komashi city strung on the hion lines, lit by the machine and kept awake by what the machine\'s leftovers turn into after dark. Kilahito is not unique; it is simply the one with the painters.', canon: 'wob', sources: ['Yumi and the Nightmare Painter'] }),
-  loc('threnody-forests-deep', 'The Deep Forest', 'threnody', 'shadowsforsilence', 0.560, 0.480, '#0f1a10', 'forest',
-    'Past where the Homeland pretends the Forests end. Nobody has drawn what is in here.',
-    { region: 'The Forests', bio: 'Past the depth the Homeland has agreed to call the edge. Nobody has mapped it, the people who have gone in did not come out to argue about it, and the shades in there are older than the settlement.' }),
   loc('lumar-rocks', 'The Rock', 'lumar-world', 'tress', 0.24, 0.44, '#9c8d78', 'rock',
     'One of the few outcrops above the spore seas, and therefore a whole society.',
     { region: 'Lumar', bio: 'One of the few outcrops standing above the spore seas, and therefore an entire society — everything Lumar\'s people have, they have because a rock happened to be there. The seas are not land and cannot be farmed; the rocks are all there is.' }),
@@ -564,9 +557,9 @@ export const PERPS: Perpendicularity[] = [
   { id: 'tears-of-edgli-perp', name: 'Tears of Edgli', body: 'nalthis', book: 'warbreaker',
     fact: 'Flowers whose dye is Endowment\'s Investiture made pigment.', at: 'tears-of-edgli',
     eraMin: 1, canon: C, sources: ['Warbreaker'] },
-  { id: 'patjis-eye-perp', name: "Patji's Eye", body: 'first-of-the-sun', book: 'sixthofdusk',
-    fact: 'A perpendicularity on the island Patji, source of Aviar powers.', at: 'patji',
-    eraMin: 1, canon: C, sources: ['Sixth of the Dusk'] },
+  { id: 'patjis-eye-perp', name: "Patji's Eye", body: 'first-of-the-sun', book: 'arcanum',
+    fact: 'A perpendicularity on the island Patji, where Aviar gain their talents.', at: 'patji',
+    eraMin: 1, canon: C, sources: ['Arcanum Unbounded — Drominad', 'Isles of the Emberdark'] },
   { id: 'pits-of-hathsin-perp', name: 'The Pits of Hathsin', body: 'scadrial', book: 'mistborn1',
     fact: 'Where Ruin\'s power crystallised into atium. Not a doorway so much as a wound that produced metal.',
     at: 'pits-of-hathsin', eraMin: 2, eraMax: 2, canon: C, sources: ['Mistborn Era 1'] },

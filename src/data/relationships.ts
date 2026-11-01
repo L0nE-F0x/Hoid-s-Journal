@@ -52,7 +52,7 @@ export const RELATIONS: Relation[] = [
   { a: { kind: 'character', id: 'hoid' }, b: { kind: 'character', id: 'sigzil' }, type: 'mentor', label: 'Mentor & apprentice', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'hoid' }, b: { kind: 'character', id: 'khriss' }, type: 'ally', label: 'Cosmere scholars', book: 'arcanum', canon: W },
   { a: { kind: 'character', id: 'khriss' }, b: { kind: 'character', id: 'nazh' }, type: 'ally', label: 'Scholar & agent', book: 'arcanum', canon: C },
-  { a: { kind: 'character', id: 'vasher' }, b: { kind: 'character', id: 'azure' }, type: 'romance', label: 'Partners', book: 'warbreaker', canon: C },
+  { a: { kind: 'character', id: 'vasher' }, b: { kind: 'character', id: 'azure' }, type: 'ally', label: 'Travels with him after the war', book: 'warbreaker', canon: C },
   { a: { kind: 'character', id: 'kelsier' }, b: { kind: 'character', id: 'vin' }, type: 'mentor', label: 'Mentor & apprentice', book: 'mistborn1', canon: C },
   { a: { kind: 'character', id: 'hoid' }, b: { kind: 'shard', id: 'odium' }, type: 'rival', label: 'Opposes Odium', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'frost' }, b: { kind: 'character', id: 'hoid' }, type: 'ally', label: 'Old friends', book: 'core', canon: C },

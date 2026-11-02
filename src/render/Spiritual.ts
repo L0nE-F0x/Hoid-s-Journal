@@ -386,7 +386,14 @@ export class Spiritual {
     // --- Dawnshards ------------------------------------------------------
     for (let i = 0; i < this.dawn.length; i++) {
       const d = this.dawn[i]!;
-      d.mesh.visible = true;
+      // A Dawnshard waits for its book like any other card: the Commands
+      // are Dawnshard's and The Sunlit Man's, and EXIST over the Shard map
+      // told a Way of Kings reader what Hoid carries.
+      const ds = DAWNSHARDS.find((x) => x.id === d.id);
+      const seen = !ds || isVisible(ds, progress);
+      d.mesh.visible = seen;
+      d.label.visible = seen;
+      if (!seen) continue;
       const a = -spin * 0.7 + (i / this.dawn.length) * Math.PI * 2 + 0.4;
       const p = new THREE.Vector3(
         Math.cos(a) * DAWN_RING,

@@ -57,6 +57,17 @@ function seenNames(list: string | undefined, body: string): string | undefined {
  * Venli") without the names of anyone the reader has not met yet. Only
  * whole names of characters gated past the current progress are taken out.
  */
+/** A magic's "Shard" field, keeping only the Shards this reader has met. */
+function shardsSeen(text: string | undefined): string | undefined {
+  if (!text) return text;
+  const progress = store.state.readProgress;
+  const parts = text.split(/\s*&\s*/).filter((name) => {
+    const sh = COSMERE.shards.find((x) => x.name.toLowerCase() === name.trim().toLowerCase());
+    return !sh || isVisible(sh, progress);
+  });
+  return parts.length ? parts.join(' & ') : undefined;
+}
+
 export function withoutHidden(text: string | undefined): string | undefined {
   if (!text) return text;
   let out = text;
@@ -393,7 +404,9 @@ function fillFromHit(host: HTMLElement, hit: LoreHit): void {
     host.append(factBlock(mag.mechanics, true) ?? '');
     host.append(factBlock(mag.bio, true) ?? '');
     host.append(fields([
-      ['Shard', mag.shard],
+      // "Preservation & Ruin" on Allomancy's card is The Hero of Ages' news
+      // to a Final Empire reader: name only the Shards they have met.
+      ['Shard', shardsSeen(mag.shard)],
       ['Type', mag.type],
       ['Users', withoutHidden(mag.users)],
     ]));

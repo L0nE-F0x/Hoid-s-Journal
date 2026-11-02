@@ -20,7 +20,8 @@ export const ORGANIZATIONS: Organization[] = [
       arc: 'wor', world: 'Roshar', wiki: 'Ghostbloods',
       members: ['kelsier', 'mraize', 'iyatil', 'felt', 'shallan', 'shai', 'kaise', 'twinsoul', 'dlavil', 'darkwater'],
       see: ['mraize', 'iyatil', 'thaidakar', 'sons-of-honor'],
-      bio: 'A society of worldhoppers working on Roshar as a cell under Mraize and Iyatil, who answer to a master called Thaidakar. They want a way to move Investiture off-world, and they collect secrets and people to get it. Shallan joined, then left.',
+      bio: 'A society of worldhoppers working on Roshar as a cell under Mraize and Iyatil, who answer to a master called Thaidakar. They want a way to move Investiture off-world, and they collect secrets and people to get it. Shallan joined them as Veil.',
+      // Her leaving them is Wind and Truth, and is on her Wind and Truth card.
     }),
   org('seventeenth-shard', 'The Seventeenth Shard', '#e0f2fe', 'stormlight', 'secret',
     'Worldhoppers sworn to watch and not interfere, and to stop others interfering. They are looking for Hoid.',
@@ -62,7 +63,8 @@ export const ORGANIZATIONS: Organization[] = [
       arc: 'edgedancer', world: 'Roshar', wiki: 'Skybreakers',
       members: ['nale', 'szeth'],
       see: ['nale', 'szeth', 'surgebinding'],
-      bio: 'They hunt Surgebinders outside their own order, by law and without mercy, under Nale. Szeth joins them. Highspren are the most legalistic of the sapient spren, which is saying something.',
+      // Szeth joining is Oathbringer: his face and the szeth–skybreakers edge say so there.
+      bio: 'They hunt Surgebinders outside their own order, by law and without mercy, under Nale. Highspren are the most legalistic of the sapient spren, which is saying something.',
     }),
   org('lightweavers', 'The Lightweavers', '#f472b6', 'stormlight', 'order',
     'Cryptics and lies that become true. Illumination and Transformation. Shallan\'s order, and a few more.',
@@ -95,7 +97,8 @@ export const ORGANIZATIONS: Organization[] = [
       arc: 'wor', world: 'Roshar', wiki: 'Truthwatchers',
       members: ['renarin'],
       see: ['renarin', 'rlain'],
-      bio: 'Ordinary Truthwatchers heal and see. Renarin, the first of the new order, sees more than he should.',
+      // What Renarin sees is Oathbringer's, and is on his Oathbringer face.
+      bio: 'Ordinary Truthwatchers heal and see. Renarin is the first of the new order.',
     }),
   org('willshapers', 'The Willshapers', '#a3e635', 'stormlight', 'order',
     'Lightspren, the Reachers. Transportation and Cohesion. Freedom is the Ideal they keep.',
@@ -174,7 +177,9 @@ export const ORGANIZATIONS: Organization[] = [
       world: 'Roshar', wiki: 'Listener',
       members: ['eshonai', 'venli', 'rlain'],
       see: ['narak', 'shattered-plains', 'everstorm'],
-      bio: 'They left the war and the Fused and made a people on the Shattered Plains. The Alethi found them. Venli found stormform. The Everstorm answered. What is left of them is a remnant trying not to be anyone\'s army.',
+      // The Fused are named in Oathbringer; the remnant and its nation are
+      // Wind and Truth, on Thude's and Bila's cards.
+      bio: 'They left the war and their gods and made a people on the Shattered Plains. The Alethi found them. Venli found stormform. The Everstorm answered.',
     }),
   org('worldsingers', 'The Worldsingers', '#fbbf24', 'stormlight', 'guild',
     'A loosely organised order of storytellers and scholars. Hoid claims them. Sigzil was apprenticed into them.',

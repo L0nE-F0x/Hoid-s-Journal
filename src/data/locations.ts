@@ -553,7 +553,10 @@ export const LOCATIONS: Location[] = [
 ];
 
 export const PERPS: Perpendicularity[] = [
-  { id: 'well-of-ascension-perp', name: 'The Well of Ascension', body: 'scadrial', book: 'mistborn1',
+  // Where the Well is, and that it was used, are the end of The Well of
+  // Ascension; whose pool it is (Preservation's), The Hero of Ages. The
+  // Well's own place card already waits for the first; this door waits for both.
+  { id: 'well-of-ascension-perp', name: 'The Well of Ascension', body: 'scadrial', book: 'mistborn1', arc: 'hoa',
     fact: 'Preservation\'s pool beneath Kredik Shaw. Used, then collapsed.', at: 'luthadel',
     eraMin: 2, eraMax: 2, canon: C, sources: ['Mistborn Era 1'] },
   { id: 'harmony-pool', name: "Harmony's Perpendicularity", body: 'scadrial', book: 'mistborn2', arc: 'tlm',

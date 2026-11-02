@@ -5,7 +5,7 @@
  */
 import {
   COSMERE, DAWNSHARDS, RELATIONS, REL_TYPES, bodyById, bodyByName, characterById,
-  isFeaturedPerson, isVisible, orgById, shardById,
+  isFeaturedPerson, isVisible, orgById, orgsForCharacter, shardById,
 } from '../data/index.ts';
 import { store } from '../core/store.ts';
 import { el, listen } from './dom.ts';
@@ -131,6 +131,8 @@ export function mountLoreWeb(root: HTMLElement): { destroy(): void } {
     for (const o of COSMERE.organizations) {
       if (!isVisible(o, progress)) continue;
       for (const mid of o.members ?? []) {
+        // Membership can be a later book's reveal (Kelsier and the Ghostbloods).
+        if (!orgsForCharacter(mid, progress).some((x) => x.id === o.id)) continue;
         link('org', o.id, 'character', mid, 'member', o.name, o.color);
       }
     }

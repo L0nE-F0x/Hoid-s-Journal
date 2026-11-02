@@ -371,7 +371,10 @@ function fillFromHit(host: HTMLElement, hit: LoreHit): void {
     host.append(headOf(o.kind, o.name, o.color, o.canon));
     host.append(factBlock(o.fact)!);
     host.append(factBlock(o.bio, true) ?? '');
-    const memberIds = (o.members ?? []).filter((mid) => canSee(mid));
+    // A member is listed once the reader may see them *and* their place in
+    // this order: the same rule a person's own card uses for their orders.
+    const memberIds = (o.members ?? []).filter((mid) => canSee(mid)
+      && orgsForCharacter(mid, store.state.readProgress).some((x) => x.id === o.id));
     host.append(fields([
       ['World', o.world],
       ['People', memberIds.length ? memberIds.map((mid) => loreLabel(mid)).join(', ') : null],

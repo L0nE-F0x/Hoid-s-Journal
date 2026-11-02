@@ -9,6 +9,7 @@ import {
 } from '../data/index.ts';
 import { store } from '../core/store.ts';
 import { el, listen } from './dom.ts';
+import { pageZoom } from './pageZoom.ts';
 import '../styles/loreWeb.css';
 
 interface Node {
@@ -508,9 +509,19 @@ export function mountLoreWeb(root: HTMLElement): { destroy(): void } {
     panY = my / zoom - worldY;
   };
 
+  /**
+   * A finger on a pinched-in page pans the page (ui/pageZoom.ts), so the web
+   * neither drags nor pans under it. A tap that does not move still picks.
+   */
+  let zoomedTap: { x: number; y: number; id: number } | null = null;
+
   const offs = [
     listen(canvas, 'pointerdown', (ev) => {
       const e = ev as PointerEvent;
+      if (e.pointerType === 'touch' && pageZoom() > 1.05) {
+        zoomedTap = e.isPrimary ? { x: e.clientX, y: e.clientY, id: e.pointerId } : null;
+        return;
+      }
       pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
       canvas.setPointerCapture(e.pointerId);
       if (pointers.size >= 2) {
@@ -562,6 +573,16 @@ export function mountLoreWeb(root: HTMLElement): { destroy(): void } {
     }),
     listen(canvas, 'pointerup', (ev) => {
       const e = ev as PointerEvent;
+      if (zoomedTap) {
+        const tap = zoomedTap;
+        zoomedTap = null;
+        if (tap.id === e.pointerId && Math.hypot(e.clientX - tap.x, e.clientY - tap.y) < 10) {
+          const p = toLocal(e);
+          const hit = hitNode(p.x, p.y);
+          if (hit) { store.set('selected', hit.id); trace(); }
+        }
+        return;
+      }
       pointers.delete(e.pointerId);
       if (pointers.size < 2) pinch = null;
       if (pointers.size === 0) {
@@ -572,6 +593,7 @@ export function mountLoreWeb(root: HTMLElement): { destroy(): void } {
     }),
     listen(canvas, 'pointercancel', (ev) => {
       const e = ev as PointerEvent;
+      zoomedTap = null;
       pointers.delete(e.pointerId);
       pinch = null;
       drag = null;

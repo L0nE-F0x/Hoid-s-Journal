@@ -20,6 +20,7 @@ import {
 } from '../data/index.ts';
 import { store } from '../core/store.ts';
 import { announce, el, listen, setColumnBottom } from './dom.ts';
+import { onZoomSettled, pageZoom } from './pageZoom.ts';
 import '../styles/atlas.css';
 
 const W = 800;
@@ -91,6 +92,26 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
    * 0–1 on its own file, so it lands at `x + u·w`, `y + v·h`.
    */
   let fit = { x: 0, y: 0, w: 1, h: 1 };
+
+  /**
+   * Backing pixels per canvas unit. Everything is laid out in W×H units and
+   * drawn at the size the screen actually shows: a phone at 3× is already
+   * past 800 pixels across the plate, and a reader who pinches into it wants
+   * the pins and their names sharp, not an 800-pixel picture blown up.
+   */
+  let res = 1;
+  const resample = (): boolean => {
+    const shown = canvas.clientWidth || W;
+    const want = (shown * Math.min(3, window.devicePixelRatio || 1) * pageZoom()) / W;
+    const next = Math.min(3, Math.max(1, Math.ceil(want * 2) / 2));
+    if (next === res) return false;
+    res = next;
+    for (const c of [canvas, mapLayer, pinLayer]) {
+      c.width = Math.round(W * res);
+      c.height = Math.round(H * res);
+    }
+    return true;
+  };
 
   /**
    * Draw a raster at its own shape. Every plate used to be stretched over
@@ -191,6 +212,7 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
     const s = store.state;
     const ctx = mapLayer.getContext('2d');
     if (!ctx) return;
+    ctx.setTransform(res, 0, 0, res, 0, 0);
     ctx.clearRect(0, 0, W, H);
     fit = { x: 0, y: 0, w: 1, h: 1 };
     if (s.scale === 'city' && s.focusedLocation) {
@@ -270,6 +292,7 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
     const s = store.state;
     const ctx = pinLayer.getContext('2d');
     if (!ctx) return;
+    ctx.setTransform(res, 0, 0, res, 0, 0);
     ctx.clearRect(0, 0, W, H);
     const rows = pinRows();
     const isHot = (id: string) => s.selected === id || s.hovered === id || s.focusedLocation === id
@@ -415,9 +438,10 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
     const s = store.state;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
+    ctx.setTransform(res, 0, 0, res, 0, 0);
     // A letterboxed plate leaves margins, and the last frame would show in them.
     ctx.clearRect(0, 0, W, H);
-    ctx.drawImage(mapLayer, 0, 0);
+    ctx.drawImage(mapLayer, 0, 0, W, H);
 
     // The highstorm crossing the plate is decoration that never stops; it
     // stands down for a reader who asked for less motion.
@@ -432,7 +456,7 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
       ctx.fillRect(x - 28, H * 0.12, 56, H * 0.76);
     }
 
-    ctx.drawImage(pinLayer, 0, 0);
+    ctx.drawImage(pinLayer, 0, 0, W, H);
   };
 
   const refresh = () => {
@@ -496,6 +520,7 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
       : plateLayer > 0 && s.scale !== 'city' && firstLayer
         ? `${byline} · places are marked on the ${firstLayer} plate`
         : byline;
+    resample();
     composeMap();
     const n = pinRows().length;
     canvas.setAttribute('aria-label', n
@@ -658,6 +683,9 @@ export function mountAtlas(root: HTMLElement): { destroy(): void } {
       if (store.state.hovered) store.set('hovered', null);
     }),
     listen(window, 'resize', () => measure()),
+    onZoomSettled(() => {
+      if (atlasIsOpen() && resample()) { composeMap(); composePins(); paint(); }
+    }),
     store.on('focusedBody', refresh),
     store.on('scale', refresh),
     store.on('era', refresh),

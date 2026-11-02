@@ -128,6 +128,9 @@ export class CameraRig {
     on('pointerdown', (e) => {
       if (this.path.length) this.skipCinematic();
       if (!this.inputEnabled) return;
+      // A reader who has pinched the page in is panning and zooming the page
+      // (see ui/pageZoom.ts); the globe under their finger stays put.
+      if (e.pointerType === 'touch' && (window.visualViewport?.scale ?? 1) > 1.05) return;
       el.setPointerCapture(e.pointerId);
       this.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
       this.poke();

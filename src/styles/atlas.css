@@ -39,9 +39,11 @@
 }
 .ceph-atlas-title { font-weight: 600; letter-spacing: 0.04em; }
 .ceph-atlas-canvas {
-  /* Tap, hold and drag on the plate are all ours, at every width: a tablet
-     in landscape is a desktop layout with a finger on it. */
-  touch-action: none;
+  /* Tap, hold and drag on the plate are ours, at every width: a tablet in
+     landscape is a desktop layout with a finger on it. A pinch is the
+     browser's: it zooms the page into the plate, and the plate redraws
+     sharp at that size (atlas.ts, `resample`). */
+  touch-action: pinch-zoom;
   -webkit-touch-callout: none;
   user-select: none;
   display: block;

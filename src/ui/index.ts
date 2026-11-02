@@ -11,6 +11,7 @@ import { mountHud } from './hud.ts';
 import { mountLoreWeb } from './loreWeb.ts';
 import { mountMinimap } from './minimap.ts';
 import { mountModals } from './modals.ts';
+import { mountPageZoom } from './pageZoom.ts';
 import { mountTitle } from './title.ts';
 
 export interface UIHandles {
@@ -70,6 +71,7 @@ export function mountUI(root: HTMLElement): UIHandles {
   const minimap = mountMinimap(root);
   root.append(hud.lowLayer);
   const modals = mountModals(root);
+  const zoom = mountPageZoom();
 
   /**
    * Panels swap under the reader: choosing Roshar in the directory flies to
@@ -206,6 +208,7 @@ export function mountUI(root: HTMLElement): UIHandles {
       minimap.destroy();
       web.destroy();
       modals.destroy();
+      zoom.destroy();
       root.classList.remove('ceph-root');
     },
   };

@@ -74,6 +74,29 @@
 
 .ceph-root ::selection { background: rgba(111, 215, 232, 0.26); }
 
+/* A double tap on a control is two presses, not a zoom: the stepper and the
+   era chips get tapped fast. Pinch-zoom still works everywhere. */
+.ceph-root button,
+.ceph-root a,
+.ceph-root [role='button'],
+.ceph-root input,
+.ceph-root label { touch-action: manipulation; }
+
+/* iOS zooms the page into any text field set under 16px when it takes focus,
+   and leaves it zoomed. */
+@media (pointer: coarse) {
+  .ceph-root input:not([type='range']),
+  .ceph-root textarea,
+  .ceph-root select { font-size: max(16px, 1em); }
+}
+
+/* The page is pinched in (ui/pageZoom.ts). Until it is back at 1×, a drag
+   pans the page and a pinch zooms it, wherever the finger lands: the sky,
+   the Lore Web and the plates give their gestures back to the browser. */
+html.ceph-zoomed #stage,
+html.ceph-zoomed .ceph-web-canvas,
+html.ceph-zoomed .ceph-atlas-canvas { touch-action: pan-x pan-y pinch-zoom; }
+
 /* Said to a screen reader, not drawn. */
 .ceph-sr-only {
   position: absolute !important;

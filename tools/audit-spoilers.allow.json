@@ -1005,54 +1005,6 @@
    "why": "fp: Aimia and Aimians are named in The Way of Kings"
   },
   {
-   "key": "shard:cultivation",
-   "field": "era4.vessel",
-   "term": "Koravellium Avast",
-   "why": "leak, ShardEra (coordinator): era 4-5 vessel rows name Koravellium (RoW) on a card open from The Way of Kings. Reported."
-  },
-  {
-   "key": "shard:cultivation",
-   "field": "era4.vessel",
-   "term": "Koravellium",
-   "why": "leak, ShardEra (coordinator): era 4-5 vessel rows name Koravellium (RoW) on a card open from The Way of Kings. Reported."
-  },
-  {
-   "key": "shard:cultivation",
-   "field": "era5.vessel",
-   "term": "Koravellium Avast",
-   "why": "leak, ShardEra (coordinator): era 4-5 vessel rows name Koravellium (RoW) on a card open from The Way of Kings. Reported."
-  },
-  {
-   "key": "shard:cultivation",
-   "field": "era5.vessel",
-   "term": "Koravellium",
-   "why": "leak, ShardEra (coordinator): era 4-5 vessel rows name Koravellium (RoW) on a card open from The Way of Kings. Reported."
-  },
-  {
-   "key": "shard:honor",
-   "field": "era4.vessel",
-   "term": "Retribution",
-   "why": "leak, ShardEra (coordinator): era 4-5 vessel rows name Retribution (WaT) on a card open from The Way of Kings. Reported."
-  },
-  {
-   "key": "shard:honor",
-   "field": "era5.vessel",
-   "term": "Retribution",
-   "why": "leak, ShardEra (coordinator): era 4-5 vessel rows name Retribution (WaT) on a card open from The Way of Kings. Reported."
-  },
-  {
-   "key": "shard:odium",
-   "field": "era4.vessel",
-   "term": "Retribution",
-   "why": "leak, ShardEra (coordinator): era 4-5 vessel rows name Retribution (WaT) on a card open from The Way of Kings. Reported."
-  },
-  {
-   "key": "shard:odium",
-   "field": "era5.vessel",
-   "term": "Retribution",
-   "why": "leak, ShardEra (coordinator): era 4-5 vessel rows name Retribution (WaT) on a card open from The Way of Kings. Reported."
-  },
-  {
    "key": "term:horneaters",
    "field": "def",
    "term": "Horneater Peaks",

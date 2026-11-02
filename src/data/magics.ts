@@ -303,7 +303,7 @@ export const MAGICS: Magic[] = [
     desc: 'On the Pantheon islands, certain birds (Aviar) grant a power to those they bond.',
     mechanics: 'A young bird raised on Patji eats the fruit of the Patji\'s Finger trees around Patji\'s Eye; a parasite in it gives the talent, which the bird shares with the person it bonds.',
     users: 'Sixth of the Dusk, Pantheon trappers',
-    canon: C, fieldNotes: { shard: { canon: 'wob', note: 'First of the Sun has no Shard; its Investiture is left over from Adonalsium. Patji is an avatar of Autonomy, by an Oathbringer epigraph and Word of Brandon.' } }, sources: ['Sixth of the Dusk'],
+    canon: C, fieldNotes: { shard: { canon: 'wob', note: 'First of the Sun has no Shard; its Investiture is left over from Adonalsium. Patji is an avatar of Autonomy, by an Oathbringer epigraph and Word of Brandon.', book: 'stormlight', arc: 'oathbringer', early: 'First of the Sun has no Shard; its Investiture is left over from Adonalsium.' } }, sources: ['Sixth of the Dusk'],
     table: {
       kind: 'aviar',
       cols: ['Aviar', 'Talent'],

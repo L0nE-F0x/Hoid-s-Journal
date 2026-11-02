@@ -10,6 +10,7 @@ import {
   cityById,
   relationsFor,
   shownFace,
+  shownNote,
   shownWorld,
   isNewThisArc,
   isVisible,
@@ -552,11 +553,14 @@ export function fillLoreCard(host: HTMLElement, id: string | null): boolean {
   }
   fillFromHit(host, hit);
   const notes = 'fieldNotes' in hit.obj ? hit.obj.fieldNotes : undefined;
-  if (notes) {
+  const shown = Object.entries(notes ?? {})
+    .map(([k, n]) => [k, n, shownNote(n, store.state.readProgress)] as const)
+    .filter(([, , text]) => !!text);
+  if (shown.length) {
     const box = el('div', { className: 'ceph-meta', style: { marginTop: '10px' } });
-    for (const [k, n] of Object.entries(notes)) {
+    for (const [k, n, text] of shown) {
       box.append(el('div', {
-        html: `<b>${k}</b> <span class="ceph-canon ceph-canon--${n.canon}">${n.canon}</span> — ${n.note}`,
+        html: `<b>${k}</b> <span class="ceph-canon ceph-canon--${n.canon}">${n.canon}</span> — ${text}`,
       }));
     }
     host.append(box);

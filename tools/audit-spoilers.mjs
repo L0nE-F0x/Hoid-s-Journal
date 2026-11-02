@@ -200,7 +200,7 @@ function namesOf(kind, o, P) {
 function textsOf(kind, o, P) {
   const t = [];
   const put = (field, text) => { if (text) t.push([field, String(text)]); };
-  for (const [k, n] of Object.entries(o.fieldNotes ?? {})) put(`note.${k}`, n.note);
+  for (const [k, n] of Object.entries(o.fieldNotes ?? {})) put(`note.${k}`, D.shownNote(n, P));
   switch (kind) {
     case 'character': {
       const face = D.shownFace(o, P);

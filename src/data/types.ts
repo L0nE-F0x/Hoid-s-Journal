@@ -1,9 +1,22 @@
 export type CanonLevel = 'canon' | 'wob' | 'speculation' | 'noncanon';
 
+/**
+ * Where a card's field came from. A note that cites a later book (where a
+ * name is first printed, which book confirmed a Word of Brandon) waits for
+ * that book: until then the card shows `early`, or no note at all.
+ */
+export interface FieldNote {
+  canon: CanonLevel;
+  note: string;
+  book?: string;
+  arc?: string;
+  early?: string;
+}
+
 export interface Cited {
   canon: CanonLevel;
   sources: string[];
-  fieldNotes?: Record<string, { canon: CanonLevel; note: string }>;
+  fieldNotes?: Record<string, FieldNote>;
 }
 
 export type BodyKind =

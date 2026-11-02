@@ -95,7 +95,8 @@ export const PEOPLE_SCADRIAL: Character[] = [
       arc: 'woa', wiki: 'Zane',
       see: ['straff-venture', 'vin', 'elend', 'amaranta'],
       bio: 'Straff\'s illegitimate Mistborn son, kept hidden and kept in atium, with a voice in his head that told him to kill everyone except Vin. He decided that meant she was meant to save him, and spent the siege trying to pull her away from Elend. When she refused he attacked her in earnest; she beat his atium and killed him, and the voice told him as he died that he had never been insane.',
-      fieldNotes: { abilities: { canon: 'wob', note: 'Brandon has said Zane carried a steel Hemalurgic spike he placed himself, which is how the voice reached him.' } },
+      // Hemalurgy is The Hero of Ages'; the voice itself is on the page from The Well of Ascension.
+      fieldNotes: { abilities: { canon: 'wob', note: 'Brandon has said Zane carried a steel Hemalurgic spike he placed himself, which is how the voice reached him.', book: 'mistborn1', arc: 'hoa' } },
     }),
   ch('ashweather-cett', 'Ashweather Cett', '#f59e0b', 'mistborn1', 'Scadrial', 'Cett, Lord Cett',
     'Noble warlord; cannot walk',

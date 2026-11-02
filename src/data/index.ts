@@ -24,8 +24,8 @@ import {
   haystack, matchesQuery, normalizeQuery, scoreHit, type SearchHit, type SearchKind,
 } from './search.ts';
 import type {
-  Belt, Body, Character, CharacterEra, Cosmere, Location, Moon, Organization, Perpendicularity,
-  Series, Shard, ShardEra,
+  Belt, Body, Character, CharacterEra, Cosmere, FieldNote, Location, Moon, Organization,
+  Perpendicularity, Series, Shard, ShardEra,
 } from './types.ts';
 
 export { CITY_PLATES, cityById, landmarkById };
@@ -450,6 +450,12 @@ export function shownFace(ch: Character, progress: Record<string, number>): Requ
     aliases: face.aliases ?? ch.aliases,
     abilities: face.abilities ?? ch.abilities,
   };
+}
+
+/** A field note as far as this reader knows it; see `FieldNote`. */
+export function shownNote(n: FieldNote, progress: Record<string, number>): string | null {
+  if (!n.book || !n.arc || isVisible({ book: n.book, arc: n.arc }, progress)) return n.note;
+  return n.early ?? null;
 }
 
 /** A world's card as far as this reader knows it; see `WORLD_FACES`. */

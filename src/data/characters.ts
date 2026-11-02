@@ -39,7 +39,7 @@ export const CHARACTERS: Character[] = [
       wiki: 'Hoid', kind: 'person', titles: 'King\'s Wit, Court jester, storyteller',
       see: ['frost', 'sigzil', 'dawnshard', 'yolen', 'seventeenth-shard'],
       bio: 'Born on Yolen before the Shattering; one of the people who was there when Adonalsium died and who did not take a Shard. He collects magics the way other people collect scars — Lightweaving from home, Allomancy on Scadrial, Breath on Nalthis, a spren on Roshar — and he cannot hurt people, which he treats as an inconvenience and a joke. On Roshar he is Wit. The Shards call him Cephandrius. He is looking for someone, and he will not say who.',
-      fieldNotes: { origin: { canon: 'canon', note: 'The Sunlit Man ch. 10 puts his birth on Yolen, before the Shattering.' } },
+      fieldNotes: { origin: { canon: 'canon', note: 'The Sunlit Man ch. 10 puts his birth on Yolen, before the Shattering.', book: 'sunlit', arc: 'sunlit' } },
     }),
   ch('vin', 'Vin', '#77aaff', 'mistborn1', 'Scadrial', 'Valette Renoux',
     'Mistborn; briefly the Vessel of Preservation',
@@ -106,7 +106,7 @@ export const CHARACTERS: Character[] = [
     'A Dula Elantrian from Sel; later seen on Roshar with the Seventeenth Shard.', false, [
       { era: 1, system: 'selish', body: 'sel' },
       { era: 3, system: 'rosharan', body: 'roshar', book: 'stormlight', arc: 'twok' },
-    ], { fieldNotes: { fact: { canon: 'wob', note: 'Ishikk calls him Grump; that Grump is Galladon is Word of Brandon 7427, 10085.' } } }),
+    ], { fieldNotes: { fact: { canon: 'wob', note: 'Ishikk calls him Grump; that Grump is Galladon is Word of Brandon 7427, 10085.', book: 'stormlight', arc: 'twok' } } }),
   ch('sigzil', 'Sigzil', '#f59e0b', 'stormlight', 'Roshar', 'Nomad, Zellion, the Sunlit Man, Sess Nassith Tor',
     'Windrunner, then Skybreaker; Skips between worlds; once carried a Dawnshard',
     'Hoid\'s apprentice. Far-future wanderer of The Sunlit Man.', false, [
@@ -130,7 +130,7 @@ export const CHARACTERS: Character[] = [
     'Once Kelsier\'s captain; later hunts Hoid across worlds.', false, [
       { era: 2, system: 'scadrian', body: 'scadrial' },
       { era: 3, system: 'rosharan', body: 'roshar', book: 'stormlight', arc: 'twok' },
-    ], { fieldNotes: { aliases: { canon: 'wob', note: '"Thinker", in Ishikk\'s Way of Kings interlude, is Demoux by Word of Brandon.' } } }),
+    ], { fieldNotes: { aliases: { canon: 'wob', note: '"Thinker", in Ishikk\'s Way of Kings interlude, is Demoux by Word of Brandon.', book: 'stormlight', arc: 'twok' } } }),
   ch('lift', 'Lift', '#86efac', 'stormlight', 'Roshar', 'Lift',
     'Edgedancer Radiant',
     'A thief who turns food into Light, and the only person who can grab a spren.', false, [

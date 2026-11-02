@@ -237,54 +237,6 @@
    "why": "fp, catalog.ts, which the coordinator owns: a name (a world, a star, an era's own label) with no plot attached."
   },
   {
-   "key": "character:hoid",
-   "field": "note.origin",
-   "term": "The Sunlit Man",
-   "why": "ui: fieldNotes have no gate; the note is Word of Brandon or a later citation. Reported."
-  },
-  {
-   "key": "character:galladon",
-   "field": "note.fact",
-   "term": "Grump",
-   "why": "ui: fieldNotes have no gate; the note is Word of Brandon or a later citation. Reported."
-  },
-  {
-   "key": "shard:devotion",
-   "field": "note.vessel",
-   "term": "Aona",
-   "why": "ui: fieldNotes have no gate; the note is Word of Brandon or a later citation. Reported."
-  },
-  {
-   "key": "shard:devotion",
-   "field": "note.vessel",
-   "term": "Way of Kings",
-   "why": "ui: fieldNotes have no gate; the note is Word of Brandon or a later citation. Reported."
-  },
-  {
-   "key": "shard:devotion",
-   "field": "era1.vessel",
-   "term": "Aona",
-   "why": "leak, ShardEra (coordinator): the era 1 vessel row names Aona (a Way of Kings epigraph) on a card open from Elantris. Reported."
-  },
-  {
-   "key": "shard:dominion",
-   "field": "note.vessel",
-   "term": "Skai",
-   "why": "ui: fieldNotes have no gate; the note is Word of Brandon or a later citation. Reported."
-  },
-  {
-   "key": "shard:dominion",
-   "field": "note.vessel",
-   "term": "Way of Kings",
-   "why": "ui: fieldNotes have no gate; the note is Word of Brandon or a later citation. Reported."
-  },
-  {
-   "key": "shard:dominion",
-   "field": "era1.vessel",
-   "term": "Skai",
-   "why": "leak, ShardEra (coordinator): the era 1 vessel row names Skai (a Way of Kings epigraph) on a card open from Elantris. Reported."
-  },
-  {
    "key": "term:spiritual-realm",
    "field": "def",
    "term": "Fortune",
@@ -417,12 +369,6 @@
    "why": "fp, catalog.ts, which the coordinator owns: a name (a world, a star, an era's own label) with no plot attached."
   },
   {
-   "key": "character:demoux",
-   "field": "note.aliases",
-   "term": "Way of Kings",
-   "why": "ui: fieldNotes have no gate; the note is Word of Brandon or a later citation. Reported."
-  },
-  {
    "key": "character:shan-elariel",
    "field": "bio",
    "term": "Elend stops caring about the engagement, Shan plots to have him killed",
@@ -547,12 +493,6 @@
    "field": "bio",
    "term": "Elend; Vin killed",
    "why": "fp: the sentence is about someone trying to kill them, not their death"
-  },
-  {
-   "key": "character:zane",
-   "field": "note.abilities",
-   "term": "Hemalurgic spike",
-   "why": "ui: fieldNotes have no gate; the note is Word of Brandon or a later citation. Reported."
   },
   {
    "key": "character:ashweather-cett",
@@ -1050,7 +990,7 @@
    "key": "character:iyatil",
    "field": "note.origin",
    "term": "Silverlight",
-   "why": "ui: fieldNotes have no gate; the note is Word of Brandon or a later citation. Reported."
+   "why": "minor: the note cites the Word of Brandon behind her origin field, which names Silverlight already; no plot"
   },
   {
    "key": "character:iyatil",
@@ -1111,18 +1051,6 @@
    "field": "fact",
    "term": "Khriss",
    "why": "fp, catalog.ts, which the coordinator owns: a name (a world, a star, an era's own label) with no plot attached."
-  },
-  {
-   "key": "magic:aviar",
-   "field": "note.shard",
-   "term": "Autonomy",
-   "why": "ui: fieldNotes have no gate; the note is Word of Brandon or a later citation. Reported."
-  },
-  {
-   "key": "magic:aviar",
-   "field": "note.shard",
-   "term": "Oathbringer",
-   "why": "ui: fieldNotes have no gate; the note is Word of Brandon or a later citation. Reported."
   },
   {
    "key": "location:the-village",
@@ -1194,13 +1122,7 @@
    "key": "shard:autonomy",
    "field": "note.vessel",
    "term": "Bavadin",
-   "why": "ui: fieldNotes have no gate; the note is Word of Brandon or a later citation. Reported."
-  },
-  {
-   "key": "shard:autonomy",
-   "field": "note.vessel",
-   "term": "The Lost Metal",
-   "why": "ui: fieldNotes have no gate; the note is Word of Brandon or a later citation. Reported."
+   "why": "minor: the note's early text names Bavadin, as the Vessel rows do: a Way of Kings letter, and her Shard was Word of Brandon before The Lost Metal."
   },
   {
    "key": "shard:autonomy",
@@ -1237,18 +1159,6 @@
    "field": "origin",
    "term": "Aimia",
    "why": "fp: Aimia and Aimians are named in The Way of Kings"
-  },
-  {
-   "key": "shard:ambition",
-   "field": "note.vessel",
-   "term": "Oathbringer",
-   "why": "ui: fieldNotes have no gate; the note is Word of Brandon or a later citation. Reported."
-  },
-  {
-   "key": "shard:ambition",
-   "field": "note.vessel",
-   "term": "Wind and Truth",
-   "why": "ui: fieldNotes have no gate; the note is Word of Brandon or a later citation. Reported."
   },
   {
    "key": "character:ishar",

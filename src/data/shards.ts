@@ -34,7 +34,11 @@ export const SHARDS: Shard[] = [
       bio: 'Khriss suspects the shades, the Evil and the strange surplus of Investiture on Threnody are chunks of Ambition, torn off in that fight and left to twist the people and the planet. There is no stable perpendicularity there, only unpredictable ones of morbid origin. Odium had her first on his list.',
       see: ['uli-da', 'threnody', 'shade'],
       fieldNotes: {
-        vessel: { canon: 'wob', note: 'Uli Da is named in an Oathbringer epigraph (ch. 40); that she held Ambition was Word of Brandon (8398) until Wind and Truth ch. 104. She was Sho Del (WoB 8933).' },
+        vessel: {
+          canon: 'wob', book: 'stormlight', arc: 'wat',
+          note: 'Uli Da is named in an Oathbringer epigraph (ch. 40); that she held Ambition was Word of Brandon (8398) until Wind and Truth ch. 104. She was Sho Del (WoB 8933).',
+          early: 'That Uli Da held Ambition is Word of Brandon 8398; that she was Sho Del is Word of Brandon 8933.',
+        },
         bio: { canon: 'wob', note: '"First on his list" is Word of Brandon 1550.' },
       },
     }),
@@ -53,7 +57,11 @@ export const SHARDS: Shard[] = [
       bio: 'On Dayside she is the Sand Lord, one of many faces she wears; whole pantheons on other worlds turn out to be her under different names. Even Taldain\'s sky is arranged — the moon held to its hour, the planet held between two suns — and the Ars Arcanum credits her for it. Khriss, who is from Taldain, cannot get home.',
       see: ['taldain', 'sand-mastery', 'khriss'],
       fieldNotes: {
-        vessel: { canon: 'wob', note: 'Hoid names Bavadin in a Way of Kings letter; that she holds Autonomy was Word of Brandon until The Lost Metal ch. 19.' },
+        vessel: {
+          canon: 'wob', book: 'mistborn2', arc: 'tlm',
+          note: 'Hoid names Bavadin in a Way of Kings letter; that she holds Autonomy was Word of Brandon until The Lost Metal ch. 19.',
+          early: 'Hoid names Bavadin in a Way of Kings letter; that she holds Autonomy is Word of Brandon.',
+        },
         bio: { canon: 'wob', note: 'The Sand Lord as her persona and her many faces are Word of Brandon 5876 and 3974.' },
       },
     }),
@@ -78,7 +86,8 @@ export const SHARDS: Shard[] = [
     'Sel\'s Shard of love that serves, Splintered long before Arelon. With Dominion\'s power it became the Dor: trapped in the Cognitive Realm, bound to the shape of the land, and behind every Aon.',
     ['Elantris', 'Arcanum Unbounded — Selish system', 'Word of Brandon'], [
       whole(0, '—', 'Yolen (pre-Shattering)'),
-      splintered(1, 'Sel', 'Aona'), splintered(2, 'Sel'), splintered(3, 'Sel'),
+      // Aona is first printed in a Way of Kings epigraph (ch. 22).
+      splintered(1, 'Sel'), from('twok', splintered(1, 'Sel', 'Aona')), splintered(2, 'Sel'), splintered(3, 'Sel'),
       splintered(4, 'Sel'), splintered(5, 'Sel'),
     ], {
       // Ien, Elantris ch. 16.
@@ -86,7 +95,7 @@ export const SHARDS: Shard[] = [
       bio: 'Arelon still prays to her as Domi. The Aon at the heart of every seon is a Splinter of her. Elantrians who walk into the Pool hear a kind voice offer them release, and whether that is something left of Devotion nobody has said.',
       see: ['dominion', 'aona', 'dor', 'seon', 'elantris-city'],
       fieldNotes: {
-        vessel: { canon: 'wob', note: 'Aona as Devotion\'s Vessel is Word of Brandon 783; her name is first printed in a Way of Kings epigraph (ch. 22).' },
+        vessel: { canon: 'wob', book: 'stormlight', arc: 'twok', note: 'Aona as Devotion\'s Vessel is Word of Brandon 783; her name is first printed in a Way of Kings epigraph (ch. 22).' },
         bio: { canon: 'wob', note: 'Domi (783) and the seons as her Splinters (4679) are Word of Brandon.' },
       },
     }),
@@ -94,14 +103,15 @@ export const SHARDS: Shard[] = [
     'Sel\'s other Shard, Splintered beside Devotion. Half of the Dor is Dominion, and Fjordell\'s Jaddeth owes it most of what he is.',
     ['Elantris', 'Arcanum Unbounded — Selish system', 'Word of Brandon'], [
       whole(0, '—', 'Yolen (pre-Shattering)'),
-      splintered(1, 'Sel', 'Skai'), splintered(2, 'Sel'), splintered(3, 'Sel'),
+      // Skai is first printed in a Way of Kings epigraph (ch. 22).
+      splintered(1, 'Sel'), from('twok', splintered(1, 'Sel', 'Skai')), splintered(2, 'Sel'), splintered(3, 'Sel'),
       splintered(4, 'Sel'), splintered(5, 'Sel'),
     ], {
       intent: 'Conquest, by Word of Brandon.',
       bio: 'The skaze are its Splinters, as the seons are Devotion\'s, and they still have a hand in Fjordell\'s politics. Sel has a second perpendicularity, presumably Dominion\'s; where it is has not been said.',
       see: ['devotion', 'skai', 'dor', 'skaze'],
       fieldNotes: {
-        vessel: { canon: 'wob', note: 'Skai as Dominion\'s Vessel is Word of Brandon; his name is first printed in a Way of Kings epigraph (ch. 22).' },
+        vessel: { canon: 'wob', book: 'stormlight', arc: 'twok', note: 'Skai as Dominion\'s Vessel is Word of Brandon; his name is first printed in a Way of Kings epigraph (ch. 22).' },
         bio: { canon: 'wob', note: 'The skaze\'s politics (6167), the second perpendicularity (13093) and "Conquest" (13140) are Word of Brandon.' },
       },
     }),

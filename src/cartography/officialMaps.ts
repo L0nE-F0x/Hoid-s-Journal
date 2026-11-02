@@ -86,8 +86,10 @@ const CITY_LAYERS: Record<string, MapLayer[]> = {
   luthadel: [
     { name: 'Survey', file: 'luthadel.jpg' },
     { name: 'Endpaper', file: 'luthadel_endpaper.png' },
-    // A painting, signed "E MONTEIRO" in its corner, not a Stewart map.
-    { name: 'Kredik Shaw', file: 'kredik_shaw.jpg', credit: 'Painting by E. Monteiro' },
+    // Fan art, not a Stewart map: Coppermind files it under Fanworks
+    // (File:Kredik Shaw.jpg — Evan Monteiro, from DeviantArt). Kept with the
+    // right credit on the owner's say-so, 2 Nov 2026.
+    { name: 'Kredik Shaw', file: 'kredik_shaw.jpg', credit: 'Fan painting by Evan Monteiro' },
   ],
   elendel: [
     { name: 'Basin', file: 'elendel.jpg' },

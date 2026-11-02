@@ -394,7 +394,10 @@ if (D.scadrialBiome(3, 0) !== 'scadrial-basin') fail('Stormlight-era Scadrial is
 
 const kal = D.COSMERE.characters.find((c) => c.id === 'kaladin');
 const kalAt = kal && D.characterAt(kal, 3, D.fullProgress());
-if (kalAt?.at !== 'urithiru') fail(`Kaladin at full read should stand at Urithiru, got ${kalAt?.at}`);
+// Wind and Truth ends him in Shinovar (ch. 144–146); before it, Urithiru.
+if (kalAt?.at !== 'shinovar') fail(`Kaladin at full read should stand in Shinovar, got ${kalAt?.at}`);
+const kalRow = kal && D.characterAt(kal, 3, D.publicationSafeProgress({ series: 'stormlight', arc: 5 }));
+if (kalRow?.at !== 'urithiru') fail(`Kaladin on Rhythm of War should stand at Urithiru, got ${kalRow?.at}`);
 const early = D.publicationSafeProgress({ series: 'stormlight', arc: 0 });
 const kalEarly = kal && D.characterAt(kal, 3, early);
 if (kalEarly?.at !== 'warcamps') fail(`Kaladin on The Way of Kings should stand at the warcamps, got ${kalEarly?.at}`);

@@ -16,6 +16,9 @@ export const PRESENCE_AT: Record<string, PlaceBeat[]> = {
   kaladin: [
     { era: 3, at: 'warcamps', arc: 'twok' },
     { era: 3, at: 'urithiru', arc: 'wor' },
+    // He spends the ten days in Shinovar with Szeth and dies there: Szeth
+    // finds his body beside Nightblood (Wind and Truth ch. 144–146).
+    { era: 3, at: 'shinovar', arc: 'wat' },
   ],
   shallan: [
     { era: 3, at: 'kharbranth', arc: 'twok' },

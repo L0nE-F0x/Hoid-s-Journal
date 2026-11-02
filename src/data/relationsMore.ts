@@ -616,6 +616,9 @@ export const RELATIONS_MORE: Relation[] = [
   { a: { kind: 'character', id: 'weonim' }, b: { kind: 'org', id: 'hexers' }, type: 'bond', label: 'Elder', book: 'fod', canon: C },
   { a: { kind: 'character', id: 'hoid' }, b: { kind: 'location', id: 'valors-temple' }, type: 'rival', label: 'Burned in it, twice', book: 'fod', canon: C },
 
+  // Moved off Jah Keved's Way of Kings card.
+  { a: { kind: 'character', id: 'taravangian' }, b: { kind: 'location', id: 'jah-keved' }, type: 'rival', label: 'Arranged the shape of its succession war', book: 'stormlight', arc: 'wor', canon: C },
+
   // Membership edges. `orgsForCharacter` shows an order on a person's card as
   // soon as both are visible unless an edge like these says when it became
   // true, and these memberships are later books' than the people or orders.

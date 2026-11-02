@@ -197,7 +197,7 @@ export const READING_FACES: Record<string, ReadingFace> = {
         fact: 'Truthless no longer, and dead once. Nale brought him back with a black sword.',
         abilities: 'Nightblood',
         aliases: 'Szeth-son-son-Vallano, Truthless, the Assassin in White',
-        bio: 'The Assassin in White, who killed King Gavilar and went on to kill rulers across Roshar for a master he would not name. Kaladin killed him in the sky over the Shattered Plains. Nale brought him back, handed him a sentient black sword, and offered him a law to follow instead of a stone.',
+        bio: 'The Assassin in White, who killed King Gavilar and went on to kill rulers across Roshar for a master he would not name. He was named Truthless for saying the Voidbringers would return, and they have. Kaladin killed him in the sky over the Shattered Plains. Nale brought him back, handed him a sentient black sword, and offered him a law to follow instead of a stone.',
       },
       {
         book: 'stormlight', arc: 'oathbringer',

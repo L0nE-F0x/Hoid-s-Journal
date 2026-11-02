@@ -190,7 +190,9 @@ export const ORGANIZATIONS: Organization[] = [
       bio: 'They gather knowledge and songs from every land they can walk, and Hoid claims them. Sigzil was apprenticed to him.',
     }),
   org('kholin', 'House Kholin', '#1d4ed8', 'stormlight', 'house',
-    'The royal house of Alethkar: Gavilar who united it, Dalinar who broke and remade it, Jasnah who inherited a war.',
+    // Jasnah inheriting the war (Oathbringer) and Dalinar remaking the house
+    // are on their own faces, gated there.
+    'The royal house of Alethkar: Gavilar who united it, and the Blackthorn who fought beside him.',
     {
       world: 'Roshar', wiki: 'House_Kholin',
       members: ['gavilar', 'dalinar', 'jasnah', 'adolin', 'renarin', 'navani'],

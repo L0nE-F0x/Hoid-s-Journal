@@ -153,7 +153,9 @@ export const PLACES_MORE: Location[] = [
       arc: 'wat', bio: 'Ten monasteries, one dedicated to each Herald, built tall and stone as watchtowers and fortresses, and the seat of both Shin government and Stone Shamanism. Szeth\'s pilgrimage in Wind and Truth took him from one to the next, beating each Honorbearer in turn.', region: 'Shinovar', see: ['monastery-of-truth', 'honorbearers', 'shinovar'], wiki: 'Monastery_of_Truth' }),
   loc('stone-shamanate', 'The Stone Shamanate', 'roshar', 'stormlight', 0.225, 0.455, '#a3e635', 'scroll',
     'Ruling clergy of Shinovar. They named Szeth Truthless and pretended that settled it.', {
-      bio: 'Shinovar\'s ruling clergy, who keep the Blades, name the Truthless and decide what the stone means. They declared Szeth Truthless for telling them the Voidbringers were returning, which he was right about, and sent him out with an Honorblade to prove how little they believed him.', region: 'Shinovar', see: ['shinovar'], wiki: 'Stone_Shamanism' }),
+      bio: 'Shinovar\'s ruling clergy, who keep the Blades, name the Truthless and decide what the stone means. They declared Szeth Truthless and sent him out with an Honorblade.',
+      // Why — the Voidbringers he said would return — is Words of Radiance (i-14), on Szeth's face there.
+      region: 'Shinovar', see: ['shinovar'], wiki: 'Stone_Shamanism' }),
   loc('kholin-princedom', 'Kholin Princedom', 'roshar', 'stormlight', 0.795, 0.47, '#3b82f6', 'crown',
     'Eastern Alethkar under House Kholin. Kholinar is the seat.', {
       bio: 'Eastern Alethkar under House Kholin, with Kholinar for its seat and the windblades for a wall. Dalinar spent his youth conquering the rest of Alethkar for his brother.', region: 'Alethkar', see: ['kholinar', 'alethkar'], wiki: 'Kholin_princedom' }),

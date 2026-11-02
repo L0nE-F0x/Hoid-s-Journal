@@ -383,7 +383,8 @@ export const LOCATIONS: Location[] = [
     { region: 'Alethkar', bio: 'Ten princedoms that spent four hundred years fighting each other until Gavilar made them one, and then spent six years on the Shattered Plains avenging him. Alethi are the Cosmere\'s most enthusiastic soldiers and least curious readers — writing is women\'s work here — and the Radiants came back out of them anyway.' }),
   loc('jah-keved', 'Jah Keved', 'roshar', 'stormlight', 0.638, 0.478, '#dc2626', 'land',
     'Second of the Vorin kingdoms, bled white by its own succession war.',
-    { region: 'Jah Keved', bio: 'The second Vorin kingdom, and the one that bled itself. When its king died the succession went to open war among the highprinces, and Taravangian arranged the shape of it; by the time a Veden sat the throne again there was not much throne left.' }),
+    { region: 'Jah Keved', bio: 'The second Vorin kingdom, and the one that bled itself. When its king died the succession went to open war among the highprinces; by the time a Veden sat the throne again there was not much throne left.' }),
+    // Taravangian's part in that war is Words of Radiance's: the taravangian–jah-keved relation.
   loc('azir', 'Azir', 'roshar', 'stormlight', 0.375, 0.599, '#fcd34d', 'land',
     'An empire that runs on paperwork, and is the better for it. The Prime is chosen by essay.',
     { region: 'Azir', bio: 'An empire that runs on clerks. The Prime is chosen by essay, the provinces answer in writing, and the whole apparatus is slow enough to be nearly impossible to decapitate.' }),

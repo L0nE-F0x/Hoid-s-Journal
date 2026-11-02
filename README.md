@@ -71,6 +71,8 @@ Splintered ones shown as the fragments they are.
 ## Controls
 
 Drag to orbit · right/middle/shift-drag to pan · scroll to zoom.
+On a phone: drag the sky to orbit, pinch it to zoom the camera, long-press to open a card.
+Pinch a card, panel or map plate to zoom the page; once it is zoomed, drag pans and pinch zooms back out.
 `WASD` fly, `Q`/`E` rise and fall, `Shift` faster.
 `Space` play/pause time · `←` `→` step · `1`–`6` jump era.
 Focusing a world holds the playhead; `Space` sets it running again.

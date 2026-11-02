@@ -62,26 +62,54 @@ Last full run before the push: tsc, `audit:data`, `audit:spoilers` (0 open),
 `test:cartography` 18/18, `test:interaction` (~85), `audit:ui` 0 dead,
 build + smoke. "click a moon opens its card" can flake under GPU load; rerun.
 
-**Owner decisions still open** (nothing below was changed):
-- `kredik_shaw.jpg` is an E. Monteiro painting; it is now credited to them, not
-  Stewart. Keep it or drop it?
-- Orbit "calm" tint at Cosmere scale is dead code (`Orrery.buildOrbits`
-  overwrites userData): switch it on (changes the approved look) or delete.
-- Cosmere-frame GPU cost is the Investiture clouds: accept, or cheaper clouds
-  on Low?
-- Yumi and Sixth of the Dusk moved to era 5 (WoB 16524): moves Komashi.
-- `user-scalable=no` blocks page zoom on phones (the app handles pinch itself).
-- Vivenna's card is titled "Vivenna" (id `azure`), because "Azure" is the
-  Oathbringer reveal.
+**Owner decisions, 2 Nov (morning after)** — settled, don't re-ask:
+- **Kredik Shaw painting: keep it, credited correctly.** Coppermind's file page
+  lists it under Fanworks: Evan Monteiro, from DeviantArt, not a book. The
+  layer's credit says so. It is the one plate outside the Stewart allowance,
+  kept on the owner's say-so.
+- **Orbit calm tint: on.** `Orrery.buildOrbits` replaced `userData` after
+  setting the two tints, so the Cosmere-scale rings never calmed. They now
+  step toward a cool tone pulled back and keep their colour at system scale.
+- **Investiture clouds' GPU cost: accepted.** No cheaper Low-quality clouds.
+- **Yumi and Sixth of the Dusk in era 5: right as is.**
+- **Phones must zoom well.** `user-scalable=no` is gone. A pinch on a card,
+  panel or plate zooms the page. A pinch on the sky still dollies the camera
+  at 1×. Once the page is zoomed, the sky, the Lore Web and the plates give
+  their gestures to the browser so a drag pans and a pinch zooms back out
+  (`ui/pageZoom.ts`, `html.ceph-zoomed`). The plate redraws at the zoomed
+  resolution (`atlas.ts` `resample`). Controls are `touch-action:
+  manipulation`, and text fields are 16 px on touch so iOS doesn't zoom into
+  them. Headless Chrome cannot synthesise a touch pinch, so this was checked
+  with `Emulation.setPageScaleFactor`. Try it on a real phone once.
+- Vivenna's card stays "Vivenna" (no objection).
 
-**Left for next time**: Kaladin's Wind and Truth Shinovar beat (an
-`audit:data` assertion keeps him at Urithiru at full read — check canon,
-then update both); Suluko (Coppermind can't place it); field notes and the
-Koravellium "Dragon of Yolen" kicker are shown ungated; the world layers
-(Final Empire endpaper, Basin, starchart) were not checked for story
-annotations; the Violet Duke, the kite planet and Zidorna still wait on canon.
-News digest from 2 Nov (Nexus 3–5 Dec, FoD hardcover 8 Dec, Ghostbloods 1 in
-Dec 2028) was in the coordinator's scratchpad, not the repo.
+**Leftovers, closed the same morning**:
+- Kaladin ends Wind and Truth in Shinovar: he dies there and Szeth finds his
+  body (ch. 144–146). `PRESENCE_AT` and the `audit:data` assertion now agree,
+  and a Rhythm of War reader still finds him at Urithiru.
+- Field notes can carry `book`/`arc`/`early` (`FieldNote`, `shownNote`).
+  The card and `audit:spoilers` both read through it. Ten notes that cited a
+  later book are gated. Devotion's and Dominion's era-1 Vessels (Aona, Skai)
+  wait for The Way of Kings epigraph that first prints them.
+- Koravellium's "Dragon of Yolen" stays: Rhythm of War ch. 80 calls her
+  "Roshar's only dragon", and WoB 14564 confirmed it. That is the footing
+  Frost's card already stands on.
+- Scadrial's world plates wait for the book that printed them (Coppermind file
+  pages): the World map is The Lost Metal's (Southern Continent, Malwish,
+  labelled), the Basin survey is Alloy of Law's, and the Final Empire
+  endpaper is The Hero of Ages' (Urteau, Fadrex, the Well's "historic"
+  location). Short of The Lost Metal, the World chip shows our own
+  unlabelled plate of the same coastline, with the pins. The starchart
+  (Arcanum Unbounded) only shows the orbit change, so it is not gated.
+- An open card now redraws when the reader changes their progress, and closes
+  if its entry is now ahead of them (`test:interaction` checks it).
+- Still out, on canon: **Suluko** (IotE ch. 14: an island on First of the Sun,
+  "presumably" Eelakin; no place for a pin), **Zidorna** (IotE ch. 28: maybe a
+  planet, maybe a city or region), the **kite world** (WaT ch. 119: "people fly
+  upon kites", no name). The **Violet Duke** is only a title with a seat and a
+  library, both already on First Dukeseat's card.
+- News digest, 2 Nov: Nexus 3–5 Dec; The Fires of December hardcover 8 Dec;
+  Ghostbloods book 1 in Dec 2028.
 
 **2026-10-09, evening: trailer re-conceived (and a Shadesmar redraw, reverted).** The owner
 said the Cognitive Realm did not read as Shadesmar ("you can't see the

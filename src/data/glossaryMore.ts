@@ -28,10 +28,12 @@ export const GLOSSARY_MORE: GlossaryTerm[] = [
     'The master of the Ghostbloods, whom the Sons of Honor fear. Gavilar\'s dying words, in the first pages of The Way of Kings, were for him: tell Thaidakar he was too late.',
     ['The Way of Kings', 'Words of Radiance'],
     { aliases: 'Master Thaidakar', category: 'people', wiki: 'Thaidakar', see: ['gavilar'], arc: 'wor' }),
+  // Open from The Way of Kings, which calls him Wit and Hoid. His other
+  // names are later books', and Hoid's own card gives them as each arrives.
   t('wit', 'Wit', 'stormlight',
-    'The King\'s Wit of Alethkar: a cruel, precise, necessary fool. Off Roshar the same man is Hoid, Cephandrius, Dust, Topaz. He collects stories and magics and will not tell you why.',
+    'The King\'s Wit of Alethkar: a cruel, precise, necessary fool. Off Roshar the same man is Hoid. He collects stories and magics and will not tell you why.',
     ['The Stormlight Archive'],
-    { aliases: 'King\'s Wit, Cephandrius, Dust, Topaz, Midius', category: 'people', wiki: 'Hoid', see: ['hoid', 'frost'] }),
+    { aliases: 'King\'s Wit', category: 'people', wiki: 'Hoid', see: ['hoid', 'frost'] }),
   t('zahel', 'Zahel', 'stormlight',
     'A lazy ardent who teaches swords in Urithiru and pretends not to care. He is Vasher of Nalthis, Returned, and Nightblood\'s maker, hiding in a war because the last one tired him.',
     ['The Stormlight Archive', 'Warbreaker'],

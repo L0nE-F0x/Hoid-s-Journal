@@ -471,6 +471,29 @@ for (let i = 0; i < PUBLISHED.length; i++) {
   const P = progressAfter(i);
   const at = titleOf(...PUBLISHED[i]);
   const known = nameSetAt(P);
+  // An alias a person's reading face is still holding back is hidden even if
+  // another card carries it: the Wit term listing "Cephandrius" from The Way
+  // of Kings told what Hoid's own card waits to say.
+  // It stays known if a visible entry is called that, or a person's card is
+  // already showing it: Odium the Shard is not Taravangian's alias.
+  const vouched = new Set();
+  for (const [kind, o] of visibleEntries(P)) {
+    const label = KINDS.find(([k]) => k === kind)[2](o);
+    if (label) vouched.add(normName(label));
+    if (kind === 'character') for (const a of split(D.shownFace(o, P).aliases)) vouched.add(normName(a));
+  }
+  const heldBack = new Set();
+  for (const c of C.characters) {
+    if (!D.READING_FACES[c.id] || !vis(c, P)) continue;
+    for (const a of split(c.aliases).map(normName)) {
+      if (a.length >= 3 && /^[\p{Lu}\p{N}]/u.test(a) && !vouched.has(a) && !NOT_A_FIRST_NAME.has(a)) heldBack.add(a);
+    }
+  }
+  for (const n of heldBack) {
+    if (!ALL.names.has(n)) ALL.names.set(n, new Set());
+    ALL.names.get(n).add('a reading face');
+    known.delete(n);
+  }
   const hidden = [...ALL.names.keys()].filter((n) => !known.has(n));
   hidden.sort((a, b) => b.length - a.length);
   // Book titles shield the words inside them: "Truth" in "Wind and Truth" is the title's.

@@ -1572,6 +1572,14 @@ export const READING_FACES: Record<string, ReadingFace> = {
         aliases: 'Wit, Hoid, Roamer',
         bio: 'On Roshar he is the King\'s Wit, paid to insult lighteyes, and never quite answers what he is. He says he came to chase an old acquaintance and spends most of his time hiding from him. Sigzil was his apprentice, once.',
       },
+      // Endowment's Oathbringer letter opens "Dearest Cephandrius".
+      {
+        book: 'stormlight', arc: 'oathbringer',
+        fact: 'The King\'s Wit, who is neither Alethi nor a fool.',
+        abilities: 'Storytelling, disguise, a great deal of knowledge',
+        aliases: 'Wit, Hoid, Roamer, Cephandrius',
+        bio: 'On Roshar he is the King\'s Wit, paid to insult lighteyes, and never quite answers what he is. He says he came to chase an old acquaintance and spends most of his time hiding from him. Sigzil was his apprentice, once.',
+      },
       { book: 'sunlit', arc: 'sunlit', published: true },
     ],
   },

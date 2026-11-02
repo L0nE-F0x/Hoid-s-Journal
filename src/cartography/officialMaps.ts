@@ -46,7 +46,8 @@ export function worldMapFile(
 
 export interface MapLayer {
   name: string;
-  file: string;
+  /** null is our own procedural plate: the globe's coastline, unlabelled. */
+  file: string | null;
   /** Who made this plate, when it is not Isaac Stewart's cartography. */
   credit?: string;
   /**
@@ -120,16 +121,30 @@ export function worldMapLayers(
       : [{ name: 'Roshar', file: 'roshar_full.jpg' }];
   }
   if (bodyId === 'scadrial' && !cognitive) {
-    return scadrialIsBasin(era, year, progress)
+    // Each plate waits for the book that printed it (Coppermind's file pages).
+    const layers: MapLayer[] = scadrialIsBasin(era, year, progress)
       ? [
-          { name: 'World', file: 'scadrial_full.png' },
-          { name: 'Basin', file: 'elendel_basin.png' },
+          // The Lost Metal's interior map: the Southern Continent and the
+          // Malwish Consortium, The Bands of Mourning's reveal, labelled.
+          { name: 'World', file: 'scadrial_full.png', book: 'mistborn2', arc: 'tlm' },
+          { name: 'Basin', file: 'elendel_basin.png', book: 'mistborn2', arc: 'aol' },
+          // Arcanum Unbounded's chart. Only the orbit it shows is story, and
+          // the basin plates already wait for The Hero of Ages.
           { name: 'Starchart', file: 'scadrial_starchart.jpg' },
         ]
       : [
           { name: 'Final Empire', file: 'final_empire.jpg' },
-          { name: 'Endpaper', file: 'final_empire_endpaper.png' },
+          // The Hero of Ages' endpaper: Urteau and Fadrex numbered, and Mount
+          // Derytatith as the Well of Ascension's "historic" location.
+          { name: 'Endpaper', file: 'final_empire_endpaper.png', book: 'mistborn1', arc: 'hoa' },
         ];
+    if (!progress) return layers;
+    const shown = layers.filter((l) => !l.book || isVisible(l, progress));
+    // The pins are measured on the World plate. Short of The Lost Metal the
+    // reader gets our plate of the same coastline instead, unlabelled: what
+    // the globe already shows them, and somewhere for the pins to stand.
+    if (layers[0]!.book && shown[0] !== layers[0]) shown.unshift({ name: 'World', file: null });
+    return shown;
   }
   return [];
 }

@@ -498,14 +498,18 @@ const ALL_ERAS = (system: string, body?: string): Character['eras'] =>
 CHARACTERS.push(
   drake('frost', 'Frost', '#e0f2fe', 'stormlight', 'the oldest of them',
     'Functionally immortal · shapeshifter · vast Cosmere knowledge',
-    'The oldest known being in the Cosmere, older than Hoid. In human form, a pale man of about sixty with a long silver beard in white and silver robes. Like all greater dragons he spent his first thirty years in human form before his First Light.',
+    // `biology` has no reading face, and this card is open from The Way of
+    // Kings. How he looks is Isles of the Emberdark's, and is on his bio.
+    'The oldest known being in the Cosmere, older than Hoid.',
     "Hoid's oldest friend and fiercest philosophical opponent. He keeps an oath of non-intervention, and the Seventeenth Shard share it; Hoid's letters in The Way of Kings are to him, and the replies in Words of Radiance are his.",
     ALL_ERAS('yolish', 'yolen'),
     { sources: ['The Stormlight Archive', 'Arcanum Unbounded', 'Word of Brandon'] }),
 
   drake('koravellium', 'Koravellium Avast', '#4ade80', 'stormlight', 'Cultivation · Kor · Slammer',
     'Vessel of Cultivation · future sight · boons and curses · spren-making',
-    'A dragon considered heretical on Yolen for refusing the worship her kind expected. Prefers human form with mortals. Immortal twice over — once by birth, once by Shard.',
+    // `biology` has no reading face; the heresy is Wind and Truth's, and lives
+    // on her bio with the rest.
+    'A dragon of Yolen.',
     'The dragon behind Cultivation. She helped Shatter Adonalsium, and she engineered the ascension of Taravangian. Also called She Who Brings the Dews at Dawn.',
     [{ era: 0, system: 'yolish', body: 'yolen' }, ...ALL_ERAS('rosharan', 'roshar').slice(1)],
     { arc: 'row', sources: ['The Stormlight Archive', 'Word of Brandon'] }),

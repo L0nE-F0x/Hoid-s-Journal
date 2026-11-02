@@ -14,6 +14,7 @@
     "bench": "node tools/bench.mjs",
     "perf": "node tools/perf.mjs",
     "audit:data": "node tools/audit-data.mjs",
+    "audit:spoilers": "node tools/audit-spoilers.mjs",
     "audit:ui": "node tools/audit-ui.mjs",
     "trace:coast": "node tools/trace-coast.mjs",
     "icons": "node tools/icons.mjs",

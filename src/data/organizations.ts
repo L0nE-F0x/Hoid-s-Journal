@@ -20,7 +20,8 @@ export const ORGANIZATIONS: Organization[] = [
       arc: 'wor', world: 'Roshar', wiki: 'Ghostbloods',
       members: ['kelsier', 'mraize', 'iyatil', 'felt', 'shallan', 'shai', 'kaise', 'twinsoul', 'dlavil', 'darkwater'],
       see: ['mraize', 'iyatil', 'thaidakar', 'sons-of-honor'],
-      bio: 'A society of worldhoppers working on Roshar as a cell under Mraize and Iyatil, who answer to a master called Thaidakar. They want a way to move Investiture off-world, and they collect secrets and people to get it. Shallan joined, then left.',
+      bio: 'A society of worldhoppers working on Roshar as a cell under Mraize and Iyatil, who answer to a master called Thaidakar. They want a way to move Investiture off-world, and they collect secrets and people to get it. Shallan joined them as Veil.',
+      // Her leaving them is Wind and Truth, and is on her Wind and Truth card.
     }),
   org('seventeenth-shard', 'The Seventeenth Shard', '#e0f2fe', 'stormlight', 'secret',
     'Worldhoppers sworn to watch and not interfere, and to stop others interfering. They are looking for Hoid.',
@@ -62,7 +63,8 @@ export const ORGANIZATIONS: Organization[] = [
       arc: 'edgedancer', world: 'Roshar', wiki: 'Skybreakers',
       members: ['nale', 'szeth'],
       see: ['nale', 'szeth', 'surgebinding'],
-      bio: 'They hunt Surgebinders outside their own order, by law and without mercy, under Nale. Szeth joins them. Highspren are the most legalistic of the sapient spren, which is saying something.',
+      // Szeth joining is Oathbringer: his face and the szeth–skybreakers edge say so there.
+      bio: 'They hunt Surgebinders outside their own order, by law and without mercy, under Nale. Highspren are the most legalistic of the sapient spren, which is saying something.',
     }),
   org('lightweavers', 'The Lightweavers', '#f472b6', 'stormlight', 'order',
     'Cryptics and lies that become true. Illumination and Transformation. Shallan\'s order, and a few more.',
@@ -95,7 +97,8 @@ export const ORGANIZATIONS: Organization[] = [
       arc: 'wor', world: 'Roshar', wiki: 'Truthwatchers',
       members: ['renarin'],
       see: ['renarin', 'rlain', 'sja-anat'],
-      bio: 'Ordinary Truthwatchers heal and see. Renarin, the first of the new order, sees more than he should.',
+      // What Renarin sees is Oathbringer's, and is on his Oathbringer face.
+      bio: 'Ordinary Truthwatchers heal and see. Renarin is the first of the new order.',
     }),
   org('willshapers', 'The Willshapers', '#a3e635', 'stormlight', 'order',
     'Lightspren, the Reachers. Transportation and Cohesion. Freedom is the Ideal they keep.',
@@ -174,7 +177,9 @@ export const ORGANIZATIONS: Organization[] = [
       world: 'Roshar', wiki: 'Listener',
       members: ['eshonai', 'venli', 'rlain'],
       see: ['narak', 'shattered-plains', 'everstorm', 'singer'],
-      bio: 'They left the war and the Fused and made a people on the Shattered Plains. The Alethi found them. Venli found stormform. The Everstorm answered. What is left of them is a remnant trying not to be anyone\'s army.',
+      // The Fused are named in Oathbringer; the remnant and its nation are
+      // Wind and Truth, on Thude's and Bila's cards.
+      bio: 'They left the war and their gods and made a people on the Shattered Plains. The Alethi found them. Venli found stormform. The Everstorm answered.',
     }),
   org('worldsingers', 'The Worldsingers', '#fbbf24', 'stormlight', 'guild',
     'A loosely organised order of storytellers and scholars. Hoid claims them. Sigzil was apprenticed into them.',
@@ -185,7 +190,9 @@ export const ORGANIZATIONS: Organization[] = [
       bio: 'They gather knowledge and songs from every land they can walk, and Hoid claims them. Sigzil was apprenticed to him.',
     }),
   org('kholin', 'House Kholin', '#1d4ed8', 'stormlight', 'house',
-    'The royal house of Alethkar: Gavilar who united it, Dalinar who broke and remade it, Jasnah who inherited a war.',
+    // Jasnah inheriting the war (Oathbringer) and Dalinar remaking the house
+    // are on their own faces, gated there.
+    'The royal house of Alethkar: Gavilar who united it, and the Blackthorn who fought beside him.',
     {
       world: 'Roshar', wiki: 'House_Kholin',
       members: ['gavilar', 'dalinar', 'jasnah', 'adolin', 'renarin', 'navani', 'evi'],
@@ -268,10 +275,11 @@ export const ORGANIZATIONS: Organization[] = [
     'Southern Scadrians who survived the Ice Death on the Sovereign\'s medallions, and fly on ettmetal.',
     {
       members: ['allik', 'jordis', 'admiral-daal'],
-      aliases: 'Southern Scadrians, south Scadrial, Malwish Consortium',
+      aliases: 'Southern Scadrians, south Scadrial',
       arc: 'bom', world: 'Scadrial', wiki: 'Malwish',
       see: ['southern-continent', 'harmonium', 'malwish-medallion', 'allik'],
-      bio: 'Every Malwish wears a mask, at all times, though the mask may change. Their airships run on ettmetal and their medallions lend Feruchemy to anyone who touches them, and they were raised to revere the metalborn the north takes for granted. By The Lost Metal five southern nations sit under the Malwish banner as a Consortium, unified mostly by one faction that sees the north as chaotic and dangerous.',
+      bio: 'Every Malwish wears a mask, at all times, though the mask may change. Their airships run on ettmetal and their medallions lend Feruchemy to anyone who touches them, and they were raised to revere the metalborn the north takes for granted.',
+      // The Consortium (The Lost Metal) is the 'malwish-nations' place card.
     }),
   org('kandra', 'The kandra', '#d6d3d1', 'mistborn1', 'species',
     'Shapeshifters who digest a body and wear its bones, hired out by Contract.',

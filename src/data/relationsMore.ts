@@ -70,7 +70,7 @@ export const RELATIONS_MORE: Relation[] = [
 
   // --- Narak (Wind and Truth) ------------------------------------------
   { a: { kind: 'character', id: 'sigzil' }, b: { kind: 'character', id: 'vienta' }, type: 'bond', label: 'Windrunner bond, renounced to save her', book: 'stormlight', canon: C },
-  { a: { kind: 'character', id: 'sigzil' }, b: { kind: 'dawnshard', id: 'dawnshard-exist' }, type: 'bond', label: 'Given Exist by Wit', book: 'stormlight', canon: C },
+  { a: { kind: 'character', id: 'sigzil' }, b: { kind: 'dawnshard', id: 'dawnshard-exist' }, type: 'bond', label: 'Given Exist by Wit', book: 'stormlight', arc: 'wat', canon: C },
   { a: { kind: 'character', id: 'moash' }, b: { kind: 'character', id: 'leyten' }, type: 'rival', label: 'Killed him and Ethenia', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'moash' }, b: { kind: 'character', id: 'teft' }, type: 'rival', label: 'Killed him in Urithiru', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'battar' }, b: { kind: 'character', id: 'moash' }, type: 'rival', label: 'Gave him crystal eyes', book: 'stormlight', canon: C },
@@ -81,7 +81,9 @@ export const RELATIONS_MORE: Relation[] = [
   { a: { kind: 'character', id: 'dami' }, b: { kind: 'org', id: 'stonewards' }, type: 'ally', label: 'Stoneward of the Fourth Ideal', book: 'stormlight', canon: C },
 
   // --- Thaylen City and the Heralds (Wind and Truth) ------------------
-  { a: { kind: 'character', id: 'jasnah' }, b: { kind: 'character', id: 'hoid' }, type: 'romance', label: 'Lovers, until her letter', book: 'stormlight', canon: C },
+  // Lovers is Rhythm of War; the letter that ends it is Wind and Truth, and
+  // lives on Jasnah's Wind and Truth card.
+  { a: { kind: 'character', id: 'jasnah' }, b: { kind: 'character', id: 'hoid' }, type: 'romance', label: 'Lovers', book: 'stormlight', arc: 'row', canon: C },
   { a: { kind: 'character', id: 'jasnah' }, b: { kind: 'character', id: 'taravangian' }, type: 'rival', label: 'Debated him for Thaylenah, and lost', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'fen' }, b: { kind: 'character', id: 'taravangian' }, type: 'ally', label: 'Signed Thaylenah over to him', book: 'stormlight', canon: C },
   { a: { kind: 'character', id: 'kalak' }, b: { kind: 'character', id: 'restares' }, type: 'ally', label: 'The same man', book: 'stormlight', canon: C },
@@ -613,4 +615,23 @@ export const RELATIONS_MORE: Relation[] = [
   { a: { kind: 'character', id: 'matin' }, b: { kind: 'character', id: 'bark' }, type: 'rival', label: 'Not afraid of him', book: 'fod', canon: C },
   { a: { kind: 'character', id: 'weonim' }, b: { kind: 'org', id: 'hexers' }, type: 'bond', label: 'Elder', book: 'fod', canon: C },
   { a: { kind: 'character', id: 'hoid' }, b: { kind: 'location', id: 'valors-temple' }, type: 'rival', label: 'Burned in it, twice', book: 'fod', canon: C },
+
+  // Moved off Jah Keved's Way of Kings card.
+  { a: { kind: 'character', id: 'taravangian' }, b: { kind: 'location', id: 'jah-keved' }, type: 'rival', label: 'Arranged the shape of its succession war', book: 'stormlight', arc: 'wor', canon: C },
+
+  // Membership edges. `orgsForCharacter` shows an order on a person's card as
+  // soon as both are visible unless an edge like these says when it became
+  // true, and these memberships are later books' than the people or orders.
+  // Szeth joins the Skybreakers in Oathbringer, not the Edgedancer that
+  // opens their card.
+  { a: { kind: 'character', id: 'szeth' }, b: { kind: 'org', id: 'skybreakers' }, type: 'ally', label: 'Skybreaker', book: 'stormlight', arc: 'oathbringer', canon: C },
+  // Kaladin and Shallan are Radiants from Words of Radiance (their faces say
+  // Windrunner and Lightweaver there), Jasnah from Oathbringer (Elsecaller).
+  { a: { kind: 'character', id: 'kaladin' }, b: { kind: 'org', id: 'knights-radiant' }, type: 'ally', label: 'Knight Radiant', book: 'stormlight', arc: 'wor', canon: C },
+  { a: { kind: 'character', id: 'shallan' }, b: { kind: 'org', id: 'knights-radiant' }, type: 'ally', label: 'Knight Radiant', book: 'stormlight', arc: 'wor', canon: C },
+  { a: { kind: 'character', id: 'jasnah' }, b: { kind: 'org', id: 'knights-radiant' }, type: 'ally', label: 'Knight Radiant', book: 'stormlight', arc: 'oathbringer', canon: C },
+  // Baon admits he is the Dynasty's in Volume 2; Acron resurfaces as
+  // Skathan's assassin in Volume 3 (their reading faces).
+  { a: { kind: 'character', id: 'baon' }, b: { kind: 'org', id: 'dynasty' }, type: 'ally', label: 'The Dynasty\'s agent', book: 'whitesand', arc: 'ws2', canon: C },
+  { a: { kind: 'character', id: 'acron' }, b: { kind: 'org', id: 'dynasty' }, type: 'ally', label: 'The Dynasty\'s assassin', book: 'whitesand', arc: 'ws3', canon: C },
 ];

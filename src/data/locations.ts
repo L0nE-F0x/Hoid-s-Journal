@@ -57,7 +57,10 @@ export const LOCATIONS: Location[] = [
   loc('akinah', 'Akinah', 'roshar', 'stormlight', 0.093, 0.567, '#a1a1aa', 'gem',
     'Ruined Aimian capital, guardian of a Dawnshard.', {
       region: 'Aimia',
-      bio: 'The Aimian capital, ruined and guarded, under weather no ship approaches willingly. On the Wandersail\'s voyage Nikli poisoned a crewman to frighten them into turning back; Rysn went on, found the Dawnshard waiting inside, and talked the Sleepless into sparing her crew.', arc: 'oathbringer' }),
+      bio: 'The Aimian capital, ruined and guarded, under weather no ship approaches willingly. On the Wandersail\'s voyage Nikli poisoned a crewman to frighten them into turning back; Rysn went on, found the Dawnshard waiting inside, and talked the Sleepless into sparing her crew.',
+      // Named in Oathbringer, but every line of the card is the Dawnshard
+      // novella: the guardians, the voyage, what was waiting inside.
+      arc: 'dawnshard' }),
   loc('horneater-peaks', 'Horneater Peaks', 'roshar', 'stormlight', 0.669, 0.533, '#fdba74', 'peak',
     'Volcanic mountains hiding Cultivation\'s Perpendicularity.', {
       region: 'Horneater Peaks',
@@ -380,7 +383,8 @@ export const LOCATIONS: Location[] = [
     { region: 'Alethkar', bio: 'Ten princedoms that spent four hundred years fighting each other until Gavilar made them one, and then spent six years on the Shattered Plains avenging him. Alethi are the Cosmere\'s most enthusiastic soldiers and least curious readers — writing is women\'s work here — and the Radiants came back out of them anyway.' }),
   loc('jah-keved', 'Jah Keved', 'roshar', 'stormlight', 0.638, 0.478, '#dc2626', 'land',
     'Second of the Vorin kingdoms, bled white by its own succession war.',
-    { region: 'Jah Keved', bio: 'The second Vorin kingdom, and the one that bled itself. When its king died the succession went to open war among the highprinces, and Taravangian arranged the shape of it; by the time a Veden sat the throne again there was not much throne left.' }),
+    { region: 'Jah Keved', bio: 'The second Vorin kingdom, and the one that bled itself. When its king died the succession went to open war among the highprinces; by the time a Veden sat the throne again there was not much throne left.' }),
+    // Taravangian's part in that war is Words of Radiance's: the taravangian–jah-keved relation.
   loc('azir', 'Azir', 'roshar', 'stormlight', 0.375, 0.599, '#fcd34d', 'land',
     'An empire that runs on paperwork, and is the better for it. The Prime is chosen by essay.',
     { region: 'Azir', bio: 'An empire that runs on clerks. The Prime is chosen by essay, the provinces answer in writing, and the whole apparatus is slow enough to be nearly impossible to decapitate.' }),
@@ -550,7 +554,10 @@ export const LOCATIONS: Location[] = [
 ];
 
 export const PERPS: Perpendicularity[] = [
-  { id: 'well-of-ascension-perp', name: 'The Well of Ascension', body: 'scadrial', book: 'mistborn1',
+  // Where the Well is, and that it was used, are the end of The Well of
+  // Ascension; whose pool it is (Preservation's), The Hero of Ages. The
+  // Well's own place card already waits for the first; this door waits for both.
+  { id: 'well-of-ascension-perp', name: 'The Well of Ascension', body: 'scadrial', book: 'mistborn1', arc: 'hoa',
     fact: 'Preservation\'s pool beneath Kredik Shaw. Used, then collapsed.', at: 'luthadel',
     eraMin: 2, eraMax: 2, canon: C, sources: ['Mistborn Era 1'] },
   { id: 'harmony-pool', name: "Harmony's Perpendicularity", body: 'scadrial', book: 'mistborn2', arc: 'tlm',
@@ -584,7 +591,8 @@ export const PERPS: Perpendicularity[] = [
   { id: 'patjis-eye-perp', name: "Patji's Eye", body: 'first-of-the-sun', book: 'arcanum',
     fact: 'A perpendicularity on the island Patji, where Aviar gain their talents.', at: 'patji',
     eraMin: 1, canon: C, sources: ['Arcanum Unbounded — Drominad', 'Isles of the Emberdark'] },
-  { id: 'pits-of-hathsin-perp', name: 'The Pits of Hathsin', body: 'scadrial', book: 'mistborn1',
+  // Ruin's power in the Pits is the end of The Hero of Ages.
+  { id: 'pits-of-hathsin-perp', name: 'The Pits of Hathsin', body: 'scadrial', book: 'mistborn1', arc: 'hoa',
     fact: 'Where Ruin\'s power crystallised into atium. Not a doorway so much as a wound that produced metal.',
     at: 'pits-of-hathsin', eraMin: 2, eraMax: 2, canon: C, sources: ['Mistborn Era 1'] },
   { id: 'dominion-pool', name: 'Sel\'s second perpendicularity', body: 'sel', book: 'elantris',

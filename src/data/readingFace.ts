@@ -197,7 +197,7 @@ export const READING_FACES: Record<string, ReadingFace> = {
         fact: 'Truthless no longer, and dead once. Nale brought him back with a black sword.',
         abilities: 'Nightblood',
         aliases: 'Szeth-son-son-Vallano, Truthless, the Assassin in White',
-        bio: 'The Assassin in White, who killed King Gavilar and went on to kill rulers across Roshar for a master he would not name. Kaladin killed him in the sky over the Shattered Plains. Nale brought him back, handed him a sentient black sword, and offered him a law to follow instead of a stone.',
+        bio: 'The Assassin in White, who killed King Gavilar and went on to kill rulers across Roshar for a master he would not name. He was named Truthless for saying the Voidbringers would return, and they have. Kaladin killed him in the sky over the Shattered Plains. Nale brought him back, handed him a sentient black sword, and offered him a law to follow instead of a stone.',
       },
       {
         book: 'stormlight', arc: 'oathbringer',
@@ -360,6 +360,14 @@ export const READING_FACES: Record<string, ReadingFace> = {
     steps: [
       {
         book: 'stormlight', arc: 'wor',
+        fact: 'Bridge Four\'s lieutenant: short, stubborn, and the first to call himself Bridge Four instead of Cobalt Guard.',
+        abilities: 'Bridge Four lieutenant',
+        bio: 'A wiry former rocksplitter, made lieutenant when Bridge Four becomes Dalinar\'s guard; he is the first to tear off the Cobalt Guard patch and insist they are Bridge Four. At Narak he holds Adolin back from a chasm by his Plate\'s skirt.',
+      },
+      // Coppermind: two weeks after Narak only Skar, Rlain and Dabbid cannot
+      // draw Stormlight — Oathbringer, not the Words of Radiance it was shown in.
+      {
+        book: 'stormlight', arc: 'oathbringer',
         fact: 'Bridge Four\'s lieutenant: short, stubborn, and the first to call himself Bridge Four instead of Cobalt Guard.',
         abilities: 'Bridge Four lieutenant',
         bio: 'A wiry former rocksplitter, made lieutenant when Bridge Four becomes Dalinar\'s guard; he is the first to tear off the Cobalt Guard patch and insist they are Bridge Four. At Narak he holds Adolin back from a chasm by his Plate\'s skirt. After the Everstorm he is one of the few of them who cannot draw in Stormlight.',
@@ -576,6 +584,8 @@ export const READING_FACES: Record<string, ReadingFace> = {
   },
   'lin-davar': {
     early: {
+      // The Ghostbloods are Words of Radiance; the published abilities said so.
+      abilities: 'Head of House Davar',
       bio: 'Brightlord of House Davar in Jah Keved, a violent man with debts and dangerous friends. He is dead, and his children are hiding it while they try to save the house.',
     },
     steps: [
@@ -652,9 +662,14 @@ export const READING_FACES: Record<string, ReadingFace> = {
       { book: 'stormlight', arc: 'wat', published: true },
     ],
   },
+  // The published fact and aliases were Wind and Truth's: that she helped
+  // Shatter Adonalsium (i-4) and Tanavast's "Kor" (ch. 100). Her name is a
+  // Rhythm of War art page (Coppermind: Koravellium Avast, trivia).
   koravellium: {
     early: {
-      bio: 'Dragon Vessel of Cultivation. She prunes Dalinar\'s memories, and gambles on Taravangian: the boon she once gave him is what makes him Odium.',
+      fact: 'Cultivation\'s Vessel, who engineered the ascension of Taravangian. Also called She Who Brings the Dews at Dawn.',
+      aliases: 'Cultivation · Slammer',
+      bio: 'Vessel of Cultivation. She prunes Dalinar\'s memories, and gambles on Taravangian: the boon she once gave him is what makes him Odium.',
     },
     steps: [
       { book: 'stormlight', arc: 'wat', published: true },
@@ -712,6 +727,7 @@ export const READING_FACES: Record<string, ReadingFace> = {
   },
   pattern: {
     early: {
+      abilities: 'Cryptic',
       bio: 'A Cryptic who loves lies, and wants to understand them. He bonds Shallan, and hums whenever the truth is about to hurt productively.',
     },
     steps: [
@@ -805,7 +821,9 @@ export const READING_FACES: Record<string, ReadingFace> = {
   thude: {
     early: {
       abilities: 'Listener warrior · warpair with Bila',
-      bio: 'One of Eshonai\'s warriors, Bila\'s mate and warpair. When the listeners were ordered into stormform he refused, and fled into the chasms with seventeen hundred others; he became a voice for the remnant Venli tries to save.',
+      // Coppermind: the escape into the chasms is Words of Radiance (i-11);
+      // the remnant surviving, and Venli finding it, is Wind and Truth (ch. 56).
+      bio: 'One of Eshonai\'s warriors, Bila\'s mate and warpair. When the listeners were ordered into stormform he refused, and fled into the chasms with seventeen hundred others.',
     },
     steps: [
       { book: 'stormlight', arc: 'wat', published: true },
@@ -984,9 +1002,10 @@ export const READING_FACES: Record<string, ReadingFace> = {
       { book: 'mistborn1', arc: 'hoa', published: true },
     ],
   },
-  // Thaidakar is a Rhythm of War reveal and Secret History a later series
-  // in publication order, so the Stormlight step comes first and Secret
-  // History, the fuller story, publishes the card.
+  // Secret History (January 2016) came out four years before Rhythm of War,
+  // and the last step a reader has reached wins. With Secret History as the
+  // published step, a reader who had just finished it was told he is
+  // Thaidakar. The Shadow is Secret History's; Thaidakar waits for Rhythm of War.
   kelsier: {
     early: {
       fact: 'The Survivor of Hathsin, building a crew to kill a god.',
@@ -996,13 +1015,13 @@ export const READING_FACES: Record<string, ReadingFace> = {
     },
     steps: [
       {
-        book: 'stormlight', arc: 'row',
-        fact: 'The Survivor of Hathsin — and Thaidakar of the Ghostbloods.',
+        book: 'secrethistory', arc: 'secrethistory',
+        fact: 'The Survivor of Hathsin, who refused to finish dying.',
         abilities: 'Mistborn, Cognitive Shadow',
-        aliases: 'Survivor, Survivor of Hathsin, Thaidakar, Lord of Scars',
-        bio: 'A half-skaa Mistborn who walked into the Pits of Hathsin and walked out a religion. He died at the Lord Ruler\'s hand, and the Ghostbloods\' Thaidakar turns out to be the same man. He cannot easily leave the Scadrian system.',
+        aliases: 'Survivor, Survivor of Hathsin',
+        bio: 'A half-skaa Mistborn who walked into the Pits of Hathsin and walked out a religion. He died at the Lord Ruler\'s hand and refused to finish dying: he held Preservation for a moment, haunted the Cognitive Realm through the Final Empire\'s last days, and outlasted it.',
       },
-      { book: 'secrethistory', arc: 'secrethistory', published: true },
+      { book: 'stormlight', arc: 'row', published: true },
     ],
   },
   // ── Mistborn Era 1: cards whose published text is a later book's ─────────
@@ -1446,13 +1465,11 @@ export const READING_FACES: Record<string, ReadingFace> = {
         abilities: 'Soldier, Dynasty agent',
         bio: 'A Darkside soldier guarding Khriss on Dayside. When she recognises Elisian officer\'s pistols, he admits he killed Captain Deral and was sent by the Dynasty, and walks out.',
       },
-      {
-        book: 'whitesand', arc: 'ws3',
-        fact: 'Khriss\'s guard and the Dynasty\'s agent — and, it turns out, a sand master.',
-        abilities: 'Soldier, Dynasty agent, sand master',
-        bio: 'Sent to judge whether sand masters threaten the Dynasty, he reports that they do not, since sand needs Dayside\'s sun, and takes his post with Khriss back. On the voyage home he passes the sand master\'s test with a massive release of power.',
-      },
-      { book: 'stormlight', arc: 'twok', published: true },
+      // The published card was gated on The Way of Kings (his cameo there),
+      // which every White Sand reader has already read: Volume 1 readers were
+      // told he is the Dynasty's agent and a sand master. Volume 3 publishes
+      // it now, and the Volume 3 face's account is folded into the bio.
+      { book: 'whitesand', arc: 'ws3', published: true },
     ],
   },
   sharezan: {
@@ -1555,6 +1572,14 @@ export const READING_FACES: Record<string, ReadingFace> = {
         aliases: 'Wit, Hoid, Roamer',
         bio: 'On Roshar he is the King\'s Wit, paid to insult lighteyes, and never quite answers what he is. He says he came to chase an old acquaintance and spends most of his time hiding from him. Sigzil was his apprentice, once.',
       },
+      // Endowment's Oathbringer letter opens "Dearest Cephandrius".
+      {
+        book: 'stormlight', arc: 'oathbringer',
+        fact: 'The King\'s Wit, who is neither Alethi nor a fool.',
+        abilities: 'Storytelling, disguise, a great deal of knowledge',
+        aliases: 'Wit, Hoid, Roamer, Cephandrius',
+        bio: 'On Roshar he is the King\'s Wit, paid to insult lighteyes, and never quite answers what he is. He says he came to chase an old acquaintance and spends most of his time hiding from him. Sigzil was his apprentice, once.',
+      },
       { book: 'sunlit', arc: 'sunlit', published: true },
     ],
   },
@@ -1565,15 +1590,16 @@ export const READING_FACES: Record<string, ReadingFace> = {
       aliases: 'Sigzil',
       bio: 'An Azish man who apprenticed to Hoid and then to a bridge crew. He writes down what the others survive.',
     },
+    // The Sunlit Man (2023) came out a year before Wind and Truth. With
+    // Sunlit as the published step, its readers got Narak, Vienta, the Night
+    // of Sorrows and Szeth's old highspren. Sunlit tells who Nomad is; Wind
+    // and Truth tells how he got there. (Auxiliary, Coppermind: tsm 20, 28; sa5 147.)
     steps: [
       {
-        book: 'stormlight', arc: 'wat',
-        fact: 'Windrunner at Narak, then the bearer of a Dawnshard.',
-        abilities: 'Windrunner (oaths renounced) · the Dawnshard Exist',
-        aliases: 'Sigzil',
-        bio: 'Bridge Four\'s Azish Worldsinger and Hoid\'s apprentice. In Wind and Truth he commands the Windrunners holding Narak: he watches Moash kill Leyten and his spren, and to save his own honorspren, Vienta, from Moash\'s knife he renounces his oaths. On the Night of Sorrows Wit gives him the Dawnshard Exist and pushes him into Shadesmar, and he leaves Roshar with an Iriali caravan.',
+        book: 'sunlit', arc: 'sunlit',
+        bio: 'Bridge Four\'s Azish Worldsinger and Hoid\'s apprentice. He becomes the man called Nomad: bonded to a highspren, Aux, hunted across the stars by the Night Brigade, and learning that skipping is not the same as escaping.',
       },
-      { book: 'sunlit', arc: 'sunlit', published: true },
+      { book: 'stormlight', arc: 'wat', published: true },
     ],
   },
   // Coppermind: Design (sa3 98, sa4 80; yumi 5, 17, 21, 32, 33, ae; WoB 10746).
@@ -1583,9 +1609,17 @@ export const READING_FACES: Record<string, ReadingFace> = {
       fact: 'Hoid\'s Cryptic. She spoils his endings on purpose.',
       abilities: 'Cryptic, Lightweaver bond',
       aliases: 'Design',
-      bio: 'The Cryptic Hoid found in Kholinar, near where Elhokar died, and bonded himself. She plays his flute without lips, considers surprises dumb, and told Kaladin how the Dog and the Dragon ends before Hoid could.',
+      bio: 'The Cryptic Hoid found in Kholinar, near where Elhokar died, and bonded himself. She plays his flute without lips and considers surprises dumb.',
     },
     steps: [
+      // Coppermind: "The Dog and the Dragon" is Rhythm of War ch. 80.
+      {
+        book: 'stormlight', arc: 'row',
+        fact: 'Hoid\'s Cryptic. She spoils his endings on purpose.',
+        abilities: 'Cryptic, Lightweaver bond',
+        aliases: 'Design',
+        bio: 'The Cryptic Hoid found in Kholinar, near where Elhokar died, and bonded himself. She plays his flute without lips, considers surprises dumb, and told Kaladin how the Dog and the Dragon ends before Hoid could.',
+      },
       { book: 'yumi', arc: 'yumi', published: true },
     ],
   },
@@ -1657,6 +1691,162 @@ export const READING_FACES: Record<string, ReadingFace> = {
     steps: [
       { book: 'stormlight', arc: 'dawnshard', bio: 'A Thaylen merchant who lost the use of her legs in a fall on Relu-na, raised a larkin, and at Akinah became the bearer of the Dawnshard Change, which the Sleepless had guarded for millennia. It lies dormant in her, though she can sense life.' },
       { book: 'stormlight', arc: 'wat', published: true },
+    ],
+  },
+
+  // ── Found by `npm run audit:spoilers`: published cards a book early ───────
+  // Each of these had no face, so its first book showed a later book's ending.
+  // Coppermind: Dabbid (sa4); the occupation of Urithiru is Rhythm of War.
+  dabbid: {
+    early: {
+      fact: 'Silent Bridge Four brother, shell-shocked from the runs.',
+      abilities: 'Bridge Four',
+      bio: 'Shell-shocked from the bridge runs and silent ever since, he stays easy to overlook.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'row', published: true },
+    ],
+  },
+  // Coppermind: Eth dies in the Honorblade theft, Oathbringer interlude 14.
+  eth: {
+    early: {
+      fact: 'Bridge Four, Mart\'s brother.',
+      abilities: 'Bridge Four',
+      bio: 'Mart\'s brother, and one of the men of Bridge Four.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'oathbringer', published: true },
+    ],
+  },
+  // Coppermind: the Third Ideal and Caelinora are Dawnshard (ch. 18); the
+  // Thaylen patent with Rysn is Wind and Truth interlude 15.
+  huio: {
+    early: {
+      fact: 'Lopen\'s cousin, and a cook.',
+      abilities: 'Cook · Bridge Four',
+      bio: 'One of Lopen\'s Herdazian cousins, short, bald and beefy, brought into Bridge Four late in 1173; he would rather be on kitchen duty with Rock, and improves Rock\'s recipes.',
+    },
+    steps: [
+      {
+        book: 'stormlight', arc: 'dawnshard',
+        fact: 'Lopen\'s cousin: a cook, and a Windrunner.',
+        abilities: 'Windrunner of the Third Ideal (Caelinora) · cook',
+        bio: 'One of Lopen\'s Herdazian cousins, short, bald and beefy, brought into Bridge Four late in 1173; he would rather be on kitchen duty with Rock, and improves Rock\'s recipes. Off Aimia he fought a yu-thorak to save the Wandersail, swore the Third Ideal to save Lopen, and summoned his honorspren Caelinora as a Shardhammer.',
+      },
+      { book: 'stormlight', arc: 'wat', published: true },
+    ],
+  },
+  // Coppermind: her hatred of humans and of Odium, and the Five, are Wind and Truth ch. 58.
+  bila: {
+    early: {
+      fact: 'Thude\'s mate and warpair.',
+      abilities: 'Listener warrior · warpair with Thude',
+      bio: 'A listener warrior in Eshonai\'s own division, Thude\'s mate and warpair through the War of Reckoning.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'wat', published: true },
+    ],
+  },
+  // Coppermind: his ashspren and his Surgebinding are Dawnshard ch. 3.
+  'ral-na': {
+    early: {
+      abilities: 'King of Relu-na',
+      bio: 'King of the Reshi people who live on Relu-na, a living greatshell island in the Reshi Sea. Vstim brought Rysn to trade with him, and she learned there what a fall costs.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'dawnshard', published: true },
+    ],
+  },
+  // Coppermind: the Black Fisher is a Death Rattle in The Way of Kings
+  // (ch. 67 epigraph); that she is one of the Unmade is Oathbringer (ch. 62),
+  // Odium's fear of her and the Elsegate are Wind and Truth (i-3, ch. 67).
+  'dai-gonarthis': {
+    early: {
+      fact: 'The Black Fisher, named in a Death Rattle.',
+      abilities: 'Unknown',
+      bio: 'A name in the Death Rattles: a dying street juggler cried that the Black Fisher holds her sorrow and consumes it.',
+    },
+    steps: [
+      {
+        book: 'stormlight', arc: 'oathbringer',
+        fact: 'The Black Fisher: one of the Unmade.',
+        bio: 'Called the Black Fisher, and one of the Unmade. Hessi wonders whether she scoured Aimia.',
+      },
+      { book: 'stormlight', arc: 'wat', published: true },
+    ],
+  },
+  // Coppermind: Masha's history of the Recreance is Oathbringer ch. 56; her
+  // marriage, Stormfall and Knights of Wind and Truth are Wind and Truth epigraphs.
+  'masha-daughter-shaliv': {
+    early: {
+      fact: 'A Shin scholar of the Recreance.',
+      aliases: 'Masha',
+      bio: 'A Shin scholar whose history of the Recreance Jasnah checks against Dalinar\'s visions.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'wat', published: true },
+    ],
+  },
+  // Bleeder is Shadows of Self.
+  'bloody-tan': {
+    early: {
+      bio: 'A slender, soft-spoken mortician who believed people were puppets and their deaths performances, and who killed at least eight of them in two months while lawmen and outlaws both hunted him. He stole Donal\'s bendalloy for the money, captured Lessie in his lair, and when Wax fired, yanked her into the path of the bullet. Wax shot him in the head.',
+    },
+    steps: [
+      { book: 'mistborn2', arc: 'sos', published: true },
+    ],
+  },
+  // The Unmade in Kholinar are Oathbringer.
+  lhan: {
+    early: {
+      bio: 'A comfortably corrupt ardent in Aesudan\'s palace circle. His interlude with Pai sketches Kholinar\'s moral rot.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'oathbringer', published: true },
+    ],
+  },
+  // Aradel and Marasi are Shadows of Self; Marasi serving under Reddi is The Bands of Mourning.
+  reddi: {
+    early: {
+      fact: 'A Fourth Octant constable, polite to Wax\'s face and less so behind it.',
+      aliases: 'Reddi',
+      bio: 'A short, lean constable with a drooping moustache, polite to Wax\'s face and less so behind it. He counted the casualties of the Yomen-Ostlin wedding for Brettin and was impressed in spite of himself.',
+    },
+    steps: [
+      {
+        book: 'mistborn2', arc: 'sos',
+        fact: 'The constable who wanted Marasi\'s job.',
+        aliases: 'Reddi, Mathieu Reddi',
+        bio: 'A short, lean constable with a drooping moustache, polite to Wax\'s face and less so behind it. He counted the casualties of the Yomen-Ostlin wedding for Brettin and was impressed in spite of himself. He wanted to be Aradel\'s assistant; Aradel chose Marasi, and their rivalry — his confessions beaten out of suspects, hers coaxed — became part of how the Fourth Octant works.',
+      },
+      { book: 'mistborn2', arc: 'bom', published: true },
+    ],
+  },
+  // Adolin and Shallan are Words of Radiance.
+  janala: {
+    early: {
+      bio: 'A lighteyed woman briefly courted by Adolin in the warcamps.',
+    },
+    steps: [
+      { book: 'stormlight', arc: 'wor', published: true },
+    ],
+  },
+  // Coppermind: in The Way of Kings Restares is a name — Gavilar, dying, asks
+  // whether he sent the assassin (prologue), and Amaram takes Kaladin's Shards
+  // because "Restares is right" (ch. 51). The Sons of Honor are Words of
+  // Radiance (chs. 54, 88); Gavilar's place among them is Oathbringer (ch. 40).
+  restares: {
+    early: {
+      fact: 'A name in Gavilar\'s last night, and the man Amaram says is right.',
+      abilities: '—',
+      bio: 'Dying, Gavilar wonders whether Restares sent his assassin. Amaram takes the Shards Kaladin won because, he says, Restares is right: this is what must be done.',
+    },
+    steps: [
+      {
+        book: 'stormlight', arc: 'wor',
+        bio: 'Senior figure in the Sons of Honor, and the voice in the letters that push Amaram toward bringing back the Heralds by forcing a Desolation — Vorin nostalgia as apocalypse plan.',
+      },
+      { book: 'stormlight', arc: 'oathbringer', published: true },
     ],
   },
 };

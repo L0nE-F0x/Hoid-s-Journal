@@ -1,0 +1,1488 @@
+{
+ "readme": [
+  "Triage for `npm run audit:spoilers`. Each entry is a hit that was read and is not a leak to fix in src/data.",
+  "An entry with no `key` matches the term on every card; one with `key` (and `field`) matches only there.",
+  "`why` starts with the verdict:",
+  "  fp     - not a leak: the name is on the page of the book the card is gated on, or it is an ordinary word.",
+  "  minor  - a name from a later book with no plot attached (a city, a Dominance, a Word of Brandon cameo). Kept on purpose.",
+  "  leak   - a real leak in a file this pass does not own (catalog.ts, ShardEra). Reported; delete the entry once it is fixed there.",
+  "  ui     - a leak the data cannot gate: field notes and a magic's Shard field have no gate of their own. Reported.",
+  "A real leak in data the sweep's owner can reach is fixed, not listed. Stale entries are reported on every run."
+ ],
+ "allow": [
+  {
+   "term": "Radiant",
+   "why": "fp: an ordinary word on Roshar (\"a Radiant\", \"Windrunner Radiant\"); Shallan's alias Radiant is gated on her own face"
+  },
+  {
+   "term": "Hero of Ages",
+   "why": "fp: the Terris prophecy is The Final Empire's; only the term's definition (Sazed) waits for The Hero of Ages"
+  },
+  {
+   "term": "Lessie",
+   "why": "fp: Wax's dead wife is The Alloy of Law's; that she was the kandra Paalm is Shadows of Self, on Paalm's own card"
+  },
+  {
+   "term": "Lord General",
+   "why": "fp: a White Sand title, not Drakes"
+  },
+  {
+   "term": "Darkness",
+   "why": "fp: Lift's name for him in Words of Radiance; the card never says he is Nale until Edgedancer"
+  },
+  {
+   "term": "Allomancer",
+   "why": "fp: the word, not Allomancer Jak"
+  },
+  {
+   "term": "Truth",
+   "why": "fp: an ordinary word (\"Sentinel of Truth\"), not Truth-Is-Waiting"
+  },
+  {
+   "term": "Elsecaller",
+   "why": "fp: the Radiant order, not the 2024 story"
+  },
+  {
+   "term": "Edgedancer",
+   "why": "fp: the Radiant order, not the novella"
+  },
+  {
+   "term": "Aesudan",
+   "why": "fp: named in Words of Radiance (Coppermind: introduced WoR); her card waits for Oathbringer for its Yelig-nar"
+  },
+  {
+   "term": "Kalad",
+   "why": "fp: Hallandren's legend is Warbreaker's; the Zahel term is what waits"
+  },
+  {
+   "term": "Peacegiver",
+   "why": "fp: Hallandren's legend is Warbreaker's; the Zahel term is what waits"
+  },
+  {
+   "term": "Rayse",
+   "why": "fp: Odium's Vessel is named in a Way of Kings epigraph (Coppermind: Koravellium Avast, trivia; sa1 18)"
+  },
+  {
+   "term": "Herald of Justice",
+   "why": "fp: the Vorin Herald is The Way of Kings'; Nale's early alias list simply omits it"
+  },
+  {
+   "term": "Herald of Resolute",
+   "why": "fp: the Vorin Herald is The Way of Kings'"
+  },
+  {
+   "term": "Trell",
+   "why": "fp: Trell is named in The Final Empire (Trelagism) and by Miles in The Alloy of Law (Coppermind: Miles Dagouter, epilogue); that Trell is Autonomy is the Lost Metal term"
+  },
+  {
+   "term": "The Night",
+   "why": "fp: \"The Night Brigade\", not the spren"
+  },
+  {
+   "term": "Painter",
+   "why": "fp: an ordinary word in an abilities list"
+  },
+  {
+   "term": "Larkin",
+   "why": "fp: the species word"
+  },
+  {
+   "term": "Dysian Aimian",
+   "why": "fp: Arclo is a Dysian Aimian in Edgedancer (Coppermind: Arclomedarian)"
+  },
+  {
+   "term": "Phendorana",
+   "why": "fp: Teft's honorspren is Oathbringer (Coppermind: introduced Oathbringer, sa3 37)"
+  },
+  {
+   "term": "Szeth-son-Neturo",
+   "why": "fp: a name in Neturo's Rhythm of War card, which is where his father is named"
+  },
+  {
+   "term": "Cryptic",
+   "why": "fp: the spren's kind, on Pattern's own card"
+  },
+  {
+   "term": "Enlightened",
+   "why": "fp: Sja-anat's word is in Oathbringer; the term card waits for Rhythm of War's fuller account"
+  },
+  {
+   "term": "Highspren",
+   "why": "fp: the Skybreakers' spren are named in Edgedancer"
+  },
+  {
+   "term": "Inkspren",
+   "why": "fp: Ivory is an inkspren in Words of Radiance (Coppermind: Ivory, introduced WoR)"
+  },
+  {
+   "term": "Midnight Essence",
+   "why": "fp: Re-Shephir's Essence is Oathbringer; the term waits for Tress's Lumaran sense"
+  },
+  {
+   "term": "False Desolation",
+   "why": "fp: named in Oathbringer alongside Ba-Ado-Mishram"
+  },
+  {
+   "term": "Cohesion",
+   "why": "fp: a Surge from The Way of Kings' Ars Arcanum"
+  },
+  {
+   "term": "Tension",
+   "why": "fp: a Surge from The Way of Kings' Ars Arcanum"
+  },
+  {
+   "term": "Abrasion",
+   "why": "fp: a Surge from The Way of Kings' Ars Arcanum"
+  },
+  {
+   "term": "Division",
+   "why": "fp: a Surge from The Way of Kings' Ars Arcanum"
+  },
+  {
+   "term": "Progression",
+   "why": "fp: a Surge from The Way of Kings' Ars Arcanum"
+  },
+  {
+   "term": "Illumination",
+   "why": "fp: a Surge from The Way of Kings' Ars Arcanum"
+  },
+  {
+   "term": "Surge",
+   "why": "fp: the Surges are The Way of Kings' Ars Arcanum"
+  },
+  {
+   "term": "Windrunners",
+   "why": "fp: the orders are named in The Way of Kings; the order card waits for its members"
+  },
+  {
+   "term": "Edgedancers",
+   "why": "fp: the orders are named in The Way of Kings"
+  },
+  {
+   "term": "Lightweavers",
+   "why": "fp: the orders are named in The Way of Kings"
+  },
+  {
+   "term": "Dustbringers",
+   "why": "fp: the orders are named in The Way of Kings"
+  },
+  {
+   "term": "Bondsmiths",
+   "why": "fp: the orders are named in The Way of Kings"
+  },
+  {
+   "term": "Elsecallers",
+   "why": "fp: the orders are named in The Way of Kings"
+  },
+  {
+   "term": "Skybreakers",
+   "why": "fp: the order is named in The Way of Kings, and Helaran's Blade from it is Words of Radiance ch. 19"
+  },
+  {
+   "term": "Recreance",
+   "why": "fp: the Recreance is The Way of Kings' history"
+  },
+  {
+   "term": "True Desolation",
+   "why": "fp: the coming Desolation is The Way of Kings'; the event card waits for it to arrive"
+  },
+  {
+   "term": "Akinah",
+   "why": "fp: Akinah is named in Oathbringer; its card is the Dawnshard novella's"
+  },
+  {
+   "term": "Well of Ascension",
+   "why": "fp: the Well is named in The Final Empire, in Alendi's logbook; its place card and its door wait for what The Well of Ascension and The Hero of Ages show of it"
+  },
+  {
+   "key": "body:yolen",
+   "field": "bio",
+   "term": "Frost",
+   "why": "fp, catalog.ts, which the coordinator owns: a name (a world, a star, an era's own label) with no plot attached."
+  },
+  {
+   "key": "body:sel",
+   "field": "fact",
+   "term": "Odium",
+   "why": "leak, catalog.ts, which the coordinator owns: Sel, open from Elantris, says Odium shattered its Shards (The Way of Kings, Arcanum). Reported."
+  },
+  {
+   "key": "body:sel",
+   "field": "bio",
+   "term": "Forgery",
+   "why": "fp, catalog.ts, which the coordinator owns: a name (a world, a star, an era's own label) with no plot attached."
+  },
+  {
+   "key": "body:sel",
+   "field": "bio",
+   "term": "Bloodsealing",
+   "why": "fp, catalog.ts, which the coordinator owns: a name (a world, a star, an era's own label) with no plot attached."
+  },
+  {
+   "key": "body:sel",
+   "field": "locations",
+   "term": "Rose Empire",
+   "why": "fp, catalog.ts, which the coordinator owns: a name (a world, a star, an era's own label) with no plot attached."
+  },
+  {
+   "key": "moon:oem",
+   "field": "fact",
+   "term": "Roshar",
+   "why": "fp, catalog.ts, which the coordinator owns: a name (a world, a star, an era's own label) with no plot attached."
+  },
+  {
+   "key": "system:selish",
+   "field": "fact",
+   "term": "Donne",
+   "why": "fp, catalog.ts, which the coordinator owns: a name (a world, a star, an era's own label) with no plot attached."
+  },
+  {
+   "key": "system:selish",
+   "field": "fact",
+   "term": "Ralen",
+   "why": "fp, catalog.ts, which the coordinator owns: a name (a world, a star, an era's own label) with no plot attached."
+  },
+  {
+   "key": "character:hoid",
+   "field": "note.origin",
+   "term": "The Sunlit Man",
+   "why": "ui: fieldNotes have no gate; the note is Word of Brandon or a later citation. Reported."
+  },
+  {
+   "key": "character:galladon",
+   "field": "note.fact",
+   "term": "Grump",
+   "why": "ui: fieldNotes have no gate; the note is Word of Brandon or a later citation. Reported."
+  },
+  {
+   "key": "shard:devotion",
+   "field": "note.vessel",
+   "term": "Aona",
+   "why": "ui: fieldNotes have no gate; the note is Word of Brandon or a later citation. Reported."
+  },
+  {
+   "key": "shard:devotion",
+   "field": "note.vessel",
+   "term": "Way of Kings",
+   "why": "ui: fieldNotes have no gate; the note is Word of Brandon or a later citation. Reported."
+  },
+  {
+   "key": "shard:devotion",
+   "field": "era1.vessel",
+   "term": "Aona",
+   "why": "leak, ShardEra (coordinator): the era 1 vessel row names Aona (a Way of Kings epigraph) on a card open from Elantris. Reported."
+  },
+  {
+   "key": "shard:dominion",
+   "field": "note.vessel",
+   "term": "Skai",
+   "why": "ui: fieldNotes have no gate; the note is Word of Brandon or a later citation. Reported."
+  },
+  {
+   "key": "shard:dominion",
+   "field": "note.vessel",
+   "term": "Way of Kings",
+   "why": "ui: fieldNotes have no gate; the note is Word of Brandon or a later citation. Reported."
+  },
+  {
+   "key": "shard:dominion",
+   "field": "era1.vessel",
+   "term": "Skai",
+   "why": "leak, ShardEra (coordinator): the era 1 vessel row names Skai (a Way of Kings epigraph) on a card open from Elantris. Reported."
+  },
+  {
+   "key": "term:spiritual-realm",
+   "field": "def",
+   "term": "Fortune",
+   "why": "minor: names the Fortune term, which waits for Oathbringer; nothing of Renarin"
+  },
+  {
+   "key": "term:identity",
+   "field": "def",
+   "term": "Feruchemy",
+   "why": "minor: a Cosmere-wide term names another series' art; no plot"
+  },
+  {
+   "key": "term:spiritweb",
+   "field": "def",
+   "term": "Hemalurgy",
+   "why": "minor: a Cosmere-wide term names Hemalurgy, whose card waits for The Hero of Ages. Reported."
+  },
+  {
+   "key": "term:adhesion-of-realms",
+   "field": "def",
+   "term": "Roshar",
+   "why": "fp: a world's name is not a plot reveal"
+  },
+  {
+   "key": "term:splintered",
+   "field": "def",
+   "term": "Ambition",
+   "why": "minor: a Cosmere-wide term lists Ambition among the Splintered (Arcanum Unbounded). Reported."
+  },
+  {
+   "key": "term:scar",
+   "field": "def",
+   "term": "Roshar",
+   "why": "fp: a world's name is not a plot reveal"
+  },
+  {
+   "key": "term:scar",
+   "field": "def",
+   "term": "Threnody",
+   "why": "fp: a world's name is not a plot reveal"
+  },
+  {
+   "key": "term:scar",
+   "field": "def",
+   "term": "Scadrial",
+   "why": "fp: a world's name is not a plot reveal"
+  },
+  {
+   "key": "magic:yolish-lightweaving",
+   "field": "desc",
+   "term": "Rosharan",
+   "why": "fp: a world's name is not a plot reveal"
+  },
+  {
+   "key": "era:2",
+   "field": "event",
+   "term": "Lord Ruler",
+   "why": "fp, catalog.ts, which the coordinator owns: a name (a world, a star, an era's own label) with no plot attached."
+  },
+  {
+   "key": "era:2",
+   "field": "event",
+   "term": "Scadrial",
+   "why": "fp, catalog.ts, which the coordinator owns: a name (a world, a star, an era's own label) with no plot attached."
+  },
+  {
+   "key": "era:2",
+   "field": "event",
+   "term": "Final Empire",
+   "why": "fp, catalog.ts, which the coordinator owns: a name (a world, a star, an era's own label) with no plot attached."
+  },
+  {
+   "key": "era:2",
+   "field": "realDate",
+   "term": "Scadrial",
+   "why": "fp, catalog.ts, which the coordinator owns: a name (a world, a star, an era's own label) with no plot attached."
+  },
+  {
+   "key": "era:2",
+   "field": "realDate",
+   "term": "Final Empire",
+   "why": "fp, catalog.ts, which the coordinator owns: a name (a world, a star, an era's own label) with no plot attached."
+  },
+  {
+   "key": "era:2",
+   "field": "realDate",
+   "term": "Catacendre",
+   "why": "leak, catalog.ts, which the coordinator owns: the HUD year label for era 2, shown to every reader, ends '→ Catacendre' (The Hero of Ages). Reported."
+  },
+  {
+   "key": "era:3",
+   "field": "event",
+   "term": "Roshar",
+   "why": "fp, catalog.ts, which the coordinator owns: a name (a world, a star, an era's own label) with no plot attached."
+  },
+  {
+   "key": "era:3",
+   "field": "event",
+   "term": "Knights Radiant",
+   "why": "fp, catalog.ts, which the coordinator owns: a name (a world, a star, an era's own label) with no plot attached."
+  },
+  {
+   "key": "era:3",
+   "field": "realDate",
+   "term": "Roshar",
+   "why": "fp, catalog.ts, which the coordinator owns: a name (a world, a star, an era's own label) with no plot attached."
+  },
+  {
+   "key": "era:3",
+   "field": "realDate",
+   "term": "Vorin",
+   "why": "fp, catalog.ts, which the coordinator owns: a name (a world, a star, an era's own label) with no plot attached."
+  },
+  {
+   "key": "era:4",
+   "field": "event",
+   "term": "Scadrial",
+   "why": "fp, catalog.ts, which the coordinator owns: a name (a world, a star, an era's own label) with no plot attached."
+  },
+  {
+   "key": "era:4",
+   "field": "event",
+   "term": "Twinborn",
+   "why": "fp, catalog.ts, which the coordinator owns: a name (a world, a star, an era's own label) with no plot attached."
+  },
+  {
+   "key": "era:4",
+   "field": "realDate",
+   "term": "Scadrial",
+   "why": "fp, catalog.ts, which the coordinator owns: a name (a world, a star, an era's own label) with no plot attached."
+  },
+  {
+   "key": "era:4",
+   "field": "realDate",
+   "term": "Catacendre",
+   "why": "leak, catalog.ts, which the coordinator owns: the HUD year label for era 4 is '~341 years after the Catacendre' (The Hero of Ages). Reported."
+  },
+  {
+   "key": "body:scadrial",
+   "field": "bio",
+   "term": "Ruin",
+   "why": "leak, catalog.ts, which the coordinator owns: Scadrial's bio, open from The Final Empire, says Preservation and Ruin made it (The Hero of Ages). Reported."
+  },
+  {
+   "key": "body:aagal-uch",
+   "field": "bio",
+   "term": "Preservation",
+   "why": "leak, catalog.ts, which the coordinator owns: open from The Final Empire, names Preservation and Ruin (The Hero of Ages). Reported."
+  },
+  {
+   "key": "body:aagal-uch",
+   "field": "bio",
+   "term": "Ruin",
+   "why": "leak, catalog.ts, which the coordinator owns: open from The Final Empire, names Preservation and Ruin (The Hero of Ages). Reported."
+  },
+  {
+   "key": "system:scadrian",
+   "field": "star",
+   "term": "Nalthis",
+   "why": "fp, catalog.ts, which the coordinator owns: a name (a world, a star, an era's own label) with no plot attached."
+  },
+  {
+   "key": "character:demoux",
+   "field": "note.aliases",
+   "term": "Way of Kings",
+   "why": "ui: fieldNotes have no gate; the note is Word of Brandon or a later citation. Reported."
+  },
+  {
+   "key": "character:shan-elariel",
+   "field": "bio",
+   "term": "Elend stops caring about the engagement, Shan plots to have him killed",
+   "why": "fp: the sentence is about someone trying to kill them, not their death"
+  },
+  {
+   "key": "character:milev",
+   "field": "bio",
+   "term": "Vin tied him to a chair and tortured him to death",
+   "why": "fp: the sentence is about someone trying to kill them, not their death"
+  },
+  {
+   "key": "location:northern-dominance",
+   "field": "desc",
+   "term": "Urteau",
+   "why": "minor: a city name ahead of its book; no plot"
+  },
+  {
+   "key": "location:northern-dominance",
+   "field": "bio",
+   "term": "Urteau",
+   "why": "minor: a city name ahead of its book; no plot"
+  },
+  {
+   "key": "location:farmost-dominance",
+   "field": "bio",
+   "term": "Western Dominance",
+   "why": "minor: a Dominance's name over places the book shows; no plot"
+  },
+  {
+   "key": "location:keep-venture",
+   "field": "bio",
+   "term": "Deepness",
+   "why": "fp: the Deepness is The Final Empire's history"
+  },
+  {
+   "key": "location:ashmount-zerinah",
+   "field": "desc",
+   "term": "Southern Dominance",
+   "why": "minor: a Dominance's name over places the book shows; no plot"
+  },
+  {
+   "key": "location:ashmount-zerinah",
+   "field": "bio",
+   "term": "Southern Dominance",
+   "why": "minor: a Dominance's name over places the book shows; no plot"
+  },
+  {
+   "key": "location:ashmount-zerinah",
+   "field": "region",
+   "term": "Southern Dominance",
+   "why": "minor: a Dominance's name over places the book shows; no plot"
+  },
+  {
+   "key": "location:ashmount-doriel",
+   "field": "bio",
+   "term": "Southern Dominance",
+   "why": "minor: a Dominance's name over places the book shows; no plot"
+  },
+  {
+   "key": "location:ashmount-doriel",
+   "field": "region",
+   "term": "Southern Dominance",
+   "why": "minor: a Dominance's name over places the book shows; no plot"
+  },
+  {
+   "key": "location:ashmount-torinost",
+   "field": "desc",
+   "term": "Western Dominance",
+   "why": "minor: a Dominance's name over places the book shows; no plot"
+  },
+  {
+   "key": "location:ashmount-torinost",
+   "field": "bio",
+   "term": "Western Dominance",
+   "why": "minor: a Dominance's name over places the book shows; no plot"
+  },
+  {
+   "key": "location:ashmount-torinost",
+   "field": "region",
+   "term": "Western Dominance",
+   "why": "minor: a Dominance's name over places the book shows; no plot"
+  },
+  {
+   "key": "location:austrex",
+   "field": "desc",
+   "term": "Southern Dominance",
+   "why": "minor: a Dominance's name over places the book shows; no plot"
+  },
+  {
+   "key": "location:austrex",
+   "field": "region",
+   "term": "Southern Dominance",
+   "why": "minor: a Dominance's name over places the book shows; no plot"
+  },
+  {
+   "key": "magic:allomancy",
+   "field": "shard",
+   "term": "Preservation",
+   "why": "ui: a magic's Shard field has no gate of its own (Ruin and Preservation are The Hero of Ages). Reported."
+  },
+  {
+   "key": "magic:feruchemy",
+   "field": "shard",
+   "term": "Preservation",
+   "why": "ui: a magic's Shard field has no gate of its own (Ruin and Preservation are The Hero of Ages). Reported."
+  },
+  {
+   "key": "magic:feruchemy",
+   "field": "shard",
+   "term": "Ruin",
+   "why": "ui: a magic's Shard field has no gate of its own (Ruin and Preservation are The Hero of Ages). Reported."
+  },
+  {
+   "key": "epoch:scadrian",
+   "field": "era3",
+   "term": "Catacendre",
+   "why": "leak, catalog.ts, which the coordinator owns: Scadrial's local dates, shown from The Final Empire, are 'post-Catacendre' (The Hero of Ages). Reported."
+  },
+  {
+   "key": "epoch:scadrian",
+   "field": "era3",
+   "term": "Roshar",
+   "why": "fp, catalog.ts, which the coordinator owns: a name (a world, a star, an era's own label) with no plot attached."
+  },
+  {
+   "key": "epoch:scadrian",
+   "field": "era4",
+   "term": "Catacendre",
+   "why": "leak, catalog.ts, which the coordinator owns: Scadrial's local dates, shown from The Final Empire, are 'post-Catacendre' (The Hero of Ages). Reported."
+  },
+  {
+   "key": "epoch:scadrian",
+   "field": "era4",
+   "term": "Wax",
+   "why": "fp, catalog.ts, which the coordinator owns: a name (a world, a star, an era's own label) with no plot attached."
+  },
+  {
+   "key": "epoch:scadrian",
+   "field": "era4",
+   "term": "Wayne",
+   "why": "fp, catalog.ts, which the coordinator owns: a name (a world, a star, an era's own label) with no plot attached."
+  },
+  {
+   "key": "character:straff-venture",
+   "field": "bio",
+   "term": "Elend; Vin killed",
+   "why": "fp: the sentence is about someone trying to kill them, not their death"
+  },
+  {
+   "key": "character:zane",
+   "field": "note.abilities",
+   "term": "Hemalurgic spike",
+   "why": "ui: fieldNotes have no gate; the note is Word of Brandon or a later citation. Reported."
+  },
+  {
+   "key": "character:ashweather-cett",
+   "field": "fact",
+   "term": "Western Dominance",
+   "why": "minor: a Dominance's name over places the book shows; no plot"
+  },
+  {
+   "key": "character:ashweather-cett",
+   "field": "bio",
+   "term": "Western Dominance",
+   "why": "minor: a Dominance's name over places the book shows; no plot"
+  },
+  {
+   "key": "character:ashweather-cett",
+   "field": "bio",
+   "term": "Fadrex City",
+   "why": "minor: Cett's lost capital, named ahead of The Hero of Ages; no plot"
+  },
+  {
+   "key": "character:ashweather-cett",
+   "field": "bio",
+   "term": "Yomen",
+   "why": "minor: the obligator who took Cett's city, named ahead of The Hero of Ages; no plot"
+  },
+  {
+   "key": "character:demoux",
+   "field": "fact",
+   "term": "Survivorist",
+   "why": "fp: the Church of the Survivor is The Well of Ascension's"
+  },
+  {
+   "key": "magic:feruchemy",
+   "field": "table.10",
+   "term": "Fortune",
+   "why": "minor: names the Fortune term, which waits for Oathbringer; nothing of Renarin"
+  },
+  {
+   "key": "body:ashyn",
+   "field": "locations",
+   "term": "Floating Cities",
+   "why": "fp, catalog.ts, which the coordinator owns: a name (a world, a star, an era's own label) with no plot attached."
+  },
+  {
+   "key": "body:roshar",
+   "field": "bio",
+   "term": "Everstorm",
+   "why": "leak, catalog.ts, which the coordinator owns: Roshar's bio, open from The Way of Kings, has the Everstorm (WoR) and Retribution 'after the Contest' (WaT). Reported."
+  },
+  {
+   "key": "body:roshar",
+   "field": "bio",
+   "term": "Retribution",
+   "why": "leak, catalog.ts, which the coordinator owns: Roshar's bio, open from The Way of Kings, ends with Retribution after the Contest (WaT). Reported."
+  },
+  {
+   "key": "body:roshar",
+   "field": "species",
+   "term": "Singers",
+   "why": "fp, catalog.ts, which the coordinator owns: a name (a world, a star, an era's own label) with no plot attached."
+  },
+  {
+   "key": "body:braize",
+   "field": "bio",
+   "term": "Damnation",
+   "why": "fp, catalog.ts, which the coordinator owns: a name (a world, a star, an era's own label) with no plot attached."
+  },
+  {
+   "key": "body:braize",
+   "field": "species",
+   "term": "Voidspren",
+   "why": "leak, catalog.ts, which the coordinator owns: Braize, open from The Way of Kings, has Voidspren and the Fused trapped there (Oathbringer). Reported."
+  },
+  {
+   "key": "moon:salas",
+   "field": "fact",
+   "term": "Voidlight",
+   "why": "leak, catalog.ts, which the coordinator owns: Salas, open from The Way of Kings, is 'the colour of Voidlight' (Oathbringer). Reported."
+  },
+  {
+   "key": "moon:mishim",
+   "field": "fact",
+   "term": "Lifelight",
+   "why": "fp, catalog.ts, which the coordinator owns: a name (a world, a star, an era's own label) with no plot attached."
+  },
+  {
+   "key": "system:rosharan",
+   "field": "fact",
+   "term": "Khriss",
+   "why": "fp, catalog.ts, which the coordinator owns: a name (a world, a star, an era's own label) with no plot attached."
+  },
+  {
+   "key": "system:rosharan",
+   "field": "star",
+   "term": "UTol",
+   "why": "fp, catalog.ts, which the coordinator owns: a name (a world, a star, an era's own label) with no plot attached."
+  },
+  {
+   "key": "system:rosharan",
+   "field": "star",
+   "term": "Komashi",
+   "why": "fp, catalog.ts, which the coordinator owns: a name (a world, a star, an era's own label) with no plot attached."
+  },
+  {
+   "key": "character:galladon",
+   "field": "bio",
+   "term": "Baon",
+   "why": "minor: the Seventeenth Shard cameo is Word of Brandon; no plot"
+  },
+  {
+   "key": "character:nightwatcher",
+   "field": "fact",
+   "term": "The Valley",
+   "why": "fp: the Nightwatcher's Valley is named in The Way of Kings"
+  },
+  {
+   "key": "character:frost",
+   "field": "fact",
+   "term": "Words of Radiance",
+   "why": "minor: says Frost's replies are in the next book's epigraphs; no content"
+  },
+  {
+   "key": "character:aona",
+   "field": "fact",
+   "term": "Rayse left both dead",
+   "why": "fp: Aona and Skai died to Rayse; Rayse is named in The Way of Kings"
+  },
+  {
+   "key": "character:aona",
+   "field": "bio",
+   "term": "Rayse's visit both were dead, and what they held was Splintered",
+   "why": "fp: Aona and Skai died to Rayse; Rayse is named in The Way of Kings"
+  },
+  {
+   "key": "character:skai",
+   "field": "fact",
+   "term": "Rayse left both dead",
+   "why": "fp: Aona and Skai died to Rayse; Rayse is named in The Way of Kings"
+  },
+  {
+   "key": "character:skai",
+   "field": "bio",
+   "term": "Rayse's visit both were dead, and what they held was Splintered",
+   "why": "fp: Aona and Skai died to Rayse; Rayse is named in The Way of Kings"
+  },
+  {
+   "key": "location:kholinar",
+   "field": "desc",
+   "term": "Oathgate",
+   "why": "minor: the Oathgates are Words of Radiance's; a Way of Kings city 'with an Oathgate' is worldbuilding, not plot. Reported."
+  },
+  {
+   "key": "location:vedenar",
+   "field": "desc",
+   "term": "Oathgate",
+   "why": "minor: the Oathgates are Words of Radiance's; a Way of Kings city 'with an Oathgate' is worldbuilding, not plot. Reported."
+  },
+  {
+   "key": "location:vedenar",
+   "field": "bio",
+   "term": "Oathgate",
+   "why": "minor: the Oathgates are Words of Radiance's; a Way of Kings city 'with an Oathgate' is worldbuilding, not plot. Reported."
+  },
+  {
+   "key": "location:rall-elorim",
+   "field": "desc",
+   "term": "Oathgate",
+   "why": "minor: the Oathgates are Words of Radiance's; a Way of Kings city 'with an Oathgate' is worldbuilding, not plot. Reported."
+  },
+  {
+   "key": "location:rall-elorim",
+   "field": "bio",
+   "term": "Oathgate",
+   "why": "minor: the Oathgates are Words of Radiance's; a Way of Kings city 'with an Oathgate' is worldbuilding, not plot. Reported."
+  },
+  {
+   "key": "location:kurth",
+   "field": "desc",
+   "term": "Oathgate",
+   "why": "minor: the Oathgates are Words of Radiance's; a Way of Kings city 'with an Oathgate' is worldbuilding, not plot. Reported."
+  },
+  {
+   "key": "location:kurth",
+   "field": "bio",
+   "term": "Oathgate",
+   "why": "minor: the Oathgates are Words of Radiance's; a Way of Kings city 'with an Oathgate' is worldbuilding, not plot. Reported."
+  },
+  {
+   "key": "location:marat",
+   "field": "bio",
+   "term": "Emul",
+   "why": "fp: the Makabaki kingdoms are named in The Way of Kings"
+  },
+  {
+   "key": "location:tukar",
+   "field": "desc",
+   "term": "Emul",
+   "why": "fp: the Makabaki kingdoms are named in The Way of Kings"
+  },
+  {
+   "key": "location:tukar",
+   "field": "bio",
+   "term": "Emul",
+   "why": "fp: the Makabaki kingdoms are named in The Way of Kings"
+  },
+  {
+   "key": "location:babatharnam",
+   "field": "bio",
+   "term": "Panatham",
+   "why": "fp: a city on The Way of Kings' endpaper map"
+  },
+  {
+   "key": "location:babatharnam",
+   "field": "bio",
+   "term": "Oathgate",
+   "why": "minor: the Oathgates are Words of Radiance's; a Way of Kings city 'with an Oathgate' is worldbuilding, not plot. Reported."
+  },
+  {
+   "key": "location:natanatan",
+   "field": "bio",
+   "term": "Stormseat",
+   "why": "fp: the Silver Kingdom's capital, an old name for Narak; a name, no plot"
+  },
+  {
+   "key": "location:liafor",
+   "field": "bio",
+   "term": "Tashikk",
+   "why": "fp: the Makabaki kingdoms are named in The Way of Kings"
+  },
+  {
+   "key": "location:makabak",
+   "field": "bio",
+   "term": "Emul",
+   "why": "fp: the Makabaki kingdoms are named in The Way of Kings"
+  },
+  {
+   "key": "location:makabak",
+   "field": "bio",
+   "term": "Tashikk",
+   "why": "fp: the Makabaki kingdoms are named in The Way of Kings"
+  },
+  {
+   "key": "location:makabak",
+   "field": "bio",
+   "term": "Azimir",
+   "why": "fp: Azir's capital is named in The Way of Kings"
+  },
+  {
+   "key": "location:makabakam",
+   "field": "desc",
+   "term": "Oathgate",
+   "why": "minor: the Oathgates are Words of Radiance's; a Way of Kings city 'with an Oathgate' is worldbuilding, not plot. Reported."
+  },
+  {
+   "key": "location:desh",
+   "field": "bio",
+   "term": "Azimir",
+   "why": "fp: Azir's capital is named in The Way of Kings"
+  },
+  {
+   "key": "location:yezier",
+   "field": "desc",
+   "term": "Tashikk",
+   "why": "fp: the Makabaki kingdoms are named in The Way of Kings"
+  },
+  {
+   "key": "location:yezier",
+   "field": "bio",
+   "term": "Tashikk",
+   "why": "fp: the Makabaki kingdoms are named in The Way of Kings"
+  },
+  {
+   "key": "location:rishir",
+   "field": "desc",
+   "term": "Oathgate",
+   "why": "minor: the Oathgates are Words of Radiance's; a Way of Kings city 'with an Oathgate' is worldbuilding, not plot. Reported."
+  },
+  {
+   "key": "location:rishir",
+   "field": "bio",
+   "term": "Oathgate",
+   "why": "minor: the Oathgates are Words of Radiance's; a Way of Kings city 'with an Oathgate' is worldbuilding, not plot. Reported."
+  },
+  {
+   "key": "location:sela-tales",
+   "field": "desc",
+   "term": "Panatham",
+   "why": "fp: a city on The Way of Kings' endpaper map"
+  },
+  {
+   "key": "location:sela-tales",
+   "field": "desc",
+   "term": "Oathgate",
+   "why": "minor: the Oathgates are Words of Radiance's; a Way of Kings city 'with an Oathgate' is worldbuilding, not plot. Reported."
+  },
+  {
+   "key": "location:sela-tales",
+   "field": "bio",
+   "term": "Panatham",
+   "why": "fp: a city on The Way of Kings' endpaper map"
+  },
+  {
+   "key": "location:sela-tales",
+   "field": "bio",
+   "term": "Oathgate",
+   "why": "minor: the Oathgates are Words of Radiance's; a Way of Kings city 'with an Oathgate' is worldbuilding, not plot. Reported."
+  },
+  {
+   "key": "location:sea-of-spears",
+   "field": "bio",
+   "term": "Rathalas",
+   "why": "fp: the Rift is named in The Way of Kings"
+  },
+  {
+   "key": "location:southern-depths",
+   "field": "desc",
+   "term": "Thaylenah",
+   "why": "fp: Thaylenah is named in The Way of Kings"
+  },
+  {
+   "key": "location:southern-depths",
+   "field": "bio",
+   "term": "Thaylenah",
+   "why": "fp: Thaylenah is named in The Way of Kings"
+  },
+  {
+   "key": "location:abamabar",
+   "field": "desc",
+   "term": "Urithiru",
+   "why": "fp: Urithiru is The Way of Kings' (Nohadon's walk, Jasnah's search); its card waits for the tower itself"
+  },
+  {
+   "key": "location:abamabar",
+   "field": "bio",
+   "term": "Urithiru",
+   "why": "fp: Urithiru is The Way of Kings' (Nohadon's walk, Jasnah's search); its card waits for the tower itself"
+  },
+  {
+   "key": "location:sebarial-princedom",
+   "field": "desc",
+   "term": "Sebarial",
+   "why": "fp: Sebarial is one of the highprinces The Way of Kings lists"
+  },
+  {
+   "key": "location:sebarial-princedom",
+   "field": "bio",
+   "term": "Sebarial",
+   "why": "fp: Sebarial is one of the highprinces The Way of Kings lists"
+  },
+  {
+   "key": "location:vamah-princedom",
+   "field": "desc",
+   "term": "Revolar",
+   "why": "fp: a city on The Way of Kings' endpaper map"
+  },
+  {
+   "key": "location:vamah-princedom",
+   "field": "bio",
+   "term": "Revolar",
+   "why": "fp: a city on The Way of Kings' endpaper map"
+  },
+  {
+   "key": "location:expanse-of-broken-sky",
+   "field": "desc",
+   "term": "Taldain",
+   "why": "fp: a world's name is not a plot reveal"
+  },
+  {
+   "key": "location:expanse-of-broken-sky",
+   "field": "bio",
+   "term": "Taldain",
+   "why": "fp: a world's name is not a plot reveal"
+  },
+  {
+   "key": "location:undersea-aimia",
+   "field": "desc",
+   "term": "Aimia",
+   "why": "fp: Aimia and Aimians are named in The Way of Kings"
+  },
+  {
+   "key": "location:undersea-aimia",
+   "field": "bio",
+   "term": "Aimia",
+   "why": "fp: Aimia and Aimians are named in The Way of Kings"
+  },
+  {
+   "key": "location:undersea-aimia",
+   "field": "region",
+   "term": "Aimia",
+   "why": "fp: Aimia and Aimians are named in The Way of Kings"
+  },
+  {
+   "key": "shard:cultivation",
+   "field": "era4.vessel",
+   "term": "Koravellium Avast",
+   "why": "leak, ShardEra (coordinator): era 4-5 vessel rows name Koravellium (RoW) on a card open from The Way of Kings. Reported."
+  },
+  {
+   "key": "shard:cultivation",
+   "field": "era4.vessel",
+   "term": "Koravellium",
+   "why": "leak, ShardEra (coordinator): era 4-5 vessel rows name Koravellium (RoW) on a card open from The Way of Kings. Reported."
+  },
+  {
+   "key": "shard:cultivation",
+   "field": "era5.vessel",
+   "term": "Koravellium Avast",
+   "why": "leak, ShardEra (coordinator): era 4-5 vessel rows name Koravellium (RoW) on a card open from The Way of Kings. Reported."
+  },
+  {
+   "key": "shard:cultivation",
+   "field": "era5.vessel",
+   "term": "Koravellium",
+   "why": "leak, ShardEra (coordinator): era 4-5 vessel rows name Koravellium (RoW) on a card open from The Way of Kings. Reported."
+  },
+  {
+   "key": "shard:honor",
+   "field": "era4.vessel",
+   "term": "Retribution",
+   "why": "leak, ShardEra (coordinator): era 4-5 vessel rows name Retribution (WaT) on a card open from The Way of Kings. Reported."
+  },
+  {
+   "key": "shard:honor",
+   "field": "era5.vessel",
+   "term": "Retribution",
+   "why": "leak, ShardEra (coordinator): era 4-5 vessel rows name Retribution (WaT) on a card open from The Way of Kings. Reported."
+  },
+  {
+   "key": "shard:odium",
+   "field": "era4.vessel",
+   "term": "Retribution",
+   "why": "leak, ShardEra (coordinator): era 4-5 vessel rows name Retribution (WaT) on a card open from The Way of Kings. Reported."
+  },
+  {
+   "key": "shard:odium",
+   "field": "era5.vessel",
+   "term": "Retribution",
+   "why": "leak, ShardEra (coordinator): era 4-5 vessel rows name Retribution (WaT) on a card open from The Way of Kings. Reported."
+  },
+  {
+   "key": "term:horneaters",
+   "field": "def",
+   "term": "Horneater Peaks",
+   "why": "fp: Rock's homeland is The Way of Kings'"
+  },
+  {
+   "key": "org:seventeenth-shard",
+   "field": "bio",
+   "term": "Baon",
+   "why": "minor: the Seventeenth Shard cameo is Word of Brandon; no plot"
+  },
+  {
+   "key": "org:seventeenth-shard",
+   "field": "world",
+   "term": "Silverlight",
+   "why": "minor: Iyatil's birthplace and the Seventeenth Shard's base are Word of Brandon; no plot"
+  },
+  {
+   "key": "org:stonewards",
+   "field": "fact",
+   "term": "Peakspren",
+   "why": "minor: a spren kind named ahead of its card; no plot"
+  },
+  {
+   "key": "org:knights-radiant",
+   "field": "bio",
+   "term": "Urithiru",
+   "why": "fp: Urithiru is The Way of Kings' (Nohadon's walk, Jasnah's search); its card waits for the tower itself"
+  },
+  {
+   "key": "org:heralds",
+   "field": "bio",
+   "term": "Chanarach",
+   "why": "fp: the Heralds' names are The Way of Kings' Ars Arcanum"
+  },
+  {
+   "key": "org:heralds",
+   "field": "bio",
+   "term": "Pailiah",
+   "why": "fp: the Heralds' names are The Way of Kings' Ars Arcanum"
+  },
+  {
+   "key": "org:heralds",
+   "field": "bio",
+   "term": "Battar",
+   "why": "fp: the Heralds' names are The Way of Kings' Ars Arcanum"
+  },
+  {
+   "key": "org:thaylen-guilds",
+   "field": "fact",
+   "term": "Thaylenah",
+   "why": "fp: Thaylenah is named in The Way of Kings"
+  },
+  {
+   "key": "perp:cultivation-pool",
+   "field": "fact",
+   "term": "Horneater Peaks",
+   "why": "fp: Rock's homeland is The Way of Kings'"
+  },
+  {
+   "key": "epoch:rosharan",
+   "field": "era4",
+   "term": "Wind and Truth",
+   "why": "leak, catalog.ts, which the coordinator owns: Roshar's local date for era 4, shown from The Way of Kings, is 'After Wind and Truth — the ten-year cold war'. Reported."
+  },
+  {
+   "key": "epoch:obrodai",
+   "field": "era3",
+   "term": "Autonomy's avatar",
+   "why": "fp, catalog.ts, which the coordinator owns: a name (a world, a star, an era's own label) with no plot attached."
+  },
+  {
+   "key": "system:dhatrian",
+   "field": "star",
+   "term": "Dhatri",
+   "why": "fp, catalog.ts, which the coordinator owns: a name (a world, a star, an era's own label) with no plot attached."
+  },
+  {
+   "key": "system:bjendal",
+   "field": "fact",
+   "term": "Ghostbloods",
+   "why": "leak, catalog.ts, which the coordinator owns: Bjendal, open from The Alloy of Law, is the Ghostbloods' (WoR) and closed in 348 PC (The Lost Metal). Reported."
+  },
+  {
+   "key": "system:bjendal",
+   "field": "star",
+   "term": "Ghostbloods",
+   "why": "leak, catalog.ts, which the coordinator owns: Bjendal, open from The Alloy of Law, is the Ghostbloods' (WoR) and closed in 348 PC (The Lost Metal). Reported."
+  },
+  {
+   "key": "location:elendel-basin",
+   "field": "bio",
+   "term": "Outer Cities",
+   "why": "minor: a Basin term ahead of its card; no plot"
+  },
+  {
+   "key": "location:southern-roughs",
+   "field": "desc",
+   "term": "Seran Range",
+   "why": "minor: a Basin place name; no plot"
+  },
+  {
+   "key": "location:southern-roughs",
+   "field": "bio",
+   "term": "Seran Range",
+   "why": "minor: a Basin place name; no plot"
+  },
+  {
+   "key": "location:southern-roughs",
+   "field": "bio",
+   "term": "New Seran",
+   "why": "minor: a Basin place name; no plot"
+  },
+  {
+   "key": "location:covingtar",
+   "field": "bio",
+   "term": "Abrigain",
+   "why": "fp: one of Wayne's characters, not Wayne's alias being revealed"
+  },
+  {
+   "key": "landmark:elendel-ladrian-mark",
+   "field": "desc",
+   "term": "Nazh",
+   "why": "minor, cities.ts (the city-plates agent): a plate annotated by Nazh, named ahead of Arcanum Unbounded."
+  },
+  {
+   "key": "route:threnody-scadrial",
+   "field": "fact",
+   "term": "Nazh",
+   "why": "minor: Nazh's maps and travels are Word of Brandon and Arcanum; no plot"
+  },
+  {
+   "key": "epoch:dhatrian",
+   "field": "era4",
+   "term": "Dhatri",
+   "why": "fp, catalog.ts, which the coordinator owns: a name (a world, a star, an era's own label) with no plot attached."
+  },
+  {
+   "key": "body:threnody",
+   "field": "fact",
+   "term": "Ambition",
+   "why": "leak, catalog.ts, which the coordinator owns: Threnody, open from Shadows for Silence, names Odium and Ambition (Arcanum). Reported."
+  },
+  {
+   "key": "system:threnodite",
+   "field": "fact",
+   "term": "Ambition",
+   "why": "leak, catalog.ts, which the coordinator owns: the Threnodite system, open from Shadows for Silence, names Odium and Ambition (Arcanum). Reported."
+  },
+  {
+   "key": "term:shade",
+   "field": "def",
+   "term": "Cognitive Shadow",
+   "why": "fp: the Cognitive Shadow term is filed later; the shades are this book's"
+  },
+  {
+   "key": "epoch:threnodite",
+   "field": "era1",
+   "term": "Ambition",
+   "why": "leak, catalog.ts, which the coordinator owns: the Threnodite local date names Ambition's death (Arcanum). Reported."
+  },
+  {
+   "key": "character:mraize",
+   "field": "origin",
+   "term": "Thaylenah",
+   "why": "fp: Thaylenah is named in The Way of Kings"
+  },
+  {
+   "key": "character:iyatil",
+   "field": "note.origin",
+   "term": "Silverlight",
+   "why": "ui: fieldNotes have no gate; the note is Word of Brandon or a later citation. Reported."
+  },
+  {
+   "key": "character:iyatil",
+   "field": "origin",
+   "term": "Silverlight",
+   "why": "minor: Iyatil's birthplace and the Seventeenth Shard's base are Word of Brandon; no plot"
+  },
+  {
+   "key": "character:moelach",
+   "field": "fact",
+   "term": "Unmade",
+   "why": "minor: Moelach is named in Words of Radiance; the word 'Unmade' is Oathbringer's. No plot"
+  },
+  {
+   "key": "character:moelach",
+   "field": "bio",
+   "term": "Unmade",
+   "why": "minor: Moelach is named in Words of Radiance; the word 'Unmade' is Oathbringer's. No plot"
+  },
+  {
+   "key": "character:moelach",
+   "field": "abilities",
+   "term": "Unmade",
+   "why": "minor: Moelach is named in Words of Radiance; the word 'Unmade' is Oathbringer's. No plot"
+  },
+  {
+   "key": "character:graves",
+   "field": "bio",
+   "term": "Moash into a plot against Elhokar",
+   "why": "fp: Graves's plot against Elhokar is Words of Radiance; Moash's part in it is the same book"
+  },
+  {
+   "key": "location:thaylen-city",
+   "field": "desc",
+   "term": "Thaylenah",
+   "why": "fp: Thaylenah is named in The Way of Kings"
+  },
+  {
+   "key": "location:thaylen-city",
+   "field": "bio",
+   "term": "Thaylenah",
+   "why": "fp: Thaylenah is named in The Way of Kings"
+  },
+  {
+   "key": "location:thaylen-city",
+   "field": "region",
+   "term": "Thaylenah",
+   "why": "fp: Thaylenah is named in The Way of Kings"
+  },
+  {
+   "key": "term:reyas-tear",
+   "field": "def",
+   "term": "Ishi",
+   "why": "fp: Ishi is a Rosharan month here, not the planet"
+  },
+  {
+   "key": "system:drominad",
+   "field": "fact",
+   "term": "Khriss",
+   "why": "fp, catalog.ts, which the coordinator owns: a name (a world, a star, an era's own label) with no plot attached."
+  },
+  {
+   "key": "magic:aviar",
+   "field": "note.shard",
+   "term": "Autonomy",
+   "why": "ui: fieldNotes have no gate; the note is Word of Brandon or a later citation. Reported."
+  },
+  {
+   "key": "magic:aviar",
+   "field": "note.shard",
+   "term": "Oathbringer",
+   "why": "ui: fieldNotes have no gate; the note is Word of Brandon or a later citation. Reported."
+  },
+  {
+   "key": "location:the-village",
+   "field": "bio",
+   "term": "Forch",
+   "why": "minor: the boy Wax killed is named in The Bands of Mourning; Shadows of Self has the incident"
+  },
+  {
+   "key": "term:evanotype",
+   "field": "def",
+   "term": "ReLuur",
+   "why": "minor: an example photographer, named ahead of The Bands of Mourning; no plot"
+  },
+  {
+   "key": "character:irich",
+   "field": "bio",
+   "term": "Array",
+   "why": "fp: Irich's rank of Array is The Bands of Mourning (Coppermind: Irich, mb6 18)"
+  },
+  {
+   "key": "character:irich",
+   "field": "bio",
+   "term": "Sequence",
+   "why": "fp: the Set's ranks are named in The Bands of Mourning"
+  },
+  {
+   "key": "character:irich",
+   "field": "titles",
+   "term": "Array",
+   "why": "fp: Irich's rank of Array is The Bands of Mourning (Coppermind: Irich, mb6 18)"
+  },
+  {
+   "key": "term:outer-cities",
+   "field": "def",
+   "term": "Bilming",
+   "why": "minor: a Basin city named ahead of The Lost Metal; no plot"
+  },
+  {
+   "key": "relation:irich~the-set",
+   "field": "label",
+   "term": "Array",
+   "why": "fp: Irich's rank of Array is The Bands of Mourning (Coppermind: Irich, mb6 18)"
+  },
+  {
+   "key": "character:khriss",
+   "field": "bio",
+   "term": "Nazh",
+   "why": "minor: Nazh's maps and travels are Word of Brandon and Arcanum; no plot"
+  },
+  {
+   "key": "character:delius",
+   "field": "bio",
+   "term": "Lord Merchant Vey",
+   "why": "fp: Vey and Raagent are named in Volume 1; their cards wait for Volume 2"
+  },
+  {
+   "key": "character:aarik",
+   "field": "bio",
+   "term": "Lord General Raagent",
+   "why": "fp: Vey and Raagent are named in Volume 1; their cards wait for Volume 2"
+  },
+  {
+   "key": "location:deep-sand",
+   "field": "bio",
+   "term": "Raagent",
+   "why": "fp: Vey and Raagent are named in Volume 1; their cards wait for Volume 2"
+  },
+  {
+   "key": "shard:autonomy",
+   "field": "note.vessel",
+   "term": "Bavadin",
+   "why": "ui: fieldNotes have no gate; the note is Word of Brandon or a later citation. Reported."
+  },
+  {
+   "key": "shard:autonomy",
+   "field": "note.vessel",
+   "term": "The Lost Metal",
+   "why": "ui: fieldNotes have no gate; the note is Word of Brandon or a later citation. Reported."
+  },
+  {
+   "key": "shard:autonomy",
+   "field": "era1.vessel",
+   "term": "Bavadin",
+   "why": "minor, ShardEra (coordinator): Bavadin is named in a Way of Kings letter and her Shard was Word of Brandon before The Lost Metal."
+  },
+  {
+   "key": "shard:autonomy",
+   "field": "era2.vessel",
+   "term": "Bavadin",
+   "why": "minor, ShardEra (coordinator): Bavadin is named in a Way of Kings letter and her Shard was Word of Brandon before The Lost Metal."
+  },
+  {
+   "key": "shard:autonomy",
+   "field": "era3.vessel",
+   "term": "Bavadin",
+   "why": "minor, ShardEra (coordinator): Bavadin is named in a Way of Kings letter and her Shard was Word of Brandon before The Lost Metal."
+  },
+  {
+   "key": "shard:autonomy",
+   "field": "era4.vessel",
+   "term": "Bavadin",
+   "why": "minor, ShardEra (coordinator): Bavadin is named in a Way of Kings letter and her Shard was Word of Brandon before The Lost Metal."
+  },
+  {
+   "key": "shard:autonomy",
+   "field": "era5.vessel",
+   "term": "Bavadin",
+   "why": "minor, ShardEra (coordinator): Bavadin is named in a Way of Kings letter and her Shard was Word of Brandon before The Lost Metal."
+  },
+  {
+   "key": "character:arclo",
+   "field": "origin",
+   "term": "Aimia",
+   "why": "fp: Aimia and Aimians are named in The Way of Kings"
+  },
+  {
+   "key": "shard:ambition",
+   "field": "note.vessel",
+   "term": "Oathbringer",
+   "why": "ui: fieldNotes have no gate; the note is Word of Brandon or a later citation. Reported."
+  },
+  {
+   "key": "shard:ambition",
+   "field": "note.vessel",
+   "term": "Wind and Truth",
+   "why": "ui: fieldNotes have no gate; the note is Word of Brandon or a later citation. Reported."
+  },
+  {
+   "key": "character:ishar",
+   "field": "bio",
+   "term": "Emul",
+   "why": "fp: the Makabaki kingdoms are named in The Way of Kings"
+  },
+  {
+   "key": "character:ishar",
+   "field": "bio",
+   "term": "Sesemalex Dar",
+   "why": "fp: Ishar's war over it is Oathbringer's"
+  },
+  {
+   "key": "character:dai-gonarthis",
+   "field": "bio",
+   "term": "Aimia",
+   "why": "fp: Aimia and Aimians are named in The Way of Kings"
+  },
+  {
+   "key": "location:the-valley",
+   "field": "bio",
+   "term": "Emul",
+   "why": "fp: the Makabaki kingdoms are named in The Way of Kings"
+  },
+  {
+   "key": "hub:expanse-vapours",
+   "field": "fact",
+   "term": "Nexus",
+   "why": "fp: the Nexus of Imagination is named in Oathbringer's Shadesmar map"
+  },
+  {
+   "key": "body:dhatri",
+   "field": "note.system",
+   "term": "Dhatrian Planetary Network",
+   "why": "fp, catalog.ts, which the coordinator owns: a name (a world, a star, an era's own label) with no plot attached."
+  },
+  {
+   "key": "body:bjendal-world",
+   "field": "bio",
+   "term": "Retribution",
+   "why": "leak, catalog.ts, which the coordinator owns: Bjendal's bio, open from The Lost Metal, says 'Roshar, after Retribution' (WaT). Reported."
+  },
+  {
+   "key": "character:maraga-dulcet",
+   "field": "bio",
+   "term": "Allomancer Jak",
+   "why": "fp: the pulp hero Maraga wants to meet is The Lost Metal's"
+  },
+  {
+   "key": "epoch:utol",
+   "field": "era5",
+   "term": "The Sunlit Man",
+   "why": "fp, catalog.ts, which the coordinator owns: a name (a world, a star, an era's own label) with no plot attached."
+  },
+  {
+   "key": "character:lorieta",
+   "field": "bio",
+   "term": "Emberdark",
+   "why": "fp: Lorieta warns Jasnah off the settlement Emberdark in Elsecaller (Coppermind: Lorieta)"
+  }
+ ]
+}

@@ -359,8 +359,10 @@ export const DAWNSHARDS: Dawnshard[] = [
     canon: C, sources: ['The Sunlit Man chs. 10, 21, 28, 34', 'Wind and Truth ch. 146', 'Word of Brandon 14300'],
   },
   {
+    // Its every line is The Way of Kings, the end of it included (Honor's last
+    // vision). As 'core' it was on the card of a reader who had only Elantris.
     id: 'dawnshard-adonalsium', name: 'A fourth Dawnshard', command: 'Unknown',
-    holder: 'unknown', book: 'core',
+    holder: 'unknown', book: 'stormlight', arc: 'twok',
     fact: 'Roshar\'s myths remember the Dawnshards as weapons — one, the Poem of Ista says, could bind any creature, voidish or mortal — and Honor\'s last vision worried how mankind would manage without them. This one\'s Command is not on the page.',
     canon: C, sources: ['The Way of Kings chs. 29, 36, 75'],
   },

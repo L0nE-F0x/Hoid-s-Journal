@@ -615,4 +615,20 @@ export const RELATIONS_MORE: Relation[] = [
   { a: { kind: 'character', id: 'matin' }, b: { kind: 'character', id: 'bark' }, type: 'rival', label: 'Not afraid of him', book: 'fod', canon: C },
   { a: { kind: 'character', id: 'weonim' }, b: { kind: 'org', id: 'hexers' }, type: 'bond', label: 'Elder', book: 'fod', canon: C },
   { a: { kind: 'character', id: 'hoid' }, b: { kind: 'location', id: 'valors-temple' }, type: 'rival', label: 'Burned in it, twice', book: 'fod', canon: C },
+
+  // Membership edges. `orgsForCharacter` shows an order on a person's card as
+  // soon as both are visible unless an edge like these says when it became
+  // true, and these memberships are later books' than the people or orders.
+  // Szeth joins the Skybreakers in Oathbringer, not the Edgedancer that
+  // opens their card.
+  { a: { kind: 'character', id: 'szeth' }, b: { kind: 'org', id: 'skybreakers' }, type: 'ally', label: 'Skybreaker', book: 'stormlight', arc: 'oathbringer', canon: C },
+  // Kaladin and Shallan are Radiants from Words of Radiance (their faces say
+  // Windrunner and Lightweaver there), Jasnah from Oathbringer (Elsecaller).
+  { a: { kind: 'character', id: 'kaladin' }, b: { kind: 'org', id: 'knights-radiant' }, type: 'ally', label: 'Knight Radiant', book: 'stormlight', arc: 'wor', canon: C },
+  { a: { kind: 'character', id: 'shallan' }, b: { kind: 'org', id: 'knights-radiant' }, type: 'ally', label: 'Knight Radiant', book: 'stormlight', arc: 'wor', canon: C },
+  { a: { kind: 'character', id: 'jasnah' }, b: { kind: 'org', id: 'knights-radiant' }, type: 'ally', label: 'Knight Radiant', book: 'stormlight', arc: 'oathbringer', canon: C },
+  // Baon admits he is the Dynasty's in Volume 2; Acron resurfaces as
+  // Skathan's assassin in Volume 3 (their reading faces).
+  { a: { kind: 'character', id: 'baon' }, b: { kind: 'org', id: 'dynasty' }, type: 'ally', label: 'The Dynasty\'s agent', book: 'whitesand', arc: 'ws2', canon: C },
+  { a: { kind: 'character', id: 'acron' }, b: { kind: 'org', id: 'dynasty' }, type: 'ally', label: 'The Dynasty\'s assassin', book: 'whitesand', arc: 'ws3', canon: C },
 ];

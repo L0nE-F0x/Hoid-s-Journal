@@ -557,12 +557,15 @@ export class Orrery {
       // no one is tracing any single ellipse — at that range full saturation
       // is a spirograph laid over the sky, so the rings step back toward a
       // common cool tone and let the star clouds carry the frame.
-      line.userData.base = new THREE.Color(body.color);
-      line.userData.calm = new THREE.Color(body.color).lerp(new THREE.Color(0x93a8c6), 0.66);
+      line.userData = {
+        kind: 'orbit',
+        id: body.id,
+        base: new THREE.Color(body.color),
+        calm: new THREE.Color(body.color).lerp(new THREE.Color(0x93a8c6), 0.66),
+      };
       line.computeLineDistances();
       line.frustumCulled = false;
       line.renderOrder = -1;
-      line.userData = { kind: 'orbit', id: body.id };
       this.group.add(line);
       this.orbitLines.set(body.id, line);
     }

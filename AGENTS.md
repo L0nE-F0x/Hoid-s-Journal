@@ -93,6 +93,7 @@ npm run shot -- --eval "__ceph.store.set('realm','cognitive')" --out /tmp/c.png
 npm run test:interaction   # ~85 checks through real mouse, keyboard and touch
 npm run test:cartography   # the globe and the atlas still draw the same world
 npm run audit:data         # every id resolves, every reference points at something
+npm run audit:spoilers     # no card shows a reader a word from a book they have not reached
 npm run build && node .github/scripts/smoke-dist.mjs   # dist/ under netlify.toml's headers, offline included
 npm run perf               # fps per Realm, expensive layers toggled off
 node tools/film.mjs --script tools/trailer.mjs --out /tmp/clips   # 60 fps trailer clips (--stills for PNGs)

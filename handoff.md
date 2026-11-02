@@ -16,32 +16,72 @@ Architecture lock: `AGENTS.md` + `DESIGN.md`. This file is the live todo.
 
 # ▶ START HERE — next session
 
-**2026-11-02 overnight overhaul — ~90 commits on `master`, NOT PUSHED (push is deploy).**
-Rollback point: local tag `pre-overhaul-2026-11-02`. Seven agents in worktrees,
-merged by the coordinator. Last full run (before the final lore merge, at
-a39837c): cartography 18/18, interaction 83/83; tsc + audit:data clean at 4cb27db.
-**Run the full suite once more on HEAD before pushing.**
+**2026-11-02/03: the overnight overhaul, finished and shipped.** The owner asked
+for a "mega overhaul" with the best current canon, as many agents as needed,
+then "keep going until all the agents finish then ship it". Ten agents ran in
+git worktrees; the coordinator merged them, fixed what fell between them, and
+pushed once every gate was green. Rollback point: local tag
+`pre-overhaul-2026-11-02` (a1f0d54).
 
-- Platform: CSP + headers, SW update flow, noscript, JSON-LD, CI builds + smoke
-  (`npm run build && node .github/scripts/smoke-dist.mjs`). Readers no longer need
-  a hard refresh; bump `SHELL_CACHE` only if the shell file list changes.
-- Cartography: Final Empire + ~36 Roshar pins measured on the plates; city marks fixed.
-- Lore: Wind and Truth (~45 people), Lost Metal (16), Emberdark, FoD court, ~170
-  factual fixes, invented entries removed (checked against Coppermind), many leaks gated.
-  News digest: scratchpad `lore-new/NEWS.md` (not in repo).
-- Render/core: boot 9.6 s → 2.5 s, chunked build, WebGL context-loss recovery, deep-link hardening.
-- UI: keyboard/focus/tab order, touch, contrast, card spoiler filter, title link (the "app vanished" bug).
-- Coordinator: Presence trail, Catacendre swap and sky events gated on reading progress.
+What landed (about 125 commits; `git log pre-overhaul-2026-11-02..` reads well):
 
-**Unfinished / owner decisions:** city-plates agent stopped mid-run (branch
-`worktree-agent-a67029c44db63e434`, unmerged; Thaylen/Shattered Plains/Fadrex/Urteau/New
-Seran landmarks). `publicationSafeProgress` still orders by series (Emperor's Soul reader
-sees Lost Metal). ShardEra per-era gating; stormwardens (Elthebar, Matain, Dukar);
-restore see-chips removed in dc2a80d now that the UI filters them; Suluko (IotE ch14)
-re-add. Owner: Kredik Shaw plate is an E. Monteiro painting credited to Stewart; orbit
-calm tint (dead code); Cosmere cloud cost; Yumi/Sixth moved to era 5; page zoom
-(`user-scalable=no`); Vivenna card renamed from Azure.
+- **Lore** from Coppermind's cited wikitext. Wind and Truth went from ~20 to
+  well over a hundred gated entries (people, relations, faces); The Lost Metal
+  +16 people; Isles of the Emberdark and the Fires of December court filled;
+  King Lopen the First of Alethkar in the book list; stormwardens (Matain,
+  Elthebar, Dukar). ~170 facts corrected with citations in the commit bodies;
+  invented people and places removed (each checked: no Coppermind page).
+- **Spoilers** — the product — tightened everywhere: publication-safe
+  progress is per *book* (`PUB_BOOKS` in catalog.ts; `audit:data` pins it),
+  Shard era rows carry `book`/`arc` (`shardEraAt`), worlds have reading faces
+  (`WORLD_FACES`, `shownWorld`), order rosters and Lore Web member edges wait
+  for the membership's relation, see-chips/titles/users are filtered on the
+  card, timeline beats and their sky events carry `book`/`arc`, the Catacendre
+  map swap waits for The Hero of Ages, the trail and the Dawnshards wait too.
+  **`npm run audit:spoilers`** (new, in CI) walks all 34 books in publication
+  order and fails on any card text the reader has not earned; triage lives in
+  `tools/audit-spoilers.allow.json`, each entry with a reason.
+- **Cartography**: Final Empire and ~36 Roshar pins measured on their plates
+  (several were in the wrong country); every city plate now has measured,
+  clickable marks — Thaylen City, Narak, Fadrex, Urteau and New Seran are new
+  `CityPlate`s; plates are letterboxed, not stretched; a layer can carry its
+  own `credit` and its own `book`/`arc` (Thaylen's annotated battle map waits
+  for Oathbringer).
+- **Interface**: keyboard and focus through every panel, touch gestures,
+  contrast (`--ceph-text-faint` brightened), reduced motion; the
+  long-standing "app vanished after a click" was the title's credit link
+  opening in the same tab.
+- **Renderer/core**: boot 9.6 s → 2.5 s, chunked build (engine/lore/app/ui),
+  WebGL context-loss recovery, deep links validated, no console errors.
+- **Platform**: CSP and headers in netlify.toml, a service worker that updates
+  without throwing readers back to the title (no hard refresh needed), a real
+  noscript page, structured data, CI builds and smoke-tests `dist/` under the
+  live headers (`npm run build && node .github/scripts/smoke-dist.mjs`).
 
+Last full run before the push: tsc, `audit:data`, `audit:spoilers` (0 open),
+`test:cartography` 18/18, `test:interaction` (~85), `audit:ui` 0 dead,
+build + smoke. "click a moon opens its card" can flake under GPU load; rerun.
+
+**Owner decisions still open** (nothing below was changed):
+- `kredik_shaw.jpg` is an E. Monteiro painting; it is now credited to them, not
+  Stewart. Keep it or drop it?
+- Orbit "calm" tint at Cosmere scale is dead code (`Orrery.buildOrbits`
+  overwrites userData): switch it on (changes the approved look) or delete.
+- Cosmere-frame GPU cost is the Investiture clouds: accept, or cheaper clouds
+  on Low?
+- Yumi and Sixth of the Dusk moved to era 5 (WoB 16524): moves Komashi.
+- `user-scalable=no` blocks page zoom on phones (the app handles pinch itself).
+- Vivenna's card is titled "Vivenna" (id `azure`), because "Azure" is the
+  Oathbringer reveal.
+
+**Left for next time**: Kaladin's Wind and Truth Shinovar beat (an
+`audit:data` assertion keeps him at Urithiru at full read — check canon,
+then update both); Suluko (Coppermind can't place it); field notes and the
+Koravellium "Dragon of Yolen" kicker are shown ungated; the world layers
+(Final Empire endpaper, Basin, starchart) were not checked for story
+annotations; the Violet Duke, the kite planet and Zidorna still wait on canon.
+News digest from 2 Nov (Nexus 3–5 Dec, FoD hardcover 8 Dec, Ghostbloods 1 in
+Dec 2028) was in the coordinator's scratchpad, not the repo.
 
 **2026-10-09, evening: trailer re-conceived (and a Shadesmar redraw, reverted).** The owner
 said the Cognitive Realm did not read as Shadesmar ("you can't see the

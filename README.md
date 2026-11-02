@@ -98,6 +98,7 @@ npm run shot -- --focus roshar --scale globe --out /tmp/roshar.png
 npm run test:interaction   # checks through real mouse and keyboard
 npm run test:cartography   # the globe and the atlas still draw the same world
 npm run audit:data         # every id resolves, every reference points at something
+npm run audit:spoilers     # no card shows a reader a word from a book they have not reached
 npm run audit:ui           # clicks every control, reports the ones that do nothing
 npm run build && node .github/scripts/smoke-dist.mjs   # the production build under the live headers
 npm run perf               # fps per Realm, expensive layers toggled off one at a time

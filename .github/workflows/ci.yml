@@ -33,6 +33,7 @@ jobs:
       - run: npm ci
       - run: npx tsc --noEmit
       - run: npm run audit:data
+      - run: npm run audit:spoilers
       # What Netlify runs. The typecheck again is cheap; a failure only Rollup
       # sees would otherwise reach the deploy with this job green.
       - run: npm run build

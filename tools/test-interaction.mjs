@@ -614,6 +614,25 @@ async function run() {
       restored && s.readingNow === null && s.readProgress.mistborn2 >= 0,
       JSON.stringify({ now: s.readingNow, mb2: s.readProgress.mistborn2 }));
     await page.evaluate(() => window.__ceph.store.set('panel', 'none'));
+    // An open card is rewritten when the reader turns their progress back,
+    // and closes when its entry is ahead of them. It used to keep the text
+    // it was opened with.
+    const follows = await page.evaluate(() => {
+      const st = window.__ceph.store;
+      const text = () => document.querySelector('.ceph-panel-drawer')?.textContent ?? '';
+      const saved = st.state.readProgress;
+      st.set('selected', 'kaladin');
+      const full = text();
+      st.set('readProgress', { ...saved, stormlight: 0 });
+      const early = text();
+      st.set('readProgress', { ...saved, stormlight: -1 });
+      const after = st.state.selected;
+      st.set('readProgress', saved);
+      st.set('selected', null);
+      return { full: full.includes('since Stormfall'), early: early.includes('since Stormfall'), after };
+    });
+    check('an open card follows the reader back through the books',
+      follows.full && !follows.early && follows.after === null, JSON.stringify(follows));
 
     // Look chips must light when clicked — they used to patch state and stay dim.
     check('Settings opens', await clickLabel(page, '^settings$'));

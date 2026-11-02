@@ -285,9 +285,10 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): {
 
   /** The entry last read out, so a re-render of the same card is not. */
   let spoken: string | null = null;
-  const refreshDrawer = () => {
+  const refreshDrawer = (keepOpen = false) => {
     // Hover is a tooltip. The card opens only on a click, so the sky does not jump.
     const id = store.state.selected;
+    const wasOpen = keepOpen && drawer.classList.contains('is-open');
     const hit = loreById(id);
     // A phone cannot afford both sheets, and on a globe the atlas already
     // names the world the drawer would be describing.
@@ -314,8 +315,8 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): {
     spoken = id;
     // A phone shows the head and the gist first (hud.css), so the world the
     // card is about is still on screen. Every new card starts that way.
-    drawer.classList.remove('is-open');
-    const more = el('button', { className: 'ceph-btn ceph-drawer-more', text: 'More', attrs: { type: 'button' } });
+    drawer.classList.toggle('is-open', wasOpen);
+    const more = el('button', { className: 'ceph-btn ceph-drawer-more', text: wasOpen ? 'Less' : 'More', attrs: { type: 'button' } });
     listen(more, 'click', () => {
       const open = drawer.classList.toggle('is-open');
       more.textContent = open ? 'Less' : 'More';
@@ -375,7 +376,17 @@ export function mountHud(root: HTMLElement, host: { onHome(): void }): {
     }),
     listen(readingLabel, 'click', () => store.set('panel', 'journal')),
     store.on('readingNow', refreshReading),
-    store.on('readProgress', () => { paintMarks(); refreshTime(); }),
+    // The open card is rewritten for what the reader now says they have
+    // read. It used to keep the text it was opened with, so a reader who
+    // turned their progress back still had a later book's card in front of
+    // them; one whose entry is now ahead of them closes.
+    store.on('readProgress', (p) => {
+      paintMarks();
+      refreshTime();
+      const hit = loreById(store.state.selected);
+      if (hit && !isVisible(hit.obj as { book?: string; arc?: string }, p)) store.set('selected', null);
+      else refreshDrawer(true);
+    }),
     listen(window, 'resize', () => measure()),
     store.on('cinematic', (on) => { skip.classList.toggle('is-on', on); refreshScale(); }),
     store.on('fault', (msg) => {

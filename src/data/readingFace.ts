@@ -662,9 +662,14 @@ export const READING_FACES: Record<string, ReadingFace> = {
       { book: 'stormlight', arc: 'wat', published: true },
     ],
   },
+  // The published fact and aliases were Wind and Truth's: that she helped
+  // Shatter Adonalsium (i-4) and Tanavast's "Kor" (ch. 100). Her name is a
+  // Rhythm of War art page (Coppermind: Koravellium Avast, trivia).
   koravellium: {
     early: {
-      bio: 'Dragon Vessel of Cultivation. She prunes Dalinar\'s memories, and gambles on Taravangian: the boon she once gave him is what makes him Odium.',
+      fact: 'Cultivation\'s Vessel, who engineered the ascension of Taravangian. Also called She Who Brings the Dews at Dawn.',
+      aliases: 'Cultivation · Slammer',
+      bio: 'Vessel of Cultivation. She prunes Dalinar\'s memories, and gambles on Taravangian: the boon she once gave him is what makes him Odium.',
     },
     steps: [
       { book: 'stormlight', arc: 'wat', published: true },

@@ -405,12 +405,12 @@ export const PEOPLE_BIOS: Record<string, Partial<Character>> = {
   frost: {
     wiki: 'Frost',
     see: ['hoid', 'seventeenth-shard', 'yolen'],
-    bio: 'Oldest dragon still corresponding with Hoid — mentor, critic, and Seventeenth Shard voice for non-intervention. He watches the Cosmere tilt toward war and still prefers letters to cataclysm. He raised his niece Starling after her parents died, taught her to feel for mortals, and let her apprentice herself to Hoid though he feared what Hoid attracts. Millennia earlier he reached Cakoban seconds too late in the Drominad subastral and buried him. By the space age he has been missing for years and most think him dead. Starling does not.',
+    bio: 'Oldest dragon still corresponding with Hoid — mentor, critic, and Seventeenth Shard voice for non-intervention. He watches the Cosmere tilt toward war and still prefers letters to cataclysm. He raised his niece Starling after her parents died, taught her to feel for mortals, and let her apprentice herself to Hoid though he feared what Hoid attracts. Millennia earlier he reached Cakoban seconds too late in the Drominad subastral and buried him. By the space age he has been missing for years and most think him dead. Starling does not. In human form he is a pale man of about sixty with a long silver beard, in white and silver robes; like all greater dragons he spent his first thirty years in human form before his First Light.',
   },
   koravellium: {
     wiki: 'Koravellium_Avast',
     see: ['cultivation', 'taravangian', 'nightwatcher', 'honor'],
-    bio: 'Dragon Vessel of Cultivation, a heretic on Yolen for refusing to be worshipped, who helped Shatter Adonalsium because she believes no one god can rule everyone. She and Tanavast loved each other, against his oaths. She prunes Dalinar\'s memories and gambles on Taravangian with a boon that makes him Odium; when he becomes Retribution she leaves Roshar, and her perpendicularity vanishes behind her.',
+    bio: 'Dragon Vessel of Cultivation, a heretic on Yolen for refusing to be worshipped, who helped Shatter Adonalsium because she believes no one god can rule everyone. She and Tanavast loved each other, against his oaths. She prunes Dalinar\'s memories and gambles on Taravangian with a boon that makes him Odium; when he becomes Retribution she leaves Roshar, and her perpendicularity vanishes behind her. She prefers human form with mortals, and is immortal twice over: once by birth, once by Shard.',
   },
   xisis: {
     wiki: 'Xisisrefliel',

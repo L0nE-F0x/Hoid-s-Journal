@@ -224,15 +224,18 @@ function textsOf(kind, o, P) {
       }
       break;
     }
-    case 'body':
-      put('fact', o.fact); put('bio', o.bio); put('aliases', o.aliases);
-      put('species', o.species.join(', '));
+    case 'body': {
+      // A world's card reads through its reading face, as the app does.
+      const face = D.shownWorld(o, P);
+      put('fact', face.fact); put('bio', face.bio); put('aliases', o.aliases);
+      put('species', face.species.join(', '));
       put('locations', split(o.locations).filter((name) => {
         const l = C.locations.find((x) => x.body === o.id && x.name.toLowerCase() === name.toLowerCase());
         return !l || vis(l, P);
       }).join(', '));
       put('sources', o.sources.join(' · '));
       break;
+    }
     case 'moon': put('fact', o.fact); put('sources', o.sources.join(' · ')); break;
     case 'belt': put('fact', o.fact); put('bio', o.bio); put('sources', o.sources.join(' · ')); break;
     case 'system':

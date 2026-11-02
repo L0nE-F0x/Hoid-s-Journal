@@ -1850,3 +1850,88 @@ export const READING_FACES: Record<string, ReadingFace> = {
     ],
   },
 };
+
+/**
+ * The same idea for a world's card. A world is open from its series' first
+ * book, and its published text is written for someone who has read them all:
+ * Roshar's ended on Retribution for a Way of Kings reader. `species` replaces
+ * the list when a later book names the people in it.
+ */
+export interface WorldFaceText {
+  fact?: string;
+  bio?: string;
+  species?: string[];
+}
+export interface WorldFaceStep extends WorldFaceText {
+  book: string;
+  arc: string;
+  published?: boolean;
+}
+export const WORLD_FACES: Record<string, { early: WorldFaceText; steps: WorldFaceStep[] }> = {
+  roshar: {
+    early: {
+      bio: 'Highstorms cross the continent east to west carrying Stormlight, and everything that lives here is built to survive them. The Vorin kingdoms remember the Heralds and the Knights Radiant who betrayed mankind; parshmen serve without a word; on the Shattered Plains the Alethi fight the Parshendi for gemhearts.',
+      species: ['Humans', 'Parshendi', 'Spren', 'Aimians'],
+    },
+    steps: [
+      {
+        book: 'stormlight', arc: 'wor',
+        bio: 'Honor, Cultivation and Odium all Invested here. Highstorms cross east to west carrying Stormlight; since the battle at Narak, the Everstorm crosses the other way. The Knights Radiant fell once. They are coming back.',
+        species: ['Humans', 'Parshendi', 'Spren', 'Aimians'],
+      },
+      {
+        book: 'stormlight', arc: 'oathbringer',
+        bio: 'Honor, Cultivation and Odium all Invested here. Highstorms cross east to west carrying Stormlight; the Everstorm crosses the other way. Singers were the first people; humans came from Ashyn as refugees and became the Vorin kingdoms, Shinovar, Azir, and the rest. The Knights Radiant fell once. They are back.',
+      },
+      { book: 'stormlight', arc: 'wat', published: true },
+    ],
+  },
+  scadrial: {
+    early: {
+      fact: 'A world of ash, mist and a red sun, ruled for a thousand years from Luthadel.',
+      bio: 'Ash falls from the Ashmounts every day and the mists come every night. The Lord Ruler has held the Final Empire for a thousand years; the skaa work its plantations, the nobility own them, and Allomancy runs in noble blood.',
+    },
+    steps: [
+      {
+        book: 'mistborn1', arc: 'hoa',
+        bio: 'Preservation and Ruin made Scadrial together, then spent an age fighting over it. The Lord Ruler moved the planet too close to the sun and buried the difference in ash. Sazed put it back, and holds both Shards as Harmony.',
+      },
+      {
+        book: 'mistborn2', arc: 'aol',
+        bio: 'Preservation and Ruin made Scadrial together, then spent an age fighting over it. The Lord Ruler moved the planet too close to the sun and buried the difference in ash. Sazed put it back. The Basin is the garden that grew in the wreckage, and Harmony holds both Shards and can rarely act.',
+      },
+      { book: 'mistborn2', arc: 'tlm', published: true },
+    ],
+  },
+  // Odium's hand in the Splintering is a Way of Kings epigraph (Coppermind: Sel).
+  sel: {
+    early: {
+      fact: 'Magic here is deeply tied to geography and form. The Shards here were Splintered long ago.',
+      bio: 'Devotion and Dominion were Splintered long ago and their power went into the Cognitive Realm, where it became the Dor — a riptide of Investiture keyed to nations and maps. AonDor, Forgery, Dakhor, ChayShan and Bloodsealing are all the same ocean, shaped by different coastlines. Elantris was a city of gods until the Chasm broke the Aon, and a prince redrew it.',
+    },
+    steps: [{ book: 'stormlight', arc: 'twok', published: true }],
+  },
+  // The Fused are named in Oathbringer; Voidspren in Words of Radiance.
+  braize: {
+    early: {
+      fact: 'A cold, barren world.',
+      bio: 'The world the Vorin Heralds are said to have held against the Voidbringers between Desolations.',
+      species: ['Voidbringers'],
+    },
+    steps: [
+      {
+        book: 'stormlight', arc: 'wor',
+        bio: 'Odium\'s seat in the system, and the cell of the Oathpact: between Desolations the Voidbringers are held here, and the Heralds with them. Vorin people call it Damnation and they are not wrong. Taln held the door alone for four thousand years.',
+        species: ['Voidspren'],
+      },
+      { book: 'stormlight', arc: 'oathbringer', published: true },
+    ],
+  },
+  // Odium's fight with Ambition over Threnody is Arcanum Unbounded.
+  threnody: {
+    early: {
+      fact: 'A world of dark forests where the dead do not rest. Its people keep the Simple Rules to stay clear of the shades.',
+    },
+    steps: [{ book: 'arcanum', arc: 'arcanum', published: true }],
+  },
+};

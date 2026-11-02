@@ -16,7 +16,7 @@ import { ORGS_MORE } from './orgsMore.ts';
 import { RELATIONS_MORE } from './relationsMore.ts';
 import { DAWNSHARDS, HUBS, ROUTES, dawnshardById, hubById } from './realms.ts';
 import { PRESENCE_AT } from './presenceAt.ts';
-import { READING_FACES, type FaceText } from './readingFace.ts';
+import { READING_FACES, WORLD_FACES, type FaceText, type WorldFaceText } from './readingFace.ts';
 import { RELATION_ARCS } from './relationArcs.ts';
 import { RELATIONS as RELATIONS_CORE, REL_TYPES } from './relationships.ts';
 import { SHARDS } from './shards.ts';
@@ -450,6 +450,19 @@ export function shownFace(ch: Character, progress: Record<string, number>): Requ
     aliases: face.aliases ?? ch.aliases,
     abilities: face.abilities ?? ch.abilities,
   };
+}
+
+/** A world's card as far as this reader knows it; see `WORLD_FACES`. */
+export function shownWorld(b: Body, progress: Record<string, number>): { fact: string; bio?: string; species: string[] } {
+  const full: WorldFaceText = { fact: b.fact, bio: b.bio, species: b.species };
+  const spec = WORLD_FACES[b.id];
+  if (!spec) return { fact: b.fact, bio: b.bio, species: b.species };
+  let face: WorldFaceText = { ...full, ...spec.early };
+  for (const step of spec.steps) {
+    if (!isVisible({ book: step.book, arc: step.arc }, progress)) continue;
+    face = step.published ? full : { ...full, ...step };
+  }
+  return { fact: face.fact ?? b.fact, bio: face.bio, species: face.species ?? b.species };
 }
 
 export function relationsFor(id: string, progress: Record<string, number>) {

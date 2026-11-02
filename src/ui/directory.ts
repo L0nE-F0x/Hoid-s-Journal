@@ -9,6 +9,7 @@ import {
   characterAt,
   inEra,
   shownFace,
+  shownWorld,
   isVisible,
   onTheMap,
   orgById,
@@ -278,7 +279,7 @@ export function mountDirectory(root: HTMLElement): { destroy(): void } {
         if (!onTheMap(b, s.readProgress, s.era) || !match(b.name, b.aliases)) continue;
         if (inside && b.system !== s.focusedSystem) continue;
         if (b.kind === 'gas-giant' && !inside) continue;
-        entry(b.id, b.name, b.kind.replace('-', ' '), b.color, b.fact);
+        entry(b.id, b.name, b.kind.replace('-', ' '), b.color, shownWorld(b, s.readProgress).fact);
       }
       for (const belt of COSMERE.belts) {
         if (!inside || belt.system !== s.focusedSystem) continue;

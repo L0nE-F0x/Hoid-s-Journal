@@ -10,6 +10,7 @@ import {
   cityById,
   relationsFor,
   shownFace,
+  shownWorld,
   isNewThisArc,
   isVisible,
   loreById,
@@ -215,15 +216,16 @@ function fillFromHit(host: HTMLElement, hit: LoreHit): void {
   if (hit.kind === 'body') {
     const b = hit.obj;
     host.append(headOf(b.kind.replace('-', ' '), b.name, b.color, b.canon));
-    host.append(factBlock(b.fact)!);
-    host.append(factBlock(b.bio, true) ?? '');
+    const face = shownWorld(b, store.state.readProgress);
+    host.append(factBlock(face.fact)!);
+    host.append(factBlock(face.bio, true) ?? '');
     const grid = fields([
       ['System', COSMERE.systems.find((s) => s.id === b.system)?.name],
     ]);
     grid.append(refField('Shards', b.shards) ?? '');
     grid.append(refField('Magic', b.magic) ?? '');
     for (const [k, v] of [
-      ['Species', b.species.join(', ')],
+      ['Species', face.species.join(', ')],
       ['Places', seenNames(b.locations, b.id)],
       ['Sources', b.sources.join(' · ')],
       ['Local date', worldDate(b.system, era)],

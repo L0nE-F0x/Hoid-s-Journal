@@ -202,12 +202,6 @@
   },
   {
    "key": "body:sel",
-   "field": "fact",
-   "term": "Odium",
-   "why": "leak, catalog.ts, which the coordinator owns: Sel, open from Elantris, says Odium shattered its Shards (The Way of Kings, Arcanum). Reported."
-  },
-  {
-   "key": "body:sel",
    "field": "bio",
    "term": "Forgery",
    "why": "fp, catalog.ts, which the coordinator owns: a name (a world, a star, an era's own label) with no plot attached."
@@ -375,12 +369,6 @@
    "why": "fp, catalog.ts, which the coordinator owns: a name (a world, a star, an era's own label) with no plot attached."
   },
   {
-   "key": "era:2",
-   "field": "realDate",
-   "term": "Catacendre",
-   "why": "leak, catalog.ts, which the coordinator owns: the HUD year label for era 2, shown to every reader, ends '→ Catacendre' (The Hero of Ages). Reported."
-  },
-  {
    "key": "era:3",
    "field": "event",
    "term": "Roshar",
@@ -421,30 +409,6 @@
    "field": "realDate",
    "term": "Scadrial",
    "why": "fp, catalog.ts, which the coordinator owns: a name (a world, a star, an era's own label) with no plot attached."
-  },
-  {
-   "key": "era:4",
-   "field": "realDate",
-   "term": "Catacendre",
-   "why": "leak, catalog.ts, which the coordinator owns: the HUD year label for era 4 is '~341 years after the Catacendre' (The Hero of Ages). Reported."
-  },
-  {
-   "key": "body:scadrial",
-   "field": "bio",
-   "term": "Ruin",
-   "why": "leak, catalog.ts, which the coordinator owns: Scadrial's bio, open from The Final Empire, says Preservation and Ruin made it (The Hero of Ages). Reported."
-  },
-  {
-   "key": "body:aagal-uch",
-   "field": "bio",
-   "term": "Preservation",
-   "why": "leak, catalog.ts, which the coordinator owns: open from The Final Empire, names Preservation and Ruin (The Hero of Ages). Reported."
-  },
-  {
-   "key": "body:aagal-uch",
-   "field": "bio",
-   "term": "Ruin",
-   "why": "leak, catalog.ts, which the coordinator owns: open from The Final Empire, names Preservation and Ruin (The Hero of Ages). Reported."
   },
   {
    "key": "system:scadrian",
@@ -575,31 +539,7 @@
   {
    "key": "epoch:scadrian",
    "field": "era3",
-   "term": "Catacendre",
-   "why": "leak, catalog.ts, which the coordinator owns: Scadrial's local dates, shown from The Final Empire, are 'post-Catacendre' (The Hero of Ages). Reported."
-  },
-  {
-   "key": "epoch:scadrian",
-   "field": "era3",
    "term": "Roshar",
-   "why": "fp, catalog.ts, which the coordinator owns: a name (a world, a star, an era's own label) with no plot attached."
-  },
-  {
-   "key": "epoch:scadrian",
-   "field": "era4",
-   "term": "Catacendre",
-   "why": "leak, catalog.ts, which the coordinator owns: Scadrial's local dates, shown from The Final Empire, are 'post-Catacendre' (The Hero of Ages). Reported."
-  },
-  {
-   "key": "epoch:scadrian",
-   "field": "era4",
-   "term": "Wax",
-   "why": "fp, catalog.ts, which the coordinator owns: a name (a world, a star, an era's own label) with no plot attached."
-  },
-  {
-   "key": "epoch:scadrian",
-   "field": "era4",
-   "term": "Wayne",
    "why": "fp, catalog.ts, which the coordinator owns: a name (a world, a star, an era's own label) with no plot attached."
   },
   {
@@ -657,40 +597,10 @@
    "why": "fp, catalog.ts, which the coordinator owns: a name (a world, a star, an era's own label) with no plot attached."
   },
   {
-   "key": "body:roshar",
-   "field": "bio",
-   "term": "Everstorm",
-   "why": "leak, catalog.ts, which the coordinator owns: Roshar's bio, open from The Way of Kings, has the Everstorm (WoR) and Retribution 'after the Contest' (WaT). Reported."
-  },
-  {
-   "key": "body:roshar",
-   "field": "bio",
-   "term": "Retribution",
-   "why": "leak, catalog.ts, which the coordinator owns: Roshar's bio, open from The Way of Kings, ends with Retribution after the Contest (WaT). Reported."
-  },
-  {
-   "key": "body:roshar",
-   "field": "species",
-   "term": "Singers",
-   "why": "fp, catalog.ts, which the coordinator owns: a name (a world, a star, an era's own label) with no plot attached."
-  },
-  {
    "key": "body:braize",
    "field": "bio",
    "term": "Damnation",
    "why": "fp, catalog.ts, which the coordinator owns: a name (a world, a star, an era's own label) with no plot attached."
-  },
-  {
-   "key": "body:braize",
-   "field": "species",
-   "term": "Voidspren",
-   "why": "leak, catalog.ts, which the coordinator owns: Braize, open from The Way of Kings, has Voidspren and the Fused trapped there (Oathbringer). Reported."
-  },
-  {
-   "key": "moon:salas",
-   "field": "fact",
-   "term": "Voidlight",
-   "why": "leak, catalog.ts, which the coordinator owns: Salas, open from The Way of Kings, is 'the colour of Voidlight' (Oathbringer). Reported."
   },
   {
    "key": "moon:mishim",
@@ -1065,12 +975,6 @@
    "why": "fp: Rock's homeland is The Way of Kings'"
   },
   {
-   "key": "epoch:rosharan",
-   "field": "era4",
-   "term": "Wind and Truth",
-   "why": "leak, catalog.ts, which the coordinator owns: Roshar's local date for era 4, shown from The Way of Kings, is 'After Wind and Truth — the ten-year cold war'. Reported."
-  },
-  {
    "key": "epoch:obrodai",
    "field": "era3",
    "term": "Autonomy's avatar",
@@ -1081,18 +985,6 @@
    "field": "star",
    "term": "Dhatri",
    "why": "fp, catalog.ts, which the coordinator owns: a name (a world, a star, an era's own label) with no plot attached."
-  },
-  {
-   "key": "system:bjendal",
-   "field": "fact",
-   "term": "Ghostbloods",
-   "why": "leak, catalog.ts, which the coordinator owns: Bjendal, open from The Alloy of Law, is the Ghostbloods' (WoR) and closed in 348 PC (The Lost Metal). Reported."
-  },
-  {
-   "key": "system:bjendal",
-   "field": "star",
-   "term": "Ghostbloods",
-   "why": "leak, catalog.ts, which the coordinator owns: Bjendal, open from The Alloy of Law, is the Ghostbloods' (WoR) and closed in 348 PC (The Lost Metal). Reported."
   },
   {
    "key": "location:elendel-basin",
@@ -1143,28 +1035,10 @@
    "why": "fp, catalog.ts, which the coordinator owns: a name (a world, a star, an era's own label) with no plot attached."
   },
   {
-   "key": "body:threnody",
-   "field": "fact",
-   "term": "Ambition",
-   "why": "leak, catalog.ts, which the coordinator owns: Threnody, open from Shadows for Silence, names Odium and Ambition (Arcanum). Reported."
-  },
-  {
-   "key": "system:threnodite",
-   "field": "fact",
-   "term": "Ambition",
-   "why": "leak, catalog.ts, which the coordinator owns: the Threnodite system, open from Shadows for Silence, names Odium and Ambition (Arcanum). Reported."
-  },
-  {
    "key": "term:shade",
    "field": "def",
    "term": "Cognitive Shadow",
    "why": "fp: the Cognitive Shadow term is filed later; the shades are this book's"
-  },
-  {
-   "key": "epoch:threnodite",
-   "field": "era1",
-   "term": "Ambition",
-   "why": "leak, catalog.ts, which the coordinator owns: the Threnodite local date names Ambition's death (Arcanum). Reported."
   },
   {
    "key": "character:mraize",
@@ -1413,12 +1287,6 @@
    "why": "fp, catalog.ts, which the coordinator owns: a name (a world, a star, an era's own label) with no plot attached."
   },
   {
-   "key": "body:bjendal-world",
-   "field": "bio",
-   "term": "Retribution",
-   "why": "leak, catalog.ts, which the coordinator owns: Bjendal's bio, open from The Lost Metal, says 'Roshar, after Retribution' (WaT). Reported."
-  },
-  {
    "key": "character:maraga-dulcet",
    "field": "bio",
    "term": "Allomancer Jak",
@@ -1435,6 +1303,12 @@
    "field": "bio",
    "term": "Emberdark",
    "why": "fp: Lorieta warns Jasnah off the settlement Emberdark in Elsecaller (Coppermind: Lorieta)"
+  },
+  {
+   "key": "era:4",
+   "field": "realDate",
+   "term": "Mistborn",
+   "why": "fp: the series' own title, 'Mistborn Era 2', which the era's label already shows every reader."
   }
  ]
 }

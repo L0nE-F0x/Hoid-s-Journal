@@ -11,6 +11,7 @@ import {
   searchJournal,
   systemOnTheMap,
   publicationSafeProgress,
+  shownWorld,
   seriesById,
   fullProgress,
   JOURNAL_BOOKS,
@@ -378,7 +379,7 @@ function renderCodex(card: HTMLElement): void {
       } else if (filter === 'world') {
         for (const b of COSMERE.bodies) {
           if (b.kind === 'gas-giant' || !isVisible(b, vis)) continue;
-          cards.push({ id: b.id, label: b.name, kind: 'world', fact: b.fact, book: b.book });
+          cards.push({ id: b.id, label: b.name, kind: 'world', fact: shownWorld(b, vis).fact, book: b.book });
         }
       }
       for (const h of cards.slice(0, 80)) {

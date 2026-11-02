@@ -167,7 +167,7 @@ export const ERAS: Era[] = [
   {
     id: 2, name: 'Mistborn Era 1', start: -350,
     event: 'The Lord Ruler holds Scadrial in ash. A thousand years of the Final Empire.',
-    realDate: "Scadrial — the Final Empire (~1,000 yrs) → Catacendre",
+    realDate: "Scadrial — the Final Empire (~1,000 yrs)",
     chrono: "Scadrial's Final Empire endures roughly a thousand years under the Lord Ruler, ending with the Catacendre. Warbreaker (a few generations before The Way of Kings) and Shadows for Silence come after it, before Roshar's Desolation; this atlas keeps them in this band.",
     canon: C, sources: ['Mistborn Era 1', 'Word of Brandon 10273, 14099'],
   },
@@ -181,7 +181,7 @@ export const ERAS: Era[] = [
   {
     id: 4, name: 'Mistborn Era 2', start: 15,
     event: 'Scadrial three centuries after the ash. Railways, newspapers, Twinborn.',
-    realDate: 'Scadrial — ~341 years after the Catacendre',
+    realDate: 'Scadrial — the time of Mistborn Era 2',
     // Era 2 is in the ten years between Stormlight 5 and 6 (WoB 549, 14582);
     // The Fires of December is post-5, pre-6 (WoB 17183); Yumi is after The
     // Sunlit Man (WoB 16524), so it is era 5's.
@@ -262,7 +262,7 @@ export const SYSTEMS: System[] = [
     wiki: 'Drominad system', sources: ['Arcanum Unbounded — Drominad system'] },
   { id: 'threnodite', name: 'Threnodite', sunColor: '#f0846a', position: sys(1050, -650, 40), book: 'shadowsforsilence', nebula: '#44403c',
     starDesc: 'A red star. Under it the nights are dark enough that the Starbelt is the only thing people read the ground by.',
-    fact: 'Four planets, most of them named for songs of mourning — and there used to be more. Odium and Ambition fought here and the missing worlds are the argument.',
+    fact: 'Four planets, most of them named for songs of mourning — and there used to be more.',
     wiki: 'Threnodite system', sources: ['Arcanum Unbounded — Threnodite system', 'Wind and Truth'] },
   { id: 'lumar', name: 'Lumar', sunColor: '#fde68a', position: sys(420, -920, -70), book: 'tress', nebula: '#6ee7b7',
     starDesc: "Unnamed. Every day it passes behind one of the twelve moons, and that world calls the cool shade it throws a moonshadow.",
@@ -302,8 +302,8 @@ export const SYSTEMS: System[] = [
     fact: 'Rellam has no gods — Tyvneri had to leave it to learn the word.',
     wiki: 'Physical Realm', sources: ['Elsecaller'] },
   { id: 'bjendal', nebulaScale: 0.55, name: 'Bjendal', sunColor: '#fbbf24', position: sys(220, -520, 110), book: 'mistborn2', nebula: '#fcd34d',
-    starDesc: 'Unnamed. The Ghostbloods count Bjendal one of their primary systems, which tells you they can reach it and not what it looks like.',
-    fact: 'In 348 PC the Cognitive road to Bjendal closed, and the Ghostbloods do not know why either.',
+    starDesc: 'Unnamed. Bjendal is a name on worldhoppers\' lists, which tells you they can reach it and not what it looks like.',
+    fact: 'In 348 PC the Cognitive road to Bjendal closed, and the worldhoppers who used it do not know why either.',
     wiki: 'Physical Realm', sources: ['The Lost Metal'] },
   // Miral is placed by the book only as far off the common roads, with a
   // perpendicularity nobody's Shard tuned. The corner of the chart is ours.
@@ -355,7 +355,7 @@ export const BODIES: Body[] = [
     shards: [], magic: [], species: [], locations: 'Outer system', biome: 'gas', hasSurface: false,
     aliases: 'the Far Eye',
     fact: 'A red gas giant with a ring system and at least five moons. The comet belt begins past it.',
-    bio: 'The Far Eye, to the Nelazan. Between the two Eyes and the comet belt, most of the Scadrian system is older than the world Preservation and Ruin built at the front of it.',
+    bio: 'The Far Eye, to the Nelazan. Between the two Eyes and the comet belt, most of the Scadrian system is older than the world at the front of it.',
     wiki: 'Aagal Uch', see: ['scadrial', 'aagal-nod'],
     ...cited('mistborn1', ['Mistborn Adventure Game', 'Arcanum Unbounded — Scadrian system']),
     fieldNotes: { name: { canon: C, note: 'The chart gives the planet; the Nelazan name comes from the Mistborn Adventure Game, which Brandon has approved as canon.' } } },
@@ -669,7 +669,7 @@ export const BODIES: Body[] = [
     orbit: { a: 13.4, e: 0.09, i: 0.05, omega: 0.6, period: 1.02 }, radius: 1.02,
     shards: [], magic: [], species: [], locations: 'Unknown', biome: 'barren', hasSurface: false,
     fact: 'One of the Ghostbloods\' primary systems. In 348 PC the Cognitive road to it was cut, and they do not know why.',
-    bio: 'Bjendal is named as a system rather than as a place anyone describes: travel there was "completely upset", which made it the fourth primary system the Ghostbloods could not visit without extreme danger — Roshar, after Retribution, being another.',
+    bio: 'Bjendal is named as a system rather than as a place anyone describes: travel there was "completely upset", which made it the fourth primary system the Ghostbloods could not visit without extreme danger.',
     wiki: 'Physical Realm', see: ['ghostbloods'],
     canon: C, sources: ['The Lost Metal'],
     fieldNotes: { system: { canon: S, note: 'Canon calls Bjendal a system and never draws it. The world at the middle of it, and where it sits, are ours.' } } },
@@ -708,7 +708,9 @@ function gasGiant(id: string, name: string, a: number, color: string, period: nu
 export const MOONS: Moon[] = [
   { id: 'salas', name: 'Salas', parent: 'roshar', book: 'stormlight', color: '#c084fc',
     orbit: { a: 2.4, e: 0.02, i: 0.04, omega: 0.1, period: 14.2 }, radius: 0.18,
-    fact: 'Smallest and first to rise, violet and dim — the colour of Voidlight. Shin call her First Sister of the Three. The orbits are unstable on a cosmic timescale; they were placed, not born. A fourth moon died and fell before Honor arrived, its fragments under the Shattered Plains.',
+    // The colour of Voidlight is Rhythm of War's comparison, and the fourth
+    // moon under the Plains is Wind and Truth's (on the Well of Control's card).
+    fact: 'Smallest and first to rise, violet and dim. Shin call her First Sister of the Three. The orbits are unstable on a cosmic timescale; they were placed, not born.',
     ...cited('stormlight', ['The Stormlight Archive', 'Coppermind: Roshar']) },
   { id: 'nomon', name: 'Nomon', parent: 'roshar', book: 'stormlight', color: '#bae6fd',
     orbit: { a: 3.15, e: 0.04, i: 0.03, omega: 1.2, period: 10.8 }, radius: 0.26,
@@ -888,15 +890,15 @@ export const WORLD_EPOCHS: Record<string, WorldEpoch[]> = {
   scadrian: [
     { era: 1, date: 'Pre-Ascension Scadrial', canon: S },
     { era: 2, date: "The Final Empire — the Lord Ruler's reign", canon: C },
-    { era: 3, date: 'Post-Catacendre band — alignment with Roshar is approximate', canon: S },
-    { era: 4, date: '~341 years after the Catacendre (Wax & Wayne)', canon: C },
+    { era: 3, date: 'The Basin\'s early centuries — alignment with Roshar is approximate', canon: S },
+    { era: 4, date: 'The time of Mistborn Era 2', canon: C },
     { era: 5, date: 'Scadrian space age', canon: S },
   ],
   rosharan: [
     { era: 1, date: 'The Heraldic Epochs — the Desolations', canon: S },
     { era: 2, date: 'After the Recreance', canon: S },
     { era: 3, date: '1173–1175, Vorin calendar — the True Desolation', canon: C },
-    { era: 4, date: 'After Wind and Truth — the ten-year cold war', canon: S },
+    { era: 4, date: 'Some years on from the True Desolation', canon: S },
     { era: 5, date: 'Rosharan space age', canon: S },
   ],
   selish: [{ era: 2, date: 'Elantris era — early post-Shattering band', canon: S }],
@@ -906,7 +908,7 @@ export const WORLD_EPOCHS: Record<string, WorldEpoch[]> = {
   ],
   taldainian: [{ era: 2, date: 'White Sand era', canon: S }],
   threnodite: [
-    { era: 1, date: "After Ambition's death scarred the system", canon: C },
+    { era: 1, date: 'Early post-Shattering', canon: C },
     { era: 2, date: 'Shadows for Silence era — placement uncertain', canon: S },
   ],
   // Sixth of the Dusk comes after Mistborn's third era (WoB 15579, 10273).
